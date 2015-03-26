@@ -1,14 +1,15 @@
 {
-    "name": "dataserverinterface",
+    "name": "nti.lib.interfaces",
     "version": "0.0.0",
     "description": "Provides an interface for interacting with the dataserver via javascript.",
     "main": "index.js",
     "scripts": {
-        "test": "grunt test"
+        "test": "grunt test",
+        "prepublish": "grunt test"
     },
     "repository": {
         "type": "git",
-        "url": "ssh://repos.nextthought.com/nti.node.dataserverinterface"
+        "url": "ssh://repos.nextthought.com/nti.lib.interfaces"
     },
     "author": "",
     "license": "private",
