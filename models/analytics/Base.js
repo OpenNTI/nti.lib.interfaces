@@ -71,7 +71,6 @@ export default class BasicEvent {
 	}
 
 	onPulse() {
-		console.debug('pulse. %o', this);
 		this.lastBeat = Date.now();
 	}
 

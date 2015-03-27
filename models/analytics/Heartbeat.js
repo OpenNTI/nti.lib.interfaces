@@ -42,7 +42,6 @@ export default class Heartbeat {
 	}
 
 	onPulse() {
-		console.debug('pulse. %o', this);
 		this._callback();
 	}
 
