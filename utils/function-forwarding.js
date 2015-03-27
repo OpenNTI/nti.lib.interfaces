@@ -1,12 +1,12 @@
 function reflect(fn, key) {
-	var keys = key.split('.');
+	let keys = key.split('.');
 
 	return function(...args) {
 		//`this` needs to be the object the returned
 		// function is injected into, _not_ a job for
 		// the arrow function
-		var scope = this;
-		var path = [];
+		let scope = this;
+		let path = [];
 
 		//walk down the path...
 		for(let i=0, l=keys.length; i<=l; i++) {
@@ -34,7 +34,7 @@ function reflect(fn, key) {
  * @return {Object}	Object with function names to bound functions
  */
 export default function forwardFunctions(fns, key) {
-	var result = {};
+	let result = {};
 
 	for(let fn of fns) {
 		result[fn] = reflect(fn, key);

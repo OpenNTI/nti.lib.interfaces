@@ -1,8 +1,7 @@
-'use strict';
-var isEmpty = require('./isempty');
+import isEmpty from './isempty';
 
-exports = module.exports = function(a) {
+export default function(a) {
 	return isEmpty(a) ? [] :
 		Array.isArray(a) ? a :
 			Array.prototype.slice.call(a);
-};
+}

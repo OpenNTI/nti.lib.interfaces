@@ -1,5 +1,3 @@
-'use strict';
-
 function min(a, b) {
 	return a < b ? a : b;
 }
@@ -10,11 +8,11 @@ function max(a, b) {
 }
 
 
-module.exports = function between(i, a, b, inclusive) {
-	var x = min(a,b);
-	var y = max(a,b);
+export default function between(i, a, b, inclusive = false) {
+	let x = min(a,b);
+	let y = max(a,b);
 
 	return inclusive ?
 		(i >= x && i <= y) :
 		(i > x && i < y);
-};
+}

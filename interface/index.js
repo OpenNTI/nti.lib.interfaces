@@ -10,9 +10,9 @@ import DataCache from '../utils/datacache';
 
 import isBrowser from '../utils/browser';
 import isEmpty from '../utils/isempty';
-import getLink from '../utils/getlink';
 import NTIIDs from '../utils/ntiids';
 import waitFor from '../utils/waitfor';
+import {default as getLink, asMap as getLinksAsMap} from '../utils/getlink';
 
 import chain from '../utils/function-chain';
 
@@ -310,7 +310,7 @@ export default class DataServerInterface {
 		return me._get('logon.ping', context)//ping
 			//pong
 			.then(data => {
-				let urls = getLink.asMap(data);
+				let urls = getLinksAsMap(data);
 
 				if (!urls['logon.handshake']) {
 					return Promise.reject('No handshake present');

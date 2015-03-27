@@ -1,25 +1,18 @@
-'use strict';
+export default class Task {
+	constructor (fn, interval) {
+		this.fn = fn;
+		this.interval = interval || 1000;
+	}
 
-
-function Task(fn, interval) {
-	this.fn = fn;
-	this.interval = interval || 1000;
-}
-
-Object.assign(Task.prototype, {
-	start: function () {
+	start () {
 		if (this._id) {
 			return;
 		}
 		this._id = setInterval(this.fn, this.interval);
-	},
+	}
 
-
-	stop: function () {
+	stop () {
 		clearInterval(this._id);
 		delete this._id;
 	}
-});
-
-
-module.exports = Task;
+}

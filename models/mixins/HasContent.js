@@ -1,4 +1,3 @@
-import define from '../../utils/object-define-properties';
 import fixRefs from '../../utils/rebase-references';
 import clean from '../../utils/sanitize-markup';
 
@@ -14,12 +13,11 @@ function cleanupContentString(content) {
 }
 
 function setup (data, keys) {
-	let props = {};
 	let clean = cleanupContentString.bind(this);
 
 	for(let key of keys) {
 		let content = data[key] || '';
-		props[key] = {
+		Object.defineProperty(this, key, {
 			enumerable: true,
 			configurable: true,
 			get () {
@@ -36,10 +34,8 @@ function setup (data, keys) {
 
 				return content;
 			}
-		};
+		});
 	}
-
-	define(this, props);
 }
 
 export const ContentKeys = Symbol('ContentKeys');

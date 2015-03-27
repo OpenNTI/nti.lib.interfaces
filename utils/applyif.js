@@ -1,12 +1,11 @@
-'use strict';
+export default function (dest, src) {
+	for(let i of Object.keys(src)) {
 
-module.exports = function (dest, src) {
-	for(var i in src) {
-		if (src.hasOwnProperty(i)) {
-			if (dest[i] == null) {//intentional "== null"
-				dest[i] = src[i];
-			}
+		if (dest[i] == null) {//intentional "== null"
+			dest[i] = src[i];
 		}
+
 	}
+
 	return dest;
-};
+}

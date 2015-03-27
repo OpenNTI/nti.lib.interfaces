@@ -1,13 +1,10 @@
-'use strict';
+import Url from 'url';
 
-var Url = require('url');
-
-module.exports = exports = function forceHost(s) {
+export default function forceHost(s) {
 	//Force our config to always point to our server...(client side)
-	var url = Url.parse(s);
-	url.host = global.location.host;
-	url.hostname = global.location.hostname;
-	url.protocol = global.location.protocol;
-	url.port = global.location.port;
+	let url = Url.parse(s);
+	let {host, hostname, protocol, port} = global.location;
+	Object.assign(url, {url, host, hostname, protocol, port});
+
 	return url.format();
-};
+}

@@ -17,13 +17,11 @@ export default class DataCache {
 
 
 	set(key, value) {
-		var o, data = this.data;
+		let data = this.data;
 		if (typeof key === 'object') {
-			o = key;
-			for (key in o) {
-				if (o.hasOwnProperty(key)) {
-					this.set(key, o[key]);
-				}
+			let o = key;
+			for (let key of Object.keys(o)) {
+				this.set(key, o[key]);
 			}
 		} else {
 			delete data[key];//make sure to reset its configuration
@@ -46,13 +44,10 @@ export default class DataCache {
 	 *                  ignored.
 	 */
 	setVolatile (key, value) {
-		var o;
 		if (typeof key === 'object') {
-			o = key;
-			for (key in o) {
-				if (o.hasOwnProperty(key)) {
-					this.setVolatile(key, o[key]);
-				}
+			let o = key;
+			for (let key of Object.keys(o)) {
+				this.setVolatile(key, o[key]);
 			}
 		} else {
 			Object.defineProperty(this.data, key, {
@@ -75,7 +70,7 @@ export default class DataCache {
 
 
 	static getForContext (context) {
-		var cache;
+		let cache;
 		if (context) {
 			cache = context[CONTEXT_PROPERTY_NAME];
 			if (!cache) {

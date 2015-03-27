@@ -1,8 +1,6 @@
-'use strict';
+import isEmpty from './isempty';
 
-var isEmpty = require('./isempty');
-
-module.exports = function ensureArray(a) {
+export default function ensureArray(a) {
 	return Array.isArray(a) ? a :
 		(isEmpty(a, true) ? [] : [a]);
-};
+}

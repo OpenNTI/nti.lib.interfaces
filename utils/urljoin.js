@@ -1,17 +1,11 @@
-'use strict';
+import path from 'path';
+import url from 'url';
 
-var Path = require('path');
-var Url = require('url');
+export default function urlJoin(...parts) {
+	let base = url.parse(parts.shift());
 
-module.exports = function urlJoin() {
-	var parts = Array.prototype.slice.call(arguments);
-	var url = Url.parse(parts.shift());
+	parts.unshift(base.pathname);
+	base.pathname = path.join(path, ...parts.map(i=> !i ? '': i.toString()));
 
-	parts.unshift(url.pathname);
-
-	function toString(i) { return !i ? '': i.toString(); }
-
-	url.pathname = Path.join.apply(Path, parts.map(toString));
-
-	return url.format();
-};
+	return base.format();
+}

@@ -2,7 +2,7 @@ import {EventEmitter} from 'events';
 
 import {parse, getModelByType} from './Parser';
 
-import getLink from '../utils/getlink';
+import {default as getLink, asMap as getLinksAsMap} from '../utils/getlink';
 import mixin from '../utils/mixin';
 import noop from '../utils/empty-function';
 import waitFor from '../utils/waitfor';
@@ -203,12 +203,12 @@ export default class Base extends EventEmitter {
 
 
 	getLinkMap () {
-		return getLink.asMap(this);
+		return getLinksAsMap(this);
 	}
 
 
 	hasLink (rel) {
-		return rel in getLink.asMap(this) && !!this.getLink(rel);
+		return rel in this.getLinkMap() && !!this.getLink(rel);
 	}
 
 

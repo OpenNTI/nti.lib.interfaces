@@ -1,19 +1,20 @@
-'use strict';
-
-var fn = module.exports = function getLink(o, rel, raw) {
+export default function getLink(o, rel, raw) {
 
 	if (o && o.Links) { o = o.Links; }
 
-	var v, i = o && o.length - 1;
-	for (i; i>=0; i--) {
-		v = o[i];
+	for (let i = o && o.length - 1; i>=0; i--) {
+		let v = o[i];
 		if (v && v.rel === rel) {
 			return raw === true ? v : v.href;
 		}
 	}
-};
+}
 
-fn.asMap = function(o) {
+/**
+ * This function is an anti-pattern. TODO: consolidate all link getting/referencing to the getLink version (perferibly
+ * as a method call off of a model, instead of a function call on a raw jso)
+ */
+export function asMap(o) {
 
 	//console.error('Prefer getLink(data, linkName)...');
 
@@ -22,13 +23,12 @@ fn.asMap = function(o) {
 		o = [o];
 	}
 
-	var m = {};
-	var v, i = o.length - 1;
-	for (i; i>=0; i--) {
-		v = o[i];
+	let m = {};
+	for (let i = o.length - 1; i>=0; i--) {
+		let v = o[i];
 		if (m[v.rel]) {console.warn('There are more than one instances of %s', v.rel);}
 		m[v.rel] = v.href;
 	}
 
 	return m;
-};
+}

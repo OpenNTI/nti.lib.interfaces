@@ -1,11 +1,9 @@
-'use strict';
+import stringHash from './string-hash';
 
-var stringHash = require('./string-hash');
+const externalUriRegex = /^((\/\/)|([a-z][a-z0-9\+\-\.]*):)/i;
+const CORS_BUSTER_REGEX = /(\S+)\s*=\s*"(((\/[^"\/]+\/)||\/)resources\/[^?"]*?)"/igm;
 
-var externalUriRegex = /^((\/\/)|([a-z][a-z0-9\+\-\.]*):)/i;
-
-
-function bustCorsForResources(string, name, value) {
+export function bustCorsForResources(string, name, value) {
 	//Look for things we know come out of a different domain
 	//and append a query param.  This allows us to, for example,
 	//add a query param related to our location host so that
@@ -18,21 +16,18 @@ function bustCorsForResources(string, name, value) {
 	//TODO Processing html with a regex is stupid
 	//consider parsing and using selectors here instead.  Note
 	//we omit things that contain query strings here
-	var regex = /(\S+)\s*=\s*"(((\/[^"\/]+\/)||\/)resources\/[^?"]*?)"/igm;
 
-	function cleanup(original, attr, url) {
-		return attr + '="' + url + '?' + name + '=' + value + '"';
-	}
-
-	return string.replace(regex, cleanup);
+	return string.replace(CORS_BUSTER_REGEX,
+		(original, attr, url) =>
+			attr + '="' + url + '?' + name + '=' + value + '"');
 }
 
 
-function rebase(string, basePath) {
-	var location = global.location || {};//This will not work well on server-side render
+export default function rebaseReferences(string, basePath) {
+	let location = global.location || {};//This will not work well on server-side render
 
 	function fixReferences(original, attr, url) {
-		var firstChar = url.charAt(0),
+		let firstChar = url.charAt(0),
 			absolute = firstChar === '/',
 			anchor = firstChar === '#',
 			external = externalUriRegex.test(url),
@@ -67,7 +62,3 @@ function rebase(string, basePath) {
 	string = string.replace(/(src|href|poster)="(.*?)"/igm, fixReferences);
 	return string;
 }
-
-rebase.bustCorsForResources = bustCorsForResources;
-
-module.exports = exports = rebase;

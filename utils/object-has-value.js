@@ -1,8 +1,6 @@
-'use strict';
+import values from './object-values';
 
-var values = require('./object-values');
-
-module.exports = function(o, val) {
-	var v = o && values(o) || false;//force falsy to become literal False
+export default function(o, val) {
+	let v = o && values(o) || false;//force falsy to become literal False
 	return v && v.indexOf(val) > -1;
-};
+}

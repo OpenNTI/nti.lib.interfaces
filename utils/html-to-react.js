@@ -1,15 +1,14 @@
-'use strict';
-var ensureArray = require('./ensure-array');
-var et = require('elementtree');
+import ensureArray from './ensure-array';
+import et from 'elementtree';
 
-var UNARY_ELEMENTS = [
+const UNARY_ELEMENTS = [
 	'br',
 	'img'
 ];
 
-var ENTITY_MATCHER = /&([^&;]+);/gm;
+const ENTITY_MATCHER = /&([^&;]+);/gm;
 
-var HTML_ENTITIES = {//these are unknown to XML by name, swap them with the &#decimal; version.
+const HTML_ENTITIES = {//these are unknown to XML by name, swap them with the &#decimal; version.
 	amp: 38,
 	lt: 60,
 	gt: 62,
@@ -264,14 +263,14 @@ var HTML_ENTITIES = {//these are unknown to XML by name, swap them with the &#de
 	diams: 9830
 };
 
-module.exports = function (html, isWidgetCallback) {
+export default function (html, isWidgetCallback) {
 	try {
-		var xml = crudeHTMLToXML(html);
+		let xml = crudeHTMLToXML(html);
 
-		var root = et.parse('<root>'+xml+'</root>').getroot();
-		var children = processChildren(root, isWidgetCallback);
+		let root = et.parse('<root>'+xml+'</root>').getroot();
+		let children = processChildren(root, isWidgetCallback);
 
-		var out = 'return ' + reactifyElement('"div"', {}, children);
+		let out = 'return ' + reactifyElement('"div"', {}, children);
 		/*jshint -W054*///Not evil in this case. Building a Template function.
 		return new Function(
 			'React, renderWidget', //arguments
@@ -281,7 +280,7 @@ module.exports = function (html, isWidgetCallback) {
 	catch (e) {
 		console.error('There was an error processing HTML into a React render Function %s', e.stack || e.message || e);
 	}
-};
+}
 
 
 function getLiteral(str) {
@@ -307,14 +306,14 @@ function reactifyElement(element, props, children, customFunc) {
 	children = ensureArray(children);
 	children = children.length > 0 ? children.join(',') : 'undefined';
 
-	var renderer = customFunc || 'React.createElement';
+	let renderer = customFunc || 'React.createElement';
 
 	return renderer + '('+element+', '+props+', '+children+')';
 }
 
 
 function processNode(n, isWidget) {
-	var renderFunction;
+	let renderFunction;
 
 	if (isWidget){
 		if (isWidget(n.tag, n.attrib)) {
@@ -322,13 +321,13 @@ function processNode(n, isWidget) {
 		}
 	}
 
-	var el = reactifyElement(
+	let el = reactifyElement(
 		getLiteral(n.tag),
 		n.attrib,
 		processChildren(n, isWidget),
 		renderFunction);
 
-	var res = [el];
+	let res = [el];
 
 	if (n.tail) {
 		res.push(getLiteral(n.tail));
@@ -340,11 +339,8 @@ function processNode(n, isWidget) {
 
 
 function processChildren(n, isWidget) {
-	var text = n.text && getLiteral(n.text);
-	var c = n.getchildren().map(function(x){
-		return processNode(x, isWidget);
-	});
-
+	let text = n.text && getLiteral(n.text);
+	let c = n.getchildren().map(x => processNode(x, isWidget));
 
 	if (text) {
 		c.unshift(text);
@@ -355,10 +351,10 @@ function processChildren(n, isWidget) {
 
 
 function ensureUnaryTagsAreClosedXML(html) {
-	var output = html;
+	let output = html;
 
 	function getMatcher(tag) {
-		var c = getMatcher,
+		let c = getMatcher,
 			m = c[tag] || (c[tag] = new RegExp('(<'+tag+')([^>]*)(>)', 'igm'));
 		return m;
 	}

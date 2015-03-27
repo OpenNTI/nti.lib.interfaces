@@ -1,7 +1,6 @@
 /* global SERVER, ActiveXObject, XMLHttpRequest */
-'use strict';
 
-var XMLHttpFactories = [
+const XMLHttpFactories = [
 	() => new XMLHttpRequest(),
 	() => new ActiveXObject('Msxml2.XMLHTTP'),
 	() => new ActiveXObject('Msxml3.XMLHTTP'),
@@ -28,7 +27,7 @@ function copy(dest, src, keys) {
 
 
 function keysToLowerCase(o) {
-	var out = {};
+	let out = {};
 	for(let k of Object.keys(o)) {
 		out[k.toLowerCase()] = o[k];
 	}
@@ -36,14 +35,14 @@ function keysToLowerCase(o) {
 }
 
 
-module.exports = exports = SERVER ? //SERVER is declared in th WebPack config file
+const request = SERVER ? //SERVER is declared in th WebPack config file
 	//in node.js land...
-	require('request') :
+	require('request') ://eeew
 
 	//Mimic request() node package in the browser...
 	function (options, callback) {
-		var headersNormalized = keysToLowerCase(options.headers || {});
-		var req, headers, formType,
+		let headersNormalized = keysToLowerCase(options.headers || {});
+		let req, headers, formType,
 			defaultType = 'application/x-www-form-urlencoded';
 
 		try {
@@ -70,7 +69,7 @@ module.exports = exports = SERVER ? //SERVER is declared in th WebPack config fi
 				req.setRequestHeader('Content-type', defaultType);
 				if (typeof options.form === 'object') {
 					options.form = Object.keys(options.form).reduce((str, v) => {
-						var joiner = str.length === 0 || str[str.length - 1] === '&' ? '' : '&';
+						let joiner = str.length === 0 || str[str.length - 1] === '&' ? '' : '&';
 						return str + joiner + encodeURIComponent(v) + '=' + encodeURIComponent(options.form[v]);
 					}, '');
 				}
@@ -95,13 +94,13 @@ module.exports = exports = SERVER ? //SERVER is declared in th WebPack config fi
 				try {
 					/* jslint -W101 */
 					// see: https://prototype.lighthouseapp.com/projects/8886/tickets/129-ie-mangles-http-response-status-code-204-to-1223
-					var status = req.status === 1223 ? 204 : req.status;
-					var headers = req.getAllResponseHeaders()
+					let status = req.status === 1223 ? 204 : req.status;
+					let headers = req.getAllResponseHeaders()
 									.trim()
 									.split('\n')
 									.map(i => i.split(':')[0]);
 
-					var response = {
+					let response = {
 						statusCode: status,
 						headers: {}
 					};
@@ -156,3 +155,6 @@ module.exports = exports = SERVER ? //SERVER is declared in th WebPack config fi
 			}
 		};
 	};
+
+
+export default request;

@@ -1,2 +1,6 @@
-'use strict';
-module.exports = function(a) {return a;};
+/**
+ * Why?
+ *
+ * See comment in empty-function (tl;dr: to save resources)
+ */
+export default function(a) {return a;}

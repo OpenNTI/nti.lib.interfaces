@@ -1,10 +1,9 @@
-'use strict';
-
+const args = 'value, index, self';
 /*jshint -W054*/
-var args = 'value, index, self';
-var filter = new Function(args, 'return self.indexOf(value) === index');
-var filterLast = new Function(args, 'return self.lastIndexOf(value) === index');
+const filter = new Function(args, 'return self.indexOf(value) === index');
+const filterLast = new Function(args, 'return self.lastIndexOf(value) === index');
+/*jshint +W054*/
 
-module.exports = function unique(array, keepLastOccurance) {
+export default function unique(array, keepLastOccurance = false) {
     return array.filter(keepLastOccurance ? filterLast : filter);
-};
+}

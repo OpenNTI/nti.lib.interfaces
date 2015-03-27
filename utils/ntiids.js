@@ -1,19 +1,18 @@
-'use strict';
-var isEmpty = require('./isempty');
-var defineProperties = require('./object-define-properties');
+import isEmpty from './isempty';
 
 
-var COMMON_PREFIX = 'tag:nextthought.com,2011-10:';
+const COMMON_PREFIX = 'tag:nextthought.com,2011-10:';
+
 
 /**
  * Parses an id and returns an object containing the split portions
  * See http://excelsior.nextthought.com/server-docs/ntiid-structure/
-
+ *
  * @param {String} id
  * @return {Object} an object containing the components of the id
  */
-function parseNTIID(id) {
-	var parts = (typeof id !== 'string' ? (id || '').toString() : id).split(':'),
+export function parseNTIID(id) {
+	let parts = (typeof id !== 'string' ? (id || '').toString() : id).split(':'),
 		authority, specific,
 		result = {};
 
@@ -48,8 +47,7 @@ function parseNTIID(id) {
 	};
 
 	//Define a setter on provider property so we can match the ds escaping of '-' to '_'
-	defineProperties(result.specific, {
-		provider: {
+	Object.defineProperty(result.specific, 'provider', {
 			get: function() {return this.$$provider;},
 			set: function(p) {
 				if (p && p.replace) {
@@ -58,12 +56,12 @@ function parseNTIID(id) {
 				this.$$provider = p;
 			}
 		}
-	});
+	);
 
 	result.specific.provider = specific.length === 3 ? specific[0] : null;
 
 	result.toString = function() {
-		var m = this,
+		let m = this,
 			a = [
 				m.authority.name,
 				m.authority.date
@@ -83,7 +81,8 @@ function parseNTIID(id) {
 	//FIXME include authority?
 	result.toURLSuffix = function() {
 		//#!html/mathcounts/mathcounts2013.warm_up_7
-		var m = this, components = [];
+		let m = this,
+			components = [];
 
 		components.push(m.specific.type);
 		if (m.specific.provider) {
@@ -98,7 +97,7 @@ function parseNTIID(id) {
 }
 
 
-function isNTIID(id) {
+export function isNTIID(id) {
 	return Boolean(parseNTIID(id));
 }
 
@@ -108,7 +107,7 @@ function isNTIID(id) {
  * @param {string} id
  * @return {string} CSS-friendly string to use in a selector
  */
-function escapeId(id) {
+export function escapeId(id) {
 	return id.replace(/:/g, '\\3a ') //no colons
 			.replace(/,/g, '\\2c ')//no commas
 			.replace(/\./g, '\\2e ');//no periods
@@ -120,8 +119,8 @@ function escapeId(id) {
  * @param {String} id
  * @return {String}
  */
-function ntiidPrefix(id) {
-	var ntiid = parseNTIID(id);
+export function ntiidPrefix(id) {
+	let ntiid = parseNTIID(id);
 	if (ntiid) {
 		ntiid.specific.type = 'HTML';
 		ntiid.specific.typeSpecific = ntiid.specific.typeSpecific.split('.')[0];
@@ -133,8 +132,8 @@ function ntiidPrefix(id) {
 /**
  * Parse the "URL friendly" NTIID we made for the legacy webapp.
  */
-function parseFragment(fragment) {
-	var authority = 'nextthought.com,2011-10',
+export function parseFragment(fragment) {
+	let authority = 'nextthought.com,2011-10',
 		parts, type, provider, typeSpecific, s;
 
 	if (isEmpty(fragment) || fragment.indexOf('#!') !== 0) {
@@ -159,9 +158,8 @@ function parseFragment(fragment) {
 }
 
 
-
-function encodeForURI(ntiid) {
-	var cut = COMMON_PREFIX.length;
+export function encodeForURI(ntiid) {
+	let cut = COMMON_PREFIX.length;
 	if (ntiid && ntiid.substr(0, cut)=== COMMON_PREFIX) {
 		ntiid = ntiid.substr(cut);
 	}
@@ -169,8 +167,9 @@ function encodeForURI(ntiid) {
 	return encodeURIComponent(ntiid);
 }
 
-function decodeFromURI(component) {
-	var ntiid = decodeURIComponent(component);
+
+export function decodeFromURI(component) {
+	let ntiid = decodeURIComponent(component);
 
 	if (!isNTIID(ntiid) && ntiid.substr(0,3) !== 'tag') {
 		ntiid = COMMON_PREFIX + ntiid;
@@ -178,14 +177,3 @@ function decodeFromURI(component) {
 
 	return ntiid;
 }
-
-
-module.exports = {
-	parseNTIID: parseNTIID,
-	isNTIID: isNTIID,
-	escapeId: escapeId,
-	ntiidPrefix: ntiidPrefix,
-	parseFragment: parseFragment,
-	encodeForURI: encodeForURI,
-	decodeFromURI: decodeFromURI
-};
