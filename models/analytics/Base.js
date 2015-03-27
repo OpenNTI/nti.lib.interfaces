@@ -63,11 +63,9 @@ export default class BasicEvent {
 		// This provides a fairly accurate end time for cases where the browser/app was closed
 		// and this event is being finished after the fact. (from localStorage).
 		endTime = (endTime - Heartbeat.interval < event.lastBeat) ? endTime : event.lastBeat;
-		console.debug('endTime %o', endTime);
 		event.time_length = durationSeconds(event[_startTime], endTime);
 		event.timestamp = endTime / 1000; // the server is expecting seconds
 		event[_finished] = true;
-		
 	}
 
 	onPulse() {
