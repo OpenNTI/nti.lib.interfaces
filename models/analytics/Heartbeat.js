@@ -60,6 +60,9 @@ class Pacemaker {
 		if (typeof pulseInterval !== 'number') {
 			throw new Error('pulseInterval argument must be a number.');
 		}
+		if (pulseInterval < defaultInterval) {
+			console.warn('Creating a Pacemaker with a fast interval (%d).', pulseInterval);
+		}
 		this.interval = pulseInterval;
 		this._beats = new Set();
 	}
