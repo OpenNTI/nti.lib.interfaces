@@ -5,7 +5,7 @@ export default function urlJoin(...parts) {
 	let base = url.parse(parts.shift());
 
 	parts.unshift(base.pathname);
-	base.pathname = path.join(base, ...parts.map(i=> !i ? '': i.toString()));
+	base.pathname = path.join(...parts.map(i=> !i ? '': i.toString()));
 
 	return base.format();
 }
