@@ -345,7 +345,7 @@ export default class DataServerInterface {
 	handshake  (urls, username, context) {
 		return this._post(urls['logon.handshake'], {_asFORM: true, username: username}, context)
 			.then(data => {
-				let result = {links: Object.assign({}, urls, getLink.asMap(data))};
+				let result = {links: Object.assign({}, urls, getLinksAsMap(data))};
 				if (!getLink(data, 'logon.continue')) {
 					result.reason = 'Not authenticated, no continue after handshake.';
 					return Promise.reject(result);
