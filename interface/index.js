@@ -10,7 +10,7 @@ import DataCache from '../utils/datacache';
 
 import isBrowser from '../utils/browser';
 import isEmpty from '../utils/isempty';
-import NTIIDs from '../utils/ntiids';
+import {isNTIID} from '../utils/ntiids';
 import waitFor from '../utils/waitfor';
 import {default as getLink, asMap as getLinksAsMap} from '../utils/getlink';
 
@@ -438,7 +438,7 @@ export default class DataServerInterface {
 
 
 	getObject (ntiid, mime, context) {
-		if (!NTIIDs.isNTIID(ntiid)) {
+		if (!isNTIID(ntiid)) {
 			return Promise.reject('Bad NTIID');
 		}
 
@@ -482,7 +482,7 @@ export default class DataServerInterface {
 	getPageInfo (ntiid, context) {
 		let mime = 'application/vnd.nextthought.pageinfo+json';
 
-		if (!NTIIDs.isNTIID(ntiid)) {
+		if (!isNTIID(ntiid)) {
 			return Promise.reject('Bad NTIID');
 		}
 
