@@ -15,11 +15,11 @@ export default {
 		}
 
 		return this[Service].get(link)
-			.then(wrapper =>
-				Object.assign(
-					wrapper,
+			.then(raw =>
+				Object.assign({},//assume `raw` is immutable
+					raw,
 					{
-						Items: this[parse](wrapper.Items)
+						Items: this[parse](raw.Items)
 					}
 				)
 			);
