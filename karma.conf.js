@@ -1,5 +1,5 @@
 'use strict';
-
+/*eslint no-var: 0*/
 var webpack = require('webpack');
 
 var stat = {
@@ -98,7 +98,7 @@ module.exports = function (config) {
 			plugins: [
 				new webpack.DefinePlugin({
 					SERVER: false
-				}),
+				})
 			],
 
 			module: {

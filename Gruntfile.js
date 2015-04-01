@@ -13,24 +13,20 @@ module.exports = function(grunt) {
         },
 
 
-		jshint: {
-	        options: {
-				jshintrc: true,
-	            reporter: require('jshint-log-reporter')
-			},
-	        files: [
+		eslint: {
+			target: [
 				'interface/**/*.js',
 				'models/**/*.js',
 				'session/**/*.js',
 				'stores/**/*.js',
 				'utils/**/*.js',
-				'index.js',
+				'index.js'
 			]
-	    }
+		}
 	});
 
 	//grunt.registerTask('docs',['jsdoc']);
 	grunt.registerTask('test', ['karma']);
-	grunt.registerTask('default', ['jshint']);
+	grunt.registerTask('default', ['eslint']);
 
 };
