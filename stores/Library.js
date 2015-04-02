@@ -20,7 +20,7 @@ export function parseListFn (scope, service, pending) {
 		return list.map(o=> {
 			try {
 				o = queue(parse(service, null, o));
-				if(o && o.on && scope.onChange){
+				if(o && o.on && scope.onChange) {
 					o.on('changed', scope.onChange);
 				}
 			} catch(e) {

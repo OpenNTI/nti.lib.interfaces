@@ -5,8 +5,8 @@ describe('isFunction', ()=> {
 	it('should identify a function', ()=> {
 		expect(isFunction).toBeDefined();
 
-		expect(isFunction(()=>{})).toBeTruthy();
-		expect(isFunction(function(){})).toBeTruthy();
+		expect(isFunction(()=> {})).toBeTruthy();
+		expect(isFunction(function() {})).toBeTruthy();
 
 		expect(isFunction()).toBeFalsy();
 		expect(isFunction({})).toBeFalsy();

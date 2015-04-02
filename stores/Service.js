@@ -191,7 +191,7 @@ export default class ServiceDocument {
 	 */
 	getAppUserSync () {
 		return this[AppUser] ||
-			(()=>{ throw new Error('User is not resolved'); }());
+			(()=> { throw new Error('User is not resolved'); }());
 	}
 
 

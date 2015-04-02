@@ -15,7 +15,7 @@ function cleanNodes(x, o) {
 			id = e.get(key);
 		}
 
-		return x.find('*[@' + key + '="' + id + '"]/..') || {remove: ()=>{}};
+		return x.find('*[@' + key + '="' + id + '"]/..') || {remove: ()=> {}};
 	}
 
 	let hiddenMethod = Symbol.for('ToC:PerformNodeFilter');

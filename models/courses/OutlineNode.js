@@ -102,7 +102,7 @@ export default class OutlineNode extends Outline {
 			getContentFallback(this);
 
 		return Promise.all([this.getProgress(), content])
-			.then(progressAndContent=>{
+			.then(progressAndContent=> {
 				let [progress, content] = progressAndContent;
 
 				applyProgress(content, progress);
@@ -130,7 +130,7 @@ function collateVideo(json) {
 		let last = list[list.length - 1];
 		if (re.test(current.MimeType)) {
 			//last was a video...
-			if (last && re.test(last.MimeType)){
+			if (last && re.test(last.MimeType)) {
 				last = list[list.length - 1] = {
 					MimeType: 'application/vnd.nextthought.ntivideoset',
 					Items: [last]

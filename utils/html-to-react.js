@@ -315,7 +315,7 @@ function reactifyElement(element, props, children, customFunc) {
 function processNode(n, isWidget) {
 	let renderFunction;
 
-	if (isWidget){
+	if (isWidget) {
 		if (isWidget(n.tag, n.attrib)) {
 			renderFunction = 'renderWidget';
 		}

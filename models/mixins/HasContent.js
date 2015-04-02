@@ -35,7 +35,7 @@ function setup (data, keys) {
 				return content;
 			}
 		});
-	}
+	};
 
 	for(let key of keys) {
 		buildProperty(this, key);

@@ -52,7 +52,7 @@ export default class Capabilities{
 			if (typeof test === 'string') {
 				test = this.hasCapability(test);
 			}
-			else if (test.call){
+			else if (test.call) {
 				test = test.call(this);
 			}
 

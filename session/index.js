@@ -62,7 +62,7 @@ export default class SessionManager {
 		req.responseHeaders = {};
 
 		req.setMaxListeners(0);//unlimited
-		res.on('close', ()=>{
+		res.on('close', ()=> {
 			req.dead = true;
 			req.emit('abort');
 			next();

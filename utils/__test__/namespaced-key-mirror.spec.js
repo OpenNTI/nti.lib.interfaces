@@ -9,7 +9,7 @@ describe('namespaced-key-mirror', ()=> {
 
 	let namespace = 'test';
 
-	it('should return an object with values equal to namespace:key', ()=>{
+	it('should return an object with values equal to namespace:key', ()=> {
 		let expectedOutput = {
 			key1: 'test:key1',
 			key2: 'test:key2'
@@ -17,7 +17,7 @@ describe('namespaced-key-mirror', ()=> {
 		expect(nsKeyMirror(namespace, input)).toEqual(expectedOutput);
 	});
 
-	it('should return keys equal to values if no namespace is given', ()=>{
+	it('should return keys equal to values if no namespace is given', ()=> {
 		let expectedOutput = {
 			key1: 'key1',
 			key2: 'key2'
@@ -25,7 +25,7 @@ describe('namespaced-key-mirror', ()=> {
 		expect(nsKeyMirror(null, input)).toEqual(expectedOutput);
 	});
 
-	it('should use the specified separator', ()=>{
+	it('should use the specified separator', ()=> {
 
 		let separator = '-';
 
@@ -37,11 +37,11 @@ describe('namespaced-key-mirror', ()=> {
 		expect(nsKeyMirror(namespace, input, separator)).toEqual(expectedOutput);
 	});
 
-	it('should throw if handed a non-string namespace', ()=>{
+	it('should throw if handed a non-string namespace', ()=> {
 		expect(nsKeyMirror.bind(null, input)).toThrow();
 	});
 
-	it('should throw if handed a non-object', ()=>{
+	it('should throw if handed a non-object', ()=> {
 		expect(nsKeyMirror.bind(null, namespace, 'bad input')).toThrow();
 	});
 

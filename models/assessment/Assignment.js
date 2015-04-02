@@ -142,7 +142,7 @@ export default class Assignment extends Base {
 
 		let result = this[ActiveSavePointPost] = this[Service].post(link, data);
 
-		result.catch(()=>{}).then(()=>{
+		result.catch(()=> {}).then(()=> {
 			if (result === this[ActiveSavePointPost]) {
 				delete this[ActiveSavePointPost];
 			}
