@@ -12,7 +12,7 @@ import isBrowser from '../utils/browser';
 import isEmpty from '../utils/isempty';
 import {isNTIID} from '../utils/ntiids';
 import waitFor from '../utils/waitfor';
-import {default as getLink, asMap as getLinksAsMap} from '../utils/getlink';
+import getLink, {asMap as getLinksAsMap} from '../utils/getlink';
 
 import chain from '../utils/function-chain';
 

@@ -3,8 +3,7 @@ import {
 	Parser as parse
 } from '../../CommonSymbols';
 
-import {
-	default as HasContent,
+import HasContent, {
 	ContentKeys,
 	SetupContentProperties
 } from '../mixins/HasContent';

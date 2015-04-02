@@ -2,7 +2,7 @@ import {EventEmitter} from 'events';
 
 import {parse, getModelByType} from './Parser';
 
-import {default as getLink, asMap as getLinksAsMap} from '../utils/getlink';
+import getLink, {asMap as getLinksAsMap} from '../utils/getlink';
 import mixin from '../utils/mixin';
 import noop from '../utils/empty-function';
 import waitFor from '../utils/waitfor';
