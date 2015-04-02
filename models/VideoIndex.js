@@ -21,7 +21,7 @@ export default class VideoIndex {
 
 	static build (service, parent, toc, json) {
 		let keyOrder = [];
-		let root = this.root;
+		let root = parent.root;
 
 		function prefix(o) {
 			o.src = urlJoin(root, o.src);
