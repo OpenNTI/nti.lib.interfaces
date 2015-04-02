@@ -1,7 +1,7 @@
 import isFunction from '../../utils/isfunction';
 import * as MimeTypes from './MimeTypes';
 import guid from '../../utils/guid';
-import Heartbeat from './Heartbeat';
+import HeartbeatManager from './Heartbeat';
 
 const StartTime = Symbol('StartTime');
 const Finished = Symbol('Finished');
@@ -40,7 +40,7 @@ export default class BasicEvent {
 		// updates an internal timestamp to provide an approximate end time for cases where
 		// an instance didn't finish normally (as when retrieved from localStorage after the
 		// app window was closed and re-opened later.
-		this[Heartbeat] = new Heartbeat(this.onPulse.bind(this));
+		this[Heartbeat] = new HeartbeatManager(this.onPulse.bind(this));
 
 	}
 
@@ -62,7 +62,7 @@ export default class BasicEvent {
 		// If more than heartbeatInterval has passed between lastBeat and endTime, use lastBeat.
 		// This provides a fairly accurate end time for cases where the browser/app was closed
 		// and this event is being finished after the fact. (from localStorage).
-		endTime = (endTime - Heartbeat.interval < event.lastBeat) ? endTime : event.lastBeat;
+		endTime = (endTime - HeartbeatManager.interval < event.lastBeat) ? endTime : event.lastBeat;
 		//We don't control "time_length", disable the lint error...
 		event.time_length = durationSeconds(event[StartTime], endTime);// eslint-disable-line camelcase
 		event.timestamp = endTime / 1000; // the server is expecting seconds
