@@ -1,6 +1,8 @@
 import isFunction from '../../utils/isfunction';
 import noop from '../../utils/empty-function';
 
+const Interval = Symbol();
+
 /*
 * Default interval if none is specified when instantiating a Heartbeat.
 */
@@ -138,7 +140,7 @@ export default class Heartbeat {
 			console.error('Callback must be a function. %o', callback);
 			callback = noop;
 		}
-		this.interval = interval;
+		this[Interval] = interval;
 		this.callback = callback;
 		add(this);
 	}
@@ -148,7 +150,7 @@ export default class Heartbeat {
 	}
 
 	get interval() {
-		return this.interval;
+		return this[Interval];
 	}
 
 	die() {
