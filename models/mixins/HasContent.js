@@ -15,7 +15,7 @@ function cleanupContentString(content) {
 function setup (data, keys) {
 	let clean = cleanupContentString.bind(this);
 
-	function buildProperty (key) {
+	let buildProperty = key => {
 		let content = data[key] || '';
 		Object.defineProperty(this, key, {
 			enumerable: true,
@@ -38,7 +38,7 @@ function setup (data, keys) {
 	}
 
 	for(let key of keys) {
-		buildProperty(key);
+		buildProperty(this, key);
 	}
 }
 
