@@ -24,6 +24,9 @@ const btoa = global.bota || base64decode;
 const jsonContent = /(application|json)/i;
 const mightBeJson = /^(\s*)(\{|\[|"|')/i;
 
+const Request = Symbol('Request Adaptor');
+const AsFormSubmittion = Symbol('');
+
 export default class DataServerInterface {
 	constructor (config) {
 		if (!config || !config.server) {
@@ -49,11 +52,11 @@ export default class DataServerInterface {
 	 * @returns {Promise}
 	 * @private
 	 */
-	_request (options, context) {
+	[Request] (options, context) {
 
 		let result;
 		let abortMethod;
-		let pending = context ? (context.__pendingServerRequests = (context.__pendingServerRequests || [])) : [];
+		let pending = context ? (context[Pending] = (context[Pending] || [])) : [];
 		let start = Date.now();
 		let url = (options || {}).url;
 
@@ -96,10 +99,10 @@ export default class DataServerInterface {
 
 		if (data) {
 			opts.form = data;
-			if (typeof data === 'object' && !data._asFORM) {
+			if (typeof data === 'object' && !data[AsFormSubmittion]) {
 				opts.headers['Content-type'] = 'application/json';
 			}
-			delete data._asFORM;
+			delete data[AsFormSubmittion];
 		}
 
 		function getContentType(headers) {
@@ -133,7 +136,7 @@ export default class DataServerInterface {
 			let active = request(opts, (error, res, body) => {
 				if (!res) {
 					logger.info('Request Options: ', opts, arguments);
-					res = {headers:{}};
+					res = {headers: {}};
 				}
 
 				let contentType = getContentType(res.headers);
@@ -143,7 +146,8 @@ export default class DataServerInterface {
 					if (isEmpty(contentType) || jsonContent.test(contentType) || mightBeJson.test(body)) {
 						body = JSON.parse(body);
 					}
-				} catch (e) {}//Don't care... let it pass to the client as a string
+				//Don't care... let it pass to the client as a string
+				} catch (e) {} // eslint-disable-line no-empty
 
 				if(!isBrowser) {
 					logger.info('REQUEST -> %s %s %s %dms',
@@ -193,13 +197,13 @@ export default class DataServerInterface {
 	}
 
 
-	_get (url, context) {
-		return this._request(url, context);
+	get (url, context) {
+		return this[Request](url, context);
 	}
 
 
-	_post (url, data, context) {
-		return this._request({
+	post (url, data, context) {
+		return this[Request]({
 			url: url,
 			method: 'POST',
 			data: data
@@ -207,8 +211,8 @@ export default class DataServerInterface {
 	}
 
 
-	_put (url, data, context) {
-		return this._request({
+	put (url, data, context) {
+		return this[Request]({
 			url: url,
 			method: 'PUT',
 			data: data
@@ -216,15 +220,15 @@ export default class DataServerInterface {
 	}
 
 
-	_delete (url, context) {
-		return this._request({
+	delete (url, context) {
+		return this[Request]({
 			url: url,
 			method: 'DELETE'
 		}, context);
 	}
 
 
-	getPurchasables  (ids, context) {
+	getPurchasables (ids, context) {
 		console.debug('{FIXME} does not belong here');
 		let url = '/dataserver2/store/get_purchasables';
 
@@ -238,7 +242,7 @@ export default class DataServerInterface {
 			});
 		}
 
-		return this._get(url, context);
+		return this.get(url, context);
 	}
 
 
@@ -260,7 +264,7 @@ export default class DataServerInterface {
 		//No? okay... get the data and build and instance
 		}
 		else {
-			promise = this._get(null, context)
+			promise = this.get(null, context)
 				.then(json =>
 					cache.set('service-doc', json) &&
 					new Service(json, this, context))
@@ -279,7 +283,7 @@ export default class DataServerInterface {
 	}
 
 
-	logInPassword (url,credentials) {
+	logInPassword (url, credentials) {
 		let username = credentials ? credentials.username : undefined;
 		let password = credentials ? credentials.password : undefined;
 		let auth = password ? ('Basic ' + btoa(username+':'+password)) : undefined;
@@ -291,12 +295,12 @@ export default class DataServerInterface {
 				Authorization: auth
 			}
 		};
-		return this._request(options);
+		return this[Request](options);
 	}
 
 
 	logInOAuth (url) {
-		return this._request({
+		return this[Request]({
 			url: url
 		});
 	}
@@ -307,7 +311,7 @@ export default class DataServerInterface {
 
 		let me = this;
 
-		return me._get('logon.ping', context)//ping
+		return me.get('logon.ping', context)//ping
 			//pong
 			.then(data => {
 				let urls = getLinksAsMap(data);
@@ -342,8 +346,8 @@ export default class DataServerInterface {
 	}
 
 
-	handshake  (urls, username, context) {
-		return this._post(urls['logon.handshake'], {_asFORM: true, username: username}, context)
+	handshake (urls, username, context) {
+		return this.post(urls['logon.handshake'], {[AsFormSubmittion]: true, username}, context)
 			.then(data => {
 				let result = {links: Object.assign({}, urls, getLinksAsMap(data))};
 				if (!getLink(data, 'logon.continue')) {
@@ -360,7 +364,7 @@ export default class DataServerInterface {
 			.then(result => {
 				let link = result.links['content.initial_tos_page'];
 				if (link) {
-					return this._delete(link, context);
+					return this.delete(link, context);
 				}
 				//wut?
 				return 'initial_tos_page link not present.';
@@ -372,9 +376,9 @@ export default class DataServerInterface {
 		return this.ping(context)
 			.then(result =>
 
-				this._post(result.links['logon.forgot.username'], {
-					_asFORM: true,
-					email: email
+				this.post(result.links['logon.forgot.username'], {
+					[AsFormSubmittion]: true,
+					email
 				}, context)
 
 			);
@@ -385,10 +389,9 @@ export default class DataServerInterface {
 		return this.ping(context)
 			.then(result =>
 
-				this._post(result.links['logon.forgot.passcode'], {
-					_asFORM: true,
-					email: email,
-					username: username,
+				this.post(result.links['logon.forgot.passcode'], {
+					[AsFormSubmittion]: true,
+					email, username,
 					success: returnURL
 				}, context)
 
@@ -396,14 +399,12 @@ export default class DataServerInterface {
 	}
 
 
-	resetPassword (username, newpw, id, context) {
+	resetPassword (username, password, id, context) {
 		return this.ping(context)
 			.then(result =>
-				this._post(result.links['logon.reset.passcode'], {
-					_asFORM: true,
-					username: username,
-					id: id,
-					password: newpw
+				this.post(result.links['logon.reset.passcode'], {
+					[AsFormSubmittion]: true,
+					id, username, password
 				}, context)
 			);
 	}
@@ -412,10 +413,10 @@ export default class DataServerInterface {
 	preflightAccountCreate (fields, context) {
 		return this.ping(context)
 			.then(result =>
-				this._request({
+				this[Request]({
 					url: result.links['account.preflight.create'],
 					headers: {
-						'Content-type':'application/json'
+						'Content-type': 'application/json'
 					},
 					data: JSON.stringify(fields)
 				}, context)
@@ -426,10 +427,10 @@ export default class DataServerInterface {
 	createAccount (fields, context) {
 		return this.ping(context)
 			.then(result =>
-				this._request({
+				this[Request]({
 					url: result.links['account.create'],
 					headers: {
-						'Content-type':'application/json'
+						'Content-type': 'application/json'
 					},
 					data: JSON.stringify(fields)
 				}, context)
@@ -458,7 +459,7 @@ export default class DataServerInterface {
 					headers.accept = mime;
 				}
 
-				return this._request({url: url, headers: headers}, context);
+				return this[Request]({url: url, headers: headers}, context);
 			});
 	}
 

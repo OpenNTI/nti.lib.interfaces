@@ -11,7 +11,7 @@ const XMLHttpFactories = [
 function createXMLHTTPObject() {
 	for (let factory of XMLHttpFactories) {
 		try { return factory(); }
-		catch (e) { }
+		catch (e) { } // eslint-disable-line no-empty
 	}
 	return null;
 }
@@ -49,7 +49,7 @@ const request = SERVER ? //SERVER is declared in th WebPack config file
 			req = createXMLHTTPObject();
 
 			if (!req) {
-				throw 'No XHR';
+				throw new Error('No XHR');
 			}
 
 

@@ -5,7 +5,7 @@ const Submitted = Symbol('Submitted');
 export default {
 
 	canSubmit () {
-		if (this.isSubmitted()) {return false;}
+		if (this.isSubmitted()) { return false; }
 
 		let list = this.questions || this.parts || [];
 

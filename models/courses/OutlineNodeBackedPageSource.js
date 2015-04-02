@@ -3,6 +3,8 @@ import {
 	Service
 } from '../../CommonSymbols';
 
+const buildRef = node => node && { ntiid: node.getID(), title: node.title, ref: node.ref };
+
 export default class OutlineNodeBackedPageSource extends Base {
 
 	constructor (node, root) {
@@ -37,15 +39,6 @@ export default class OutlineNodeBackedPageSource extends Base {
 		};
 	}
 
-}
-
-
-function buildRef(node) {
-	return node && {
-		ntiid: node.getID(),
-		title: node.title,
-		ref: node.ref
-	};
 }
 
 

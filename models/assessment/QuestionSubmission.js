@@ -1,4 +1,4 @@
-import  Base from '../Base';
+import Base from '../Base';
 import submission from '../mixins/Submission';
 
 export default class QuestionSubmission extends Base {
@@ -26,7 +26,7 @@ export default class QuestionSubmission extends Base {
 	}
 
 
-	getPartValue  (index) {
+	getPartValue (index) {
 		return this.parts[index];
 	}
 
@@ -53,7 +53,7 @@ export default class QuestionSubmission extends Base {
 	canSubmit () {
 		function answered(p) { return p !== null; }
 
-		if (this.isSubmitted()) {return false;}
+		if (this.isSubmitted()) { return false; }
 
 		return this.parts.filter(answered).length > 0;
 	}

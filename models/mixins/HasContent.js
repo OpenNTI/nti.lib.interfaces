@@ -15,7 +15,7 @@ function cleanupContentString(content) {
 function setup (data, keys) {
 	let clean = cleanupContentString.bind(this);
 
-	for(let key of keys) {
+	function buildProperty (key) {
 		let content = data[key] || '';
 		Object.defineProperty(this, key, {
 			enumerable: true,
@@ -36,6 +36,10 @@ function setup (data, keys) {
 			}
 		});
 	}
+
+	for(let key of keys) {
+		buildProperty(key);
+	}
 }
 
 export const ContentKeys = Symbol('ContentKeys');
@@ -45,7 +49,7 @@ export default {
 
 	constructor (data) {
 		let keys = this[ContentKeys] &&
-		 			this[ContentKeys]();
+					this[ContentKeys]();
 
 		if (keys === undefined) {
 			keys = ['content'];

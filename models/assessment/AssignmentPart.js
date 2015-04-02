@@ -6,7 +6,7 @@ import {
 export default class AssignmentPart extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
-		this.question_set = this[parse](this.question_set);
+		this.question_set = this[parse](this.question_set);// eslint-disable-line camelcase
 	}
 
 

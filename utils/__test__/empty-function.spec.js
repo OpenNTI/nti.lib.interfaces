@@ -29,6 +29,6 @@ describe('empty function', ()=> {
 		body = body[1];
 
 		expect(typeof body).toBe('string');
-		expect(body.replace(/\s*/,'').length).toBe(0);
+		expect(body.replace(/\s*/, '').length).toBe(0);
 	});
 });

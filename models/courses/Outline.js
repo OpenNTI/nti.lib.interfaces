@@ -64,17 +64,18 @@ export default class Outline extends Base {
 
 
 	get maxDepth () {
-		return (this[MAX_DEPTH] = (this[MAX_DEPTH] || getMaxDepthFrom(this.root)));
+		let d = this[MAX_DEPTH] = (this[MAX_DEPTH] || getMaxDepthFrom(this.root));
+		return d;
 	}
 
 
-	get depth () {return 0;}
+	get depth () { return 0; }
 
 
 	get root () { return this; }
 
 
-	getNode  (id) {
+	getNode (id) {
 		if (this.getID() === id) {
 			return this;
 		}
@@ -93,19 +94,19 @@ export default class Outline extends Base {
 	}
 
 
-	isAssignment  (outlineNodeId, assessmentId) {
+	isAssignment (outlineNodeId, assessmentId) {
 		let collection = this.assignments;
 		return collection && collection.isAssignment(outlineNodeId, assessmentId);
 	}
 
 
-	getAssignment  (outlineNodeId, assignmentId) {
+	getAssignment (outlineNodeId, assignmentId) {
 		let collection = this.assignments;
 		return collection && collection.getAssignment(outlineNodeId, assignmentId);
 	}
 
 
-	getAssignments  () {
+	getAssignments () {
 		let collection = this.assignments;
 		if (collection) {
 			return collection.getAssignments(this.getID());

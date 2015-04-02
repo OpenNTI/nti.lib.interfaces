@@ -11,7 +11,7 @@ export default {
 		}
 
 		if (typeof params === 'object') {
-			link = link.concat('?',QueryString.stringify(params));
+			link = link.concat('?', QueryString.stringify(params));
 		}
 
 		return this[Service].get(link)

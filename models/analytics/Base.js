@@ -3,12 +3,12 @@ import * as MimeTypes from './MimeTypes';
 import guid from '../../utils/guid';
 import Heartbeat from './Heartbeat';
 
-const _startTime = Symbol('_startTime');
-const _finished = Symbol('_finished');
-const _minDuration = Symbol('_minDuration');
-const _id = Symbol('_id');
-const _halted = Symbol('_halted');
-const _heartbeat = Symbol('_heartbeat');
+const StartTime = Symbol('StartTime');
+const Finished = Symbol('Finished');
+const MinDuration = Symbol('MinDuration');
+const ID = Symbol('ID');
+const Halted = Symbol('Halted');
+const Heartbeat = Symbol('Heartbeat');
 
 function durationSeconds(startTime = Date.now(), endTime = Date.now()) {
 	return (endTime - startTime) / 1000;
@@ -19,15 +19,15 @@ let mimeTypes = MimeTypes.getTypes();
 export default class BasicEvent {
 	constructor (mimeType, courseId, RootContextID = courseId, startTime = Date.now(), minimumDurationSeconds = 1) {
 
-		if (! mimeType || ! mimeTypes[mimeType]) {
+		if (!mimeType || !mimeTypes[mimeType]) {
 			console.warn('Unrecognized MimeType for analytics event: \'%s\'', mimeType);
 		}
 
-		this[_startTime] = startTime;
-		this[_finished] = false;
-		this[_minDuration] = minimumDurationSeconds;
-		this[_id] = guid();
-		this[_halted] = false;
+		this[StartTime] = startTime;
+		this[Finished] = false;
+		this[MinDuration] = minimumDurationSeconds;
+		this[ID] = guid();
+		this[Halted] = false;
 
 		Object.assign(this, {
 			MimeType: mimeType || MimeTypes.UNKNOWN_TYPE,
@@ -40,19 +40,19 @@ export default class BasicEvent {
 		// updates an internal timestamp to provide an approximate end time for cases where
 		// an instance didn't finish normally (as when retrieved from localStorage after the
 		// app window was closed and re-opened later.
-		this[_heartbeat] = new Heartbeat(this.onPulse.bind(this));
+		this[Heartbeat] = new Heartbeat(this.onPulse.bind(this));
 
 	}
 
 	static halt(event) {
-		event[_halted] = true;
+		event[Halted] = true;
 		this.finish(event);
 	}
 
 	static finish(event, endTime = Date.now()) {
-		if (event[_heartbeat]) {
-			event[_heartbeat].die();
-			delete event[_heartbeat];
+		if (event[Heartbeat]) {
+			event[Heartbeat].die();
+			delete event[Heartbeat];
 		}
 
 		if (event.finished) {
@@ -63,9 +63,10 @@ export default class BasicEvent {
 		// This provides a fairly accurate end time for cases where the browser/app was closed
 		// and this event is being finished after the fact. (from localStorage).
 		endTime = (endTime - Heartbeat.interval < event.lastBeat) ? endTime : event.lastBeat;
-		event.time_length = durationSeconds(event[_startTime], endTime);
+		//We don't control "time_length", disable the lint error...
+		event.time_length = durationSeconds(event[StartTime], endTime);// eslint-disable-line camelcase
 		event.timestamp = endTime / 1000; // the server is expecting seconds
-		event[_finished] = true;
+		event[Finished] = true;
 	}
 
 	onPulse() {
@@ -73,11 +74,11 @@ export default class BasicEvent {
 	}
 
 	get id() {
-		return this[_id];
+		return this[ID];
 	}
 
 	get finished() {
-		return this[_finished];
+		return this[Finished];
 	}
 
 	halt() {
@@ -89,22 +90,23 @@ export default class BasicEvent {
 	}
 
 	get startTime() {
-		return this[_startTime];
+		return this[StartTime];
 	}
 
 	setContextPath (path) {
-		this.context_path = path;
+		//We don't control the name "context_path"
+		this.context_path = path; // eslint-disable-line camelcase
 	}
 
 	getDuration () {
-		return this.finished ? this.time_length : durationSeconds(this._startTime);
+		return this.finished ? this.time_length : durationSeconds(this[StartTime]);
 	}
 
 	getData () {
 		let k, v, d = {};
 
 		for (k in this) {
-			if (!this.hasOwnProperty(k)) {continue;}
+			if (!this.hasOwnProperty(k)) { continue; }
 			v = this[k];
 			if (v != null && !isFunction(v)) {
 

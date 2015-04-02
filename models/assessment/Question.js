@@ -71,7 +71,7 @@ export default class Question extends Base {
 		let expect = this.parts.length;
 		let {parts} = questionSubmission;
 
-		return this.parts.filter((p,i)=>p.isAnswered(parts[i])).length === expect;
+		return this.parts.filter((p, i)=>p.isAnswered(parts[i])).length === expect;
 	}
 
 }

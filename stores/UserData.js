@@ -22,7 +22,7 @@ export default class UserData extends EventEmitter {
 			this.loading = false;
 			Object.assign(this, data);
 
-			this.Items = {root:[]};
+			this.Items = {root: []};
 
 			for (let i of parseList(data.Items)) {
 				let binId = i.getContainerID();
@@ -34,7 +34,7 @@ export default class UserData extends EventEmitter {
 
 		pending.push(load);
 
-		this.on('load', ()=>console.log('Load: %o',this));
+		this.on('load', ()=>console.log('Load: %o', this));
 	}
 
 }

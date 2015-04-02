@@ -9,8 +9,8 @@ function max(a, b) {
 
 
 export default function between(i, a, b, inclusive = false) {
-	let x = min(a,b);
-	let y = max(a,b);
+	let x = min(a, b);
+	let y = max(a, b);
 
 	return inclusive ?
 		(i >= x && i <= y) :

@@ -22,7 +22,7 @@ export default class Enrollment {
 
 	enrollOpen (catalogEntryId) {
 		let service = this[Service];
-		return service.post(service.getCoursesEnrolledURL(),{
+		return service.post(service.getCoursesEnrolledURL(), {
 			NTIID: catalogEntryId
 		});
 	}

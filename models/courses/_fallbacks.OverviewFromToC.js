@@ -57,7 +57,8 @@ function getForumProps(node) {
 	return {
 		title: node.get('title'),
 		icon: node.get('icon')
-	}; }
+	};
+}
 
 
 function getVideoProps(node) {
@@ -103,7 +104,7 @@ function notAThing(node) {
 
 function getConfigForNode(node, outlineNode) {
 	if (notAThing(node)) {
-		return;
+		return null;
 	}
 
 	let obj = {
@@ -162,8 +163,8 @@ export default function buildFromToc (element, outlineNode) {
 
 
 	return {
-	    MimeType: 'application/vnd.nextthought.ntilessonoverview',
-	    NTIID: element.get('ntiid'),
+		MimeType: 'application/vnd.nextthought.ntilessonoverview',
+		NTIID: element.get('ntiid'),
 		Items: items,
 		title: element.get('label')
 	};

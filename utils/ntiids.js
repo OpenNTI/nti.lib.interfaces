@@ -48,8 +48,8 @@ export function parseNTIID(id) {
 
 	//Define a setter on provider property so we can match the ds escaping of '-' to '_'
 	Object.defineProperty(result.specific, 'provider', {
-			get: function() {return this.$$provider;},
-			set: function(p) {
+			get: function () { return this.$$provider; },
+			set: function (p) {
 				if (p && p.replace) {
 					p = p.replace(/-/g, '_');
 				}
@@ -171,7 +171,7 @@ export function encodeForURI(ntiid) {
 export function decodeFromURI(component) {
 	let ntiid = decodeURIComponent(component);
 
-	if (!isNTIID(ntiid) && ntiid.substr(0,3) !== 'tag') {
+	if (!isNTIID(ntiid) && ntiid.substr(0, 3) !== 'tag') {
 		ntiid = COMMON_PREFIX + ntiid;
 	}
 

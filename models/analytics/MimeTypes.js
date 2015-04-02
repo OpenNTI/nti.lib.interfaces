@@ -3,17 +3,17 @@ export const RESOURCE_VIEWED = 'application/vnd.nextthought.analytics.resourceev
 export const TOPIC_VIEWED = 'application/vnd.nextthought.analytics.topicviewevent';
 export const UNKNOWN_TYPE = 'application/vnd.nextthought.analytics.unknowntype';
 
-let _types = null;
+let types = null;
 
 export function getTypes() {
-	if (!_types) {
-		_types = {};
+	if (!types) {
+		types = {};
 		Object.keys(exports).forEach(key => {
 			let mt = exports[key];
 			if (typeof mt === 'string') {
-				 _types[mt] = mt; 
+				types[mt] = mt;
 			}
 		});
 	}
-	return _types;
+	return types;
 }

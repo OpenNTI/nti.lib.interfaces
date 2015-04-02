@@ -21,6 +21,7 @@ let BATCH_SIZE = 5;
 
 let inflight;
 
+const ApplyData = Symbol('Apply Data');
 
 function cleanInflight() { inflight = null; }
 
@@ -28,7 +29,6 @@ function cleanInflight() { inflight = null; }
 export default class Notifications extends EventEmitter {
 
 	static load (service, reload) {
-		let Notifications = this;
 
 		if (inflight) {
 			return inflight;
@@ -77,19 +77,19 @@ export default class Notifications extends EventEmitter {
 		this[Service] = service;
 		this.Items = [];
 
-		Object.assign(this, forwardFunctions(['every','filter','forEach','map','reduce'], 'Items'));
+		Object.assign(this, forwardFunctions(['every', 'filter', 'forEach', 'map', 'reduce'], 'Items'));
 
 
-		this.__applyData(data);
+		this[ApplyData](data);
 
 		this.lastViewed = new Date(parseFloat(data.lastViewed || 0) * 1000);
 	}
 
-	get isBusy () {return !!inflight;}
+	get isBusy () { return !!inflight; }
 
-	get hasMore () {return !!this.nextBatchSrc;}
+	get hasMore () { return !!this.nextBatchSrc; }
 
-	get length () {return (this.Items || []).length;}
+	get length () { return (this.Items || []).length; }
 
 
 
@@ -99,7 +99,7 @@ export default class Notifications extends EventEmitter {
 		if (!inflight) {
 			if (this.nextBatchSrc) {
 				inflight = get(this[Service], this.nextBatchSrc, true)
-					.then(this.__applyData.bind(this));
+					.then(this[ApplyData].bind(this));
 
 				inflight.then(clean, clean);
 
@@ -112,7 +112,7 @@ export default class Notifications extends EventEmitter {
 	}
 
 
-	__applyData (data) {
+	[ApplyData] (data) {
 		this.Items = this.Items.concat(data.Items);
 		this.nextBatchSrc = (data.TotalItemCount > this.Items.length) &&
 			getLink(data, 'batch-next');

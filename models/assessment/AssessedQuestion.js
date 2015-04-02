@@ -17,7 +17,7 @@ export default class AssessedQuestion extends Base {
 		return this.questionId || this.NTIID;
 	}
 
-	
+
 	isSubmitted () {
 		return true;
 	}

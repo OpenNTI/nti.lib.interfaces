@@ -3,7 +3,7 @@ import ensureArray from '../ensure-array';
 describe('ensure-array', ()=> {
 
 	it('should return the array that is passed', ()=> {
-		let a = [1,2,3];
+		let a = [1, 2, 3];
 		let b = [];
 
 		expect(ensureArray(a)).toBe(a);

@@ -21,7 +21,7 @@ export default class Comment extends Post {
 			sortOrder: 'ascending'
 		};
 
-		link = link.concat('?',QueryString.stringify(params));
+		link = link.concat('?', QueryString.stringify(params));
 
 		return this[Service].get(link)
 			.then(result => this[parse](result.Items));

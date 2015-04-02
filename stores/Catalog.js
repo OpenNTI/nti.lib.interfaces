@@ -24,7 +24,7 @@ export default class Catalog extends EventEmitter {
 		this[Pending] = pending;
 
 		Object.assign(this, data,
-			forwardFunctions(['every','filter','forEach','map','reduce'], 'Items'));
+			forwardFunctions(['every', 'filter', 'forEach', 'map', 'reduce'], 'Items'));
 
 		this.onChange = this.onChange.bind(this);
 

@@ -4,6 +4,17 @@ import {encodeForURI as encodeNTIIDForURI} from '../utils/ntiids';
 
 import {Parent, Service} from '../CommonSymbols';
 
+
+function buildRef(node) {
+	let id = node && node.getID();
+	return id && {
+		ntiid: id,
+		title: node.title,
+		ref: encodeNTIIDForURI(id)
+	};
+}
+
+
 export default class VideoIndexBackedPageSource extends Base {
 
 	constructor (index) {
@@ -34,14 +45,4 @@ export default class VideoIndexBackedPageSource extends Base {
 		let subset = this[Parent].scopped(containerId);
 		return new this.constructor(subset);
 	}
-}
-
-
-function buildRef(node) {
-	let id = node && node.getID();
-	return id && {
-		ntiid: id,
-		title: node.title,
-		ref: encodeNTIIDForURI(id)
-	};
 }

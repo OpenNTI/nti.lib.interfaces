@@ -26,7 +26,7 @@ export function asMap(o) {
 	let m = {};
 	for (let i = o.length - 1; i>=0; i--) {
 		let v = o[i];
-		if (m[v.rel]) {console.warn('There are more than one instances of %s', v.rel);}
+		if (m[v.rel]) { console.warn('There are more than one instances of %s', v.rel); }
 		m[v.rel] = v.href;
 	}
 

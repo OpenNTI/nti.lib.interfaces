@@ -88,54 +88,9 @@ export default class Package extends Base {
 						.then(find)
 						.then(urlJoin.bind(this, this.root))
 						.then(get)
-						.then(parseVideoIndex.bind(this, toc)));
+						.then(VideoIndex.build.bind(VideoIndex, this[Service], this, toc)));
 		}
 
 		return promise;
 	}
-}
-
-function parseVideoIndex (toc, json) {
-	let keyOrder = [];
-	let root = this.root;
-
-	function prefix(o) {
-		o.src = urlJoin(root, o.src);
-		o.srcjsonp = urlJoin(root, o.srcjsonp);
-		return o;
-	}
-
-	function tocOrder(a, b) {
-		// Since the <[topic|object] ntiid="..." is not guaranteed to be unique,
-		// this will just order by first occurance of any element that has an
-		// ntiid attribute with value of what is asked for (a & b)
-		let c = toc.getSortPosition(a),
-		d = toc.getSortPosition(b),
-		p = c > d;
-		return p ? 1 : -1;
-	}
-
-	let containers = (json && json.Containers) || {};
-	let keys = Object.keys(containers);
-
-	try {
-		keys.sort(tocOrder);
-	} catch (e) {
-		console.warn('Potentially unsorted: %o', e.stack || e.message || e);
-	}
-
-	keys.forEach(k => keyOrder.push(...containers[k]));
-
-	let vi = (json && json.Items) || json;
-
-	for (let n in vi) {
-		if (vi.hasOwnProperty(n)) {
-			n = vi[n];
-			if (n && !isEmpty(n.transcripts)) {
-				n.transcripts = n.transcripts.map(prefix);
-			}
-		}
-	}
-
-	return new VideoIndex(this[Service], this, vi, keyOrder, containers);
 }

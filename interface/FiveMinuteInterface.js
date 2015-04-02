@@ -10,6 +10,9 @@ import ServiceModel from '../stores/Service';
 
 import {Context, Server} from '../CommonSymbols';
 
+const getAppUser = 'Get the Active User';
+const getUserLink = 'Get Link from User';
+
 export default class FiveMinuteInterface {
 	static fromService (service) {
 		let server = service[Server];
@@ -29,7 +32,7 @@ export default class FiveMinuteInterface {
 
 	getServer () { return this[Server]; }
 
-	_getAppUser () {
+	[getAppUser] () {
 		//FIXME: This doesn't leverage our instance cache.
 		//This will create a new Service Doc instance (as well
 		// as a new App User model instance)
@@ -37,17 +40,17 @@ export default class FiveMinuteInterface {
 	}
 
 	getAdmissionStatus () {
-		return this._getAppUser()
+		return this[getAppUser]()
 			.then(user=>(user||{}).fmaep_admission_state);
 	}
 
-	_getUserLink (rel) {
-		return this._getAppUser().then(user=>user.getLink(rel));
+	[getUserLink] (rel) {
+		return this[getAppUser]().then(user=>user.getLink(rel));
 	}
 
 	preflight (data) {
 		// get the preflight link.
-		let p = this._getUserLink('fmaep.admission.preflight');
+		let p = this[getUserLink]('fmaep.admission.preflight');
 
 		// post the data to the link
 		let r = p.then(link => this.post(link, data));
@@ -57,13 +60,13 @@ export default class FiveMinuteInterface {
 
 	requestAdmission (data) {
 		console.debug('five minute service requestAdmission');
-		let getLink = this._getUserLink('fmaep.admission');
+		let getLink = this[getUserLink]('fmaep.admission');
 		let r = getLink.then(link => this.post(link, data));
 		return r;
 	}
 
 	requestConcurrentEnrollment (data) {
-		return this._getUserLink('concurrent.enrollment.notify')
+		return this[getUserLink]('concurrent.enrollment.notify')
 			.then(link => this.post(link, data));
 	}
 
@@ -72,7 +75,8 @@ export default class FiveMinuteInterface {
 		return this.post(link, {
 			crn: ntiCrn,
 			term: ntiTerm,
-			return_url: returnUrl
+			//We don't control the name "return_url", so ignore the error
+			return_url: returnUrl // eslint-disable-line camelcase
 		});
 	}
 }

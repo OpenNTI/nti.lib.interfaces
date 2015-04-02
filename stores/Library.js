@@ -37,7 +37,6 @@ export function parseListFn (scope, service, pending) {
 export default class Library extends EventEmitter {
 
 	static load (service, name, reload) {
-		let Library = this;
 		let instance = instances[name];
 
 		function make (contentPackages, contentBundles, enrolledCourses, administeredCourses) {

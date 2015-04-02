@@ -271,8 +271,8 @@ export default function (html, isWidgetCallback) {
 		let children = processChildren(root, isWidgetCallback);
 
 		let out = 'return ' + reactifyElement('"div"', {}, children);
-		/*jshint -W054*///Not evil in this case. Building a Template function.
-		return new Function(
+		//Not evil in this case. Building a Template function.
+		return new Function(// eslint-disable-line no-new-func
 			'React, renderWidget', //arguments
 			'renderWidget = renderWidget || React.createElement.bind(React);' + out // function body
 			);

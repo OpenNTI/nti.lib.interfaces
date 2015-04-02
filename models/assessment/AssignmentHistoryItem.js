@@ -6,7 +6,7 @@ import {
 export default class AssignmentHistoryItem extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
-		for(let prop of ['Feedback','Grade','Submission','pendingAssessment']) {
+		for(let prop of ['Feedback', 'Grade', 'Submission', 'pendingAssessment']) {
 			this[prop] = data[prop] && this[parse](data[prop]);
 		}
 	}

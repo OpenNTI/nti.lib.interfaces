@@ -55,7 +55,7 @@ export default function rebaseReferences(string, basePath) {
 			original : attr + '="' + host + url + '"';
 	}
 
-	var envSalt = '',
+	let envSalt = '',
 		locationHash = stringHash(location.hostname + envSalt);
 
 	string = bustCorsForResources(string, 'h', locationHash);

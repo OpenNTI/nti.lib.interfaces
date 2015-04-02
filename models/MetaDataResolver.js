@@ -6,13 +6,12 @@ const services = {
 	vimeo: Vimeo
 };
 
-const resolve = Promise.reject.bind(Promise,'No resolver for service');
+const resolve = Promise.reject.bind(Promise, 'No resolver for service');
 
 export default class MetaDataResolver {
 
 	static from (source) {
 		let service = source[Service];
-		let MetaDataResolver = this;
 
 		let resolver = services[source.service] || {resolve};
 

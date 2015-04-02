@@ -9,7 +9,7 @@ function reflect(fn, key) {
 		let path = [];
 
 		//walk down the path...
-		for(let i=0, l=keys.length; i<=l; i++) {
+		for(let i = 0, l = keys.length; i <= l; i++) {
 			let key = keys[i];
 			if (i < l && scope) {
 				scope = scope[key];

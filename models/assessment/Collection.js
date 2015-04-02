@@ -11,6 +11,22 @@ import {
 	Parser as parse
 } from '../../CommonSymbols';
 
+
+function find(list, id) {
+	return list.reduce((found, item) =>
+		found || (
+			(item.getID()===id || (item.containsId && item.containsId(id))) ? item : null
+		), null);
+}
+
+
+function nodeToNTIIDs(node) {
+	let id = node.get('ntiid');
+	return (id? [id] : []).concat(
+			node.getchildren().reduce((a, b) =>
+				a.concat(nodeToNTIIDs(b)), []));
+}
+
 export default class Collection extends Base {
 
 	/**
@@ -60,7 +76,7 @@ export default class Collection extends Base {
 	}
 
 
-	isAssignment  (outlineNodeID, assessmentId) {
+	isAssignment (outlineNodeID, assessmentId) {
 		let maybe = this.getAssignment(outlineNodeID, assessmentId);
 		if (maybe) {
 			return null;
@@ -75,20 +91,4 @@ export default class Collection extends Base {
 		let maybe = this.getAssignments(outlineNodeID);
 		return maybe && find(maybe, assignmentId);
 	}
-}
-
-
-function find(list, id) {
-	return list.reduce((found, item) =>
-		found || (
-			(item.getID()===id || (item.containsId && item.containsId(id))) ? item : null
-		), null);
-}
-
-
-function nodeToNTIIDs(node) {
-	let id = node.get('ntiid');
-	return (id? [id] : []).concat(
-			node.getchildren().reduce((a, b) =>
-				a.concat(nodeToNTIIDs(b)), []));
 }

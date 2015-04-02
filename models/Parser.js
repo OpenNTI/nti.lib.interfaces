@@ -99,7 +99,7 @@ const PARSERS = {
 	'courses.courseenrollment': CourseEnrollment,
 	'courseware.courseinstanceadministrativerole': CourseAdministrativeRole,
 	'courses.legacycommunitybasedcourseinstance': 'courses.courseinstance',
-	'courseware.courseinstanceenrollment':'courses.courseenrollment',
+	'courseware.courseinstanceenrollment': 'courses.courseenrollment',
 
 	'courses.courseoutline': CourseOutline,
 	'courses.courseoutlinenode': CourseOutlineNode,
@@ -110,8 +110,8 @@ const PARSERS = {
 	'CourseOutlineNodeProgress': 'courseoutlinenodeprogress',
 	'progresscontainer': 'courseoutlinenodeprogress',
 
-	'progress' : CourseProgress,
-	'Progress' : 'progress',
+	'progress': CourseProgress,
+	'Progress': 'progress',
 
 	'courses.coursecataloglegacyentry': 'courses.catalogentry',//Really?! Two packages?! :P
 	'courseware.coursecataloglegacyentry': 'courses.catalogentry',
@@ -227,6 +227,18 @@ const PARSERS = {
 };
 
 
+function getType(o) {
+	return o.MimeType || o.mimeType || o.Class;
+}
+
+
+function error(obj) {
+	let e = new Error('No Parser for object: ' + (obj && getType(obj)));
+	e.NoParser = true;
+	throw e;
+}
+
+
 export function getModelByType(type) {
 	type = type.replace(/^application\/vnd.nextthought./, '');
 	let p = PARSERS[type];
@@ -268,17 +280,6 @@ export function parse(service, parent, obj) {
 	return (Cls && Cls.parse(...args)) || error(obj);
 }
 
-
-function getType(o) {
-	return o.MimeType || o.mimeType || o.Class;
-}
-
-
-function error(obj) {
-	let e = new Error('No Parser for object: ' + (obj && getType(obj)));
-	e.NoParser = true;
-	throw e;
-}
 
 //Default Constructors
 function ConstructorFuncWithParent (service, parent, data) {

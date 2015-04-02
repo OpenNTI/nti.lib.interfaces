@@ -8,7 +8,7 @@ import fallbackOverview from './_fallbacks.OverviewFromToC';
 import {encodeForURI} from '../../utils/ntiids';
 import emptyFunction from '../../utils/empty-function';
 
-let emptyCourseObject = {getID:emptyFunction};
+let emptyCourseObject = {getID: emptyFunction};
 
 const Progress = Symbol.for('Progress');
 
@@ -56,7 +56,7 @@ export default class OutlineNode extends Outline {
 
 	get depth () {
 		let type = super.constructor;
-		return this.parents({test:p=>p instanceof type}).length;
+		return this.parents({test: p=>p instanceof type}).length;
 	}
 
 
@@ -80,17 +80,17 @@ export default class OutlineNode extends Outline {
 	get isSection () {}
 
 
-	isAssignment  (assessmentId) {
+	isAssignment (assessmentId) {
 		return this.root.isAssignment(this.getID(), assessmentId);
 	}
 
 
-	getAssignment  (assignmentId) {
+	getAssignment (assignmentId) {
 		return this.root.getAssignment(this.getID(), assignmentId);
 	}
 
 
-	getAssignments  () {
+	getAssignments () {
 		return this.root.getAssignments();
 	}
 
@@ -158,7 +158,7 @@ function collateVideo(json) {
 
 
 function applyProgress(content, progress) {
-	if (!content) {return;}
+	if (!content) { return; }
 
 	function findWithFuzzyKey (c, key) {
 		key = key.toLowerCase();

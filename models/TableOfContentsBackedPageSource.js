@@ -4,6 +4,21 @@ import {encodeForURI as encodeNTIIDForURI} from '../utils/ntiids';
 
 const Service = Symbol.for('Service');
 
+
+function buildRef(node, root) {
+	return node && {
+		ntiid: node.get('ntiid'),
+		title: node.get('label'),
+		// Lets not make paths longer than they have to...
+		// The pattern will be the view is prefixed with the root in the slug.
+		// Adding a page id at the end would be redundant. The "Root" is the
+		// "default" pageId.
+		ref: node === root ?
+			'/' : encodeNTIIDForURI(node.get('ntiid'))
+	};
+}
+
+
 export default class TableOfContentsBackedPageSource extends Base{
 	constructor (ToC, root) {
 		super(ToC[Service], ToC);
@@ -42,19 +57,6 @@ export default class TableOfContentsBackedPageSource extends Base{
 }
 
 
-function buildRef(node, root) {
-	return node && {
-		ntiid: node.get('ntiid'),
-		title: node.get('label'),
-		// Lets not make paths longer than they have to...
-		// The pattern will be the view is prefixed with the root in the slug.
-		// Adding a page id at the end would be redundant. The "Root" is the
-		// "default" pageId.
-		ref: node === root ?
-			'/' : encodeNTIIDForURI(node.get('ntiid'))
-	};
-}
-
 
 function suppressed(node) {
 	let isAnchor = suppressed.is || (suppressed.id = /#/);
@@ -64,6 +66,7 @@ function suppressed(node) {
 }
 
 function flatten(node) {
-	let fn = flatten.fnLoop || (flatten.fnLoop = (a,n)=>a.concat(flatten(n)));
-	return [node].concat(node._children.reduce(fn, []));
+	let fn = flatten.fnLoop || (flatten.fnLoop = (a, n)=>a.concat(flatten(n)));
+	//We don't control the name "_children"...silence error/warning
+	return [node].concat(node._children.reduce(fn, [])); // eslint-disable-line no-underscore-dangle
 }

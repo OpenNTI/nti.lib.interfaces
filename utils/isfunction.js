@@ -6,6 +6,5 @@ export default function isFunction(object) {
 	//return object && getClass.call(object) === '[object Function]';
 
 	//Very FAST:
-	return typeof(object) === 'function';
+	return typeof object === 'function';
 }
-

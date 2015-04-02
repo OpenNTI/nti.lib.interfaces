@@ -42,11 +42,11 @@ const list = Symbol('lsit');
 
 export default class Capabilities{
 	constructor (service, caps) {
-		this[Service]= service;
+		this[Service] = service;
 		this[list] = caps || [];
 
 		for (let cap in CAPABILITIES) {
-			if (!CAPABILITIES.hasOwnProperty(cap)) {continue;}
+			if (!CAPABILITIES.hasOwnProperty(cap)) { continue; }
 			let test = CAPABILITIES[cap];
 
 			if (typeof test === 'string') {

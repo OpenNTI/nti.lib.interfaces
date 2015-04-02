@@ -25,7 +25,7 @@ export default class Progress extends Base{
 
 	getProgress () {
 		let {AbsoluteProgress, MaxPossibleProgress} = this[HIDDEN];
-		return AbsoluteProgress/(MaxPossibleProgress||1);
+		return AbsoluteProgress / (MaxPossibleProgress||1);
 	}
 
 

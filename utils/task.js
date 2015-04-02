@@ -1,3 +1,4 @@
+const ID = Symbol();
 export default class Task {
 	constructor (fn, interval) {
 		this.fn = fn;
@@ -5,14 +6,14 @@ export default class Task {
 	}
 
 	start () {
-		if (this._id) {
+		if (this[ID]) {
 			return;
 		}
-		this._id = setInterval(this.fn, this.interval);
+		this[ID] = setInterval(this.fn, this.interval);
 	}
 
 	stop () {
-		clearInterval(this._id);
-		delete this._id;
+		clearInterval(this[ID]);
+		delete this[ID];
 	}
 }

@@ -9,10 +9,10 @@ const defaultInterval = 2000;
 /**
 * Pacemakers indexed by their timing/interval, e.g. {2000: pacemaker_instance, 5000: pacemaker_instance}
 */
-let _pacemakersByInterval = {};
+let PacemakersByInterval = {};
 
 /**
-* @return The key for looking up a pacemaker in _pacemakersByInterval
+* @return The key for looking up a pacemaker in PacemakersByInterval
 */
 function keyForPacemaker(interval) {
 	return interval;
@@ -21,20 +21,20 @@ function keyForPacemaker(interval) {
 /**
 * @return A Pacemaker instance for the given interval, instantiating one if necessary.
 */
-function _pacemakerForInterval(interval) {
+function pacemakerForInterval(interval) {
 	let key = keyForPacemaker(interval);
-	if (!_pacemakersByInterval[key]) {
+	if (!PacemakersByInterval[key]) {
 		console.debug('new Pacemaker: interval: %d', interval);
-		_pacemakersByInterval[key] = new Pacemaker(interval);
+		PacemakersByInterval[key] = new Pacemaker(interval);
 	}
-	return _pacemakersByInterval[key];
-} 
+	return PacemakersByInterval[key];
+}
 
 /**
 * Registers a heartbeat to receive callbacks at its interval.
 */
 function add(heartbeat) {
-	let pm = _pacemakerForInterval(heartbeat.interval);
+	let pm = pacemakerForInterval(heartbeat.interval);
 	pm.add(heartbeat);
 }
 
@@ -42,7 +42,7 @@ function add(heartbeat) {
 * Un-register the given heartbeat; Stop receiving callbacks.
 */
 function remove(heartbeat) {
-	let pm = _pacemakerForInterval(heartbeat.interval);
+	let pm = pacemakerForInterval(heartbeat.interval);
 	pm.remove(heartbeat);
 }
 
@@ -64,14 +64,14 @@ class Pacemaker {
 			console.warn('Creating a Pacemaker with a fast interval (%d).', pulseInterval);
 		}
 		this.interval = pulseInterval;
-		this._beats = new Set();
+		this.beats = new Set();
 	}
 
 	/**
 	* Start sending periodic pulses to our Heartbeats.
 	*/
 	start() {
-		this.intervalId = setInterval(this._pulse.bind(this), this.interval);
+		this.intervalId = setInterval(this.pulse.bind(this), this.interval);
 	}
 
 	/**
@@ -93,18 +93,18 @@ class Pacemaker {
 	* Register a Heartbeat to receive periodic pulses.
 	*/
 	add(heartbeat) {
-		this._beats.add(heartbeat);
+		this.beats.add(heartbeat);
 		if (!this.running) {
 			this.start();
-		}  
+		}
 	}
 
 	/**
 	* Un-register the given heartbeat. Stops the Pacemaker if none remain.
 	*/
 	remove(heartbeat) {
-		this._beats.delete(heartbeat);
-		if (this._beats.size === 0) {
+		this.beats.delete(heartbeat);
+		if (this.beats.size === 0) {
 			this.stop();
 		}
 	}
@@ -112,8 +112,8 @@ class Pacemaker {
 	/**
 	* Send a pulse to each registered Heartbeat.
 	*/
-	_pulse() {
-		this._beats.forEach(beat => {
+	pulse() {
+		this.beats.forEach(beat => {
 			beat.onPulse();
 		});
 	}
@@ -122,7 +122,7 @@ class Pacemaker {
 	* @return the number of currently registered Heartbeats.
 	*/
 	get size() {
-		return this._beats.size;
+		return this.beats.size;
 	}
 
 }
@@ -138,21 +138,21 @@ export default class Heartbeat {
 			console.error('Callback must be a function. %o', callback);
 			callback = noop;
 		}
-		this._interval = interval;
-		this._callback = callback;
+		this.interval = interval;
+		this.callback = callback;
 		add(this);
 	}
 
 	onPulse() {
-		this._callback();
+		this.callback();
 	}
 
 	get interval() {
-		return this._interval;
+		return this.interval;
 	}
 
 	die() {
 		remove(this);
 	}
-	
+
 }

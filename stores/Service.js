@@ -19,6 +19,7 @@ let inflight = {};
 import {Context, Server, Service, Pending} from '../CommonSymbols';
 
 const AppUser = Symbol('LoggedInUser');
+const RequestUserResolve = Symbol('RequestUserResolve');
 
 export default class ServiceDocument {
 	constructor (json, server, context) {
@@ -63,7 +64,7 @@ export default class ServiceDocument {
 			delete inflight[key];
 		}
 
-		let p = inflight[key] = this.getServer()._get(url, this[Context]);
+		let p = inflight[key] = this.getServer().get(url, this[Context]);
 
 		p.then(clean, clean);
 
@@ -77,17 +78,17 @@ export default class ServiceDocument {
 
 
 	post (url, data) {
-		return this.getServer()._post(url, data, this[Context]);
+		return this.getServer().post(url, data, this[Context]);
 	}
 
 
 	put (url, data) {
-		return this.getServer()._put(url, data, this[Context]);
+		return this.getServer().put(url, data, this[Context]);
 	}
 
 
 	delete (url, data) {
-		return this.getServer()._delete(url, data, this[Context]);
+		return this.getServer().delete(url, data, this[Context]);
 	}
 
 
@@ -148,7 +149,7 @@ export default class ServiceDocument {
 		return this.getObjects(ntiids).then(o => parse(this, parent || this, o));
 	}
 
-	getAppUsername  () {
+	getAppUsername () {
 		let w = this.getUserWorkspace();
 		return w && w.Title;
 	}
@@ -190,11 +191,11 @@ export default class ServiceDocument {
 	 */
 	getAppUserSync () {
 		return this[AppUser] ||
-			(()=>{throw new Error('User is not resolved');}());
+			(()=>{ throw new Error('User is not resolved'); }());
 	}
 
 
-	__requestUserResolve (username) {
+	[RequestUserResolve] (username) {
 		let key = 'user-'+username;
 		let cache = this.getDataCache();
 		let cached = cache.get(key);
@@ -231,7 +232,7 @@ export default class ServiceDocument {
 			return Promise.resolve(repo[username]);
 		}
 
-		let req = repo[username] = this.__requestUserResolve(username);
+		let req = repo[username] = this[RequestUserResolve](username);
 
 		req.then(
 			user=> repo[username] = user,
@@ -285,7 +286,7 @@ export default class ServiceDocument {
 	}
 
 
-	ensureAnalyticsSession  () {
+	ensureAnalyticsSession () {
 		let workspace = this.getWorkspace('Analytics');
 		let url = getLink(workspace, 'analytics_session');
 
@@ -295,7 +296,7 @@ export default class ServiceDocument {
 	endAnalyticsSession () {
 		let workspace = this.getWorkspace('Analytics');
 		let url = getLink(workspace, 'end_analytics_session');
-		let timestamp = Math.floor(new Date()/1000);
+		let timestamp = Math.floor(new Date() / 1000);
 		return url ? this.post(url, { timestamp }) : Promise.reject('No link for end_analytics_session.');
 	}
 
@@ -325,10 +326,8 @@ export default class ServiceDocument {
 			mimeType = mimeType.MimeType;
 		}
 
-		items.every(function(workspace) {
-			let items = workspace.Items || [];
-
-			items.every(function(collection) {
+		items.every(workspace => {
+			(workspace.Items || []).every(collection => {
 				if (collection.accepts.indexOf(mimeType) > -1) {
 					if (!title || collection.Title === title) {
 						result = collection;
@@ -358,7 +357,7 @@ export default class ServiceDocument {
 	}
 
 
-	getContentBundlesURL  () {
+	getContentBundlesURL () {
 		return (this.getCollection('VisibleContentBundles', 'ContentBundles') || {}).href;
 	}
 

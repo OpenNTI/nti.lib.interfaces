@@ -15,7 +15,7 @@ function cleanNodes(x, o) {
 			id = e.get(key);
 		}
 
-		return x.find('*[@' + key + '="' + id + '"]/..') || {remove:()=>{}};
+		return x.find('*[@' + key + '="' + id + '"]/..') || {remove: ()=>{}};
 	}
 
 	let hiddenMethod = Symbol.for('ToC:PerformNodeFilter');
@@ -49,7 +49,7 @@ export default class TableOfContents extends Base {
 
 	getNode (id) {
 		let n = this.root,
-			r = n._root;
+			r = n._root; // eslint-disable-line no-underscore-dangle
 
 		if (r.get('ntiid') === id) {
 			return r;
@@ -67,7 +67,7 @@ export default class TableOfContents extends Base {
 
 	getSortPosition (id) {
 		let node = this.getNode(id);
-		return (node && node._id) || -1;
+		return (node && node._id) || -1; // eslint-disable-line no-underscore-dangle
 	}
 
 

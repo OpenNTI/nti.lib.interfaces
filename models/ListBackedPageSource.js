@@ -1,5 +1,13 @@
 import {encodeForURI} from '../utils/ntiids';
 
+function buildRef(node) {
+	return node && {
+		ntiid: node.getID(),
+		title: node.title,
+		ref: encodeForURI(node.getID())
+	};
+}
+
 export default class ListBackedPageSource {
 
 	constructor (list) {
@@ -25,13 +33,4 @@ export default class ListBackedPageSource {
 		};
 	}
 
-}
-
-
-function buildRef(node) {
-	return node && {
-		ntiid: node.getID(),
-		title: node.title,
-		ref: encodeForURI(node.getID())
-	};
 }

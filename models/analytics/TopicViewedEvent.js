@@ -5,7 +5,7 @@ export default class TopicViewedEvent extends BasicEvent {
 	constructor (topicId, courseId, startTime = Date.now()) {
 		super(TOPIC_VIEWED, courseId, null, startTime);
 		Object.assign(this, {
-			topic_id: topicId
+			topic_id: topicId // eslint-disable-line camelcase
 		});
 	}
 }

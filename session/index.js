@@ -19,12 +19,12 @@ export default class SessionManager {
 
 		return this.getServiceDocument(context)
 			.then(doc => {
-					let w = doc.getUserWorkspace();
-					if (w) {
-						return w.Title;
-					}
-					return Promise.reject('No user workspace');
-				});
+				let w = doc.getUserWorkspace();
+				if (w) {
+					return w.Title;
+				}
+				return Promise.reject('No user workspace');
+			});
 
 	}
 

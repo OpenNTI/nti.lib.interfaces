@@ -72,10 +72,12 @@ export default class Base extends EventEmitter {
 			mixin(this, partial, data);
 		}
 
-		for (let fieldName of dateFields) {
-			let methodName = 'get' + fieldName.replace(
+		let getMethod = x => 'get' + x.replace(
 								PASCAL_CASE_REGEX,
-								(_,c)=>(c||'').toUpperCase());
+								(_, c)=>(c || '').toUpperCase());
+
+		for (let fieldName of dateFields) {
+			let methodName = getMethod(fieldName);
 
 			this[methodName] = dateGetter(fieldName);
 		}
@@ -95,16 +97,20 @@ export default class Base extends EventEmitter {
 
 		list.push(...pending);
 
+		function remove (p) {
+			return ()=> {
+				//remember JavaScript is not multi-threaded,
+				// this action is effectively atomic... if that ever changes (it won't), this is not thread safe ;)
+				let i = list.indexOf(p);
+				if (i >= 0) {
+					list.splice(i, 1);//remove promise from the array
+				}
+			};
+		}
+
 		for (let p of pending) {
 			p.catch(noop)//prevent failures from interupting our cleanup
-				.then(()=> {
-					//remember JavaScript is not multi-threaded,
-					// this action is effectively atomic... if that ever changes (it won't), this is not thread safe ;)
-					let i = list.indexOf(p);
-					if (i >= 0) {
-						list.splice(i,1);//remove promise from the array
-					}
-			});
+				.then(remove(p));
 		}
 	}
 
@@ -122,7 +128,7 @@ export default class Base extends EventEmitter {
 	[Parser] (raw) {
 
 		if (raw === this) {
-		 	throw new Error('Migration failure: something is calling parse with `this` as the first argument.');
+			throw new Error('Migration failure: something is calling parse with `this` as the first argument.');
 		}
 
 

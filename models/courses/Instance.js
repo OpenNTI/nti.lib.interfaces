@@ -80,7 +80,7 @@ export default class Instance extends Base {
 	}
 
 
-	getDiscussions  () {
+	getDiscussions () {
 		function logAndResume(reason) {
 			if (reason !== NOT_DEFINED) {
 				console.warn('Could not load board: %o', reason);
@@ -128,7 +128,7 @@ export default class Instance extends Base {
 	}
 
 
-	getOutlineNode  (id) {
+	getOutlineNode (id) {
 		return this.getOutline()
 			.then(outline => outline.getNode(id) || Promise.reject('Outline Node not found'));
 	}
@@ -138,7 +138,7 @@ export default class Instance extends Base {
 		return Promise.all(
 			this.ContentPackageBundle.map(pkg=>pkg.getVideoIndex()))
 				.then(indices =>
-					indices.reduce((a,b) =>a.combine(b)));
+					indices.reduce((a, b) =>a.combine(b)));
 	}
 
 
@@ -211,7 +211,7 @@ function binDiscussions (section, parent) {
 
 			bin = bins[bin];
 			if (!bin[key]) {
-				bin[key] = {id: group.NTIID, forums:[]};
+				bin[key] = {id: group.NTIID, forums: []};
 			}
 
 			if (bin[key].id !== group.NTIID) {

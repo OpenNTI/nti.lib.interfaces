@@ -128,7 +128,7 @@ function assessmentItemOrder(a, b) {
 	let order = assessmentItemOrder.order = (assessmentItemOrder.order || {
 		'application/vnd.nextthought.assessment.assignment': 0,
 		'application/vnd.nextthought.naquestionset': 1,
-		'application/vnd.nextthought.naquestion': 2,
+		'application/vnd.nextthought.naquestion': 2
 	});
 
 	a = order[a.MimeType] || 3;

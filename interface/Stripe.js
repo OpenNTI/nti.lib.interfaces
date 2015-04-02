@@ -1,11 +1,14 @@
 /* global Stripe */
 
+import {Context, Server} from '../CommonSymbols';
+
 import ServiceModel from '../stores/Service';
 import getLink from '../utils/getlink';
 
-let _pollInterval = 1000;
+let pollInterval = 1000;
 
-import {Context, Server} from '../CommonSymbols';
+const PollPurchaseAttempt = 'Begin Polling Purchase Attempt Endpoint';
+
 
 export default class StripeInterface {
 	static fromService (service) {
@@ -34,7 +37,7 @@ export default class StripeInterface {
 		}
 
 		//TODO: purchasable should be a model... getLink should be never imported outside of Base class for models
-		let link = getLink(purchasable.Links,'price');
+		let link = getLink(purchasable.Links, 'price');
 		if (link) {
 			return this.post(link, {
 				purchasableID: purchasable.ID
@@ -115,12 +118,12 @@ export default class StripeInterface {
 			.then(result => {
 				let attempt = result.Items[0];
 
-				return this._pollPurchaseAttempt(attempt.ID, attempt.Creator, pollUrl);
+				return this[PollPurchaseAttempt](attempt.ID, attempt.Creator, pollUrl);
 			});
 	}
 
 
-	_pollPurchaseAttempt (purchaseId, creator, pollUrl) {
+	[PollPurchaseAttempt] (purchaseId, creator, pollUrl) {
 		let me = this;
 
 		return new Promise((fulfill, reject) => {
@@ -131,7 +134,7 @@ export default class StripeInterface {
 					return fulfill(attempt);
 				}
 
-				setTimeout(check, _pollInterval);
+				setTimeout(check, pollInterval);
 			}
 
 

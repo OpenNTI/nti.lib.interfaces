@@ -12,9 +12,9 @@ describe('applyIf', () => {
 	});
 
 	it('should apply keys only if that key is null/undefined', () => {
-		expect(applyIf({test:0}, {a: '1', test: 2})).toEqual({test: 0, a: '1'});
-		expect(applyIf({test:null}, {a: '1', test: 2})).toEqual({test: 2, a: '1'});
-		expect(applyIf({test:undefined}, {a: '1', test: 2})).toEqual({test: 2, a: '1'});
+		expect(applyIf({test: 0}, {a: '1', test: 2})).toEqual({test: 0, a: '1'});
+		expect(applyIf({test: null}, {a: '1', test: 2})).toEqual({test: 2, a: '1'});
+		expect(applyIf({test: undefined}, {a: '1', test: 2})).toEqual({test: 2, a: '1'});
 	});
 
 });
