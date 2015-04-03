@@ -9,18 +9,11 @@ const ASSET_MAP = {
 
 let MISSING_ASSET_DATA = {};
 
-const MISSING_ASSET_DATA_KEY = Symbol('MISSING_ASSET_DATA');
-
 /**
  * return the root that should be used if PlatforPresentationResources isn't defined
  * @return {string} default root to use
  */
 function getDefaultAssetRoot(scope) {
-	if (typeof window !== 'undefined') {
-		/* global window */
-		window[MISSING_ASSET_DATA_KEY] = MISSING_ASSET_DATA;
-	}
-
 	MISSING_ASSET_DATA[scope.getID()] = true;
 
 	if (scope.getDefaultAssetRoot) {
