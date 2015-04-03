@@ -38,7 +38,7 @@ function setup (data, keys) {
 	};
 
 	for(let key of keys) {
-		buildProperty(this, key);
+		buildProperty(key);
 	}
 }
 
