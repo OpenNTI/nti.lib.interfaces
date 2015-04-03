@@ -25,7 +25,7 @@ export default class UserData extends EventEmitter {
 			this.Items = {root: []};
 
 			for (let i of parseList(data.Items)) {
-				let binId = i.getContainerID();
+				let binId = i.getContainerID ? i.getContainerID() : 'root';
 				bin(binId !== rootContainerId ? binId : 'root', i);
 			}
 
