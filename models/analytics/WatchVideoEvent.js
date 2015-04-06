@@ -3,8 +3,8 @@ import {WATCH_VIDEO} from './MimeTypes';
 
 export default class WatchVideoEvent extends BasicEvent {
 
-	constructor (resourceId, context, videoStartTime, maxDuration, hasTranscript) {
-		super(WATCH_VIDEO, null, (context||[])[0] || null);
+	constructor (resourceId, courseId, context, videoStartTime, maxDuration, hasTranscript) {
+		super(WATCH_VIDEO, courseId, (context||[])[0] || null);
 		Object.assign(this, {
 			MaxDuration: maxDuration,
 			/*eslint-disable camelcase */
