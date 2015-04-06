@@ -12,11 +12,18 @@ export default class DataCache {
 
 
 	get(key) {
+		if (key == null) {
+			throw new Error('null key error');
+		}
 		return this.data[key];
 	}
 
 
 	set(key, value) {
+		if (key == null) {
+			throw new Error('null key error');
+		}
+
 		let data = this.data;
 		if (typeof key === 'object') {
 			let o = key;
