@@ -156,9 +156,12 @@ export default class Instance extends Base {
 //Private methods
 
 function resolveCatalogEntry(service, inst) {
-	const cache = service.getDataCache();
-	const url = inst.getLink('CourseCatalogEntry');
-	const cached = cache.get(url);
+	let cache = service.getDataCache();
+	let url = inst.getLink('CourseCatalogEntry');
+	if (!url) {
+		throw new Error('No CCE Link!');
+	}
+	let cached = cache.get(url);
 
 	let work;
 

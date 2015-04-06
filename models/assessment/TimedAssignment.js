@@ -4,8 +4,8 @@ import Assignment from './Assignment';
 
 export default class TimedAssignment extends Assignment {
 	constructor(service, parent, data) {
-		this.isTimed = true;
 		super(service, parent, data);
+		this.isTimed = true;
 
 		// IsTimedAssignment
 		// MaximumTimeAllowed

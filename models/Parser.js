@@ -233,7 +233,7 @@ function getType(o) {
 
 
 function error(obj) {
-	let e = new Error('No Parser for object: ' + (obj && getType(obj)));
+	let e = new Error('No Parser for object: ' + (obj && getType(obj))+ '\n' + JSON.stringify(obj).substr(0, 50));
 	e.NoParser = true;
 	throw e;
 }

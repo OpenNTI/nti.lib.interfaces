@@ -18,6 +18,7 @@ export default class Catalog extends EventEmitter {
 	}
 
 	constructor (service, data) {
+		super();
 		let pending = [];
 
 		this[Service] = service;

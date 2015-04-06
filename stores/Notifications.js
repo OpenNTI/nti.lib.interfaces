@@ -72,6 +72,7 @@ export default class Notifications extends EventEmitter {
 
 
 	constructor (service, data) {
+		super();
 		ensureInstanceCountDoesNotReach(this, 2);
 
 		this[Service] = service;

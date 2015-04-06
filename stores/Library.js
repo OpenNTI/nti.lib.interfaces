@@ -84,7 +84,7 @@ export default class Library extends EventEmitter {
 
 
 	constructor(service, name, contentPackages, contentBundles, enrolledCourses, administeredCourses) {
-
+		super();
 		let pending = [];
 
 		this[Service] = service;

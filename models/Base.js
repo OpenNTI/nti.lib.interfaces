@@ -2,7 +2,7 @@ import {EventEmitter} from 'events';
 
 import {parse, getModelByType} from './Parser';
 
-import getLink, {asMap as getLinksAsMap} from '../utils/getlink';
+import getLinkImpl, {asMap as getLinksAsMap} from '../utils/getlink';
 import mixin from '../utils/mixin';
 import noop from '../utils/empty-function';
 import waitFor from '../utils/waitfor';
@@ -56,6 +56,7 @@ const is = Symbol('isTest');
 export default class Base extends EventEmitter {
 
 	constructor (service, parent, data, ...mixins) {
+		super();
 		let dateFields = this[DateFields]();
 
 		this[Service] = service;
@@ -204,7 +205,7 @@ export default class Base extends EventEmitter {
 
 
 	getLink (rel) {
-		return getLink(this, rel);
+		return getLinkImpl(this, rel);
 	}
 
 

@@ -20,6 +20,11 @@ function reflect(fn, key) {
 			}
 		}
 
+		if (!scope[fn]) {
+			let {name} = scope.constructor;
+			throw new Error(`Class ${name} does not implement ${fn}`);
+		}
+
 		return scope[fn](...args);
 	};
 }

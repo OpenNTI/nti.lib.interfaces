@@ -7,6 +7,8 @@ import {parseListFn} from './Library';
 export default class UserData extends EventEmitter {
 
 	constructor (service, rootContainerId, source) {
+		super();
+
 		let pending = [];
 
 		this[Service] = service;
