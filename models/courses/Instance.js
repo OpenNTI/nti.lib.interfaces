@@ -40,6 +40,7 @@ export default class Instance extends Base {
 			title: cce.Title || bundle.title,
 			label: cce.ProviderUniqueID,
 			icon: cce.icon || bundle.icon,
+			background: cce.background || bundle.background,
 			thumb: cce.thumb || bundle.thumb
 		};
 	}
