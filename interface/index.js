@@ -1,4 +1,3 @@
-
 import Url from 'url';
 //If the login method is invoked on the NodeJS side, we will need this function...
 import base64decode from 'btoa';
@@ -190,7 +189,7 @@ export default class DataServerInterface {
 			abortMethod = ()=> { active.abort(); reject('aborted'); };
 		});
 
-		result.abort = abortMethod || ()=> logger.info('Attempting to abourt request, but missing abort() method.');
+		result.abort = abortMethod || (()=> logger.info('Attempting to abourt request, but missing abort() method.'));
 
 		pending.push(result);
 		return result;
