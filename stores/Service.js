@@ -208,8 +208,7 @@ export default class ServiceDocument {
 			result = this.get(this.getResolveUserURL(username))
 				.then(data => {
 					let items = data.Items || [data];
-					let user = items.reduce((user, data) =>
-						user || (data.Username === username && data), null);
+					let user = items.reduce((u, d) => u || (d.Username === username && d), null);
 
 					cache.set(key, user);
 					return user || Promise.reject('Username "'+ username +'" could not resolve.');
