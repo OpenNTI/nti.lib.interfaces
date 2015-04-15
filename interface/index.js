@@ -461,7 +461,7 @@ export default class DataServerInterface {
 				return this[Request]({url: url, headers: headers}, context);
 			})
 			.catch(e => {
-				if (typeof e === 'object' && e.statusCode === 404) {
+				if (typeof e === 'object' && e.statusCode === 404 && (e.Class || e.MimeType)) {
 					return e;
 				}
 				return Promise.reject(e);
