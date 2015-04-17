@@ -1,10 +1,11 @@
 import BasicEvent from './Base';
 import {WATCH_VIDEO} from './MimeTypes';
+import {isNTIID} from '../../utils/ntiids';
 
 export default class WatchVideoEvent extends BasicEvent {
 
 	constructor (resourceId, courseId, context, videoStartTime, maxDuration, hasTranscript) {
-		super(WATCH_VIDEO, courseId, (context||[])[0] || null);
+		super(WATCH_VIDEO, courseId, (context||[]).find(elem => isNTIID(elem)) || null);
 		Object.assign(this, {
 			MaxDuration: maxDuration,
 			/*eslint-disable camelcase */
