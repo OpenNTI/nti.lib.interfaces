@@ -97,11 +97,11 @@ export default class OutlineNode extends Outline {
 
 	getContent () {
 		let link = 'overview-content';
-		let content = this.hasLink(link) ?
+		let getContent = this.hasLink(link) ?
 			this.fetchLink(link).then(collateVideo) :
 			getContentFallback(this);
 
-		return Promise.all([this.getProgress(), content])
+		return Promise.all([this.getProgress(), getContent])
 			.then(progressAndContent=> {
 				let [progress, content] = progressAndContent;
 
@@ -169,10 +169,11 @@ function applyProgress(content, progress) {
 		return key && c[key];
 	}
 
-	let id = ['Target-NTIID', 'NTIID'].reduce(
-			(id, key)=> id || findWithFuzzyKey(content, key), null);
+	let [a, b] = ['Target-NTIID', 'NTIID']
+				.map(key=> findWithFuzzyKey(content, key))
+				.map(id=> id && progress.getProgress(id));
 
-	let nodeProgress = id && progress.getProgress(id);
+	let nodeProgress = a || b;
 
 	if (nodeProgress != null) {
 		content[Progress] = nodeProgress;
