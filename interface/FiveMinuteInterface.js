@@ -24,10 +24,10 @@ export default class FiveMinuteInterface {
 	constructor (server, context) {
 		Object.assign(this, {
 			get: ServiceModel.prototype.get,
-			post: ServiceModel.prototype.post,
-			[Server]: server,
-			[Context]: context
+			post: ServiceModel.prototype.post
 		});
+		this[Server] = server;
+		this[Context] = context;
 	}
 
 	getServer () { return this[Server]; }
