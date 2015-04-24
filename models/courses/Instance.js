@@ -136,10 +136,19 @@ export default class Instance extends Base {
 
 
 	getVideoIndex () {
-		return Promise.all(
-			this.ContentPackageBundle.map(pkg=>pkg.getVideoIndex()))
-				.then(indices =>
-					indices.reduce((a, b) =>a.combine(b)));
+		return Promise.all([
+			this.getOutline(),
+			Promise.all(
+				this.ContentPackageBundle.map(pkg=>pkg.getVideoIndex()))
+					.then(indices =>
+						indices.reduce((a, b) =>a.combine(b)))
+		])
+			.then(outlineAndRawIndex => {
+				let [, index] = outlineAndRawIndex;
+
+
+				return index;
+			});
 	}
 
 
