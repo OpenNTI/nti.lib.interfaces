@@ -23,6 +23,6 @@ export default class MetaDataResolver {
 	constructor (service, meta) {
 		this[Service] = service;
 		Object.assign(this, meta);
-		console.log(this);
+		// console.log(this);
 	}
 }
