@@ -97,7 +97,7 @@ export default class VideoIndex {
 		let data = Object.assign({}, this[Data], that[Data]);
 		let containers = Object.assign({}, this[Containers], that[Containers]);
 
-		return new this.constructor(this[Service], this[Parent], data, order, containers);
+		return new VideoIndex(this[Service], this[Parent], data, order, containers);
 	}
 
 
@@ -118,7 +118,7 @@ export default class VideoIndex {
 			return pass;
 		});
 
-		return new this.constructor(this[Service], this[Parent], data, order);
+		return new VideoIndex(this[Service], this[Parent], data, order);
 	}
 
 

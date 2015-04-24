@@ -136,6 +136,20 @@ export default class Instance extends Base {
 
 
 	getVideoIndex () {
+
+		function getForNode(node, index, output) {
+			let scoped = index.scoped(node.getID());
+
+			if (scoped && scoped.length) {
+				output.push(scoped);
+			}
+
+			let {contents} = node;
+			if (contents && contents.length) {
+				contents.forEach(n=>getForNode(n, index, output));
+			}
+		}
+
 		return Promise.all([
 			this.getOutline(),
 			Promise.all(
@@ -144,10 +158,13 @@ export default class Instance extends Base {
 						indices.reduce((a, b) =>a.combine(b)))
 		])
 			.then(outlineAndRawIndex => {
-				let [, index] = outlineAndRawIndex;
+				let [outline, index] = outlineAndRawIndex;
+				let slices = [];
 
+				getForNode(outline, index, slices);
 
-				return index;
+				return slices.reduce((a, b)=> a.combine(b));
+				// return index;
 			});
 	}
 
