@@ -12,7 +12,8 @@ export default class MetaDataResolverForVimeo {
 				.then(o=> o[0] || o)
 				.then(o=>
 					({
-						poster: o.thumbnail_url
+						poster: o.thumbnail_url,
+						thumbnail: o.thumbnail_url
 					})
 				);
 

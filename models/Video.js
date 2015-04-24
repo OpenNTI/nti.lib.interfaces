@@ -24,6 +24,12 @@ export default class Video {
 	}
 
 
+	getThumbnail () {
+		let first = this.sources[0];
+		return first ? first.getThumbnail() : Promise.reject('No Source');
+	}
+
+
 	getPoster () {
 		let first = this.sources[0];
 		return first ? first.getPoster() : Promise.reject('No Source');
