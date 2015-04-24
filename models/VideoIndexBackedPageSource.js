@@ -42,7 +42,7 @@ export default class VideoIndexBackedPageSource extends Base {
 
 
 	scopped (containerId) {
-		let subset = this[Parent].scopped(containerId);
+		let subset = this[Parent].scoped(containerId);
 		return new this.constructor(subset);
 	}
 }

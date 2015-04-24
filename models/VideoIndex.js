@@ -101,9 +101,8 @@ export default class VideoIndex {
 	}
 
 
-	scopped (containerId) {
+	scoped (containerId) {
 		let list = this[Containers][containerId] || [];
-
 		return this.filter(o=>list.indexOf(o.getID())>=0);
 	}
 
