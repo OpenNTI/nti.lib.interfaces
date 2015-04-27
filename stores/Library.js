@@ -118,19 +118,11 @@ export default class Library extends EventEmitter {
 	}
 
 
-	getCourse (courseInstanceId, ignoreAdministeredCourses) {
-		let admin = this.administeredCourses || [];
-		let courses = this.courses || [];
-
-		if (ignoreAdministeredCourses !== true) {
-			courses = [].concat(admin).concat(courses);
-		}
-
-		let found;
-		courses.every(course =>
-			!(found = (course.getCourseID() === courseInstanceId) ? course : null));
-
-		return found;
+	getCourse (courseInstanceId, ignoreAdministeredCourses = false) {
+		return this.findCourse(
+			course=> course.getCourseID() === courseInstanceId,
+			ignoreAdministeredCourses
+		);
 	}
 
 
@@ -149,6 +141,22 @@ export default class Library extends EventEmitter {
 
 		return packs.reduce((found, pkg)=>
 			found || pkg.getID() === packageId && pkg, null);
+	}
+
+
+	findCourse(findFn, ignoreAdministeredCourses = false) {
+		let admin = this.administeredCourses || [];
+		let courses = this.courses || [];
+
+		if (ignoreAdministeredCourses !== true) {
+			courses = [].concat(admin).concat(courses);
+		}
+
+		let found;
+		courses.every(course =>
+			!(found = findFn(course) ? course : null));
+
+		return found;
 	}
 }
 
