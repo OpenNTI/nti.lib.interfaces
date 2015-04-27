@@ -48,7 +48,10 @@ export default class VideoIndex {
 			console.warn('Potentially unsorted: %o', e.stack || e.message || e);
 		}
 
-		keys.forEach(k => keyOrder.push(...containers[k]));
+		keys.forEach(k => {
+			let unique = containers[k].filter(i=> keyOrder.indexOf(i) === -1);
+			keyOrder.push(...unique);
+		});
 
 		let vi = (json && json.Items) || json;
 
