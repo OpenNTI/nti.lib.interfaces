@@ -142,7 +142,13 @@ export default class ServiceDocument {
 	}
 
 	getParsedObject(ntiid, parent) {
-		return this.getObject(ntiid).then(o => parse(this, parent || this, o));
+		let p = o => parse(this, parent || this, o);
+
+		if (typeof ntiid === 'object') {
+			return Promise.resolve(p(ntiid));
+		}
+
+		return this.getObject(ntiid).then(p);
 	}
 
 	getParsedObjects(ntiids, parent) {
