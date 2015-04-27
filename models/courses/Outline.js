@@ -27,12 +27,16 @@ export default class Outline extends Base {
 		}
 
 		else if (!promise) {
-			let assignments = this.parent().getAssignments();
+			let assignments = this.parent()
+				.getAssignments()
+					//do not let failing assignment loads prevent getting the outline
+					.catch(er=> console.error(er.stack || er.message || er));
+
 			let contents = this.fetchLinkParsed('contents');
 
 			promise = Promise.all([assignments, contents])
 				.then(requests=> {
-					let [assignments, contents] = requests;
+					[assignments, contents] = requests;
 					Object.assign(this, {
 						assignments,
 						contents
