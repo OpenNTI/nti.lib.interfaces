@@ -39,6 +39,10 @@ export default class Enrollment {
 
 
 	redeemGift (purchasable, courseId, accessKey) {
+		if (!purchasable) {
+			throw new Error('Purchasable is a required argument');
+		}
+
 		if (purchasable.getLink) {
 			console.error('Use model@getLink');
 		} else {
