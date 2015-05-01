@@ -38,7 +38,7 @@ export default class Enrollment {
 	}
 
 
-	redeemGift (purchasable, accessKey) {
+	redeemGift (purchasable, courseId, accessKey) {
 		if (purchasable.getLink) {
 			console.error('Use model@getLink');
 		} else {
@@ -50,6 +50,6 @@ export default class Enrollment {
 			return Promise.reject('Couldn\'t find the gift redemption link for the provided purchasable');
 		}
 
-		return this[Service].post(link, { code: accessKey });
+		return this[Service].post(link, { ntiid: courseId, code: accessKey });
 	}
 }
