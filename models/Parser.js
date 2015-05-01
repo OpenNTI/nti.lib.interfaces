@@ -260,6 +260,10 @@ export function getModelByType(type) {
 
 
 export function parse(service, parent, obj) {
+	if (obj == null) {
+		return obj;
+	}
+
 	if (Array.isArray(obj)) {
 		return obj.map(parse.bind(this, service, parent));
 	}
