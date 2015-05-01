@@ -25,7 +25,7 @@ export default class VideoIndexBackedPageSource extends Base {
 	getPagesAround (pageId) {
 		let nodes = this[Parent];
 		let index = nodes.reduce(
-			(found, node, index) => (typeof found !== 'number' && node.getID() === pageId) ? index : found,
+			(found, node, ix) => (typeof found !== 'number' && node.getID() === pageId) ? ix : found,
 			null);
 
 
@@ -41,7 +41,7 @@ export default class VideoIndexBackedPageSource extends Base {
 	}
 
 
-	scopped (containerId) {
+	scoped (containerId) {
 		let subset = this[Parent].scoped(containerId);
 		return new this.constructor(subset);
 	}
