@@ -111,7 +111,7 @@ export default class Base extends EventEmitter {
 			delete scope[x];
 			Object.defineProperty(scope, x, {
 				enumerable: false,
-				get () { throw new Error(`Use ${name} instead`); }
+				get () { throw new Error(`Access to ${x} is now blocked. There is a new accessor to use instead.`); }
 			});
 		}
 	}
