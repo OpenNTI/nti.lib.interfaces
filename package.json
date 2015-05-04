@@ -16,7 +16,7 @@
 		"btoa": "^1.1.2",
 		"elementtree": "^0.1.6",
 
-		"query-string": "^1.0.0",
+		"query-string": "^2.0.0",
 		"request": "^2.44.0",
 		"url": "^0.10.1"
 	},
