@@ -8,7 +8,7 @@ export default class EnrollmentOptions extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
-		console.log('Enrollment Options:', data);
+		// console.log('Enrollment Options:', data);
 
 		let {Items} = this;
 
