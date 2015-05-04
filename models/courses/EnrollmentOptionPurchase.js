@@ -19,8 +19,10 @@ export default class EnrollmentOptionStore extends EnrollmentOption {
 
 		let Items = this[getPurchasables]();
 
+		let parsedItems = this[Purchasables].Items = [];
+
 		for (let p = 0, len = Items.length; p < len; p++) {
-			Items[p] = this[parse](Items[p]);
+			parsedItems[p] = this[parse](Items[p]);
 		}
 	}
 
