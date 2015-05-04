@@ -1,5 +1,8 @@
 import Base from '../Base';
-import {DateFields} from '../../CommonSymbols';
+import {
+	Parser as parse,
+	DateFields
+} from '../../CommonSymbols';
 
 import setAndEmit from '../../utils/getsethandler';
 
@@ -18,6 +21,8 @@ export default class CourseCatalogEntry extends Base {
 			this.getAsset('thumb').then(setAndEmit(this, 'thumb')),
 			this.getAsset('background').then(setAndEmit(this, 'background'))
 		);
+
+		this[parse]('EnrollmentOptions');
 	}
 
 	[DateFields] () {

@@ -51,6 +51,8 @@ function doParse(parent, data) {
 
 const PASCAL_CASE_REGEX = /(?:^|[^a-z0-9])([a-z0-9])?/igm;
 
+const TakeOver = Symbol.for('TakeOver');
+
 const is = Symbol('isTest');
 
 export default class Base extends EventEmitter {
@@ -90,6 +92,27 @@ export default class Base extends EventEmitter {
 			'CreatedTime',
 			'Last Modified'
 		];
+	}
+
+
+	[TakeOver] (x, y) {
+		let scope = this;
+		let enumerable = !!y;
+		let name = y || x;
+
+		Object.defineProperty(scope, name, {
+			enumerable,
+			writable: false,
+			value: scope[x]
+		});
+
+		if (x !== name) {
+			delete scope[x];
+			Object.defineProperty(scope, x, {
+				enumerable: false,
+				get () { throw new Error(`Use ${name} instead`); }
+			});
+		}
 	}
 
 

@@ -2,6 +2,7 @@ import Url from 'url';
 //If the login method is invoked on the NodeJS side, we will need this function...
 import base64decode from 'btoa';
 import QueryString from 'query-string';
+
 import request from '../utils/request';
 import logger from '../logger';
 
@@ -27,6 +28,7 @@ const Request = Symbol('Request Adaptor');
 const AsFormSubmittion = Symbol('');
 
 export default class DataServerInterface {
+
 	constructor (config) {
 		if (!config || !config.server) {
 			throw new Error('No configuration');
@@ -225,25 +227,6 @@ export default class DataServerInterface {
 			method: 'DELETE'
 		}, context);
 	}
-
-
-	getPurchasables (ids, context) {
-		console.debug('{FIXME} does not belong here');
-		let url = '/dataserver2/store/get_purchasables';
-
-		if (ids) {
-			if (Array.isArray(ids)) {
-				ids = ids.join(',');
-			}
-
-			url += '?' + QueryString.stringify({
-				purchasables: ids
-			});
-		}
-
-		return this.get(url, context);
-	}
-
 
 
 	getServiceDocument (context) {

@@ -1,4 +1,4 @@
-'use strict';
+import QueryString from 'query-string';
 
 import {parse} from '../models/Parser';
 
@@ -141,6 +141,7 @@ export default class ServiceDocument {
 		return this.getServer().getObject(ntiid, mime, this[Context]);
 	}
 
+
 	getParsedObject(ntiid, parent) {
 		let p = o => parse(this, parent || this, o);
 
@@ -151,9 +152,27 @@ export default class ServiceDocument {
 		return this.getObject(ntiid).then(p);
 	}
 
+
 	getParsedObjects(ntiids, parent) {
 		return this.getObjects(ntiids).then(o => parse(this, parent || this, o));
 	}
+
+
+	getPurchasables (ids) {
+		let url = '/dataserver2/store/get_purchasables';
+
+		if (ids) {
+			if (Array.isArray(ids)) {
+				ids = ids.join(',');
+			}
+
+			url += '?' + QueryString.stringify({purchasables: ids});
+		}
+
+		return this.get(url)
+			.then(collection=> parse(this, null, collection.Items));
+	}
+
 
 	getAppUsername () {
 		let w = this.getUserWorkspace();
@@ -298,12 +317,14 @@ export default class ServiceDocument {
 		return this.hasCookie('nti.da_session') ? Promise.resolve() : this.post(url);
 	}
 
+
 	endAnalyticsSession () {
 		let workspace = this.getWorkspace('Analytics');
 		let url = getLink(workspace, 'end_analytics_session');
 		let timestamp = Math.floor(new Date() / 1000);
 		return url ? this.post(url, { timestamp }) : Promise.reject('No link for end_analytics_session.');
 	}
+
 
 	postAnalytics (events) {
 		let workspace = this.getWorkspace('Analytics');

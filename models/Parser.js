@@ -17,11 +17,16 @@ import CourseCatalogEntry from './courses/CatalogEntry';
 import CourseInstance from './courses/Instance';
 import CourseAdministrativeRole from './courses/AdministrativeRole';
 import CourseEnrollment from './courses/Enrollment';
+import CourseEnrollmentOptions from './courses/EnrollmentOptions';
+import CourseEnrollmentOption from './courses/EnrollmentOption';
+import CourseEnrollmentOption5Minute from './courses/EnrollmentOption5Minute';
+import CourseEnrollmentOptionPurchase from './courses/EnrollmentOptionPurchase';
 import CourseOutline from './courses/Outline';
 import CourseOutlineNode from './courses/OutlineNode';
 import CourseOutlineNodeProgress from './courses/OutlineNodeProgress';
 
 import CourseProgress from './courses/Progress';
+
 
 import AssessmentQuestionSet from './assessment/QuestionSet';
 import AssessmentQuestion from './assessment/Question';
@@ -72,6 +77,11 @@ import ExternalResourceEvent from './analytics/ExternalResourceEvent';
 import TopicViewedEvent from './analytics/TopicViewedEvent';
 import WatchVideoEvent from './analytics/WatchVideoEvent';
 
+import Purchasable from './store/Purchasable';
+import PurchasableCourse from './store/PurchasableCourse';
+import PurchasableCourseChoiceBundle from './store/PurchasableCourseChoiceBundle';
+import StripeConnectKey from './store/StripeConnectKey';
+
 const ignored = {parse: identity};
 
 const PARSERS = {
@@ -99,6 +109,14 @@ const PARSERS = {
 	'courses.catalogentry': CourseCatalogEntry,
 	'courses.courseinstance': CourseInstance,
 	'courses.courseenrollment': CourseEnrollment,
+
+	'courseware.enrollmentoptions': CourseEnrollmentOptions,
+
+	'courseware.enrollmentoption': CourseEnrollmentOption,
+	'courseware.openenrollmentoption': 'courseware.enrollmentoption',
+	'courseware.fiveminuteenrollmentoption': CourseEnrollmentOption5Minute,
+	'courseware.storeenrollmentoption': CourseEnrollmentOptionPurchase,
+
 	'courseware.courseinstanceadministrativerole': CourseAdministrativeRole,
 	'courses.legacycommunitybasedcourseinstance': 'courses.courseinstance',
 	'courseware.courseinstanceenrollment': 'courses.courseenrollment',
@@ -225,7 +243,12 @@ const PARSERS = {
 	'note': Note,
 
 	'messageinfo': null,//Need To Model
-	'openbadges.badge': null//Need To Model
+	'openbadges.badge': null,//Need To Model
+
+	'store.purchasable': Purchasable,
+	'store.purchasablecourse': PurchasableCourse,
+	'store.purchasablecoursechoicebundle': PurchasableCourseChoiceBundle,
+	'store.stripeconnectkey': StripeConnectKey
 };
 
 
