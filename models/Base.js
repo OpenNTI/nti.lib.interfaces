@@ -65,6 +65,7 @@ export default class Base extends EventEmitter {
 		this[Parent] = parent;
 
 		if (data) {
+			data = JSON.parse(JSON.stringify(data));//deep clone
 			Object.assign(this, data);
 		}
 
