@@ -25,8 +25,8 @@ export default class OutlineNodeBackedPageSource extends Base {
 
 	getPagesAround (pageId) {
 		const nodes = this.pagesInRange;
-		const index = nodes.reduce((found, node, index) =>
-			(typeof found !== 'number' && node.getID() === pageId) ? index : found, null);
+		const index = nodes.reduce((found, node, ix) =>
+			(typeof found !== 'number' && node.getID() === pageId) ? ix : found, null);
 
 		let next = nodes[index + 1];
 		let prev = nodes[index - 1];

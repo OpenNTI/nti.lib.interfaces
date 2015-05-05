@@ -66,7 +66,7 @@ export default class Forum extends Base {
 		return service.post(link, payload)
 			.then(result =>
 				service.post(getLink(result, 'publish'))
-					.then(result => this[parse](result)));
+					.then(obj => this[parse](obj)));
 
 	}
 

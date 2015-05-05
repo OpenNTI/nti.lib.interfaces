@@ -17,8 +17,8 @@ export default class UserData extends EventEmitter {
 
 		let parseList = parseListFn(this, service, pending);
 
-		let bin = (bin, item) =>
-			(this.Items[bin] = (this.Items[bin] || [])).push(item);
+		let bin = (name, item) =>
+			(this.Items[name] = (this.Items[name] || [])).push(item);
 
 		let load = service.get(source).then(data=> {
 			this.loading = false;

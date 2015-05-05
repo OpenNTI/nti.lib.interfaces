@@ -25,10 +25,10 @@ function dateString (str) {
 
 class Logger {
 
-	quiet() {this.noize = false;}
+	quiet() { this.noize = false; }
 
 	info (str, ...args) {
-		if (this.noize === false) {return;}
+		if (this.noize === false) { return; }
 
 		console.log(dateString(str), ...args);
 	}
@@ -46,7 +46,7 @@ class Logger {
 
 
 	debug (str, ...args) {
-		if (this.noize === false) {return;}
+		if (this.noize === false) { return; }
 		if (console.debug) {
 			console.debug(dateString(str), ...args);
 		} else {

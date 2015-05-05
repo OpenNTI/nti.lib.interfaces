@@ -27,6 +27,6 @@ export default class Forums {
 			return Promise.reject('Item has neither flag nor flag.metoo link.');
 		}
 		return this[Service].post(link)
-				.then(o => parse(this[Service], this, o));
+				.then(obj => parse(this[Service], this, obj));
 	}
 }

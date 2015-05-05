@@ -3,7 +3,6 @@ import {
 	Service
 } from '../../CommonSymbols';
 
-import isEmpty from '../../utils/isempty';
 import setAndEmit from '../../utils/getsethandler';
 import urlJoin from '../../utils/urljoin';
 

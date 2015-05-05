@@ -13,7 +13,7 @@ function cleanupContentString(content) {
 }
 
 function setup (data, keys) {
-	let clean = cleanupContentString.bind(this);
+	let filter = cleanupContentString.bind(this);
 
 	let buildProperty = key => {
 		let content = data[key] || '';
@@ -23,9 +23,9 @@ function setup (data, keys) {
 			get () {
 
 				if (Array.isArray(content)) {
-					content = content.map(clean);
+					content = content.map(filter);
 				} else {
-					content = clean(content);
+					content = filter(content);
 				}
 
 				//re-define the getter

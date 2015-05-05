@@ -18,8 +18,8 @@ export default class ListBackedPageSource {
 	getPagesAround (pageId) {
 		const nodes = this.list;
 		const index = nodes.reduce(
-			(found, node, index) =>
-				(typeof found !== 'number' && node.getID() === pageId) ? index : found,
+			(found, node, ix) =>
+				(typeof found !== 'number' && node.getID() === pageId) ? ix : found,
 			null);
 
 		let next = nodes[index + 1];
