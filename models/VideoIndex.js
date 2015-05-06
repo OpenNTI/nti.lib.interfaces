@@ -13,6 +13,7 @@ const Containers = Symbol('Containers');
 const getVideo = (s, i, v) => v instanceof Video ? v : new Video(s, i, v);
 
 export default class VideoIndex {
+
 	static parse (service, parent, data, order, containers) {
 		console.error('Where ?');
 		return new VideoIndex(service, parent, data, order, containers);
@@ -80,9 +81,14 @@ export default class VideoIndex {
 
 		for(let key in data) {
 			if (data.hasOwnProperty(key)) {
-				this[Data][key] = getVideo(service, this, data[key]);
+				this[Data][key] = this.videoFrom(data[key], this);
 			}
 		}
+	}
+
+
+	videoFrom (data, parent) {
+		return getVideo(this[Service], parent, data);
 	}
 
 
