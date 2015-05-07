@@ -81,6 +81,7 @@ import Purchasable from './store/Purchasable';
 import PurchasableCourse from './store/PurchasableCourse';
 import PurchasableCourseChoiceBundle from './store/PurchasableCourseChoiceBundle';
 import StripeConnectKey from './store/StripeConnectKey';
+import StripePricedPurchasable from './store/StripePricedPurchasable';
 
 const ignored = {parse: identity};
 
@@ -248,7 +249,8 @@ const PARSERS = {
 	'store.purchasable': Purchasable,
 	'store.purchasablecourse': PurchasableCourse,
 	'store.purchasablecoursechoicebundle': PurchasableCourseChoiceBundle,
-	'store.stripeconnectkey': StripeConnectKey
+	'store.stripeconnectkey': StripeConnectKey,
+	'store.stripepricedpurchasable': StripePricedPurchasable
 };
 
 

@@ -2,6 +2,8 @@
 
 import {Context, Server} from '../CommonSymbols';
 
+import {parse} from '../models/Parser';
+
 import ServiceModel from '../stores/Service';
 import getLink from '../utils/getlink';
 
@@ -30,14 +32,8 @@ export default class StripeInterface {
 
 
 	getPricing (purchasable) {
-		if (purchasable.getLink) {
-			console.error('Use model@getLink');
-		} else {
-			console.error('purchasable needs to be a model');
-		}
-
 		//TODO: purchasable should be a model... getLink should be never imported outside of Base class for models
-		let link = getLink(purchasable.Links, 'price');
+		let link = purchasable.getLink('price');
 		if (link) {
 			return this.post(link, {
 				purchasableID: purchasable.ID
@@ -58,7 +54,11 @@ export default class StripeInterface {
 		}
 
 		if (link) {
-			return this.post(link, data);
+			return this.post(link, data)
+				.then(o=> parse(
+					this, //should be an instance of Service, but we don't have one. :/
+					this,
+					o));
 		}
 
 		throw new Error('Unable to find price with coupon link for purchasable');
