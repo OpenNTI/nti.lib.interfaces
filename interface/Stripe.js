@@ -48,13 +48,7 @@ export default class StripeInterface {
 
 
 	getCouponPricing (purchasable, coupon) {
-		if (purchasable.getLink) {
-			console.error('Use model@getLink');
-		} else {
-			console.error('purchasable needs to be a model');
-		}
-		//TODO: purchasable should be a model... getLink should be never imported outside of Base class for models
-		let link = getLink(purchasable.Links, 'price_purchasable_with_stripe_coupon');
+		let link = purchasable.getLink('price_purchasable_with_stripe_coupon');
 		let data = {
 				purchasableID: purchasable.ID
 			};
@@ -84,10 +78,8 @@ export default class StripeInterface {
 	}
 
 	submitPayment (data) {
-		let stripeToken = data.stripeToken.id;
-		let purchasable = data.purchasable;
-		let pricing = data.pricing;
-		let giftInfo = data.giftInfo;
+		let {stripeToken, purchasable, pricing, giftInfo} = data;
+
 		let linkRel = giftInfo ? 'gift_stripe_payment' : 'post_stripe_payment';
 		let pollUrl = giftInfo ? '/dataserver2/store/get_gift_purchase_attempt' : '/dataserver2/store/get_purchase_attempt';
 		let paymentUrl = getLink(purchasable.Links, linkRel);
