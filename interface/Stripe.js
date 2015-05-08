@@ -79,7 +79,7 @@ export default class StripeInterface {
 		let paymentUrl = purchasable.getLink(linkRel);
 		let payload = {
 			PurchasableID: purchasable.ID,
-			token: stripeToken,
+			token: stripeToken.id,
 			context: {
 				AllowVendorUpdates: data.allowVendorUpdates
 			}
