@@ -5,7 +5,6 @@ import {Context, Server} from '../CommonSymbols';
 import {parse} from '../models/Parser';
 
 import ServiceModel from '../stores/Service';
-import getLink from '../utils/getlink';
 
 let pollInterval = 1000;
 
@@ -32,12 +31,10 @@ export default class StripeInterface {
 
 
 	getPricing (purchasable) {
-		//TODO: purchasable should be a model... getLink should be never imported outside of Base class for models
 		let link = purchasable.getLink('price');
 		if (link) {
-			return this.post(link, {
-				purchasableID: purchasable.ID
-			});
+			return this.post(link, {purchasableID: purchasable.ID})
+				.then(o => parse(this, this, o));
 		}
 		throw new Error('Unable to find price link for provided Purchasable');
 	}
@@ -69,10 +66,7 @@ export default class StripeInterface {
 			Stripe.setPublishableKey(stripePublicKey);
 			Stripe.card.createToken(data, (status, response) => {
 				//if (response.error) {return reject(response.error);}
-				fulfill({
-					status: status,
-					response: response
-				});
+				fulfill({ status, response });
 			});
 		});
 	}
@@ -82,7 +76,7 @@ export default class StripeInterface {
 
 		let linkRel = giftInfo ? 'gift_stripe_payment' : 'post_stripe_payment';
 		let pollUrl = giftInfo ? '/dataserver2/store/get_gift_purchase_attempt' : '/dataserver2/store/get_purchase_attempt';
-		let paymentUrl = getLink(purchasable.Links, linkRel);
+		let paymentUrl = purchasable.getLink(linkRel);
 		let payload = {
 			PurchasableID: purchasable.ID,
 			token: stripeToken,
@@ -107,11 +101,9 @@ export default class StripeInterface {
 
 
 		return this.post(paymentUrl, payload)
-			.then(result => {
-				let attempt = result.Items[0];
-
-				return this[PollPurchaseAttempt](attempt.ID, attempt.Creator, pollUrl);
-			});
+			.then(collection => parse(this, this, collection.Items))
+			.then(collection => collection[0])
+			.then(attempt => this[PollPurchaseAttempt](attempt.getID(), attempt.creator, pollUrl));
 	}
 
 
@@ -120,9 +112,8 @@ export default class StripeInterface {
 
 		return new Promise((fulfill, reject) => {
 
-			function pollResponse(result) {
-				let attempt = result.Items[0];
-				if(/^Failed|Success$/i.test(attempt.State)) {
+			function pollResponse(attempt) {
+				if(/^Failed|Success$/i.test(attempt.state)) {
 					return fulfill(attempt);
 				}
 
@@ -139,6 +130,9 @@ export default class StripeInterface {
 				}
 
 				me.get(pollUrl + params)
+					.then(o => o.Items)
+					.then(items => parse(this, this, items))
+					.then(items => items.length === 1 ? items[0] : Promise.reject(items))
 					.then(pollResponse)
 					.catch(reject);
 			}

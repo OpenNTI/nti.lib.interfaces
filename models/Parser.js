@@ -80,8 +80,12 @@ import WatchVideoEvent from './analytics/WatchVideoEvent';
 import Purchasable from './store/Purchasable';
 import PurchasableCourse from './store/PurchasableCourse';
 import PurchasableCourseChoiceBundle from './store/PurchasableCourseChoiceBundle';
+import PurchaseAttempt from './store/PurchaseAttempt';
+import GiftPurchaseAttempt from './store/GiftPurchaseAttempt';
 import StripeConnectKey from './store/StripeConnectKey';
 import StripePricedPurchasable from './store/StripePricedPurchasable';
+import StripePurchaseItem from './store/StripePurchaseItem';
+import StripePurchaseOrder from './store/StripePurchaseOrder';
 
 const ignored = {parse: identity};
 
@@ -249,8 +253,12 @@ const PARSERS = {
 	'store.purchasable': Purchasable,
 	'store.purchasablecourse': PurchasableCourse,
 	'store.purchasablecoursechoicebundle': PurchasableCourseChoiceBundle,
+	'store.purchaseattempt': PurchaseAttempt,
+	'store.giftpurchaseattempt': GiftPurchaseAttempt,
 	'store.stripeconnectkey': StripeConnectKey,
-	'store.stripepricedpurchasable': StripePricedPurchasable
+	'store.stripepricedpurchasable': StripePricedPurchasable,
+	'store.stripepurchaseitem': StripePurchaseItem,
+	'store.stripepurchaseorder': StripePurchaseOrder
 };
 
 
