@@ -15,6 +15,8 @@ export default class Purchasable extends Base {
 
 		rename('StripeConnectKey', StripeConnectKey);
 
+		//rename('VendorInfo', 'vendorInfo');
+
 		rename('Amount', 'amount');
 		rename('Fee', 'fee');
 		rename('Currency', 'currency');

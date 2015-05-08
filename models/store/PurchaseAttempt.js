@@ -18,6 +18,7 @@ export default class PurchaseAttempt extends Base {
 		rename('ChargeID', 'chargeId');
 		rename('TokenID', 'tokenId');
 		rename('TransactionID', 'transactionID');
+		rename('RedemptionCode', 'redemptionCode');
 
 		rename('Creator', 'creator');
 		rename('Description', 'description');
