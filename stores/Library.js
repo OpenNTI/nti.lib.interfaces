@@ -127,16 +127,17 @@ export default class Library extends EventEmitter {
 
 
 	getPackage (packageId) {
+		let courseBundles = [].concat(this.courses, this.administeredCourses)
+			.map(course => course.CourseInstance.ContentPackageBundle);
 
-		let packs = unique(this.packages.concat(
+		let bundles = [].concat(this.bundles, courseBundles);
 
-			this.bundles.concat(
-					this.courses.concat(this.administeredCourses).map(course =>
-						course.CourseInstance.ContentPackageBundle
-					)
-				)
+		let referencedPackages = bundles.reduce((set, bundle) => set.concat(bundle.ContentPackages), []);
 
-				.reduce((set, bundle) => set.concat(bundle.ContentPackages), [])
+		let packs = unique([].concat(
+				this.packages,
+				referencedPackages,
+				bundles //Also search over Bundles as they have the same "interface" as Packages.
 			));
 
 		return packs.reduce((found, pkg)=>
