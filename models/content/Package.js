@@ -51,6 +51,9 @@ export default class Package extends Base {
 	}
 
 
+	getDiscussions () { return Promise.reject('Not Implemented'); }
+
+
 	getTableOfContents () {
 		let service = this[Service];
 		let toc = this.tableOfContents;
