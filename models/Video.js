@@ -42,7 +42,7 @@ export default class Video {
 
 
 	/**
-	 * @param {String} [lang] Request a language specific transcript. If
+	 * @param {string} [lang] Request a language specific transcript. If
 	 *                        nothing is provided, it will default to english.
 	 * @return {Promise}
 	 */

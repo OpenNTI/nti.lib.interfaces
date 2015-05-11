@@ -26,7 +26,7 @@ export default class Assignment extends Base {
 	/**
 	 * Checks to see if the NTIID is within this Assignment (Checking the QuestionSet's id and all questions id's)
 	 *
-	 * @param {String} id NTIID
+	 * @param {string} id NTIID
 	 */
 	containsId (id) {
 		return this.parts.filter(p => p && p.containsId(id)).length > 0;

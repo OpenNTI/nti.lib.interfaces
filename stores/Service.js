@@ -341,8 +341,8 @@ export default class ServiceDocument {
 
 	/**
 	 *
-	 * @param {String} mimeType
-	 * @param {String} [title]
+	 * @param {string} mimeType
+	 * @param {string} [title]
 	 */
 	getCollectionFor (mimeType, title) {
 		let result = null,

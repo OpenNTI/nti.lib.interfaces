@@ -278,8 +278,8 @@ export default class Base extends EventEmitter {
 	 * If two argumetns are given, then it will look for the first parent that has that attribute and matches the
 	 * attibuteValue test.
 	 *
-	 * @param  {String} attribute
-	 * @param  {String|RegExp} [attributeValue]
+	 * @param  {string} attribute
+	 * @param  {string|RegExp} [attributeValue]
 	 *
 	 * @return {Model}
 	 */
@@ -299,8 +299,8 @@ export default class Base extends EventEmitter {
 	 *
 	 * @see #up()
 	 *
-	 * @param  {String} attribute
-	 * @param  {String|RegExp} [attributeValue]
+	 * @param  {string} attribute
+	 * @param  {string|RegExp} [attributeValue]
 	 *
 	 * @return {Model[]}
 	 */

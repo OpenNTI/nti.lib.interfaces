@@ -34,10 +34,10 @@ export default class Collection extends Base {
 	 *
 	 * @param  {ServiceDocument} service     Service descriptor/interface.
 	 * @param  {Model} parent                Parent model.
-	 * @param  {Object} assignments          Object of keys where each key is an
+	 * @param  {object} assignments          Object of keys where each key is an
 	 *                                       array of Assignments that are visible
 	 *                                       to the current user.
-	 * @param  {Object} assessments          Object of keys where each key is an
+	 * @param  {object} assessments          Object of keys where each key is an
 	 *                                       array of Non-Assignment assessments
 	 *                                       visible to the current user.
 	 */

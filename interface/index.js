@@ -44,12 +44,12 @@ export default class DataServerInterface {
 	 *   web browser. Do not use this directly. Only use the interface methods NOT
 	 *   prefixed with underscores.
 	 *
-	 * @param {Object/String} [options] - Request options or URL.
-	 * @param {String} [options.url] - The dataserver resource we wish to make the request for, or an absolute url.
-	 * @param {String} [options.method] - defaults to GET, and POST if `form` is set.
-	 * @param {Object} [options.data] - A dictionary of form values to send with the request.
-	 * @param {Object} [options.headers] - HTTP headers to add to the request.
-	 * @param {Object} [context] - An active request context to the node's "express" http server.
+	 * @param {object/string} [options] - Request options or URL.
+	 * @param {string} [options.url] - The dataserver resource we wish to make the request for, or an absolute url.
+	 * @param {string} [options.method] - defaults to GET, and POST if `form` is set.
+	 * @param {object} [options.data] - A dictionary of form values to send with the request.
+	 * @param {object} [options.headers] - HTTP headers to add to the request.
+	 * @param {object} [context] - An active request context to the node's "express" http server.
 	 * @returns {Promise}
 	 * @private
 	 */

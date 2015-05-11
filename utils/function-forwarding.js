@@ -34,9 +34,9 @@ function reflect(fn, key) {
  * binds functions from the object at the given key so they can be added to an
  * upper object. (ex: map an array's forEach (bound) to the wrapping object)
  *
- * @param  {Array[String]} fns An array of function names to bind and return
- * @param  {String} key The key where the object is at.
- * @return {Object}	Object with function names to bound functions
+ * @param  {array[string]} fns An array of function names to bind and return
+ * @param  {string} key The key where the object is at.
+ * @return {object}	Object with function names to bound functions
  */
 export default function forwardFunctions(fns, key) {
 	let result = {};

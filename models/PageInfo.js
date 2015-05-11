@@ -121,8 +121,8 @@ export default class PageInfo extends Base {
  * 	2: QuestionSets
  * 	3: Questions
  *
- * @param {Object} a
- * @param {Object} b
+ * @param {object} a
+ * @param {object} b
  */
 function assessmentItemOrder(a, b) {
 	let order = assessmentItemOrder.order = (assessmentItemOrder.order || {

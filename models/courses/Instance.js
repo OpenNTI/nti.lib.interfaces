@@ -225,9 +225,9 @@ function resolveCatalogEntry(service, inst) {
  *		Other: ...(same as above)
  *	}
  *
- * @param  {Object} section Object of forums in this section
- * @param  {Object} parent  Object of forums in the parent if there are any
- * @return {Object}        The binned forums
+ * @param  {object} section Object of forums in this section
+ * @param  {object} parent  Object of forums in the parent if there are any
+ * @return {object}        The binned forums
  */
 function binDiscussions (section, parent) {
 	let bins = {};
