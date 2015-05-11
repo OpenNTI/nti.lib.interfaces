@@ -43,6 +43,19 @@ export default class Bundle extends Base {
 			);
 	}
 
+
+	getPresentationProperties () {
+		return {
+			author: this.author,
+			title: this.title,
+			label: this.label,
+			icon: this.icon,
+			background: this.background,
+			thumb: this.thumb
+		};
+	}
+
+
 	getDefaultAssetRoot () {
 		let root = ([this].concat(this.ContentPackages))
 				.reduce((agg, o) => agg || o.root, null);

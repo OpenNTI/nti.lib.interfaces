@@ -27,6 +27,18 @@ export default class Package extends Base {
 	}
 
 
+	getPresentationProperties () {
+		return {
+			author: this.author,
+			title: this.title,
+			label: this.label,
+			icon: this.icon,
+			background: this.background,
+			thumb: this.thumb
+		};
+	}
+
+
 	getDefaultAssetRoot () {
 		let root = this.root;
 
