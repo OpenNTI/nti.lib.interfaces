@@ -77,6 +77,7 @@ import ExternalResourceEvent from './analytics/ExternalResourceEvent';
 import TopicViewedEvent from './analytics/TopicViewedEvent';
 import WatchVideoEvent from './analytics/WatchVideoEvent';
 
+import PricedItem from './store/PricedItem';
 import Purchasable from './store/Purchasable';
 import PurchasableCourse from './store/PurchasableCourse';
 import PurchasableCourseChoiceBundle from './store/PurchasableCourseChoiceBundle';
@@ -250,6 +251,7 @@ const PARSERS = {
 	'messageinfo': null,//Need To Model
 	'openbadges.badge': null,//Need To Model
 
+	'store.priceditem': PricedItem,
 	'store.purchasable': Purchasable,
 	'store.purchasablecourse': PurchasableCourse,
 	'store.purchasablecoursechoicebundle': PurchasableCourseChoiceBundle,
