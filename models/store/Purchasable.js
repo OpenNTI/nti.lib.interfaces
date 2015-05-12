@@ -17,16 +17,18 @@ export default class Purchasable extends Base {
 
 		//rename('VendorInfo', 'vendorInfo');
 
-		rename('Amount', 'amount');
-		rename('Fee', 'fee');
-		rename('Currency', 'currency');
-
-		rename('IsPurchasable', 'enabled');
-		rename('Redeemable', 'redeemable');
 		rename('Activated', 'activated');
+		rename('Amount', 'amount');
 		rename('BulkPurchase', 'bulkPurchase');//unclear
+		rename('Currency', 'currency');
 		rename('Discountable', 'discountable');
+		rename('Fee', 'fee');
 		rename('Giftable', 'giftable');
+		rename('IsPurchasable', 'enabled');
+		rename('Name', 'name');
+		rename('Provider', 'provider');
+		rename('Redeemable', 'redeemable');
+		rename('Title', 'title');
 
 		/*
 		Author: null
