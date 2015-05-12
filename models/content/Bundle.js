@@ -75,7 +75,13 @@ export default class Bundle extends Base {
 	getDiscussions () {
 		return this.fetchLinkParsed('DiscussionBoard')
 			.then(board => board.getContents())
-			.then(data => ({ default: data.Items}));
+			.then(data => ({
+				Other: {
+					Section: {
+						forums: data.Items
+					}
+				}
+			}));
 	}
 
 
