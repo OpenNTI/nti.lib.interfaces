@@ -125,7 +125,7 @@ export default function buildFromToc (element, outlineNode) {
 	let sections = {},
 		items = [];
 
-	for(let node of element.getchildren()) {
+	for(let node of element) {
 		let obj = getConfigForNode(node, outlineNode);
 		let type = obj && (obj.section || SECTION_TYPE_MAP[obj.MimeType] || 'Unknown');
 

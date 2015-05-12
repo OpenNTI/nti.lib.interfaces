@@ -184,7 +184,7 @@ function applyProgress(content, progress) {
 	}
 }
 
-/*******************************************************************************
+/* *****************************************************************************
  * FALLBACK TEMPORARY STUFF BELOW THIS POINT
  */
 function getContentFallback(outlineNode) {

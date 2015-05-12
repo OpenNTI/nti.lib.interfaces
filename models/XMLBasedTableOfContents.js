@@ -1,9 +1,8 @@
 import Base from './Base';
 
-import xml from 'elementtree';
+import XML from 'elementtree';
 import PageSource from './TableOfContentsBackedPageSource';
-import forwardFunctions from '../utils/function-forwarding';
-
+import Node from './TableOfContentsNode';
 
 function cleanNodes(x, o) {
 	function getParent(e) {
@@ -32,42 +31,51 @@ function cleanNodes(x, o) {
 
 export default class TableOfContents extends Base {
 
-	constructor (service, parent, data) {
-		super(service, parent, null, forwardFunctions(['find'], 'root'));
+	constructor (service, parent, data, title) {
+		super(service, parent, null);
 
-		this.root = xml.parse(data);
-		cleanNodes(this.root, this);
+		this.title = title;
+		this.xml = XML.parse(data);
+		this.root = this.xml.getroot();
+
+		cleanNodes(this.xml, this);
 	}
 
 
+	find (query) {
+		let n = this.xml.find(query);
+		return n && new Node(this, n);
+	}
+
 
 	getVideoIndexRef () {
-		let ref = this.root.find('.//reference[@type="application/vnd.nextthought.videoindex"]');
+		let ref = this.xml.find('.//reference[@type="application/vnd.nextthought.videoindex"]');
 		return ref && ref.get('href');
 	}
 
 
 	getNode (id) {
-		let n = this.root,
-			r = n._root; // eslint-disable-line no-underscore-dangle
+		let {root, xml} = this;
+		let node = root;
 
-		if (r.get('ntiid') === id) {
-			return r;
+		if (root.get('ntiid') !== id) {
+
+			let list = xml.findall('.//*[@ntiid="' + id + '"]') || [];
+
+			if (list.length > 1) {
+				console.warn('Found multiple elements for id %s: %o', id, list);
+			}
+
+			node = list[0];
 		}
 
-		let list = n.findall('.//*[@ntiid="' + id + '"]') || [];
-
-		if (list.length > 1) {
-			console.warn('Found multiple elements for id %s: %o', id, list);
-		}
-
-		return list[0];
+		return new Node(this, node);
 	}
 
 
 	getSortPosition (id) {
 		let node = this.getNode(id);
-		return (node && node._id) || -1; // eslint-disable-line no-underscore-dangle
+		return (node && node.idx) || -1;
 	}
 
 
@@ -75,4 +83,49 @@ export default class TableOfContents extends Base {
 		return new PageSource(this, rootId);
 	}
 
+
+	[Symbol.iterator] () {
+		let {children} = this,
+			{length} = children,
+			index = 0;
+
+		return {
+
+			next () {
+				let done = index >= length,
+					value = children[index++];
+
+				return { value, done };
+			}
+
+		};
+	}
+
+
+	get children () { return this.root.getchildren().map(node => new Node(this, node)); }
+
+
+	get id () { return this.getID(); }
+
+
+	get length () { return this.root.getchildren().length; }
+
+
+	get tag () { return this.root.tag; }
+
+
+	get (attr) { return this.root.get(attr); }
+
+
+	getAttribute (...a) { return this.get(...a); }
+
+
+	getID() { return this.get('ntiid'); }
+
+
+	filter (...args) { return this.children.filter(...args); }
+
+	map (...args) { return this.children.map(...args); }
+
+	reduce (...args) { return this.children.reduce(...args); }
 }

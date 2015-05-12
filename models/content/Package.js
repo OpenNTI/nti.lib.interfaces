@@ -10,6 +10,7 @@ import urlJoin from '../../utils/urljoin';
 import assets from '../mixins/PresentationResources';
 
 import VideoIndex from '../VideoIndex';
+import TablesOfContents from '../TablesOfContents';
 import ToC from '../XMLBasedTableOfContents';
 
 const VideoIndexReqest = Symbol('VideoIndexReqest');
@@ -54,6 +55,12 @@ export default class Package extends Base {
 	getDiscussions () { return Promise.reject('Not Implemented'); }
 
 
+	getTablesOfContents () {//implement common expected interface
+		return this.getTableOfContents()
+			.then(table => new TablesOfContents.fromIterable([table], this[Service], this));
+	}
+
+
 	getTableOfContents () {
 		let service = this[Service];
 		let toc = this.tableOfContents;
@@ -66,7 +73,7 @@ export default class Package extends Base {
 				service.get(this.index).then(data =>
 						cache.set(this.index, data) && data);
 
-			toc = toc.then(o => new ToC(service, this, o));
+			toc = toc.then(o => new ToC(service, this, o, this.title));
 
 			this.tableOfContents = toc;
 		}

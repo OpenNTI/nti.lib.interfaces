@@ -41,7 +41,7 @@ export default class TableOfContentsBackedPageSource extends Base{
 		let node = root.find(query) || (root.get('ntiid') === pageId && root);
 		let nodes = this.pagesInRange;
 
-		let index = nodes.indexOf(node);
+		let index = nodes.findIndex(n => n.id === node.id);
 
 		let next = nodes[index + 1];
 		let prev = nodes[index - 1];
@@ -67,6 +67,5 @@ function suppressed(node) {
 
 function flatten(node) {
 	let fn = flatten.fnLoop || (flatten.fnLoop = (a, n)=>a.concat(flatten(n)));
-	//We don't control the name "_children"...silence error/warning
-	return [node].concat(node._children.reduce(fn, [])); // eslint-disable-line no-underscore-dangle
+	return [node].concat(node.reduce(fn, []));
 }

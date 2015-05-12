@@ -87,16 +87,8 @@ export default class Bundle extends Base {
 
 	getTablesOfContents () {
 
-		return Promise.all(this.ContentPackages.map(p =>
-			p.getTableOfContents().then(t => ({ id: p.getID(), toc: t }))))
+		return Promise.all(this.ContentPackages.map(p =>p.getTableOfContents()))
 
-			.then(tables => {
-				let result = tables.slice();
-
-				tables.forEach((v, i) =>
-					result[v.id] = result[i] = v.toc);
-
-				return new TablesOfContents(this[Service], this, result);
-			});
+			.then(tables => new TablesOfContents.fromIterable(tables, this[Service], this));
 	}
 }

@@ -59,6 +59,6 @@ export default function rebaseReferences(string, basePath) {
 		locationHash = stringHash(location.hostname + envSalt);
 
 	string = bustCorsForResources(string, 'h', locationHash);
-	string = string.replace(/(src|href|poster)="(.*?)"/igm, fixReferences);
+	string = string.replace(/(src|href|poster|data-source-wrapped)="(.*?)"/igm, fixReferences);
 	return string;
 }
