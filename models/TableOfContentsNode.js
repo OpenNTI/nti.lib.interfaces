@@ -1,5 +1,7 @@
 const DATA = Symbol('data');
 
+import escape from '../utils/regexp-escape';
+
 export default class XMLBasedTableOfContentsNode {
 
 	constructor (toc, data) {
@@ -73,4 +75,13 @@ export default class XMLBasedTableOfContentsNode {
 
 	reduce (...args) { return this.children.reduce(...args); }
 
+
+	matches (substring) {
+		let {title} = this;
+		let re = new RegExp(escape(substring), 'i');
+
+		let aDescendantMatches = () => this.children.some(n => n.matches(substring));
+
+		return re.test(title) || aDescendantMatches();
+	}
 }
