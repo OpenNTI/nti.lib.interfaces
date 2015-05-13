@@ -44,9 +44,9 @@ export default class Collection extends Base {
 	 * @returns {void}
 	 */
 	constructor(service, parent, assignments, assessments, tables) {
-		const process = (v, k, o) => o[k] = Array.isArray(v) ? this[parse](v) : v;
-
 		super(service, parent);
+
+		const process = (v, k, o) => o[k] = Array.isArray(v) ? this[parse](v) : v;
 
 		this.tables = tables;
 
