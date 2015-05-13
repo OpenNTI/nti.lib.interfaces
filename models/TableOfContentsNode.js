@@ -76,12 +76,12 @@ export default class XMLBasedTableOfContentsNode {
 	reduce (...args) { return this.children.reduce(...args); }
 
 
-	matches (substring) {
+	matches (substring, deep = true) {
 		let {title} = this;
 		let re = new RegExp(escape(substring), 'i');
 
 		let aDescendantMatches = () => this.children.some(n => n.matches(substring));
 
-		return re.test(title) || aDescendantMatches();
+		return re.test(title) || (deep && aDescendantMatches());
 	}
 }
