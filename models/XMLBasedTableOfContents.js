@@ -36,7 +36,7 @@ export default class TableOfContents extends Base {
 
 		this.title = title;
 		this.xml = XML.parse(data);
-		this.root = this.xml.getroot();
+		this.root = new Node(this, this.xml.getroot(), this);
 
 		cleanNodes(this.xml, this);
 	}
@@ -58,7 +58,7 @@ export default class TableOfContents extends Base {
 		let {root, xml} = this;
 		let node = root;
 
-		if (root.get('ntiid') !== id) {
+		if (root.id !== id) {
 
 			let list = xml.findall('.//*[@ntiid="' + id + '"]') || [];
 
@@ -67,9 +67,10 @@ export default class TableOfContents extends Base {
 			}
 
 			node = list[0];
+			node = node && new Node(this, node);
 		}
 
-		return new Node(this, node);
+		return node;
 	}
 
 
@@ -102,30 +103,22 @@ export default class TableOfContents extends Base {
 	}
 
 
-	get children () { return this.root.getchildren().map(node => new Node(this, node)); }
-
-
+	get children () { return this.root.children; }
 	get id () { return this.getID(); }
-
-
-	get length () { return this.root.getchildren().length; }
-
-
+	get length () { return this.root.length; }
 	get tag () { return this.root.tag; }
 
 
 	get (attr) { return this.root.get(attr); }
 
-
 	getAttribute (...a) { return this.get(...a); }
-
 
 	getID() { return this.get('ntiid'); }
 
+	// filter (...args) {
+	// 	let filtered = this.root.filter(...args);
+	// 	return new FilteredTableOfContents(filtered);
+	// }
 
-	filter (...args) { return this.children.filter(...args); }
-
-	map (...args) { return this.children.map(...args); }
-
-	reduce (...args) { return this.children.reduce(...args); }
+	flatten () { return this.root.flatten(); }
 }

@@ -2,11 +2,14 @@ const DATA = Symbol('data');
 
 import escape from '../utils/regexp-escape';
 
+const flat = (a, n)=> a.concat(n.flatten());
+
 export default class XMLBasedTableOfContentsNode {
 
-	constructor (toc, data) {
-		this.toc = toc;
+	constructor (toc, data, parent) {
 		this[DATA] = data;
+		this.parent = parent;
+		this.toc = toc;
 	}
 
 
@@ -29,24 +32,14 @@ export default class XMLBasedTableOfContentsNode {
 
 
 	get children () {
-		return this[DATA].getchildren().map(n => new XMLBasedTableOfContentsNode(this.toc, n));
+		return this[DATA].getchildren().map(n => new XMLBasedTableOfContentsNode(this.toc, n, this));
 	}
 
 	get id () { return this.getID(); }
-
-
 	get idx () { return this[DATA]._id; }//eslint-disable-line no-underscore-dangle
-
-
 	get length () { return this[DATA].getchildren().length; }
-
-
 	get tag () { return this[DATA].tag; }
-
-
 	get title () { return this.get('label'); }
-
-
 	get type () { return this.get('level'); }
 
 
@@ -69,19 +62,35 @@ export default class XMLBasedTableOfContentsNode {
 	}
 
 
-	filter (...args) { return this.children.filter(...args); }
+	// filter (filter) {
+	// 	if (!filter || typeof filter !== 'function') {
+	// 		throw new Error('Illegal Argument');
+	// 	}
+	//
+	// 	let flattened = this.flatten();
+	// 	let prune = flattened.filter(x=> !filter(x));
+	//
+	// 	console.log(prune);
+	//
+	// 	return this;
+	// }
 
-	map (...args) { return this.children.map(...args); }
 
-	reduce (...args) { return this.children.reduce(...args); }
+	getMatchExp (substring) {
+		return new RegExp(`(${escape(substring)})`, 'igm');
+	}
 
 
 	matches (substring, deep = true) {
 		let {title} = this;
-		let re = new RegExp(escape(substring), 'i');
+		let re = this.getMatchExp(substring);
 
 		let aDescendantMatches = () => this.children.some(n => n.matches(substring));
-
 		return re.test(title) || (deep && aDescendantMatches());
+	}
+
+
+	flatten () {
+		return [this].concat(this.children.reduce(flat, []));
 	}
 }

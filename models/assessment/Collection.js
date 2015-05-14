@@ -23,7 +23,7 @@ function find(list, id) {
 function nodeToNTIIDs(node) {
 	let id = node.get('ntiid');
 	return (id? [id] : []).concat(
-			node.reduce((a, b) =>
+			node.children.reduce((a, b) =>
 				a.concat(nodeToNTIIDs(b)), []));
 }
 

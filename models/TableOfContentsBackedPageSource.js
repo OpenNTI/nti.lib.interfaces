@@ -26,7 +26,7 @@ export default class TableOfContentsBackedPageSource extends Base{
 		this.root = ToC.getNode(root);
 
 		try {
-			this.pagesInRange = flatten(this.root).filter(suppressed);
+			this.pagesInRange = this.root.flatten().filter(suppressed);
 		}
 		catch(e) {
 			console.error(e.stack || e.message || e);
@@ -63,9 +63,4 @@ function suppressed(node) {
 	let isTopic = suppressed.tag || (suppressed.tag = /topic/i);
 
 	return node && isTopic.test(node.tag) && !isAnchor.test(node.get('href'));
-}
-
-function flatten(node) {
-	let fn = flatten.fnLoop || (flatten.fnLoop = (a, n)=>a.concat(flatten(n)));
-	return [node].concat(node.reduce(fn, []));
 }
