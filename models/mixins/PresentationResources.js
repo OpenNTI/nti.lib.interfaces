@@ -11,7 +11,8 @@ let MISSING_ASSET_DATA = {};
 
 /**
  * return the root that should be used if PlatforPresentationResources isn't defined
- * @return {string} default root to use
+ * @param {Model} scope the instance of the model that this is mixed into.
+ * @returns {string} default root to use
  */
 function getDefaultAssetRoot(scope) {
 	MISSING_ASSET_DATA[scope.getID()] = true;

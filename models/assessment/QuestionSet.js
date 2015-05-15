@@ -18,6 +18,7 @@ export default class QuestionSet extends Base {
 	 * Checks to see if the NTIID is within this QuestionSet
 	 *
 	 * @param {string} id NTIID
+	 * @returns {boolean} true if contains the id, false otherwise.
 	 */
 	containsId (id) {
 		return !!this.getQuestion(id);

@@ -50,7 +50,7 @@ export default class DataServerInterface {
 	 * @param {object} [options.data] - A dictionary of form values to send with the request.
 	 * @param {object} [options.headers] - HTTP headers to add to the request.
 	 * @param {object} [context] - An active request context to the node's "express" http server.
-	 * @returns {Promise}
+	 * @returns {Promise} The promise of data or rejection ;)
 	 * @private
 	 */
 	[Request] (options, context) {

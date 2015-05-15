@@ -278,10 +278,11 @@ export default class Base extends EventEmitter {
 	 * If two argumetns are given, then it will look for the first parent that has that attribute and matches the
 	 * attibuteValue test.
 	 *
-	 * @param  {string} attribute
-	 * @param  {string|RegExp} [attributeValue]
+	 * @param {array} query The arguments:
+	 *                      {string} query[0] attribute - The name of a property/attribute name.
+	 *                      {string|RegExp} query[1] attributeValue - The (optional) value or value tester
 	 *
-	 * @return {Model}
+	 * @returns {Model} The model that passes the test.
 	 */
 	parent (...query) {
 		let p = this[Parent];
@@ -299,10 +300,11 @@ export default class Base extends EventEmitter {
 	 *
 	 * @see #up()
 	 *
-	 * @param  {string} attribute
-	 * @param  {string|RegExp} [attributeValue]
+	 * @param {array} query The arguments:
+	 *                      {string} query[0] attribute - The name of a property/attribute name.
+	 *                      {string|RegExp} query[1] attributeValue - The (optional) value or value tester
 	 *
-	 * @return {Model[]}
+	 * @returns {Model[]} All the parents that match the query
 	 */
 	parents (...query) {
 		let matches = [];

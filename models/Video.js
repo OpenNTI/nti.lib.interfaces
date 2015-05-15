@@ -44,7 +44,7 @@ export default class Video {
 	/**
 	 * @param {string} [lang] Request a language specific transcript. If
 	 *                        nothing is provided, it will default to english.
-	 * @return {Promise}
+	 * @returns {Promise} A promise of a transcript or a rejection.
 	 */
 	getTranscript (lang) {
 		let target = lang || 'en';

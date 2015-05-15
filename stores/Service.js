@@ -213,6 +213,7 @@ export default class ServiceDocument {
 	/**
 	 * Do not use this method for general purpose resolving the user,
 	 * use the async method.
+	 * @returns {User} A user model
 	 */
 	getAppUserSync () {
 		return this[AppUser] ||
@@ -341,8 +342,9 @@ export default class ServiceDocument {
 
 	/**
 	 *
-	 * @param {string} mimeType
-	 * @param {string} [title]
+	 * @param {string} mimeType The mimetype of what we're looking for
+	 * @param {string} [title] Optionally, restrict by title
+	 * @returns {object} the collection
 	 */
 	getCollectionFor (mimeType, title) {
 		let result = null,

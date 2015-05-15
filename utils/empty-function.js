@@ -1,4 +1,4 @@
-/**
+/*
  * Why?
  *
  * For every place we want to pass a no-op function, we write ()=>{} or function(){}, we are creating new

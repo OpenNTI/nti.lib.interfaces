@@ -49,6 +49,7 @@ export default class DataCache {
 	 *                              can be an Object of keys and values.
 	 * @param {*} value A value to cache. If `key` is an object, this paramater is
 	 *                  ignored.
+	 * @returns {DataCache} this. (allows chaining)
 	 */
 	setVolatile (key, value) {
 		if (typeof key === 'object') {

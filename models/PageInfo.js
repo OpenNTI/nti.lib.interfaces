@@ -121,8 +121,9 @@ export default class PageInfo extends Base {
  * 	2: QuestionSets
  * 	3: Questions
  *
- * @param {object} a
- * @param {object} b
+ * @param {object} a left hand value
+ * @param {object} b right hand value
+ * @returns {number} the comparison
  */
 function assessmentItemOrder(a, b) {
 	let order = assessmentItemOrder.order = (assessmentItemOrder.order || {
