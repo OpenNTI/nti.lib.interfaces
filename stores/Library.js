@@ -1,37 +1,34 @@
 import {EventEmitter} from 'events';
 
 import identity from '../utils/identity';
+import mixin from '../utils/mixin';
 import waitFor from '../utils/waitfor';
 import unique from '../utils/array-unique';
 
 import {parse} from '../models/Parser';
+import Pendability from '../models/mixins/Pendability';
 
-import {Service, Pending} from '../CommonSymbols';
+import {Pending, Service} from '../CommonSymbols';
 
 let instances = {};
 
-export function parseListFn (scope, service, pending) {
-	function queue(p) {
-		let list = (p && p[Pending]) || [];
-		return pending.push( ...list) && p;
-	}
-
-	return list=> {
-		return list.map(o=> {
-			try {
-				o = queue(parse(service, null, o));
-				if(o && o.on && scope.onChange) {
-					o.on('changed', scope.onChange);
-				}
-			} catch(e) {
-				console.error(e.stack || e.message || e);
-				o = null;
+export function parseListFn (scope, service) {
+	let m = o => {
+		try {
+			o = parse(service, null, o);
+			scope.addToPending(o);
+			if(o && o.on && scope.onChange) {
+				o.on('changed', scope.onChange);
 			}
+		} catch(e) {
+			console.error(e.stack || e.message || e);
+			o = null;
+		}
 
-			return o;
-		})
-		.filter(identity);
+		return o;
 	};
+
+	return list=>list.map(m).filter(identity);
 }
 
 export default class Library extends EventEmitter {
@@ -85,15 +82,13 @@ export default class Library extends EventEmitter {
 
 	constructor(service, name, contentPackages, contentBundles, enrolledCourses, administeredCourses) {
 		super();
-		let pending = [];
-
+		mixin(this, Pendability);
 		this[Service] = service;
-		this[Pending] = pending;
 		this.name = name;
 
 		this.onChange = this.onChange.bind(this);
 
-		let parseList = parseListFn(this, service, pending);
+		let parseList = parseListFn(this, service);
 
 
 		contentBundles = contentBundles.filter(o => {

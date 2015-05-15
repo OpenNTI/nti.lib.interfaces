@@ -4,10 +4,9 @@ import {parse, getModelByType} from './Parser';
 
 import getLinkImpl, {asMap as getLinksAsMap} from '../utils/getlink';
 import mixin from '../utils/mixin';
-import noop from '../utils/empty-function';
-import waitFor from '../utils/waitfor';
 
 import JSONValue from './mixins/JSONValue';
+import Pendability from './mixins/Pendability';
 
 import {
 	Parent,
@@ -70,6 +69,7 @@ export default class Base extends EventEmitter {
 		}
 
 		mixin(this, JSONValue);
+		mixin(this, Pendability);
 
 		// mixin
 		for (let partial of mixins) {
@@ -121,34 +121,6 @@ export default class Base extends EventEmitter {
 				}
 			});
 		}
-	}
-
-
-	addToPending (...pending) {
-		let list = this[Pending] = (this[Pending] || []);
-
-		list.push(...pending);
-
-		function remove (p) {
-			return ()=> {
-				//remember JavaScript is not multi-threaded,
-				// this action is effectively atomic... if that ever changes (it won't), this is not thread safe ;)
-				let i = list.indexOf(p);
-				if (i >= 0) {
-					list.splice(i, 1);//remove promise from the array
-				}
-			};
-		}
-
-		for (let p of pending) {
-			p.catch(noop)//prevent failures from interupting our cleanup
-				.then(remove(p));
-		}
-	}
-
-
-	waitForPending () {
-		return waitFor(this[Pending]);
 	}
 
 

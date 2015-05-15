@@ -19,17 +19,15 @@ export default class Catalog extends EventEmitter {
 
 	constructor (service, data) {
 		super();
-		let pending = [];
 
 		this[Service] = service;
-		this[Pending] = pending;
 
 		Object.assign(this, data,
 			forwardFunctions(['every', 'filter', 'forEach', 'map', 'reduce'], 'Items'));
 
 		this.onChange = this.onChange.bind(this);
 
-		let parseList = parseListFn(this, service, pending);
+		let parseList = parseListFn(this, service);
 
 		this.Items = parseList(data.Items);
 	}

@@ -1,6 +1,10 @@
 import {EventEmitter} from 'events';
 
-import {Service, Pending} from '../CommonSymbols';
+import mixin from '../utils/mixin';
+
+import Pendability from '../models/mixins/Pendability';
+
+import {Service} from '../CommonSymbols';
 
 import {parseListFn} from './Library';
 
@@ -8,18 +12,17 @@ export default class UserData extends EventEmitter {
 
 	constructor (service, rootContainerId, source) {
 		super();
-
-		let pending = [];
-
+		mixin(this, Pendability);
 		this[Service] = service;
-		this[Pending] = pending;
+
 		this.loading = true;
 
-		let parseList = parseListFn(this, service, pending);
+		let parseList = parseListFn(this, service);
 
 		let bin = (name, item) =>
 			(this.Items[name] = (this.Items[name] || [])).push(item);
 
+		let start = Date.now();
 		let load = service.get(source).then(data=> {
 			this.loading = false;
 			Object.assign(this, data);
@@ -31,12 +34,12 @@ export default class UserData extends EventEmitter {
 				bin(binId !== rootContainerId ? binId : 'root', i);
 			}
 
-			this.emit('load');
+			this.emit('load', `${(Date.now() - start)}ms`);
 		});
 
-		pending.push(load);
+		this.addToPending(load);
 
-		this.on('load', ()=>console.log('Load: %o', this));
+		this.on('load', time => console.log('Load: %s %o', time, this));
 	}
 
 }
