@@ -5,7 +5,11 @@ import Community from './Community';
 import User from './User';
 import PageInfo from './PageInfo';
 import Change from './Change';
-import Note from './Note';
+
+import Highlight from './annotations/Highlight';
+import Note from './annotations/Note';
+import Redaction from './annotations/Redaction';
+
 import ContentPackage from './content/Package';
 import ContentBundle from './content/Bundle';
 
@@ -246,7 +250,9 @@ const PARSERS = {
 	'forums.generalforumcomment': 'forums.comment',
 	'forums.contentforumcomment': 'forums.comment',
 
+	'highlight': Highlight,
 	'note': Note,
+	'redaction': Redaction,
 
 	'messageinfo': null,//Need To Model
 	'openbadges.badge': null,//Need To Model

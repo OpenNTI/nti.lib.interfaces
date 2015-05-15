@@ -1,7 +1,7 @@
-import Base from './Base';
-// import {Parser} from '../CommonSymbols';
+import Base from '../Base';
+// import {Parser} from '../../CommonSymbols';
 
-export default class Note extends Base {
+export default class Annotation extends Base {
 
 	constructor (service, parent, data) {
 		super(service, parent, data);
