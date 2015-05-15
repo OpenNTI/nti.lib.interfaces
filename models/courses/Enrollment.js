@@ -21,7 +21,8 @@ export default class Enrollment extends Base {
 			forwardFunctions([
 				'getPresentationProperties',
 				'getOutline',
-				'getDiscussions'
+				'getDiscussions',
+				'hasDiscussions'
 
 			//From:
 			], 'CourseInstance'),

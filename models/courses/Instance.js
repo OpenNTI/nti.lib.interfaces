@@ -115,6 +115,11 @@ export default class Instance extends Base {
 	}
 
 
+	hasDiscussions () {
+		return !!(this.Discussions || this.ParentDiscussions);
+	}
+
+
 	getOutline () {
 		let outline = this.Outline;
 		if (!this[OutlineCache]) {

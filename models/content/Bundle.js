@@ -85,6 +85,11 @@ export default class Bundle extends Base {
 	}
 
 
+	hasDiscussions () {
+		return this.hasLink('DiscussionBoard');
+	}
+
+
 	getTablesOfContents () {
 
 		return Promise.all(this.ContentPackages.map(p =>p.getTableOfContents()))

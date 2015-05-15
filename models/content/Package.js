@@ -53,6 +53,7 @@ export default class Package extends Base {
 
 
 	getDiscussions () { return Promise.reject('Not Implemented'); }
+	hasDiscussions () { return false; }
 
 
 	getTablesOfContents () {//implement common expected interface
