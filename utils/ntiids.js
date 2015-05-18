@@ -160,7 +160,7 @@ export function parseFragment(fragment) {
 
 export function encodeForURI(ntiid) {
 	let cut = COMMON_PREFIX.length;
-	if (ntiid && ntiid.substr(0, cut)=== COMMON_PREFIX) {
+	if (ntiid && ntiid.substr(0, cut) === COMMON_PREFIX) {
 		ntiid = ntiid.substr(cut);
 	}
 

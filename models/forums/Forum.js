@@ -38,7 +38,7 @@ export default class Forum extends Base {
 
 		let params = {
 			batchStart: 0,
-			batchSize: size||5,
+			batchSize: size || 5,
 			sortOrder: 'descending',
 			sortOn: 'NewestDescendantCreatedTime'
 		};

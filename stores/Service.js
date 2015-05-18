@@ -100,7 +100,7 @@ export default class ServiceDocument {
 		c = (c && c.split(/;\W*/)) || [];
 
 		function search(found, v) {
-			return found || (v && v.indexOf(cookie)===0);
+			return found || (v && v.indexOf(cookie) === 0);
 		}
 
 		return c.reduce(search, false);
@@ -222,7 +222,7 @@ export default class ServiceDocument {
 
 
 	[RequestUserResolve] (username) {
-		let key = 'user-'+username;
+		let key = `user-${username}`;
 		let cache = this.getDataCache();
 		let cached = cache.get(key);
 		let result;
@@ -237,7 +237,7 @@ export default class ServiceDocument {
 					let user = items.reduce((u, d) => u || (d.Username === username && d), null);
 
 					cache.set(key, user);
-					return user || Promise.reject('Username "'+ username +'" could not resolve.');
+					return user || Promise.reject(`Username "${username}" could not resolve.`);
 				});
 
 			cache.setVolatile(key, result);//if this is asked for again before we resolve, reuse this promise.
@@ -374,7 +374,7 @@ export default class ServiceDocument {
 
 	getContainerURL (ntiid) {
 		let base = this.getResolveAppUserURL();
-		let pageURI = encodeURIComponent('Pages('+ntiid+')');
+		let pageURI = encodeURIComponent(`Pages(${ntiid})`);
 
 		return joinWithURL(base, pageURI);
 	}

@@ -158,7 +158,7 @@ export default class Base extends EventEmitter {
 
 		if (key) {//If the paramater was a key, assign the parsed object back to the key...
 			this[key] = o;
-			if (o == null || o.length===0) {
+			if (o == null || o.length === 0) {
 				delete this[key];
 			}
 		}
@@ -179,11 +179,11 @@ export default class Base extends EventEmitter {
 						let current = this[prop];
 						let value = o[prop];
 						//We will assume if its an array, that we should parse it.
-						if (current && (current[Service] || Array.isArray(current||value))) {
+						if (current && (current[Service] || Array.isArray(current || value))) {
 							try {
 								value = this[Parser](value);
 							} catch(e) {
-								console.warn('Attempted to parse new value, and something went wrong... %o', e.stack||e.message||e);
+								console.warn('Attempted to parse new value, and something went wrong... %o', e.stack || e.message || e);
 							}
 						}
 

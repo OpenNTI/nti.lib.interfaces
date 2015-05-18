@@ -92,7 +92,6 @@ const request = SERVER ? //SERVER is declared in th WebPack config file
 				}
 
 				try {
-					/* jslint -W101 */
 					// see: https://prototype.lighthouseapp.com/projects/8886/tickets/129-ie-mangles-http-response-status-code-204-to-1223
 					let status = req.status === 1223 ? 204 : req.status;
 					let headers = req.getAllResponseHeaders()

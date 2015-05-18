@@ -149,7 +149,7 @@ function resolveUIData(service, data) {
 				pending.push(...o[Pending]);
 			}
 		} catch(e) {
-			console.warn(e.NoParser? e.message : (e.stack || e.message || e));
+			console.warn(e.NoParser ? e.message : (e.stack || e.message || e));
 		}
 		return o;
 	});

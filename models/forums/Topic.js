@@ -38,7 +38,7 @@ export default class Topic extends Base {
 		if (inReplyTo) {
 			// inReplyTo = typeof inReplyTo === 'object' ? inReplyTo.NTIID : inReplyTo;
 			payload.inReplyTo = inReplyTo.NTIID;
-			payload.references = (inReplyTo.references||[]).slice(0);
+			payload.references = (inReplyTo.references || []).slice(0);
 			payload.references.push(inReplyTo.NTIID);
 		}
 

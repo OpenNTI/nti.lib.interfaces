@@ -115,7 +115,7 @@ function getConfigForNode(node, outlineNode) {
 		section: node.get('section')
 	};
 
-	let parser = MIME_PARSER[obj.MimeType||node.tag] || noOp;
+	let parser = MIME_PARSER[obj.MimeType || node.tag] || noOp;
 
 	return Object.assign(obj, parser(node, obj.MimeType, outlineNode));
 }

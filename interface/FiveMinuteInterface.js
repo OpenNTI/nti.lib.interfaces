@@ -41,7 +41,7 @@ export default class FiveMinuteInterface {
 
 	getAdmissionStatus () {
 		return this[getAppUser]()
-			.then(user=>(user||{}).fmaep_admission_state);
+			.then(user=>(user || {}).fmaep_admission_state);
 	}
 
 	[getUserLink] (rel) {

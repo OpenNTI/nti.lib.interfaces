@@ -5,7 +5,7 @@ import {isNTIID} from '../../utils/ntiids';
 export default class WatchVideoEvent extends BasicEvent {
 
 	constructor (resourceId, courseId, context, videoStartTime, maxDuration, hasTranscript) {
-		super(WATCH_VIDEO, courseId, (context||[]).find(elem => isNTIID(elem)) || null);
+		super(WATCH_VIDEO, courseId, (context || []).find(elem => isNTIID(elem)) || null);
 		Object.assign(this, {
 			MaxDuration: maxDuration,
 			/*eslint-disable camelcase */

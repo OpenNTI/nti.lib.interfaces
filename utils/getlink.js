@@ -2,7 +2,7 @@ export default function getLink(o, rel, raw) {
 
 	if (o && o.Links) { o = o.Links; }
 
-	for (let i = o && o.length - 1; i>=0; i--) {
+	for (let i = o && o.length - 1; i >= 0; i--) {
 		let v = o[i];
 		if (v && v.rel === rel) {
 			return raw === true ? v : v.href;
@@ -24,7 +24,7 @@ export function asMap(o) {
 	}
 
 	let m = {};
-	for (let i = o.length - 1; i>=0; i--) {
+	for (let i = o.length - 1; i >= 0; i--) {
 		let v = o[i];
 		if (m[v.rel]) { console.warn('There are more than one instances of %s', v.rel); }
 		m[v.rel] = v.href;

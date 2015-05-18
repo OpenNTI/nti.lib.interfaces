@@ -27,7 +27,7 @@ export default class FillInTheBlank extends Part {
 		super(service, parent, data);
 
 		this[ValueKeys] = (this.input.match(tags) || [])
-			.map(s=>(s.match(keyName)||{})[1]);
+			.map(s=>(s.match(keyName) || {})[1]);
 	}
 
 

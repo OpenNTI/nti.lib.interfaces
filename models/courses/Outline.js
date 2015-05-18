@@ -59,7 +59,7 @@ export default class Outline extends Base {
 
 
 	get isEmpty () {
-		return (this.label||'').trim().length === 0 &&
+		return (this.label || '').trim().length === 0 &&
 				this.contents.length === 0;
 	}
 

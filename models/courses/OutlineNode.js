@@ -20,7 +20,7 @@ export default class OutlineNode extends Outline {
 	constructor(service, parent, data) {
 		super(service, parent, data);
 		let p = c=>c.map(o => this[parse](o));
-		this.contents = p(data.contents|| []);
+		this.contents = p(data.contents || []);
 	}
 
 	get label () { return this.DCTitle; }

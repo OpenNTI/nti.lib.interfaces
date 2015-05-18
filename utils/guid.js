@@ -8,14 +8,14 @@ export default function guidGenerator() {
 	let seed = Date.now();
 
 	function next () {
-		let result = (seed + Math.random() * 16)%16 | 0;
+		let result = (seed + Math.random() * 16) % 16 | 0;
 		seed = Math.floor(seed / 16);//update seed
 		return result;
 	}
 
 	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c)=> {
 		let r = next();
-		return (c==='x' ? r : (r&0x7|0x8)).toString(16);
+		return (c === 'x' ? r : (r & 0x7 | 0x8)).toString(16);
 	});
 	/*eslint-enable no-bitwise*/
 }

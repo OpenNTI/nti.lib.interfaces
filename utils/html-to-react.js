@@ -267,7 +267,7 @@ export default function (html, isWidgetCallback) {
 	try {
 		let xml = crudeHTMLToXML(html);
 
-		let root = et.parse('<root>'+xml+'</root>').getroot();
+		let root = et.parse(`<root>${xml}</root>`).getroot();
 		let children = processChildren(root, isWidgetCallback);
 
 		let out = 'return ' + reactifyElement('"div"', {}, children);
@@ -308,7 +308,8 @@ function reactifyElement(element, props, children, customFunc) {
 
 	let renderer = customFunc || 'React.createElement';
 
-	return renderer + '('+element+', '+props+', '+children+')';
+	return renderer + '(' + element + ', ' + props + ', ' + children + ')';
+	// return `${renderer}(${element}, ${props}, ${children})`;
 }
 
 
@@ -355,12 +356,12 @@ function ensureUnaryTagsAreClosedXML(html) {
 
 	function getMatcher(tag) {
 		let c = getMatcher,
-			m = c[tag] || (c[tag] = new RegExp('(<'+tag+')([^>]*)(>)', 'igm'));
+			m = c[tag] || (c[tag] = new RegExp(`(<${tag})([^>]*)(>)`, 'igm'));
 		return m;
 	}
 
 	function fix(o, tag, attrs, closer) {
-		if (attrs.length === 0 || attrs.charAt(attrs.length-1) !== '/') {
+		if (attrs.length === 0 || attrs.charAt(attrs.length - 1) !== '/') {
 			return tag + attrs + '/' + closer;
 		}
 		return o;

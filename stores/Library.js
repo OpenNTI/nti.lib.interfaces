@@ -49,7 +49,7 @@ export default class Library extends EventEmitter {
 			.then(data=>waitFor((instance = make(...data))[Pending]))
 			.then(()=>instances[name] = instance))
 			.catch(e=> {
-				console.error(e.stack||e.message||e);
+				console.error(e.stack || e.message || e);
 				return Promise.reject(e);
 			});
 	}

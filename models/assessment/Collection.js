@@ -15,14 +15,14 @@ import {
 function find(list, id) {
 	return list.reduce((found, item) =>
 		found || (
-			(item.getID()===id || (item.containsId && item.containsId(id))) ? item : null
+			(item.getID() === id || (item.containsId && item.containsId(id))) ? item : null
 		), null);
 }
 
 
 function nodeToNTIIDs(node) {
 	let id = node.get('ntiid');
-	return (id? [id] : []).concat(
+	return (id ? [id] : []).concat(
 			node.children.reduce((a, b) =>
 				a.concat(nodeToNTIIDs(b)), []));
 }
