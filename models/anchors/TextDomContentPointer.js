@@ -1,7 +1,5 @@
 import DomContentPointer from './DomContentPointer';
 
-// import {locateRangeEdgeForAnchor} from './utils';
-
 import { Parser as parse } from '../../CommonSymbols';
 
 export default class TextDomContentPointer extends DomContentPointer {
@@ -61,7 +59,7 @@ export default class TextDomContentPointer extends DomContentPointer {
 	}
 
 
-	// locateRangePointInAncestor (ancestorNode, startResult) {
-	// 	return locateRangeEdgeForAnchor(this, ancestorNode, startResult);
-	// }
+	locateRangePointInAncestor (AnchorLib, ancestorNode, startResult) {
+		return AnchorLib.locateRangeEdgeForAnchor(this, ancestorNode, startResult);
+	}
 }

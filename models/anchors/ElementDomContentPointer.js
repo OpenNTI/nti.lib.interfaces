@@ -1,7 +1,4 @@
 import DomContentPointer from './DomContentPointer';
-// import {locateElementDomContentPointer} from './utils';
-
-// import { Parser as parse } from '../../CommonSymbols';
 
 export default class ElementDomContentPointer extends DomContentPointer {
 
@@ -46,7 +43,7 @@ export default class ElementDomContentPointer extends DomContentPointer {
 	}
 
 
-	// locateRangePointInAncestor (ancestorNode, startResult) {
-	// 	return locateElementDomContentPointer(this, ancestorNode, startResult);
-	// }
+	locateRangePointInAncestor (AnchorLib, ancestorNode, startResult) {
+		return AnchorLib.locateElementDomContentPointer(this, ancestorNode, startResult);
+	}
 }
