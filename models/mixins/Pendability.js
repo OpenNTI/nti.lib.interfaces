@@ -4,6 +4,11 @@ import { Pending } from '../../CommonSymbols';
 
 export default {
 
+	constructor () {
+		this[Pending] = [];
+	},
+
+
 	addToPending (...pending) {
 		let list = this[Pending] = (this[Pending] || []);
 
