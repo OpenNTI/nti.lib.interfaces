@@ -10,10 +10,10 @@ function reflect(fn, key) {
 
 		//walk down the path...
 		for(let i = 0, l = keys.length; i <= l; i++) {
-			let key = keys[i];
+			let k = keys[i];
 			if (i < l && scope) {
-				scope = scope[key];
-				path.push(key);
+				scope = scope[k];
+				path.push(k);
 				if (!scope) {
 					console.warn('Property path `%s` does not exist on: %o', path.join('.'), this);
 				}
@@ -34,9 +34,9 @@ function reflect(fn, key) {
  * binds functions from the object at the given key so they can be added to an
  * upper object. (ex: map an array's forEach (bound) to the wrapping object)
  *
- * @param  {array[string]} fns An array of function names to bind and return
+ * @param  {string[]} fns An array of function names to bind and return
  * @param  {string} key The key where the object is at.
- * @return {object}	Object with function names to bound functions
+ * @returns {object}	Object with function names to bound functions
  */
 export default function forwardFunctions(fns, key) {
 	let result = {};

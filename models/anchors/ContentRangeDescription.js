@@ -1,5 +1,5 @@
 import Base from './Base';
-
+console.log('defining ContentRangeDescription');
 export default class ContentRangeDescription extends Base {
 
 	constructor (service, parent, data) {

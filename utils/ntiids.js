@@ -8,8 +8,8 @@ const COMMON_PREFIX = 'tag:nextthought.com,2011-10:';
  * Parses an id and returns an object containing the split portions
  * See http://excelsior.nextthought.com/server-docs/ntiid-structure/
  *
- * @param {string} id
- * @return {object} an object containing the components of the id
+ * @param {string} id ntiid
+ * @returns {object} an object containing the components of the id
  */
 export function parseNTIID(id) {
 	let parts = (typeof id !== 'string' ? (id || '').toString() : id).split(':'),
@@ -104,8 +104,8 @@ export function isNTIID(id) {
 
 /**
  * CSS escape ids
- * @param {string} id
- * @return {string} CSS-friendly string to use in a selector
+ * @param {string} id ntiid
+ * @returns {string} CSS-friendly string to use in a selector
  */
 export function escapeId(id) {
 	return id.replace(/:/g, '\\3a ') //no colons
@@ -116,8 +116,8 @@ export function escapeId(id) {
 
 /**
  * Returns the prefix of the content ntiid we think this ntiid would reside beneath
- * @param {string} id
- * @return {string}
+ * @param {string} id ntiid
+ * @returns {string} prefix
  */
 export function ntiidPrefix(id) {
 	let ntiid = parseNTIID(id);
@@ -131,6 +131,8 @@ export function ntiidPrefix(id) {
 
 /**
  * Parse the "URL friendly" NTIID we made for the legacy webapp.
+ * @param {stirng} fragment The string from the url fragement
+ * @returns {string} NTIID
  */
 export function parseFragment(fragment) {
 	let authority = 'nextthought.com,2011-10',

@@ -94,7 +94,7 @@ const request = SERVER ? //SERVER is declared in th WebPack config file
 				try {
 					// see: https://prototype.lighthouseapp.com/projects/8886/tickets/129-ie-mangles-http-response-status-code-204-to-1223
 					let status = req.status === 1223 ? 204 : req.status;
-					let headers = req.getAllResponseHeaders()
+					let responseHeaders = req.getAllResponseHeaders()
 									.trim()
 									.split('\n')
 									.map(i => i.split(':')[0]);
@@ -114,7 +114,7 @@ const request = SERVER ? //SERVER is declared in th WebPack config file
 						'statusText'
 					]);
 
-					for(let i of headers) {
+					for(let i of responseHeaders) {
 						response.headers[i] = req.getResponseHeader(i);
 					}
 

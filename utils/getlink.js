@@ -10,7 +10,7 @@ export default function getLink(o, rel, raw) {
 	}
 }
 
-/**
+/*
  * This function is an anti-pattern. TODO: consolidate all link getting/referencing to the getLink version (perferibly
  * as a method call off of a model, instead of a function call on a raw jso)
  */

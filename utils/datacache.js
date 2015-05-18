@@ -27,8 +27,8 @@ export default class DataCache {
 		let data = this.data;
 		if (typeof key === 'object') {
 			let o = key;
-			for (let key of Object.keys(o)) {
-				this.set(key, o[key]);
+			for (let i of Object.keys(o)) {
+				this.set(i, o[i]);
 			}
 		} else {
 			delete data[key];//make sure to reset its configuration
@@ -54,8 +54,8 @@ export default class DataCache {
 	setVolatile (key, value) {
 		if (typeof key === 'object') {
 			let o = key;
-			for (let key of Object.keys(o)) {
-				this.setVolatile(key, o[key]);
+			for (let i of Object.keys(o)) {
+				this.setVolatile(i, o[i]);
 			}
 		} else {
 			Object.defineProperty(this.data, key, {

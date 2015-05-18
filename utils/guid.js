@@ -2,6 +2,7 @@
  * RFC4122 version 4 compliant UUID generator.
  *
  * @see http://stackoverflow.com/a/8809472
+ * @returns {string} A Globally Unique Identifier
  */
 export default function guidGenerator() {
 	/*eslint-disable no-bitwise*/
