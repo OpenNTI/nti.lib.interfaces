@@ -59,8 +59,5 @@ export default class TableOfContentsBackedPageSource extends Base{
 
 
 function suppressed(node) {
-	let isAnchor = suppressed.is || (suppressed.id = /#/);
-	let isTopic = suppressed.tag || (suppressed.tag = /topic/i);
-
-	return node && isTopic.test(node.tag) && !isAnchor.test(node.get('href'));
+	return node && node.isTopic() && !node.isAnchor();
 }

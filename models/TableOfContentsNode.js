@@ -4,6 +4,9 @@ import escape from '../utils/regexp-escape';
 
 const flat = (a, n)=> a.concat(n.flatten());
 
+const anchor = RegExp.prototype.test.bind(/#/i);
+const topic = RegExp.prototype.test.bind(/topic/i);
+
 export default class XMLBasedTableOfContentsNode {
 
 	constructor (toc, data, parent) {
@@ -43,6 +46,7 @@ export default class XMLBasedTableOfContentsNode {
 	get type () { return this.get('level'); }
 
 
+
 	find (...args) {
 		let n = this[DATA].find(...args);
 		return n && new XMLBasedTableOfContentsNode(this.toc, n);
@@ -76,10 +80,24 @@ export default class XMLBasedTableOfContentsNode {
 	// }
 
 
+	getAchorTarget () {
+		let href = this.get('href');
+		return href.split(/#/)[1];
+	}
+
+
 	getMatchExp (substring) {
 		return new RegExp(`(${escape(substring)})`, 'igm');
 	}
 
+
+	isAnchor () {
+		return anchor(this.get('href'));
+	}
+
+	isTopic () {
+		return topic(this.tag);
+	}
 
 	matches (substring, deep = true) {
 		let {title} = this;
