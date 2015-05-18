@@ -10,6 +10,19 @@ import Highlight from './annotations/Highlight';
 import Note from './annotations/Note';
 import Redaction from './annotations/Redaction';
 
+import ContentPointer from './anchors/ContentPointer';
+import ContentRangeDescription from './anchors/ContentRangeDescription';
+import DomContentPointer from './anchors/DomContentPointer';
+import DomContentRangeDescription from './anchors/DomContentRangeDescription';
+import ElementDomContentPointer from './anchors/ElementDomContentPointer';
+import TextContext from './anchors/TextContext';
+import TextDomContentPointer from './anchors/TextDomContentPointer';
+import TimeContentPointer from './anchors/TimeContentPointer';
+import TimeRangeDescription from './anchors/TimeRangeDescription';
+import TranscriptContentPointer from './anchors/TranscriptContentPointer';
+import TranscriptRangeDescription from './anchors/TranscriptRangeDescription';
+
+
 import ContentPackage from './content/Package';
 import ContentBundle from './content/Bundle';
 
@@ -253,6 +266,18 @@ const PARSERS = {
 	'highlight': Highlight,
 	'note': Note,
 	'redaction': Redaction,
+
+	'contentrange.contentpointer': ContentPointer,
+	'contentrange.contentrangedescription': ContentRangeDescription,
+	'contentrange.domcontentpointer': DomContentPointer,
+	'contentrange.domcontentrangedescription': DomContentRangeDescription,
+	'contentrange.elementdomcontentpointer': ElementDomContentPointer,
+	'contentrange.textcontext': TextContext,
+	'contentrange.textdomcontentpointer': TextDomContentPointer,
+	'contentrange.timecontentpointer': TimeContentPointer,
+	'contentrange.timerangedescription': TimeRangeDescription,
+	'contentrange.transcriptcontentpointer': TranscriptContentPointer,
+	'contentrange.transcriptrangedescription': TranscriptRangeDescription,
 
 	'messageinfo': null,//Need To Model
 	'openbadges.badge': null,//Need To Model
