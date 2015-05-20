@@ -12,15 +12,18 @@ export default class UserData extends EventEmitter {
 
 	constructor (service, rootContainerId, source) {
 		super();
-		mixin(this, Pendability);
-		this[Service] = service;
+		Object.assign(this, {
+			[Service]: service,
+			loading: true
+		});
 
-		this.loading = true;
+		mixin(this, Pendability);
+
 
 		let parseList = parseListFn(this, service);
-
 		let bin = (name, item) =>
 			(this.Items[name] = (this.Items[name] || [])).push(item);
+
 
 		let start = Date.now();
 		let load = service.get(source).then(data=> {
@@ -34,12 +37,55 @@ export default class UserData extends EventEmitter {
 				bin(binId !== rootContainerId ? binId : 'root', i);
 			}
 
-			this.emit('load', `${(Date.now() - start)}ms`);
+			this.loaded = Date.now();
+			this.emit('load', this, `${(this.loaded - start)}ms`);
 		});
 
 		this.addToPending(load);
 
-		this.on('load', time => console.log('Load: %s %o', time, this));
+		this.on('load', (_, time) => console.log('Load: %s %o', time, this));
 	}
 
+
+	[Symbol.iterator] () {
+		let {Items = {}} = this,
+			bins = Object.keys(Items),
+			binIx = 0,
+			index = 0;
+
+		return {
+
+			next () {
+				let bin = Items[bins[binIx]] || [];
+				let done = binIx >= bins.length && index >= bin.length;
+				let value = bin[index++];
+
+				if (index >= bin.length) {
+					binIx++;
+					if (binIx < bins.length) {
+						index = 0;
+					}
+				}
+
+
+
+				return { value, done };
+			}
+
+		};
+	}
+
+
+	get (id) {
+		for (let i of this) {
+			if (i.getID() === id) {
+				return i;
+			}
+		}
+	}
+
+
+	has (id) {
+		return !!this.get(id);
+	}
 }
