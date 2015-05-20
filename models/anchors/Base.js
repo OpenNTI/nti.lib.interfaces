@@ -5,9 +5,10 @@ export default class Base extends Model {
 		super(service, parent, data);
 
 		let MimeType = 'application/vnd.nextthought.contentrange.' + (this.constructor.name.toLowerCase());
-		if (this.MimeType !== MimeType) {
+		if (this.MimeType && this.MimeType !== MimeType) {
 			console.warn('Type Missmatch?', this.MimeType, 'expected: ' + MimeType);
 		}
-		this.isEmpty = true;
+
+		Object.assign(this, {MimeType, isEmpty: true});
 	}
 }
