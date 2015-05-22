@@ -207,6 +207,13 @@ export default class Base extends EventEmitter {
 	}
 
 
+	get isModifiable () {
+		return this.hasLink('edit') || //has an edit link.
+			//or its a new object that has yet to be posted to the server.
+			(!this.Links && !this.href);
+	}
+
+
 	getLink (rel) {
 		return getLinkImpl(this, rel);
 	}
