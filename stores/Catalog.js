@@ -3,8 +3,11 @@ import {EventEmitter} from 'events';
 
 import forwardFunctions from '../utils/function-forwarding';
 import waitFor from '../utils/waitfor';
+import mixin from '../utils/mixin';
 
 import {parseListFn} from './Library';
+
+import Pendability from '../models/mixins/Pendability';
 
 import {Service, Pending} from '../CommonSymbols';
 
@@ -19,7 +22,7 @@ export default class Catalog extends EventEmitter {
 
 	constructor (service, data) {
 		super();
-
+		mixin(this, Pendability);
 		this[Service] = service;
 
 		Object.assign(this, data,
