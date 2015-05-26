@@ -50,24 +50,15 @@ export default class UserData extends EventEmitter {
 	[Symbol.iterator] () {
 		let {Items = {}} = this,
 			bins = Object.keys(Items),
-			binIx = 0,
+			snapshot = bins.reduce((a, b)=> a.concat(Items[b] || []), []),
 			index = 0;
+
 
 		return {
 
 			next () {
-				let bin = Items[bins[binIx]] || [];
-				let done = binIx >= bins.length && index >= bin.length;
-				let value = bin[index++];
-
-				if (index >= bin.length) {
-					binIx++;
-					if (binIx < bins.length) {
-						index = 0;
-					}
-				}
-
-
+				let done = index >= snapshot.length;
+				let value = snapshot[index++];
 
 				return { value, done };
 			}
