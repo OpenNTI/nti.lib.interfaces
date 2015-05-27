@@ -33,7 +33,6 @@ export default class UserData extends EventEmitter {
 			this.Items = {root: []};
 
 			let list = parseList(data.Items);
-			list.sort((a, b) => b.getLastModified() - a.getLastModified());
 
 			for (let i of list) {
 				let binId = i.getContainerID ? i.getContainerID() : 'root';
@@ -56,6 +55,7 @@ export default class UserData extends EventEmitter {
 			snapshot = bins.reduce((a, b)=> a.concat(Items[b] || []), []),
 			index = 0;
 
+		snapshot.sort((a, b) => b.getLastModified() - a.getLastModified());//show newest first.
 
 		return {
 
