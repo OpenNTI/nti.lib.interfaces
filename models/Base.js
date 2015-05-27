@@ -85,6 +85,8 @@ export default class Base extends EventEmitter {
 
 			this[methodName] = dateGetter(fieldName);
 		}
+
+		this[TakeOver]('Creator', 'creator');
 	}
 
 
@@ -100,6 +102,11 @@ export default class Base extends EventEmitter {
 		let scope = this;
 		let enumerable = !!y;
 		let name = y || x;
+
+		if (name in scope) {
+			console.warn('%s is already defined.', name);
+			return;
+		}
 
 		Object.defineProperty(scope, name, {
 			enumerable,
