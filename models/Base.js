@@ -117,7 +117,9 @@ export default class Base extends EventEmitter {
 					if (typeof name === 'string') {
 						m = `Use ${name} instead.`;
 					}
-					throw new Error(`Access to ${x} is now blocked. ${m}`);
+					m = new Error(`Access to ${x} is deprecated. ${m}`);
+					console.error(m.stack || m.message || m);
+					return scope[name];
 				}
 			});
 		}
