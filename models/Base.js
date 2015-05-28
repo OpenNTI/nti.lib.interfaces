@@ -102,20 +102,22 @@ export default class Base extends EventEmitter {
 		let scope = this;
 		let enumerable = !!y;
 		let name = y || x;
+		let value = scope[x];
 
-		if (name in scope) {
+		if (scope[name] && x !== name) {
 			console.warn('%s is already defined.', name);
 			return;
 		}
 
+		delete scope[x];
+
 		Object.defineProperty(scope, name, {
 			enumerable,
 			writable: false,
-			value: scope[x]
+			value
 		});
 
 		if (x !== name) {
-			delete scope[x];
 			Object.defineProperty(scope, x, {
 				enumerable: false,
 				get () {
