@@ -1,8 +1,8 @@
 
 import identity from '../utils/identity';
 
-import Community from './Community';
 import User from './User';
+import Community from './Community';
 import PageInfo from './PageInfo';
 import Change from './Change';
 
