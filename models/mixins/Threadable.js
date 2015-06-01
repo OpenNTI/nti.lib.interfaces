@@ -35,6 +35,13 @@ export default {
 		});
 
 		return result;
-	}
+	},
 
+
+	getReplies () {
+		this.fetchLinkParsed('replies')
+			.then(x => console.log(x));
+
+		return Promise.resolve([]);
+	}
 };

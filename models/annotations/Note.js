@@ -13,9 +13,4 @@ export default class Note extends Highlight {
 		return this.ReferencedByCount;
 	}
 
-
-	getReplies () {
-
-		return Promise.resolve([]);
-	}
 }
