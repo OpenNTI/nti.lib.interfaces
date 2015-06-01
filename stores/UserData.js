@@ -21,8 +21,13 @@ export default class UserData extends EventEmitter {
 
 
 		let parseList = parseListFn(this, service);
-		let bin = (name, item) =>
-			(this.Items[name] = (this.Items[name] || [])).push(item);
+		let getBin = name => (this.Items[name] = (this.Items[name] || []));
+
+		let pushUnique = (array, item) => array.map(x=>x.getID()).includes(item.getID()) ?
+							console.warn('Item is not unique in dataset:', item) :
+							array.push(item);
+
+		let bin = (name, item) => pushUnique(getBin(name), item);
 
 
 		let start = Date.now();
