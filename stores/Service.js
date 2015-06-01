@@ -1,6 +1,6 @@
 import QueryString from 'query-string';
 
-import {parse} from '../models/Parser';
+import {parse} from '../models';
 
 import Capabilities from '../models/Capabilities';
 

@@ -3,7 +3,7 @@ import Interface from './interface';
 import cache from './utils/datacache';
 import logger from './logger';
 
-import {getModelByType as lookup} from './models/Parser';
+import {getModelByType as lookup} from './models';
 
 export default function(config) {
 	let i = new Interface(config);

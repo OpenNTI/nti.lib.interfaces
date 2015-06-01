@@ -3,8 +3,8 @@ import Base from '../Base';
 
 export default class Annotation extends Base {
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	constructor (service, parent, data, ...mixins) {
+		super(service, parent, data, ...mixins);
 	}
 
 

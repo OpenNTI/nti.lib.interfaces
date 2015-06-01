@@ -6,7 +6,7 @@ import {
 import Url from 'url';
 import {EventEmitter} from 'events';
 
-import {parse} from '../models/Parser';
+import {parse} from '../models';
 
 import ensureInstanceCountDoesNotReach from '../utils/debugging-invoke-limiter';
 

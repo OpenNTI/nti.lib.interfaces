@@ -5,7 +5,7 @@ import mixin from '../utils/mixin';
 import waitFor from '../utils/waitfor';
 import unique from '../utils/array-unique';
 
-import {parse} from '../models/Parser';
+import {parse} from '../models';
 import Pendability from '../models/mixins/Pendability';
 
 import {Pending, Service} from '../CommonSymbols';

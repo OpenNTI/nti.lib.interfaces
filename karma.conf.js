@@ -1,55 +1,28 @@
+/*eslint no-var: 0, strict: 0*/
 'use strict';
-/*eslint no-var: 0*/
 var webpack = require('webpack');
-
-var stat = {
-	version: false,
-	hash: false,
-	timings: false,
-	assets: false,
-	chunks: false,
-	chunkModules: false,
-	chunkOrigins: false,
-	modules: false,
-	cached: false,
-	cachedAssets: false,
-	showChildren: false,
-	source: false,
-
-	colors: true,
-	reasons: true,
-	errorDetails: true
-};
 
 module.exports = function (config) {
 	config.set({
-		basePath: '',
+		// basePath: '',
 		frameworks: ['jasmine'],
 
 		files: [
-			'test/**/*',
-			'**/__test__/*.js'
+			'test/**/*.js',
+			'**/__test__/*.spec.js'
 		],
 
 		preprocessors: {
-			'test/**/*': ['webpack'],
-			'**/__test__/*.js': ['webpack', 'sourcemap']
+			'test/**/*.js': ['webpack'],
+			'**/__test__/*.spec.js': ['webpack', 'sourcemap']
 		},
 
-		exclude: [],
+		// exclude: [],
 
-		port: 8090,
-		logLevel: config.LOG_INFO,
+		// port: 9876,
+		logLevel: config.LOG_WARN,
 		colors: true,
 		autoWatch: false,
-		// Start these browsers, currently available:
-		// - Chrome
-		// - ChromeCanary
-		// - Firefox
-		// - Opera
-		// - Safari (only Mac)
-		// - PhantomJS
-		// - IE (only Windows)
 		browsers: ['PhantomJS'],
 
 
@@ -73,7 +46,10 @@ module.exports = function (config) {
 
 
 		webpackServer: {
-			stats: stat,
+			stats: {
+				colors: true,
+				reasons: true
+			},
 			quiet: true
 		},
 
@@ -83,12 +59,19 @@ module.exports = function (config) {
 			debug: true,
 			devtool: 'inline-source-map',
 
-			stats: stat,
 
 			node: {
 				net: 'empty',
 				tls: 'empty'
 			},
+
+			stats: {
+				colors: true,
+				reasons: true
+			},
+			target: 'web',
+
+
 
 			resolve: {
 				root: __dirname,
@@ -103,7 +86,7 @@ module.exports = function (config) {
 
 			module: {
 				loaders: [
-					{ test: /\.js(x)?$/, loader: 'babel' },
+					{ test: /\.js(x)?$/, loader: 'babel', exclude: /node_modules/ },
 					{ test: /\.json$/, loader: 'json' }
 				]
 			}

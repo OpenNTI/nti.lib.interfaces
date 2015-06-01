@@ -41,7 +41,7 @@ export default class TextDomContentPointer extends DomContentPointer {
 
 
 	validateContexts (contexts) {
-		if (!contexts) {
+		if (contexts == null || !Array.isArray(contexts)) {
 			throw new Error('Must supply TextContexts');
 		}
 		else if (contexts.length < 1) {

@@ -1,4 +1,6 @@
-import ContentRangeDescription from '../ContentRangeDescription';
+import {getModelByType} from '../../../models';
+
+const ContentRangeDescription = getModelByType('contentrange.contentrangedescription');
 
 describe('ContentRangeDescription Tests', () => {
 	describe('locator tests', () => {

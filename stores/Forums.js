@@ -1,4 +1,4 @@
-import {parse} from '../models/Parser';
+import {parse} from '../models';
 import {decodeFromURI} from '../utils/ntiids';
 
 import {Service} from '../CommonSymbols';

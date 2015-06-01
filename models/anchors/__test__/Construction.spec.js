@@ -1,22 +1,20 @@
-import RealDomContentPointer from '../DomContentPointer';
-import RealElementDomContentPointer from '../ElementDomContentPointer';
-import RealTextDomContentPointer from '../TextDomContentPointer';
-import RealDomContentRangeDescription from '../DomContentRangeDescription';
-import RealTextContext from '../TextContext';
+import {getModelByType} from '../../../models';
 
-class DomContentPointer extends RealDomContentPointer { constructor(o) { super(null, null, o); } }
-class ElementDomContentPointer extends RealElementDomContentPointer { constructor(o) { super(null, null, o); } }
-class TextDomContentPointer extends RealTextDomContentPointer { constructor(o) { super(null, null, o); } }
-class DomContentRangeDescription extends RealDomContentRangeDescription { constructor(o) { super(null, null, o); } }
-class TextContext extends RealTextContext { constructor(o) { super(null, null, o); } }
+const DomContentPointer = getModelByType('contentrange.domcontentpointer');
+const ElementDomContentPointer = getModelByType('contentrange.elementdomcontentpointer');
+const TextDomContentPointer = getModelByType('contentrange.textdomcontentpointer');
+const DomContentRangeDescription = getModelByType('contentrange.domcontentrangedescription');
+const TextContext = getModelByType('contentrange.textcontext');
 
+
+const make = (C, o) => new C(null, null, o);
 
 describe('Model Tests', () => {
 	/*eslint-disable no-new*/
 	it('Good TextContent Creation', () => {
 		let text = 'This is some text',
 			offset = 5,
-			ct = new TextContext({contextText: text, contextOffset: offset});
+			ct = make(TextContext, {contextText: text, contextOffset: offset});
 
 		expect(ct).toBeTruthy();
 		expect(ct.getContextText()).toEqual(text);
@@ -25,28 +23,28 @@ describe('Model Tests', () => {
 
 	it('Bad TextContent Creation', () => {
 		try {
-			new TextContext({contextText: '', contextOffset: 5});
+			make(TextContext, {contextText: '', contextOffset: 5});
 			expect(false).toBeTruthy();
 		}
 		catch (e) {
 			expect(e.message).toEqual('Text must have one or more characters');
 		}
 		try {
-			new TextContext({contextOffset: 5});
+			make(TextContext, {contextOffset: 5});
 			expect(false).toBeTruthy();
 		}
 		catch (e) {
 			expect(e.message).toEqual('Text must have one or more characters');
 		}
 		try {
-			new TextContext({contextText: 'text', contextOffset: -1});
+			make(TextContext, {contextText: 'text', contextOffset: -1});
 			expect(false).toBeTruthy();
 		}
 		catch (e) {
 			expect(e.message).toEqual('Offset must be greater than 0, supplied value: -1');
 		}
 		try {
-			new TextContext({contextText: 'text'});
+			make(TextContext, {contextText: 'text'});
 			expect(false).toBeTruthy();
 		}
 		catch (e) {
@@ -57,7 +55,7 @@ describe('Model Tests', () => {
 
 	it('Good DomContentPointer Creation', () => {
 		let role = 'end',
-			ca = new DomContentPointer({role: role});
+			ca = make(DomContentPointer, {role: role});
 
 		expect(ca.getRole()).toBe(role);
 	});
@@ -65,7 +63,7 @@ describe('Model Tests', () => {
 
 	it('Bad DomContentPointer Creation', () => {
 		try {
-			new DomContentPointer({role: 'invalid'});
+			make(DomContentPointer, {role: 'invalid'});
 			expect(false).toBeTruthy();
 		}
 		catch (e) {
@@ -73,7 +71,7 @@ describe('Model Tests', () => {
 		}
 
 		try {
-			new DomContentPointer({});
+			make(DomContentPointer, {});
 			expect(false).toBeTruthy();
 		}
 		catch (e) {
@@ -85,7 +83,7 @@ describe('Model Tests', () => {
 		let id = 'a1234567',
 			tagName = 'SOMETAGNAME',
 			role = 'end',
-			ca = new ElementDomContentPointer({elementId: id, elementTagName: tagName, role: role});
+			ca = make(ElementDomContentPointer, {elementId: id, elementTagName: tagName, role: role});
 
 		expect(ca.getElementTagName()).toBe(tagName);
 		expect(ca.getElementId()).toBe(id);
@@ -99,7 +97,7 @@ describe('Model Tests', () => {
 			element = document.createElement(tagName), ca;
 
 		element.setAttribute('id', id);
-		ca = new ElementDomContentPointer({node: element, role: role});
+		ca = make(ElementDomContentPointer, {node: element, role: role});
 
 		expect(ca.getElementTagName()).toBe(tagName);
 		expect(ca.getElementId()).toBe(id);
@@ -108,7 +106,7 @@ describe('Model Tests', () => {
 
 	it('Bad ElementDomContentPointer Creation', () => {
 		try {
-			new ElementDomContentPointer({elementTagName: 'name', role: 'end'});
+			make(ElementDomContentPointer, {elementTagName: 'name', role: 'end'});
 			expect(false).toBeTruthy();
 		}
 		catch (e) {
@@ -116,7 +114,7 @@ describe('Model Tests', () => {
 		}
 
 		try {
-			new ElementDomContentPointer({elementId: 'id', role: 'start'});
+			make(ElementDomContentPointer, {elementId: 'id', role: 'start'});
 			expect(false).toBeTruthy();
 		}
 		catch (e) {
@@ -124,7 +122,7 @@ describe('Model Tests', () => {
 		}
 
 		try {
-			new ElementDomContentPointer({elementId: 'id', elementTagName: 'tagName', role: 'wrong'});
+			make(ElementDomContentPointer, {elementId: 'id', elementTagName: 'tagName', role: 'wrong'});
 			expect(false).toBeTruthy();
 		}
 		catch (e) {
@@ -132,7 +130,7 @@ describe('Model Tests', () => {
 		}
 
 		try {
-			new ElementDomContentPointer({elementId: 'id', elementTagName: 'tagName'});
+			make(ElementDomContentPointer, {elementId: 'id', elementTagName: 'tagName'});
 			expect(false).toBeTruthy();
 		}
 		catch (e) {
@@ -142,7 +140,7 @@ describe('Model Tests', () => {
 
 	it('Good TextDomContentPointer Creation', () => {
 		let	cfg = {
-				ancestor: new ElementDomContentPointer({
+				ancestor: make(ElementDomContentPointer, {
 					elementId: 'id',
 					elementTagName: 'tagName',
 					role: 'ancestor'
@@ -150,12 +148,12 @@ describe('Model Tests', () => {
 				role: 'start',
 				edgeOffset: 5,
 				contexts: [
-					new TextContext({contextText: 'text1', contextOffset: 0}),
-					new TextContext({contextText: 'text2', contextOffset: 1}),
-					new TextContext({contextText: 'text3', contextOffset: 2})
+					make(TextContext, {contextText: 'text1', contextOffset: 0}),
+					make(TextContext, {contextText: 'text2', contextOffset: 1}),
+					make(TextContext, {contextText: 'text3', contextOffset: 2})
 				]
 			},
-			x = new TextDomContentPointer(cfg);
+			x = make(TextDomContentPointer, cfg);
 
 		expect(x.getEdgeOffset()).toEqual(cfg.edgeOffset);
 		expect(x.getContexts()).toBeTruthy();
@@ -169,7 +167,7 @@ describe('Model Tests', () => {
 	it('Bad TextDomContentPointer Creation', () => {
 		try {
 
-			new TextDomContentPointer({
+			make(TextDomContentPointer, {
 				role: 'ancestor',
 				edgeOffset: 5,
 				contexts: []
@@ -181,7 +179,7 @@ describe('Model Tests', () => {
 		}
 
 		try {
-			new TextDomContentPointer({
+			make(TextDomContentPointer, {
 				role: 'ancestor',
 				edgeOffset: 5
 			});
@@ -192,12 +190,12 @@ describe('Model Tests', () => {
 		}
 
 		try {
-			new TextDomContentPointer({
+			make(TextDomContentPointer, {
 				role: 'ancestor',
 				contexts: [
-					new TextContext({contextText: 'text1', contextOffset: 0}),
-					new TextContext({contextText: 'text2', contextOffset: 1}),
-					new TextContext({contextText: 'text3', contextOffset: 2})
+					make(TextContext, {contextText: 'text1', contextOffset: 0}),
+					make(TextContext, {contextText: 'text2', contextOffset: 1}),
+					make(TextContext, {contextText: 'text3', contextOffset: 2})
 				]
 			});
 			expect(false).toBeTruthy();
@@ -208,13 +206,13 @@ describe('Model Tests', () => {
 		}
 
 		try {
-			new TextDomContentPointer({
+			make(TextDomContentPointer, {
 				role: 'ancestor',
 				edgeOffset: 3,
 				contexts: [
-					new TextContext({contextText: 'text1', contextOffset: 0}),
-					new TextContext({contextText: 'text2', contextOffset: 1}),
-					new TextContext({contextText: 'text3', contextOffset: 2})
+					make(TextContext, {contextText: 'text1', contextOffset: 0}),
+					make(TextContext, {contextText: 'text2', contextOffset: 1}),
+					make(TextContext, {contextText: 'text3', contextOffset: 2})
 				]
 			});
 			expect(false).toBeTruthy();
@@ -224,18 +222,18 @@ describe('Model Tests', () => {
 		}
 
 		try {
-			new TextDomContentPointer({
+			make(TextDomContentPointer, {
 				role: 'ancestor',
 				edgeOffset: 3,
-				ancestor: new ElementDomContentPointer({
+				ancestor: make(ElementDomContentPointer, {
 					elementId: 'id',
 					elementTagName: 'tagName',
 					role: 'end' //must be ancestor
 				}),
 				contexts: [
-					new TextContext({contextText: 'text1', contextOffset: 0}),
-					new TextContext({contextText: 'text2', contextOffset: 1}),
-					new TextContext({contextText: 'text3', contextOffset: 2})
+					make(TextContext, {contextText: 'text1', contextOffset: 0}),
+					make(TextContext, {contextText: 'text2', contextOffset: 1}),
+					make(TextContext, {contextText: 'text3', contextOffset: 2})
 				]
 			});
 			expect(false).toBeTruthy();
@@ -246,49 +244,49 @@ describe('Model Tests', () => {
 	});
 
 	it('Good DomContentRangeDescription Creation', () => {
-		let tca1 = new TextDomContentPointer({
+		let tca1 = make(TextDomContentPointer, {
 				role: 'start',
-				ancestor: new ElementDomContentPointer({
+				ancestor: make(ElementDomContentPointer, {
 					elementId: 'id',
 					elementTagName: 'tagName',
 					role: 'ancestor'
 				}),
 				edgeOffset: 5,
 				contexts: [
-					new TextContext({contextText: 'text1', contextOffset: 0}),
-					new TextContext({contextText: 'text2', contextOffset: 1}),
-					new TextContext({contextText: 'text3', contextOffset: 2})
+					make(TextContext, {contextText: 'text1', contextOffset: 0}),
+					make(TextContext, {contextText: 'text2', contextOffset: 1}),
+					make(TextContext, {contextText: 'text3', contextOffset: 2})
 				]
 			}),
-			tca2 = new TextDomContentPointer({
+			tca2 = make(TextDomContentPointer, {
 				role: 'start',
-				ancestor: new ElementDomContentPointer({
+				ancestor: make(ElementDomContentPointer, {
 					elementId: 'id',
 					elementTagName: 'tagName',
 					role: 'ancestor'
 				}),
 				edgeOffset: 5,
 				contexts: [
-					new TextContext({contextText: 'text1', contextOffset: 0}),
-					new TextContext({contextText: 'text2', contextOffset: 1}),
-					new TextContext({contextText: 'text3', contextOffset: 2})
+					make(TextContext, {contextText: 'text1', contextOffset: 0}),
+					make(TextContext, {contextText: 'text2', contextOffset: 1}),
+					make(TextContext, {contextText: 'text3', contextOffset: 2})
 				]
 			}),
-			ca1 = new TextDomContentPointer({
+			ca1 = make(TextDomContentPointer, {
 				role: 'start',
-				ancestor: new ElementDomContentPointer({
+				ancestor: make(ElementDomContentPointer, {
 					elementId: 'id',
 					elementTagName: 'tagName',
 					role: 'ancestor'
 				}),
 				edgeOffset: 5,
 				contexts: [
-					new TextContext({contextText: 'text1', contextOffset: 0}),
-					new TextContext({contextText: 'text2', contextOffset: 1}),
-					new TextContext({contextText: 'text3', contextOffset: 2})
+					make(TextContext, {contextText: 'text1', contextOffset: 0}),
+					make(TextContext, {contextText: 'text2', contextOffset: 1}),
+					make(TextContext, {contextText: 'text3', contextOffset: 2})
 				]
 			}),
-			dcrd = new DomContentRangeDescription({
+			dcrd = make(DomContentRangeDescription, {
 				start: tca1,
 				end: tca2,
 				ancestor: ca1
@@ -300,37 +298,37 @@ describe('Model Tests', () => {
 	});
 
 	it('Bad DomContentRangeDescription Creation', () => {
-		let tca1 = new TextDomContentPointer({
+		let tca1 = make(TextDomContentPointer, {
 				role: 'start',
-				ancestor: new ElementDomContentPointer({
+				ancestor: make(ElementDomContentPointer, {
 					elementId: 'id',
 					elementTagName: 'tagName',
 					role: 'ancestor'
 				}),
 				edgeOffset: 5,
 				contexts: [
-					new TextContext({contextText: 'text1', contextOffset: 0}),
-					new TextContext({contextText: 'text2', contextOffset: 1}),
-					new TextContext({contextText: 'text3', contextOffset: 2})
+					make(TextContext, {contextText: 'text1', contextOffset: 0}),
+					make(TextContext, {contextText: 'text2', contextOffset: 1}),
+					make(TextContext, {contextText: 'text3', contextOffset: 2})
 				]
 			}),
-			tca2 = new TextDomContentPointer({
+			tca2 = make(TextDomContentPointer, {
 				role: 'start',
 				edgeOffset: 5,
-				ancestor: new ElementDomContentPointer({
+				ancestor: make(ElementDomContentPointer, {
 					elementId: 'id',
 					elementTagName: 'tagName',
 					role: 'ancestor'
 				}),
 				contexts: [
-					new TextContext({contextText: 'text1', contextOffset: 0}),
-					new TextContext({contextText: 'text2', contextOffset: 1}),
-					new TextContext({contextText: 'text3', contextOffset: 2})
+					make(TextContext, {contextText: 'text1', contextOffset: 0}),
+					make(TextContext, {contextText: 'text2', contextOffset: 1}),
+					make(TextContext, {contextText: 'text3', contextOffset: 2})
 				]
 			});
 
 		try {
-			new DomContentRangeDescription({
+			make(DomContentRangeDescription, {
 				start: tca1,
 				end: tca2
 			});

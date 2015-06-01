@@ -2,7 +2,7 @@
 
 import {Context, Server} from '../CommonSymbols';
 
-import {parse} from '../models/Parser';
+import {parse} from '../models';
 
 import ServiceModel from '../stores/Service';
 
