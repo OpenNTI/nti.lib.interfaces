@@ -21,7 +21,7 @@ export default class DomContentRangeDescription extends ContentRangeDescription 
 			!this.isDomContentPointer(end) ||
 			!this.isDomContentPointer(ancestor))
 		{
-			console.error('Invalid contents', arguments);
+			// console.error('Invalid contents', arguments);
 			throw new Error('Invalid contents');
 		}
 

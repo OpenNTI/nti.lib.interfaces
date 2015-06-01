@@ -44,6 +44,8 @@ export default class TextDomContentPointer extends DomContentPointer {
 		if (contexts == null || !Array.isArray(contexts)) {
 			throw new Error('Must supply TextContexts');
 		}
+		//Because of how our parsing works, empty "known fields" are deleted if they were invalid...
+		//so this elseif is nearly impossible to get to.
 		else if (contexts.length < 1) {
 			throw new Error('Must supply at least 1 TextContext');
 		}
