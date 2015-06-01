@@ -16,3 +16,7 @@ export default function between(i, a, b, inclusive = false) {
 		(i >= x && i <= y) :
 		(i > x && i < y);
 }
+
+between.inclusive = function (i, a, b) {
+	return between(i, a, b, true);
+};
