@@ -1,5 +1,8 @@
 import isEmpty from './isempty';
 
+export const PARENT = Symbol('Thread Links:Parent');
+export const CHILDREN = Symbol('Thread Links:Children');
+
 const GETTERS = {
 	Highlight: x => x,
 	Note: x => x,
@@ -14,7 +17,7 @@ const GETTERS = {
 
 //TODO unify this function with buildThreads into one function taking a list of userdata and returning a new list where
 // the threadable objects have been threaded.
-export function threadUserData (d) {
+export function thread (d) {
 	let data = !Array.isArray(d) ? [d] : d,
 		tree = {};
 
@@ -53,11 +56,11 @@ export function cleanupTree (tree) {
 		let o = tree[k] || {};
 
 		//turn children object into array
-		o.children = Array.isArray(o.children) ?
-						o.children :
-						typeof o.children === 'object' ? Object.values(o.children) : void 0;
+		o[CHILDREN] = Array.isArray(o[CHILDREN]) ?
+						o[CHILDREN] :
+						typeof o[CHILDREN] === 'object' ? Object.values(o[CHILDREN]) : void 0;
 
-		if (o.parent) { delete tree[k]; }
+		if (o[PARENT]) { delete tree[k]; }
 	}
 
 	prune(tree);
@@ -76,8 +79,8 @@ export function buildItemTree (items, tree) {
 			result[n.getID()] = n;
 		}
 
-		if (!isEmpty(n.children)) {
-			for(let kid of n.children) {
+		if (!isEmpty(n[CHILDREN])) {
+			for(let kid of n[CHILDREN]) {
 				flattenNode(kid, result);
 			}
 		}
@@ -104,7 +107,7 @@ export function buildItemTree (items, tree) {
 		let oid = g.getID(),
 			parent = g.inReplyTo;
 
-		r.children = r.children || {};
+		r[CHILDREN] = r[CHILDREN] || {};
 
 		if (!tree.hasOwnProperty(oid)) {
 			tree[oid] = r;
@@ -121,10 +124,10 @@ export function buildItemTree (items, tree) {
 				buildTree(p);
 			}
 
-			p.children = p.children || {};
-			p.children[r.getID()] = r;
+			p[CHILDREN] = p[CHILDREN] || {};
+			p[CHILDREN][r.getID()] = r;
 
-			r.parent = p;
+			r[PARENT] = p;
 		}
 	});
 
@@ -139,6 +142,6 @@ function prune (/*tree*/) {
 
 
 export function tearDownThreadingLinks (o) {
-	delete o.parent;
-	delete o.children;
+	delete o[PARENT];
+	delete o[CHILDREN];
 }

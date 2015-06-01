@@ -4,23 +4,23 @@ import isEmpty from '../isempty';
 describe('UserDataThreader utils', ()=> {
 
 	it('Makes public api available', ()=> {
-		expect(UserDataThreader.threadUserData).toBeTruthy();
+		expect(UserDataThreader.thread).toBeTruthy();
 		expect(UserDataThreader.buildThreads).toBeTruthy();
 	});
 
 	describe('Parenting works as expected', ()=> {
 		it('abandons links successfully', ()=> {
 			let a = {
-				parent: {},
-				children: []
+				[UserDataThreader.PARENT]: {},
+				[UserDataThreader.CHILDREN]: []
 			};
 
-			expect(a.parent).toBeTruthy();
-			expect(a.children).toBeTruthy();
+			expect(a[UserDataThreader.PARENT]).toBeTruthy();
+			expect(a[UserDataThreader.CHILDREN]).toBeTruthy();
 
 			UserDataThreader.tearDownThreadingLinks(a);
-			expect(a.parent).toBeUndefined();
-			expect(a.parent).toBeUndefined();
+			expect(a[UserDataThreader.PARENT]).toBeUndefined();
+			expect(a[UserDataThreader.PARENT]).toBeUndefined();
 		});
 	});
 
@@ -50,8 +50,8 @@ describe('UserDataThreader utils', ()=> {
 			expect(results.length).toEqual(1);
 
 			results = results[0];
-			expect(results.parent).toBeUndefined();
-			expect(isEmpty(results.children)).toBe(true);
+			expect(results[UserDataThreader.PARENT]).toBeUndefined();
+			expect(isEmpty(results[UserDataThreader.CHILDREN])).toBe(true);
 		});
 
 	});
