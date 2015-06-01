@@ -1,12 +1,13 @@
+import {Parser} from '../../CommonSymbols';
+import {thread, CHILDREN} from '../../utils/UserDataThreader';
 
 export default {
 	isThreadable: true,
 
 	toParentPlaceHolder (threadableReply = this) {
-		//the result object will have the "reply" as the prototype.
-		let result = Object.create(threadableReply);
+		let result = {};
 
-		let refs = (threadableReply.get('references') || []).slice();
+		let refs = (threadableReply.references || []).slice();
 		if (refs.length) {
 			refs.pop();
 		}
@@ -18,30 +19,44 @@ export default {
 
 		//We need to bring these values up onto the current object otherwise when we save it,
 		//they will not be enumerated since they would not be "Owned"
-		let {style, applicableRange, sharedWith, selectedText, ContainerId} = threadableReply;
+		let {style, applicableRange, sharedWith, selectedText, Class, ContainerId, MimeType} = threadableReply;
 
 		Object.assign(result, {
-			//Modified Values:
-			'Last Modified': new Date(ct.getTime()),
+			applicableRange,
+			body: [],
+			Class,
+			ContainerId,
 			CreatedTime: ct,
 			Creator: '',
-			placeholder: true,
-			phantom: void 0,
-			NTIID: threadableReply.inReplyTo,
-			references: refs,
 			inReplyTo: refs[refs.length - 1],
-			//Echoed Values
-			style, applicableRange, sharedWith, selectedText, ContainerId
+			'Last Modified': new Date(ct.getTime()),
+			MimeType,
+			NTIID: threadableReply.inReplyTo,
+			phantom: void 0,
+			placeholder: true,
+			references: refs,
+			selectedText,
+			sharedWith,
+			style
 		});
+
+		result = this[Parser](result);
 
 		return result;
 	},
 
 
 	getReplies () {
-		this.fetchLinkParsed('replies')
-			.then(x => console.log(x));
+		if (this[CHILDREN]) {
+			return Promise.resolve(this[CHILDREN]);
+		}
 
-		return Promise.resolve([]);
+		return this.fetchLinkParsed('replies')
+			.then(x =>
+				thread(
+					[this].concat(x) //prevent a placeholder from being generated AND get the Thread-Links applied to "this"
+				)
+				[0][CHILDREN]
+			);
 	}
 };
