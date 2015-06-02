@@ -1,6 +1,6 @@
 import {EventEmitter} from 'events';
 
-import {parse, getModelByType} from '.';
+import {parse, getModelByType} from './';
 
 import getLinkImpl, {asMap as getLinksAsMap} from '../utils/getlink';
 import mixin from '../utils/mixin';
