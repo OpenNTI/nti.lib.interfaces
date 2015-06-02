@@ -252,7 +252,14 @@ export default class Base extends EventEmitter {
 
 	fetchLinkParsed (rel) {
 		return this.fetchLink(rel)
-			.then(x=> x.hasOwnProperty('Items') && !x.hasOwnProperty('MimeType') ? x.Items : x)
+			.then(x=> {
+				if (x.Items && !x.MimeType) {
+					if (x.Links) { console.warn('Dropping Collection Links'); }
+					x = x.Items;
+				}
+
+				return x;
+			})
 			.then(x=> this[Parser](x));
 	}
 
