@@ -3,15 +3,9 @@ import isEmpty from './isempty';
 export const PARENT = Symbol('Thread Links:Parent');
 export const CHILDREN = Symbol('Thread Links:Children');
 
+const identity = x => x;
 const GETTERS = {
-	Highlight: x => x,
-	Note: x => x,
-	TranscriptSummary: x => x.RoomInfo,
-	QuizResult: x => x,
-	CommentPost: x => x,
-	GeneralForumComment: x => x,
-	PersonalBlogComment: x => x,
-	ContentCommentPost: x => x
+	TranscriptSummary: x => x.RoomInfo
 };
 
 
@@ -103,7 +97,7 @@ export function buildItemTree (items, tree) {
 	}
 
 	list.forEach(function buildTree(r) {
-		let g = GETTERS[r.Class](r);
+		let g = (GETTERS[r.Class] || identity)(r);
 		let oid = g.getID(),
 			parent = g.inReplyTo;
 
