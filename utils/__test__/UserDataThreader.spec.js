@@ -5,7 +5,6 @@ describe('UserDataThreader utils', ()=> {
 
 	it('Makes public api available', ()=> {
 		expect(UserDataThreader.thread).toBeTruthy();
-		expect(UserDataThreader.buildThreads).toBeTruthy();
 	});
 
 	describe('Parenting works as expected', ()=> {

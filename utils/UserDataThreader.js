@@ -9,37 +9,47 @@ const GETTERS = {
 };
 
 
-//TODO unify this function with buildThreads into one function taking a list of userdata and returning a new list where
-// the threadable objects have been threaded.
-export function thread (d) {
-	let data = !Array.isArray(d) ? [d] : d,
-		tree = {};
+/**
+ * Given a set of Threadables, in the form of bins of arrays or just an array,
+ * this will return an array of Threadable trees.
+ *
+ * @param {object|array} data Something to thread. @see getData
+ *
+ * @return {array} An array of Threadable trees. (Threadables that are roots to their trees)
+ */
+export function thread (data) {
+	data = getData(data);
+	let tree = {};
 
-	if (data && data[0].isThreadable) {
+	if (data && data.every(x=> x.isThreadable)) {
 		buildItemTree(data, tree);
+		cleanupTree(tree);
+	}
+	else {
+		console.warn('Not all items in data were threadable', data);
 	}
 
-	cleanupTree(tree);
 
 	return Object.values(tree);
 }
 
+/**
+ * Returns an array of objects to thread.
+ *
+ * @param {object|array} data Can be a single Threadable, an array of Threadables, or bins of Threadables.
+ *
+ * @return {array} Objects ready to thread
+ */
+function getData (data) {
+	let isArray = Array.isArray(data);
+	let bins = !isArray && Object.keys(data);
+	let isBins = bins && bins.every(x => Array.isArray(data[x]));
 
-//Expects an object with keys to arrays of threadables.
-export function buildThreads (bins) {
-	let tree = {};
-
-	if (bins) {
-		for (let o of Object.values(bins)) {
-			if (o && o[0].isThreadable) {
-				buildItemTree(o, tree);
-			}
-		}
-
-		cleanupTree(tree);
-	}
-
-	return tree;
+	return isArray ?
+				data :
+				isBins ?
+					bins.reduce((o, x) => o.concat(x), []) :
+					[data];
 }
 
 
