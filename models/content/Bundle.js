@@ -96,4 +96,9 @@ export default class Bundle extends Base {
 
 			.then(tables => new TablesOfContents.fromIterable(tables, this[Service], this));
 	}
+
+
+	getPublicScope () {
+		return [];
+	}
 }

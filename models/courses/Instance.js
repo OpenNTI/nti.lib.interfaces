@@ -185,6 +185,30 @@ export default class Instance extends Base {
 
 		return Promise.resolve(root.resolve(url));
 	}
+
+
+	getPublicScope () { return this.getScope('Public'); }
+
+
+	getScope (scope) {
+		let s = (this.Scopes || {})[scope.toLowerCase()] || '';//Old...
+
+		/*
+		if (this.SharingScopes) {
+			s = this.SharingScopes;
+			s = s.getScope(scope);
+			if (s && typeof s !== 'string') {
+				s = s.NTIID;
+			}
+		}
+		*/
+
+		if (typeof s === 'string') {
+			s = s.split(' ');
+		}
+
+		return s.filter(v => v && v.length > 0);
+	}
 }
 
 

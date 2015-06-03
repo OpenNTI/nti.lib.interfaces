@@ -28,6 +28,11 @@ export default class Package extends Base {
 	}
 
 
+	getPublicScope () {
+		return [];
+	}
+
+
 	getPresentationProperties () {
 		return {
 			author: this.author,
