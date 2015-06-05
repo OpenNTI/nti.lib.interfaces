@@ -8,6 +8,24 @@ import {Service} from '../CommonSymbols';
 
 import {parseListFn} from './Library';
 
+
+/**
+ * A filter decision function.  Filters out non-"Top Level" items.
+ *
+ * @param {Model} item A User Generated Data model instance (Note, Highlight, etc)
+ * @param {string[]} ids All the IDs in the response.
+ *
+ * @return {boolean} Returns true if the item's references are not in the set of all ids.
+ */
+function topLevelOnly (item, ids) {
+	// I'm not convinced this will (in a single pass) filter out all non-top-level items.
+	// It has fixed my initial case. Must test further.
+	return item.references
+		.filter(x => ids.includes(x))
+		.length === 0;
+}
+
+
 export default class UserData extends EventEmitter {
 
 	constructor (service, rootContainerId, source) {
@@ -38,6 +56,12 @@ export default class UserData extends EventEmitter {
 			this.Items = {root: []};
 
 			let list = parseList(data.Items);
+
+			let ids = list.map(x => x.getID());
+			list = list.filter(x => topLevelOnly(x, ids));
+
+			this.OriginalTotal = this.Total;
+			this.Total = list.length;
 
 			for (let i of list) {
 				let binId = i.getContainerID ? i.getContainerID() : 'root';
