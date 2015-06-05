@@ -5,8 +5,8 @@ import QueryString from 'query-string';
 
 import request from '../utils/request';
 import logger from '../logger';
-
 import DataCache from '../utils/datacache';
+import MimeComparator from '../utils/MimeComparator';
 
 import isBrowser from '../utils/browser';
 import isEmpty from '../utils/isempty';
@@ -178,7 +178,8 @@ export default class DataServerInterface {
 				//Accept we check the Content-Type to see if that is what
 				//we get back.  If it's not, we reject.
 				if (mime) {
-					if (contentType && contentType.indexOf(mime) < 0) {
+					mime = new MimeComparator(mime);
+					if (!mime.is(contentType)) {
 						return reject('Requested with an explicit accept value of ' +
 										mime + ' but got ' + contentType + '.  Rejecting.');
 					}
