@@ -46,6 +46,18 @@ export default {
 	},
 
 
+	isTopLevel () {
+		let hasParent = !!this[PARENT];
+		let shouldHaveParent = this.inReplyTo != null;
+
+		if ((shouldHaveParent && !hasParent) || (!shouldHaveParent && hasParent)) {
+			console.warn('Weird');
+		}
+
+		return !shouldHaveParent && !hasParent;
+	},
+
+
 	getReplies () {
 		if (this[CHILDREN]) {
 			return Promise.resolve(this[CHILDREN]);
