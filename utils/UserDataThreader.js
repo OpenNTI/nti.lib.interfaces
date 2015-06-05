@@ -65,6 +65,9 @@ export function cleanupTree (tree) {
 						typeof o[CHILDREN] === 'object' ? Object.values(o[CHILDREN]) : void 0;
 
 		if (o[PARENT]) { delete tree[k]; }
+		if (o[CHILDREN].length === 0) {
+			delete o[CHILDREN];
+		}
 	}
 
 	prune(tree);

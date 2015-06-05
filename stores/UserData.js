@@ -1,6 +1,7 @@
 import {EventEmitter} from 'events';
 
 import mixin from '../utils/mixin';
+import {thread} from '../utils/UserDataThreader';
 
 import Pendability from '../models/mixins/Pendability';
 
@@ -23,6 +24,31 @@ function topLevelOnly (item, ids) {
 	return item.references
 		.filter(x => ids.includes(x))
 		.length === 0;
+}
+
+/**
+ * The user data comes back as a flat list. Relevant items from others, and all the current users.
+ * We perform a filter to remove extranious items that would be fetched by a 'replies' link, leaving
+ * only the nodes needed to generate a placeholder node.
+ *
+ * The purpose of this function is to reduce the list down to the un-threadable annotations (non-notes)
+ * and the Root notes...where a Root note may have been deleted and only its children remain. (hence
+ * threading will recreate the placeholder)
+ *
+ * @param {Annotation[]} list All the user data for a container.
+ *
+ * @return {Annotation[]} All the top-level user data, note rootes, and placeholder roots.
+ */
+function threadThreadables(list) {
+	let A = [], B = []; //To sets. Lets call A non-threadable, and B threadable.
+
+	for (let x of list) {
+		//separate the wheat from the chaff...
+		(x.isThreadable ? B : A).push(x);
+	}
+
+	//rejoin every body (after threading the threadables)
+	return A.concat(thread(B));
 }
 
 
@@ -63,9 +89,15 @@ export default class UserData extends EventEmitter {
 			this.OriginalTotal = this.Total;
 			this.Total = list.length;
 
+			//Sort into container bins.
 			for (let i of list) {
 				let binId = i.getContainerID ? i.getContainerID() : 'root';
 				bin(binId !== rootContainerId ? binId : 'root', i);
+			}
+
+			//merge some items under placeholders
+			for (let i of Object.keys(this.Items)) {
+				this.Items[i] = threadThreadables(this.Items[i]);
 			}
 
 			this.loaded = Date.now();
