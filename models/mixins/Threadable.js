@@ -71,8 +71,18 @@ export default {
 			return Promise.resolve(children);
 		}
 
-		return this.fetchLinkParsed('replies')
-			.then(x =>
+		let shouldRequest = this.hasLink('replies') && this.ReferencedByCount > 0;
+
+		//do not make a request that we know will probably fail or result in nothing.
+		let request = shouldRequest ?
+			this.fetchLinkParsed('replies') :
+			Promise.resolve();
+
+		return request.then(x =>
+				(!x || !x.length) ? //do we have replies?
+				[] : //no? resolve with empty list
+
+				//yes? thread.
 				thread(
 					[this].concat(x) //prevent a placeholder from being generated AND get the Thread-Links applied to "this"
 				)
