@@ -1,5 +1,5 @@
 import {Parser} from '../../CommonSymbols';
-import {thread, CHILDREN} from '../../utils/UserDataThreader';
+import {thread, CHILDREN, PARENT} from '../../utils/UserDataThreader';
 
 export default {
 	isThreadable: true,
@@ -59,8 +59,16 @@ export default {
 
 
 	getReplies () {
-		if (this[CHILDREN]) {
-			return Promise.resolve(this[CHILDREN]);
+		let children = this[CHILDREN];
+
+		if (this.placeholder) {
+			//If we're a placeholder, we need to aggregate the replies from our children.
+			//We want to wait on the children's getReplies, but we want to fulfill with OUR direct children.
+			return Promise.all(children.map(x => x.getReplies().then(() => x)));
+		}
+
+		if (children) {
+			return Promise.resolve(children);
 		}
 
 		return this.fetchLinkParsed('replies')
