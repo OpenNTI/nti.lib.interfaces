@@ -177,38 +177,42 @@ export default class Base extends EventEmitter {
 	}
 
 
-	refresh () {
-		return this[Service].getObject(this.getID())
-			.then(o => {
-				if (this.NTIID !== o.NTIID) {
-					throw new Error('Mismatch!');
-				}
+	refresh (newRaw) {
 
-				for(let prop in o) {
-					if (o.hasOwnProperty(prop)) {
+		let fetch = newRaw ?
+			Promise.resolve(newRaw) :
+			this[Service].getObject(this.getID());
 
-						let current = this[prop];
-						let value = o[prop];
-						//We will assume if its an array, that we should parse it.
-						if (current && (current[Service] || Array.isArray(current || value))) {
-							try {
-								value = this[Parser](value);
-							} catch(e) {
-								console.warn('Attempted to parse new value, and something went wrong... %o', e.stack || e.message || e);
-							}
+		return fetch.then(o => {
+			if (this.NTIID !== o.NTIID) {
+				throw new Error('Mismatch!');
+			}
+
+			for(let prop in o) {
+				if (o.hasOwnProperty(prop)) {
+
+					let current = this[prop];
+					let value = o[prop];
+					//We will assume if its an array, that we should parse it.
+					if (current && (current[Service] || Array.isArray(current || value))) {
+						try {
+							value = this[Parser](value);
+						} catch(e) {
+							console.warn('Attempted to parse new value, and something went wrong... %o', e.stack || e.message || e);
 						}
-
-						if (typeof current === 'function') {
-							throw new Error('a value was named as one of the methods on this model.');
-						}
-
-						this[prop] = value;
-
 					}
-				}
 
-				return this;
-			});
+					if (typeof current === 'function') {
+						throw new Error('a value was named as one of the methods on this model.');
+					}
+
+					this[prop] = value;
+
+				}
+			}
+
+			return this;
+		});
 
 	}
 
@@ -261,6 +265,16 @@ export default class Base extends EventEmitter {
 				return x;
 			})
 			.then(x=> this[Parser](x));
+	}
+
+
+	postToLink (rel, data) {
+		let link = this.getLink(rel);
+		if (!link) {
+			return Promise.reject('No Link');
+		}
+
+		return this[Service].post(link, data);
 	}
 
 
