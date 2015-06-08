@@ -1,5 +1,5 @@
 import Base from '../Base';
-// import {Parser} from '../../CommonSymbols';
+import {Service} from '../../CommonSymbols';
 
 function pluck(o, ...keys) {
 	let out = {NTIID: o.NTIID};
@@ -18,6 +18,11 @@ export default class Annotation extends Base {
 
 	getContainerID () {
 		return this.ContainerId;
+	}
+
+
+	getContextData () {
+		return this[Service].getParsedObject(this.getContainerID());
 	}
 
 
