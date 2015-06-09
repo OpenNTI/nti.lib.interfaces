@@ -1,9 +1,9 @@
-export const WATCH_VIDEO = 'application/vnd.nextthought.analytics.watchvideoevent';
-export const RESOURCE_VIEWED = 'application/vnd.nextthought.analytics.resourceevent';
-export const TOPIC_VIEWED = 'application/vnd.nextthought.analytics.topicviewevent';
-export const UNKNOWN_TYPE = 'application/vnd.nextthought.analytics.unknowntype';
 export const ASSIGNMENT_VIEWED = 'application/vnd.nextthought.analytics.assignmentviewevent';
+export const RESOURCE_VIEWED = 'application/vnd.nextthought.analytics.resourceevent';
 export const SELFASSESSMENT_VIEWED = 'application/vnd.nextthought.analytics.selfassessmentviewevent';
+export const TOPIC_VIEWED = 'application/vnd.nextthought.analytics.topicviewevent';
+export const WATCH_VIDEO = 'application/vnd.nextthought.analytics.watchvideoevent';
+export const UNKNOWN_TYPE = 'application/vnd.nextthought.analytics.unknowntype';
 
 let types = null;
 
