@@ -5,6 +5,7 @@ import User from './User';
 import Community from './Community';
 import PageInfo from './PageInfo';
 import Change from './Change';
+import MessageInfo from './MessageInfo';
 
 import Highlight from './annotations/Highlight';
 import Note from './annotations/Note';
@@ -279,7 +280,7 @@ const PARSERS = {
 	'contentrange.transcriptcontentpointer': TranscriptContentPointer,
 	'contentrange.transcriptrangedescription': TranscriptRangeDescription,
 
-	'messageinfo': null,//Need To Model
+	'messageinfo': MessageInfo,
 	'openbadges.badge': null,//Need To Model
 
 	'store.priceditem': PricedItem,
