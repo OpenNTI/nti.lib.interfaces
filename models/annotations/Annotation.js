@@ -40,4 +40,21 @@ export default class Annotation extends Base {
 			.then(o => this.refresh(pluck(o, 'Links')))
 			.then(() => this.onChange('favorite'));
 	}
+
+
+	flag () {
+		let link = this.hasLink('flag') ?
+			'flag' :
+			this.hasLink('flag.metoo') ?
+				'flag.metoo' :
+				null;
+
+		if (!link) {
+			return Promise.reject('No Link');
+		}
+
+		return this.postToLink(link)
+			.then(o => this.refresh(pluck(o, 'Links')))
+			.then(() => this.onChange('flag'));
+	}
 }
