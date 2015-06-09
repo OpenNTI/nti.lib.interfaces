@@ -90,6 +90,8 @@ import ForumsForum from './forums/Forum';
 import ForumsPost from './forums/Post';
 import ForumsComment from './forums/Comment';
 
+import AssessmentEvent from './analytics/AssessmentEvent';
+import AssignmentEvent from './analytics/AssignmentEvent';
 import ResourceEvent from './analytics/ResourceEvent';
 import ExternalResourceEvent from './analytics/ExternalResourceEvent';
 import TopicViewedEvent from './analytics/TopicViewedEvent';
@@ -126,6 +128,8 @@ const PARSERS = {
 	'videoindex-pagesource': VideoIndexBackedPageSource,
 
 	'analytics.externalresourceevent': ExternalResourceEvent,
+	'analytics.assessmentevent': AssessmentEvent,
+	'analytics.assignmentevent': AssignmentEvent,
 	'analytics.resourceevent': ResourceEvent,
 	'analytics.topicviewevent': TopicViewedEvent,
 	'analytics.watchvideoevent': WatchVideoEvent,
