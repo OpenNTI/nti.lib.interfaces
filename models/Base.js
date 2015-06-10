@@ -104,6 +104,18 @@ export default class Base extends EventEmitter {
 		let name = y || x;
 		let value = scope[x];
 
+		function deprecated () {
+			let m = 'There is a new accessor to use instead.';
+
+			if (typeof name === 'string') {
+				m = `Use ${name} instead.`;
+			}
+
+			m = new Error(`Access to ${x} is deprecated. ${m}`);
+			console.error(m.stack || m.message || m);
+			return scope[name];
+		}
+
 		if (scope[name] && x !== name) {
 			console.warn('%s is already defined.', name);
 			return;
@@ -112,24 +124,18 @@ export default class Base extends EventEmitter {
 		delete scope[x];
 
 		Object.defineProperty(scope, name, {
+			configurable: true,
 			enumerable,
 			writable: false,
 			value
 		});
 
 		if (x !== name) {
+			deprecated.renamedTo = name;
+
 			Object.defineProperty(scope, x, {
 				enumerable: false,
-				get () {
-					let m = 'There is a new accessor to use instead.';
-
-					if (typeof name === 'string') {
-						m = `Use ${name} instead.`;
-					}
-					m = new Error(`Access to ${x} is deprecated. ${m}`);
-					console.error(m.stack || m.message || m);
-					return scope[name];
-				}
+				get: deprecated
 			});
 		}
 	}
@@ -188,13 +194,51 @@ export default class Base extends EventEmitter {
 				throw new Error('Mismatch!');
 			}
 
+			const MightBeModel = x=> !x || !!x[Service];
+			const Objects = x=> typeof x === 'object';
+
 			for(let prop in o) {
 				if (o.hasOwnProperty(prop)) {
+					let value = o[prop];
+
+					//The property may have been remapped...
+					let desc = Object.getOwnPropertyDescriptor(this, prop);
+					let {renamedTo} = (desc || {}).get || {};
+					if (desc && renamedTo) {
+						prop = renamedTo;
+					}
 
 					let current = this[prop];
-					let value = o[prop];
-					//We will assume if its an array, that we should parse it.
-					if (current && (current[Service] || Array.isArray(current || value))) {
+
+					if (current === value) {
+						continue;
+					}
+
+					//If the current value is truthy, and Model-like, then declare it to be a Model.
+					let currentIsModel = current && MightBeModel(current);
+
+					let currentMightBeListOfModels =
+						current == null || //If the current value is empty, we cannot presume... the new value should shed some light.
+						(Array.isArray(current) && current.every(MightBeModel)); //If the current value is an array, and each element of the array is Model-like...
+						//then the current value Might be a list of models...
+
+					//Lets inspect the new value...
+					let newValueIsArrayOfObjects =
+						Array.isArray(value) && //If its an array,
+						value.length > 0 && // and its length is greater than zero (there are things in it)
+						value.every(Objects); // and every element is an Object
+						//then the new value sould be parsed... as long as the current value is also parsed.
+
+					//So, should we parse?
+					if (
+						//if the current value was a model,
+						currentIsModel ||
+						(
+							//or the current value was unset, or a list of Models,
+							currentMightBeListOfModels &&
+							newValueIsArrayOfObjects//and our new value is a list of objects...
+						)
+					) {// then, yes... parse
 						try {
 							value = this[Parser](value);
 						} catch(e) {
@@ -206,8 +250,15 @@ export default class Base extends EventEmitter {
 						throw new Error('a value was named as one of the methods on this model.');
 					}
 
-					this[prop] = value;
+					desc = Object.getOwnPropertyDescriptor(this, prop);
+					if (desc && !desc.writable) {
+						delete this[prop];
+						desc.value = value;
 
+						Object.defineProperty(this, prop, desc);
+					} else {
+						this[prop] = value;
+					}
 				}
 			}
 
