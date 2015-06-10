@@ -86,7 +86,9 @@ export default class Base extends EventEmitter {
 			this[methodName] = dateGetter(fieldName);
 		}
 
-		this[TakeOver]('Creator', 'creator');
+		if (this.hasOwnProperty('Creator')) {
+			this[TakeOver]('Creator', 'creator');
+		}
 	}
 
 
