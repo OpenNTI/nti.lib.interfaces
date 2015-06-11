@@ -173,7 +173,7 @@ export function encodeForURI(ntiid) {
 export function decodeFromURI(component) {
 	let ntiid = decodeURIComponent(component);
 
-	if (!isNTIID(ntiid) && ntiid.substr(0, 3) !== 'tag') {
+	if (!isNTIID(ntiid) && ntiid.substr(0, 3) !== 'tag' && ntiid.length > 0) {
 		ntiid = COMMON_PREFIX + ntiid;
 	}
 
