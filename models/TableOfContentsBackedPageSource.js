@@ -5,16 +5,11 @@ import {encodeForURI as encodeNTIIDForURI} from '../utils/ntiids';
 const Service = Symbol.for('Service');
 
 
-function buildRef(node, root) {
+function buildRef(node/*, root*/) {
 	return node && {
 		ntiid: node.get('ntiid'),
 		title: node.get('label'),
-		// Lets not make paths longer than they have to...
-		// The pattern will be the view is prefixed with the root in the slug.
-		// Adding a page id at the end would be redundant. The "Root" is the
-		// "default" pageId.
-		ref: node === root ?
-			'/' : encodeNTIIDForURI(node.get('ntiid'))
+		ref: encodeNTIIDForURI(node.get('ntiid'))
 	};
 }
 
