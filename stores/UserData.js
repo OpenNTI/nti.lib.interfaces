@@ -21,9 +21,10 @@ import {parseListFn} from './Library';
 function topLevelOnly (item, ids) {
 	// I'm not convinced this will (in a single pass) filter out all non-top-level items.
 	// It has fixed my initial case. Must test further.
-	return item.references
+	return item && (!item.references || item.references
 		.filter(x => ids.includes(x))
-		.length === 0;
+		.length === 0
+		);
 }
 
 /**
