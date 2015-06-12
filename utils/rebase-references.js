@@ -13,9 +13,6 @@ export function bustCorsForResources(string, name, value) {
 	//referenceing resources.  We ignore urls with a protocol or protcolless
 	//absolute urls (//).  We look for relative urls rooted at resources.
 	//or absolute urls whose first folder is resources.
-	//TODO Processing html with a regex is stupid
-	//consider parsing and using selectors here instead.  Note
-	//we omit things that contain query strings here
 
 	return string.replace(CORS_BUSTER_REGEX,
 		(original, attr, url) =>
