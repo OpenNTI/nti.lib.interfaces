@@ -352,11 +352,11 @@ export default class Base extends EventEmitter {
 	parent (...query) {
 		let p = this[Parent];
 
-		if (p && (query.length === 0 || p[is](...query))) {
+		if (p && (query.length === 0 || (p[is] && p[is](...query)))) {
 			return p;
 		}
 
-		return p && p.parent(...query);
+		return p && p.parent && p.parent(...query);
 	}
 
 
@@ -378,7 +378,7 @@ export default class Base extends EventEmitter {
 		if (p && p.parents) {
 
 			matches = p.parents(...query);
-			if (query.length === 0 || p[is](...query)) {
+			if (query.length === 0 || (p[is] && p[is](...query))) {
 				matches.push(p);
 			}
 		}
