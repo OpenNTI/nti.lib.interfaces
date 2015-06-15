@@ -60,6 +60,10 @@ export default class ServiceDocument {
 			return inflight[key];
 		}
 
+		if (!url || url === '') {
+			return Promise.reject('No URL');
+		}
+
 		function clean() {
 			delete inflight[key];
 		}
