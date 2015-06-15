@@ -15,11 +15,10 @@ export default {
 									.replace(/\/AssignmentHistories.*/, '');
 
 		let assignmentId = this.AssignmentId;
-		let a, b, result;
 
 
 		//If this model has an assignment parent model instance,
-		a = this.parent('MimeType', /assessment.assignment$/i);
+		let a = this.parent('MimeType', /assessment.assignment$/i);
 		a = (a ?
 		//... the assignment title is already known... use it.
 			Promise.resolve(a) :
@@ -34,20 +33,22 @@ export default {
 
 		//This is really dirty (IMO),
 		//TODO: Find a better way to resolve the "Course Name"
-		b = service.get(courseInstanceUrl).then(courseInstanceData =>
-				//OMG, ICK! Yet another request...
-				service.get(getLink(courseInstanceData, 'CourseCatalogEntry'))
-			)
+		let b = !courseInstanceUrl
 
-			//Okay, the scary part is over! just grab what we need and run.
-			.then(catalogEntryData =>
-				this.CourseName = catalogEntryData.Title);
+			? Promise.resolve('No Course URL')
+			: (
+				service.get(courseInstanceUrl).then(courseInstanceData =>
+					//OMG, ICK! Yet another request...
+					service.get(getLink(courseInstanceData, 'CourseCatalogEntry'))
+				)
+				//Okay, the scary part is over! just grab what we need and run.
+				.then(catalogEntryData => this.CourseName = catalogEntryData.Title)
+			);
 
 
 		//Wait on the two async operations (a and b), then fire a change
 		// event so views know values changed.
-		result = Promise.all([a, b])
-			.then(()=>this.emit('change'));
+		let result = Promise.all([a, b]).then(()=>this.emit('change'));
 
 		this.addToPending(result);
 	}
