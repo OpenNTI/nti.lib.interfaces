@@ -13,8 +13,23 @@ export default class User extends Base {
 	}
 
 
-	get DisplayName () {
+	get avatar () {
+		return this.avatarURL;
+	}
+
+
+	get displayName () {
 		return this.alias || this.realname || this.Username;
+	}
+
+
+	get firstName () { return this.NonI18NFirstName; }
+	get lastName () { return this.NonI18NLastName; }
+
+
+	get initials () {
+		let {firstName, lastName} = this;
+		return (firstName && lastName) ? `${firstName[0]}${lastName[0]}` : null;
 	}
 
 
