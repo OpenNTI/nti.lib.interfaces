@@ -376,11 +376,11 @@ export default class ServiceDocument {
 	}
 
 
-	getContainerURL (ntiid) {
+	getContainerURL (ntiid, postfix) {
 		let base = this.getResolveAppUserURL();
 		let pageURI = encodeURIComponent(`Pages(${ntiid})`);
 
-		return joinWithURL(base, pageURI);
+		return joinWithURL(base, pageURI, postfix || '');
 	}
 
 
