@@ -103,6 +103,7 @@ export default class UserData extends EventEmitter {
 
 			this.loaded = Date.now();
 			this.emit('load', this, `${(this.loaded - start)}ms`);
+			this.emit('change', this);
 		});
 
 		this.addToPending(load);
