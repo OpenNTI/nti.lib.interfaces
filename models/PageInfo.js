@@ -12,6 +12,8 @@ import {Service, Pending, Parser as parse} from '../CommonSymbols';
 
 import UserDataStore from '../stores/UserData';
 
+const NOT_FOUND = {statusCode: 404, message: 'Not Found'};
+
 const UserData = Symbol('UserData');
 
 export default class PageInfo extends Base {
@@ -91,7 +93,8 @@ export default class PageInfo extends Base {
 		url.search = QueryString.stringify(o);
 
 		return this.getResource(url.format())
-			.then(objects=>this[parse](objects.Items[0]));
+			.then(objects=> objects.Items[0] || Promise.reject(NOT_FOUND))
+			.then(this[parse].bind(this));
 	}
 
 
