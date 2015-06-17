@@ -8,12 +8,13 @@ export default {
 		for (let k of Object.keys(this)) {
 			let v = this[k];
 			if (v !== void undefined && !isFunction(v)) {
-
+				let translator = `translate:${v}`;
 				if (v && isFunction(v.getData)) {
 					v = v.getData();
 				}
 
-				d[k] = v;
+				d[k] = (d[translator] && isFunction(d[translator]))
+					? d[translator](v) : v;
 			}
 		}
 
