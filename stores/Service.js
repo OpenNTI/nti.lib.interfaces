@@ -237,7 +237,7 @@ export default class ServiceDocument {
 		else {
 			result = this.get(this.getResolveUserURL(username))
 				.then(data => {
-					let items = data.Items || [data];
+					let items = data.Items || (data.MimeType ? [data] : []);
 					let user = items.reduce((u, d) => u || (d.Username === username && d), null);
 
 					cache.set(key, user);
