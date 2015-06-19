@@ -122,7 +122,7 @@ export default class StripeInterface {
 
 
 			function check() {
-				console.warn('URI Encoding purchase id for polling to work with broken server.');
+				//URI Encoding purchase id for polling to work with broken server.
 				let params = '?purchaseId=' + encodeURIComponent(purchaseId);
 
 				if (creator) {
