@@ -84,7 +84,7 @@ export default class DataServerInterface {
 			opts.headers = Object.assign( true, ((options || {}).headers || {}), {
 				//Always override these headers
 				'accept': mime || 'application/json',
-				'x-requested-with': 'XMLHttpRequest'
+				'X-Requested-With': 'XMLHttpRequest'
 			});
 		}
 
