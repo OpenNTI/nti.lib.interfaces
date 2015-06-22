@@ -1,5 +1,9 @@
 import isFunction from '../../utils/isfunction';
 
+const BLACK_LISTED = {
+	_events: true
+};
+
 export default {
 
 	getData () {
@@ -7,7 +11,7 @@ export default {
 
 		for (let k of Object.keys(this)) {
 			let v = this[k];
-			if (v !== void undefined && !isFunction(v)) {
+			if (v !== void undefined && !BLACK_LISTED[v] && !isFunction(v)) {
 				let translator = `translate:${v}`;
 				if (v && isFunction(v.getData)) {
 					v = v.getData();
