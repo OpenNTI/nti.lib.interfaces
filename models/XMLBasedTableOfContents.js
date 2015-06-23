@@ -29,7 +29,7 @@ function cleanNodes(x, o) {
 }
 
 
-export default class TableOfContents extends Base {
+export default class XMLBasedTableOfContents extends Base {
 
 	constructor (service, parent, data, title) {
 		super(service, parent, null);
@@ -81,7 +81,11 @@ export default class TableOfContents extends Base {
 
 
 	getPageSource (rootId) {
-		return new PageSource(this, rootId);
+		try {
+			return new PageSource(this, rootId);
+		} catch (e) {
+			return null;
+		}
 	}
 
 
