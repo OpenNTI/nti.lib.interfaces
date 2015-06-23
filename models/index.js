@@ -7,6 +7,8 @@ import PageInfo from './PageInfo';
 import Change from './Change';
 import MessageInfo from './MessageInfo';
 
+import RelatedWorkReference from './RelatedWorkReference';
+
 import Highlight from './annotations/Highlight';
 import Note from './annotations/Note';
 import Redaction from './annotations/Redaction';
@@ -125,6 +127,8 @@ const PARSERS = {
 	'mediasource': MediaSource,
 	'video': Video,
 	'ntivideo': 'video',
+
+	'relatedworkref': RelatedWorkReference,
 
 	'videoindex-pagesource': VideoIndexBackedPageSource,
 
