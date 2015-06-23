@@ -18,21 +18,23 @@ export default class TableOfContentsBackedPageSource extends Base{
 	constructor (ToC, root) {
 		super(ToC[Service], ToC);
 
-		this.root = ToC.getNode(root);
+		if (!root) {
+			root = ToC.root.id;
+		}
 
-		try {
-			this.pagesInRange = this.root.flatten().filter(suppressed);
+		this.root = ToC.getNode(root);
+		if (!this.root) {
+			throw new Error(`The root "${root}" does not exist in the ToC`);
 		}
-		catch(e) {
-			console.error(e.stack || e.message || e);
-			throw e;
-		}
+
+		this.pagesInRange = this.root.flatten().filter(suppressed);
 	}
 
 
 	getPagesAround (pageId) {
 		let query = './/*[@ntiid="' + pageId + '"]';
 		let {root} = this;
+
 		let node = root.find(query) || (root.get('ntiid') === pageId && root);
 		let nodes = this.pagesInRange;
 
@@ -42,7 +44,7 @@ export default class TableOfContentsBackedPageSource extends Base{
 		let prev = nodes[index - 1];
 
 		return {
-			total: nodes.length,
+		total: nodes.length,
 			index: index,
 			next: buildRef(next, root),
 			prev: buildRef(prev, root)
