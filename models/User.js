@@ -28,8 +28,8 @@ export default class User extends Base {
 
 
 	get initials () {
-		let {firstName, lastName} = this;
-		return (firstName && lastName) ? `${firstName[0]}${lastName[0]}` : null;
+		let {displayName, firstName, lastName} = this;
+		return (firstName && lastName) ? `${firstName[0]}${lastName[0]}` : displayName[0];
 	}
 
 
