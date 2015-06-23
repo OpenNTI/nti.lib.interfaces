@@ -69,7 +69,7 @@ function getRelatedWorkProps(node) {
 	return {
 		MimeType: 'application/vnd.nextthought.relatedworkref',
 		creator: node.get('creator'),
-		desc: node.get('desc'),
+		description: node.get('desc'),
 		href: node.get('href'),
 		icon: node.get('icon'),
 		'target-NTIID': node.get('target-ntiid'),
