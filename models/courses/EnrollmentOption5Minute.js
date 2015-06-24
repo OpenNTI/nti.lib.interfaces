@@ -17,6 +17,10 @@ export default class EnrollmentOption5Minute extends EnrollmentOption {
 		rename('OU_AllowVendorUpdates', 'allowVendorUpdates(ou)');
 
 		// console.log('Enrollment Option (5M):', this);
+
+		if (this.getEnrollCutOffDate() < Date.now()) {
+			this.available = false;
+		}
 	}
 
 
