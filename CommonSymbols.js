@@ -11,3 +11,6 @@ export const Parser = Symbol('Parser');
 export const Pending = Symbol.for('PendingRequests');
 export const SiteName = Symbol.for('nti:site-name');
 export const ServiceStash = Symbol.for('nti:service');
+
+export const Progress = Symbol.for('Progress');
+export const Summary = Symbol('Container-Summary');

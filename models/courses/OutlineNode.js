@@ -1,5 +1,5 @@
 import Outline from './Outline';
-import {Parser as parse} from '../../CommonSymbols';
+import {Progress, Summary, Parser as parse} from '../../CommonSymbols';
 
 import path from 'path';
 
@@ -9,8 +9,6 @@ import {encodeForURI} from '../../utils/ntiids';
 import emptyFunction from '../../utils/empty-function';
 
 let emptyCourseObject = {getID: emptyFunction};
-
-const Progress = Symbol.for('Progress');
 
 function getCourse (node) {
 	return node.root.parent();
@@ -101,11 +99,11 @@ export default class OutlineNode extends Outline {
 			this.fetchLink(link).then(collateVideo) :
 			getContentFallback(this);
 
-		return Promise.all([this.getProgress(), getContent])
+		return Promise.all([this.getProgress(), this.getSummary(), getContent])
 			.then(progressAndContent=> {
-				let [progress, content] = progressAndContent;
+				let [progress, summary, content] = progressAndContent;
 
-				applyProgress(content, progress);
+				applyProgressAndSummary(content, progress, summary);
 
 				return content;
 			});
@@ -120,6 +118,17 @@ export default class OutlineNode extends Outline {
 		}
 
 		return this.fetchLinkParsed(link);
+	}
+
+
+	getSummary () {
+		let link = 'overview-summary';
+
+		if (!this.hasLink(link)) {
+			return Promise.resolve(null);
+		}
+
+		return this.fetchLink(link);
 	}
 }
 
@@ -157,7 +166,7 @@ function collateVideo(json) {
 }
 
 
-function applyProgress(content, progress) {
+function applyProgressAndSummary(content, progress, summary) {
 	if (!content) { return; }
 
 	function findWithFuzzyKey (c, key) {
@@ -171,16 +180,22 @@ function applyProgress(content, progress) {
 
 	let [a, b] = ['Target-NTIID', 'NTIID']
 				.map(key=> findWithFuzzyKey(content, key))
-				.map(id=> id && progress.getProgress(id));
+				.map(id=> id && [progress.getProgress(id), (summary || {})[id]])
+				//ensure empty results reduce down to falsy...since an array of [null, null] is truthy.
+				.map(x => x && (x[0] || x[1]) && x);
 
-	let nodeProgress = a || b;
+	let [nodeProgress, summaryData] = (a || b || []);
 
 	if (nodeProgress != null) {
 		content[Progress] = nodeProgress;
 	}
 
+	if (summaryData != null) {
+		content[Summary] = summaryData;
+	}
+
 	if (Array.isArray(content.Items)) {
-		content.Items.forEach(item=>applyProgress(item, progress));
+		content.Items.forEach(item=>applyProgressAndSummary(item, progress, summary));
 	}
 }
 
