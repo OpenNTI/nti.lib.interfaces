@@ -1,3 +1,4 @@
+import * as CommonSymbols from './CommonSymbols';
 import Session from './session';
 import Interface from './interface';
 import cache from './utils/datacache';
@@ -18,6 +19,8 @@ export default function(config) {
 		session: new Session(i)
 	};
 }
+
+export {CommonSymbols};
 
 export function getModel (...args) {
 	return lookup(...args);
