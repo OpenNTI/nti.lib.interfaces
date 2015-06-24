@@ -190,8 +190,8 @@ function applyProgressAndSummary(content, progress, summary) {
 		content[Progress] = nodeProgress;
 	}
 
-	if (summaryData != null) {
-		content[Summary] = summaryData;
+	if (summary != null) {
+		content[Summary] = summaryData || {ItemCount: 0};
 	}
 
 	if (Array.isArray(content.Items)) {
