@@ -9,6 +9,10 @@ import MessageInfo from './MessageInfo';
 
 import RelatedWorkReference from './RelatedWorkReference';
 
+// profile
+import ProfessionalPosition from './profile/ProfessionalPosition';
+import Education from './profile/Education';
+
 import Highlight from './annotations/Highlight';
 import Note from './annotations/Note';
 import Redaction from './annotations/Redaction';
@@ -291,6 +295,10 @@ const PARSERS = {
 
 	'messageinfo': MessageInfo,
 	'openbadges.badge': null,//Need To Model
+
+	// profile
+	'professionalposition': ProfessionalPosition,
+	'education': Education,
 
 	'store.priceditem': PricedItem,
 	'store.pricingresults': PricingResults,

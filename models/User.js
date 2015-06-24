@@ -10,8 +10,9 @@ export default class User extends Base {
 		super(service, null, data);
 
 		this[parse]('Communities');
+		this[parse]('positions');
+		this[parse]('education');
 	}
-
 
 	get avatar () {
 		return this.avatarURL;

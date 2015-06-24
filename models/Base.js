@@ -91,6 +91,11 @@ export default class Base extends EventEmitter {
 		}
 	}
 
+	ensureProperty(name, isRequired, type) {
+		if(isRequired && !this[name] || typeof this[name] !== type) {
+			throw new TypeError('Property constraints not met for field:' + name );
+		}
+	}
 
 	[DateFields] () {
 		return [
