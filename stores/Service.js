@@ -348,31 +348,44 @@ export default class ServiceDocument {
 	 *
 	 * @param {string} mimeType The mimetype of what we're looking for
 	 * @param {string} [title] Optionally, restrict by title
+	 * @param {array} [tryScopes] Optionally, pick a destination from contextual scopes. Treat as a stack!
 	 * @returns {object} the collection
 	 */
-	getCollectionFor (mimeType, title) {
-		let result = null,
-			items = this.Items || [];
+	getCollectionFor (mimeType, title, tryScopes) {
+		let items = this.Items || [];
+		let Pages = x => x && x.rel === 'Pages';
 
 		if (mimeType && typeof mimeType !== 'string') {
 			mimeType = mimeType.MimeType;
 		}
 
-		items.every(workspace => {
-			(workspace.Items || []).every(collection => {
+		//tryScopes is treated as a stack, so the top of the stack is at the end of the
+		//array...for iterating, reverse the array.
+		tryScopes = (tryScopes || []).slice().reverse();
+
+		for(let scope of tryScopes) {
+			let link = ((scope || {}).Links || []).find(Pages);
+			if (link /*&& link.accepts(mimeType)*/) {
+				return link;
+			}
+		}
+
+		for (let workspace of items) {
+			for(let collection of (workspace.Items || [])) {
+
+				//TODO: make the Collection an official model and turn accepts into a method that returns boolean.
+				//if (collection.accepts(mimeType)) {
 				if (collection.accepts.indexOf(mimeType) > -1) {
+
 					if (!title || collection.Title === title) {
-						result = collection;
+						return collection;
 					}
+
 				}
+			}
+		}
 
-				return !result;
-			});
-
-			return !result;
-		});
-
-		return result;
+		return void 0;
 	}
 
 
