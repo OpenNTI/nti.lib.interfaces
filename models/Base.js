@@ -23,6 +23,11 @@ import parseDate from '../utils/parse-date';
 
 let CONTENT_VISIBILITY_MAP = {OU: 'OUID'};
 
+function GenEnumerabilityOf (obj, propName) {
+	let desc = obj && Object.getOwnPropertyDescriptor(obj, propName);
+	return desc && desc.enumerable;
+}
+
 function dateGetter(key) {
 	const symbol = Symbol.for(`parsedDate:${key}`);
 	return function () {
@@ -51,7 +56,7 @@ function doParse(parent, data) {
 const PASCAL_CASE_REGEX = /(?:^|[^a-z0-9])([a-z0-9])?/igm;
 
 const TakeOver = Symbol.for('TakeOver');
-
+const SetProtectedProperty = Symbol.for('SetProtectedProperty');
 const is = Symbol('isTest');
 
 export default class Base extends EventEmitter {
@@ -130,12 +135,7 @@ export default class Base extends EventEmitter {
 
 		delete scope[x];
 
-		Object.defineProperty(scope, name, {
-			configurable: true,
-			enumerable,
-			writable: false,
-			value
-		});
+		this[SetProtectedProperty](name, value, scope, enumerable);
 
 		if (x !== name) {
 			deprecated.renamedTo = name;
@@ -145,6 +145,16 @@ export default class Base extends EventEmitter {
 				get: deprecated
 			});
 		}
+	}
+
+
+	[SetProtectedProperty] (name, value, scope = this, enumerable = GenEnumerabilityOf(scope, name)) {
+		Object.defineProperty(scope, name, {
+			configurable: true,
+			enumerable,
+			writable: false,
+			value
+		});
 	}
 
 
