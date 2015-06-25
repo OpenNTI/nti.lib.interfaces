@@ -1,9 +1,9 @@
 import Base from '../Base';
 
-export default class Education extends Base {
+export default class EducationalExperience extends Base {
 
 	static newFrom(data) {
-		return new Education(null, null, data);
+		return new EducationalExperience(null, null, data);
 	}
 
 	constructor (service, parent, data) {
