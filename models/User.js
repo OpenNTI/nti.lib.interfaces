@@ -45,4 +45,12 @@ export default class User extends Base {
 		let list = this.Communities;
 		return excludeGroups ? list.filter(ONLY_COMMUNITIES) : list;
 	}
+
+	getActivity () {
+		let link = this.getLink('Activity');
+		if (!link) {
+			return Promise.reject('No Activity link.');
+		}
+		return this.fetchLinkParsed('Activity');
+	}
 }
