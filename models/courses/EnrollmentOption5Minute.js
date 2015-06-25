@@ -5,6 +5,7 @@ import {
 } from '../../CommonSymbols';
 
 const TakeOver = Symbol.for('TakeOver');
+const SetProtectedProperty = Symbol.for('SetProtectedProperty');
 
 export default class EnrollmentOption5Minute extends EnrollmentOption {
 	constructor (service, parent, data) {
@@ -18,8 +19,8 @@ export default class EnrollmentOption5Minute extends EnrollmentOption {
 
 		// console.log('Enrollment Option (5M):', this);
 
-		if (this.getEnrollCutOffDate() < Date.now()) {
-			this.available = false;
+		if (this.available && this.getEnrollCutOffDate() < Date.now()) {
+			this[SetProtectedProperty]('available', false);
 		}
 	}
 
