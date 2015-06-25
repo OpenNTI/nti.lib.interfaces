@@ -11,7 +11,7 @@ import RelatedWorkReference from './RelatedWorkReference';
 
 // profile
 import ProfessionalPosition from './profile/ProfessionalPosition';
-import Education from './profile/Education';
+import EducationalExperience from './profile/EducationalExperience';
 
 import Highlight from './annotations/Highlight';
 import Note from './annotations/Note';
@@ -297,8 +297,9 @@ const PARSERS = {
 	'openbadges.badge': null,//Need To Model
 
 	// profile
-	'professionalposition': ProfessionalPosition,
-	'education': Education,
+	'profile.professionalposition': ProfessionalPosition,
+	'profile.educationalexperiance': EducationalExperience,
+	'profile.educationalexperience': EducationalExperience,
 
 	'store.priceditem': PricedItem,
 	'store.pricingresults': PricingResults,
