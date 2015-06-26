@@ -1,6 +1,8 @@
 import Base from './Base';
 
-import { Parser as parse } from '../CommonSymbols';
+import Achievements from '../stores/Achievements';
+
+import { Service, Parser as parse } from '../CommonSymbols';
 
 const ONLY_COMMUNITIES = x => x.isCommunity;
 
@@ -34,6 +36,24 @@ export default class User extends Base {
 	}
 
 
+	getAchievements () {
+		if (!this.hasLink('Badges')) {
+			return Promise.reject('Badges not available');
+		}
+
+		return this.fetchLink('Badges')
+			.then(workspace => new Achievements(this[Service], this, workspace));
+	}
+
+
+	getActivity () {
+		if (!this.hasLink('Activity')) {
+			return Promise.reject('No Activity link.');
+		}
+		return this.fetchLinkParsed('Activity');
+	}
+
+
 	/**
 	 * Get the communities this user is a member of.
 	 *
@@ -44,13 +64,5 @@ export default class User extends Base {
 	getCommunities (excludeGroups) {
 		let list = this.Communities;
 		return excludeGroups ? list.filter(ONLY_COMMUNITIES) : list;
-	}
-
-	getActivity () {
-		let link = this.getLink('Activity');
-		if (!link) {
-			return Promise.reject('No Activity link.');
-		}
-		return this.fetchLinkParsed('Activity');
 	}
 }
