@@ -143,6 +143,10 @@ export default class Instance extends Base {
 
 	getVideoIndex () {
 
+		function combine(list) {
+			return !list || list.length === 0 ? null : list.reduce((a, b)=> a.combine(b));
+		}
+
 		function getForNode(node, index, output) {
 			let id = node.getID();
 
@@ -162,8 +166,7 @@ export default class Instance extends Base {
 			this.getOutline(),
 			Promise.all(
 				this.ContentPackageBundle.map(pkg=>pkg.getVideoIndex()))
-					.then(indices =>
-						indices.reduce((a, b) =>a.combine(b), []))
+					.then(indices => combine(indices))
 		])
 			.then(outlineAndRawIndex => {
 				let [outline, index] = outlineAndRawIndex;
@@ -171,8 +174,7 @@ export default class Instance extends Base {
 
 				getForNode(outline, index, slices);
 
-				return slices.reduce((a, b)=> a.combine(b), []);
-				// return index;
+				return combine(slices);
 			});
 	}
 
