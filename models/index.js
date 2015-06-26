@@ -129,6 +129,7 @@ const PARSERS = {
 	'ContentPackageBundle': ContentBundle,
 
 	'mediasource': MediaSource,
+	'videosource': MediaSource,
 	'video': Video,
 	'ntivideo': 'video',
 
