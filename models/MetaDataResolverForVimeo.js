@@ -2,6 +2,8 @@
 //const URL = '//vimeo.com/api/v2/video/{0}.json',
 const URL = '//vimeo.com/api/oembed.json?url=http%3A//vimeo.com/{0}';
 
+const FAIL = 'data:,';
+
 export default class MetaDataResolverForVimeo {
 
 	static resolve (service, source) {
@@ -15,7 +17,12 @@ export default class MetaDataResolverForVimeo {
 						poster: o.thumbnail_url,
 						thumbnail: o.thumbnail_url
 					})
-				);
+				)
+				.catch(failure => ({
+					failure,
+					poster: FAIL,
+					thumbnail: FAIL
+				}));
 
 		/*
 		author_name: "Oklahoma State University"
