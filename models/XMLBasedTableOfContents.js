@@ -34,9 +34,17 @@ export default class XMLBasedTableOfContents extends Base {
 	constructor (service, parent, data, title) {
 		super(service, parent, null);
 
-		this.title = title;
-		this.xml = XML.parse(data);
-		this.root = new Node(this, this.xml.getroot(), this);
+		let {numbering, toc = {}} = (parent || {}).PresentationProperties || {};
+
+		let xml = XML.parse(data);
+
+		Object.assign(this, {
+			MAX_LEVEL: toc['max-level'] || Infinity,
+			numbering,
+			title,
+			xml,
+			root: new Node(this, xml.getroot(), this)
+		});
 
 		cleanNodes(this.xml, this);
 	}
