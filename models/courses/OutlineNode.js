@@ -180,7 +180,7 @@ function applyProgressAndSummary(content, progress, summary) {
 
 	let [a, b] = ['Target-NTIID', 'NTIID']
 				.map(key=> findWithFuzzyKey(content, key))
-				.map(id=> id && [progress.getProgress(id), (summary || {})[id]])
+				.map(id=> id && [(progress && progress.getProgress(id)), (summary || {})[id]])
 				//ensure empty results reduce down to falsy...since an array of [null, null] is truthy.
 				.map(x => x && (x[0] || x[1]) && x);
 
