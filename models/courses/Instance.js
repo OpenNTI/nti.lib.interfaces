@@ -171,7 +171,7 @@ export default class Instance extends Base {
 
 				getForNode(outline, index, slices);
 
-				return slices.reduce((a, b)=> a.combine(b));
+				return slices.reduce((a, b)=> a.combine(b), []);
 				// return index;
 			});
 	}
