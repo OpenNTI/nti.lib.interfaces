@@ -50,7 +50,7 @@ export default class Bundle extends Base {
 			title: this.title,
 			label: this.label,
 			icon: this.icon,
-			background: this.background,
+			background: this.icon,
 			thumb: this.thumb
 		};
 	}
