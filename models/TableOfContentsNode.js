@@ -13,6 +13,13 @@ export default class XMLBasedTableOfContentsNode {
 		this[DATA] = data;
 		this.parent = parent;
 		this.toc = toc;
+		try {
+			//FIXME: We should be using the depth of the tree instead of relying on an ATTRIBUTE of a topic...
+			this.level = parseInt(this.get('levelnum'), 10);
+		} catch (e) {
+			console.warn('This node does not have a valid `levelnum` attribute: %o', data);
+			this.level = -1;
+		}
 	}
 
 
@@ -97,6 +104,10 @@ export default class XMLBasedTableOfContentsNode {
 
 	isTopic () {
 		return topic(this.tag);
+	}
+
+	isBeyondLevel () {
+		return this.level > this.toc.MAX_LEVEL;
 	}
 
 	matches (substring, deep = true) {
