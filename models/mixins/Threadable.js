@@ -88,5 +88,14 @@ export default {
 				)
 				[0][CHILDREN]
 			);
+	},
+
+
+	appendNewChild (newChild) {
+		let children = this[CHILDREN] = (this[CHILDREN] || []).slice();
+
+		newChild[PARENT] = this;
+
+		children.push(newChild);
 	}
 };
