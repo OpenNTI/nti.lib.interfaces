@@ -339,6 +339,13 @@ export default class ServiceDocument {
 			events: events
 		};
 
+		if (!url) {
+			return Promise.reject({
+				statusCode: 501, //HTTP 501 means not implemented
+				message: 'No Analytics End-point.'
+			});
+		}
+
 		return this.ensureAnalyticsSession()
 				.then(this.post.bind(this, url, payload));
 	}
