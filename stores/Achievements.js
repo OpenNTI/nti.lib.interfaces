@@ -16,7 +16,6 @@ export default class Achievements extends EventEmitter {
 		Object.assign(this, {
 			[Service]: service,
 			owner,
-			[data]: {},
 			loading: true
 		});
 
@@ -24,8 +23,8 @@ export default class Achievements extends EventEmitter {
 
 		let parseList = parseListFn(this, service);
 		let loadBin = (name, href) => service.get(href)
-											.then(parseList)
-											.then(value=> Object.defineProperty(name, {value}));
+											.then(o => parseList(o.Items || []))
+											.then(value=> Object.defineProperty(this, name, {value}));
 
 		let start = Date.now();
 		let loads = [];
@@ -34,17 +33,22 @@ export default class Achievements extends EventEmitter {
 			let {Title, href} = collection;
 			loads.push(loadBin(
 				Title
-					.replace(/All$/i, 'available')
+					.replace(/All/i, 'available')
 					.replace(/Badges$/i, '')
 					.toLowerCase(), href));
 		}
 
-		loads = Promise.all(loads).then(() => {
-			this.loading = false;
-			this.loaded = Date.now();
-			this.emit('load', this, `${(this.loaded - start)}ms`);
-			this.emit('change', this);
-		});
+		loads = Promise.all(loads)
+			.catch(er => {
+				console.log(er);
+				this.error = true;
+			})
+			.then(() => {
+				this.loading = false;
+				this.loaded = Date.now();
+				this.emit('load', this, `${(this.loaded - start)}ms`);
+				this.emit('change', this);
+			});
 
 		this.addToPending(loads);
 
