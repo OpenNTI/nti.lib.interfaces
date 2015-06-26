@@ -111,6 +111,21 @@ export default class Library extends EventEmitter {
 	}
 
 
+	hasCatalog () {
+		//Forget you saw this if statement. $AppConfig is not safe to
+		// reference directly. This is for a Symmys Hack.
+
+		if (typeof $AppConfig !== 'undefined') { //eslint-disable-line no-undef
+			let {flags = {}} = $AppConfig; //eslint-disable-line no-undef
+			if (flags.hideCatalog) {
+				return false;
+			}
+		}
+
+		return !!this[Service].getCoursesCatalogURL();
+	}
+
+
 	onChange () {
 		this.emit('changed', this);
 	}
