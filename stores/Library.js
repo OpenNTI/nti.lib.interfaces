@@ -99,7 +99,10 @@ export default class Library extends EventEmitter {
 			return !invalid;
 		});
 
-		contentPackages = contentPackages.filter(pkg => !pkg.isCourse);
+		contentPackages = contentPackages
+			.filter(pkg => !pkg.isCourse //not a course, and not referenced in a bundle...
+						&& !contentBundles.find(x=>
+							x.ContentPackages.find(p=> p.NTIID === pkg.NTIID)));
 
 		this.packages = parseList(contentPackages);
 		this.bundles = parseList(contentBundles);
