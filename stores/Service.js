@@ -495,4 +495,20 @@ export default class ServiceDocument {
 		return '/dataserver2/store/redeem_purchase_code';//TODO: this is legacy...replace
 	}
 
+
+	getContextPathFor (ntiid) {
+		let {href} = this.getCollection('PathToContainerId', 'Global') || {};
+
+		if (!href) {
+			Promise.reject({statusCode: NOT_IMPLEMENTED, message: 'PathToContainerId is not available here.'});
+		}
+
+		return this.get(href + '?' + QueryString.stringify({objectId: ntiid}))
+
+			.then(x => console.debug('Context Path (raw): %o', x) || x)
+
+			.then(data => data.map(path => path.map(item => parse(this, parent || this, item))))
+
+			.then(x => console.debug('Context Path (parsed): %o', x) || x);
+	}
 }
