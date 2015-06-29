@@ -274,28 +274,20 @@ export default class ServiceDocument {
 
 
 	getUserWorkspace () {
-		let workspace;
-		this.Items.every(function(o) {
-			if (getLink(o, 'ResolveSelf')) {
-				workspace = o;
+		for (let workspace of this.Items) {
+			if (getLink(workspace, 'ResolveSelf')) {
+				return workspace;
 			}
-			return !workspace;
-		});
-
-		return workspace;
+		}
 	}
 
 
 	getWorkspace (name) {
-		let workspace;
-		this.Items.every(function(o) {
-			if (o.Title === name) {
-				workspace = o;
+		for(let workspace of this.Items) {
+			if (workspace.Title === name) {
+				return workspace;
 			}
-			return !workspace;
-		});
-
-		return workspace;
+		}
 	}
 
 
@@ -303,17 +295,13 @@ export default class ServiceDocument {
 		let workspace = workspaceName ?
 					this.getWorkspace(workspaceName) :
 					this.getUserWorkspace(),
-			items = (workspace && workspace.Items) || [],
-			collection = null;
+			items = (workspace && workspace.Items) || [];
 
-		items.every(function(o) {
+		for (let o of items) {
 			if (o.Title === title) {
-				collection = o;
+				return o;
 			}
-			return !collection;
-		});
-
-		return collection;
+		}
 	}
 
 
