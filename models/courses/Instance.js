@@ -32,6 +32,12 @@ export default class Instance extends Base {
 	}
 
 
+	containsPackage (id) {
+		//Are course NTIIDs being passed around like packageIds? If so, this will catch it.
+		return this.ContentPackageBundle.containsPackage(id) || this.getID() === id;
+	}
+
+
 	getPresentationProperties () {
 		let cce = this.CatalogEntry || EMPTY_CATALOG_ENTRY,
 			bundle = this.ContentPackageBundle;

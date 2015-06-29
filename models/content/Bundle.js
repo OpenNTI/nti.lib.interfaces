@@ -44,6 +44,21 @@ export default class Bundle extends Base {
 	}
 
 
+	containsPackage (id) {
+		let found = false;
+
+		for (let pkg of this.ContentPackages) {
+			if (pkg.getID() === id) {
+				found = true;
+				break;
+			}
+		}
+
+		//Are bundle NTIIDs being passed around like packageIds? If so, this will catch it.
+		return found || this.getID() === id;
+	}
+
+
 	getPresentationProperties () {
 		return {
 			author: this.author,
