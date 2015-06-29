@@ -18,6 +18,8 @@ let inflight = {};
 
 import {Context, Server, Service, Pending} from '../CommonSymbols';
 
+const NOT_IMPLEMENTED = 501; //HTTP 501 means not implemented
+
 const AppUser = Symbol('LoggedInUser');
 const RequestUserResolve = Symbol('RequestUserResolve');
 
@@ -341,7 +343,7 @@ export default class ServiceDocument {
 
 		if (!url) {
 			return Promise.reject({
-				statusCode: 501, //HTTP 501 means not implemented
+				statusCode: NOT_IMPLEMENTED,
 				message: 'No Analytics End-point.'
 			});
 		}
