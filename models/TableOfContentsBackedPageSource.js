@@ -27,8 +27,9 @@ export default class TableOfContentsBackedPageSource extends Base{
 			throw new Error(`The root "${root}" does not exist in the ToC`);
 		}
 
-		this.pagesInRange = this.root.flatten().filter(suppressed);
-	}
+		this.pages = this.root.flatten();
+		this.pagesInRange = this.pages.filter(suppressed);
+	}z
 
 
 	getPagesAround (pageId) {
@@ -38,17 +39,37 @@ export default class TableOfContentsBackedPageSource extends Base{
 		let node = root.find(query) || (root.get('ntiid') === pageId && root);
 		let nodes = this.pagesInRange;
 
-		let index = nodes.findIndex(n => n.id === node.id);
-
-		let next = nodes[index + 1];
-		let prev = nodes[index - 1];
+		let index = this.find(node);
+		let next = index < 0 ? null : nodes[index + 1];
+		let prev = index < 0 ? null : nodes[index - 1];
 
 		return {
-		total: nodes.length,
+			total: nodes.length,
 			index: index,
 			next: buildRef(next, root),
 			prev: buildRef(prev, root)
 		};
+	}
+
+
+	find (node) {
+		let nodes = this.pagesInRange;
+		let matcher = n => n.id === node.id;
+
+		let index = nodes.findIndex(matcher);
+		if (index < 0) {
+			//The node we're looking for is suppressed... it MUST be decendent to a non-suppressed node.
+			index = this.pages.findIndex(matcher);
+			if (index < 0) {
+				return -1;
+			}
+
+			do { node = this.pages[index--]; } while(node && !suppressed(node));
+
+			return node ? nodes.findIndex(matcher) : -1;
+		}
+
+		return index;
 	}
 
 }
