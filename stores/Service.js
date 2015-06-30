@@ -500,7 +500,7 @@ export default class ServiceDocument {
 		let {href} = this.getCollection('PathToContainerId', 'Global') || {};
 
 		if (!href) {
-			Promise.reject({statusCode: NOT_IMPLEMENTED, message: 'PathToContainerId is not available here.'});
+			return Promise.reject({statusCode: NOT_IMPLEMENTED, message: 'PathToContainerId is not available here.'});
 		}
 
 		return this.get(href + '?' + QueryString.stringify({objectId: ntiid}))
