@@ -297,6 +297,11 @@ export default class Base extends EventEmitter {
 	}
 
 
+	getContextPath() {
+		return this.fetchLinkParsed('LibraryPath');
+	}
+
+
 	getLink (rel) {
 		return getLinkImpl(this, rel);
 	}

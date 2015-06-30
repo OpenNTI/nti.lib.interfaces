@@ -497,7 +497,7 @@ export default class ServiceDocument {
 
 
 	getContextPathFor (ntiid) {
-		let {href} = this.getCollection('PathToContainerId', 'Global') || {};
+		let {href} = this.getCollection('LibraryPath', 'Global') || {};
 
 		if (!href) {
 			return Promise.reject({statusCode: NOT_IMPLEMENTED, message: 'PathToContainerId is not available here.'});
