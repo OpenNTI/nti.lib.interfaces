@@ -352,7 +352,18 @@ export function parse(service, parent, obj) {
 	}
 
 	if (Array.isArray(obj)) {
-		return obj.map(parse.bind(this, service, parent));
+		return obj.map(o => {
+			try {
+				o = parse(service, parent, o);
+			}
+			catch (e) {
+				if (!e.NoParser) {
+					throw e;
+				}
+				console.warn(e.message);
+			}
+			return o;
+		});
 	}
 
 	if (Object.getPrototypeOf(obj) !== Object.getPrototypeOf({})) {
