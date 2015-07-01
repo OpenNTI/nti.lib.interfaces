@@ -53,6 +53,7 @@ function doParse(parent, data) {
 	}
 }
 
+const NO_LINK = 'No Link';
 const PASCAL_CASE_REGEX = /(?:^|[^a-z0-9])([a-z0-9])?/igm;
 
 const TakeOver = Symbol.for('TakeOver');
@@ -298,7 +299,11 @@ export default class Base extends EventEmitter {
 
 
 	getContextPath() {
-		return this.fetchLinkParsed('LibraryPath');
+		return this.fetchLinkParsed('LibraryPath')
+			.catch(reason =>
+				(reason === NO_LINK)
+					? this[Service].getContextPathFor(this.getID())
+					: Promise.reject(reason));
 	}
 
 
@@ -320,7 +325,7 @@ export default class Base extends EventEmitter {
 	fetchLink (rel) {
 		let link = this.getLink(rel);
 		if (!link) {
-			return Promise.reject('No Link');
+			return Promise.reject(NO_LINK);
 		}
 
 		return this[Service].get(link);
