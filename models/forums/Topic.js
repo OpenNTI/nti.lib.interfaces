@@ -5,11 +5,11 @@ import {
 } from '../../CommonSymbols';
 
 import GetContents from '../mixins/GetContents';
-//import SharedWithList from '../mixins/SharedWithList';
+import Likable from '../mixins/Likable';
 
 export default class Topic extends Base {
 	constructor(service, parent, data) {
-		super(service, parent, data, GetContents/*, SharedWithList*/);
+		super(service, parent, data, GetContents, Likable);
 
 		// PostCount
 		// title
