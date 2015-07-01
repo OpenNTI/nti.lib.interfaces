@@ -1,4 +1,4 @@
-const HIGHLIGHT_GROUP = 'application/vnd.nextthought.collated-hightlight-container';
+const HIGHLIGHT_GROUP = 'application/vnd.nextthought.collated-highlight-container';
 
 const getTime = d => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
 
