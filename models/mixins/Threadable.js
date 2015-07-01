@@ -50,9 +50,9 @@ export default {
 		let hasParent = !!this[PARENT];
 		let shouldHaveParent = this.inReplyTo != null;
 
-		if ((shouldHaveParent && !hasParent) || (!shouldHaveParent && hasParent)) {
-			console.warn('Weird');
-		}
+		// if ((shouldHaveParent && !hasParent) || (!shouldHaveParent && hasParent)) {
+		// 	console.warn('Weird');
+		// }
 
 		return !shouldHaveParent && !hasParent;
 	},
