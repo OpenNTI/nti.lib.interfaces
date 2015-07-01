@@ -1,10 +1,10 @@
 import Base from '../Base';
 import {Service, Parser as parse} from '../../CommonSymbols';
-//import SharedWithList from '../mixins/SharedWithList';
+import Likable from '../mixins/Likable';
 
 export default class Post extends Base {
 	constructor (service, parent, data) {
-		super(service, parent, data/*, SharedWithList*/);
+		super(service, parent, data, Likable);
 
 		//body
 		//title
