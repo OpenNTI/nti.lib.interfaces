@@ -3,6 +3,8 @@ import Base from './Base';
 import Achievements from '../stores/Achievements';
 import Stream from '../stores/Stream';
 
+import ActivityCollator from '../utils/activity-collator';
+
 import { Service, Parser as parse } from '../CommonSymbols';
 
 const ONLY_COMMUNITIES = x => x.isCommunity;
@@ -58,13 +60,19 @@ export default class User extends Base {
 			'redaction'
 		];
 
-		return new Stream(this[Service], this, this.getLink('Activity'), {
-			exclude: exclude.map(x=> 'application/vnd.nextthought.' + x).join(','),
-			sortOn: 'createdTime',
-			sortOrder: 'descending',
-			batchStart: 0,
-			batchSize: 20
-		});
+		return new Stream(
+			this[Service],
+			this,
+			this.getLink('Activity'),
+			{
+				exclude: exclude.map(x=> 'application/vnd.nextthought.' + x).join(','),
+				sortOn: 'createdTime',
+				sortOrder: 'descending',
+				batchStart: 0,
+				batchSize: 20
+			},
+			ActivityCollator
+		);
 	}
 
 
