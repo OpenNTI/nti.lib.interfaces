@@ -12,17 +12,28 @@ import {Service} from '../CommonSymbols';
 
 import {parseListFn} from './Library';
 
+const DATA = Symbol();
 
 export default class Stream extends EventEmitter {
-
-	constructor (service, owner, href, options = {}) {
+	/**
+	 * constructor
+	 *
+	 * @param {Service} service		Service document instance.
+	 * @param {Model} owner			Parent object. (the thing that called the constructor)
+	 * @param {string} href			initial URL to load.
+	 * @param {object} options		Query-String param object.
+	 * @param {function} collator	Optional collator function that returns an array, given an array in its first argument.
+	 * @return {void}
+	 */
+	constructor (service, owner, href, options = {}, collator = null) {
 		super();
 		Object.assign(this, {
 			[Service]: service,
-			data: [],
+			[DATA]: [],
 			owner,
 			href,
 			options,
+			collator,
 			loading: true
 		});
 
@@ -50,9 +61,7 @@ export default class Stream extends EventEmitter {
 			let next = this.next || (this.href + (this.href.indexOf('?') === -1 ? '?' : '&') + query);
 
 			let loads = this.load(next)
-				.then(v => Object.defineProperty(this, 'data', {
-					value: this.data.concat(v)
-				}))
+				.then(v => this[DATA] = this[DATA].concat(v))
 				.catch(er => {
 					console.log(er);
 					this.error = true;
@@ -72,8 +81,14 @@ export default class Stream extends EventEmitter {
 		});
 	}
 
+	get items () {
+		let {collator} = this;
+		let data = this[DATA];
+
+		return collator ? collator(data) : data;
+	}
 
 	map (...args) {
-		return this.data.map(...args);
+		return this.items.map(...args);
 	}
 }
