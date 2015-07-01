@@ -9,6 +9,9 @@ export default class Comment extends Post {
 		super(service, parent, data);
 	}
 
+	isTopLevel () {
+		return false;
+	}
 
 	getReplies () {
 		let link = this.getLink('replies');

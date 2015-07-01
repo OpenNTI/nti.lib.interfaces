@@ -21,6 +21,9 @@ export default class Topic extends Base {
 		this[parse]('headline');
 	}
 
+	isTopLevel () {
+		return true;
+	}
 
 	addComment (comment, inReplyTo) {
 		const service = this[Service];
