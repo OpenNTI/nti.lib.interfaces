@@ -1,6 +1,7 @@
 import Base from './Base';
 
 import Achievements from '../stores/Achievements';
+import Stream from '../stores/Stream';
 
 import { Service, Parser as parse } from '../CommonSymbols';
 
@@ -48,9 +49,22 @@ export default class User extends Base {
 
 	getActivity () {
 		if (!this.hasLink('Activity')) {
-			return Promise.reject('No Activity link.');
+			return null;
 		}
-		return this.fetchLinkParsed('Activity');
+
+		let exclude = [
+			'assessment.assessedquestion',
+			'bookmark',
+			'redaction'
+		];
+
+		return new Stream(this[Service], this, this.getLink('Activity'), {
+			exclude: exclude.map(x=> 'application/vnd.nextthought.' + x).join(','),
+			sortOn: 'createdTime',
+			sortOrder: 'descending',
+			batchStart: 0,
+			batchSize: 10
+		});
 	}
 
 
