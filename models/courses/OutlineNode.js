@@ -129,7 +129,16 @@ export default class OutlineNode extends Outline {
 			return Promise.resolve(null);
 		}
 
-		return this.fetchLink(link, {filter: 'TopLevel'});
+
+		let accept = [
+			'note'
+		];
+
+		return this.fetchLink(link, {
+			// exclude: exclude.map(x=> 'application/vnd.nextthought.' + x).join(','),
+			accept: accept.map(x=> 'application/vnd.nextthought.' + x).join(','),
+			filter: 'TopLevel'
+		});
 	}
 }
 
