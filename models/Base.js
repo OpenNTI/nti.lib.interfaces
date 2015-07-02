@@ -1,5 +1,8 @@
 import {EventEmitter} from 'events';
 
+import Url from 'url';
+import QueryString from 'query-string';
+
 import {parse, getModelByType} from './';
 
 import getLinkImpl, {asMap as getLinksAsMap} from '../utils/getlink';
@@ -307,8 +310,21 @@ export default class Base extends EventEmitter {
 	}
 
 
-	getLink (rel) {
-		return getLinkImpl(this, rel);
+	getLink (rel, params) {
+		let link = getLinkImpl(this, rel);
+
+		if (link && params) {
+
+			let url = Url.parse(link);
+			url.search = QueryString.stringify(
+							Object.assign(
+								QueryString.parse(url.search),
+								params));
+
+			link = url.format();
+		}
+
+		return link;
 	}
 
 
@@ -322,8 +338,8 @@ export default class Base extends EventEmitter {
 	}
 
 
-	fetchLink (rel) {
-		let link = this.getLink(rel);
+	fetchLink (rel, params) {
+		let link = this.getLink(rel, params);
 		if (!link) {
 			return Promise.reject(NO_LINK);
 		}
@@ -332,8 +348,8 @@ export default class Base extends EventEmitter {
 	}
 
 
-	fetchLinkParsed (rel) {
-		return this.fetchLink(rel)
+	fetchLinkParsed (rel, params) {
+		return this.fetchLink(rel, params)
 			.then(x=> {
 				if (x.Items && !x.MimeType) {
 					if (x.Links) { console.warn('Dropping Collection Links'); }
