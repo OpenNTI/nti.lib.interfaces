@@ -5,9 +5,14 @@ import User from './User';
 import Community from './Community';
 import PageInfo from './PageInfo';
 import Change from './Change';
-import MessageInfo from './MessageInfo';
 
 import RelatedWorkReference from './RelatedWorkReference';
+
+//chat
+import MessageInfo from './chat/MessageInfo';
+import RoomInfo from './chat/RoomInfo';
+import Transcript from './chat/Transcript';
+import TranscriptSummary from './chat/TranscriptSummary';
 
 // profile
 import ProfessionalPosition from './profile/ProfessionalPosition';
@@ -294,7 +299,6 @@ const PARSERS = {
 	'contentrange.transcriptcontentpointer': TranscriptContentPointer,
 	'contentrange.transcriptrangedescription': TranscriptRangeDescription,
 
-	'messageinfo': MessageInfo,
 	'openbadges.badge': null,//Need To Model
 
 	// profile
@@ -312,7 +316,12 @@ const PARSERS = {
 	'store.stripeconnectkey': StripeConnectKey,
 	'store.stripepricedpurchasable': StripePricedPurchasable,
 	'store.stripepurchaseitem': StripePurchaseItem,
-	'store.stripepurchaseorder': StripePurchaseOrder
+	'store.stripepurchaseorder': StripePurchaseOrder,
+
+	'messageinfo': MessageInfo,
+	'_meeting': RoomInfo,
+	'transcript': Transcript,
+	'transcriptsummary': TranscriptSummary
 };
 
 

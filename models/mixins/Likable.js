@@ -1,10 +1,4 @@
-function pluck(o, ...keys) {
-	let out = {NTIID: o.NTIID};
-	for (let key of keys) {
-		out[key] = o[key];
-	}
-	return out;
-}
+import pluck from '../../utils/pluck';
 
 export default {
 	like () {
@@ -35,7 +29,7 @@ export default {
 		}
 
 		return this.postToLink(link)
-			.then(o => this.refresh(pluck(o, 'Links')))
+			.then(o => this.refresh(pluck(o, 'NTIID', 'Links')))
 			.then(() => this.onChange('flag'));
 	}
 };
