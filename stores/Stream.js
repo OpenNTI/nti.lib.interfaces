@@ -43,6 +43,7 @@ export default class Stream extends EventEmitter {
 		this.load = url => service.get(url)
 								.then(o => {
 									this.next = getLink(o, 'batch-next');
+									console.debug('Stream has more? ', !!this.next);
 									return parseList(o.Items || []);
 								});
 
