@@ -76,6 +76,19 @@ export default class User extends Base {
 	}
 
 
+	getMemberships () {
+		if (!this.hasLink('memberships')) {
+			return null;
+		}
+
+		return new Stream(
+			this[Service],
+			this,
+			this.getLink('memberships')
+		);
+	}
+
+
 	/**
 	 * Get the communities this user is a member of.
 	 *

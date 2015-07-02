@@ -50,6 +50,15 @@ export default class Stream extends EventEmitter {
 		this.nextBatch();
 	}
 
+	/**
+	 * Returns true if there is more to load from the stream. (show a load more button)
+	 *
+	 * @return {boolean} True, if there is more, False, otherwise.
+	 */
+	get more () {
+		return !!this.next;
+	}
+
 
 	nextBatch () {
 		return this.waitForPending().then(() => {
@@ -81,6 +90,7 @@ export default class Stream extends EventEmitter {
 		});
 	}
 
+
 	get items () {
 		let {collator} = this;
 		let data = this[DATA];
@@ -90,5 +100,10 @@ export default class Stream extends EventEmitter {
 
 	map (...args) {
 		return this.items.map(...args);
+	}
+
+
+	[Symbol.iterator] () {
+		return this.items()[Symbol.iterator]();
 	}
 }
