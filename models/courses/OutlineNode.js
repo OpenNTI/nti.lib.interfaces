@@ -129,7 +129,7 @@ export default class OutlineNode extends Outline {
 			return Promise.resolve(null);
 		}
 
-		return this.fetchLink(link);
+		return this.fetchLink(link, {filter: 'TopLevel'});
 	}
 }
 
