@@ -69,7 +69,7 @@ export default class User extends Base {
 				sortOn: 'createdTime',
 				sortOrder: 'descending',
 				batchStart: 0,
-				batchSize: 200
+				batchSize: 10
 			},
 			ActivityCollator
 		);
