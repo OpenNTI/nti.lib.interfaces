@@ -2,7 +2,7 @@ const HIGHLIGHT_GROUP = 'application/vnd.nextthought.collated-highlight-containe
 
 const getTime = d => new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
 
-const newContainer = () => ({MimeType: HIGHLIGHT_GROUP, Items: {}});
+const newContainer = (creator, date) => ({MimeType: HIGHLIGHT_GROUP, Items: {}, creator, date});
 
 const isHighlight = RegExp.prototype.test.bind(/highlight/i);
 
@@ -21,14 +21,14 @@ export default function activityCollator (activity) {
 		let group = known[time];
 
 		if (!group) {
-			group = known[time] = newContainer();
+			group = known[time] = newContainer(item.creator, time);
 			output.push(group);
 		}
 
 		let {Items} = group;
-		let {ContainerID} = item;
+		let {ContainerId} = item;
 
-		let list = Items[ContainerID] = Items[ContainerID] || [];
+		let list = Items[ContainerId] = Items[ContainerId] || [];
 
 		list.push(item);
 	}
