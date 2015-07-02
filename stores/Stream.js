@@ -33,8 +33,7 @@ export default class Stream extends EventEmitter {
 			owner,
 			href,
 			options,
-			collator,
-			loading: true
+			collator
 		});
 
 		mixin(this, Pendability);
@@ -61,9 +60,17 @@ export default class Stream extends EventEmitter {
 
 
 	nextBatch () {
-		return this.waitForPending().then(() => {
+		this.loading = true;
+		let start = Date.now();
+		this.emit('change', this);
 
-			let start = Date.now();
+		return this.waitForPending().then(() => {
+			let delay = Date.now() - start;
+			if (delay > 1) {
+				console.debug('Now Loading... Delayed %sms', delay);
+			}
+
+			start = Date.now();
 
 			let query = this.options ? QueryString.stringify(this.options) : '';
 
