@@ -5,6 +5,7 @@ import path from 'path';
 
 import fallbackOverview from './_fallbacks.OverviewFromToC';
 
+import applyIf from '../../utils/applyif';
 import {encodeForURI} from '../../utils/ntiids';
 import emptyFunction from '../../utils/empty-function';
 
@@ -178,13 +179,45 @@ function applyProgressAndSummary(content, progress, summary) {
 		return key && c[key];
 	}
 
-	let [a, b] = ['Target-NTIID', 'NTIID']
+	let [nodeProgress, summaryData] = ['Target-NTIID', 'NTIID']
+				//We sadly have used inconsistent cassings of Target-NTIID, and NTIID.
+				//Some are lowercase, some are capped, some are mixed.
+				//Step 1: Find the VALUE of each "fuzzy" key. (eg: Lower case the keys and find a first-match.)
 				.map(key=> findWithFuzzyKey(content, key))
-				.map(id=> id && [(progress && progress.getProgress(id)), (summary || {})[id]])
-				//ensure empty results reduce down to falsy...since an array of [null, null] is truthy.
-				.map(x => x && (x[0] || x[1]) && x);
 
-	let [nodeProgress, summaryData] = (a || b || []);
+				//Now that we (may) have the IDs for each key to test, we need to look up the progress and
+				//summary data for each id... returning a tuple of the potential data.
+				//Step 2: Build a tuple of the shape: [progress, summary]
+				.map(id=> id && [(progress && progress.getProgress(id)), (summary || {})[id]])
+
+				//Now the array of potentials is a list of tuples. We need to reduce this down to one tuple.
+				//Step 3: Reduce the posible keys results down to one tuple, by applying each result on top
+				//of each other. 99% of the time we expect the list of tuples to be all in one element, or
+				//spread out over the elements such that each part of the tuple never overlaps. ... for the
+				// case that two or more elements in the array have a tuple that has a populated part that
+				// overlaps, we will accept the first one and drop all supsequent ones.
+				// Ex:  [
+				// 		[Progress, ],
+				// 		[, Summary]
+				// ]
+				//
+				// or [
+				// 		[, Summary],
+				// 		[Progress, ]
+				// ]
+				//
+				// or [
+				// 		[Progress, Summary],
+				// 		[,]
+				// ]
+				//
+				// or [
+				// 		[,]
+				// 		[Progress, Summary]
+				// ]
+				//
+				// The result should be a single tuple [Progress, Summary]
+				.reduce((r, x) => applyIf(r || [], x || []));
 
 	if (nodeProgress != null) {
 		content[Progress] = nodeProgress;
