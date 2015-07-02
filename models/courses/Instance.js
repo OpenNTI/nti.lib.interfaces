@@ -28,7 +28,11 @@ export default class Instance extends Base {
 		this[parse]('Discussions');
 		this[parse]('Outline');
 
-		this.addToPending(resolveCatalogEntry(service, this));
+		try {
+			this.addToPending(resolveCatalogEntry(service, this));
+		} catch (e) {
+			console.warn('There was a problem resolving the CatalogEntry! %o', e.stack || e.message || e);
+		}
 	}
 
 
