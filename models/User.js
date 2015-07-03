@@ -19,6 +19,10 @@ export default class User extends Base {
 		this[parse]('education');
 	}
 
+	getID () {
+		return this.Username;
+	}
+
 	get avatar () {
 		return this.avatarURL;
 	}
