@@ -40,6 +40,7 @@ import ContentBundle from './content/Bundle';
 
 import MediaSource from './MediaSource';
 import Video from './Video';
+import VideoRef from './VideoRef';
 import VideoIndexBackedPageSource from './VideoIndexBackedPageSource';
 
 import CourseCatalogEntry from './courses/CatalogEntry';
@@ -137,6 +138,7 @@ const PARSERS = {
 	'videosource': MediaSource,
 	'video': Video,
 	'ntivideo': 'video',
+	'ntivideoref': VideoRef,
 
 	'relatedworkref': RelatedWorkReference,
 
