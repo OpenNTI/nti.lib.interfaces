@@ -21,6 +21,11 @@ export default class Transcript extends Base {
 	}
 
 
+	get messageCount () {
+		return this.RoomInfo.messageCount;
+	}
+
+
 	get originator () {
 		let ri = this.RoomInfo;
 		return (ri || this).creator;
