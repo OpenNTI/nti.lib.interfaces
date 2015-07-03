@@ -47,6 +47,8 @@ export default class Stream extends EventEmitter {
 									return parseList(o.Items || []);
 								});
 
+		this.on('load', (_, time) => console.log('Load: %s %o', time, this));
+
 		this.nextBatch();
 	}
 
@@ -92,8 +94,6 @@ export default class Stream extends EventEmitter {
 
 			this.addToPending(loads);
 
-			this.on('load', (_, time) => console.log('Load: %s %o', time, this));
-
 			return loads.then(()=> this);
 		});
 	}
@@ -106,12 +106,18 @@ export default class Stream extends EventEmitter {
 		return collator ? collator(data) : data;
 	}
 
+
+	get length () {
+		return this.items.length;
+	}
+
+
 	map (...args) {
 		return this.items.map(...args);
 	}
 
 
 	[Symbol.iterator] () {
-		return this.items()[Symbol.iterator]();
+		return this.items[Symbol.iterator]();
 	}
 }
