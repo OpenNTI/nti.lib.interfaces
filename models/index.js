@@ -3,6 +3,7 @@ import identity from '../utils/identity';
 
 import User from './User';
 import Community from './Community';
+import FriendsList from './FriendsList';
 import PageInfo from './PageInfo';
 import Change from './Change';
 
@@ -129,6 +130,7 @@ const PARSERS = {
 
 	'community': Community,
 	'user': User,
+	'friendslist': FriendsList,
 	'pageinfo': PageInfo,
 
 	'ContentPackage': ContentPackage,

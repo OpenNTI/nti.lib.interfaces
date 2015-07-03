@@ -1,15 +1,13 @@
-import Base from './Base';
+import Entity from './Entity';
 
 import Achievements from '../stores/Achievements';
 import Stream from '../stores/Stream';
-
-import ActivityCollator from '../utils/activity-collator';
 
 import { Service, Parser as parse } from '../CommonSymbols';
 
 const ONLY_COMMUNITIES = x => x.isCommunity;
 
-export default class User extends Base {
+export default class User extends Entity {
 
 	constructor (service, data) {
 		super(service, null, data);
@@ -23,25 +21,6 @@ export default class User extends Base {
 		return this.Username;
 	}
 
-	get avatar () {
-		return this.avatarURL;
-	}
-
-
-	get displayName () {
-		return this.alias || this.realname || this.Username;
-	}
-
-
-	get firstName () { return this.NonI18NFirstName; }
-	get lastName () { return this.NonI18NLastName; }
-
-
-	get initials () {
-		let {displayName, firstName, lastName} = this;
-		return (firstName && lastName) ? `${firstName[0]}${lastName[0]}` : displayName[0];
-	}
-
 
 	getAchievements () {
 		if (!this.hasLink('Badges')) {
@@ -50,33 +29,6 @@ export default class User extends Base {
 
 		return this.fetchLink('Badges')
 			.then(workspace => new Achievements(this[Service], this, workspace));
-	}
-
-
-	getActivity () {
-		if (!this.hasLink('Activity')) {
-			return null;
-		}
-
-		let exclude = [
-			'assessment.assessedquestion',
-			'bookmark',
-			'redaction'
-		];
-
-		return new Stream(
-			this[Service],
-			this,
-			this.getLink('Activity'),
-			{
-				exclude: exclude.map(x=> 'application/vnd.nextthought.' + x).join(','),
-				sortOn: 'createdTime',
-				sortOrder: 'descending',
-				batchStart: 0,
-				batchSize: 10
-			},
-			ActivityCollator
-		);
 	}
 
 
