@@ -14,6 +14,8 @@ import {REL_USER_SEARCH, REL_USER_UNIFIED_SEARCH, REL_USER_RESOLVE, REL_BULK_USE
 import getLink from '../utils/getlink';
 import joinWithURL from '../utils/urljoin';
 import {isNTIID} from '../utils/ntiids';
+import waitFor from '../utils/waitfor';
+import wait from '../utils/wait';
 
 let inflight = {};
 
@@ -73,7 +75,9 @@ export default class ServiceDocument {
 
 		let p = inflight[key] = this.getServer().get(url, this[Context]);
 
-		p.then(clean, clean);
+		waitFor(p) //once the request finishes
+			.then(()=>wait(1000)) //wait one second before
+			.then(clean); //we remove the request's promise from the in-flight cache.
 
 		return p;
 	}
