@@ -29,7 +29,7 @@ export default class TableOfContentsBackedPageSource extends Base{
 
 		this.pages = this.root.flatten();
 		this.pagesInRange = this.pages.filter(suppressed);
-	}z
+	}
 
 
 	getPagesAround (pageId) {
