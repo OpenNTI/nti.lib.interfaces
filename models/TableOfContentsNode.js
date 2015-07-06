@@ -5,7 +5,7 @@ import escape from '../utils/regexp-escape';
 const flat = (a, n)=> a.concat(n.flatten());
 
 const anchor = RegExp.prototype.test.bind(/#/i);
-const topic = RegExp.prototype.test.bind(/topic/i);
+const topic = RegExp.prototype.test.bind(/^(topic|toc)$/i);
 
 export default class XMLBasedTableOfContentsNode {
 
