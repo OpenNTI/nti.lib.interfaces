@@ -1,4 +1,5 @@
 import QueryString from 'query-string';
+import Url from 'url';
 
 import {parse} from '../models';
 
@@ -119,16 +120,22 @@ export default class ServiceDocument {
 
 
 	getPageInfo (ntiid) {
+		let mime = 'application/vnd.nextthought.pageinfo+json';
 		let key = 'pageinfo-' + ntiid;
 		let cache = this.getDataCache();
 		let cached = cache.get(key);
 		let result;
 
+		if (!isNTIID(ntiid)) {
+			return Promise.reject('Bad NTIID');
+		}
+
 		if (cached) {
 			result = Promise.resolve(cached);
-		} else {
-			result = this.getServer().getPageInfo(ntiid, this[Context])
-				.then(function(json) {
+		}
+		else {
+			result = this.getObject(ntiid, mime)
+				.then(json => {
 					cache.set(key, json);
 					return json;
 				});
@@ -138,13 +145,40 @@ export default class ServiceDocument {
 	}
 
 
-	getObjects (ntiids) {
-		return this.getServer().getObjects(ntiids, this[Context]);
+	getObject (ntiid, type) {
+		if (!isNTIID(ntiid)) {
+			return Promise.reject('Bad NTIID');
+		}
+
+
+		let headers = {};
+		let url = this.getObjectURL(ntiid);
+
+		if (type) {
+			url = Url.parse(url);
+			url.search = QueryString.stringify(Object.assign(
+				QueryString.parse(url.query), { type }));
+
+			url = url.format();
+
+			headers.accept = type;
+
+			url = {url, headers};
+		}
+
+		return this.get(url);
 	}
 
 
-	getObject (ntiid, mime) {
-		return this.getServer().getObject(ntiid, mime, this[Context]);
+	getObjects (ntiids) {
+		if (!Array.isArray(ntiids)) {
+			ntiids = [ntiids];
+		}
+
+		return Promise.all(ntiids.map(n => this.getObject(n)))
+				.then(results =>
+					(!Array.isArray(results) ? [results] : results)
+						.map(o => o && o.MimeType ? o : null));
 	}
 
 

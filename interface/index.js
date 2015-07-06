@@ -1,7 +1,6 @@
 import Url from 'url';
 //If the login method is invoked on the NodeJS side, we will need this function...
 import base64decode from 'btoa';
-import QueryString from 'query-string';
 
 import request from '../utils/request';
 import logger from '../logger';
@@ -10,7 +9,6 @@ import MimeComparator from '../utils/MimeComparator';
 
 import isBrowser from '../utils/browser';
 import isEmpty from '../utils/isempty';
-import {isNTIID} from '../utils/ntiids';
 import waitFor from '../utils/waitfor';
 import getLink, {asMap as getLinksAsMap} from '../utils/getlink';
 
@@ -420,62 +418,4 @@ export default class DataServerInterface {
 			);
 	}
 
-
-	getObject (ntiid, mime, context) {
-		if (!isNTIID(ntiid)) {
-			return Promise.reject('Bad NTIID');
-		}
-
-		return this.getServiceDocument(context)
-			.then(doc => {
-				let headers = {},
-					url = doc.getObjectURL(ntiid);
-
-				if (mime) {
-					url = Url.parse(url);
-					url.search = QueryString.stringify(Object.assign(
-						QueryString.parse(url.query), {
-							type: mime
-						}));
-
-					url = url.format();
-					headers.accept = mime;
-				}
-
-				return this[Request]({url: url, headers: headers}, context);
-			})
-			.catch(e => {
-				if (typeof e === 'object' && e.statusCode === 404 && (e.Class || e.MimeType)) {
-					return e;
-				}
-				return Promise.reject(e);
-			});
-	}
-
-
-	getObjects (ntiids, context) {
-		if (!Array.isArray(ntiids)) {
-			ntiids = [ntiids];
-		}
-
-		let me = this;
-
-		return Promise.all(ntiids.map(n =>
-			me.getObject(n, undefined, context)))
-				.then(results =>
-					(!Array.isArray(results) ? [results] : results).map(o=>o && o.MimeType ? o : null)
-				);
-
-	}
-
-
-	getPageInfo (ntiid, context) {
-		let mime = 'application/vnd.nextthought.pageinfo+json';
-
-		if (!isNTIID(ntiid)) {
-			return Promise.reject('Bad NTIID');
-		}
-
-		return this.getObject(ntiid, mime, context);
-	}
 }
