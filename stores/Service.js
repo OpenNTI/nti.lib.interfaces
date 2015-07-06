@@ -24,7 +24,7 @@ import {Context, Server, Service, Pending} from '../CommonSymbols';
 const NOT_IMPLEMENTED = 501; //HTTP 501 means not implemented
 
 const AppUser = Symbol('LoggedInUser');
-const RequestUserResolve = Symbol('RequestUserResolve');
+const RequestEntityResolve = Symbol('RequestEntityResolve');
 
 export default class ServiceDocument {
 	constructor (json, server, context) {
@@ -265,23 +265,28 @@ export default class ServiceDocument {
 	}
 
 
-	[RequestUserResolve] (username) {
-		let key = `user-${username}`;
+	[RequestEntityResolve] (entityId) {
+		let key = `entity-${entityId}`;
 		let cache = this.getDataCache();
 		let cached = cache.get(key);
 		let result;
+
+		let entityMatcher = d => d.NTIID === entityId || d.Username === entityId;
 
 		if (cached) {
 			result = Promise.resolve(cached);
 		}
 		else {
-			result = this.get(this.getResolveUserURL(username))
+			result = this.get(this.getResolveUserURL(entityId))
 				.then(data => {
 					let items = data.Items || (data.MimeType ? [data] : []);
-					let user = items.reduce((u, d) => u || (d.Username === username && d), null);
+					let entity = items.find(entityMatcher);
 
-					cache.set(key, user);
-					return user || Promise.reject(`Username "${username}" could not resolve.`);
+					if (entity) {
+						cache.set(key, entity);
+					}
+
+					return entity || Promise.reject(`Entity "${entityId}" could not resolve.`);
 				});
 
 			cache.setVolatile(key, result);//if this is asked for again before we resolve, reuse this promise.
@@ -291,21 +296,35 @@ export default class ServiceDocument {
 	}
 
 
-	resolveUser (username) {
-		let key = 'user-respository';
+	/**
+	 * Resolve an entity.
+	 *
+	 * @deprecated
+	 * @param {string} entityId ID to resolve to entity.
+	 *
+	 * @return {Promise} Promise for an Entity.
+	 */
+	resolveUser (entityId) {
+		console.warn('Deprecated. Call resolveEntity');
+		return this.resolveEntity(entityId);
+	}
+
+
+	resolveEntity (entityId) {
+		let key = 'entity-respository';
 		let cache = this.getDataCache();
 		let repo = cache.get(key) || {};
 		cache.setVolatile(key, repo);
 
-		if (repo[username]) {
-			return Promise.resolve(repo[username]);
+		if (repo[entityId]) {
+			return Promise.resolve(repo[entityId]);
 		}
 
-		let req = repo[username] = this[RequestUserResolve](username);
+		let req = repo[entityId] = this[RequestEntityResolve](entityId);
 
 		req.then(
-			user=> repo[username] = user,
-			()=> delete repo[username]);
+			user=> repo[entityId] = user,
+			()=> delete repo[entityId]);
 
 		return req;
 	}
