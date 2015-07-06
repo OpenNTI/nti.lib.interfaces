@@ -181,8 +181,8 @@ export default class ServiceDocument {
 
 
 	getAppUsername () {
-		let w = this.getUserWorkspace();
-		return w && w.Title;
+		let {Title} = this.getUserWorkspace() || {};
+		return Title;
 	}
 
 
@@ -200,7 +200,7 @@ export default class ServiceDocument {
 			url = this.getResolveAppUserURL();
 			if (url) {
 				result = this.get(url)
-					.then(function(json) {
+					.then(json => {
 						cache.set(key, json);
 						return json;
 					});
