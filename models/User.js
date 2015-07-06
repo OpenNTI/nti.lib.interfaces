@@ -11,11 +11,23 @@ export default class User extends Entity {
 
 	constructor (service, data) {
 		super(service, null, data);
+		this.isUser = true;
 
 		this[parse]('Communities');
 		this[parse]('positions');
 		this[parse]('education');
 	}
+
+
+	get firstName () { return this.NonI18NFirstName; }
+	get lastName () { return this.NonI18NLastName; }
+
+
+	get initials () {
+		let {displayName, firstName, lastName} = this;
+		return (firstName && lastName) ? `${firstName[0]}${lastName[0]}` : displayName[0];
+	}
+
 
 	getID () {
 		return this.Username;

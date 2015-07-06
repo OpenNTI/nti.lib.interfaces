@@ -24,16 +24,6 @@ export default class Entity extends Base {
 	}
 
 
-	get firstName () { return this.NonI18NFirstName; }
-	get lastName () { return this.NonI18NLastName; }
-
-
-	get initials () {
-		let {displayName, firstName, lastName} = this;
-		return (firstName && lastName) ? `${firstName[0]}${lastName[0]}` : displayName[0];
-	}
-
-
 	getActivity () {
 		if (!this.hasLink('Activity')) {
 			return null;
