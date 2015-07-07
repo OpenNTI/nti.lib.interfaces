@@ -11,6 +11,34 @@ export default class Community extends Entity {
 	}
 
 
+	getActivity (filterParams) {
+		let {source} = filterParams || {};
+		if (!source) {
+			return super.getActivity(filterParams);
+		}
+
+		let linkPromise = this.getDiscussionBoardContents()
+			.then(x => (x.Items || []).find(i=> i.ID === source) || Promise.reject('Source Not Found.'))
+			.then(x => x.getLink('contents'));
+
+		return new Stream(
+			this[Service],
+			this,
+			linkPromise
+		);
+	}
+
+
+	getDiscussionBoard () {
+		return this.fetchLinkParsed('DiscussionBoard');
+	}
+
+
+	getDiscussionBoardContents () {
+		return this.getDiscussionBoard().then(x => x.getContents());
+	}
+
+
 	getMembers () {
 		if (!this.hasLink('members')) {
 			return null;

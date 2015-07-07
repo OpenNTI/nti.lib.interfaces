@@ -20,7 +20,7 @@ export default class Stream extends EventEmitter {
 	 *
 	 * @param {Service} service		Service document instance.
 	 * @param {Model} owner			Parent object. (the thing that called the constructor)
-	 * @param {string} href			initial URL to load.
+	 * @param {string|Promise} href			initial URL to load.
 	 * @param {object} options		Query-String param object.
 	 * @param {function} collator	Optional collator function that returns an array, given an array in its first argument.
 	 * @return {void}
@@ -48,6 +48,14 @@ export default class Stream extends EventEmitter {
 								});
 
 		this.on('load', (_, time) => console.log('Load: %s %o', time, this));
+
+		if (href.then) {
+			this.addToPending(
+				href.then(
+					x => this.href = x,
+					()=> Object.assign(this, {error: true, href: null})
+				));
+		}
 
 		this.nextBatch();
 	}
