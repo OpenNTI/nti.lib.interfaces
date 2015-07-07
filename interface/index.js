@@ -233,6 +233,8 @@ export default class DataServerInterface {
 			cached = cache.get('service-doc-instance'),
 			promise;
 
+		let set = x => cache.setVolatile('service-doc-instance', x);
+
 		//Do we have an instance?
 		if (cached) {
 			return Promise.resolve(cached);
@@ -256,8 +258,10 @@ export default class DataServerInterface {
 		}
 
 		//once we have an instance, stuff it in the cache so we don't keep building it.
-		promise.then(instance =>
-			cache.setVolatile('service-doc-instance', instance));
+		promise.then(set);
+		//until the promise resolves, cache the promise itself. (Promise.resolve()
+		//when given a promise, will resolve when the passed promise resolves)
+		set(promise);
 
 		//Return a promise that will fulfill with the instance...
 		return promise;
