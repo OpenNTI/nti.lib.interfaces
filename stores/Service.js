@@ -5,6 +5,7 @@ import {parse} from '../models';
 
 import Capabilities from '../models/Capabilities';
 
+import ContactStore from './Contacts';
 import Enrollment from './Enrollment';
 import Forums from './Forums';
 
@@ -21,9 +22,12 @@ let inflight = {};
 
 import {Context, Server, Service, Pending} from '../CommonSymbols';
 
+const CONTACT_MIME = 'application/vnd.nextthought.friendslist';
+
 const NOT_IMPLEMENTED = 501; //HTTP 501 means not implemented
 
 const AppUser = Symbol('LoggedInUser');
+const Contacts = Symbol('Contacts');
 const RequestEntityResolve = Symbol('RequestEntityResolve');
 
 export default class ServiceDocument {
@@ -41,9 +45,17 @@ export default class ServiceDocument {
 		this.forums = new Forums(this);
 
 		this[Pending] = [
-			this.getAppUser().then(u =>
-				this[AppUser] = u
-			)
+			this.getAppUser().then(u => {
+				this[AppUser] = u;
+
+				let {href} = this.getCollectionFor(CONTACT_MIME, 'FriendsLists') || {};
+				if (href) {
+					this[Contacts] = new ContactStore(this, href, u);
+					return this[Contacts].waitForPending();
+				} else {
+					console.warn('No FriendsLists Collection');
+				}
+			})
 		];
 	}
 
@@ -441,6 +453,9 @@ export default class ServiceDocument {
 
 		return void 0;
 	}
+
+
+
 
 
 	getContainerURL (ntiid, postfix) {
