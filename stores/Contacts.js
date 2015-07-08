@@ -11,6 +11,7 @@ import Pendability from '../models/mixins/Pendability';
 import {Service} from '../CommonSymbols';
 
 import {parseListFn} from './Library';
+export const MIME_TYPE = 'application/vnd.nextthought.friendslist';
 
 const DATA = Symbol();
 

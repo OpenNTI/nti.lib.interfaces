@@ -5,7 +5,7 @@ import {parse} from '../models';
 
 import Capabilities from '../models/Capabilities';
 
-import ContactStore from './Contacts';
+import ContactStore, {MIME_TYPE as CONTACT_MIME} from './Contacts';
 import Enrollment from './Enrollment';
 import Forums from './Forums';
 
@@ -21,8 +21,6 @@ import wait from '../utils/wait';
 let inflight = {};
 
 import {Context, Server, Service, Pending} from '../CommonSymbols';
-
-const CONTACT_MIME = 'application/vnd.nextthought.friendslist';
 
 const NOT_IMPLEMENTED = 501; //HTTP 501 means not implemented
 
