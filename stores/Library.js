@@ -1,35 +1,15 @@
 import {EventEmitter} from 'events';
 
-import identity from '../utils/identity';
 import mixin from '../utils/mixin';
 import waitFor from '../utils/waitfor';
 import unique from '../utils/array-unique';
 
-import {parse} from '../models';
+import {parseListFn} from '../models';
 import Pendability from '../models/mixins/Pendability';
 
 import {Pending, Service} from '../CommonSymbols';
 
 let instances = {};
-
-export function parseListFn (scope, service) {
-	let m = o => {
-		try {
-			o = parse(service, null, o);
-			scope.addToPending(o);
-			if(o && o.on && scope.onChange) {
-				o.on('changed', scope.onChange);
-			}
-		} catch(e) {
-			console.error(e.stack || e.message || e);
-			o = null;
-		}
-
-		return o;
-	};
-
-	return list=>list.map(m).filter(identity);
-}
 
 export default class Library extends EventEmitter {
 

@@ -10,7 +10,7 @@ import getLink from '../utils/getlink';
 
 import {Service} from '../CommonSymbols';
 
-import {parseListFn} from './Library';
+import {parseListFn} from '../models';
 
 const DATA = Symbol();
 

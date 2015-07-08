@@ -5,7 +5,7 @@ import forwardFunctions from '../utils/function-forwarding';
 import waitFor from '../utils/waitfor';
 import mixin from '../utils/mixin';
 
-import {parseListFn} from './Library';
+import {parseListFn} from '../models';
 
 import Pendability from '../models/mixins/Pendability';
 

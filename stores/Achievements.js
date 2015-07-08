@@ -6,7 +6,7 @@ import Pendability from '../models/mixins/Pendability';
 
 import {Service} from '../CommonSymbols';
 
-import {parseListFn} from './Library';
+import {parseListFn} from '../models';
 
 
 export default class Achievements extends EventEmitter {
