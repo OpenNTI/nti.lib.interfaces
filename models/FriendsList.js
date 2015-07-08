@@ -9,4 +9,6 @@ export default class FriendsList extends Entity {
 		this.isGroup = data.IsDynamicSharing;
 		this[parse]('friends');
 	}
+
+	getID () { return this.ID; }
 }
