@@ -38,6 +38,9 @@ export default class Community extends Entity {
 		return this.getDiscussionBoard().then(x => x.getContents());
 	}
 
+	leave () {
+		return this.postToLink('leave', {});
+	}
 
 	getMembers () {
 		if (!this.hasLink('members')) {
