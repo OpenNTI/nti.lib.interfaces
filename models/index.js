@@ -398,6 +398,26 @@ export function parse(service, parent, obj) {
 }
 
 
+export function parseListFn (scope, service) {
+	let m = o => {
+		try {
+			o = parse(service, null, o);
+			scope.addToPending(o);
+			if(o && o.on && scope.onChange) {
+				o.on('changed', scope.onChange);
+			}
+		} catch(e) {
+			console.error(e.stack || e.message || e);
+			o = null;
+		}
+
+		return o;
+	};
+
+	return list=>list.map(m).filter(identity);
+}
+
+
 //Default Constructors
 function ConstructorFuncWithParent (service, parent, data) {
 	return (this.prototype.isPrototypeOf(data)) ? data :
