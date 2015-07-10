@@ -13,19 +13,64 @@ export default class Community extends Entity {
 
 	getActivity (filterParams) {
 		let {source} = filterParams || {};
-		if (!source) {
-			return super.getActivity(filterParams);
+		let service = this[Service], store, href;
+
+		let linkPromise = this.getDiscussionBoardContents().then(x => {
+
+			//What is the default forum?? Should there be a flag/id somewhere?
+			let forum = x.Items[0];
+
+			if (source) {
+				forum = (x.Items || []).find(i=> i.ID === source);
+			}
+
+			return forum || Promise.reject('Source Not Found.');
+		})
+
+		//Once a forum is picked, assign the href...
+		.then(x => {
+			href = x.getLink('add');//this sets the href for our "postToActivity" augmented method.
+
+			//return the value to be the Stream Store's data source.
+			return source //if there is a source set,
+				? x.getLink('contents') // use its contents link,
+				: this.getLink('Activity'); // otherwise, use the Community's Activity link.
+		});
+
+
+		store = new Stream(
+			service,
+			this,
+			linkPromise,
+			{
+				sortOn: 'createdTime',
+				sortOrder: 'descending',
+				batchStart: 0,
+				batchSize: 10
+			}
+		);
+
+		if (this.isAppUserAMember) {
+
+			Object.assign(store, {
+
+				postToActivity (body, title = '-') {
+					if (!href) {
+						return Promise.reject('No forum to post to.');
+					}
+
+					return service.postParseResponse(href, {
+						MimeType: 'application/vnd.nextthought.forums.headlinepost',
+						title,
+						body
+					})
+					.then(x => this.insert(x));
+				}
+
+			});
 		}
 
-		let linkPromise = this.getDiscussionBoardContents()
-			.then(x => (x.Items || []).find(i=> i.ID === source) || Promise.reject('Source Not Found.'))
-			.then(x => x.getLink('contents'));
-
-		return new Stream(
-			this[Service],
-			this,
-			linkPromise
-		);
+		return store;
 	}
 
 
@@ -38,9 +83,6 @@ export default class Community extends Entity {
 		return this.getDiscussionBoard().then(x => x.getContents());
 	}
 
-	leave () {
-		return this.postToLink('leave', {});
-	}
 
 	getMembers () {
 		if (!this.hasLink('members')) {
@@ -54,4 +96,25 @@ export default class Community extends Entity {
 		);
 	}
 
+
+	leave () {
+		return this.postToLink('leave', {});
+	}
+
+
+	postToActivity (body) {
+		let service = this[Service];
+
+		let {href} = {};
+
+		if (!href) {
+			return Promise.reject('No Collection to post to.');
+		}
+
+		return service.post(href, {
+			MimeType: 'application/vnd.nextthought.forums.headlinepost',
+			title: '-',//?
+			body
+		});
+	}
 }

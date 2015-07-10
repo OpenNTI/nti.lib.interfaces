@@ -44,6 +44,38 @@ export default class User extends Entity {
 	}
 
 
+	getActivity () {
+		let store = super.getActivity();
+
+		let {Username} = this;
+		let service = this[Service];
+
+		if (this.isAppUserAMember) {
+
+			Object.assign(store, {
+
+				postToActivity (body, title = '-') {
+					let {href} = service.getCollection('Blog', Username) || {};
+
+					if (!href) {
+						return Promise.reject('No Collection to post to.');
+					}
+
+					return service.postParseResponse(href, {
+						MimeType: 'application/vnd.nextthought.forums.personalblogentrypost',
+						title,
+						body
+					})
+					.then(x => this.insert(x));
+				}
+
+			});
+		}
+
+		return store;
+	}
+
+
 	getMemberships () {
 		if (!this.hasLink('memberships')) {
 			return null;
