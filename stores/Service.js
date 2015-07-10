@@ -112,6 +112,19 @@ export default class ServiceDocument {
 		return this.getServer().delete(url, data, this[Context]);
 	}
 
+	//TODO: consolidate into #post()... don't want to take the time to see if
+	//parsing the response all the time will interupt existing code.
+	postParseResponse (url, data, parent = this) {
+		return this.post(url, data)
+			.then(x => {
+				try {
+					return parse(this, parent, x);
+				} catch (e) {
+					return x;
+				}
+			});
+	}
+
 
 	hasCookie (cookie) {
 		let c = this[Context];
