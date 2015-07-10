@@ -43,6 +43,7 @@ export default class Stream extends EventEmitter {
 		this.load = url => service.get(url)
 								.then(o => {
 									this.next = getLink(o, 'batch-next');
+									// this.prev = getLink(o, 'batch-prev');
 									console.debug('Stream has more? ', !!this.next);
 									return parseList(o.Items || []);
 								});
@@ -127,5 +128,16 @@ export default class Stream extends EventEmitter {
 
 	[Symbol.iterator] () {
 		return this.items[Symbol.iterator]();
+	}
+
+
+	//Meant for posts to activity so we don't have to reload... do not abuse.
+	insert (item) {
+		if (this.prev) {
+			//Not on the first page... so just drop.
+			return;
+		}
+		this[DATA].unshift(item);
+		this.fire('change');
 	}
 }
