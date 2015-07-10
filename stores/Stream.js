@@ -138,6 +138,6 @@ export default class Stream extends EventEmitter {
 			return;
 		}
 		this[DATA].unshift(item);
-		this.fire('change');
+		this.emit('change');
 	}
 }
