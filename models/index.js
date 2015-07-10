@@ -102,6 +102,7 @@ import ForumsTopic from './forums/Topic';
 import ForumsForum from './forums/Forum';
 import ForumsPost from './forums/Post';
 import ForumsComment from './forums/Comment';
+import BlogEntry from './forums/BlogEntry';
 
 import AssessmentEvent from './analytics/AssessmentEvent';
 import AssignmentEvent from './analytics/AssignmentEvent';
@@ -278,6 +279,9 @@ const PARSERS = {
 	'forums.communityheadlinetopic': 'forums.topic',
 	'forums.communityheadlinepost': 'forums.post',
 	'forums.communitytopic': 'forums.topic',
+
+	'forums.personalblogentry': BlogEntry,
+	'forums.personalblogentrypost': 'forums.post',
 
 	'forums.contentboard': 'forums.board',
 	'forums.contentforum': 'forums.forum',
