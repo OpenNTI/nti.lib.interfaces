@@ -100,21 +100,4 @@ export default class Community extends Entity {
 	leave () {
 		return this.postToLink('leave', {});
 	}
-
-
-	postToActivity (body) {
-		let service = this[Service];
-
-		let {href} = {};
-
-		if (!href) {
-			return Promise.reject('No Collection to post to.');
-		}
-
-		return service.post(href, {
-			MimeType: 'application/vnd.nextthought.forums.headlinepost',
-			title: '-',//?
-			body
-		});
-	}
 }
