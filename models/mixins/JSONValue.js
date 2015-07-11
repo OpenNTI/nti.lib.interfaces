@@ -12,13 +12,13 @@ export default {
 		for (let k of Object.keys(this)) {
 			let v = this[k];
 			if (v !== void undefined && !BLACK_LISTED[v] && !isFunction(v)) {
-				let translator = `translate:${v}`;
+				let translator = `translate:${k}`;
 				if (v && isFunction(v.getData)) {
 					v = v.getData();
 				}
 
-				d[k] = (d[translator] && isFunction(d[translator]))
-					? d[translator](v) : v;
+				d[k] = (this[translator] && isFunction(this[translator]))
+					? this[translator](v) : v;
 			}
 		}
 
