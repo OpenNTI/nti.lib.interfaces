@@ -280,6 +280,7 @@ const PARSERS = {
 	'forums.communityheadlinepost': 'forums.post',
 	'forums.communitytopic': 'forums.topic',
 
+	'forums.personalblog': 'forums.board',
 	'forums.personalblogentry': BlogEntry,
 	'forums.personalblogentrypost': 'forums.post',
 
