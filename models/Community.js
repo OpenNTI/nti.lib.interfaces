@@ -64,6 +64,13 @@ export default class Community extends Entity {
 						title,
 						body
 					})
+					.then(response => {
+						let publish = (response || {}).getLink && (response || {}).getLink('publish');
+						if (publish) {
+							service.post(publish);
+						}
+						return response;
+					})
 					.then(x => this.insert(x));
 				}
 
