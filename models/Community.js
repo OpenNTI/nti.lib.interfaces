@@ -18,7 +18,7 @@ export default class Community extends Entity {
 		let linkPromise = this.getDiscussionBoardContents().then(x => {
 
 			//What is the default forum?? Should there be a flag/id somewhere?
-			let forum = x.Items[0];
+			let forum = x.Items.find(item => (item.title === 'Forum')) || x.Items[0];
 
 			if (source) {
 				forum = (x.Items || []).find(i=> i.ID === source);
