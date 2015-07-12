@@ -66,13 +66,8 @@ export default class User extends Entity {
 						title,
 						body
 					})
-					.then(response => {
-						let publish = (response || {}).getLink && (response || {}).getLink('publish');
-						if (publish) {
-							service.post(publish);
-						}
-						return response;
-					})
+					.then(blogEntry => blogEntry.postToLink('publish')
+												.then(()=> blogEntry))
 					.then(x => this.insert(x));
 				}
 
