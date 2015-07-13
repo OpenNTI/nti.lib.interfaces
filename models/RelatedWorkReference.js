@@ -1,8 +1,12 @@
 import Base from './Base';
 
 import UserDataStore from '../stores/UserData';
+
 import {REL_RELEVANT_USER_GENERATED_DATA} from '../constants';
+
 import {Service} from '../CommonSymbols';
+
+import {isNTIID} from '../utils/ntiids';
 
 const UserData = Symbol('UserData');
 
@@ -14,6 +18,11 @@ export default class RelatedWorkReference extends Base {
 	//Minimum keys required: NTIID. Links preferred.
 	constructor (service, data) {
 		super(service, null, data);
+	}
+
+
+	get isExternal () {
+		return /external/i.test(this.type) || !isNTIID(this.href);
 	}
 
 
