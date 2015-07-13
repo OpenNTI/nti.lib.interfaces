@@ -8,7 +8,10 @@ export default class MetaDataResolverForVimeo {
 
 	static resolve (service, source) {
 
-		let url = URL.replace('{0}', source.source[0]);
+		let id = source.source;
+		id = Array.isArray(id) ? id[0] : id;
+
+		let url = URL.replace('{0}', id);
 		// console.log(url);
 		return service.get(url)
 				.then(o=> o[0] || o)
