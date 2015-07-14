@@ -346,7 +346,7 @@ export default class ServiceDocument {
 		let req = repo[entityId] = this[RequestEntityResolve](entityId);
 
 		req.then(
-			user=> repo[entityId] = user,
+			entity => repo[entityId] = entity,
 			()=> delete repo[entityId]);
 
 		return req;
