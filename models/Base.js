@@ -372,6 +372,16 @@ export default class Base extends EventEmitter {
 	}
 
 
+	putToLink (rel, data) {
+		let link = this.getLink(rel);
+		if (!link) {
+			return Promise.reject('No Link');
+		}
+
+		return this[Service].put(link, data);
+	}
+
+
 	onChange (who) {
 		this.emit('change', this, who);
 	}
