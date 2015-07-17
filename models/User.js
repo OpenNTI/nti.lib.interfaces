@@ -7,13 +7,35 @@ import { Service, Parser as parse } from '../CommonSymbols';
 
 const ONLY_COMMUNITIES = x => x.isCommunity;
 
+
+function cleanData(data) {
+	let {accepting=[], following=[], ignoring=[]} = data;
+	delete data.accepting;
+	delete data.following;
+	delete data.ignoring;
+	delete data.AvatarURLChoices;
+
+	let toID = o => /user/i.test(o.MimeType) ? o.Username : o.NTIID;
+
+	data.Connections = {
+		//Drop all exess data, just the ID is needed.
+		accepting: accepting.map(toID),
+		following: following.map(toID),
+		ignoring: ignoring.map(toID)
+	};
+}
+
+
 export default class User extends Entity {
 
 	constructor (service, data) {
+		cleanData(data);
 		super(service, null, data);
 		this.isUser = true;
 
 		this[parse]('Communities');
+		this[parse]('DynamicMemberships');
+
 		this[parse]('positions');
 		this[parse]('education');
 	}
