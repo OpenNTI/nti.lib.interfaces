@@ -45,7 +45,7 @@ export default class Note extends Highlight {
 			.then(data => this[parse](data))
 			.then(reply => {
 				this.appendNewChild(reply);
-				this.emit('changed');
+				this.emit('change');
 			});
 	}
 }

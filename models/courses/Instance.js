@@ -22,7 +22,7 @@ export default class Instance extends Base {
 
 		let bundle = this[parse]('ContentPackageBundle');
 
-		bundle.on('changed', this.onChange.bind(this));
+		bundle.on('change', this.onChange.bind(this));
 
 		this[parse]('ParentDiscussions');
 		this[parse]('Discussions');

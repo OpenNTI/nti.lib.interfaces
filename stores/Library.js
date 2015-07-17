@@ -107,7 +107,7 @@ export default class Library extends EventEmitter {
 
 
 	onChange () {
-		this.emit('changed', this);
+		this.emit('change', this);
 	}
 
 

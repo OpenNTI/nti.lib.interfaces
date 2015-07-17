@@ -373,7 +373,7 @@ export default class Base extends EventEmitter {
 
 
 	onChange (who) {
-		this.emit('changed', this, who);
+		this.emit('change', this, who);
 	}
 
 

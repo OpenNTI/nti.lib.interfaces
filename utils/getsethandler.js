@@ -3,7 +3,7 @@ export default function getSetHandler(scope, property, silent) {
 		let old = scope[property];
 		scope[property] = v;
 		if (scope.emit && silent !== true) {
-			scope.emit('changed', scope, property, v, old);
+			scope.emit('change', scope, property, v, old);
 		}
 	};
 }

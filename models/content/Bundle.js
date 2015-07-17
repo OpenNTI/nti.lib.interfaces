@@ -32,7 +32,7 @@ export default class Bundle extends Base {
 
 		this.ContentPackages = (data.ContentPackages || []).map(v => {
 			let obj = this[parse](v);
-			obj.on('changed', this.onChange.bind(this));
+			obj.on('change', this.onChange.bind(this));
 			return obj;
 		});
 

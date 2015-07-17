@@ -38,7 +38,7 @@ export default class Enrollment extends Base {
 
 		let i = this[parse]('CourseInstance');
 
-		i.on('changed', this.onChange.bind(this));
+		i.on('change', this.onChange.bind(this));
 	}
 
 

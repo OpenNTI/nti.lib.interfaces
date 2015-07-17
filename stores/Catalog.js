@@ -37,7 +37,7 @@ export default class Catalog extends EventEmitter {
 
 
 	onChange () {
-		this.emit('changed', this);
+		this.emit('change', this);
 	}
 
 
