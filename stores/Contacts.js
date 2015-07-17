@@ -134,4 +134,65 @@ export default class Contacts extends EventEmitter {
 	createGroup (name) {
 		return this[CREATE](getNewListData(name, true, this.context));
 	}
+
+
+	/**
+	 * Determins if the entity is in any of your Lists in the Contacts store.
+	 *
+	 * @param {string|Entity} entity The User entity, string or Model Instance.
+	 * @param {boolean} includeGroups Instruct the search to include groups when searching.
+	 *
+	 * @return {boolean} true if the store has any reference to the entity.
+	 */
+	contains (entity, includeGroups = false) {
+		let found = false;
+
+		for (let list of this[DATA]) {
+			if (!includeGroups && list.isGroup) {
+				//Ignore DFLs. even if they are yours. Unless specified to include them.
+				// Typically when we are talking about "Contacts", those are the users
+				// that are in your private (static) FriendsLists.
+				continue;
+			}
+
+
+			found = list.contains(entity);
+			if (found) { break; }
+		}
+
+		return found;
+	}
+
+
+	addContact (entity, toLists = []) {
+		const getList = x => typeof x === 'object' ? x : this[DATA].find(l => l.getID() === x);
+
+		let pending = [];
+		let lists = [...toLists, this.RESERVED_GROUP_ID];
+
+		for (let list of lists) {
+			list = getList(list);
+
+			if (!list || !list.add || list.isGroup) {
+				return Promise.reject('Bad List');
+			}
+
+			pending.push(list);
+		}
+
+		return Promise.all(pending.map(list => list.add(entity)));
+	}
+
+
+	removeContact (entity) {
+		let pending = [];
+
+		for(let list of this[DATA]) {
+			if (list.isGroup) { continue; }
+
+			pending.push(list.remove(entity));
+		}
+
+		return Promise.all(pending);
+	}
 }
