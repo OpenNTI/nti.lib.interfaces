@@ -15,7 +15,14 @@ export default class FriendsList extends Entity {
 			let blocker = () => Promise.reject('DFL');
 			Object.assign(this, {
 				add: blocker,
-				remove: blocker
+				remove: blocker,
+				isMember: this.hasLink('my_membership'),
+				leave () {
+					return service.delete(this.getLink('my_membership'))
+						.then(() => this.refresh())
+						.then(() =>	this.isMember = false)
+						.then(() => this.onChange('membership'));
+				}
 			});
 		}
 	}
@@ -62,7 +69,7 @@ export default class FriendsList extends Entity {
 
 		let data = this.getData();
 
-		data.friends = [...data.friends.map(x => getID(x)), entityId];
+		data.friends = [...friends.map(x => getID(x)), entityId];
 
 		return this.putToLink('edit', data)
 			.then(o => this.refresh(pluck(o, 'NTIID', 'friends')))
