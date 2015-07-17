@@ -5,16 +5,25 @@ import {parse} from '../models';
 
 import Capabilities from '../models/Capabilities';
 
+import Pendability from '../models/mixins/Pendability';
+
+
 import ContactStore, {MIME_TYPE as CONTACT_MIME} from './Contacts';
 import Enrollment from './Enrollment';
 import Forums from './Forums';
 
-import DataCache from '../utils/datacache';
+import {
+	REL_USER_SEARCH,
+	REL_USER_UNIFIED_SEARCH,
+	REL_USER_RESOLVE,
+	REL_BULK_USER_RESOLVE
+} from '../constants';
 
-import {REL_USER_SEARCH, REL_USER_UNIFIED_SEARCH, REL_USER_RESOLVE, REL_BULK_USER_RESOLVE} from '../constants';
+import DataCache from '../utils/datacache';
 import getLink from '../utils/getlink';
 import joinWithURL from '../utils/urljoin';
 import {isNTIID} from '../utils/ntiids';
+import mixin from '../utils/mixin';
 import waitFor from '../utils/waitfor';
 import wait from '../utils/wait';
 
@@ -34,6 +43,8 @@ export default class ServiceDocument {
 		this[Server] = server;
 		this[Context] = context;
 
+		mixin(this, Pendability);
+
 		let caps = json.CapabilityList || [];
 
 		Object.assign(this, json);
@@ -42,7 +53,7 @@ export default class ServiceDocument {
 		this.enrollment = new Enrollment(this);
 		this.forums = new Forums(this);
 
-		this[Pending] = [
+		this.addToPending(
 			this.getAppUser().then(u => {
 				this[AppUser] = u;
 
@@ -54,7 +65,16 @@ export default class ServiceDocument {
 					console.warn('No FriendsLists Collection');
 				}
 			})
-		];
+		);
+
+		if (context) {
+			let pending = context[Pending];
+			if (!pending) {
+				pending = context[Pending] = [];
+			}
+
+			pending.push(this.waitForPending());
+		}
 	}
 
 
@@ -65,6 +85,11 @@ export default class ServiceDocument {
 
 	getDataCache () {
 		return DataCache.getForContext(this[Context]);
+	}
+
+
+	getContacts () {
+		return this[Contacts];
 	}
 
 

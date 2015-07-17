@@ -44,7 +44,7 @@ export default class SessionManager {
 				context[ServiceStash] = service;
 
 				return Promise.all([
-					service.getAppUser(),
+					service.waitForPending(),
 					//Catalog.load(service),
 					Library.load(service, 'Main')//,
 					//Notifications.load(service)
@@ -80,7 +80,7 @@ export default class SessionManager {
 		this.getUser(req)
 			.then(user => req.username = user)
 			.then(()=> logger.debug('SESSION [VALID] %s %s', req.method, url))
-			.then(this.setupIntitalData.bind(this, req))
+			.then(()=> this.setupIntitalData(req))
 			.then(finish)
 			.catch(reason => {
 				if ((reason || {}).hasOwnProperty('statusCode')) {
