@@ -10,6 +10,7 @@ import mixin from '../utils/mixin';
 
 import JSONValue from './mixins/JSONValue';
 import Pendability from './mixins/Pendability';
+import Editable from './mixins/Editable';
 
 import {
 	Parent,
@@ -77,6 +78,7 @@ export default class Base extends EventEmitter {
 			Object.assign(this, data);
 		}
 
+		mixin(this, Editable);
 		mixin(this, JSONValue);
 		mixin(this, Pendability);
 
