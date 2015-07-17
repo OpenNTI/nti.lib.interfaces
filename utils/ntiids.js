@@ -48,8 +48,8 @@ export function parseNTIID(id) {
 
 	//Define a setter on provider property so we can match the ds escaping of '-' to '_'
 	Object.defineProperty(result.specific, 'provider', {
-			get: function () { return this.$$provider; },
-			set: function (p) {
+			get () { return this.$$provider; },
+			set (p) {
 				if (p && p.replace) {
 					p = p.replace(/-/g, '_');
 				}
