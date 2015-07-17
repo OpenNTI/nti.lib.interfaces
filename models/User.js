@@ -51,6 +51,39 @@ export default class User extends Entity {
 	}
 
 
+	get following () {//do not define a setter.
+		let service = this[Service];
+		let contacts = service.getContacts();
+
+		if (!contacts) {
+			service.waitForPending().then(() => this.onChange('following'));
+		}
+
+		return contacts && contacts.contains(this, false);
+	}
+
+
+	/**
+	 * Toggles the state of following.
+	 *
+	 * @return {[type]} [description]
+	 */
+	follow () {
+		let contacts = this[Service].getContacts();
+		if (!contacts) {
+			return Promise.reject('Not Ready, no Contact store');
+		}
+
+		let {following} = this;
+
+		let pending = contacts[(following ? 'remove' : 'add') + 'Contact'](this);
+
+		pending.then(() => this.onChange('following'));
+
+		return pending;
+	}
+
+
 	getID () {
 		return this.Username;
 	}
