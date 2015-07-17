@@ -8,7 +8,7 @@ import Pendability from '../models/mixins/Pendability';
 
 import getLink from '../utils/getlink';
 
-import {Service} from '../CommonSymbols';
+import {Service, DELETED} from '../CommonSymbols';
 
 import {parseListFn} from '../models';
 
@@ -59,6 +59,24 @@ export default class Stream extends EventEmitter {
 		}
 
 		this.nextBatch();
+	}
+
+
+	onChange (who, what) {
+		let data = this[DATA];
+		if (what === DELETED) {
+			let index = data.findIndex(x => x.getID() === who.getID());
+			if (index < 0) {
+				return;
+			}
+
+			let item = data.splice(index, 1)[0];//remove it;
+
+			item.removeListener('change', this.onChange);
+			console.debug('Removed deleted item: %o', item);
+		}
+
+		this.emit('change', this);
 	}
 
 	/**
@@ -138,6 +156,7 @@ export default class Stream extends EventEmitter {
 			return;
 		}
 		this[DATA].unshift(item);
+		item.on('change', this.onChange.bind(this));
 		this.emit('change');
 	}
 }
