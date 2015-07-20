@@ -60,6 +60,7 @@ import CourseProgress from './courses/Progress';
 
 
 import AssessmentQuestionSet from './assessment/QuestionSet';
+import AssessmentQuestionSetRef from './assessment/QuestionSetReference';
 import AssessmentQuestion from './assessment/Question';
 
 import AssessmentAssignment from './assessment/Assignment';
@@ -191,6 +192,7 @@ const PARSERS = {
 	'assessment.assessedpart': AssessmentAssessedPart,
 
 	'questionset': AssessmentQuestionSet,
+	'questionsetref': AssessmentQuestionSetRef,
 	'naquestionset': 'questionset',
 	'naquestionbank': 'questionset',
 	'question': AssessmentQuestion,
