@@ -57,6 +57,7 @@
 		"quotes": [1, "single"],
 		"radix": 2,
 		"space-before-blocks": [1, "always"],
+		"space-infix-ops": [2, {"int32Hint": true}],
 		"strict": [2, "never"],
 		"wrap-iife": [2, "outside"],
 		"valid-jsdoc": 1
