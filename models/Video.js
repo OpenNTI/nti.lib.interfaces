@@ -82,9 +82,4 @@ export default class Video {
 
 		return Promise.resolve(store);//in the future, this may need to be async...
 	}
-
-
-	getPageSource () {
-		return this[Parent].getPageSource(this);
-	}
 }
