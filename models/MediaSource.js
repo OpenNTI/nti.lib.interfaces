@@ -4,7 +4,7 @@ import MetaDataResolver from './MetaDataResolver';
 
 const resolver = Symbol('Resolver');
 
-export default class MediaSource extends Base{
+export default class MediaSource extends Base {
 	constructor(service, parent, data) {
 		super(service, parent, data);
 	}
