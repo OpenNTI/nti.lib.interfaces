@@ -20,6 +20,10 @@ export default class Transcript extends Base {
 		}
 	}
 
+	get startTime () {
+		return this.RoomInfo.getCreatedTime();
+	}
+
 
 	get messageCount () {
 		return this.RoomInfo.messageCount;
