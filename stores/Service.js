@@ -216,7 +216,15 @@ export default class ServiceDocument {
 			url = {url, headers};
 		}
 
-		return this.get(url);
+		return this.get(url)
+			.catch(o => {
+				if (o.statusCode === 404 && 'MimeType' in o) {
+					delete o.statusCode;
+					delete o.Message;
+					return o;
+				}
+				return Promise.reject(o);
+			});
 	}
 
 
