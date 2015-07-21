@@ -10,7 +10,6 @@ import Pendability from '../models/mixins/Pendability';
 
 import ContactStore, {MIME_TYPE as CONTACT_MIME} from './Contacts';
 import Enrollment from './Enrollment';
-import Forums from './Forums';
 
 import {
 	REL_USER_SEARCH,
@@ -51,7 +50,6 @@ export default class ServiceDocument {
 
 		this.capabilities = new Capabilities(this, caps);
 		this.enrollment = new Enrollment(this);
-		this.forums = new Forums(this);
 
 		this.addToPending(
 			this.getAppUser().then(u => {
