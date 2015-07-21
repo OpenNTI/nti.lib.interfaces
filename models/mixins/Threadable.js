@@ -19,11 +19,11 @@ export default {
 
 		//We need to bring these values up onto the current object otherwise when we save it,
 		//they will not be enumerated since they would not be "Owned"
-		let {style, applicableRange, sharedWith, selectedText, Class, ContainerId, MimeType} = threadableReply;
+		let {style, applicableRange, sharedWith, selectedText, title, Class, ContainerId, MimeType} = threadableReply;
 
 		Object.assign(result, {
 			applicableRange,
-			body: [],
+			body: ['This message has been deleted.'],
 			Class,
 			ContainerId,
 			CreatedTime: ct,
@@ -37,7 +37,8 @@ export default {
 			references: refs,
 			selectedText,
 			sharedWith,
-			style
+			style,
+			title
 		});
 
 		result = this[Parser](result);
