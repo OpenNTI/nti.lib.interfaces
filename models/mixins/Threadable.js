@@ -46,9 +46,14 @@ export default {
 	},
 
 
+	isReply () {
+		return this.inReplyTo != null;
+	},
+
+
 	isTopLevel () {
 		let hasParent = !!this[PARENT];
-		let shouldHaveParent = this.inReplyTo != null;
+		let shouldHaveParent = this.isReply();
 
 		// if ((shouldHaveParent && !hasParent) || (!shouldHaveParent && hasParent)) {
 		// 	console.warn('Weird');
