@@ -71,7 +71,15 @@ export default class SessionManager {
 		logger.debug('SESSION [BEGIN] %s %s', req.method, url);
 
 		function finish() {
-			res.set(req.responseHeaders);
+			if (req.dead) {
+				return;
+			}
+
+			try {
+				res.set(req.responseHeaders);
+			} catch (e) {
+				logger.warn('Could not set headers because: %s (headers: %o)', e.message, req.responseHeaders);
+			}
 			logger.debug('SESSION [END] %s %s (User: %s, %dms)',
 				req.method, url, req.username, Date.now() - start);
 			next();
@@ -80,7 +88,7 @@ export default class SessionManager {
 		this.getUser(req)
 			.then(user => req.username = user)
 			.then(()=> logger.debug('SESSION [VALID] %s %s', req.method, url))
-			.then(()=> this.setupIntitalData(req))
+			.then(()=> !req.dead && this.setupIntitalData(req))
 			.then(finish)
 			.catch(reason => {
 				if ((reason || {}).hasOwnProperty('statusCode')) {
