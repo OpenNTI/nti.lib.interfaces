@@ -78,6 +78,9 @@ import AssessmentAssignmentSubmission from './assessment/AssignmentSubmission';
 import AssessmentQuestionSetSubmission from './assessment/QuestionSetSubmission';
 import AssessmentQuestionSubmission from './assessment/QuestionSubmission';
 
+import AssessmentPollSubmittion from './assessment/PollSubmission';
+import AssessmentSurveySubmittion from './assessment/SurveySubmission';
+
 import AssessmentResponse from './assessment/Response';
 
 import AssessmentPart from './assessment/Part';
@@ -201,8 +204,11 @@ const PARSERS = {
 	'question': AssessmentQuestion,
 	'naquestion': 'question',
 	'naquestionfillintheblankwordbank': 'question',
+
 	'nasurvey': AssessmentSurvey,
 	'napoll': AssessmentPoll,
+	'assessment.pollsubmission': AssessmentPollSubmittion,
+	'assessment.surveysubmission': AssessmentSurveySubmittion,
 
 	'assessment.assignment': AssessmentAssignment,
 	'assessment.timedassignment': AssessmentTimedAssignment,
@@ -243,6 +249,13 @@ const PARSERS = {
 	'assessment.numericmathpart': 'assessment.part',
 	'assessment.orderingpart': AssessmentPartOrdering,
 	'assessment.symbolicmathpart': 'assessment.part',
+
+	'assessment.nongradablefreeresponsepart': 'assessment.freeresponsepart',
+	'assessment.nongradablematchingpart': 'assessment.matchingpart',
+	'assessment.nongradablemodeledcontentpart': 'assessment.modeledcontentpart',
+	'assessment.nongradablemultiplechoicepart': 'assessment.multiplechoicepart',
+	'assessment.nongradablemultiplechoicemultipleanswerpart': 'assessment.multiplechoicepart',
+	'assessment.nongradableorderingpart': 'assessment.orderingpart',
 
 	'assessment.fillintheblankshortanswersolution': 'assessment.solution',
 	'assessment.fillintheblankwithwordbanksolution': 'assessment.solution',

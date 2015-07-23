@@ -51,7 +51,7 @@ export default class QuestionSubmission extends Base {
 
 
 	canSubmit () {
-		function answered(p) { return p !== null; }
+		const answered = p => p !== null;
 
 		if (this.isSubmitted()) { return false; }
 

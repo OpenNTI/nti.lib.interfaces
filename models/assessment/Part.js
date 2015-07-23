@@ -37,6 +37,11 @@ export default class Part extends Base {
 	}
 
 
+	get isNonGradable () {
+		return /nongradable/i.test(this.MimeType);
+	}
+
+
 	isAnswered (partValue) {
 		return partValue != null;
 	}

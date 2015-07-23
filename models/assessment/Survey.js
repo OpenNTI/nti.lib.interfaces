@@ -8,4 +8,14 @@ export default class Survey extends QuestionSet {
 	getSubmissionModel() {
 		return this.getModel('assessment.surveysubmission');
 	}
+
+	getSubmission () {
+		let s = super.getSubmission();
+
+		s.surveyId = s.questionSetId;
+		delete s.questionSetId;
+
+		return s;
+	}
+
 }
