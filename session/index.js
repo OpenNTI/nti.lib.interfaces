@@ -32,7 +32,11 @@ export default class SessionManager {
 	getServiceDocument (context) {
 		let server = this.server;
 		return server.ping(context)
-			.then(server.getServiceDocument.bind(server, context));
+			.then(pong => server.getServiceDocument(context)
+				.then(service => {
+					service.setLogoutURL(pong.links['logon.logout']);
+					return service;
+				}));
 	}
 
 

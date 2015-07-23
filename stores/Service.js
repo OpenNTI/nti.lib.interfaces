@@ -32,6 +32,8 @@ import {Context, Server, Service, Pending} from '../CommonSymbols';
 
 const NOT_IMPLEMENTED = 501; //HTTP 501 means not implemented
 
+const LOGOUT_URL = '%%logout-url%%';
+
 const AppUser = Symbol('LoggedInUser');
 const Contacts = Symbol('Contacts');
 const RequestEntityResolve = Symbol('RequestEntityResolve');
@@ -497,7 +499,30 @@ export default class ServiceDocument {
 	}
 
 
+	getLogoutURL (succssURL) {
+		let url = this.getDataCache().get(LOGOUT_URL);
+		if (!url) {
+			console.error('No Logout URL defined! Pulling a URL out of thin air.');
+			url = '/dataserver2/logon.logout';
+		}
 
+		url = Url.parse(url);
+		url.search = QueryString.stringify(
+						Object.assign(
+							QueryString.parse(url.search),
+							{success: succssURL}));
+
+		return url.format();
+	}
+
+
+	setLogoutURL (url) {
+		if (!this[Context]) {
+			throw new Error('Client cannot set url');
+		}
+
+		this.getDataCache().set(LOGOUT_URL, url);
+	}
 
 
 	getContainerURL (ntiid, postfix) {

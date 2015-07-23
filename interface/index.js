@@ -268,9 +268,12 @@ export default class DataServerInterface {
 	}
 
 
-	logInPassword (url, credentials) {
-		let username = credentials ? credentials.username : undefined;
-		let password = credentials ? credentials.password : undefined;
+	logInPassword (url, username, password) {
+		if (typeof username === 'object') {
+			password = username.password || void 0;
+			username = username.username || void 0;
+		}
+
 		let auth = password ? ('Basic ' + btoa(username + ':' + password)) : undefined;
 		let options = {
 			url: url,
