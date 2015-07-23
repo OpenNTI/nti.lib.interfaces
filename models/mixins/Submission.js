@@ -9,7 +9,7 @@ export default {
 
 		let list = this.questions || this.parts || [];
 
-		return list.reduce((can, q) => can || q.canSubmit(), false);
+		return list.reduce((can, q) => can || (q && q.canSubmit()), false);
 	},
 
 
