@@ -43,9 +43,13 @@ export default class Question extends Base {
 	}
 
 
+	getSubmissionModel() {
+		return this.getModel('assessment.questionsubmission');
+	}
+
 
 	getSubmission () {
-		let Model = this.getModel('assessment.questionsubmission');
+		let Model = this.getSubmissionModel();
 		return Model.build(this[Service], {
 			ContainerId: this.containerId,
 			NTIID: this.getID(),

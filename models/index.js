@@ -63,6 +63,9 @@ import AssessmentQuestionSet from './assessment/QuestionSet';
 import AssessmentQuestionSetRef from './assessment/QuestionSetReference';
 import AssessmentQuestion from './assessment/Question';
 
+import AssessmentSurvey from './assessment/Survey';
+import AssessmentPoll from './assessment/Poll';
+
 import AssessmentAssignment from './assessment/Assignment';
 import AssessmentTimedAssignment from './assessment/TimedAssignment';
 import AssessmentAssignmentPart from './assessment/AssignmentPart';
@@ -198,6 +201,8 @@ const PARSERS = {
 	'question': AssessmentQuestion,
 	'naquestion': 'question',
 	'naquestionfillintheblankwordbank': 'question',
+	'nasurvey': AssessmentSurvey,
+	'napoll': AssessmentPoll,
 
 	'assessment.assignment': AssessmentAssignment,
 	'assessment.timedassignment': AssessmentTimedAssignment,

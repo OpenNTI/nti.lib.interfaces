@@ -39,9 +39,12 @@ export default class QuestionSet extends Base {
 		return this.questions.length;
 	}
 
+	getSubmissionModel() {
+		return this.getModel('assessment.questionsetsubmission');
+	}
 
 	getSubmission () {
-		let Model = this.getModel('assessment.questionsetsubmission');
+		let Model = this.getSubmissionModel();
 		let s = Model.build(this[Service], {
 			questionSetId: this.getID(),
 			ContainerId: this.containerId,
