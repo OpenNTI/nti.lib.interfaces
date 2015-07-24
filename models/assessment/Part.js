@@ -20,6 +20,9 @@ export default class Part extends Base {
 		this[parse]('hints');
 		this[parse]('solutions');
 		this[parse]('wordbank');
+
+		Object.defineProperty(this, 'isNonGradable', {value: /nongradable/i.test(this.MimeType)});
+		this.MimeType = this.MimeType.replace(/nongradable/i, '');
 	}
 
 	[ContentKeys] () {
@@ -34,11 +37,6 @@ export default class Part extends Base {
 
 	getPartIndex () {
 		return this.parent().parts.indexOf(this);
-	}
-
-
-	get isNonGradable () {
-		return /nongradable/i.test(this.MimeType);
 	}
 
 
