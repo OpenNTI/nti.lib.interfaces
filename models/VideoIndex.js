@@ -118,6 +118,8 @@ export default class VideoIndex {
 
 	filter (fn) {
 		let data = {};
+		let containers = {};
+
 		let order = this[Order].filter((v, i, a) => {
 			let o = this[Data][v];
 			let pass = fn(o, i, a);
@@ -127,7 +129,17 @@ export default class VideoIndex {
 			return pass;
 		});
 
-		return new VideoIndex(this[Service], this[Parent], data, order);
+		let has = x => x in data;
+
+		for (let container of Object.keys(this[Containers])) {
+			let list = this[Containers][container].filter(has);
+			if (list.length > 0) {
+				containers[container] = list;
+			}
+		}
+
+
+		return new VideoIndex(this[Service], this[Parent], data, order, containers);
 	}
 
 
