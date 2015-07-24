@@ -13,7 +13,8 @@ export default class AssignmentSubmission extends Base {
 
 	constructor (service, parent, data) {
 		super(service, parent, data, Submission, {
-			MimeType: 'application/vnd.nextthought.assessment.assignmentsubmission'
+			MimeType: 'application/vnd.nextthought.assessment.assignmentsubmission',
+			SubmitsToObjectURL: true
 		});
 
 		// CreatorRecordedEffortDuration: 0

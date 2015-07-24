@@ -31,9 +31,14 @@ export default {
 
 
 	submit () {
-		let target = (this[Service].getCollectionFor(this) || {}).href;
+		// Try looking up the href to POST to in the service doc's collections...
+		// (unless the model has flagged that it prevers Object URL... then short circuit)
+		let target = ((!this.SubmitsToObjectURL && this[Service].getCollectionFor(this)) || {}).href
+					//If value yet, get/build the Objects URL...
+					|| this[Service].getObjectURL(this.getID());
+
 		if (!target) {
-			console.error('No where to save object: %o', this);
+			return Promise.reject('No URL');
 		}
 
 		return this[Service]

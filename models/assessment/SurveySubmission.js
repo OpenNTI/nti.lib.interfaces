@@ -7,8 +7,10 @@ import {
 export default class SurveySubmission extends QuestionSetSubmission {
 	constructor (service, parent, data) {
 		super(service, parent, data);
-		this.MimeType = 'application/vnd.nextthought.assessment.surveysubmission';
-
+		Object.assign(this, {
+			MimeType: 'application/vnd.nextthought.assessment.surveysubmission',
+			SubmitsToObjectURL: true
+		});
 		this[parse]('parts');
 	}
 

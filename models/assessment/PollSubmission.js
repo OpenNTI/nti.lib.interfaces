@@ -3,7 +3,10 @@ import QuestionSubmission from './QuestionSubmission';
 export default class PollSubmission extends QuestionSubmission {
 	constructor (service, parent, data) {
 		super(service, parent, data);
-		this.MimeType = 'application/vnd.nextthought.assessment.pollsubmission';
+		Object.assign(this, {
+			MimeType: 'application/vnd.nextthought.assessment.pollsubmission',
+			SubmitsToObjectURL: true
+		});
 	}
 
 	getID () {
