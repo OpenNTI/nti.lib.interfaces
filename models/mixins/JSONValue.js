@@ -11,7 +11,7 @@ export default {
 
 		let get = v => {
 			if (Array.isArray(v)) {
-				v = v.map(x => this.getData.call(x));
+				v = v.map(x => get(x));
 
 			} else if (v && isFunction(v.getData)) {
 				v = v.getData();
