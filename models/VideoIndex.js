@@ -95,12 +95,6 @@ export default class VideoIndex {
 	get length () { return this[Order].length; }
 
 
-	asJSON () {
-		console.log('Still used?');
-		return Object.assign({}, this[Data]);
-	}
-
-
 	combine (that) {
 		let order = this[Order].concat(that[Order]);
 		let data = Object.assign({}, this[Data], that[Data]);
