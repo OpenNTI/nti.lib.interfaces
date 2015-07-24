@@ -114,7 +114,7 @@ export default class Notifications extends EventEmitter {
 
 
 	[ApplyData] (data) {
-		this.Items = this.Items.concat(data.Items);
+		this.Items = this.Items.concat(data.Items || []);
 		this.nextBatchSrc = (data.TotalItemCount > this.Items.length) &&
 			getLink(data, 'batch-next');
 
