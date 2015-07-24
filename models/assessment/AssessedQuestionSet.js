@@ -8,7 +8,7 @@ import assessed from '../mixins/AssessedAssessmentPart';
 export default class AssessedQuestionSet extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data, assessed);
-		this.questions = data.questions.map(question=>this[parse](question));
+		this[parse]('questions');
 	}
 
 	getQuestion (id) {

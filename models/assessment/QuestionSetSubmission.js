@@ -17,8 +17,7 @@ export default class QuestionSetSubmission extends Base {
 		});
 
 		// CreatorRecordedEffortDuration: 0
-
-		this.questions = this.questions.map(q =>this[parse](q));
+		this[parse]('questions');
 	}
 
 

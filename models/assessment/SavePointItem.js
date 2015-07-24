@@ -7,7 +7,7 @@ export default class SavePointItem extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
-		this.Submission = data.Submission && this[parse](data.Submission);
+		this[parse]('Submission');
 	}
 
 

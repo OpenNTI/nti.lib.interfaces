@@ -12,7 +12,7 @@ export default class Assignment extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data, {isSubmittable: true});
 
-		this.parts = (data.parts || []).map(p => this[parse](p));
+		this[parse]('parts');
 	}
 
 	[DateFields] () {

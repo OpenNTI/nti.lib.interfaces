@@ -9,7 +9,7 @@ export default class AssessedQuestion extends Base {
 	constructor(service, parent, data) {
 		super(service, parent, data, assessed);
 
-		this.parts = data.parts.map(part =>this[parse](part));
+		this[parse]('parts');
 	}
 
 

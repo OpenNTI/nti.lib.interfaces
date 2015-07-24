@@ -15,8 +15,7 @@ export default class Question extends Base {
 			isQuestion: true
 		});
 
-		this.parts = data.parts.map(p=>this[parse](p));
-
+		this[parse]('parts');
 		this[parse]('wordbank');
 	}
 

@@ -16,11 +16,8 @@ export default class AssignmentSubmission extends Base {
 			MimeType: 'application/vnd.nextthought.assessment.assignmentsubmission'
 		});
 
-
-
-		this.parts = this.parts.map(part => this[parse](part));
-
 		// CreatorRecordedEffortDuration: 0
+		this[parse]('parts');
 	}
 
 
