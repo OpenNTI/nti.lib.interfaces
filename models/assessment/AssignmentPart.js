@@ -6,7 +6,7 @@ import {
 export default class AssignmentPart extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
-		this[parse]('question_set');
+		this[parse]('question_set', []);
 	}
 
 

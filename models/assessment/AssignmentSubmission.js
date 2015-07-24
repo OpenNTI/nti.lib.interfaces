@@ -18,7 +18,7 @@ export default class AssignmentSubmission extends Base {
 		});
 
 		// CreatorRecordedEffortDuration: 0
-		this[parse]('parts');
+		this[parse]('parts', []);
 	}
 
 

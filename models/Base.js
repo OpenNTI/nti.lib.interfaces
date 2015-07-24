@@ -169,7 +169,7 @@ export default class Base extends EventEmitter {
 	}
 
 
-	[Parser] (raw) {
+	[Parser] (raw, defaultValueForKey) {
 
 		if (raw === this) {
 			throw new Error('Migration failure: something is calling parse with `this` as the first argument.');
@@ -199,7 +199,11 @@ export default class Base extends EventEmitter {
 		if (key) {//If the paramater was a key, assign the parsed object back to the key...
 			this[key] = o;
 			if (o == null || o.length === 0) {
-				delete this[key];
+				if (arguments.length > 1) {//a value was passed to the 2nd argument. (use its value no matter what it is.)
+					this[key] = defaultValueForKey;
+				} else {
+					delete this[key];
+				}
 			}
 		}
 		return o;

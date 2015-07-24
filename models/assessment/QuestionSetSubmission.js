@@ -17,7 +17,7 @@ export default class QuestionSetSubmission extends Base {
 		});
 
 		// CreatorRecordedEffortDuration: 0
-		this[parse]('questions');
+		this[parse]('questions', []);
 	}
 
 

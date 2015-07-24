@@ -11,7 +11,7 @@ export default class QuestionSet extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data, {isSubmittable: true});
 
-		this[parse]('questions');
+		this[parse]('questions', []);
 	}
 
 	/**

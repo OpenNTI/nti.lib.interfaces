@@ -11,7 +11,7 @@ export default class SurveySubmission extends QuestionSetSubmission {
 			MimeType: 'application/vnd.nextthought.assessment.surveysubmission',
 			SubmitsToObjectURL: true
 		});
-		this[parse]('parts');
+		this[parse]('parts', []);
 	}
 
 	getID () {

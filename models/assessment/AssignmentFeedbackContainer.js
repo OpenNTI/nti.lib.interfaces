@@ -9,7 +9,7 @@ export default class AssignmentFeedbackContainer extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
-		this[parse]('Items');
+		this[parse]('Items', []);
 	}
 
 	addPost (body) {

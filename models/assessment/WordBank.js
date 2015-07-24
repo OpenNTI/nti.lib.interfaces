@@ -4,7 +4,7 @@ import {Parser as parse} from '../../CommonSymbols';
 export default class WordBank extends Base {
 	constructor(service, parent, data) {
 		super(service, parent, data);
-		this[parse]('entries');
+		this[parse]('entries', []);
 	}
 
 	getEntry (id) {
