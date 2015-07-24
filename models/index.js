@@ -94,6 +94,7 @@ import AssessmentPartMatching from './assessment/parts/Matching';
 import AssessmentPartMultipleChoice from './assessment/parts/MultipleChoice';
 import AssessmentPartOrdering from './assessment/parts/Ordering';
 
+import AssessmentInquiryItem from './assessment/InquiryItem';
 import AssessmentSavePointItem from './assessment/SavePointItem';
 
 import AssessmentWordBank from './assessment/WordBank';
@@ -269,6 +270,8 @@ const PARSERS = {
 	'assessment.orderingsolution': 'assessment.solution',
 	'assessment.symbolicmathsolution': 'assessment.solution',
 
+	'assessment.inquiryitem': AssessmentInquiryItem,
+	'assessment.userscourseinquiryitem': 'assessment.inquiryitem',
 	'assessment.savepointitem': AssessmentSavePointItem,
 	'assessment.userscourseassignmentsavepointitem': 'assessment.savepointitem',
 
