@@ -1,5 +1,6 @@
 import QuestionSet from './QuestionSet';
 
+
 export default class Survey extends QuestionSet {
 	constructor (service, parent, data) {
 		super(service, parent, data);
@@ -18,4 +19,8 @@ export default class Survey extends QuestionSet {
 		return s;
 	}
 
+
+	loadPreviousSubmission () {
+		return this.fetchLinkParsed('History');
+	}
 }
