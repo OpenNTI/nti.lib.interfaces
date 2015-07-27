@@ -11,4 +11,14 @@ export default class InqueryItem extends Base {
 		//CatalogEntryNTIID
 		this[parse]('Submission');
 	}
+
+	getQuestions () {
+		let submission = this.pendingAssessment || this.Submission;
+		return submission ? submission.getQuestions() : [];
+	}
+
+
+	isSubmitted () {
+		return !!this.Submission;
+	}
 }
