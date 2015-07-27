@@ -101,38 +101,22 @@ export default class Assignment extends Base {
 
 	loadPreviousSubmission () {
 		return this.loadHistory()
-			.catch(this.loadSavePoint.bind(this));
+			.catch(() => this.loadSavePoint());
 	}
 
 
 	loadHistory () {
-		let service = this[Service];
-		let link = this.getLink('History');
-
-		if (!link) {
-			return Promise.reject('No Link');
-		}
-
-		return service.get(link).then(data=>this[parse](data));
+		return this.fetchLinkParsed('History');
 	}
 
 
 	loadSavePoint () {
-		let service = this[Service];
-		let link = this.getLink('Savepoint');
-
-		if (!link) {
-			return Promise.reject('No Link');
-		}
-
-		return service.get(link)
-			.then(data=>this[parse](data));
+		return this.fetchLinkParsed('Savepoint');
 	}
 
 
 	postSavePoint (data) {
-		let link = this.getLink('Savepoint');
-		if (!link) {
+		if (!this.hasLink('Savepoint')) {
 			return Promise.resolve({});
 		}
 
@@ -141,7 +125,7 @@ export default class Assignment extends Base {
 			last.abort();
 		}
 
-		let result = this[ActiveSavePointPost] = this[Service].post(link, data);
+		let result = this[ActiveSavePointPost] = this.postToLink('Savepoint', data);
 
 		result.catch(()=> {}).then(()=> {
 			if (result === this[ActiveSavePointPost]) {
