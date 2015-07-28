@@ -14,17 +14,6 @@ export default class Entity extends Base {
 	}
 
 
-	//Determins if the logged in user is a member of this Entity. (default implementation)
-	// This cannot be called/read during the app's initialization...
-	get isAppUserAMember () {
-		let me = this[Service].getAppUserSync();
-		let entityID = this.getID();
-
-		return me.getID() === entityID //if the Entity represents the App User (users are entities)
-			|| me.Communities.some(x=> x.getID() === entityID); // Or if the Entity's ID is in the set of Communities
-	}
-
-
 	get avatar () {
 		return this.avatarURL;
 	}

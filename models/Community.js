@@ -50,7 +50,11 @@ export default class Community extends Entity {
 			}
 		);
 
-		if (this.isAppUserAMember) {
+		linkPromise.then(()=> {
+			if (!href) {
+				store.postToActivity = void 0;
+				return;
+			}
 
 			Object.assign(store, {
 
@@ -70,7 +74,9 @@ export default class Community extends Entity {
 				}
 
 			});
-		}
+
+			store.emit('change');
+		});
 
 		return store;
 	}

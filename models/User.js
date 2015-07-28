@@ -51,6 +51,12 @@ export default class User extends Entity {
 	}
 
 
+	get isAppUser () {
+		let appUser = this[Service].getAppUsername();
+		return this.getID() === appUser;
+	}
+
+
 	get following () {//do not define a setter.
 		let service = this[Service];
 		let contacts = service.getContacts();
@@ -101,11 +107,10 @@ export default class User extends Entity {
 
 	getActivity () {
 		let store = super.getActivity();
-
 		let {Username} = this;
 		let service = this[Service];
 
-		if (this.isAppUserAMember) {
+		if (this.isAppUser) {
 
 			Object.assign(store, {
 
