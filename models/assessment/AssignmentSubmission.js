@@ -22,6 +22,11 @@ export default class AssignmentSubmission extends Base {
 	}
 
 
+	getID () {
+		return this.NTIID || this.assignmentId;
+	}
+
+
 	getQuestion (id) {
 		return this.parts.reduce((found, p) =>
 			found || p.getQuestion(id), null);
