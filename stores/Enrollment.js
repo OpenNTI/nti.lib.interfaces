@@ -34,7 +34,10 @@ export default class Enrollment {
 			.then(library =>
 				library.getCourse(courseId, true) || Promise.reject('Not Enrolled'))
 
-			.then(course => course.drop());
+			.then(course => {
+				console.log('hi');
+				return course.drop();
+			});
 	}
 
 
