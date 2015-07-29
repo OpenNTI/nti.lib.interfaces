@@ -116,6 +116,9 @@ import AssessmentEvent from './analytics/AssessmentEvent';
 import AssignmentEvent from './analytics/AssignmentEvent';
 import ResourceEvent from './analytics/ResourceEvent';
 import ExternalResourceEvent from './analytics/ExternalResourceEvent';
+import ProfileViewedEvent from './analytics/ProfileViewedEvent';
+import ProfileActivityViewedEvent from './analytics/ProfileActivityViewedEvent';
+import ProfileMembershipViewedEvent from './analytics/ProfileMembershipViewedEvent';
 import TopicViewedEvent from './analytics/TopicViewedEvent';
 import WatchVideoEvent from './analytics/WatchVideoEvent';
 
@@ -160,6 +163,9 @@ const PARSERS = {
 	'analytics.assignmentevent': AssignmentEvent,
 	'analytics.resourceevent': ResourceEvent,
 	'analytics.topicviewevent': TopicViewedEvent,
+	'analytics.profileviewevent': ProfileViewedEvent,
+	'analytics.profileactivityviewevent': ProfileActivityViewedEvent,
+	'analytics.profilemembershipviewevent': ProfileMembershipViewedEvent,
 	'analytics.watchvideoevent': WatchVideoEvent,
 
 	'courses.catalogentry': CourseCatalogEntry,
