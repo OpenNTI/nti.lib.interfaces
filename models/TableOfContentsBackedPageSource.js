@@ -52,9 +52,15 @@ export default class TableOfContentsBackedPageSource extends Base{
 	}
 
 
+	contains (node) {
+		return this.find(node) >= 0;
+	}
+
+
 	find (node) {
 		let nodes = this.pagesInRange;
-		let matcher = n => n.id === node.id;
+		let nodeId = node && (typeof node === 'string' ? node : node.id);
+		let matcher = n => n.id === nodeId;
 
 		let index = nodes.findIndex(matcher);
 		if (index < 0) {
