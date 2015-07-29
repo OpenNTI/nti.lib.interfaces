@@ -559,6 +559,10 @@ export default class ServiceDocument {
 
 
 	getObjectURL (ntiid, field) {
+		if (!ntiid) {
+			throw new Error('No NTIID specified');
+		}
+
 		let collection = this.getCollection('Objects', 'Global') || {};
 		let parts = [
 			collection.href || '',
