@@ -169,8 +169,8 @@ export default class ServiceDocument {
 
 
 	getEnrollment () {
-		console.warn('TODO: Move the guts of store/Enrollent into the app as API.');
 		if (!this[ENROLLMENT]) {
+			console.warn('TODO: Move the guts of store/Enrollent into the app as API.');
 			this[ENROLLMENT] = new Enrollment(this);
 		}
 		return this[ENROLLMENT];
