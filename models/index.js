@@ -66,6 +66,7 @@ import AssessmentQuestion from './assessment/Question';
 import AssessmentSurvey from './assessment/Survey';
 import AssessmentPoll from './assessment/Poll';
 
+import AssessmentAssignmentRef from './assessment/AssignmentReference';
 import AssessmentAssignment from './assessment/Assignment';
 import AssessmentTimedAssignment from './assessment/TimedAssignment';
 import AssessmentAssignmentPart from './assessment/AssignmentPart';
@@ -217,6 +218,7 @@ const PARSERS = {
 	'assessment.pollsubmission': AssessmentPollSubmittion,
 	'assessment.surveysubmission': AssessmentSurveySubmittion,
 
+	'assessmentref': AssessmentAssignmentRef,
 	'assessment.assignment': AssessmentAssignment,
 	'assessment.timedassignment': AssessmentTimedAssignment,
 
