@@ -11,6 +11,7 @@ import Pendability from '../models/mixins/Pendability';
 import ContactStore, {MIME_TYPE as CONTACT_MIME} from './Contacts';
 import Enrollment from './Enrollment';
 
+
 import {
 	REL_USER_SEARCH,
 	REL_USER_UNIFIED_SEARCH,
@@ -29,6 +30,8 @@ import wait from '../utils/wait';
 let inflight = {};
 
 import {Context, Server, Service, Pending} from '../CommonSymbols';
+
+const ENROLLMENT = Symbol('enrollment');
 
 const NOT_IMPLEMENTED = 501; //HTTP 501 means not implemented
 
@@ -51,7 +54,6 @@ export default class ServiceDocument {
 		Object.assign(this, json);
 
 		this.capabilities = new Capabilities(this, caps);
-		this.enrollment = new Enrollment(this);
 
 		this.addToPending(
 			this.getAppUser().then(u => {
@@ -167,7 +169,11 @@ export default class ServiceDocument {
 
 
 	getEnrollment () {
-		return this.enrollment;
+		console.warn('TODO: Move the guts of store/Enrollent into the app as API.');
+		if (!this[ENROLLMENT]) {
+			this[ENROLLMENT] = new Enrollment(this);
+		}
+		return this[ENROLLMENT];
 	}
 
 

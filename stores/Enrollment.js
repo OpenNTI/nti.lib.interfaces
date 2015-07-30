@@ -6,6 +6,9 @@ import {Service} from '../CommonSymbols';
 
 const GetLibrary = Symbol('Library Getter');
 
+
+//TODO: There isn't enough here to warrent a whole heavy class. This should move to the catalog API on the app side.
+
 export default class Enrollment {
 	constructor (service) {
 		this[Service] = service;
@@ -32,12 +35,10 @@ export default class Enrollment {
 
 		return this[GetLibrary]()
 			.then(library =>
-				library.getCourse(courseId, true) || Promise.reject('Not Enrolled'))
+				library.getCourse(courseId, true)
+				|| Promise.reject(new Error('Course Not Found in Library. Not Enrolled?')))
 
-			.then(course => {
-				console.log('hi');
-				return course.drop();
-			});
+			.then(course => course.drop());
 	}
 
 
