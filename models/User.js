@@ -95,6 +95,12 @@ export default class User extends Entity {
 	}
 
 
+	getProfileSchema () {
+		return this.fetchLink('account.profile')
+			.then(account => account.ProfileSchema);
+	}
+
+
 	getAchievements () {
 		if (!this.hasLink('Badges')) {
 			return Promise.reject('Badges not available');
