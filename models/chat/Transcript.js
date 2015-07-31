@@ -2,6 +2,8 @@ import Base from '../Base';
 
 import { Parser as parse } from '../../CommonSymbols';
 
+import {thread} from '../../utils/UserDataThreader';
+
 const TakeOver = Symbol.for('TakeOver');
 
 export default class Transcript extends Base {
@@ -16,6 +18,9 @@ export default class Transcript extends Base {
 		rename('Contributors', 'contributors');
 
 		if (this.Messages) {
+			this.Messages = thread(this.Messages);
+			this.Messages.sort((a, b) => a.getCreatedTime() - b.getCreatedTime());
+
 			rename('Messages', 'messages');
 		}
 	}
