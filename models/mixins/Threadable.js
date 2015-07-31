@@ -84,6 +84,8 @@ export default {
 			this.fetchLinkParsed('replies') :
 			Promise.resolve();
 
+		this[CHILDREN] = request;
+
 		return request.then(x =>
 				(!x || !x.length) ? //do we have replies?
 				[] : //no? resolve with empty list
@@ -93,7 +95,8 @@ export default {
 					[this].concat(x) //prevent a placeholder from being generated AND get the Thread-Links applied to "this"
 				)
 				[0][CHILDREN]
-			);
+			)
+			.then(x => (this[CHILDREN] = x));
 	},
 
 
