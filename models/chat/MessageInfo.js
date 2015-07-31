@@ -1,10 +1,12 @@
 import Base from '../Base';
 
+import Threadable from '../mixins/Threadable';
+
 import pluck from '../../utils/pluck';
 
 export default class MessageInfo extends Base {
 	constructor (service, parent, data) {
-		super(service, parent, data);
+		super(service, parent, data, Threadable);
 	}
 
 	flag () {
