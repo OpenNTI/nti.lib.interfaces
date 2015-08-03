@@ -4,25 +4,21 @@ import {
 	Parser as parse
 } from '../../CommonSymbols';
 
-export default class InqueryItem extends Base {
+export default class InqueryItemResponse extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
-		//CatalogEntryNTIID
+		this[parse]('Aggregated');
 		this[parse]('Submission');
 	}
 
 	getQuestions () {
 		let submission = this.Submission;
-		return !submission
-			? []
-			: submission.getQuestions
-				? submission.getQuestions()
-				: [submission];
+		return !submission ? [] : submission.getQuestions();
 	}
 
 
 	isSubmitted () {
-		return !!this.Submission;
+		return !!this.Submission || this.Aggregated;
 	}
 }

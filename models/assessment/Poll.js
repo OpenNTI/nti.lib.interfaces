@@ -19,4 +19,9 @@ export default class Poll extends Question {
 
 		return s;
 	}
+
+
+	loadPreviousSubmission () {
+		return this.fetchLinkParsed('History');
+	}
 }

@@ -96,6 +96,7 @@ import AssessmentPartMultipleChoice from './assessment/parts/MultipleChoice';
 import AssessmentPartOrdering from './assessment/parts/Ordering';
 
 import AssessmentInquiryItem from './assessment/InquiryItem';
+import AssessmentInquiryItemResponse from './assessment/InquiryItemResponse';
 import AssessmentSavePointItem from './assessment/SavePointItem';
 
 import AssessmentWordBank from './assessment/WordBank';
@@ -280,6 +281,7 @@ const PARSERS = {
 
 	'assessment.inquiryitem': AssessmentInquiryItem,
 	'assessment.userscourseinquiryitem': 'assessment.inquiryitem',
+	'assessment.userscourseinquiryitemresponse': AssessmentInquiryItemResponse,
 	'assessment.savepointitem': AssessmentSavePointItem,
 	'assessment.userscourseassignmentsavepointitem': 'assessment.savepointitem',
 
