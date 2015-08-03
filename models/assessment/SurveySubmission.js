@@ -14,6 +14,10 @@ export default class SurveySubmission extends QuestionSetSubmission {
 		this[parse]('parts', []);
 	}
 
+
+	canReset () { return !this.isSubmitted(); }
+	
+
 	getID () {
 		return this.NTIID || this.surveyId;
 	}

@@ -14,6 +14,9 @@ export default class PollSubmission extends QuestionSubmission {
 	}
 
 
+	canReset () { return !this.isSubmitted(); }
+
+
 	canSubmit () {
 		const answered = p => p !== null;
 
