@@ -25,7 +25,7 @@ describe('UserDataThreader utils', ()=> {
 
 	describe('buildItemTree', ()=> {
 
-		function createThreadable(name, placeholder) {
+		function createThreadable (name, placeholder) {
 			let n = {
 				isThreadable: true,
 				parent: {},

@@ -10,7 +10,7 @@ const ID = Symbol('ID');
 const Halted = Symbol('Halted');
 const Heartbeat = Symbol('Heartbeat');
 
-function durationSeconds(startTime = Date.now(), endTime = Date.now()) {
+function durationSeconds (startTime = Date.now(), endTime = Date.now()) {
 	return (endTime - startTime) / 1000;
 }
 
@@ -44,12 +44,12 @@ export default class BasicEvent {
 
 	}
 
-	static halt(event) {
+	static halt (event) {
 		event[Halted] = true;
 		this.finish(event);
 	}
 
-	static finish(event, endTime = Date.now()) {
+	static finish (event, endTime = Date.now()) {
 		if (event[Heartbeat]) {
 			event[Heartbeat].die();
 			delete event[Heartbeat];
@@ -69,19 +69,19 @@ export default class BasicEvent {
 		event[Finished] = true;
 	}
 
-	onPulse() {
+	onPulse () {
 		this.lastBeat = Date.now();
 	}
 
-	get id() {
+	get id () {
 		return this[ID];
 	}
 
-	get finished() {
+	get finished () {
 		return this[Finished];
 	}
 
-	halt() {
+	halt () {
 		this.constructor.halt(this);
 	}
 
@@ -89,7 +89,7 @@ export default class BasicEvent {
 		this.constructor.finish(this, endTime);
 	}
 
-	get startTime() {
+	get startTime () {
 		return this[StartTime];
 	}
 

@@ -1,6 +1,6 @@
 import isEmpty from './isempty';
 
-export default function hash(str) {
+export default function hash (str) {
 	let h = 0;
 	if (isEmpty(str)) {
 		return h;

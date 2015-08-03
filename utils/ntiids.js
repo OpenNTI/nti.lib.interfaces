@@ -11,7 +11,7 @@ const COMMON_PREFIX = 'tag:nextthought.com,2011-10:';
  * @param {string} id ntiid
  * @returns {object} an object containing the components of the id
  */
-export function parseNTIID(id) {
+export function parseNTIID (id) {
 	let parts = (typeof id !== 'string' ? (id || '').toString() : id).split(':'),
 		authority, specific,
 		result = {};
@@ -60,7 +60,7 @@ export function parseNTIID(id) {
 
 	result.specific.provider = specific.length === 3 ? specific[0] : null;
 
-	result.toString = function() {
+	result.toString = function () {
 		let m = this,
 			a = [
 				m.authority.name,
@@ -79,7 +79,7 @@ export function parseNTIID(id) {
 	};
 
 	//FIXME include authority?
-	result.toURLSuffix = function() {
+	result.toURLSuffix = function () {
 		//#!html/mathcounts/mathcounts2013.warm_up_7
 		let m = this,
 			components = [];
@@ -97,7 +97,7 @@ export function parseNTIID(id) {
 }
 
 
-export function isNTIID(id) {
+export function isNTIID (id) {
 	return Boolean(parseNTIID(id));
 }
 
@@ -107,7 +107,7 @@ export function isNTIID(id) {
  * @param {string} id ntiid
  * @returns {string} CSS-friendly string to use in a selector
  */
-export function escapeId(id) {
+export function escapeId (id) {
 	return id.replace(/:/g, '\\3a ') //no colons
 			.replace(/,/g, '\\2c ')//no commas
 			.replace(/\./g, '\\2e ');//no periods
@@ -119,7 +119,7 @@ export function escapeId(id) {
  * @param {string} id ntiid
  * @returns {string} prefix
  */
-export function ntiidPrefix(id) {
+export function ntiidPrefix (id) {
 	let ntiid = parseNTIID(id);
 	if (ntiid) {
 		ntiid.specific.type = 'HTML';
@@ -134,7 +134,7 @@ export function ntiidPrefix(id) {
  * @param {stirng} fragment The string from the url fragement
  * @returns {string} NTIID
  */
-export function parseFragment(fragment) {
+export function parseFragment (fragment) {
 	let authority = 'nextthought.com,2011-10',
 		parts, type, provider, typeSpecific, s;
 
@@ -160,7 +160,7 @@ export function parseFragment(fragment) {
 }
 
 
-export function encodeForURI(ntiid) {
+export function encodeForURI (ntiid) {
 	let cut = COMMON_PREFIX.length;
 	if (ntiid && ntiid.substr(0, cut) === COMMON_PREFIX) {
 		ntiid = ntiid.substr(cut);
@@ -170,7 +170,7 @@ export function encodeForURI(ntiid) {
 }
 
 
-export function decodeFromURI(component) {
+export function decodeFromURI (component) {
 	let ntiid = decodeURIComponent(component);
 
 	if (!isNTIID(ntiid) && ntiid.substr(0, 3) !== 'tag' && ntiid.length > 0) {

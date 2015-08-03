@@ -3,11 +3,11 @@ import isEmpty from './isempty';
 const anchors = /<a([^>]*)>(.*?)<\/a>/igm;
 const pars = /<(\/)?p([^>]*)>/igm;
 
-function stripAnchors(tag, attrs, body) {
+function stripAnchors (tag, attrs, body) {
 	return (isEmpty(body) || isEmpty(attrs) || attrs.indexOf('href') === -1) ? '' : tag;
 }
 
-function stripPars(tag, end) {
+function stripPars (tag, end) {
 	return end ? '\n' : '';
 }
 

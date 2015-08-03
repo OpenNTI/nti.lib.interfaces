@@ -2,10 +2,6 @@ import Base from '../Base';
 
 export default class ProfessionalPosition extends Base {
 
-	static newFrom(data) {
-		return new ProfessionalPosition(null, null, data);
-	}
-
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

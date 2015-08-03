@@ -3,7 +3,7 @@ import Assignment from './Assignment';
 
 
 export default class TimedAssignment extends Assignment {
-	constructor(service, parent, data) {
+	constructor (service, parent, data) {
 		super(service, parent, data);
 		this.isTimed = true;
 

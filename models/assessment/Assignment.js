@@ -89,7 +89,7 @@ export default class Assignment extends Base {
 			parts: []
 		});
 
-		s.parts = this.parts.map(function(p) {
+		s.parts = this.parts.map(p => {
 			p = p.getSubmission();
 			p[ReParent](s);
 			return p;

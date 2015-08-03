@@ -5,7 +5,7 @@ import Stream from '../stores/Stream';
 import { Service } from '../CommonSymbols';
 
 export default class Community extends Entity {
-	constructor(service, data) {
+	constructor (service, data) {
 		super(service, null, data);
 		this.isCommunity = true;
 	}

@@ -1,4 +1,4 @@
-export default function getLink(o, rel, raw) {
+export default function getLink (o, rel, raw) {
 
 	if (o && o.Links) { o = o.Links; }
 
@@ -14,7 +14,7 @@ export default function getLink(o, rel, raw) {
  * This function is an anti-pattern. TODO: consolidate all link getting/referencing to the getLink version (perferibly
  * as a method call off of a model, instead of a function call on a raw jso)
  */
-export function asMap(o) {
+export function asMap (o) {
 
 	//console.error('Prefer getLink(data, linkName)...');
 

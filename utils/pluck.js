@@ -7,7 +7,7 @@
  *
  * @return {object} a new object with just the keys specified
  */
-export default function pluck(o, ...keys) {
+export default function pluck (o, ...keys) {
 	let out = {};
 	for (let key of keys) {
 		out[key] = o[key];

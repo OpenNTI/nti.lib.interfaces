@@ -6,7 +6,7 @@
  * @param {Function} fn the function to execute.
  * @returns {void}
  */
-export default function buffer(time: number, fn: Function) {
+export default function buffer (time: number, fn: Function) {
 	if (typeof time !== 'number') { throw new Error('Illegal Argument: The first argument must be a number'); }
 	if (typeof fn !== 'function') { throw new Error('Illegal Argument: The second argument must be a function'); }
 

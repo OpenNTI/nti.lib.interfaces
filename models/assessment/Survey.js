@@ -6,7 +6,7 @@ export default class Survey extends QuestionSet {
 		super(service, parent, data);
 	}
 
-	getSubmissionModel() {
+	getSubmissionModel () {
 		return this.getModel('assessment.surveysubmission');
 	}
 

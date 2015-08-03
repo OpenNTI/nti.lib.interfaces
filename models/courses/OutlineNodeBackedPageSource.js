@@ -42,11 +42,11 @@ export default class OutlineNodeBackedPageSource extends Base {
 }
 
 
-function suppressed(node) {
+function suppressed (node) {
 	return node && node.href;
 }
 
-function flatten(node) {
+function flatten (node) {
 	const fn = flatten.fnLoop ||
 		(flatten.fnLoop = (a, n)=> a.concat(flatten(n)));
 

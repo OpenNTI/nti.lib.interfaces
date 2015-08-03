@@ -1,14 +1,14 @@
-function min(a, b) {
+function min (a, b) {
 	return a < b ? a : b;
 }
 
 
-function max(a, b) {
+function max (a, b) {
 	return a > b ? a : b;
 }
 
 
-export default function between(i, a, b, inclusive = false) {
+export default function between (i, a, b, inclusive = false) {
 	let x = min(a, b);
 	let y = max(a, b);
 

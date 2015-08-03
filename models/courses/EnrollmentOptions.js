@@ -37,17 +37,17 @@ export default class EnrollmentOptions extends Base {
 	}
 
 
-	getEnrollmentOptionForOpen() {
+	getEnrollmentOptionForOpen () {
 		return this.Items.OpenEnrollment;
 	}
 
 
-	getEnrollmentOptionForPurchase() {
+	getEnrollmentOptionForPurchase () {
 		return this.Items.StoreEnrollment;
 	}
 
 
-	getEnrollmentOptionForFiveMinute() {
+	getEnrollmentOptionForFiveMinute () {
 		return this.Items.FiveminuteEnrollment;
 	}
 }

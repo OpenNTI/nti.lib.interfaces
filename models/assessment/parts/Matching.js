@@ -2,7 +2,7 @@ import Part from '../Part';
 import {ContentKeys} from '../../mixins/HasContent';
 
 export default class Matching extends Part {
-	constructor(service, parent, data) {
+	constructor (service, parent, data) {
 		super(service, parent, data);
 	}
 

@@ -5,7 +5,7 @@ import {encodeForURI as encodeNTIIDForURI} from '../utils/ntiids';
 import {Parent, Service} from '../CommonSymbols';
 
 
-function buildRef(node) {
+function buildRef (node) {
 	let id = node && node.getID();
 	return id && {
 		ntiid: id,
@@ -43,6 +43,6 @@ export default class VideoIndexBackedPageSource extends Base {
 
 	scoped (containerId) {
 		let subset = this[Parent].scoped(containerId);
-		return new this.constructor(subset);
+		return new this.constructor (subset);
 	}
 }

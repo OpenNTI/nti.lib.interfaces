@@ -81,7 +81,7 @@ export function buildItemTree (items, tree) {
 	//console.log('Using list of objects', items);
 
 	//Flatten an preexisting relationships of list into the array ignoring duplicates.
-	function flattenNode(n, result) {
+	function flattenNode (n, result) {
 		if (!n.placeholder) {
 			result[n.getID()] = n;
 		}
@@ -109,7 +109,7 @@ export function buildItemTree (items, tree) {
 		}
 	}
 
-	list.forEach(function buildTree(r) {
+	list.forEach(function buildTree (r) {
 		let g = (GETTERS[r.Class] || identity)(r);
 		let oid = g.getID(),
 			parent = g.inReplyTo;

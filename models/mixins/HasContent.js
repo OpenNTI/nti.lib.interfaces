@@ -1,7 +1,7 @@
 import fixRefs from '../../utils/rebase-references';
 import clean from '../../utils/sanitize-markup';
 
-function cleanupContentString(content) {
+function cleanupContentString (content) {
 	try {
 		let root = this.getContentRoot();
 		content = fixRefs(content, root);

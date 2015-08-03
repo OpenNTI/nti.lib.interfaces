@@ -8,7 +8,7 @@ import GetContents from '../mixins/GetContents';
 import Likable from '../mixins/Likable';
 
 export default class Topic extends Base {
-	constructor(service, parent, data) {
+	constructor (service, parent, data) {
 		super(service, parent, data, GetContents, Likable);
 
 		// PostCount

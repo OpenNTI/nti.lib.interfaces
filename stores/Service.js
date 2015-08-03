@@ -106,7 +106,7 @@ export default class ServiceDocument {
 			return Promise.reject('No URL');
 		}
 
-		function clean() {
+		function clean () {
 			delete inflight[key];
 		}
 
@@ -160,7 +160,7 @@ export default class ServiceDocument {
 		c = c && (c.Cookie || c.cookie);
 		c = (c && c.split(/;\W*/)) || [];
 
-		function search(found, v) {
+		function search (found, v) {
 			return found || (v && v.indexOf(cookie) === 0);
 		}
 
@@ -248,7 +248,7 @@ export default class ServiceDocument {
 	}
 
 
-	getParsedObject(ntiid, parent) {
+	getParsedObject (ntiid, parent) {
 		let p = o => parse(this, parent || this, o);
 
 		if (typeof ntiid === 'object') {
@@ -259,7 +259,7 @@ export default class ServiceDocument {
 	}
 
 
-	getParsedObjects(ntiids, parent) {
+	getParsedObjects (ntiids, parent) {
 		return this.getObjects(ntiids).then(o => parse(this, parent || this, o));
 	}
 

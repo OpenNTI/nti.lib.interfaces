@@ -25,7 +25,7 @@
 export default function binDiscussions (section, parent) {
 	let bins = {};
 
-	function addTo(key, group) {
+	function addTo (key, group) {
 
 		let items = (group && group.Items) || [];
 		for(let item of items) {

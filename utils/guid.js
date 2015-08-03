@@ -4,7 +4,7 @@
  * @see http://stackoverflow.com/a/8809472
  * @returns {string} A Globally Unique Identifier
  */
-export default function guidGenerator() {
+export default function guidGenerator () {
 	/*eslint-disable no-bitwise*/
 	let seed = Date.now();
 

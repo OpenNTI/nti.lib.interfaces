@@ -1,7 +1,7 @@
 import path from 'path';
 import url from 'url';
 
-export default function urlJoin(...parts) {
+export default function urlJoin (...parts) {
 	let base = url.parse(parts.shift());
 
 	parts.unshift(base.pathname);

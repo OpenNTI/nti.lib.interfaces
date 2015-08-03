@@ -8,7 +8,7 @@ const NEVER_FAIL = thenable =>
 		emptyFunction);
 
 
-export default function(pending, timeout) {
+export default function (pending, timeout) {
 
 	if (!Array.isArray(pending)) {
 		pending = [Promise.resolve(pending)];

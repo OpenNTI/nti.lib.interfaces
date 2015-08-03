@@ -24,19 +24,19 @@ export default class VideoIndex {
 		let keyOrder = [];
 		let root = parent.root;
 
-		function prefix(o) {
+		function prefix (o) {
 			o.src = urlJoin(root, o.src);
 			o.srcjsonp = urlJoin(root, o.srcjsonp);
 			return o;
 		}
 
-		function tocOrder(a, b) {
+		function tocOrder (a, b) {
 			// Since the <[topic|object] ntiid="..." is not guaranteed to be unique,
 			// this will just order by first occurance of any element that has an
 			// ntiid attribute with value of what is asked for (a & b)
 			let c = toc.getSortPosition(a),
-			d = toc.getSortPosition(b),
-			p = c > d;
+				d = toc.getSortPosition(b),
+				p = c > d;
 			return p ? 1 : -1;
 		}
 
@@ -150,7 +150,7 @@ export default class VideoIndex {
 	indexOf (id) { return this[Order].indexOf(id); }
 
 
-	get(id) { return this[Data][id]; }
+	get (id) { return this[Data][id]; }
 
 
 	getAt (index) {

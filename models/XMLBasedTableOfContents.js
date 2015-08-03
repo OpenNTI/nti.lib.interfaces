@@ -4,10 +4,10 @@ import XML from 'elementtree';
 import PageSource from './TableOfContentsBackedPageSource';
 import Node from './TableOfContentsNode';
 
-function cleanNodes(x, o) {
-	function getParent(e) {
+function cleanNodes (x, o) {
+	function getParent (e) {
 		let key = 'ntiid',
-		id = e.get(key);
+			id = e.get(key);
 
 		if (!id) {
 			key = 'target-ntiid';
@@ -125,7 +125,7 @@ export default class XMLBasedTableOfContents extends Base {
 
 	getAttribute (...a) { return this.get(...a); }
 
-	getID() { return this.get('ntiid'); }
+	getID () { return this.get('ntiid'); }
 
 	// filter (...args) {
 	// 	let filtered = this.root.filter(...args);

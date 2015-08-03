@@ -22,7 +22,7 @@ const TYPES = {
 	UNKNOWN_TYPE
 };
 
-export function getTypes() {
+export function getTypes () {
 	if (!types) {
 		types = {};
 		Object.keys(TYPES).forEach(key => {

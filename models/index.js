@@ -365,19 +365,19 @@ const PARSERS = {
 };
 
 
-function getType(o) {
+function getType (o) {
 	return o.MimeType || o.mimeType || o.Class;
 }
 
 
-function error(obj) {
+function error (obj) {
 	let e = new Error('No Parser for object: ' + (obj && getType(obj)) + '\n' + JSON.stringify(obj).substr(0, 50));
 	e.NoParser = true;
 	throw e;
 }
 
 
-export function getModelByType(type) {
+export function getModelByType (type) {
 	type = type.replace(/^application\/vnd.nextthought./, '');
 	let p = PARSERS[type];
 	if (typeof p === 'string') {
@@ -395,7 +395,7 @@ export function getModelByType(type) {
 }
 
 
-export function parse(service, parent, obj) {
+export function parse (service, parent, obj) {
 	if (obj == null) {
 		return obj;
 	}

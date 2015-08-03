@@ -36,7 +36,7 @@ export default class Library extends EventEmitter {
 
 
 	static get (service, name, reload) {
-		function reloading(i) { i.emit('reloading'); }
+		function reloading (i) { i.emit('reloading'); }
 
 		let instance = instances[name];
 
@@ -60,7 +60,7 @@ export default class Library extends EventEmitter {
 	}
 
 
-	constructor(service, name, contentPackages, contentBundles, enrolledCourses, administeredCourses) {
+	constructor (service, name, contentPackages, contentBundles, enrolledCourses, administeredCourses) {
 		super();
 		mixin(this, Pendability);
 		this[Service] = service;
@@ -138,7 +138,7 @@ export default class Library extends EventEmitter {
 	}
 
 
-	findCourse(findFn, ignoreAdministeredCourses = false) {
+	findCourse (findFn, ignoreAdministeredCourses = false) {
 		let admin = this.administeredCourses || [];
 		let courses = this.courses || [];
 
@@ -155,7 +155,7 @@ export default class Library extends EventEmitter {
 }
 
 
-function resolveCollection(s, url, ignoreCache) {
+function resolveCollection (s, url, ignoreCache) {
 	let cache = s.getDataCache();
 
 	if (!url) {

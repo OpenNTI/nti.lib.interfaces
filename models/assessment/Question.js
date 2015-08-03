@@ -42,7 +42,7 @@ export default class Question extends Base {
 	}
 
 
-	getSubmissionModel() {
+	getSubmissionModel () {
 		return this.getModel('assessment.questionsubmission');
 	}
 

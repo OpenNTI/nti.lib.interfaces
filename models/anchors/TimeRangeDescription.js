@@ -21,9 +21,9 @@ export default class TimeRangeDescription extends ContentRangeDescription {
 	}
 
 
-	getSeriesId() { return this.seriesId; }
-	getStart() { return this.start; }
-	getEnd() { return this.end; }
+	getSeriesId () { return this.seriesId; }
+	getStart () { return this.start; }
+	getEnd () { return this.end; }
 
 
 	isTimeContentPointer (o) {

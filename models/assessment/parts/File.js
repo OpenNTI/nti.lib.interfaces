@@ -11,7 +11,7 @@ function getRegExp (pattern, regExpFormat) {
 
 export default class File extends Part {
 
-	constructor(service, parent, data) {
+	constructor (service, parent, data) {
 		super(service, parent, data);
 	}
 

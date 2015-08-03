@@ -93,7 +93,7 @@ export default class Instance extends Base {
 
 
 	getDiscussions () {
-		function logAndResume(reason) {
+		function logAndResume (reason) {
 			if (reason !== NOT_DEFINED) {
 				console.warn('Could not load board: %o', reason);
 			}
@@ -108,7 +108,7 @@ export default class Instance extends Base {
 		return Promise.all([
 			contents(this.Discussions).catch(logAndResume),
 			contents(this.ParentDiscussions).catch(logAndResume)
-			])
+		])
 			.then(data => {
 				let [section, parent] = data;
 
@@ -153,11 +153,11 @@ export default class Instance extends Base {
 
 	getVideoIndex () {
 
-		function combine(list) {
+		function combine (list) {
 			return !list || list.length === 0 ? null : list.reduce((a, b)=> a.combine(b));
 		}
 
-		function getForNode(node, index, output) {
+		function getForNode (node, index, output) {
 			let id = node.getID();
 
 			let scoped = id && index.scoped(id);
@@ -226,7 +226,7 @@ export default class Instance extends Base {
 
 //Private methods
 
-function resolveCatalogEntry(service, inst) {
+function resolveCatalogEntry (service, inst) {
 	let cache = service.getDataCache();
 	let url = inst.getLink('CourseCatalogEntry');
 	if (!url) {

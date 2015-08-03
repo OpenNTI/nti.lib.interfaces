@@ -10,7 +10,7 @@ import Notifications from './stores/Notifications';
 
 import {getModelByType as lookup} from './models';
 
-export default function(config) {
+export default function (config) {
 	let i = new Interface(config);
 
 	if (config.silent) {

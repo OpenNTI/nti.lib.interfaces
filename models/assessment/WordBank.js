@@ -2,7 +2,7 @@ import Base from '../Base';
 import {Parser as parse} from '../../CommonSymbols';
 
 export default class WordBank extends Base {
-	constructor(service, parent, data) {
+	constructor (service, parent, data) {
 		super(service, parent, data);
 		this[parse]('entries', []);
 	}

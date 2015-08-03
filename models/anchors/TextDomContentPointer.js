@@ -16,9 +16,9 @@ export default class TextDomContentPointer extends DomContentPointer {
 	}
 
 
-	getAncestor() { return this.ancestor; }
-	getContexts() { return this.contexts; }
-	getEdgeOffset() { return this.edgeOffset; }
+	getAncestor () { return this.ancestor; }
+	getContexts () { return this.contexts; }
+	getEdgeOffset () { return this.edgeOffset; }
 
 
 	primaryContext () {

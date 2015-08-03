@@ -40,7 +40,7 @@ const CAPABILITIES = {
 
 const list = Symbol('lsit');
 
-export default class Capabilities{
+export default class Capabilities {
 	constructor (service, caps) {
 		this[Service] = service;
 		this[list] = caps || [];

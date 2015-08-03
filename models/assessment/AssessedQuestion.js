@@ -6,7 +6,7 @@ import {
 import assessed from '../mixins/AssessedAssessmentPart';
 
 export default class AssessedQuestion extends Base {
-	constructor(service, parent, data) {
+	constructor (service, parent, data) {
 		super(service, parent, data, assessed);
 
 		this[parse]('parts', []);

@@ -39,7 +39,7 @@ export default class QuestionSet extends Base {
 		return this.questions.length;
 	}
 
-	getSubmissionModel() {
+	getSubmissionModel () {
 		return this.getModel('assessment.questionsetsubmission');
 	}
 

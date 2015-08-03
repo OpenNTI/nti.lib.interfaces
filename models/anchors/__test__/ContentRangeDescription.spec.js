@@ -5,7 +5,7 @@ const ContentRangeDescription = getModelByType('contentrange.contentrangedescrip
 describe('ContentRangeDescription Tests', () => {
 	describe('locator tests', () => {
 
-		function createCRD() {
+		function createCRD () {
 			return new ContentRangeDescription(null, null, {});
 		}
 

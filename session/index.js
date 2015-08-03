@@ -74,7 +74,7 @@ export default class SessionManager {
 
 		logger.debug('SESSION [BEGIN] %s %s', req.method, url);
 
-		function finish() {
+		function finish () {
 			if (req.dead) {
 				return;
 			}

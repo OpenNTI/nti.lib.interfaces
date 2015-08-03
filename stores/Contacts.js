@@ -32,7 +32,7 @@ function generateID (name, context) {
 }
 
 
-function getNewListData(name, isDynamic, context) {
+function getNewListData (name, isDynamic, context) {
 
 	let id = generateID(name, context);
 

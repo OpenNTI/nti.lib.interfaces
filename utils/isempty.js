@@ -1,5 +1,5 @@
 
-export default function isEmpty(value, allowEmptyString) {
+export default function isEmpty (value, allowEmptyString) {
 	return	(value === null) ||
 			(value === undefined) ||
 			(!allowEmptyString && value === '') ||

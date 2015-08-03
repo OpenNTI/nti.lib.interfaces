@@ -5,4 +5,4 @@
  * instances...bloating memory, and creating extra work for the garbage collector. Having one common empty
  * funciton gives us a clean way to conserve resources.
  */
-export default Object.freeze(function() {});
+export default function () {}

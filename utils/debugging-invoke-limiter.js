@@ -1,6 +1,6 @@
 const hits = {};
 
-export default function(instance, maxCount) {
+export default function (instance, maxCount) {
 	let key = instance.constructor.toString();
 	let c = hits[key] = (hits[key] || 0) + 1;
 

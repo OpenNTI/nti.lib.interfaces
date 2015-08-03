@@ -80,7 +80,7 @@ function getToCNodesReferencing (ntiid, toc) {
 		return [];
 	}
 
-	function getNodesForKey(keys) {
+	function getNodesForKey (keys) {
 		let nodes = [];
 
 		for(let k of keys) {

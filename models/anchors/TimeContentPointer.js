@@ -18,8 +18,8 @@ export default class TimeContentPointer extends ContentPointer {
 		this.validateRole(this.role);
 	}
 
-	getRole() { return this.role; }
-	getSeconds() { return this.seconds; }
+	getRole () { return this.role; }
+	getSeconds () { return this.seconds; }
 
 
 	/**

@@ -1,6 +1,6 @@
 const MILLI = /\.\d+/;
 
-export default function parseDate(value) {
+export default function parseDate (value) {
 	if (!value) {
 		return null;
 	}

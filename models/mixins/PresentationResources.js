@@ -14,7 +14,7 @@ let MISSING_ASSET_DATA = {};
  * @param {Model} scope the instance of the model that this is mixed into.
  * @returns {string} default root to use
  */
-function getDefaultAssetRoot(scope) {
+function getDefaultAssetRoot (scope) {
 	MISSING_ASSET_DATA[scope.getID()] = true;
 
 	if (scope.getDefaultAssetRoot) {

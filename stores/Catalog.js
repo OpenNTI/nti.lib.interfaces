@@ -57,7 +57,7 @@ export default class Catalog extends EventEmitter {
 }
 
 
-function get(s, url, ignoreCache) {
+function get (s, url, ignoreCache) {
 	let cache = s.getDataCache();
 
 	let cached = cache.get(url), result;

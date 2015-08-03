@@ -93,11 +93,11 @@ export default class Package extends Base {
 		let promise = this[VideoIndexReqest];
 		let cache = service.getDataCache();
 
-		function find(toc) {
+		function find (toc) {
 			return toc.getVideoIndexRef() || Promise.reject('No Video Index');
 		}
 
-		function get(url) {
+		function get (url) {
 			let cached = cache.get(url);
 			if (cached) {
 				return cached;

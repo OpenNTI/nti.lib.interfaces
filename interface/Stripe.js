@@ -112,7 +112,7 @@ export default class StripeInterface {
 
 		return new Promise((fulfill, reject) => {
 
-			function pollResponse(attempt) {
+			function pollResponse (attempt) {
 				if(/^Failed|Success$/i.test(attempt.state)) {
 					return fulfill(attempt);
 				}
@@ -121,7 +121,7 @@ export default class StripeInterface {
 			}
 
 
-			function check() {
+			function check () {
 				//URI Encoding purchase id for polling to work with broken server.
 				let params = '?purchaseId=' + encodeURIComponent(purchaseId);
 

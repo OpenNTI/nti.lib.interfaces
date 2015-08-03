@@ -6,7 +6,7 @@ describe('isFunction', ()=> {
 		expect(isFunction).toBeDefined();
 
 		expect(isFunction(()=> {})).toBeTruthy();
-		expect(isFunction(function() {})).toBeTruthy();
+		expect(isFunction(function () {})).toBeTruthy();
 
 		expect(isFunction()).toBeFalsy();
 		expect(isFunction({})).toBeFalsy();

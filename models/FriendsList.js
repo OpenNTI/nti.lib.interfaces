@@ -6,7 +6,7 @@ import pluck from '../utils/pluck';
 const getID = e => typeof e === 'object' ? e.getID() : e;
 
 export default class FriendsList extends Entity {
-	constructor(service, parent, data) {
+	constructor (service, parent, data) {
 		super(service, parent, data);
 		this.isGroup = data.IsDynamicSharing;
 		this[parse]('friends');

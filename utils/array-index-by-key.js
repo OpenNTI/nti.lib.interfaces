@@ -10,7 +10,7 @@
  * Note: No attempt is made to prevent items with
  * the same key from stomping each other.
  */
-export default function indexArrayByKey(arr, key) {
+export default function indexArrayByKey (arr, key) {
 	let result = {};
 
 	for(let item of arr) {

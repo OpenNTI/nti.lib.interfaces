@@ -68,7 +68,7 @@ export default class XMLBasedTableOfContentsNode {
 	}
 
 
-	getID() {
+	getID () {
 		return this.get('ntiid') || console.warn('No ntiid', this);
 	}
 

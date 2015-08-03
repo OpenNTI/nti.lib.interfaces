@@ -16,7 +16,7 @@ function getCourse (node) {
 }
 
 export default class OutlineNode extends Outline {
-	constructor(service, parent, data) {
+	constructor (service, parent, data) {
 		super(service, parent, data);
 		let p = c=>c.map(o => this[parse](o));
 		this.contents = p(data.contents || []);
@@ -143,9 +143,9 @@ export default class OutlineNode extends Outline {
 }
 
 
-function collateVideo(json) {
+function collateVideo (json) {
 	let re = /ntivideo$/;
-	function collate(list, current) {
+	function collate (list, current) {
 		let last = list[list.length - 1];
 		if (re.test(current.MimeType)) {
 			//last was a video...
@@ -176,7 +176,7 @@ function collateVideo(json) {
 }
 
 
-function applyProgressAndSummary(content, progress, summary) {
+function applyProgressAndSummary (content, progress, summary) {
 	if (!content) { return; }
 
 	function findWithFuzzyKey (c, key) {
@@ -244,7 +244,7 @@ function applyProgressAndSummary(content, progress, summary) {
 /* *****************************************************************************
  * FALLBACK TEMPORARY STUFF BELOW THIS POINT
  */
-function getContentFallback(outlineNode) {
+function getContentFallback (outlineNode) {
 	console.debug('[FALLBACK] Deriving OutlineNode(%s) content', outlineNode.getID());
 	let course = getCourse(outlineNode);
 	let bundle = course && course.ContentPackageBundle;
@@ -253,7 +253,7 @@ function getContentFallback(outlineNode) {
 
 	let p = pkg ? pkg.getTableOfContents() : Promise.reject('No Content Package');
 
-	return p.then(function(toc) {
+	return p.then(function (toc) {
 		let tocNode = toc.getNode(contentId);
 		let content = fallbackOverview(tocNode, outlineNode);
 		if (!content) {

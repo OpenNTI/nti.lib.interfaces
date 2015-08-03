@@ -7,7 +7,7 @@ import submission from '../mixins/Submission';
 
 export default class QuestionSetSubmission extends Base {
 
-	static build(service, data) {
+	static build (service, data) {
 		return new this(service, null, data);
 	}
 

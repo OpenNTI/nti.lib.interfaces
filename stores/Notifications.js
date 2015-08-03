@@ -23,7 +23,7 @@ let inflight;
 
 const ApplyData = Symbol('Apply Data');
 
-function cleanInflight() { inflight = null; }
+function cleanInflight () { inflight = null; }
 
 
 export default class Notifications extends EventEmitter {
@@ -123,7 +123,7 @@ export default class Notifications extends EventEmitter {
 }
 
 
-function get(s, url, ignoreCache) {
+function get (s, url, ignoreCache) {
 	let cache = s.getDataCache();
 
 	let cached = cache.get(url), result;
@@ -139,7 +139,7 @@ function get(s, url, ignoreCache) {
 }
 
 
-function resolveUIData(service, data) {
+function resolveUIData (service, data) {
 	let pending = [];
 
 	data.Items = data.Items.map(o => {

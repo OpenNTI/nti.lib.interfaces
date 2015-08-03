@@ -6,7 +6,7 @@ export default class Poll extends Question {
 	}
 
 
-	getSubmissionModel() {
+	getSubmissionModel () {
 		return this.getModel('assessment.pollsubmission');
 	}
 

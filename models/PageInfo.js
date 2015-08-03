@@ -54,7 +54,7 @@ export default class PageInfo extends Base {
 
 
 	getPackageID () {
-		function bestGuess() {
+		function bestGuess () {
 			throw new Error('PageInfo does not declare the package ID.');
 		}
 
@@ -63,7 +63,7 @@ export default class PageInfo extends Base {
 
 
 	getAssessmentQuestion (questionId) {
-		function find(found, item) {
+		function find (found, item) {
 			return found || (
 				//Find in Assignments/QuestionSets
 				(item.getQuestion && item.getQuestion(questionId)) ||
@@ -128,7 +128,7 @@ export default class PageInfo extends Base {
  * @param {object} b right hand value
  * @returns {number} the comparison
  */
-function assessmentItemOrder(a, b) {
+function assessmentItemOrder (a, b) {
 	let order = assessmentItemOrder.order = (assessmentItemOrder.order || {
 		'application/vnd.nextthought.assessment.assignment': 0,
 		'application/vnd.nextthought.naquestionset': 1,
@@ -144,7 +144,7 @@ function assessmentItemOrder(a, b) {
 }
 
 
-function setupAssessmentItems(items, pageInfo) {
+function setupAssessmentItems (items, pageInfo) {
 	items = items.map(o=>pageInfo[parse](o));
 	items.sort(assessmentItemOrder);
 

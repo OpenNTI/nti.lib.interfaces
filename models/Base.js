@@ -32,7 +32,7 @@ function GenEnumerabilityOf (obj, propName) {
 	return desc && desc.enumerable;
 }
 
-function dateGetter(key) {
+function dateGetter (key) {
 	const symbol = Symbol.for(`parsedDate:${key}`);
 	return function () {
 		if (typeof this[symbol] !== 'object') {
@@ -42,7 +42,7 @@ function dateGetter(key) {
 	};
 }
 
-function doParse(parent, data) {
+function doParse (parent, data) {
 	let service = parent[Service];
 
 	try {
@@ -102,7 +102,7 @@ export default class Base extends EventEmitter {
 		}
 	}
 
-	ensureProperty(name, isRequired, type) {
+	ensureProperty (name, isRequired, type) {
 		if(isRequired && !this[name] || (this[name] && typeof this[name] !== type)) {
 			throw new TypeError('Property constraints not met for field:' + name );
 		}
@@ -307,7 +307,7 @@ export default class Base extends EventEmitter {
 	}
 
 
-	getContextPath() {
+	getContextPath () {
 		return this.fetchLinkParsed('LibraryPath')
 			.catch(reason =>
 				(reason === NO_LINK)
@@ -467,9 +467,9 @@ export default class Base extends EventEmitter {
 
 
 	hasVisibility (el, status) {
-		function getProp(p) {
+		function getProp (p) {
 			let fn = ['getAttribute', 'get']
-				.reduce(function(f, n) { return f || el[n] && n; }, 0);
+				.reduce((f, n) => f || el[n] && n, 0);
 			return (fn && el[fn](p)) || el[p];
 		}
 

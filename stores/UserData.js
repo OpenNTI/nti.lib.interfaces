@@ -40,7 +40,7 @@ function topLevelOnly (item, ids) {
  *
  * @return {Annotation[]} All the top-level user data, note rootes, and placeholder roots.
  */
-function threadThreadables(list) {
+function threadThreadables (list) {
 	let A = [], B = []; //To sets. Lets call A non-threadable, and B threadable.
 
 	for (let x of list) {

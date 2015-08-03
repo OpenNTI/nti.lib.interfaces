@@ -5,7 +5,7 @@ import {encodeForURI as encodeNTIIDForURI} from '../utils/ntiids';
 const Service = Symbol.for('Service');
 
 
-function buildRef(node/*, root*/) {
+function buildRef (node/*, root*/) {
 	return node && {
 		ntiid: node.get('ntiid'),
 		title: node.get('label'),
@@ -14,7 +14,7 @@ function buildRef(node/*, root*/) {
 }
 
 
-export default class TableOfContentsBackedPageSource extends Base{
+export default class TableOfContentsBackedPageSource extends Base {
 	constructor (ToC, root) {
 		super(ToC[Service], ToC);
 
@@ -82,6 +82,6 @@ export default class TableOfContentsBackedPageSource extends Base{
 
 
 
-function suppressed(node) {
+function suppressed (node) {
 	return node && node.isTopic() && !node.isAnchor();
 }

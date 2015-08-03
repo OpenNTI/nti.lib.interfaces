@@ -42,7 +42,7 @@ export default class CourseCatalogEntry extends Base {
 	get author () { return (this.DCCreator || []).join(', '); }
 
 
-	getEnrollmentOptions() {return this[EnrollmentOptions]; }
+	getEnrollmentOptions () {return this[EnrollmentOptions]; }
 
 
 	getDefaultAssetRoot () { return ''; }

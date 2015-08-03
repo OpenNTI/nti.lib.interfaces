@@ -1,7 +1,7 @@
-function reflect(fn, key) {
+function reflect (fn, key) {
 	let keys = key.split('.');
 
-	return function(...args) {
+	return function (...args) {
 		//`this` needs to be the object the returned
 		// function is injected into, _not_ a job for
 		// the arrow function
@@ -38,7 +38,7 @@ function reflect(fn, key) {
  * @param  {string} key The key where the object is at.
  * @returns {object}	Object with function names to bound functions
  */
-export default function forwardFunctions(fns, key) {
+export default function forwardFunctions (fns, key) {
 	let result = {};
 
 	for(let fn of fns) {

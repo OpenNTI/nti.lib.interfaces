@@ -1,6 +1,6 @@
 import {encodeForURI} from '../utils/ntiids';
 
-function buildRef(node) {
+function buildRef (node) {
 	return node && {
 		ntiid: node.getID(),
 		title: node.title,

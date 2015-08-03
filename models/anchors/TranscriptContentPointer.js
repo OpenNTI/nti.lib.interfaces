@@ -9,6 +9,6 @@ export default class TranscriptContentPointer extends TimeContentPointer {
 		this[parse]('pointer');
 	}
 
-	getPointer() { return this.pointer; }
-	getCueId() { return this.cueid; }
+	getPointer () { return this.pointer; }
+	getCueId () { return this.cueid; }
 }

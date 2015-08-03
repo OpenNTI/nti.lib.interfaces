@@ -8,7 +8,7 @@ const XMLHttpFactories = [
 ];
 
 
-function createXMLHTTPObject() {
+function createXMLHTTPObject () {
 	for (let factory of XMLHttpFactories) {
 		try { return factory(); }
 		catch (e) { } // eslint-disable-line no-empty
@@ -17,7 +17,7 @@ function createXMLHTTPObject() {
 }
 
 
-function copy(dest, src, keys) {
+function copy (dest, src, keys) {
 	for(let key of keys) {
 		if (src[key]) {
 			dest[key] = src[key];
@@ -26,7 +26,7 @@ function copy(dest, src, keys) {
 }
 
 
-function keysToLowerCase(o) {
+function keysToLowerCase (o) {
 	let out = {};
 	for(let k of Object.keys(o)) {
 		out[k.toLowerCase()] = o[k];

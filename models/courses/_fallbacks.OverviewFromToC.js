@@ -43,17 +43,17 @@ const MIME_PARSER = {
 };
 
 
-function noOp() { return SHARED; }
+function noOp () { return SHARED; }
 
 
-function getTopicLink() {
+function getTopicLink () {
 	return {
 		MimeType: 'application/vnd.nextthought.topic'
 	};
 }
 
 
-function getForumProps(node) {
+function getForumProps (node) {
 	return {
 		title: node.get('title'),
 		icon: node.get('icon')
@@ -61,11 +61,12 @@ function getForumProps(node) {
 }
 
 
-function getVideoProps(node) {
-	return { poster: node.get('poster') }; }
+function getVideoProps (node) {
+	return { poster: node.get('poster') };
+}
 
 
-function getRelatedWorkProps(node) {
+function getRelatedWorkProps (node) {
 	return {
 		MimeType: 'application/vnd.nextthought.relatedworkref',
 		creator: node.get('creator'),
@@ -78,7 +79,7 @@ function getRelatedWorkProps(node) {
 }
 
 
-function getAssessment(node, fallbackMime, outlineNode) {
+function getAssessment (node, fallbackMime, outlineNode) {
 	let ntiid = node.get('target-ntiid');
 	let assignment = outlineNode.getAssignment(ntiid);
 
@@ -90,7 +91,7 @@ function getAssessment(node, fallbackMime, outlineNode) {
 }
 
 
-function notAThing(node) {
+function notAThing (node) {
 	let ignored = {
 		'application/vnd.nextthought.ntislidedeck': 1,
 		'application/vnd.nextthought.relatedworkref': 1
@@ -102,7 +103,7 @@ function notAThing(node) {
 }
 
 
-function getConfigForNode(node, outlineNode) {
+function getConfigForNode (node, outlineNode) {
 	if (notAThing(node)) {
 		return null;
 	}

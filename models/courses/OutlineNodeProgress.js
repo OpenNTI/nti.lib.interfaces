@@ -1,9 +1,9 @@
 import {Parser as parse} from '../../CommonSymbols';
 import Base from '../Base';
 
-export default class OutlineNodeProgress extends Base{
+export default class OutlineNodeProgress extends Base {
 
-	constructor(service, parent, data) {
+	constructor (service, parent, data) {
 		super(service, parent, data);
 
 		let {Items} = this;

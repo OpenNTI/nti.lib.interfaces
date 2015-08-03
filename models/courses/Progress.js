@@ -2,8 +2,8 @@ import Base from '../Base';
 
 const HIDDEN = Symbol('Protected Data');
 
-export default class Progress extends Base{
-	constructor(service, parent, data) {
+export default class Progress extends Base {
+	constructor (service, parent, data) {
 		super(service, parent, data);
 
 		//Relevant keys:

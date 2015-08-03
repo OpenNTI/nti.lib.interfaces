@@ -283,7 +283,7 @@ export default function (html, isWidgetCallback) {
 }
 
 
-function getLiteral(str) {
+function getLiteral (str) {
 	if (typeof str !== 'string') {
 		return String(str);
 	}
@@ -297,7 +297,7 @@ function getLiteral(str) {
 }
 
 
-function reactifyElement(element, props, children, customFunc) {
+function reactifyElement (element, props, children, customFunc) {
 	//TODO: translate html attribute names to JS propertyNames
 
 	delete props.style; // TODO: convert styles to react
@@ -313,7 +313,7 @@ function reactifyElement(element, props, children, customFunc) {
 }
 
 
-function processNode(n, isWidget) {
+function processNode (n, isWidget) {
 	let renderFunction;
 
 	if (isWidget) {
@@ -339,7 +339,7 @@ function processNode(n, isWidget) {
 }
 
 
-function processChildren(n, isWidget) {
+function processChildren (n, isWidget) {
 	let text = n.text && getLiteral(n.text);
 	let c = n.getchildren().map(x => processNode(x, isWidget));
 
@@ -351,16 +351,16 @@ function processChildren(n, isWidget) {
 }
 
 
-function ensureUnaryTagsAreClosedXML(html) {
+function ensureUnaryTagsAreClosedXML (html) {
 	let output = html;
 
-	function getMatcher(tag) {
+	function getMatcher (tag) {
 		let c = getMatcher,
 			m = c[tag] || (c[tag] = new RegExp(`(<${tag})([^>]*)(>)`, 'igm'));
 		return m;
 	}
 
-	function fix(o, tag, attrs, closer) {
+	function fix (o, tag, attrs, closer) {
 		if (attrs.length === 0 || attrs.charAt(attrs.length - 1) !== '/') {
 			return tag + attrs + '/' + closer;
 		}
@@ -375,12 +375,12 @@ function ensureUnaryTagsAreClosedXML(html) {
 }
 
 
-function swizzleEntities(html) {
+function swizzleEntities (html) {
 	return html.replace(ENTITY_MATCHER, htmlEntitySwizzler);
 }
 
 
-function htmlEntitySwizzler(entityTag, entity) {
+function htmlEntitySwizzler (entityTag, entity) {
 	entity =	HTML_ENTITIES[entity] || //Trust the case at first
 	HTML_ENTITIES[entity.toLowerCase()] || //Try a lowercased
 	entity; //fallback with what they gave us.
@@ -389,7 +389,7 @@ function htmlEntitySwizzler(entityTag, entity) {
 }
 
 
-function crudeHTMLToXML(html) {
+function crudeHTMLToXML (html) {
 	html = swizzleEntities(html);
 	return ensureUnaryTagsAreClosedXML(html);
 }

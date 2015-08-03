@@ -8,7 +8,7 @@ import { Service, Parser as parse } from '../CommonSymbols';
 const ONLY_COMMUNITIES = x => x.isCommunity;
 
 
-function cleanData(data) {
+function cleanData (data) {
 	let {accepting=[], following=[], ignoring=[]} = data;
 	delete data.accepting;
 	delete data.following;

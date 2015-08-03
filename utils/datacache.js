@@ -11,7 +11,7 @@ export default class DataCache {
 	}
 
 
-	get(key) {
+	get (key) {
 		if (key == null) {
 			throw new Error('null key error');
 		}
@@ -19,7 +19,7 @@ export default class DataCache {
 	}
 
 
-	set(key, value) {
+	set (key, value) {
 		if (key == null) {
 			throw new Error('null key error');
 		}

@@ -104,7 +104,7 @@ export default class DataServerInterface {
 			delete data[AsFormSubmittion];
 		}
 
-		function getContentType(headers) {
+		function getContentType (headers) {
 			let reg = /Content-Type/i;
 			let key = Object.keys(headers).reduce((i, k) => i || (reg.test(k) && k), null);
 

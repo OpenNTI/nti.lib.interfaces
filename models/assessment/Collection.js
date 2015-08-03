@@ -12,7 +12,7 @@ import {
 } from '../../CommonSymbols';
 
 
-function find(list, id) {
+function find (list, id) {
 	return list.reduce((found, item) =>
 		found || (
 			(item.getID() === id || (item.containsId && item.containsId(id))) ? item : null
@@ -20,7 +20,7 @@ function find(list, id) {
 }
 
 
-function nodeToNTIIDs(node) {
+function nodeToNTIIDs (node) {
 	let id = node.get('ntiid');
 	return (id ? [id] : []).concat(
 			node.children.reduce((a, b) =>
@@ -43,7 +43,7 @@ export default class Collection extends Base {
 	 * @param  {array} tables                Tables of Contents
 	 * @returns {void}
 	 */
-	constructor(service, parent, assignments, assessments, tables) {
+	constructor (service, parent, assignments, assessments, tables) {
 		super(service, parent);
 
 		const process = (v, k, o) => o[k] = Array.isArray(v) ? this[parse](v) : v;
