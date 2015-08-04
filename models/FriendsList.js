@@ -103,15 +103,4 @@ export default class FriendsList extends Entity {
 
 
 	getID () { return this.ID; }
-
-
-	getActivity (...args) {
-		let store = super.getActivity(...args);
-
-		// if (this.isAppUserAMember) {
-			//TODO: augment store with "postToActivity"... see User#getActivity()
-		// }
-
-		return store;
-	}
 }

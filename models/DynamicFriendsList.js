@@ -31,4 +31,11 @@ export default class DynamicFriendsList extends FriendsList {
 	remove () {
 		return Promise.reject('Cannot remove members from DFL');
 	}
+
+
+	getActivity (...args) {
+		let store = super.getActivity(...args);
+
+		return store;
+	}
 }
