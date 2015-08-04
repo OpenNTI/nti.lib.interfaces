@@ -86,17 +86,32 @@ export default {
 
 		this[CHILDREN] = request;
 
-		return request.then(x =>
-				(!x || !x.length) ? //do we have replies?
-				[] : //no? resolve with empty list
+		return request
+			.then(x => {
+				//do we have replies?
+				if (!x || !x.length) {
+					return []; //no? resolve with empty list
+				}
 
 				//yes? thread.
-				thread(
-					[this].concat(x) //prevent a placeholder from being generated AND get the Thread-Links applied to "this"
-				)
-				[0][CHILDREN]
-			)
-			.then(x => (this[CHILDREN] = x));
+				delete this[CHILDREN]; //thread() doesn't like promises on this key :P
+
+				//prevent a placeholder from being generated AND get the Thread-Links applied to "this"
+				let tree = [this].concat(x);
+				let trees = thread(tree); //thread returns all the trees represented by the array of items passed.
+
+				return trees[0] //We only passed data for our tree... so get the one-and-only tree
+								// (first element in the returned array)
+							[CHILDREN]; //And We only want the replies to the trunk...so get the list of CHILDREN.
+			})
+			//Then apply the final result to our CHILDREN
+			.then(x => (this[CHILDREN] = x))
+
+			.catch(x => { //catch any error, and clear the CHILDREN key.
+
+				delete this[CHILDREN];
+				return Promise.reject(x);//continue the error
+			});
 	},
 
 
