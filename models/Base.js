@@ -102,9 +102,13 @@ export default class Base extends EventEmitter {
 		}
 	}
 
-	ensureProperty (name, isRequired, type) {
+	ensureProperty (name, isRequired, type, value) {
 		if(isRequired && !this[name] || (this[name] && typeof this[name] !== type)) {
 			throw new TypeError('Property constraints not met for field:' + name );
+		}
+
+		if (arguments.length > 3 && this[name] !== value) {
+			throw new Error(`Required Property value for field ${name} is not met`);
 		}
 	}
 

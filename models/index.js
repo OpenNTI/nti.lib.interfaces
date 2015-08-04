@@ -4,6 +4,7 @@ import identity from '../utils/identity';
 import User from './User';
 import Community from './Community';
 import FriendsList from './FriendsList';
+import DynamicFriendsList from './DynamicFriendsList';
 import PageInfo from './PageInfo';
 import Change from './Change';
 
@@ -145,6 +146,7 @@ const PARSERS = {
 	'community': Community,
 	'user': User,
 	'friendslist': FriendsList,
+	'dynamicfriendslist': DynamicFriendsList,
 	'pageinfo': PageInfo,
 
 	'ContentPackage': ContentPackage,

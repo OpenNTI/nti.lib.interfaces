@@ -8,23 +8,7 @@ const getID = e => typeof e === 'object' ? e.getID() : e;
 export default class FriendsList extends Entity {
 	constructor (service, parent, data) {
 		super(service, parent, data);
-		this.isGroup = data.IsDynamicSharing;
 		this[parse]('friends');
-
-		if (this.isGroup) {
-			let blocker = () => Promise.reject('DFL');
-			Object.assign(this, {
-				add: blocker,
-				remove: blocker,
-				isMember: this.hasLink('my_membership'),
-				leave () {
-					return service.delete(this.getLink('my_membership'))
-						.then(() => this.refresh())
-						.then(() =>	this.isMember = false)
-						.then(() => this.onChange('membership'));
-				}
-			});
-		}
 	}
 
 	/**
