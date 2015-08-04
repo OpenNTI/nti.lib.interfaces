@@ -7,7 +7,6 @@ export default class DynamicFriendsList extends FriendsList {
 		this.isGroup = true;
 
 		this.ensureProperty('IsDynamicSharing', true, 'boolean', true);
-		console.debug(this);
 	}
 
 
