@@ -101,7 +101,7 @@ export function buildItemTree (items, tree) {
 
 	//console.log('Flattened list is ', list);
 
-	console.log('Flattened list of size ', items.length, 'to flattened list of size', list.length);
+	// console.log('Flattened list of size ', items.length, 'to flattened list of size', list.length);
 
 	for (let r of list) {
 		if (!r.placeholder) {

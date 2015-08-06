@@ -87,6 +87,8 @@ export default {
 
 		this[CHILDREN] = request;
 
+
+
 		return request
 			.then(x => {
 				//do we have replies?
@@ -94,19 +96,26 @@ export default {
 					return []; //no? resolve with empty list
 				}
 
+				let parent = this[PARENT];
+
 				//yes? thread.
 				delete this[CHILDREN]; //thread() doesn't like promises on this key :P
 
 				//prevent a placeholder from being generated AND get the Thread-Links applied to "this"
 				let tree = [this].concat(x);
-				let trees = thread(tree); //thread returns all the trees represented by the array of items passed.
 
-				return trees[0] //We only passed data for our tree... so get the one-and-only tree
-								// (first element in the returned array)
-							[CHILDREN]; //And We only want the replies to the trunk...so get the list of CHILDREN.
+				thread(tree); //thread returns all the trees represented by the array of items passed, and adds pointers to the tree branches and parents.
+
+				//thread() may have changed our PARENT to point to a new placeholder...
+				delete this[PARENT]; //no matter what, we do not want the parent from the thread() call
+				if (parent) {
+					//put our pointer back
+					this[PARENT] = parent;
+				}
+
+				//thread() updated our CHILDREN property as well.
+				return this[CHILDREN];
 			})
-			//Then apply the final result to our CHILDREN
-			.then(x => (this[CHILDREN] = x))
 
 			.catch(x => { //catch any error, and clear the CHILDREN key.
 
