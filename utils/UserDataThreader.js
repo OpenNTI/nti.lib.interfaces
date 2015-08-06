@@ -131,6 +131,10 @@ export function buildItemTree (items, tree) {
 				buildTree(p);
 			}
 
+			if (p.placeholder) {
+				p.ReferencedByCount += r.ReferencedByCount || 0;
+			}
+
 			p[CHILDREN] = p[CHILDREN] || {};
 			p[CHILDREN][r.getID()] = r;
 

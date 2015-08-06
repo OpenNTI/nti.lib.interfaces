@@ -22,6 +22,7 @@ export default {
 		let {style, applicableRange, sharedWith, selectedText, title, Class, ContainerId, MimeType} = threadableReply;
 
 		Object.assign(result, {
+			ReferencedByCount: 0,
 			applicableRange,
 			body: ['This message has been deleted.'],
 			Class,
