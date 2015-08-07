@@ -8,7 +8,9 @@ import Capabilities from '../models/Capabilities';
 import Pendability from '../models/mixins/Pendability';
 
 
-import ContactStore, {MIME_TYPE as CONTACT_MIME} from './Contacts';
+import ContactsStore from './Contacts';
+import GroupsStore from './Groups';
+
 import Enrollment from './Enrollment';
 
 
@@ -39,6 +41,8 @@ const LOGOUT_URL = '%%logout-url%%';
 
 const AppUser = Symbol('LoggedInUser');
 const Contacts = Symbol('Contacts');
+const Groups = Symbol('Groups');
+const Lists = Symbol('Lists');
 const RequestEntityResolve = Symbol('RequestEntityResolve');
 
 export default class ServiceDocument {
@@ -59,9 +63,9 @@ export default class ServiceDocument {
 			this.getAppUser().then(u => {
 				this[AppUser] = u;
 
-				let {href} = this.getCollectionFor(CONTACT_MIME, 'FriendsLists') || {};
+				let {href} = this.getCollection('FriendsLists', this.getAppUsername()) || {};
 				if (href) {
-					this[Contacts] = new ContactStore(this, href, u);
+					this[Contacts] = new ContactsStore(this, href, u);
 					return this[Contacts].waitForPending();
 				} else {
 					console.warn('No FriendsLists Collection');
@@ -92,6 +96,63 @@ export default class ServiceDocument {
 
 	getContacts () {
 		return this[Contacts];
+	}
+
+
+	getCommunities () {
+		// if (!this[Communities]) {
+		// 	let u = this[AppUser];
+		// 	let {href} = this.getCollection('Communities', this.getAppUsername()) || {};
+		// 	if (href) {
+		// 		this[Communities] = new CommunitiesStore(this, href, u);
+		// 	} else {
+		// 		console.warn('No Communities Collection');
+		// 	}
+		// }
+		//
+		// return this[Communities];
+	}
+
+
+	getGroups () {
+		if (!this[Groups]) {
+			let u = this[AppUser];
+			let {href} = this.getCollection('Groups', this.getAppUsername()) || {};
+			if (href) {
+				this[Groups] = new GroupsStore(this, href, u);
+			} else {
+				console.warn('No Groups Collection');
+			}
+		}
+
+		return this[Groups];
+	}
+
+
+	getLists () {
+		if (!this[Lists]) {
+
+			let c = this[Contacts];
+			this[Lists] = Object.assign(Object.create(c), {
+				[Symbol.iterator] () {
+					let snapshot = this.getLists();
+					let {length} = snapshot;
+					let index = 0;
+					return {
+
+						next () {
+							let done = index >= length;
+							let value = snapshot[index++];
+
+							return { value, done };
+						}
+
+					};
+				}
+			});
+		}
+
+		return this[Lists];
 	}
 
 

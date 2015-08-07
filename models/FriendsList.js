@@ -11,6 +11,29 @@ export default class FriendsList extends Entity {
 		this[parse]('friends');
 	}
 
+
+	get length () {
+		return (this.friends || []).length;
+	}
+
+
+	[Symbol.iterator] () {
+		let snapshot = this.friends;
+		let {length} = snapshot;
+		let index = 0;
+		return {
+
+			next () {
+				let done = index >= length;
+				let value = snapshot[index++];
+
+				return { value, done };
+			}
+
+		};
+	}
+
+
 	/**
 	 * Determins if the entity is in this List.
 	 *

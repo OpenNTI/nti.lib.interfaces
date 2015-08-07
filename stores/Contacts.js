@@ -32,7 +32,7 @@ function generateID (name, context) {
 }
 
 
-function getNewListData (name, isDynamic, context) {
+export function getNewListData (name, isDynamic, MimeType, context) {
 
 	let id = generateID(name, context);
 
@@ -42,7 +42,7 @@ function getNewListData (name, isDynamic, context) {
 	}
 
 	return {
-		MimeType: MIME_TYPE,
+		MimeType,
 		Username: id,
 		alias: name,
 		friends: [],
@@ -79,8 +79,6 @@ export default class Contacts extends EventEmitter {
 
 		this.on('load', (_, time) => console.log('Load: %s %o', time, this));
 
-		window.Contacts = this;
-
 		this.loading = true;
 		let start = Date.now();
 
@@ -106,7 +104,7 @@ export default class Contacts extends EventEmitter {
 		let {RESERVED_GROUP_ID} = this;
 
 		if(!this[DATA].find(x=> x.getID() === RESERVED_GROUP_ID)) {
-			return this[CREATE](getNewListData(['My Contacts', RESERVED_GROUP_ID], false, this.context))
+			return this[CREATE](getNewListData(['My Contacts', RESERVED_GROUP_ID], false, MIME_TYPE, this.context))
 				.catch(e => e.statusCode !== 409 ? 0 : Promise.reject(e));
 		}
 	}
@@ -126,13 +124,43 @@ export default class Contacts extends EventEmitter {
 	}
 
 
-	createList (name) {
-		return this[CREATE](getNewListData(name, false, this.context));
+	[Symbol.iterator] () {
+		let snapshot = {};
+
+		//We can optimize this down to the dedicated hidden List if we think we can ensure all connections get into it.
+		for (let list of this[DATA]) {
+			for (let user of list) {
+				snapshot[user.getID()] = user;
+			}
+		}
+
+		snapshot = Object.values(snapshot);
+
+		let {length} = snapshot;
+		let index = 0;
+
+		return {
+
+			next () {
+				let done = index >= length;
+				let value = snapshot[index++];
+
+				return { value, done };
+			}
+
+		};
 	}
 
 
-	createGroup (name) {
-		return this[CREATE](getNewListData(name, true, this.context));
+	createList (name) {
+		return this[CREATE](getNewListData(name, false, MIME_TYPE, this.context));
+	}
+
+
+
+	getLists () {
+		const {RESERVED_GROUP_ID} = this;
+		return this[DATA].filter(x => x.getID() !== RESERVED_GROUP_ID);
 	}
 
 
@@ -140,22 +168,13 @@ export default class Contacts extends EventEmitter {
 	 * Determins if the entity is in any of your Lists in the Contacts store.
 	 *
 	 * @param {string|Entity} entity The User entity, string or Model Instance.
-	 * @param {boolean} includeGroups Instruct the search to include groups when searching.
 	 *
 	 * @return {boolean} true if the store has any reference to the entity.
 	 */
-	contains (entity, includeGroups = false) {
+	contains (entity) {
 		let found = false;
 
 		for (let list of this[DATA]) {
-			if (!includeGroups && list.isGroup) {
-				//Ignore DFLs. even if they are yours. Unless specified to include them.
-				// Typically when we are talking about "Contacts", those are the users
-				// that are in your private (static) FriendsLists.
-				continue;
-			}
-
-
 			found = list.contains(entity);
 			if (found) { break; }
 		}
