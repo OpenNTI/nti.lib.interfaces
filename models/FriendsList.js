@@ -18,7 +18,7 @@ export default class FriendsList extends Entity {
 
 
 	[Symbol.iterator] () {
-		let snapshot = this.friends;
+		let snapshot = this.friends || [];
 		let {length} = snapshot;
 		let index = 0;
 		return {
