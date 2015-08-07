@@ -9,11 +9,11 @@ import HasContent from '../mixins/HasContent';
 const Individual = Symbol('Individual');
 
 export default class Question extends Base {
-	constructor (service, parent, data) {
+	constructor (service, parent, data, ...mixins) {
 		super(service, parent, data, HasContent, {
 			isSubmittable: true,
 			isQuestion: true
-		});
+		}, ...mixins);
 
 		this[parse]('parts', []);
 		this[parse]('wordbank');
