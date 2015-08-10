@@ -648,7 +648,7 @@ export default class ServiceDocument {
 			(this.getWorkspace('Global') || {}).Links || [],
 			REL_USER_SEARCH);
 
-		if (!l) {
+		if (!l || !username || username === '') {
 			return null;
 		}
 

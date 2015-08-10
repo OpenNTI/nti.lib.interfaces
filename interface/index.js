@@ -190,7 +190,7 @@ export default class DataServerInterface {
 			abortMethod = ()=> { active.abort(); reject('aborted'); };
 		});
 
-		result.abort = abortMethod || (()=> logger.info('Attempting to abourt request, but missing abort() method.'));
+		result.abort = abortMethod || (()=> logger.info('Attempting to abort request, but missing abort() method.'));
 
 		pending.push(result);
 		return result;

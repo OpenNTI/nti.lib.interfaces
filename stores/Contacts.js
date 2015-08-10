@@ -17,7 +17,9 @@ export const MIME_TYPE = 'application/vnd.nextthought.friendslist';
 const DATA = Symbol();
 const CREATE = Symbol();
 
+const ACTIVE_SEARCH_REQUEST = Symbol();
 const ENSURE_CONTACT_GROUP = Symbol();
+const SEARCH_THROTTLE = Symbol();
 
 const CONTACTS_LIST_ID = e => `mycontacts-${e.getID()}`;
 
@@ -213,5 +215,52 @@ export default class Contacts extends EventEmitter {
 		}
 
 		return Promise.all(pending);
+	}
+
+
+	entityMatchesQuery (entity, query) {
+		let {displayName} = entity;
+		return !query || new RegExp(query, 'i').test(displayName);
+	}
+
+
+	search (query) {
+		let service = this[Service];
+		let parseList = parseListFn(this, service);
+		let fetch = service.getUserSearchURL(query);
+
+		const notInContacts = user => !this.contains(user);
+		const byDisplayName = (a, b) => a.displayName.localeCompare(b.displayName);
+
+		const clean = () => {
+			clearTimeout(this[SEARCH_THROTTLE]);
+			let prev = this[ACTIVE_SEARCH_REQUEST];
+			delete this[ACTIVE_SEARCH_REQUEST];
+			if (prev && prev.abort) {
+				prev.abort();
+			}
+		};
+
+		clean();
+
+		return new Promise((done, fail) => {
+
+			let abort = setTimeout(()=>fail('Aborted'), 1000);
+
+			this[SEARCH_THROTTLE] = setTimeout(() => {
+				clearTimeout(abort);
+
+				clean();
+
+				let req = this[ACTIVE_SEARCH_REQUEST] = service.get(fetch);
+
+				req.then(data => data.Items)
+					.then(parseList)
+					.then(list => list.filter(notInContacts).sort(byDisplayName))
+					.then(done, fail)
+					.then(clean, clean);
+
+			}, 500);
+		});
 	}
 }
