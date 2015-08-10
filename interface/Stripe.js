@@ -42,9 +42,7 @@ export default class StripeInterface {
 
 	getCouponPricing (purchasable, coupon) {
 		let link = purchasable.getLink('price_purchasable_with_stripe_coupon');
-		let data = {
-				purchasableID: purchasable.ID
-			};
+		let data = { purchasableID: purchasable.ID };
 
 		if (coupon) {
 			data.Coupon = coupon;
