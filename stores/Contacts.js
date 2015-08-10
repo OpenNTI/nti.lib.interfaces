@@ -229,6 +229,9 @@ export default class Contacts extends EventEmitter {
 		let parseList = parseListFn(this, service);
 		let fetch = service.getUserSearchURL(query);
 
+		const NO_QUERY = Symbol();
+		const ABORTED = Symbol();
+
 		const notInContacts = user => !this.contains(user);
 		const byDisplayName = (a, b) => a.displayName.localeCompare(b.displayName);
 
@@ -244,8 +247,11 @@ export default class Contacts extends EventEmitter {
 		clean();
 
 		return new Promise((done, fail) => {
+			if (!fetch) {
+				return fail(NO_QUERY);
+			}
 
-			let abort = setTimeout(()=>fail('Aborted'), 1000);
+			let abort = setTimeout(()=>fail(ABORTED), 1000);
 
 			this[SEARCH_THROTTLE] = setTimeout(() => {
 				clearTimeout(abort);
@@ -261,6 +267,13 @@ export default class Contacts extends EventEmitter {
 					.then(clean, clean);
 
 			}, 500);
-		});
+		})
+			.catch(err=> {
+				if (err === ABORTED || err === NO_QUERY || err.statusCode === 0) {
+					err = {statusCode: -1, message: 'Aborted'};
+				}
+
+				return Promise.reject(err);
+			});
 	}
 }
