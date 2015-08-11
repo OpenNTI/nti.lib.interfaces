@@ -97,6 +97,9 @@ export default class Base extends EventEmitter {
 			this[methodName] = dateGetter(fieldName);
 		}
 
+		this[TakeOver]('_events');
+		this[TakeOver]('_maxListeners');
+
 		if (this.hasOwnProperty('Creator')) {
 			this[TakeOver]('Creator', 'creator');
 		}
