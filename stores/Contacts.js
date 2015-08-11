@@ -219,8 +219,9 @@ export default class Contacts extends EventEmitter {
 
 
 	entityMatchesQuery (entity, query) {
-		let {displayName} = entity;
-		return !query || new RegExp(query, 'i').test(displayName);
+		let {displayName, realname} = entity;
+		query = query && new RegExp(query, 'i');
+		return !query || query.test(displayName) || query.test(realname);
 	}
 
 
