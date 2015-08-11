@@ -111,7 +111,7 @@ export default class FriendsList extends Entity {
 
 		//Lets just submit the username/id of the entities in our list instead of the full objects.
 		let data = this.getData();
-		data.friends = data.friends.map(x => getID(x));
+		data.friends = this.friends.map(x => getID(x));
 
 		return this.putToLink('edit', data)
 			.then(() => this.onChange('friends'))
