@@ -8,8 +8,8 @@ const VALID_ROLES = [
 
 export default class DomContentPointer extends ContentPointer {
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	constructor (service, parent, data, ...mixins) {
+		super(service, parent, data, {Class: 'DomContentPointer'}, ...mixins);
 		this.validateRole(this.role);
 	}
 

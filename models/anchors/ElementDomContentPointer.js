@@ -2,7 +2,7 @@ import DomContentPointer from './DomContentPointer';
 
 export default class ElementDomContentPointer extends DomContentPointer {
 
-	constructor (service, parent, data) {
+	constructor (service, parent, data, ...mixins) {
 		//If we are given a dom element as input, pull the necessary parts and
 		//create a config we can use to create this.
 		if (data.node) {
@@ -18,7 +18,7 @@ export default class ElementDomContentPointer extends DomContentPointer {
 			data.elementTagName = data.elementTagName.toUpperCase();
 		}
 
-		super(service, parent, data);
+		super(service, parent, data, {Class: 'ElementDomContentPointer'}, ...mixins);
 
 		this.validateTagName(this.elementTagName);
 		this.validateId(this.elementId);

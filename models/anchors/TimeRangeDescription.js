@@ -4,8 +4,8 @@ import { Parser as parse } from '../../CommonSymbols';
 
 export default class TimeRangeDescription extends ContentRangeDescription {
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	constructor (service, parent, data, ...mixins) {
+		super(service, parent, data, {Class: 'TimeRangeDescription'}, ...mixins);
 
 		this[parse]('start');
 		this[parse]('end');

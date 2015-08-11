@@ -4,8 +4,8 @@ import { Parser as parse } from '../../CommonSymbols';
 
 export default class TextDomContentPointer extends DomContentPointer {
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	constructor (service, parent, data, ...mixins) {
+		super(service, parent, data, {Class: 'TextDomContentPointer'}, ...mixins);
 
 		this[parse]('ancestor');
 		this[parse]('contexts');

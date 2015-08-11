@@ -4,8 +4,8 @@ const VALID_ROLES = ['start', 'end'];
 
 export default class TimeContentPointer extends ContentPointer {
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	constructor (service, parent, data, ...mixins) {
+		super(service, parent, data, {Class: 'TimeContentPointer'}, ...mixins);
 
 		//Ugh. The first implementation, prior to exposing to end-users, used seconds.
 		//Apparently, when the server started modeling this on their end, they didn't
