@@ -1,6 +1,7 @@
 import isFunction from '../../utils/isfunction';
 
 const BLACK_LISTED = {
+	Class: true,
 	_events: true
 };
 
