@@ -5,6 +5,8 @@ const BLACK_LISTED = {
 };
 
 export default {
+	toJSON () { return this.getData(); },
+
 
 	getData () {
 		let d = {};
