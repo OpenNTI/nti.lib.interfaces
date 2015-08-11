@@ -188,12 +188,14 @@ export default class Base extends EventEmitter {
 		if (typeof raw === 'string' && (typeof this[raw] === 'object' || this[raw] == null)) {
 			key = raw;
 			raw = this[key];
-
-			if (raw && raw[Parser]) {
-				console.error('Attempting to re-parse a model, aborting');
-				return raw;
-			}
 		}
+
+
+		if (raw && raw[Parser]) {
+			console.error('Attempting to re-parse a model, aborting');
+			return raw;
+		}
+
 
 		let o = raw && doParse(this, raw);
 		if (o && o[Pending]) {
