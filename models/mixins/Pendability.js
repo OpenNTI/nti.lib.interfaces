@@ -25,15 +25,23 @@ export default {
 
 
 		for (let p of pending) {
-			if (!p) { continue; }
+			if (!p) {
+				console.trace('null promise');
+				continue;
+			}
 
 			if (Array.isArray(p[Pending])) {
 				this.addToPending(...p[Pending]);
-			} else if (p.then) {
+
+			}
+			else if (p.then) {
+
 				list.push(p);
+
 				p.catch(noop)//prevent failures from interupting our cleanup
 					.then(remove(p));
-			} else {
+			}
+			else {
 				console.warn('Unexpected object in the pending queue: ', p);
 			}
 		}

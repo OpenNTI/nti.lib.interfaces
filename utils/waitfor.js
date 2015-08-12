@@ -5,7 +5,7 @@ import emptyFunction from './empty-function';
 const NEVER_FAIL = thenable =>
 	thenable.then(
 		emptyFunction,
-		emptyFunction);
+		e => console.warn('Why', e));
 
 
 export default function (pending, timeout) {
