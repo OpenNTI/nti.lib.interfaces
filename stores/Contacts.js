@@ -143,9 +143,25 @@ export default class Contacts extends EventEmitter {
 		snapshot = Object.values(snapshot);
 
 		snapshot = snapshot.sort((a, b) => {
-			let astring = [a.NonI18NLastName || '~~~', a.NonI18NFirstName || '~~~', a.displayName, a.Username].join(':');
-			let bstring = [b.NonI18NLastName || '~~~', b.NonI18NFirstName || '~~~', b.displayName, b.Username].join(':');
-			return astring === bstring ? 0 : (astring > bstring ? 1 : -1); // can't be equal because usernames
+			//wrapper around localeCompare, but, you cannot call localeCompare on falsy values, so check those first.
+			const cmp = (A, B) => !A
+			//If our left-hand-operand is falsy, the comparison is easy... and can only have 2 results.
+			// (0 if the right-hand-operand is falsy, 1 otherwise - because non-falsy is greater than falsy.)
+				? (!B ? 0 : 1)
+				//If we have a non-falsy left-hand-operand, just call localeCompare... (it will return
+				// appropriately for falsy right-hand-operands)
+				: A.localeCompare(B);
+
+			//Loop over the list of fields we want to compare. Stop as soon as we have a non-equal comparison.
+			for(let field of ['NonI18NLastName', 'NonI18NFirstName', 'displayName', 'Username']) {
+				let c = cmp(a[field], b[field]);
+				if (c !== 0) {
+					return c;
+				}
+			}
+
+			//If we get here, all is equal.
+			return 0;
 		});
 
 		let {length} = snapshot;
