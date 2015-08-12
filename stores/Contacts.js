@@ -152,9 +152,14 @@ export default class Contacts extends EventEmitter {
 				// appropriately for falsy right-hand-operands)
 				: A.localeCompare(B);
 
+			//safe accessor, if the main object is falsy, don't blow up trying to dereference the field.
+			const getField = (o, f) => o ? o[f] : void 0;
+
 			//Loop over the list of fields we want to compare. Stop as soon as we have a non-equal comparison.
 			for(let field of ['NonI18NLastName', 'NonI18NFirstName', 'displayName', 'Username']) {
-				let c = cmp(a[field], b[field]);
+
+				let c = cmp(getField(a, field), getField(b, field));
+
 				if (c !== 0) {
 					return c;
 				}
