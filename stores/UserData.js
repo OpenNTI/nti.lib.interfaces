@@ -10,6 +10,7 @@ import {Service, DELETED} from '../CommonSymbols';
 
 import {parseListFn} from '../models';
 
+const insert = Symbol();
 
 /**
  * A filter decision function.  Filters out non-"Top Level" items.
@@ -54,13 +55,20 @@ function threadThreadables (list) {
 }
 
 
+function binId (i, rootId) {
+	let id = i.getContainerID ? i.getContainerID() : 'root';
+	return id !== rootId ? binId : 'root';
+}
+
+
 export default class UserData extends EventEmitter {
 
 	constructor (service, rootContainerId, source) {
 		super();
 		Object.assign(this, {
 			[Service]: service,
-			loading: true
+			loading: true,
+			rootId: rootContainerId
 		});
 
 		mixin(this, Pendability);
@@ -93,8 +101,7 @@ export default class UserData extends EventEmitter {
 
 			//Sort into container bins.
 			for (let i of list) {
-				let binId = i.getContainerID ? i.getContainerID() : 'root';
-				bin(binId !== rootContainerId ? binId : 'root', i);
+				bin(binId(i, rootContainerId), i);
 			}
 
 			//merge some items under placeholders
@@ -136,6 +143,26 @@ export default class UserData extends EventEmitter {
 	}
 
 
+	[insert] (item) {
+		let bId = binId(item, this.rootId);
+		let bin = this.Items[bId];
+		if (!bin) {
+			bin = this.Items[bId] = [];
+		}
+
+		if (item.isThreadable && item.isReply()) {
+			return console.warn('Inserting a reply!! Ignoring.');
+		}
+
+		//TODO: think through the scenario of if the item is a threadable, rethread? ignore replies?
+
+		bin.push(item);
+
+		item.on('change', this.onChange.bind(this));
+		this.emit('change');
+	}
+
+
 	onChange (who, what) {
 		if (what === DELETED) {
 
@@ -168,5 +195,21 @@ export default class UserData extends EventEmitter {
 
 	has (id) {
 		return !!this.get(id);
+	}
+
+
+	create (data) {
+		let service = this[Service];
+		let {href} = service.getCollectionFor(data.MimeType) || {};
+
+		if (!href) {
+			return Promise.reject('No Collection to post to.');
+		}
+
+		return service.postParseResponse(href, data)
+			.then(x => {
+				this[insert](x);
+				return x;
+			});
 	}
 }
