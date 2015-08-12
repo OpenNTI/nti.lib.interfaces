@@ -142,6 +142,12 @@ export default class Contacts extends EventEmitter {
 
 		snapshot = Object.values(snapshot);
 
+		snapshot = snapshot.sort((a, b) => {
+			let astring = [a.NonI18NLastName || '~~~', a.NonI18NFirstName || '~~~', a.displayName].join(':');
+			let bstring = [b.NonI18NLastName || '~~~', b.NonI18NFirstName || '~~~', b.displayName].join(':');
+			return astring === bstring ? 0 : (astring > bstring ? 1 : -1);
+		});
+
 		let {length} = snapshot;
 		let index = 0;
 
