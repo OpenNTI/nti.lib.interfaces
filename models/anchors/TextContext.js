@@ -5,7 +5,7 @@ export default class TextContext extends Base {
 	constructor (service, parent, data, ...mixins) {
 		super(service, parent, data, {Class: 'TextContext'}, ...mixins);
 
-		delete this.isEmpty;
+		this.isEmpty = false;
 
 		this.validateOffset(data.contextOffset);
 		this.validateText(data.contextText);

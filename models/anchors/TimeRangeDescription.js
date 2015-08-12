@@ -10,7 +10,8 @@ export default class TimeRangeDescription extends ContentRangeDescription {
 		this[parse]('start');
 		this[parse]('end');
 
-		this.isTimeRange = true;
+		Object.defineProperty(this, 'isTimeRange', {value: true});
+
 		this.isEmpty = false;
 
 		if (!this.isTimeContentPointer(this.start)) {

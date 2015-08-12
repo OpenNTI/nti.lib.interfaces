@@ -7,7 +7,7 @@ export default class DomContentRangeDescription extends ContentRangeDescription 
 	constructor (service, parent, data, ...mixins) {
 		super(service, parent, data, {Class: 'DomContentRangeDescription'}, ...mixins);
 		this.isEmpty = false;
-		this.isDomContentRangeDescription = true;
+		Object.defineProperty(this, 'isDomContentRangeDescription', {value: true});
 
 		this[parse]('ancestor');
 		this[parse]('end');
