@@ -6,7 +6,7 @@ import {thread} from '../utils/UserDataThreader';
 
 import Pendability from '../models/mixins/Pendability';
 
-import {Service} from '../CommonSymbols';
+import {Service, DELETED} from '../CommonSymbols';
 
 import {parseListFn} from '../models';
 
@@ -133,6 +133,27 @@ export default class UserData extends EventEmitter {
 			}
 
 		};
+	}
+
+
+	onChange (who, what) {
+		if (what === DELETED) {
+
+			for (let bin of Object.values(this.Items)) {
+
+				let index = bin.findIndex(x => x.getID() === who.getID());
+				if (index < 0) {
+					continue;
+				}
+
+				let item = bin.splice(index, 1)[0];//remove it;
+
+				item.removeListener('change', this.onChange);
+				console.debug('Removed deleted item: %o', item);
+			}
+		}
+
+		this.emit('change', this);
 	}
 
 

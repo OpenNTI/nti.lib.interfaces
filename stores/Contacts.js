@@ -12,7 +12,7 @@ import guid from '../utils/guid';
 
 import {parse, parseListFn} from '../models';
 
-import {Service} from '../CommonSymbols';
+import {Service, DELETED} from '../CommonSymbols';
 
 export const MIME_TYPE = 'application/vnd.nextthought.friendslist';
 
@@ -194,6 +194,24 @@ export default class Contacts extends EventEmitter {
 	getLists () {
 		const {RESERVED_GROUP_ID} = this;
 		return this[DATA].filter(x => x.getID() !== RESERVED_GROUP_ID);
+	}
+
+
+	onChange (who, what) {
+		let data = this[DATA];
+		if (what === DELETED) {
+			let index = data.findIndex(x => x.getID() === who.getID());
+			if (index < 0) {
+				return;
+			}
+
+			let item = data.splice(index, 1)[0];//remove it;
+
+			item.removeListener('change', this.onChange);
+			console.debug('Removed deleted list: %o', item);
+		}
+
+		this.emit('change', this);
 	}
 
 
