@@ -2,6 +2,7 @@ import {EventEmitter} from 'events';
 
 import QueryString from 'query-string';
 
+import browser from '../utils/browser';
 import mixin from '../utils/mixin';
 
 import Pendability from '../models/mixins/Pendability';
@@ -48,7 +49,9 @@ export default class Stream extends EventEmitter {
 									return parseList(o.Items || []);
 								});
 
-		this.on('load', (_, time) => console.log('Load: %s %o', time, this));
+		if (browser) {
+			this.on('load', (_, time) => console.log('Load: %s %o', time, this));
+		}
 
 		if (href.then) {
 			this.addToPending(
