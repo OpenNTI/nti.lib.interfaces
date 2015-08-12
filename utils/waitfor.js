@@ -5,7 +5,7 @@ import emptyFunction from './empty-function';
 const NEVER_FAIL = thenable =>
 	thenable.then(
 		emptyFunction,
-		e => console.warn('Why', e));
+		emptyFunction);
 
 
 export default function (pending, timeout) {
@@ -15,7 +15,7 @@ export default function (pending, timeout) {
 	}
 
 	return new Promise((resolve, reject) => {
-		if (timeout) {
+		if (typeof timeout === 'number' && timeout >= 0) {
 			let onTimeout = () => {
 				resolve = emptyFunction;
 				reject('Timeout');

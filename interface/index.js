@@ -9,7 +9,6 @@ import MimeComparator from '../utils/MimeComparator';
 
 import isBrowser from '../utils/browser';
 import isEmpty from '../utils/isempty';
-import waitFor from '../utils/waitfor';
 import getLink, {asMap as getLinksAsMap} from '../utils/getlink';
 
 import chain from '../utils/function-chain';
@@ -250,12 +249,11 @@ export default class DataServerInterface {
 			promise = this.get(null, context)
 				.then(json =>
 					cache.set('service-doc', json) &&
-					new Service(json, this, context))
-
-				.then(doc =>
-					waitFor(doc[Pending])
-						.then(() => Promise.resolve(doc)));
+					new Service(json, this, context));
 		}
+
+		promise = promise.then(doc => doc.waitForPending()
+				.then(() => Promise.resolve(doc)));
 
 		//once we have an instance, stuff it in the cache so we don't keep building it.
 		promise.then(set);

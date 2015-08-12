@@ -26,7 +26,6 @@ export default {
 
 		for (let p of pending) {
 			if (!p) {
-				console.trace('null promise');
 				continue;
 			}
 
