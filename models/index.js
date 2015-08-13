@@ -332,6 +332,7 @@ const PARSERS = {
 
 	'forums.generalforumcomment': 'forums.comment',
 	'forums.contentforumcomment': 'forums.comment',
+	'forums.personalblogcomment': 'forums.comment',
 
 	'highlight': Highlight,
 	'note': Note,
