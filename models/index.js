@@ -315,6 +315,12 @@ const PARSERS = {
 	'forums.communityheadlinepost': 'forums.post',
 	'forums.communitytopic': 'forums.topic',
 
+	'forums.dflboard': 'forums.board',
+	'forums.dflforum': 'forums.forum',
+	'forums.dflheadlinetopic': 'forums.topic',
+	'forums.dflheadlinepost': 'forums.post',
+	'forums.dfltopic': 'forums.topic',
+
 	'forums.personalblog': 'forums.board',
 	'forums.personalblogentry': BlogEntry,
 	'forums.personalblogentrypost': 'forums.post',
