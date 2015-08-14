@@ -11,7 +11,7 @@ import mixin from '../utils/mixin';
 
 import {parse, parseListFn} from '../models';
 
-import {Service} from '../CommonSymbols';
+import {Service, DELETED} from '../CommonSymbols';
 
 import {getNewListData} from './Contacts';
 
@@ -43,6 +43,7 @@ export default class Groups extends EventEmitter {
 		});
 
 		mixin(this, Pendability);
+		this.onChange = this.onChange.bind(this);
 
 		let parseList = parseListFn(this, service);
 		this.load = url => service.get(url).then(o => parseList(Object.values(o.Items || [])));
@@ -81,6 +82,8 @@ export default class Groups extends EventEmitter {
 					: (this[DATA].push(x) && x)
 			)
 
+			.then(x => x.on('change', this.onChange))
+
 			.then(() => this.emit('change', this));
 	}
 
@@ -99,6 +102,24 @@ export default class Groups extends EventEmitter {
 			}
 
 		};
+	}
+
+
+	onChange (who, what) {
+		let data = this[DATA];
+		if (what === DELETED) {
+			let index = data.findIndex(x => x.getID() === who.getID());
+			if (index < 0) {
+				return;
+			}
+
+			let item = data.splice(index, 1)[0];//remove it;
+
+			item.removeListener('change', this.onChange);
+			console.debug('Removed deleted group: %o', item);
+		}
+
+		this.emit('change', this);
 	}
 
 
