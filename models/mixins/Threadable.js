@@ -126,10 +126,11 @@ export default {
 
 
 	appendNewChild (newChild) {
-		let children = this[CHILDREN] = (this[CHILDREN] || []).slice();
 
 		newChild[PARENT] = this;
 
-		children.push(newChild);
+		let children = this[CHILDREN] || [];
+
+		this[CHILDREN] = [...children, newChild];
 	}
 };
