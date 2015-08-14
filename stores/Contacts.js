@@ -78,6 +78,8 @@ export default class Contacts extends EventEmitter {
 
 		mixin(this, Pendability);
 
+		this.onChange = this.onChange.bind(this);
+
 		let parseList = parseListFn(this, service);
 		this.load = url => service.get(url).then(o => parseList(Object.values(o.Items || [])));
 
@@ -125,6 +127,8 @@ export default class Contacts extends EventEmitter {
 					? Promise.reject('Already contains item??')
 					: (this[DATA].push(x) && x)
 			)
+
+			.then(x => x.on('change', this.onChange))
 
 			.then(() => this.emit('change', this));
 	}
