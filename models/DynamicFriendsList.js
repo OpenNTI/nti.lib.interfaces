@@ -95,4 +95,14 @@ export default class DynamicFriendsList extends FriendsList {
 
 		return store;
 	}
+
+
+	getDiscussionBoard () {
+		return this.fetchLinkParsed('DiscussionBoard');
+	}
+
+
+	getDiscussionBoardContents () {
+		return this.getDiscussionBoard().then(x => x.getContents());
+	}
 }
