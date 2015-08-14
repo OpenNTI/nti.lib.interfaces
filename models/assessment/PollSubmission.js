@@ -3,9 +3,9 @@ import QuestionSubmission from './QuestionSubmission';
 export default class PollSubmission extends QuestionSubmission {
 	constructor (service, parent, data) {
 		super(service, parent, data);
+		Object.defineProperty(this, 'SubmitsToObjectURL', {value: true});
 		Object.assign(this, {
-			MimeType: 'application/vnd.nextthought.assessment.pollsubmission',
-			SubmitsToObjectURL: true
+			MimeType: 'application/vnd.nextthought.assessment.pollsubmission'
 		});
 	}
 

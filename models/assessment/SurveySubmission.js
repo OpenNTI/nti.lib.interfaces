@@ -7,16 +7,16 @@ import {
 export default class SurveySubmission extends QuestionSetSubmission {
 	constructor (service, parent, data) {
 		super(service, parent, data);
+		Object.defineProperty(this, 'SubmitsToObjectURL', {value: true});
 		Object.assign(this, {
-			MimeType: 'application/vnd.nextthought.assessment.surveysubmission',
-			SubmitsToObjectURL: true
+			MimeType: 'application/vnd.nextthought.assessment.surveysubmission'
 		});
 		this[parse]('parts', []);
 	}
 
 
 	canReset () { return !this.isSubmitted(); }
-	
+
 
 	getID () {
 		return this.NTIID || this.surveyId;
