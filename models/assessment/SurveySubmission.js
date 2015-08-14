@@ -11,7 +11,11 @@ export default class SurveySubmission extends QuestionSetSubmission {
 		Object.assign(this, {
 			MimeType: 'application/vnd.nextthought.assessment.surveysubmission'
 		});
-		this[parse]('parts', []);
+
+		this[parse]('parts');
+		if (!this.parts) {
+			Object.defineProperty(this, 'parts', {value: []});
+		}
 	}
 
 
