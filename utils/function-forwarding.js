@@ -12,6 +12,12 @@ function reflect (fn, key) {
 		for(let i = 0, l = keys.length; i <= l; i++) {
 			let k = keys[i];
 			if (i < l && scope) {
+
+				if (!scope[k]) {
+					let {name} = scope.constructor;
+					throw new Error(`Class ${name} does not have property ${k}`);
+				}
+
 				scope = scope[k];
 				path.push(k);
 				if (!scope) {
