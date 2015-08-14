@@ -44,6 +44,18 @@ export default {
 
 		result = this[Parser](result);
 
+		delete result.ReferencedByCount;
+		Object.defineProperty(result, 'ReferencedByCount', {
+			get () {
+				let children = this[CHILDREN];
+				if (!Array.isArray(children)) {
+					return 0;
+				}
+
+				return children.length + children.reduce((sum, x) => sum + x.ReferencedByCount, 0);
+			}
+		});
+
 		return result;
 	},
 

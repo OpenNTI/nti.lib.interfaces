@@ -11,7 +11,7 @@ export default class Note extends Highlight {
 	}
 
 	get replyCount () {
-		//TODO: once children are loaded and threaded read that count.
+		// Rely on this value, placeholders will have a getter for the ReferencedByCount property.
 		return this.ReferencedByCount;
 	}
 
