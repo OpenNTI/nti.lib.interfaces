@@ -20,7 +20,7 @@ export default class Achievements extends EventEmitter {
 		});
 
 		mixin(this, Pendability);
-
+		//this.onChange = this.onChange.bind(this);
 		let parseList = parseListFn(this, service);
 		let loadBin = (name, href) => service.get(href)
 											.then(o => parseList(o.Items || []))

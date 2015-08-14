@@ -38,6 +38,7 @@ export default class Stream extends EventEmitter {
 		});
 
 		mixin(this, Pendability);
+		this.onChange = this.onChange.bind(this);
 
 		let parseList = parseListFn(this, service);
 
@@ -159,7 +160,7 @@ export default class Stream extends EventEmitter {
 			return;
 		}
 		this[DATA].unshift(item);
-		item.on('change', this.onChange.bind(this));
+		item.on('change', this.onChange);
 		this.emit('change');
 	}
 }

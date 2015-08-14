@@ -451,7 +451,7 @@ export function parseListFn (scope, service) {
 			o = parse(service, null, o);
 			scope.addToPending(o);
 			if(o && o.on && scope.onChange) {
-				o.on('change', scope.onChange.bind(scope));
+				o.on('change', scope.onChange);
 			}
 		} catch(e) {
 			console.error(e.stack || e.message || e);

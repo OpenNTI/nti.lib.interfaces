@@ -72,7 +72,7 @@ export default class UserData extends EventEmitter {
 		});
 
 		mixin(this, Pendability);
-
+		this.onChange = this.onChange.bind(this);
 
 		let parseList = parseListFn(this, service);
 		let getBin = name => (this.Items[name] = (this.Items[name] || []));
