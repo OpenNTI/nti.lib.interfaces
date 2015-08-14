@@ -65,7 +65,9 @@ import AssessmentQuestionSetRef from './assessment/QuestionSetReference';
 import AssessmentQuestion from './assessment/Question';
 
 import AssessmentSurvey from './assessment/Survey';
+import AssessmentSurveyReference from './assessment/SurveyReference';
 import AssessmentPoll from './assessment/Poll';
+import AssessmentPollReference from './assessment/PollReference';
 
 import AssessmentAssignmentRef from './assessment/AssignmentReference';
 import AssessmentAssignment from './assessment/Assignment';
@@ -218,6 +220,8 @@ const PARSERS = {
 
 	'nasurvey': AssessmentSurvey,
 	'napoll': AssessmentPoll,
+	'surveyref': AssessmentSurveyReference,
+	'pollref': AssessmentPollReference,
 	'assessment.pollsubmission': AssessmentPollSubmittion,
 	'assessment.surveysubmission': AssessmentSurveySubmittion,
 
