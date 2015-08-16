@@ -27,8 +27,10 @@ export default class DynamicFriendsList extends FriendsList {
 				catch (e) {
 					console.warn(e);
 				}
+
+				delete this.isMember;
+				Object.defineProperty(this, 'isMember', {value: false});
 			})
-			.then(() =>	this.isMember = false)
 			.then(() => this.onChange('membership'));
 	}
 
