@@ -17,8 +17,17 @@ export default class DynamicFriendsList extends FriendsList {
 
 
 	leave () {
+		let {Links} = this;
 		return this[Service].delete(this.getLink('my_membership'))
-			.then(() => this.refresh())
+			.then(() => {
+				try {
+					//remove the link so we do not look like we are a member.
+					Links.splice(Links.findIndex(x => x.rel === 'my_membership'), 1);
+				}
+				catch (e) {
+					console.warn(e);
+				}
+			})
 			.then(() =>	this.isMember = false)
 			.then(() => this.onChange('membership'));
 	}
