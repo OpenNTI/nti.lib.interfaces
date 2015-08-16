@@ -264,14 +264,14 @@ export default class ServiceDocument {
 	}
 
 
-	getObject (ntiid, type) {
+	getObject (ntiid, type, field) {
 		if (!isNTIID(ntiid)) {
 			return Promise.reject('Bad NTIID');
 		}
 
 
 		let headers = {};
-		let url = this.getObjectURL(ntiid);
+		let url = this.getObjectURL(ntiid, field);
 
 		if (type) {
 			url = Url.parse(url);
@@ -309,14 +309,14 @@ export default class ServiceDocument {
 	}
 
 
-	getParsedObject (ntiid, parent) {
+	getParsedObject (ntiid, parent, field, type) {
 		let p = o => parse(this, parent || this, o);
 
 		if (typeof ntiid === 'object') {
 			return Promise.resolve(p(ntiid));
 		}
 
-		return this.getObject(ntiid).then(p);
+		return this.getObject(ntiid, type, field).then(p);
 	}
 
 
