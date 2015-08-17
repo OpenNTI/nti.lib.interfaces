@@ -57,26 +57,38 @@ export default class FriendsList extends Entity {
 	/**
 	 * Add a new entity to the list.
 	 *
-	 * @param {string|Entity} entity The entity to add.
+	 * @param {...string|Entity} entity The entity to add.
 	 * @return {Promise} To fulfill if successfull, or reject with an error.
 	 */
-	add (entity) {
-		let entityId = getID(entity);
-
+	add (...entities) {
 		if (!this.hasLink('edit')) {
 			return Promise.reject('No Edit Link');
 		}
 
+		let data = this.getData();
 		let {friends = []} = this;
+		let newfriends = [];
 
-		let index = friends.findIndex(x => x.getID() === entityId);
-		if (index >= 0) {
+		//unwrap argument array argument
+		if (entities.length === 1 && Array.isArray(entities[0])) {
+			entities = entities[0];
+		}
+
+		for (let entity of entities) {
+			let entityId = getID(entity);
+			let index = friends.findIndex(x => x.getID() === entityId);
+			if (index >= 0) {
+				continue;
+			}
+
+			newfriends.push(entityId);
+		}
+
+		if (newfriends.length === 0) {
 			return Promise.resolve(this);
 		}
 
-		let data = this.getData();
-
-		data.friends = [...friends.map(x => getID(x)), entityId];
+		data.friends = [...friends.map(x => getID(x)), ...newfriends];
 
 		return this.putToLink('edit', data)
 			.then(o => this.refresh(pluck(o, 'NTIID', 'friends')))
