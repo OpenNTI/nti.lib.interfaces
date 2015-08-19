@@ -1,7 +1,7 @@
 import isEmpty from '../utils/isempty';
 import MediaSource from './MediaSource';
 import UserDataStore from '../stores/UserData';
-import {REL_RELEVANT_USER_GENERATED_DATA} from '../constants';
+import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA} from '../constants';
 import {Service, Parent} from '../CommonSymbols';
 
 const UserData = Symbol('UserData');
@@ -77,7 +77,7 @@ export default class Video {
 
 		if (!store) {
 			store = this[UserData] = new UserDataStore(service, id,
-				service.getContainerURL(id, REL_RELEVANT_USER_GENERATED_DATA));
+				service.getContainerURL(id, REL_RELEVANT_CONTAINED_USER_GENERATED_DATA));
 		}
 
 		return Promise.resolve(store);//in the future, this may need to be async...

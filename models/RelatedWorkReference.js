@@ -2,7 +2,7 @@ import Base from './Base';
 
 import UserDataStore from '../stores/UserData';
 
-import {REL_RELEVANT_USER_GENERATED_DATA} from '../constants';
+import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA} from '../constants';
 
 import {Service} from '../CommonSymbols';
 
@@ -33,7 +33,7 @@ export default class RelatedWorkReference extends Base {
 
 		if (!store) {
 			store = this[UserData] = new UserDataStore(service, id,
-				service.getContainerURL(id, REL_RELEVANT_USER_GENERATED_DATA));
+				service.getContainerURL(id, REL_RELEVANT_CONTAINED_USER_GENERATED_DATA));
 		}
 
 		return Promise.resolve(store);//in the future, this may need to be async...

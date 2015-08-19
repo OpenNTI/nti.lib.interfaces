@@ -4,7 +4,7 @@ import path from 'path';
 
 import QueryString from 'query-string';
 
-import {REL_USER_GENERATED_DATA, REL_RELEVANT_USER_GENERATED_DATA} from '../constants';
+import {REL_USER_GENERATED_DATA, REL_RELEVANT_CONTAINED_USER_GENERATED_DATA} from '../constants';
 
 import fixRefs from '../utils/rebase-references';
 
@@ -105,7 +105,7 @@ export default class PageInfo extends Base {
 			store = this[UserData] = new UserDataStore(
 				this[Service],
 				this.getID(),
-				this.getLink(REL_RELEVANT_USER_GENERATED_DATA)
+				this.getLink(REL_RELEVANT_CONTAINED_USER_GENERATED_DATA)
 			);
 
 			this.addToPending(...store[Pending]);
