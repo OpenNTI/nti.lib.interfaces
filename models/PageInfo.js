@@ -24,7 +24,7 @@ export default class PageInfo extends Base {
 			this.AssessmentItems = setupAssessmentItems(data.AssessmentItems, this);
 		}
 
-		this['parse']('sharingPreference');
+		this[parse]('sharingPreference');
 	}
 
 
@@ -61,6 +61,12 @@ export default class PageInfo extends Base {
 		}
 
 		return this.ContentPackageNTIID || bestGuess(this);
+	}
+
+
+
+	getSharingPreferences () {
+		return Promise.resolve(this.sharingPreference);
 	}
 
 
