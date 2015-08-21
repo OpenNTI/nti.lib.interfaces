@@ -208,7 +208,10 @@ export default class Instance extends Base {
 	}
 
 
-	getPublicScope () { return this.getScope('Public'); }
+	getDefaultShareWithValue (/*preferences*/) {
+		return Promise.resolve([ this.SharingScopes.defaultScopeID ]);
+	}
+
 
 	getSharingSuggestions () {
 		const parent = this.parent();

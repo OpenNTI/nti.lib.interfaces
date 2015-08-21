@@ -23,6 +23,8 @@ export default class PageInfo extends Base {
 		if (data.AssessmentItems) {
 			this.AssessmentItems = setupAssessmentItems(data.AssessmentItems, this);
 		}
+
+		this['parse']('sharingPreference');
 	}
 
 

@@ -28,7 +28,7 @@ export default class Package extends Base {
 	}
 
 
-	getPublicScope () {
+	getDefaultShareWithValue (/*preferences*/) {
 		return [];
 	}
 

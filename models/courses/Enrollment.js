@@ -22,7 +22,7 @@ export default class Enrollment extends Base {
 				'containsPackage',
 				'getOutline',
 				'getPresentationProperties',
-				'getPublicScope',
+				'getDefaultShareWithValue',
 				'getDiscussions',
 				'hasDiscussions'
 			//From:

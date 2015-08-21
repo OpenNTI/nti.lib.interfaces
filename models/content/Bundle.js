@@ -113,7 +113,7 @@ export default class Bundle extends Base {
 	}
 
 
-	getPublicScope () {
+	getDefaultShareWithValue (/*preferences*/) {
 		return [];
 	}
 }
