@@ -41,6 +41,11 @@ export default class User extends Entity {
 	}
 
 
+	get displayType () {
+		return 'Person';
+	}
+
+
 	get firstName () { return this.NonI18NFirstName; }
 	get lastName () { return this.NonI18NLastName; }
 

@@ -10,6 +10,10 @@ export default class Community extends Entity {
 		this.isCommunity = true;
 	}
 
+	get displayType () {
+		return 'Community';
+	}
+
 
 	getActivity (filterParams) {
 		let {source} = filterParams || {};

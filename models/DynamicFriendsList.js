@@ -11,6 +11,11 @@ export default class DynamicFriendsList extends FriendsList {
 	}
 
 
+	get displayType () {
+		return 'Group';
+	}
+
+
 	get isMember () {
 		return this.hasLink('my_membership');
 	}

@@ -14,6 +14,11 @@ export default class Entity extends Base {
 	}
 
 
+	get displayType () {
+		return 'Unknown';
+	}
+
+
 	get avatar () {
 		return this.avatarURL;
 	}

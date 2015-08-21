@@ -11,6 +11,10 @@ export default class FriendsList extends Entity {
 		this[parse]('friends');
 	}
 
+	get displayType () {
+		return 'List';
+	}
+
 
 	get length () {
 		return (this.friends || []).length;
