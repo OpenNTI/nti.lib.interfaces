@@ -20,6 +20,11 @@ export default class Instance extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data, {isCourse: true});
 
+		if (!parent || !parent.isEnrollment) {
+			console.error('Invalid CourseInstance parent model!', parent);
+			throw new Error('Parent Reference needs to be an enrollment Model instance');
+		}
+
 		let bundle = this[parse]('ContentPackageBundle');
 
 		bundle.on('change', this.onChange.bind(this));
@@ -27,6 +32,10 @@ export default class Instance extends Base {
 		this[parse]('ParentDiscussions');
 		this[parse]('Discussions');
 		this[parse]('Outline');
+		this[parse]('SharingScopes');
+		this[parse]('ParentSharingScopes');
+
+		delete this.LegacyScopes;
 
 		try {
 			this.addToPending(resolveCatalogEntry(service, this));
@@ -201,25 +210,44 @@ export default class Instance extends Base {
 
 	getPublicScope () { return this.getScope('Public'); }
 
-
-	getScope (scope) {
-		let s = (this.Scopes || {})[scope.toLowerCase()] || '';//Old...
-
-		/*
-		if (this.SharingScopes) {
-			s = this.SharingScopes;
-			s = s.getScope(scope);
-			if (s && typeof s !== 'string') {
-				s = s.NTIID;
-			}
-		}
-		*/
-
-		if (typeof s === 'string') {
-			s = s.split(' ');
+	getSharingSuggestions () {
+		const parent = this.parent();
+		if (parent && parent.getSharingSuggestions) {
+			return parent.getSharingSuggestions();
 		}
 
-		return s.filter(v => v && v.length > 0);
+		const getScope = (x, y) => x && x.getScope(y);
+		let sectionScopes = this.SharingScopes;
+		let parentScopes = this.ParentSharingScopes;
+
+		let {defaultScope, defaultScopeID} = sectionScopes || {};
+
+		let parentPublic = getScope(parentScopes || sectionScopes, 'Public');
+
+		let suggestions = [];
+
+		if (!defaultScope && parentScopes) {
+			defaultScope = parentScopes.getScopeForId(defaultScopeID);
+		}
+
+		if (parentPublic) {
+			let allStudents = Object.create(parentPublic, {
+				friendlyName: {value: 'All Students'}
+			});
+
+			suggestions = [...suggestions, allStudents];
+		}
+
+		if (defaultScope && defaultScope !== parentPublic) {
+			let classmates = Object.create(defaultScope, {
+				friendlyName: {value: 'My Classmates'}
+			});
+
+			suggestions = [...suggestions, classmates];
+		}
+
+
+		return Promise.resolve(suggestions);
 	}
 }
 

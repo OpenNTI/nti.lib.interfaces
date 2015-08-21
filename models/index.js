@@ -53,11 +53,13 @@ import CourseEnrollmentOptions from './courses/EnrollmentOptions';
 import CourseEnrollmentOption from './courses/EnrollmentOption';
 import CourseEnrollmentOption5Minute from './courses/EnrollmentOption5Minute';
 import CourseEnrollmentOptionPurchase from './courses/EnrollmentOptionPurchase';
+import CourseSharingScopes from './courses/SharingScopes';
 import CourseOutline from './courses/Outline';
 import CourseOutlineNode from './courses/OutlineNode';
 import CourseOutlineNodeProgress from './courses/OutlineNodeProgress';
 
 import CourseProgress from './courses/Progress';
+
 
 
 import AssessmentQuestionSet from './assessment/QuestionSet';
@@ -153,6 +155,7 @@ const PARSERS = {
 
 	'ContentPackage': ContentPackage,
 	'ContentPackageBundle': ContentBundle,
+	'CourseInstanceSharingScopes': CourseSharingScopes,
 
 	'mediasource': MediaSource,
 	'videosource': MediaSource,
