@@ -1,15 +1,6 @@
-import {EventEmitter} from 'events';
+import EntityStore from './EntityStore';
 
-import browser from '../utils/browser';
-
-// import QueryString from 'query-string';
-
-import Pendability from '../models/mixins/Pendability';
-
-import mixin from '../utils/mixin';
-// import getLink from '../utils/getlink';
-
-import {parse, parseListFn} from '../models';
+import {parse} from '../models';
 
 import {Service, DELETED} from '../CommonSymbols';
 
@@ -17,12 +8,9 @@ import {getNewListData} from './Contacts';
 
 export const MIME_TYPE = 'application/vnd.nextthought.dynamicfriendslist';
 
-const DATA = Symbol();
 const CREATE = Symbol();
 
-
-
-export default class Groups extends EventEmitter {
+export default class Groups extends EntityStore {
 
 	/**
 	 * Groups constructor
@@ -34,41 +22,7 @@ export default class Groups extends EventEmitter {
 	 * @return {void}
 	 */
 	constructor (service, entryPoint, context) {
-		super();
-		Object.assign(this, {
-			[Service]: service,
-			[DATA]: [],
-			entryPoint,
-			context
-		});
-
-		mixin(this, Pendability);
-		this.onChange = this.onChange.bind(this);
-
-		let parseList = parseListFn(this, service);
-		this.load = url => service.get(url).then(o => parseList(Object.values(o.Items || [])));
-
-		if (browser) {
-			this.on('load', (_, time) => console.log('Load: %s %o', time, this));
-		}
-
-		this.loading = true;
-		let start = Date.now();
-
-		let load = this.load(entryPoint)
-			.then(x => this[DATA].push(...x))
-			.catch(er => {
-				console.log(er.message || er);
-				this.error = true;
-			})
-			.then(() => {
-				this.loading = false;
-				this.loaded = Date.now();
-				this.emit('load', this, `${(this.loaded - start)}ms`);
-				this.emit('change', this);
-			});
-
-		this.addToPending(load);
+		super(service, entryPoint, context);
 	}
 
 
@@ -77,9 +31,9 @@ export default class Groups extends EventEmitter {
 			.post(this.entryPoint, data)
 			.then(x => parse(this[Service], null, x))
 
-			.then(x => this[DATA].find(i => i.getID() === x.getID())
+			.then(x => this['get:Data']().find(i => i.getID() === x.getID())
 					? Promise.reject('Already contains item??')
-					: (this[DATA].push(x) && x)
+					: (this['get:Data']().push(x) && x)
 			)
 
 			.then(x => x.on('change', this.onChange))
@@ -88,25 +42,8 @@ export default class Groups extends EventEmitter {
 	}
 
 
-	[Symbol.iterator] () {
-		let snapshot = this[DATA].slice();
-		let {length} = snapshot;
-		let index = 0;
-		return {
-
-			next () {
-				let done = index >= length;
-				let value = snapshot[index++];
-
-				return { value, done };
-			}
-
-		};
-	}
-
-
 	onChange (who, what) {
-		let data = this[DATA];
+		let data = this['get:Data']();
 		if (what === DELETED) {
 			let index = data.findIndex(x => x.getID() === who.getID());
 			if (index < 0) {
@@ -126,7 +63,4 @@ export default class Groups extends EventEmitter {
 	createGroup (name) {
 		return this[CREATE](getNewListData(name, true, MIME_TYPE, this.context));
 	}
-
-
-
 }

@@ -9,6 +9,7 @@ import Pendability from '../models/mixins/Pendability';
 
 
 import ContactsStore from './Contacts';
+import CommunitiesStore from './EntityStore';
 import GroupsStore from './Groups';
 
 import Enrollment from './Enrollment';
@@ -41,6 +42,7 @@ const LOGOUT_URL = '%%logout-url%%';
 
 const AppUser = Symbol('LoggedInUser');
 const Contacts = Symbol('Contacts');
+const Communities = Symbol('Communities');
 const Groups = Symbol('Groups');
 const Lists = Symbol('Lists');
 const RequestEntityResolve = Symbol('RequestEntityResolve');
@@ -100,17 +102,17 @@ export default class ServiceDocument {
 
 
 	getCommunities () {
-		// if (!this[Communities]) {
-		// 	let u = this[AppUser];
-		// 	let {href} = this.getCollection('Communities', this.getAppUsername()) || {};
-		// 	if (href) {
-		// 		this[Communities] = new CommunitiesStore(this, href, u);
-		// 	} else {
-		// 		console.warn('No Communities Collection');
-		// 	}
-		// }
-		//
-		// return this[Communities];
+		if (!this[Communities]) {
+			let u = this[AppUser];
+			let {href} = this.getCollection('Communities', this.getAppUsername()) || {};
+			if (href) {
+				this[Communities] = new CommunitiesStore(this, href, u);
+			} else {
+				console.warn('No Communities Collection');
+			}
+		}
+
+		return this[Communities];
 	}
 
 
