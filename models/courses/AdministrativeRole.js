@@ -40,7 +40,7 @@ export default class InstanceAdministrativeRole extends Enrollment {
 
 function buildSuggestionsFrom (scopes, sectionName = 'My Course') {
 	const order = ['Default', 'Public', 'Purchased', 'ForCredit', 'ForCreditNonDegree'];
-	const friendlyNames = {
+	const generalNames = {
 		Default: 'Default Scope',
 		Public: 'All Students in {sectionName}',
 		Purchased: 'Life Long Learn Students in {sectionName}',
@@ -59,15 +59,15 @@ function buildSuggestionsFrom (scopes, sectionName = 'My Course') {
 			continue;
 		}
 
-		let friendlyName = friendlyNames[name];
-		if (friendlyName) {
-			friendlyName = friendlyName.replace('{sectionName}', sectionName);
+		let generalName = generalNames[name];
+		if (generalName) {
+			generalName = generalName.replace('{sectionName}', sectionName);
 		}
 
 		items.push(
-			friendlyName
+			generalName
 				? Object.create( scope, {
-					friendlyName: {value: friendlyName}})
+					generalName: {value: generalName}})
 				: scope );
 
 	}

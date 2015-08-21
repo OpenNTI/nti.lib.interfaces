@@ -243,7 +243,7 @@ export default class Instance extends Base {
 
 		if (parentPublic) {
 			let allStudents = Object.create(parentPublic, {
-				friendlyName: {value: 'All Students'}
+				generalName: {value: 'All Students'}
 			});
 
 			suggestions = [...suggestions, allStudents];
@@ -251,7 +251,7 @@ export default class Instance extends Base {
 
 		if (defaultScope && defaultScope !== parentPublic) {
 			let classmates = Object.create(defaultScope, {
-				friendlyName: {value: 'My Classmates'}
+				generalName: {value: 'My Classmates'}
 			});
 
 			suggestions = [...suggestions, classmates];
