@@ -223,14 +223,14 @@ export default class Instance extends Base {
 		let sectionScopes = this.SharingScopes;
 		let parentScopes = this.ParentSharingScopes;
 
-		let {defaultScope, defaultScopeID} = sectionScopes || {};
+		let {defaultScope, defaultScopeId} = sectionScopes || {};
 
 		let parentPublic = getScope(parentScopes || sectionScopes, 'Public');
 
 		let suggestions = [];
 
 		if (!defaultScope && parentScopes) {
-			defaultScope = parentScopes.getScopeForId(defaultScopeID);
+			defaultScope = parentScopes.getScopeForId(defaultScopeId);
 		}
 
 		if (parentPublic) {

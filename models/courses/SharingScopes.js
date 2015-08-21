@@ -13,11 +13,11 @@ export default class SharingScopes extends Base {
 
 
 	get defaultScope () {
-		return this.getScopeForId(this.defaultScopeID);
+		return this.getScopeForId(this.defaultScopeId);
 	}
 
 
-	get defaultScopeID () {
+	get defaultScopeId () {
 		return this.DefaultSharingScopeNTIID;
 	}
 
@@ -39,7 +39,7 @@ export default class SharingScopes extends Base {
 		let items = Object.values(this.Items || {});
 
 		for (let item of items) {
-			if (item.getId && item.getID() === id) {
+			if (item.getID && item.getID() === id) {
 				return item;
 			}
 		}
