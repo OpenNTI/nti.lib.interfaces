@@ -209,7 +209,7 @@ export default class Instance extends Base {
 
 
 	getDefaultShareWithValue (/*preferences*/) {
-		return Promise.resolve([ this.SharingScopes.defaultScopeID ]);
+		return Promise.resolve([ this.SharingScopes.defaultScope ].filter(x => x));
 	}
 
 
