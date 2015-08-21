@@ -20,11 +20,6 @@ export default class Instance extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data, {isCourse: true});
 
-		if (!parent || !parent.isEnrollment) {
-			console.error('Invalid CourseInstance parent model!', parent);
-			throw new Error('Parent Reference needs to be an enrollment Model instance');
-		}
-
 		let bundle = this[parse]('ContentPackageBundle');
 
 		bundle.on('change', this.onChange.bind(this));
@@ -224,6 +219,10 @@ export default class Instance extends Base {
 
 	getSharingSuggestions () {
 		const parent = this.parent();
+		if (parent && !parent.isEnrollment) {
+			console.warn('Potentially Wrong CourseInstance reference');
+		}
+
 		if (parent && parent.getSharingSuggestions) {
 			return parent.getSharingSuggestions();
 		}
