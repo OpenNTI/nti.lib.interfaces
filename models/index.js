@@ -361,8 +361,6 @@ const PARSERS = {
 	'contentrange.transcriptcontentpointer': TranscriptContentPointer,
 	'contentrange.transcriptrangedescription': TranscriptRangeDescription,
 
-	'openbadges.badge': null,//Need To Model
-
 	// profile
 	'profile.professionalposition': ProfessionalPosition,
 	'profile.educationalexperiance': EducationalExperience,
