@@ -8,6 +8,7 @@ import DynamicFriendsList from './DynamicFriendsList';
 import PageInfo from './PageInfo';
 import Change from './Change';
 import Badge from './Badge';
+import BadgeIssuer from './BadgeIssuer';
 
 import RelatedWorkReference from './RelatedWorkReference';
 
@@ -155,7 +156,7 @@ const PARSERS = {
 	'pageinfo': PageInfo,
 	'badge': Badge,
 	'openbadges.badge': 'badge',
-
+	'openbadges.issuer': BadgeIssuer,
 
 	'ContentPackage': ContentPackage,
 	'ContentPackageBundle': ContentBundle,
