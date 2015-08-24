@@ -7,6 +7,7 @@ import FriendsList from './FriendsList';
 import DynamicFriendsList from './DynamicFriendsList';
 import PageInfo from './PageInfo';
 import Change from './Change';
+import Badge from './Badge';
 
 import RelatedWorkReference from './RelatedWorkReference';
 
@@ -152,6 +153,9 @@ const PARSERS = {
 	'friendslist': FriendsList,
 	'dynamicfriendslist': DynamicFriendsList,
 	'pageinfo': PageInfo,
+	'badge': Badge,
+	'openbadges.badge': 'badge',
+
 
 	'ContentPackage': ContentPackage,
 	'ContentPackageBundle': ContentBundle,
