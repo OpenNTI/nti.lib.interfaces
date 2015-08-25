@@ -36,7 +36,7 @@ function generateID (name, context) {
 }
 
 
-export function getNewListData (name, isDynamic, MimeType, context) {
+export function getNewListData (name, isDynamic, MimeType, context, friends = []) {
 
 	let id = generateID(name, context);
 
@@ -49,7 +49,7 @@ export function getNewListData (name, isDynamic, MimeType, context) {
 		MimeType,
 		Username: id,
 		alias: name,
-		friends: [],
+		friends,
 		IsDynamicSharing: !!isDynamic
 	};
 }
@@ -189,8 +189,10 @@ export default class Contacts extends EventEmitter {
 	}
 
 
-	createList (name) {
-		return this[CREATE](getNewListData(name, false, MIME_TYPE, this.context));
+	createList (name, friends) {
+		// unwrap full user entities to IDs.
+		let userIds = (friends || []).map( (friend) => friend.getID ? friend.getID() : friend );
+		return this[CREATE](getNewListData(name, false, MIME_TYPE, this.context, userIds));
 	}
 
 
