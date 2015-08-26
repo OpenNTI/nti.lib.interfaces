@@ -237,14 +237,20 @@ export default class Contacts extends EventEmitter {
 
 	removeContact (entity) {
 		let pending = [];
+		let lists = [];
+		let undo = () => this.addContact(entity, lists);
 
 		for(let list of this[DATA]) {
 			if (list.isGroup) { continue; }
 
-			pending.push(list.remove(entity));
+			if (list.contains(entity)) {
+				pending.push(list.remove(entity));
+				lists.push(list);
+			}
 		}
 
-		return Promise.all(pending);
+		return Promise.all(pending)
+			.then(() => ({undo}));
 	}
 
 
