@@ -5,6 +5,8 @@ import {
 } from '../../CommonSymbols';
 
 import Url from 'url';
+import Stream from '../../stores/Stream';
+import ActivityCollator from '../../utils/activity-collator';
 
 import emptyFunction from '../../utils/empty-function';
 import binDiscussions from '../../utils/forums-bin-discussions';
@@ -64,6 +66,32 @@ export default class Instance extends Base {
 	//Should only show assignments if there is an AssignmentsByOutlineNode link
 	shouldShowAssignments () {
 		return !!this.getLink('AssignmentsByOutlineNode');
+	}
+
+	getActivity () {
+		if (!this.hasLink('CourseRecursiveStreamByBucket')) {
+			return null;
+		}
+
+		let exclude = [
+			'assessment.assessedquestion',
+			'bookmark',
+			'redaction'
+		];
+
+		return new Stream(
+			this[Service],
+			this,
+			this.getLink('CourseRecursiveStreamByBucket'),
+			{
+				exclude: exclude.map(x=> 'application/vnd.nextthought.' + x).join(','),
+				sortOn: 'createdTime',
+				sortOrder: 'descending',
+				batchStart: 0,
+				batchSize: 10
+			},
+			ActivityCollator
+		);
 	}
 
 

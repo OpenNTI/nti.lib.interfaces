@@ -59,6 +59,7 @@ import CourseSharingScopes from './courses/SharingScopes';
 import CourseOutline from './courses/Outline';
 import CourseOutlineNode from './courses/OutlineNode';
 import CourseOutlineNodeProgress from './courses/OutlineNodeProgress';
+import CourseRecursiveStreamBucket from './courses/CourseRecursiveStreamBucket';
 
 import CourseProgress from './courses/Progress';
 
@@ -161,6 +162,8 @@ const PARSERS = {
 	'ContentPackage': ContentPackage,
 	'ContentPackageBundle': ContentBundle,
 	'CourseInstanceSharingScopes': CourseSharingScopes,
+
+	'CourseRecursiveStreamBucket': CourseRecursiveStreamBucket,
 
 	'mediasource': MediaSource,
 	'videosource': MediaSource,
