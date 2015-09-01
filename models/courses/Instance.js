@@ -6,7 +6,6 @@ import {
 
 import Url from 'url';
 import Stream from '../../stores/Stream';
-import ActivityCollator from '../../utils/activity-collator';
 
 import emptyFunction from '../../utils/empty-function';
 import binDiscussions from '../../utils/forums-bin-discussions';
@@ -73,24 +72,16 @@ export default class Instance extends Base {
 			return null;
 		}
 
-		let exclude = [
-			'assessment.assessedquestion',
-			'bookmark',
-			'redaction'
-		];
-
 		return new Stream(
 			this[Service],
 			this,
 			this.getLink('CourseRecursiveStreamByBucket'),
 			{
-				exclude: exclude.map(x=> 'application/vnd.nextthought.' + x).join(','),
 				sortOn: 'createdTime',
 				sortOrder: 'descending',
 				batchStart: 0,
 				batchSize: 10
-			},
-			ActivityCollator
+			}
 		);
 	}
 
