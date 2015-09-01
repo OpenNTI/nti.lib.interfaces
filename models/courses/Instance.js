@@ -103,7 +103,7 @@ export default class Instance extends Base {
 
 
 		// A/B sets... Assignments are the Universe-Set minus the B set.
-		// The A set is the assignmetns you can see.
+		// The A set is the assignments you can see.
 		let A = this.getLink('AssignmentsByOutlineNode');
 		let B = this.getLink('NonAssignmentAssessmentItemsByOutlineNode');
 
