@@ -62,11 +62,21 @@ export default class Collection extends Base {
 	}
 
 
+	/**
+	 * Get the known visible assignments for the current user. If the outlineNodeID is
+	 * ommitted then ALL the assignments are returned.
+	 *
+	 * @param {string} outlineNodeID Optional. The outlineNode NTIID you wish to scope to.
+	 *
+	 * @return {array} An array of Assignments.
+	 */
 	getAssignments (outlineNodeID) {
 		let v = this.visibleAssignments;
-		let node = this.tables.getNode(outlineNodeID);
-		return nodeToNTIIDs(node).reduce((agg, id) =>
-			v[id] ? (agg || []).concat(v[id]) : agg, null);
+		let node = outlineNodeID && this.tables.getNode(outlineNodeID);
+		let nodeIdsToInclude = node ? nodeToNTIIDs(node) : Object.keys(v);
+
+		return nodeIdsToInclude.reduce((agg, id) =>
+			v[id] ? agg.concat(v[id]) : agg, []);
 	}
 
 
