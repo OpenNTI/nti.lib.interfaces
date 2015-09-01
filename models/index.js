@@ -392,7 +392,13 @@ const PARSERS = {
 
 
 function getType (o) {
-	return o.MimeType || o.mimeType || o.Class;
+	let type = o.MimeType || o.mimeType;
+	if (!type) {
+		type = o.Class;
+		if (type) {
+			console.error('Object does not have a MimeType and has fallen back to Class name resolve: ' + type, o);		}
+	}
+	return type;
 }
 
 
