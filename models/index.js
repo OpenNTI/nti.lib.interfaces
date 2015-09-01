@@ -396,7 +396,8 @@ function getType (o) {
 	if (!type) {
 		type = o.Class;
 		if (type) {
-			console.error('Object does not have a MimeType and has fallen back to Class name resolve: ' + type, o);		}
+			console.error('Object does not have a MimeType and has fallen back to Class name resolve: ' + type, o);
+		}
 	}
 	return type;
 }
