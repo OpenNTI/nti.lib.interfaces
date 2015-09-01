@@ -46,19 +46,18 @@ export default class Collection extends Base {
 	constructor (service, parent, assignments, assessments, tables) {
 		super(service, parent);
 
-		const process = (v, k, o) => o[k] = Array.isArray(v) ? this[parse](v) : v;
+		const process = (k, v, o) => o[k] = Array.isArray(v) ? this[parse](v) : v;
+		const consume = (obj, dict) => Object.keys(dict)
+											.filter(x => x !== 'href')
+											.forEach(key => process(key, dict[key], obj));
 
 		this.tables = tables;
 
 		let a =	this.visibleAssignments = {};
-		for(let key of Object.keys(assignments)) {
-			process(assignments[key], key, a);
-		}
+		consume(a, assignments);
 
 		let b = this.notAssignments = {};
-		for(let key of Object.keys(assessments)) {
-			process(assessments[key], key, b);
-		}
+		consume(b, assessments);
 	}
 
 
