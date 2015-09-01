@@ -53,6 +53,7 @@ import CourseAdministrativeRole from './courses/AdministrativeRole';
 import CourseEnrollment from './courses/Enrollment';
 import CourseEnrollmentOptions from './courses/EnrollmentOptions';
 import CourseEnrollmentOption from './courses/EnrollmentOption';
+import CourseEnrollmentOptionOZone from './courses/EnrollmentOptionOZone';
 import CourseEnrollmentOption5Minute from './courses/EnrollmentOption5Minute';
 import CourseEnrollmentOptionPurchase from './courses/EnrollmentOptionPurchase';
 import CourseSharingScopes from './courses/SharingScopes';
@@ -193,6 +194,7 @@ const PARSERS = {
 
 	'courseware.enrollmentoption': CourseEnrollmentOption,
 	'courseware.openenrollmentoption': 'courseware.enrollmentoption',
+	'courseware.ozoneenrollmentoption': CourseEnrollmentOptionOZone,
 	'courseware.fiveminuteenrollmentoption': CourseEnrollmentOption5Minute,
 	'courseware.storeenrollmentoption': CourseEnrollmentOptionPurchase,
 
