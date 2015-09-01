@@ -74,6 +74,9 @@ export default class EntityStore extends EventEmitter {
 		let snapshot = this[DATA].slice();
 		let {length} = snapshot;
 		let index = 0;
+
+		snapshot = snapshot.sort((a, b) => ((a && a.displayName) || '').localeCompare((b && b.displayName) || ''));
+
 		return {
 
 			next () {
