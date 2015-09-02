@@ -160,11 +160,14 @@ const PARSERS = {
 	'openbadges.badge': 'badge',
 	'openbadges.issuer': BadgeIssuer,
 
-	'ContentPackage': ContentPackage,
-	'ContentPackageBundle': ContentBundle,
-	'CourseInstanceSharingScopes': CourseSharingScopes,
+	'contentpackage': ContentPackage,
+	'contentpackagebundle': ContentBundle,
+	'courseinstancesharingscopes': CourseSharingScopes,
 
-	'CourseRecursiveStreamBucket': CourseRecursiveStreamBucket,
+	'ContentPackage': 'contentpackage',
+	'ContentPackageBundle': 'contentpackagebundle',
+	'CourseInstanceSharingScopes': 'courseinstancesharingscopes',
+
 
 	'mediasource': MediaSource,
 	'videosource': MediaSource,
@@ -189,6 +192,9 @@ const PARSERS = {
 	'courses.catalogentry': CourseCatalogEntry,
 	'courses.courseinstance': CourseInstance,
 	'courses.courseenrollment': CourseEnrollment,
+
+	'courseware.courserecursivestreambucket': CourseRecursiveStreamBucket,
+	'CourseRecursiveStreamBucket': 'courseware.courserecursivestreambucket',
 
 	'courseware.enrollmentoptions': CourseEnrollmentOptions,
 
