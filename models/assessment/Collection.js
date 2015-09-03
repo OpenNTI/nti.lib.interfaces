@@ -232,8 +232,8 @@ export default class Collection extends Base {
 	}
 
 
-	isAssignment (outlineNodeID, assessmentId) {
-		let maybe = this.getAssignment(outlineNodeID, assessmentId);
+	isAssignment (assessmentId, outlineNodeID) {
+		let maybe = this.getAssignment(assessmentId, outlineNodeID);
 		if (maybe) {
 			return true;
 		}
@@ -243,7 +243,7 @@ export default class Collection extends Base {
 	}
 
 
-	getAssignment (outlineNodeID, assignmentId) {
+	getAssignment (assignmentId, outlineNodeID) {
 		let maybe = this.getAssignments(outlineNodeID);
 		return maybe && find(maybe, assignmentId);
 	}
