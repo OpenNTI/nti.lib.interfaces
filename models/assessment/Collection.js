@@ -144,7 +144,42 @@ export default class Collection extends Base {
 	}
 
 
-	[ORDER_BY_LESSON] () {}
+	[ORDER_BY_LESSON] (filter) {
+		const {visibleAssignments: assignments} = this;
+		const keys = Object.keys(assignments);
+
+		let groups = {};
+
+		const getGroup = (node, index, key) => {
+			groups[key] = groups[key] || {label: (node || {}).label || 'Unknown', index, items: []};
+			return groups[key];
+		};
+
+
+
+		return this.parent().getOutline()
+			.then(outline => outline.getFlattenedList())
+			.then(list => {
+				let nodes = {}, i = 0;
+				for (let node of list) {
+					nodes[node.getID()] = {index: i++, node};
+				}
+
+				for (let key of keys) {
+					let {node, index = -1} = nodes[key] || {};
+
+					for (let assignment of assignments[key]) {
+
+						if (!filter || filter(assignment)) {
+							let group = getGroup(node, index, key);
+							group.items.push(assignment);
+						}
+					}
+				}
+
+				return Object.values(groups).sort((a, b) => a.index - b.index);
+			});
+	}
 
 
 	/**
