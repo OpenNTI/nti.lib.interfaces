@@ -9,7 +9,7 @@ const ONLY_COMMUNITIES = x => x.isCommunity;
 
 
 function cleanData (data) {
-	let {accepting=[], following=[], ignoring=[]} = data;
+	let {accepting = [], following = [], ignoring = []} = data;
 	delete data.accepting;
 	delete data.following;
 	delete data.ignoring;
