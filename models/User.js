@@ -125,7 +125,7 @@ export default class User extends Entity {
 
 			Object.assign(store, {
 
-				postToActivity (body, title = '-') {
+				postToActivity (body, title = '-', shareWith = null) {
 					let {href} = service.getCollection('Blog', Username) || {};
 
 					if (!href) {
@@ -137,8 +137,27 @@ export default class User extends Entity {
 						title,
 						body
 					})
-					.then(blogEntry => blogEntry.postToLink('publish')
-												.then(()=> blogEntry))
+
+					.then(blogEntry => {
+						let next = Promise.resolve();
+						if (shareWith) {
+							let others = shareWith.filter(x => !x.publish);
+
+							if (others.length !== shareWith.length) {
+								next = blogEntry.postToLink('publish');
+							}
+
+							if (others.length > 0) {
+								next = next
+									.then(()=> blogEntry.save({sharedWith: others}));
+							}
+
+
+						}
+
+						return next.then(()=> blogEntry);
+					})
+
 					.then(x => this.insert(x));
 				}
 
