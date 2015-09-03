@@ -201,7 +201,7 @@ export default class Collection extends Base {
 	}
 }
 
-Object.assign(Collection, {
+Object.assign(Collection.prototype, {
 	ORDER_BY_COMPLETION,
 	ORDER_BY_DUE_DATE,
 	ORDER_BY_LESSON
