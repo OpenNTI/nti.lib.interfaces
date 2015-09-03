@@ -150,8 +150,13 @@ export default class Collection extends Base {
 
 		let groups = {};
 
-		const getGroup = (node, index, key) => {
-			groups[key] = groups[key] || {label: (node || {}).label || 'Unknown', index, items: []};
+		const getGroup = (node, sortBy, key) => {
+			groups[key] = groups[key] || {
+				label: (node || {}).label || 'Unknown',
+				sortBy,
+				items: []
+			};
+
 			return groups[key];
 		};
 
@@ -177,7 +182,7 @@ export default class Collection extends Base {
 					}
 				}
 
-				return Object.values(groups).sort((a, b) => a.index - b.index);
+				return Object.values(groups).sort((a, b) => a.sortBy - b.sortBy);
 			});
 	}
 
