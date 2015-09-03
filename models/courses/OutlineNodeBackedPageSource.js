@@ -14,7 +14,7 @@ export default class OutlineNodeBackedPageSource extends Base {
 		this.current = node;
 
 		try {
-			this.pagesInRange = flatten(root).filter(suppressed);
+			this.pagesInRange = root.getFlattenedList().filter(suppressed);
 		}
 		catch(e) {
 			console.error(e.stack || e.message || e);
@@ -44,11 +44,4 @@ export default class OutlineNodeBackedPageSource extends Base {
 
 function suppressed (node) {
 	return node && node.href;
-}
-
-function flatten (node) {
-	const fn = flatten.fnLoop ||
-		(flatten.fnLoop = (a, n)=> a.concat(flatten(n)));
-
-	return [node].concat(node.contents.reduce(fn, []));
 }

@@ -84,4 +84,16 @@ export default class Outline extends Base {
 		}
 		return root[cache];
 	}
+
+
+	getFlattenedList () {
+		function flatten (node) {
+			const fn = flatten.fnLoop ||
+				(flatten.fnLoop = (a, n)=> a.concat(flatten(n)));
+
+			return [node].concat(node.contents.reduce(fn, []));
+		}
+
+		return flatten(this);
+	}
 }
