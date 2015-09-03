@@ -11,6 +11,9 @@ import {
 	Parser as parse
 } from '../../CommonSymbols';
 
+const ORDER_BY_COMPLETION = Symbol('ORDER_BY_COMPLETION');
+const ORDER_BY_DUE_DATE = Symbol('ORDER_BY_DUE_DATE');
+const ORDER_BY_LESSON = Symbol('ORDER_BY_LESSON');
 
 function find (list, id) {
 	return list.reduce((found, item) =>
@@ -26,6 +29,11 @@ function nodeToNTIIDs (node) {
 			node.children.reduce((a, b) =>
 				a.concat(nodeToNTIIDs(b)), []));
 }
+
+
+const toNumeric = o => o ? o.getTime() : 0;
+const normalize = o => o === 0 ? 0 : o / Math.abs(o);
+
 
 export default class Collection extends Base {
 
@@ -58,6 +66,95 @@ export default class Collection extends Base {
 
 		let b = this.notAssignments = {};
 		consume(b, assessments);
+	}
+
+
+	sortComparatorDueDate (a, b) { //eslint-disable-line
+		let aD = toNumeric(a.getDueDate());
+		let bD = toNumeric(b.getDueDate());
+		return normalize(aD - bD);
+	}
+
+
+	sortComparatorTitle (a, b) {
+		return (a.title || '').localeCompare(b.title);
+	}
+
+
+	sortComparatorComplete (a, b) {
+		const v = o => o.hasLink('History') ? 1 : -1;
+		return v(a) - v(b);
+	}
+
+
+	[ORDER_BY_COMPLETION] (filter) {
+		//The return value of getAssignments is volatile, and can be manipulated without worry.
+		const all = this.getAssignments()
+			//pre-sort by title so when we group, they'll already be in order with in the groups.
+			.sort(this.sortComparatorTitle);
+
+		const groups = [
+			{label: 'Incomplete', items: []},
+			{label: 'Complete', items: []}
+		];
+
+		let [incomplete, complete] = groups;
+
+		for (let assignment of all) {
+			let group = (assignment.hasLink('History')) ? complete : incomplete;
+			if (!filter || filter(assignment)) {
+				group.items.push(assignment);
+			}
+		}
+
+		return groups;
+	}
+
+
+	[ORDER_BY_DUE_DATE] (filter) {
+		//The return value of getAssignments is volatile, and can be manipulated without worry.
+		const all = this.getAssignments()
+			//pre-sort by title so when we group, they'll already be in order with in the groups.
+			.sort(this.sortComparatorTitle);
+
+		let groups = {};
+
+		const getGroup = a => {
+			let key = (new Date(a.getDueDate())).setHours(0, 0, 0);
+			groups[key] = groups[key] || {label: new Date(key), items: []};
+			return groups[key];
+		};
+
+		for (let assignment of all) {
+			if (!filter || filter(assignment)) {
+				let group = getGroup(assignment);
+				group.items.push(assignment);
+			}
+		}
+
+		return Object.values(groups).sort((a, b) => a.label - b.label);
+	}
+
+
+	[ORDER_BY_LESSON] () {}
+
+
+	/**
+	 * Returns assignments grouped by a particular ordering.
+	 *
+	 * @param {enum}   order   One of the ORDER_BY_* static constants on this class.
+	 * @param {string} search  A search filter string
+	 *
+	 * @return {Promise} A promise that will fulfill with the collection ordered by the requested type.
+	 */
+	getAssignmentsBy (order, search) {
+		const searchFn = a => (a.title || '').toLowerCase().indexOf(search.toLowerCase()) >= 0;
+
+		try {
+			return Promise.resolve(this[order](search && searchFn));
+		} catch (e) {
+			return Promise.reject('Bad Arguments');
+		}
 	}
 
 
@@ -103,3 +200,9 @@ export default class Collection extends Base {
 		return maybe && find(maybe, assignmentId);
 	}
 }
+
+Object.assign(Collection, {
+	ORDER_BY_COMPLETION,
+	ORDER_BY_DUE_DATE,
+	ORDER_BY_LESSON
+});
