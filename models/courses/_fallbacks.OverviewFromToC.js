@@ -37,7 +37,7 @@ const MIME_PARSER = {
 	'application/vnd.nextthought.content': getRelatedWorkProps,
 	'application/vnd.nextthought.externallink': getRelatedWorkProps,
 	'application/vnd.nextthought.relatedworkref': getRelatedWorkProps,
-	//'application/vnd.nextthought.naquestionset': getAssessment,
+	'application/vnd.nextthought.assignment': getAssessment,
 	'application/vnd.nextthought.naquestionset': getAssessment,
 	'application/vnd.nextthought.nanosubmitassignment': getAssessment
 };
@@ -79,12 +79,11 @@ function getRelatedWorkProps (node) {
 }
 
 
-function getAssessment (node, fallbackMime, outlineNode) {
+function getAssessment (node, MimeType) {
 	let ntiid = node.get('target-ntiid');
-	let assignment = outlineNode.getAssignment(ntiid);
 
 	return {
-		MimeType: assignment ? 'application/vnd.nextthought.assignment' : fallbackMime,
+		MimeType,
 		'question-count': node.get('question-count'),
 		'Target-NTIID': ntiid
 	};

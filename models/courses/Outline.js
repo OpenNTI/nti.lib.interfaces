@@ -27,21 +27,9 @@ export default class Outline extends Base {
 		}
 
 		else if (!promise) {
-			let assignments = this.parent()
-				.getAssignments()
-					//do not let failing assignment loads prevent getting the outline
-					.catch(er=> console.error(er.stack || er.message || er));
-
-			let contents = this.fetchLinkParsed('contents');
-
-			promise = Promise.all([assignments, contents])
-				.then(requests=> {
-					[assignments, contents] = requests;
-					Object.assign(this, {
-						assignments,
-						contents
-					});
-
+			promise = this.fetchLinkParsed('contents')
+				.then(contents => {
+					Object.assign(this, { contents });
 					delete this[OUTLINE_CONTENT_CACHE];
 					return this;
 				});
@@ -95,26 +83,5 @@ export default class Outline extends Base {
 			root[cache] = new PageSource(root, this.root);
 		}
 		return root[cache];
-	}
-
-
-	isAssignment (outlineNodeId, assessmentId) {
-		let collection = this.assignments;
-		return collection && collection.isAssignment(outlineNodeId, assessmentId);
-	}
-
-
-	getAssignment (outlineNodeId, assignmentId) {
-		let collection = this.assignments;
-		return collection && collection.getAssignment(outlineNodeId, assignmentId);
-	}
-
-
-	getAssignments () {
-		let collection = this.assignments;
-		if (collection) {
-			return collection.getAssignments(this.getID());
-		}
-		return [];
 	}
 }

@@ -79,21 +79,6 @@ export default class OutlineNode extends Outline {
 	get isSection () {}
 
 
-	isAssignment (assessmentId) {
-		return this.root.isAssignment(this.getID(), assessmentId);
-	}
-
-
-	getAssignment (assignmentId) {
-		return this.root.getAssignment(this.getID(), assignmentId);
-	}
-
-
-	getAssignments () {
-		return this.root.getAssignments();
-	}
-
-
 	getContent () {
 		let link = 'overview-content';
 		let getContent = this.hasLink(link) ?
