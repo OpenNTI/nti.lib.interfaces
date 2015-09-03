@@ -120,8 +120,16 @@ export default class Collection extends Base {
 		let groups = {};
 
 		const getGroup = a => {
-			let key = (new Date(a.getDueDate())).setHours(0, 0, 0);
-			groups[key] = groups[key] || {label: new Date(key), items: []};
+			let due = a.getDueDate();
+			let key = (new Date(due)).setHours(0, 0, 0);
+			let sortBy = new Date(key);
+
+			groups[key] = groups[key] || {
+				sortBy,
+				label: due == null ? '' : sortBy,
+				items: []
+			};
+
 			return groups[key];
 		};
 
@@ -132,7 +140,7 @@ export default class Collection extends Base {
 			}
 		}
 
-		return Object.values(groups).sort((a, b) => a.label - b.label);
+		return Object.values(groups).sort((a, b) => a.sortBy - b.sortBy);
 	}
 
 
