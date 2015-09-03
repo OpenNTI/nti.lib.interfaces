@@ -176,7 +176,6 @@ export default class Instance extends Base {
 
 
 	getOutline () {
-		let outline = this.Outline;
 		if (!this[OutlineCache]) {
 			//We have to wait for the CCE to load to know if its in preview mode or not.
 			this[OutlineCache] = this.waitForPending().then(()=>
@@ -184,7 +183,7 @@ export default class Instance extends Base {
 					this.CatalogEntry.Preview ?
 						Promise.reject('Preview') :
 						//not preview, Load contents...
-						outline.get());
+						this.Outline.getContent());
 		}
 		return this[OutlineCache];
 	}

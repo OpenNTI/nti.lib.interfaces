@@ -19,7 +19,7 @@ export default class Outline extends Base {
 	}
 
 
-	get () {
+	getContent () {
 		let promise = this[OUTLINE_CONTENT_CACHE];
 
 		if (this.contents) {
