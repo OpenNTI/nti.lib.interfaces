@@ -10,7 +10,8 @@ import Stream from '../../stores/Stream';
 import emptyFunction from '../../utils/empty-function';
 import binDiscussions from '../../utils/forums-bin-discussions';
 
-import AssessmentCollection from '../assessment/Collection';
+import AssessmentCollectionStudentView from '../assessment/CollectionStudentView';
+import AssessmentCollectionInstructorView from '../assessment/CollectionInstructorView';
 
 const NOT_DEFINED = {reason: 'Not defined'};
 const EMPTY_CATALOG_ENTRY = {getAuthorLine: emptyFunction};
@@ -38,6 +39,11 @@ export default class Instance extends Base {
 		} catch (e) {
 			console.warn('There was a problem resolving the CatalogEntry! %o', e.stack || e.message || e);
 		}
+	}
+
+
+	get isAdministrative () {
+		return (this.parent() || {}).isAdministrative || false;
 	}
 
 
@@ -87,28 +93,44 @@ export default class Instance extends Base {
 
 
 	getAssignments () {
-		let key = Symbol.for('GetAssignmentsRequest');
+		const KEY = Symbol.for('GetAssignmentsRequest');
+		const parent = this.parent();
+		const getLink = rel => (parent && parent.getLink(rel)) || this.getLink(rel);
+		const {isAdministrative} = this;
+
+		if (!parent || !parent.isEnrollment) {
+			console.warn('Potentially Wrong CourseInstance reference');
+		}
+
 
 		let i = this[Service];
-		let p = this[key];
-
-
-		// A/B sets... Assignments are the Universe-Set minus the B set.
-		// The A set is the assignments you can see.
-		let A = this.getLink('AssignmentsByOutlineNode');
-		let B = this.getLink('NonAssignmentAssessmentItemsByOutlineNode');
+		let p = this[KEY];
 
 		if (!this.shouldShowAssignments()) {
 			return Promise.reject('No Assignments');
 		}
 
 		if (!p) {
-			p = this[key] = Promise.all([
-				i.get(A), //AssignmentsByOutlineNode
-				i.get(B), //NonAssignmentAssessmentItemsByOutlineNode
-				this.ContentPackageBundle.getTablesOfContents()
+			// A/B sets... Assignments are the Universe-Set minus the B set.
+			// The A set is the assignments you can see.
+			let A = this.fetchLink('AssignmentsByOutlineNode');
+			let B = this.fetchLink('NonAssignmentAssessmentItemsByOutlineNode');
+
+			let historyLink = getLink('AssignmentHistory');
+			let gradebookLink = this.getLink('GradeBook');
+
+			p = this[KEY] = Promise.all([
+				A, //AssignmentsByOutlineNode
+				B, //NonAssignmentAssessmentItemsByOutlineNode
+				this.ContentPackageBundle.getTablesOfContents(),
+
+				historyLink,
+
+				gradebookLink
 			])
-				.then(a => new AssessmentCollection(i, this, ...a));
+				.then(a => isAdministrative
+					? new AssessmentCollectionInstructorView(i, this, ...a)
+					: new AssessmentCollectionStudentView(i, this, ...a));
 		}
 
 		return p;
@@ -238,7 +260,7 @@ export default class Instance extends Base {
 
 	getSharingSuggestions () {
 		const parent = this.parent();
-		if (parent && !parent.isEnrollment) {
+		if (!parent || !parent.isEnrollment) {
 			console.warn('Potentially Wrong CourseInstance reference');
 		}
 
