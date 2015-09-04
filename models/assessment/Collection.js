@@ -72,6 +72,32 @@ export default class Collection extends Base {
 
 		let b = this.notAssignments = {};
 		consume(b, assessments);
+
+		let outlineMap = {};
+		let assessmentToOutlineMap = {};
+		for (let collection of [assignments, assessments]) {
+			let {Outline: map = {}} = collection;
+			//The map is OutlineNodeID => [AssessmentIDs]
+			//We want the map to be complete from both assessment collections.
+			//Maintain the order, of the individual types, but because these
+			//are split by assignments/non-assignments, there will be an
+			//implicit strata. Assignments, then Self-Assessments.
+			//This will not likely be exposed, so I'm not going to stress it.
+			for (let nodeId of Object.keys(map)) {
+				let list = outlineMap[nodeId] || [];
+				//concat the two lists: (the existing and current collection's map)
+				outlineMap[nodeId] = [...list, ...map[nodeId]];
+
+				for (let assessmentId of map[nodeId]) {
+					if (assessmentToOutlineMap[assessmentId]) {
+						console.warn('Duplicated key!', assessmentToOutlineMap[assessmentId], nodeId);
+					}
+					assessmentToOutlineMap[assessmentId] = nodeId;
+				}
+			}
+		}
+
+		Object.assign(this, {outlineMap, assessmentToOutlineMap});
 	}
 
 
@@ -151,7 +177,10 @@ export default class Collection extends Base {
 
 
 	[ORDER_BY_LESSON] (filter) {
-		const {visibleAssignments: assignments} = this;
+		const {
+			assessmentToOutlineMap: mapping,
+			visibleAssignments: {items: assignments}
+		} = this;
 		const keys = Object.keys(assignments);
 
 		let groups = {};
@@ -177,15 +206,16 @@ export default class Collection extends Base {
 				}
 
 				for (let key of keys) {
-					let {node, index = -1} = nodes[key] || {};
+					let nodeId = mapping[key];
+					let {node, index = -1} = nodes[nodeId] || {};
 
-					for (let assignment of assignments[key]) {
+					let assignment = assignments[key];
 
-						if (!filter || filter(assignment)) {
-							let group = getGroup(node, index, key);
-							group.items.push(assignment);
-						}
+					if (!filter || filter(assignment)) {
+						let group = getGroup(node, index, key);
+						group.items.push(assignment);
 					}
+
 				}
 
 				return Object.values(groups).sort((a, b) => a.sortBy - b.sortBy);
