@@ -142,17 +142,8 @@ export default class User extends Entity {
 						let next = Promise.resolve();
 						if (shareWith) {
 							let others = shareWith.filter(x => !x.publish);
-
-							if (others.length !== shareWith.length) {
-								next = blogEntry.postToLink('publish');
-							}
-
-							if (others.length > 0) {
-								next = next
-									.then(()=> blogEntry.save({sharedWith: others}));
-							}
-
-
+							let publish = others.length !== shareWith.length;
+							next = blogEntry.share(publish, others);
 						}
 
 						return next.then(()=> blogEntry);
