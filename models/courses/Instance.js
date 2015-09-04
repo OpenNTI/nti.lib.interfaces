@@ -122,7 +122,6 @@ export default class Instance extends Base {
 			p = this[KEY] = Promise.all([
 				A, //AssignmentsByOutlineNode
 				B, //NonAssignmentAssessmentItemsByOutlineNode
-				this.ContentPackageBundle.getTablesOfContents(),
 
 				historyLink,
 

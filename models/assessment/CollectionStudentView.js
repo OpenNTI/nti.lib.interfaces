@@ -13,12 +13,11 @@ export default class CollectionStudentView extends Base {
 	 * @param  {object} assessments          Object of keys where each key is an
 	 *                                       array of Non-Assignment assessments
 	 *                                       visible to the current user.
-	 * @param  {array} tables                Tables of Contents
 	 * @param  {string} historyLink          URL to fetch assignment histories.
 	 * @returns {void}
 	 */
-	constructor (service, parent, assignments, assessments, tables, historyLink) {
-		super(service, parent, assignments, assessments, tables);
+	constructor (service, parent, assignments, assessments, historyLink) {
+		super(service, parent, assignments, assessments);
 		Object.assign(this, {historyLink});
 	}
 

@@ -48,18 +48,15 @@ export default class Collection extends Base {
 	 * @param  {object} assessments          Object of keys where each key is an
 	 *                                       array of Non-Assignment assessments
 	 *                                       visible to the current user.
-	 * @param  {array} tables                Tables of Contents
 	 * @returns {void}
 	 */
-	constructor (service, parent, assignments, assessments, tables) {
+	constructor (service, parent, assignments, assessments) {
 		super(service, parent);
 
 		const process = (k, v, o) => o[k] = Array.isArray(v) ? this[parse](v) : v;
 		const consume = (obj, dict) => Object.keys(dict)
 											.filter(x => x !== 'href')
 											.forEach(key => process(key, dict[key], obj));
-
-		this.tables = tables;
 
 		let a =	this.visibleAssignments = {};
 		consume(a, assignments);
