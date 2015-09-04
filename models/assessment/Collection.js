@@ -22,18 +22,25 @@ function find (list, id) {
 		), null);
 }
 
+function fillMaps (v, o) {
+	let items = o.items = (o.items || {});
 
-function nodeToNTIIDs (node) {
-	let id = node.get('ntiid');
-	return (id ? [id] : []).concat(
-			node.children.reduce((a, b) =>
-				a.concat(nodeToNTIIDs(b)), []));
+	for (let i of (Array.isArray(v) ? v : [v])) {
+		let key = i.getID();
+
+		if (items[key]) {
+			console.warn('Duplicate Item', items[key], i);
+		}
+
+		items[key] = i;
+	}
 }
 
 
 const toNumeric = o => o ? o.getTime() : 0;
 const normalize = o => o === 0 ? 0 : o / Math.abs(o);
 
+const GetListFrom = Symbol();
 
 export default class Collection extends Base {
 
@@ -53,9 +60,11 @@ export default class Collection extends Base {
 	constructor (service, parent, assignments, assessments) {
 		super(service, parent);
 
-		const process = (k, v, o) => o[k] = Array.isArray(v) ? this[parse](v) : v;
-		const consume = (obj, dict) => Object.keys(dict)
-											.filter(x => x !== 'href')
+		const process = (k, v, o) => fillMaps(o[k] = this[parse](v), o);
+		const getItems = o => o.Items || o;
+		const isIgnoredKey = RegExp.prototype.test.bind(/^href$/i);
+		const consume = (obj, dict) => Object.keys(getItems(dict))
+											.filter(x => !isIgnoredKey(x))
 											.forEach(key => process(key, dict[key], obj));
 
 		let a =	this.visibleAssignments = {};
@@ -203,46 +212,62 @@ export default class Collection extends Base {
 	}
 
 
+
+	getAssessmentIdsUnder (outlineNodeId) {
+		let {outlineMap: map = {}} = this;
+		return map[outlineNodeId];
+	}
+
+
+	[GetListFrom] (dict, outlineNodeId) {
+		let {items} = dict;
+		let ids = outlineNodeId && (this.getAssessmentIdsUnder(outlineNodeId) || []);
+		let nodeIdsToInclude = ids || Object.keys(items);
+
+		return nodeIdsToInclude.reduce((agg, id) =>
+			items[id] ? agg.concat(items[id]) : agg, []);
+	}
+
+
 	/**
-	 * Get the known visible assignments for the current user. If the outlineNodeID is
+	 * Get the known visible assignments for the current user. If the outlineNodeId is
 	 * ommitted then ALL the assignments are returned.
 	 *
-	 * @param {string} outlineNodeID Optional. The outlineNode NTIID you wish to scope to.
+	 * @param {string} outlineNodeId Optional. The outlineNode NTIID you wish to scope to.
 	 *
 	 * @return {array} An array of Assignments.
 	 */
-	getAssignments (outlineNodeID) {
-		let v = this.visibleAssignments;
-		let node = outlineNodeID && this.tables.getNode(outlineNodeID);
-		let nodeIdsToInclude = node ? nodeToNTIIDs(node) : Object.keys(v);
-
-		return nodeIdsToInclude.reduce((agg, id) =>
-			v[id] ? agg.concat(v[id]) : agg, []);
+	getAssignments (outlineNodeId) {
+		return this[GetListFrom](this.visibleAssignments, outlineNodeId);
 	}
 
 
-	getAssessments (outlineNodeID) {
-		let v = this.notAssignments;
-		let node = this.tables.getNode(outlineNodeID);
-		return nodeToNTIIDs(node).reduce((agg, id) =>
-			v[id] ? (agg || []).concat(v[id]) : agg, null);
+	/**
+	 * Get the known visible assessments for the current user. If the outlineNodeId is
+	 * ommitted then ALL the assessments are returned.
+	 *
+	 * @param {string} outlineNodeId Optional. The outlineNode NTIID you wish to scope to.
+	 *
+	 * @return {array} An array of Assessments.
+	 */
+	getAssessments (outlineNodeId) {
+		return this[GetListFrom](this.notAssignments, outlineNodeId);
 	}
 
 
-	isAssignment (assessmentId, outlineNodeID) {
-		let maybe = this.getAssignment(assessmentId, outlineNodeID);
-		if (maybe) {
+	getAssignment (assignmentId) {
+		const {visibleAssignments: {items: map}} = this;
+		return map[assignmentId];
+	}
+
+
+	isAssignment (assessmentId) {
+		if(this.getAssignment(assessmentId)) {
 			return true;
 		}
 
-		maybe = this.getAssessments(outlineNodeID);
+		let maybe = this.getAssessments();
 		return !maybe || !find(maybe, assessmentId);
-	}
-
-
-	getAssignment (assignmentId, outlineNodeID) {
-		let maybe = this.getAssignments(outlineNodeID);
-		return maybe && find(maybe, assignmentId);
 	}
 }
 
