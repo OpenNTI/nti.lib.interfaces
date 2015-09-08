@@ -424,17 +424,10 @@ export default class ServiceDocument {
 	/**
 	 * Resolve an entity.
 	 *
-	 * @deprecated
 	 * @param {string} entityId ID to resolve to entity.
 	 *
 	 * @return {Promise} Promise for an Entity.
 	 */
-	resolveUser (entityId) {
-		console.warn('Deprecated. Call resolveEntity');
-		return this.resolveEntity(entityId);
-	}
-
-
 	resolveEntity (entityId) {
 		let key = 'entity-respository';
 		let cache = this.getDataCache();
