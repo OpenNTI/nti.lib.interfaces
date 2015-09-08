@@ -72,7 +72,7 @@ export default class Collection extends Base {
 		const isIgnoredKey = RegExp.prototype.test.bind(/^href$/i);
 		const consume = (obj, dict) => Object.keys(getItems(dict))
 											.filter(x => !isIgnoredKey(x))
-											.forEach(key => process(key, dict[key], obj));
+											.forEach(key => process(key, getItems(dict)[key], obj));
 
 		let a =	this.visibleAssignments = {};
 		consume(a, assignments);
