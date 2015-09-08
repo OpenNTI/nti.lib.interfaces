@@ -66,7 +66,10 @@ export default class PageInfo extends Base {
 
 
 	getSharingPreferences () {
-		return Promise.resolve(this.sharingPreference);
+		const {sharingPreference: pref} = this;
+		return pref
+			? pref.waitForPending().then(()=> pref)
+			: Promise.resolve(void 0);
 	}
 
 
