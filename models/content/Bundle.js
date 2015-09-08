@@ -113,7 +113,7 @@ export default class Bundle extends Base {
 	}
 
 
-	getDefaultShareWithValue (/*preferences*/) {
-		return [];
+	getDefaultShareWithValue (preferences) {
+		return preferences ? preferences.value : [];
 	}
 }

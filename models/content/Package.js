@@ -28,8 +28,8 @@ export default class Package extends Base {
 	}
 
 
-	getDefaultShareWithValue (/*preferences*/) {
-		return [];
+	getDefaultShareWithValue (preferences) {
+		return preferences ? preferences.value : [];
 	}
 
 
