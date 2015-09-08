@@ -6,6 +6,7 @@ import Community from './Community';
 import FriendsList from './FriendsList';
 import DynamicFriendsList from './DynamicFriendsList';
 import PageInfo from './PageInfo';
+import SharingPagePreference from './SharingPagePreference';
 import Change from './Change';
 import Badge from './Badge';
 import BadgeIssuer from './BadgeIssuer';
@@ -156,6 +157,8 @@ const PARSERS = {
 	'friendslist': FriendsList,
 	'dynamicfriendslist': DynamicFriendsList,
 	'pageinfo': PageInfo,
+	'sharingpagepreference': SharingPagePreference,
+	'SharingPagePreference': 'sharingpagepreference',
 	'badge': Badge,
 	'openbadges.badge': 'badge',
 	'openbadges.issuer': BadgeIssuer,
