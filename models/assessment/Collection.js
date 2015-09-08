@@ -22,14 +22,21 @@ function find (list, id) {
 		), null);
 }
 
-function fillMaps (v, o) {
+function fillMaps (oValue, o, oKey) {
 	let items = o.items = (o.items || {});
+	let update = (v, old) => oValue[oValue.indexOf(old)] = v;
 
-	for (let i of (Array.isArray(v) ? v : [v])) {
+	if (!Array.isArray(oValue)) {
+		oValue = [oValue];
+		update = v => o[oKey] = v;
+	}
+
+	for (let i of oValue) {
 		let key = i.getID();
 
 		if (items[key]) {
-			console.warn('Duplicate Item', items[key], i);
+			update(items[key], i);
+			continue;
 		}
 
 		items[key] = i;
@@ -60,7 +67,7 @@ export default class Collection extends Base {
 	constructor (service, parent, assignments, assessments) {
 		super(service, parent);
 
-		const process = (k, v, o) => fillMaps(o[k] = this[parse](v), o);
+		const process = (k, v, o) => fillMaps(o[k] = this[parse](v), o, k);
 		const getItems = o => o.Items || o;
 		const isIgnoredKey = RegExp.prototype.test.bind(/^href$/i);
 		const consume = (obj, dict) => Object.keys(getItems(dict))
