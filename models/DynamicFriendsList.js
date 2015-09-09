@@ -1,6 +1,6 @@
 import FriendsList from './FriendsList';
 import Stream from '../stores/Stream';
-import {Service} from '../CommonSymbols';
+import { Service, DELETED } from '../CommonSymbols';
 
 export default class DynamicFriendsList extends FriendsList {
 	constructor (service, parent, data) {
@@ -36,6 +36,7 @@ export default class DynamicFriendsList extends FriendsList {
 				delete this.isMember;
 				Object.defineProperty(this, 'isMember', {value: false});
 			})
+			.then(() => this.onChange(DELETED, this.getID()))
 			.then(() => this.onChange('membership'));
 	}
 

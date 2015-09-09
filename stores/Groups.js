@@ -53,7 +53,7 @@ export default class Groups extends EntityStore {
 			let item = data.splice(index, 1)[0];//remove it;
 
 			item.removeListener('change', this.onChange);
-			console.debug('Removed deleted group: %o', item);
+			console.debug('Removed deleted/left group: %o', item);
 		}
 
 		this.emit('change', this);
