@@ -37,12 +37,16 @@ export default {
 					//If value yet, get/build the Objects URL...
 					|| this[Service].getObjectURL(this.getID());
 
+
+		let submitted = this.onSuccessfulSubmission.bind(this) || ()=> {};
+
 		if (!target) {
 			return Promise.reject('No URL');
 		}
 
 		return this[Service]
 			.post(target, this.getData())
-			.then(data => this[parse](data));
+			.then(data => this[parse](data))
+			.then(data => Promise.resolve(submitted(data)).then(()=> data));
 	}
 };

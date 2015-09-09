@@ -83,8 +83,8 @@ export default class Assignment extends Base {
 
 
 	getSubmission () {
-		let model = this.getModel('assessment.assignmentsubmission');
-		let s = model.build(this[Service], {
+		let Model = this.getModel('assessment.assignmentsubmission');
+		let s = new Model(this[Service], this, {
 			assignmentId: this.getID(),
 			parts: []
 		});

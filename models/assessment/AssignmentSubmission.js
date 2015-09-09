@@ -7,10 +7,6 @@ import Submission from '../mixins/Submission';
 
 export default class AssignmentSubmission extends Base {
 
-	static build (service, data) {
-		return new this(service, null, data);
-	}
-
 	constructor (service, parent, data) {
 		super(service, parent, data, Submission, {
 			MimeType: 'application/vnd.nextthought.assessment.assignmentsubmission'
@@ -48,5 +44,15 @@ export default class AssignmentSubmission extends Base {
 
 		return this.parts.reduce((sum, q, i) =>
 			sum + q.countUnansweredQuestions(assignment.parts[i].question_set), 0);
+	}
+
+
+	onSuccessfulSubmission () {
+		let p = this.parent();
+		if (!p || !p.getSubmission) {
+			return;
+		}
+
+		return p.refresh();
 	}
 }
