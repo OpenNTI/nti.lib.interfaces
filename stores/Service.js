@@ -242,27 +242,12 @@ export default class ServiceDocument {
 
 	getPageInfo (ntiid) {
 		let mime = 'application/vnd.nextthought.pageinfo+json';
-		let key = 'pageinfo-' + ntiid;
-		let cache = this.getDataCache();
-		let cached = cache.get(key);
-		let result;
 
 		if (!isNTIID(ntiid)) {
 			return Promise.reject('Bad NTIID');
 		}
 
-		if (cached) {
-			result = Promise.resolve(cached);
-		}
-		else {
-			result = this.getObject(ntiid, mime)
-				.then(json => {
-					cache.set(key, json);
-					return json;
-				});
-		}
-
-		return result.then(info=>parse(this, this, info));
+		return this.getObject(ntiid, mime).then(info=>parse(this, this, info));
 	}
 
 
