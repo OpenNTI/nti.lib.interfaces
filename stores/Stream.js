@@ -108,7 +108,7 @@ export default class Stream extends EventEmitter {
 
 			let query = this.options ? QueryString.stringify(this.options) : '';
 
-			let next = this.next || (this.href + (this.href.indexOf('?') === -1 ? '?' : '&') + query);
+			let next = this.next || this.href && (this.href + (this.href.indexOf('?') === -1 ? '?' : '&') + query);
 
 			let loads = this.load(next)
 				.then(v => this[DATA] = this[DATA].concat(v))
