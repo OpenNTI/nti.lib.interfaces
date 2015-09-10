@@ -37,8 +37,10 @@ export default {
 					//If value yet, get/build the Objects URL...
 					|| this[Service].getObjectURL(this.getID());
 
-
-		let submitted = this.onSuccessfulSubmission.bind(this) || ()=> {};
+		const fn = 'onSuccessfulSubmission';
+		let submitted = this[fn]
+			? x => this[fn](x)
+			: ()=> {};
 
 		if (!target) {
 			return Promise.reject('No URL');
