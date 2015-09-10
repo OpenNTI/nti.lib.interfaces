@@ -82,3 +82,5 @@ export default class Entity extends Base {
 		);
 	}
 }
+
+Entity.trackInstances = true;
