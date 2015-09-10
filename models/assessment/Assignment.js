@@ -5,10 +5,45 @@ import {
 	DateFields,
 	Parser as parse
 } from '../../CommonSymbols';
+import parseDate from '../../utils/parse-date';
+
+const isNewer = (x, i) => parseDate(x['Last Modified']) > i.getLastModified();
 
 const ActiveSavePointPost = Symbol('ActiveSavePointPost');
 
 export default class Assignment extends Base {
+	static parse (service, parent, data) {
+		const map = this.instances = (this.instances || {});
+		const {NTIID: id} = data;
+
+		//#smh
+		//When Assessment Parts parse, they look to the parent for the
+		//content root to fill in the "relative" URLs to assets they link to :/
+		//Content from the server referencing Images or any other assets should be absolute.
+		//But...they're not. #fml
+		parent = parent.getContentRoot ? parent : null;
+
+		let inst = map[id];
+		if (!inst) {
+			inst = map[id] = new Assignment(service, parent, data);
+		}
+
+		//Refresh if: 
+		//newer data
+		else if (isNewer(data, inst)
+			//or has a proper parent. (see gripe above)
+			|| (parent && !inst.parent())) {
+
+			if (parent && inst.parent() !== parent) {
+				inst[ReParent](parent);
+			}
+
+			inst.refresh(data);
+		}
+
+		return inst;
+	}
+
 	constructor (service, parent, data) {
 		super(service, parent, data, {isSubmittable: true});
 
