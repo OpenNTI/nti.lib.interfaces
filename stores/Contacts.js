@@ -269,6 +269,7 @@ export default class Contacts extends EventEmitter {
 		const NO_QUERY = Symbol();
 		const ABORTED = Symbol();
 
+		const isUser = x => x.isUser;
 		const notInContacts = user => !this.contains(user);
 		const byDisplayName = (a, b) => a.displayName.localeCompare(b.displayName);
 
@@ -299,7 +300,7 @@ export default class Contacts extends EventEmitter {
 
 				req.then(data => data.Items)
 					.then(parseList)
-					.then(list => list.filter(notInContacts).sort(byDisplayName))
+					.then(list => list.filter(x => isUser(x) && notInContacts(x)).sort(byDisplayName))
 					.then(done, fail)
 					.then(clean, clean);
 
