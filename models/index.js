@@ -428,9 +428,7 @@ export function getModelByType (type) {
 
 
 	if (p && !p.parse) {
-		p.parse = (p.prototype.constructor.length > 2) ?
-			ConstructorFuncWithParent :
-			ConstructorFunc;
+		p.parse = ConstructorFunc;
 	}
 
 	return p;
@@ -496,14 +494,35 @@ export function parseListFn (scope, service) {
 }
 
 
-//Default Constructors
-function ConstructorFuncWithParent (service, parent, data) {
-	return (this.prototype.isPrototypeOf(data)) ? data :
-	new this(service, parent, data);
+
+//Basic managed-instance tracker (invoke with .call or .apply!!)
+function trackInstances (data, make) {
+	const MOD_TIME = 'Last Modified';
+	const map = this.instances = (this.instances || {});
+	const {NTIID: id} = data;
+
+	let inst = map[id];
+	if (!inst) {
+		inst = map[id] = make();
+	}
+	else if (data[MOD_TIME] > inst[MOD_TIME]) {
+		inst.refresh(data);
+	}
+
+	return inst;
 }
 
 
-function ConstructorFunc (service, data) {
-	return (this.prototype.isPrototypeOf(data)) ? data :
-	new this(service, data);
+
+//Default Constructor
+function ConstructorFunc (service, parent, data) {
+	const Ctor = this;
+	const useParent = this.prototype.constructor.length > 2;
+	const make = ()=> useParent ? new Ctor(service, parent, data) : new Ctor(service, data);
+
+	return (this.prototype.isPrototypeOf(data))
+		? data
+		: this.trackInstances
+			? trackInstances.call(this, data, make)
+			: make();
 }
