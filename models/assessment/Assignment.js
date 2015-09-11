@@ -51,7 +51,8 @@ export default class Assignment extends Base {
 
 		this[parse]('parts', []);
 
-		this[RENAME]('GradeAssignmentSubmittedCount', 'submittedCount');
+		this[RENAME]('GradeAssignmentSubmittedCount', 'submittedCount'); //number of submissions with grades?
+		//this[RENAME]('GradeSubmittedCount', 'gradeCount'); // just number of grades?
 	}
 
 	[DateFields] () {
