@@ -185,10 +185,10 @@ export default class Collection extends Base {
 
 	[ORDER_BY_LESSON] (filter) {
 		const {
-			assessmentToOutlineMap: mapping,
+			assessmentToOutlineMap,
 			visibleAssignments: {items: assignments}
 		} = this;
-		const keys = Object.keys(assignments);
+		const assignmentIds = Object.keys(assignments);
 
 		let groups = {};
 
@@ -212,14 +212,14 @@ export default class Collection extends Base {
 					nodes[node.getID()] = {index: i++, node};
 				}
 
-				for (let key of keys) {
-					let nodeId = mapping[key];
-					let {node, index = -1} = nodes[nodeId] || {};
+				for (let assignmentId of assignmentIds) {
+					let outlineNodeId = assessmentToOutlineMap[assignmentId];
+					let {node = null, index = -1} = nodes[outlineNodeId] || {};
 
-					let assignment = assignments[key];
+					let assignment = assignments[assignmentId];
 
 					if (!filter || filter(assignment)) {
-						let group = getGroup(node, index, key);
+						let group = getGroup(node, index, assignmentId);
 						group.items.push(assignment);
 					}
 
