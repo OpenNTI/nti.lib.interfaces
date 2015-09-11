@@ -221,7 +221,7 @@ export default class Collection extends Base {
 					let assignment = assignments[assignmentId];
 
 					if (!filter || filter(assignment)) {
-						let group = getGroup(node, index, assignmentId);
+						let group = getGroup(node, index, outlineNodeId);
 						group.items.push(assignment);
 					}
 
