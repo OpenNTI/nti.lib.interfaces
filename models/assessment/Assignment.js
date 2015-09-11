@@ -98,6 +98,9 @@ export default class Assignment extends Base {
 		return date > this.getDueDate();
 	}
 
+	getAssignedDate () {
+		return this.getAvailableForSubmissionBeginning();
+	}
 
 	getDueDate () {
 		return this.getAvailableForSubmissionEnding();
