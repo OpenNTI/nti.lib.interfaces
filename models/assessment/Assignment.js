@@ -7,6 +7,8 @@ import {
 } from '../../CommonSymbols';
 import parseDate from '../../utils/parse-date';
 
+const RENAME = Symbol.for('TakeOver');
+
 const isNewer = (x, i) => parseDate(x['Last Modified']) > i.getLastModified();
 
 const ActiveSavePointPost = Symbol('ActiveSavePointPost');
@@ -28,7 +30,7 @@ export default class Assignment extends Base {
 			inst = map[id] = new Assignment(service, parent, data);
 		}
 
-		//Refresh if: 
+		//Refresh if:
 		//newer data
 		else if (isNewer(data, inst)
 			//or has a proper parent. (see gripe above)
@@ -48,6 +50,8 @@ export default class Assignment extends Base {
 		super(service, parent, data, {isSubmittable: true});
 
 		this[parse]('parts', []);
+
+		this[RENAME]('GradeAssignmentSubmittedCount', 'submittedCount');
 	}
 
 	[DateFields] () {

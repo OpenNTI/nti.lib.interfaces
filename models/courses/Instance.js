@@ -17,6 +17,7 @@ const NOT_DEFINED = {reason: 'Not defined'};
 const EMPTY_CATALOG_ENTRY = {getAuthorLine: emptyFunction};
 
 const OutlineCache = Symbol('OutlineCache');
+const RENAME = Symbol.for('TakeOver');
 
 export default class Instance extends Base {
 	constructor (service, parent, data) {
@@ -31,6 +32,10 @@ export default class Instance extends Base {
 		this[parse]('Outline');
 		this[parse]('SharingScopes');
 		this[parse]('ParentSharingScopes');
+
+		this[RENAME]('TotalEnrolledCount', 'enrolledTotalCount');
+		this[RENAME]('TotalLegacyOpenEnrolledCount', 'enrolledOpenlyTotalCount');
+		this[RENAME]('TotalLegacyForCreditEnrolledCount', 'enrolledForCreditTotalCount');
 
 		delete this.LegacyScopes;
 
