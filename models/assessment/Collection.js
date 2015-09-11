@@ -208,8 +208,10 @@ export default class Collection extends Base {
 			.then(outline => outline.getFlattenedList())
 			.then(list => {
 				let nodes = {}, i = 0;
-				for (let node of list) {
-					nodes[node.getID()] = {index: i++, node};
+				for (let n of list) {
+					if (n.getID()) {
+						nodes[n.getID()] = {index: i++, node: n};
+					}
 				}
 
 				for (let assignmentId of assignmentIds) {
