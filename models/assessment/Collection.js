@@ -216,7 +216,7 @@ export default class Collection extends Base {
 
 				for (let assignmentId of assignmentIds) {
 					let outlineNodeId = assessmentToOutlineMap[assignmentId];
-					let {node = null, index = -1} = nodes[outlineNodeId] || {};
+					let {node = null, index = Number.MAX_VALUE} = nodes[outlineNodeId] || {};
 
 					let assignment = assignments[assignmentId];
 
