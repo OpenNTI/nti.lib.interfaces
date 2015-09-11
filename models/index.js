@@ -123,6 +123,7 @@ import ForumsForum from './forums/Forum';
 import ForumsPost from './forums/Post';
 import ForumsComment from './forums/Comment';
 import BlogEntry from './forums/BlogEntry';
+import Blog from './forums/Blog';
 
 import AssessmentEvent from './analytics/AssessmentEvent';
 import AssignmentEvent from './analytics/AssignmentEvent';
@@ -347,7 +348,7 @@ const PARSERS = {
 	'forums.dflheadlinepost': 'forums.post',
 	'forums.dfltopic': 'forums.topic',
 
-	'forums.personalblog': 'forums.board',
+	'forums.personalblog': Blog,
 	'forums.personalblogentry': BlogEntry,
 	'forums.personalblogentrypost': 'forums.post',
 
