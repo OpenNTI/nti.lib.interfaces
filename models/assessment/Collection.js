@@ -185,14 +185,15 @@ export default class Collection extends Base {
 
 	[ORDER_BY_LESSON] (filter) {
 		const {
-			assessmentToOutlineMap,
+			outlineMap,
 			visibleAssignments: {items: assignments}
 		} = this;
-		const assignmentIds = Object.keys(assignments);
+
+		let ungrouped = Object.assign({}, assignments);
 
 		let groups = {};
 
-		const getGroup = (node, sortBy, key) => {
+		function getGroup (node, sortBy, key) {
 			groups[key] = groups[key] || {
 				label: (node || {}).label || 'Unknown',
 				sortBy,
@@ -200,31 +201,42 @@ export default class Collection extends Base {
 			};
 
 			return groups[key];
-		};
+		}
 
+		function bin (assignmentId, order, node) {
+			let binId = (node && node.getID()) || 'Unknown';
+			let assignment = assignments[assignmentId];
+
+			delete ungrouped[assignmentId];
+
+			if (!filter || filter(assignment)) {
+				let group = getGroup(node, order, binId);
+				group.items.push(assignment);
+			}
+		}
+
+
+		const ungroupedByName = (a, b) =>
+			this.sortComparatorTitle(ungrouped[a], ungrouped[b]);
 
 
 		return this.parent().getOutline()
 			.then(outline => outline.getFlattenedList())
 			.then(list => {
-				let nodes = {}, i = 0;
-				for (let n of list) {
-					if (n.getID()) {
-						nodes[n.getID()] = {index: i++, node: n};
+
+				list.forEach((n, index) => {
+
+					let assessments = outlineMap[n.getID()];
+					if (!assessments) { return; }
+
+					for (let assessmentId of assessments) {
+						bin(assessmentId, index, n);
 					}
-				}
+				});
 
-				for (let assignmentId of assignmentIds) {
-					let outlineNodeId = assessmentToOutlineMap[assignmentId];
-					let {node = null, index = Number.MAX_VALUE} = nodes[outlineNodeId] || {};
-
-					let assignment = assignments[assignmentId];
-
-					if (!filter || filter(assignment)) {
-						let group = getGroup(node, index, outlineNodeId);
-						group.items.push(assignment);
-					}
-
+				//show the ungrouped (the inner-bin order is lost here...resort by name)
+				for (let assignmentId of Object.keys(ungrouped).sort(ungroupedByName)) {
+					bin(assignmentId, Number.MAX_VALUE);
 				}
 
 				return Object.values(groups).sort((a, b) => a.sortBy - b.sortBy);
