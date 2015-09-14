@@ -1,6 +1,6 @@
 import isFunction from '../../utils/isfunction';
 import * as MimeTypes from './MimeTypes';
-import guid from '../../utils/guid';
+import uuid from 'node-uuid';
 import HeartbeatManager from './Heartbeat';
 
 const StartTime = Symbol('StartTime');
@@ -26,7 +26,7 @@ export default class BasicEvent {
 		this[StartTime] = startTime;
 		this[Finished] = false;
 		this[MinDuration] = minimumDurationSeconds;
-		this[ID] = guid();
+		this[ID] = uuid.v4();
 		this[Halted] = false;
 
 		Object.assign(this, {

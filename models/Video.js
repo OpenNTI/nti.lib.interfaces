@@ -1,4 +1,5 @@
-import isEmpty from '../utils/isempty';
+import isEmpty from 'fbjs/lib/isEmpty';
+
 import MediaSource from './MediaSource';
 import UserDataStore from '../stores/UserData';
 import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA} from '../constants';

@@ -7,7 +7,7 @@ import fallbackOverview from './_fallbacks.OverviewFromToC';
 
 import applyIf from '../../utils/applyif';
 import {encodeForURI} from '../../utils/ntiids';
-import emptyFunction from '../../utils/empty-function';
+import emptyFunction from 'fbjs/lib/emptyFunction';
 
 let emptyCourseObject = {getID: emptyFunction};
 

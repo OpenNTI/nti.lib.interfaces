@@ -1,6 +1,6 @@
 import {MODEL_INSTANCE_CACHE_KEY} from '../CommonSymbols';
 
-import identity from '../utils/identity';
+import emptyFunction from 'fbjs/lib/emptyFunction';
 
 import User from './User';
 import Community from './Community';
@@ -162,7 +162,7 @@ import StripePricedPurchasable from './store/StripePricedPurchasable';
 import StripePurchaseItem from './store/StripePurchaseItem';
 import StripePurchaseOrder from './store/StripePurchaseOrder';
 
-const ignored = {parse: identity};
+const ignored = {parse: emptyFunction.thatReturnsArgument};
 
 const PARSERS = {
 	'link': ignored,
@@ -520,7 +520,7 @@ export function parseListFn (scope, service) {
 		return o;
 	};
 
-	return list=>list.map(m).filter(identity);
+	return list=>list.map(m).filter(emptyFunction.thatReturnsArgument);
 }
 
 

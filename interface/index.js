@@ -7,8 +7,9 @@ import logger from '../logger';
 import DataCache from '../utils/datacache';
 import MimeComparator from '../utils/MimeComparator';
 
+import isEmpty from 'fbjs/lib/isEmpty';
+
 import isBrowser from '../utils/browser';
-import isEmpty from '../utils/isempty';
 import getLink, {asMap as getLinksAsMap} from '../utils/getlink';
 
 import chain from '../utils/function-chain';

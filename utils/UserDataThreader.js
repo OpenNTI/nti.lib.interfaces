@@ -1,4 +1,4 @@
-import isEmpty from './isempty';
+import isEmpty from 'fbjs/lib/isEmpty';
 
 export const PARENT = Symbol('Thread Links:Parent');
 export const CHILDREN = Symbol('Thread Links:Children');

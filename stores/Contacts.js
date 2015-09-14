@@ -7,7 +7,7 @@ import browser from '../utils/browser';
 import Pendability from '../models/mixins/Pendability';
 
 import mixin from '../utils/mixin';
-import guid from '../utils/guid';
+import uuid from 'node-uuid';
 // import getLink from '../utils/getlink';
 
 import {parse, parseListFn} from '../models';
@@ -32,7 +32,7 @@ function generateID (name, context) {
 	//when manipulating the list by the object url (say for deletion).
 	name = (name + '').replace(/@@|@\(/ig, '');
 	name = name.replace(/[^0-9A-Z\-@\+\._]/ig, '');
-	return name + '-' + context.getID() + '_' + guid();
+	return name + '-' + context.getID() + '_' + uuid.v4();
 }
 
 

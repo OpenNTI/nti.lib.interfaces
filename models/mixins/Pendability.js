@@ -1,4 +1,4 @@
-import noop from '../../utils/empty-function';
+import noop from 'fbjs/lib/emptyFunction';
 import waitFor from '../../utils/waitfor';
 import { Pending } from '../../CommonSymbols';
 

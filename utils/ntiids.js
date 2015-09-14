@@ -1,4 +1,4 @@
-import isEmpty from './isempty';
+import isEmpty from 'fbjs/lib/isEmpty';
 
 
 const COMMON_PREFIX = 'tag:nextthought.com,2011-10:';

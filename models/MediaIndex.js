@@ -2,7 +2,8 @@ import {parse} from './';
 import PageSourceModel from './MediaIndexBackedPageSource';
 import {Service, Parent} from '../CommonSymbols';
 
-import isEmpty from '../utils/isempty';
+import isEmpty from 'fbjs/lib/isEmpty';
+
 import urlJoin from '../utils/urljoin';
 
 const PageSource = Symbol('PageSource');

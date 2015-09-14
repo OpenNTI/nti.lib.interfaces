@@ -8,7 +8,7 @@ import {MEDIA_BY_OUTLINE_NODE} from '../../constants';
 
 import Url from 'url';
 
-import emptyFunction from '../../utils/empty-function';
+import emptyFunction from 'fbjs/lib/emptyFunction';
 import binDiscussions from '../../utils/forums-bin-discussions';
 
 import AssessmentCollectionStudentView from '../assessment/assignment/CollectionStudentView';
