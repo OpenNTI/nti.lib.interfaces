@@ -261,8 +261,9 @@ export default class Contacts extends EventEmitter {
 	}
 
 
-	search (query) {
+	search (query, allowAnyEntityType = false) {
 		let service = this[Service];
+		let {context: appUser} = this;
 		let parseList = parseListFn(this, service);
 		let fetch = service.getUserSearchURL(query);
 
@@ -270,7 +271,7 @@ export default class Contacts extends EventEmitter {
 		const ABORTED = Symbol();
 
 		const isUser = x => x.isUser;
-		const notInContacts = user => !this.contains(user);
+		const notInContacts = user => !this.contains(user) && user.getID() !== appUser.getID();
 		const byDisplayName = (a, b) => a.displayName.localeCompare(b.displayName);
 
 		const clean = () => {
@@ -281,6 +282,8 @@ export default class Contacts extends EventEmitter {
 				prev.abort();
 			}
 		};
+
+		const resultFilter = x => (allowAnyEntityType || isUser(x)) && notInContacts(x);
 
 		clean();
 
@@ -300,7 +303,7 @@ export default class Contacts extends EventEmitter {
 
 				req.then(data => data.Items)
 					.then(parseList)
-					.then(list => list.filter(x => isUser(x) && notInContacts(x)).sort(byDisplayName))
+					.then(list => list.filter(resultFilter).sort(byDisplayName))
 					.then(done, fail)
 					.then(clean, clean);
 
