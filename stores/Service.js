@@ -329,8 +329,15 @@ export default class ServiceDocument {
 
 
 	getAppUsername () {
-		let {Title} = this.getUserWorkspace() || {};
-		return Title;
+		let {appUsername} = this;
+
+		if (!appUsername) {
+			let {Title} = this.getUserWorkspace() || {};
+			appUsername = Title;
+			Object.assign(this, {appUsername});
+		}
+
+		return appUsername;
 	}
 
 
@@ -340,6 +347,10 @@ export default class ServiceDocument {
 		let cached = cache.get(key);
 		let result;
 		let url;
+
+		if (this[AppUser]) {
+			return Promise.resolve(this[AppUser]);
+		}
 
 		if (cached) {
 			result = Promise.resolve(cached);
