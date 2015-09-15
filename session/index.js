@@ -5,6 +5,8 @@ import logger from '../logger';
 
 import {ServiceStash} from '../CommonSymbols';
 
+const TOS = Symbol();
+
 export default class SessionManager {
 	constructor (server) {
 		if (!server) {
@@ -47,8 +49,15 @@ export default class SessionManager {
 			.then(service => {
 				context[ServiceStash] = service;
 
+				//Check ToS
+				const user = service.getAppUserSync();
+				if (user.acceptTermsOfService) {
+					logger.error('User needs to accept terms of service.');
+					return Promise.reject(TOS);
+				}
+
 				return Promise.all([
-					service.waitForPending(),
+					service,
 					//Catalog.load(service),
 					Library.load(service, 'Main')//,
 					//Notifications.load(service)
@@ -62,6 +71,7 @@ export default class SessionManager {
 		let start = Date.now();
 		let url = req.originalUrl || req.url;
 		let basepath = this.config.basepath || '/';
+		let scope = url.substr(0, basepath.length) === basepath ? url.substr(basepath.length) : url;
 
 		req.responseHeaders = {};
 
@@ -103,12 +113,23 @@ export default class SessionManager {
 					return next(reason);
 				}
 
-				if (!/\/(api|login)/.test(req.url)) {
+				if (reason === TOS) {
+					if(/^tos/.test(scope)) {
+						return next();
+					}
+
+					logger.debug('SESSION [TOS NEEDS ACCEPTING] %s %s REDIRECT %stos/ (User: %s, %dms)',
+						req.method, url, basepath, req.username, Date.now() - start);
+
+					res.redirect(basepath + 'tos/?return=' + encodeURIComponent(req.originalUrl));
+				}
+				else if (!/^(api|login)/.test(scope)) {
 					logger.debug('SESSION [INVALID] %s %s REDIRECT %slogin/ (User: annonymous, %dms)',
 						req.method, url, basepath, Date.now() - start);
 
 					res.redirect(basepath + 'login/?return=' + encodeURIComponent(req.originalUrl));
-				} else {
+				}
+				else {
 					logger.error('SESSION [ERROR] %s %s (%s, %dms)',
 						req.method, url, reason, Date.now() - start);
 
