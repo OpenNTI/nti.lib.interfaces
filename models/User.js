@@ -4,6 +4,7 @@ import Achievements from '../stores/Achievements';
 import Stream from '../stores/Stream';
 
 import { Service, Parser as parse } from '../CommonSymbols';
+import {TOS_NOT_ACCEPTED} from '../constants';
 
 const ONLY_COMMUNITIES = x => x.isCommunity;
 
@@ -38,6 +39,14 @@ export default class User extends Entity {
 
 		this[parse]('positions');
 		this[parse]('education');
+
+		if (this.isAppUser && this.hasLink(TOS_NOT_ACCEPTED)) {
+
+			Object.assign(this, {
+				acceptTermsOfService: () => service.delete(this.getLink(TOS_NOT_ACCEPTED))
+			});
+
+		}
 	}
 
 
