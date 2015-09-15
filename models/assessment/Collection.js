@@ -209,7 +209,7 @@ export default class Collection extends Base {
 
 			delete ungrouped[assignmentId];
 
-			if (!filter || filter(assignment)) {
+			if (assignment && (!filter || filter(assignment))) {
 				let group = getGroup(node, order, binId);
 				group.items.push(assignment);
 			}
