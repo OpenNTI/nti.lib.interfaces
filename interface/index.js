@@ -16,6 +16,7 @@ import chain from '../utils/function-chain';
 import Service from '../stores/Service';
 
 import {Pending, SiteName} from '../CommonSymbols';
+import {TOS_NOT_ACCEPTED} from '../constants';
 
 const btoa = global.bota || base64decode;
 const jsonContent = /(application|json)/i;
@@ -348,7 +349,7 @@ export default class DataServerInterface {
 	deleteTOS (context) {
 		return this.ping(context)
 			.then(result => {
-				let link = result.links['content.initial_tos_page'];
+				let link = result.links[TOS_NOT_ACCEPTED];
 				if (link) {
 					return this.delete(link, context);
 				}
