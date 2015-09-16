@@ -30,8 +30,6 @@ import mixin from '../utils/mixin';
 import waitFor from '../utils/waitfor';
 import wait from '../utils/wait';
 
-let inflight = {};
-
 import {Context, Server, Service, Pending} from '../CommonSymbols';
 
 const ENROLLMENT = Symbol('enrollment');
@@ -52,6 +50,7 @@ export default class ServiceDocument {
 		this[Service] = this; //So the parser can access it
 		this[Server] = server;
 		this[Context] = context;
+		this.inflightRequests = {};
 
 		mixin(this, Pendability);
 
@@ -160,6 +159,7 @@ export default class ServiceDocument {
 
 	get (url) {
 		let key = typeof url === 'string' ? url : JSON.stringify(url);
+		let {inflightRequests: inflight} = this;
 
 		if (inflight[key]) {
 			return inflight[key];
@@ -177,7 +177,7 @@ export default class ServiceDocument {
 
 		waitFor(p) //once the request finishes
 			.then(()=>wait(1000)) //wait one second before
-			.then(clean); //we remove the request's promise from the in-flight cache.
+			.then(clean, clean); //we remove the request's promise from the in-flight cache.
 
 		return p;
 	}
