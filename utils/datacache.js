@@ -15,11 +15,17 @@ export default class DataCache {
 	}
 
 
-	get (key) {
+	get (key, defaultValue, volatile) {
+		let {data} = this;
 		if (key == null) {
 			throw new Error('null key error');
 		}
-		return this.data[key];
+
+		if (!data[key] && (defaultValue != null || volatile)) {
+			this[volatile ? 'setVolatile' : 'set'](key, defaultValue);
+		}
+
+		return data[key];
 	}
 
 
@@ -28,7 +34,7 @@ export default class DataCache {
 			throw new Error('null key error');
 		}
 
-		let data = this.data;
+		let {data} = this;
 		if (typeof key === 'object') {
 			let o = key;
 			for (let i of Object.keys(o)) {

@@ -497,17 +497,21 @@ export function parseListFn (scope, service) {
 
 
 //Basic managed-instance tracker (invoke with .call or .apply!!)
-function trackInstances (data, make) {
+function trackInstances (service, data, make) {
+	const MODEL_INSTANCE_CACHE = '%%model.instances%%';
 	const MOD_TIME = 'Last Modified';
-	const map = this.instances = (this.instances || {});
+	const cache = service.getDataCache();
+	const map = cache.get(MODEL_INSTANCE_CACHE, {}, true);
 	const {NTIID: id} = data;
 
 	let inst = map[id];
 	if (!inst) {
 		inst = map[id] = make();
 	}
-	else if (data[MOD_TIME] > inst[MOD_TIME]) {
-		inst.refresh(data);
+	else {
+		if (data[MOD_TIME] > inst[MOD_TIME]) {
+			inst.refresh(data);
+		}
 	}
 
 	return inst;
@@ -524,6 +528,6 @@ function ConstructorFunc (service, parent, data) {
 	return (this.prototype.isPrototypeOf(data))
 		? data
 		: this.trackInstances
-			? trackInstances.call(this, data, make)
+			? trackInstances.call(this, service, data, make)
 			: make();
 }
