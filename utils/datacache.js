@@ -6,8 +6,12 @@ const CONTEXT_PROPERTY_NAME = Symbol.for(GLOBAL_PROPERTY_NAME);
 export default class DataCache {
 
 	constructor () {
-		this.data = global[GLOBAL_PROPERTY_NAME] || {};
-		delete global[GLOBAL_PROPERTY_NAME];
+		if (isBrowser) {
+			this.data = global[GLOBAL_PROPERTY_NAME] || {};
+			delete global[GLOBAL_PROPERTY_NAME];
+		}
+
+		this.data = {};
 	}
 
 
@@ -91,7 +95,7 @@ export default class DataCache {
 
 			cache = this.globalInstance;
 			if (!cache) {
-				cache = this.globalInstance = new this();
+				cache = this.globalInstance = new DataCache();
 			}
 		}
 
