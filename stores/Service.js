@@ -342,36 +342,14 @@ export default class ServiceDocument {
 
 
 	getAppUser () {
-		let key = 'appuser';
-		let cache = this.getDataCache();
-		let cached = cache.get(key);
-		let result;
-		let url;
-
 		if (this[AppUser]) {
 			return Promise.resolve(this[AppUser]);
 		}
 
-		if (cached) {
-			result = Promise.resolve(cached);
-		}
-		else {
-			url = this.getResolveAppUserURL();
-			if (url) {
-				result = this.get(url)
-					.then(json => {
-						cache.set(key, json);
-						return json;
-					});
-
-				cache.setVolatile(key, result);//if this is asked for again before we resolve, reuse this promise.
-
-			} else {
-				result = Promise.resolve(null);
-			}
-		}
-
-		return result.then(user=>parse(this[Service], this, user));
+		let url = this.getResolveAppUserURL();
+		return url
+			? this.get({url}).then(user=>parse(this[Service], this, user))
+			: Promise.resolve(null);
 	}
 
 
