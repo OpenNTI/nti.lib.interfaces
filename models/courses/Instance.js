@@ -27,6 +27,7 @@ export default class Instance extends Base {
 
 		bundle.on('change', this.onChange.bind(this));
 
+		this[parse]('GradeBook');
 		this[parse]('ParentDiscussions');
 		this[parse]('Discussions');
 		this[parse]('Outline');

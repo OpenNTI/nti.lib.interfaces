@@ -48,6 +48,7 @@ import Video from './Video';
 import VideoRef from './VideoRef';
 import VideoIndexBackedPageSource from './VideoIndexBackedPageSource';
 
+import CourseGradeBookShell from './courses/GradeBookShell';
 import CourseCatalogEntry from './courses/CatalogEntry';
 import CourseInstance from './courses/Instance';
 import CourseAdministrativeRole from './courses/AdministrativeRole';
@@ -163,6 +164,7 @@ const PARSERS = {
 	'badge': Badge,
 	'openbadges.badge': 'badge',
 	'openbadges.issuer': BadgeIssuer,
+	'gradebookshell': CourseGradeBookShell,
 
 	'contentpackage': ContentPackage,
 	'contentpackagebundle': ContentBundle,
