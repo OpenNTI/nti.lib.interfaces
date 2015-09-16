@@ -123,19 +123,14 @@ export default class Instance extends Base {
 			let B = this.fetchLink('NonAssignmentAssessmentItemsByOutlineNode');
 
 			let historyLink = getLink('AssignmentHistory');
-			let gradebookLink = this.getLink('GradeBook');
 
 			p = this[KEY] = Promise.all([
 				A, //AssignmentsByOutlineNode
-				B, //NonAssignmentAssessmentItemsByOutlineNode
-
-				historyLink,
-
-				gradebookLink
+				B //NonAssignmentAssessmentItemsByOutlineNode
 			])
 				.then(a => isAdministrative
-					? new AssessmentCollectionInstructorView(i, this, ...a)
-					: new AssessmentCollectionStudentView(i, this, ...a));
+					? new AssessmentCollectionInstructorView(i, this, ...a, this.GradeBook)
+					: new AssessmentCollectionStudentView(i, this, ...a, historyLink));
 		}
 
 		return p;
