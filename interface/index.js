@@ -92,6 +92,11 @@ export default class DataServerInterface {
 				opts.headers,
 				{'accept-encoding': ''}
 			);
+
+			delete opts.headers['content-length'];
+			delete opts.headers['content-type'];
+			delete opts.headers['referer'];
+
 		} else if (!isBrowser) {
 			throw new Error('Calling request w/o context!');
 		}
