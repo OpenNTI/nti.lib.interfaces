@@ -49,11 +49,12 @@ export default class Question extends Base {
 
 	getSubmission () {
 		let Model = this.getSubmissionModel();
+		let {parts} = this;
 		return Model.build(this[Service], {
 			ContainerId: this.containerId,
 			NTIID: this.getID(),
 			questionId: this.getID(),
-			parts: this.parts.map(()=>null)
+			parts: parts && parts.map(()=>null)
 		});
 	}
 
@@ -71,10 +72,11 @@ export default class Question extends Base {
 
 
 	isAnswered (questionSubmission) {
-		let expect = this.parts.length;
+		let items = this.parts || [];
+		let expect = items.length;
 		let {parts} = questionSubmission;
 
-		return this.parts.filter((p, i)=> p && p.isAnswered && p.isAnswered(parts[i])).length === expect;
+		return items.filter((p, i)=> p && p.isAnswered && p.isAnswered(parts[i])).length === expect;
 	}
 
 }

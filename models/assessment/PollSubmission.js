@@ -22,6 +22,6 @@ export default class PollSubmission extends QuestionSubmission {
 
 		if (this.isSubmitted()) { return false; }
 
-		return this.parts.filter(answered).length > 0;
+		return this.parts && this.parts.filter(answered).length > 0;
 	}
 }

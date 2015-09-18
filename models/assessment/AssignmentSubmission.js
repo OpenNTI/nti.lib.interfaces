@@ -25,24 +25,26 @@ export default class AssignmentSubmission extends Base {
 
 
 	getQuestion (id) {
-		return this.parts.reduce((found, p) =>
+		return (this.parts || []).reduce((found, p) =>
 			found || p.getQuestion(id), null);
 	}
 
 
 	getQuestions () {
-		return this.parts.reduce((list, p) =>
+		return (this.parts || []).reduce((list, p) =>
 			list.concat(p.getQuestions()), []);
 	}
 
 
 	countUnansweredQuestions (assignment) {
+		let parts = this.parts || [];
+
 		//Verify argument is an Assignment model
-		if (!assignment || !assignment.parts || assignment.parts.length !== this.parts.length) {
+		if (!assignment || !assignment.parts || assignment.parts.length !== parts.length) {
 			throw new Error('Invalid Argument');
 		}
 
-		return this.parts.reduce((sum, q, i) =>
+		return parts.reduce((sum, q, i) =>
 			sum + q.countUnansweredQuestions(assignment.parts[i].question_set), 0);
 	}
 

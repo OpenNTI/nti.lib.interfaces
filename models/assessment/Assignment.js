@@ -70,7 +70,7 @@ export default class Assignment extends Base {
 	 * @returns {boolean} true if the id was found, false otherwise.
 	 */
 	containsId (id) {
-		return this.parts.filter(p => p && p.containsId(id)).length > 0;
+		return (this.parts || []).filter(p => p && p.containsId(id)).length > 0;
 	}
 
 
@@ -108,19 +108,19 @@ export default class Assignment extends Base {
 
 
 	getQuestion (id) {
-		return this.parts.reduce((question, part) =>
+		return (this.parts || []).reduce((question, part) =>
 			question || part.getQuestion(id), null);
 	}
 
 
 	getQuestions () {
-		this.parts.reduce((list, part) =>
+		return (this.parts || []).reduce((list, part) =>
 			list.concat(part.getQuestions()), []);
 	}
 
 
 	getQuestionCount () {
-		return this.parts.reduce((agg, part) =>
+		return (this.parts || []).reduce((agg, part) =>
 			agg + part.getQuestionCount(), 0);
 	}
 

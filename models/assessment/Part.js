@@ -36,7 +36,9 @@ export default class Part extends Base {
 
 
 	getPartIndex () {
-		return this.parent().parts.indexOf(this);
+		let p = this.parent() || {};
+		let items = p.parts || [];
+		return items.indexOf(this);
 	}
 
 

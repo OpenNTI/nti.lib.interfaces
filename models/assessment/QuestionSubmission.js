@@ -33,7 +33,7 @@ export default class QuestionSubmission extends Base {
 
 	setPartValue (index, value) {
 		index = parseInt(index, 10);
-		if (index < 0 || index >= this.parts.length) {
+		if (index < 0 || index >= (this.parts || []).length) {
 			throw new Error('Index Out Of Bounds.');
 		}
 
@@ -55,6 +55,6 @@ export default class QuestionSubmission extends Base {
 
 		if (this.isSubmitted()) { return false; }
 
-		return this.parts.filter(answered).length > 0;
+		return (this.parts || []).filter(answered).length > 0;
 	}
 }
