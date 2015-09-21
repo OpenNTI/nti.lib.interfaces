@@ -11,4 +11,6 @@ export const REL_USER_GENERATED_DATA_SEARCH = 'UGDSearch';
 export const REL_USER_UNIFIED_SEARCH = 'UnifiedSearch';
 export const ROOT_NTIID = 'tag:nextthought.com,2011-10:Root';
 
+export const MEDIA_BY_OUTLINE_NODE = 'MediaByOutlineNode';
+
 export const TOS_NOT_ACCEPTED = 'content.initial_tos_page';

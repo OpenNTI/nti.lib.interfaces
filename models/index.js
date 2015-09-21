@@ -46,7 +46,6 @@ import ContentBundle from './content/Bundle';
 import MediaSource from './MediaSource';
 import Video from './Video';
 import VideoRef from './VideoRef';
-import VideoIndexBackedPageSource from './VideoIndexBackedPageSource';
 
 import CourseGradeBookShell from './courses/GradeBookShell';
 import CourseCatalogEntry from './courses/CatalogEntry';
@@ -182,8 +181,6 @@ const PARSERS = {
 	'ntivideoref': VideoRef,
 
 	'relatedworkref': RelatedWorkReference,
-
-	'videoindex-pagesource': VideoIndexBackedPageSource,
 
 	'analytics.externalresourceevent': ExternalResourceEvent,
 	'analytics.assessmentevent': AssessmentEvent,

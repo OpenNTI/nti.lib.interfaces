@@ -15,7 +15,7 @@ function buildRef (node) {
 }
 
 
-export default class VideoIndexBackedPageSource extends Base {
+export default class MediaIndexBackedPageSource extends Base {
 
 	constructor (index) {
 		super(index[Service], index);

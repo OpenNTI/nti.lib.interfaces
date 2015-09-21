@@ -4,6 +4,8 @@ import {
 	Parser as parse
 } from '../../CommonSymbols';
 
+import {MEDIA_BY_OUTLINE_NODE} from '../../constants';
+
 import Url from 'url';
 import Stream from '../../stores/Stream';
 
@@ -12,9 +14,12 @@ import binDiscussions from '../../utils/forums-bin-discussions';
 
 import AssessmentCollectionStudentView from '../assessment/CollectionStudentView';
 import AssessmentCollectionInstructorView from '../assessment/CollectionInstructorView';
+import MediaIndex from '../MediaIndex';
 
 const NOT_DEFINED = {reason: 'Not defined'};
 const EMPTY_CATALOG_ENTRY = {getAuthorLine: emptyFunction};
+
+const MEDIA_INDEX = Symbol('Media Index');
 
 const OutlineCache = Symbol('OutlineCache');
 const RENAME = Symbol.for('TakeOver');
@@ -45,6 +50,15 @@ export default class Instance extends Base {
 		} catch (e) {
 			console.warn('There was a problem resolving the CatalogEntry! %o', e.stack || e.message || e);
 		}
+	}
+
+	get root () {
+		//This needs to go away. fast.
+		//We're using this to prefix the RELATIVE hrefs in the Video Transcript data.
+		//We're doing something similar for Content in Questions (assets are relative coming back)
+		//All content given to the client in JSON form should have full hrefs. No Relative hrefs.
+		return this.ContentPackageBundle.packageRoot;
+		//Furthermore this breaks as soon as we have bundles with more than one package.
 	}
 
 
@@ -195,11 +209,27 @@ export default class Instance extends Base {
 	}
 
 
-	getVideoIndex () {
+	getMediaIndex () {
+		let promise = this[MEDIA_INDEX];
+		let MAX_AGE = 3600000; //One Hour
 
-		function combine (list) {
-			return !list || list.length === 0 ? null : list.reduce((a, b)=> a.combine(b));
+		if (!promise || promise.stale) {
+			let start = Date.now();
+
+			promise = this[MEDIA_INDEX] = this.fetchLink(MEDIA_BY_OUTLINE_NODE)
+				.then(x => MediaIndex.build(this[Service], this, x.ContainerOrder || [], x));
+
+			Object.defineProperty(promise, 'stale', {
+				enumerable: false,
+				get: () => (Date.now() - start) > MAX_AGE
+			});
 		}
+
+		return promise;
+	}
+
+
+	getVideoIndex () {
 
 		function getForNode (node, index, output) {
 			let id = node.getID();
@@ -216,11 +246,14 @@ export default class Instance extends Base {
 			}
 		}
 
+		if (this.hasLink(MEDIA_BY_OUTLINE_NODE)) {
+			return this.getMediaIndex()
+				.then(i => i.filter(x => x.isVideo));
+		}
+
 		return Promise.all([
 			this.getOutline(),
-			Promise.all(
-				this.ContentPackageBundle.map(pkg=>pkg.getVideoIndex()))
-					.then(indices => combine(indices))
+			this.ContentPackageBundle.getVideoIndex()
 		])
 			.then(outlineAndRawIndex => {
 				let [outline, index] = outlineAndRawIndex;
@@ -228,7 +261,7 @@ export default class Instance extends Base {
 
 				getForNode(outline, index, slices);
 
-				return combine(slices);
+				return MediaIndex.combine(slices);
 			});
 	}
 

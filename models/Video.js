@@ -11,8 +11,11 @@ const NO_TRANSCRIPT_LANG = 'No Transcript for the requested language.';
 
 export default class Video {
 	constructor (service, parent, data) {
-		this[Service] = service;
-		this[Parent] = parent;
+		Object.assign(this,{
+			[Service]: service,
+			[Parent]: parent,
+			isVideo: true
+		});
 
 		Object.assign(this, {
 			NO_TRANSCRIPT,

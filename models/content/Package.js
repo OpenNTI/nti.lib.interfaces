@@ -9,7 +9,7 @@ import urlJoin from '../../utils/urljoin';
 
 import assets from '../mixins/PresentationResources';
 
-import VideoIndex from '../VideoIndex';
+import MediaIndex from '../MediaIndex';
 import TablesOfContents from '../TablesOfContents';
 import ToC from '../XMLBasedTableOfContents';
 
@@ -46,7 +46,7 @@ export default class Package extends Base {
 
 
 	getDefaultAssetRoot () {
-		let root = this.root;
+		let {root} = this;
 
 		if (!root) {
 			console.error('No root for content package: ', this);
@@ -113,9 +113,9 @@ export default class Package extends Base {
 				.then(toc =>
 					Promise.resolve(toc)
 						.then(find)
-						.then(urlJoin.bind(this, this.root))
+						.then(path => urlJoin(this.root, path))
 						.then(get)
-						.then(VideoIndex.build.bind(VideoIndex, this[Service], this, toc)));
+						.then(data => MediaIndex.build(this[Service], this, toc, data)));
 		}
 
 		return promise;

@@ -82,7 +82,7 @@ export default class XMLBasedTableOfContents extends Base {
 	}
 
 
-	getSortPosition (id) {
+	indexOf (id) {
 		let node = this.getNode(id);
 		return (node && node.idx) || -1;
 	}

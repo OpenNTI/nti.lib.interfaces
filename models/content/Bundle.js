@@ -12,6 +12,7 @@ import forwardFunctions from '../../utils/function-forwarding';
 import assets from '../mixins/PresentationResources';
 
 import TablesOfContents from '../TablesOfContents';
+import MediaIndex from '../MediaIndex';
 
 export default class Bundle extends Base {
 	constructor (service, parent, data) {
@@ -41,6 +42,25 @@ export default class Bundle extends Base {
 			this.getAsset('thumb').then(setAndEmit(this, 'thumb')),
 			this.getAsset('background').then(setAndEmit(this, 'background'))
 			);
+	}
+
+
+	get packageRoot () {
+		let root = null;
+		let {ContentPackages: pks} = this;
+		let {length} = pks;
+
+		if (length > 1) {
+			console.warn(	'Ambiguous content root. By the time we see this, I hope we ' +
+							'have absolute paths for content references! Ex: transcripts' +
+							' in videos, images in question content, etc');
+		}
+
+		for (let i = 0; i < length && !root; i++ ) {
+			root = pks[i].root;
+		}
+
+		return root;
 	}
 
 
@@ -115,5 +135,11 @@ export default class Bundle extends Base {
 
 	getDefaultShareWithValue (preferences) {
 		return preferences ? preferences.value : [];
+	}
+
+
+	getVideoIndex () {
+		return Promise.all(this.map(pkg=>pkg.getVideoIndex()))
+				.then(indices => MediaIndex.combine(indices));
 	}
 }

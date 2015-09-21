@@ -1,5 +1,5 @@
-import Video from './Video';
-import PageSourceModel from './VideoIndexBackedPageSource';
+import {parse} from './';
+import PageSourceModel from './MediaIndexBackedPageSource';
 import {Service, Parent} from '../CommonSymbols';
 
 import isEmpty from '../utils/isempty';
@@ -10,17 +10,17 @@ const Order = Symbol('Order');
 const Data = Symbol('Data');
 const Containers = Symbol('Containers');
 
-const getVideo = (s, i, v) => v instanceof Video ? v : new Video(s, i, v);
+const getMedia = (s, i, v) => (v && v[Service]) ? v : parse(s, i, v);
 
-export default class VideoIndex {
+export default class MediaIndex {
 
 	static parse (service, parent, data, order, containers) {
 		console.error('Where ?');
-		return new VideoIndex(service, parent, data, order, containers);
+		return new MediaIndex(service, parent, data, order, containers);
 	}
 
 
-	static build (service, parent, toc, json) {
+	static build (service, parent, orderProvider, json) {
 		let keyOrder = [];
 		let root = parent.root;
 
@@ -30,12 +30,9 @@ export default class VideoIndex {
 			return o;
 		}
 
-		function tocOrder (a, b) {
-			// Since the <[topic|object] ntiid="..." is not guaranteed to be unique,
-			// this will just order by first occurance of any element that has an
-			// ntiid attribute with value of what is asked for (a & b)
-			let c = toc.getSortPosition(a),
-				d = toc.getSortPosition(b),
+		function order (a, b) {
+			let c = orderProvider.indexOf(a),
+				d = orderProvider.indexOf(b),
 				p = c > d;
 			return p ? 1 : -1;
 		}
@@ -44,7 +41,7 @@ export default class VideoIndex {
 		let keys = Object.keys(containers);
 
 		try {
-			keys.sort(tocOrder);
+			keys.sort(order);
 		} catch (e) {
 			console.warn('Potentially unsorted: %o', e.stack || e.message || e);
 		}
@@ -65,7 +62,12 @@ export default class VideoIndex {
 			}
 		}
 
-		return new VideoIndex(service, parent, vi, keyOrder, containers);
+		return new MediaIndex(service, parent, vi, keyOrder, containers);
+	}
+
+
+	static combine (list) {
+		return !list || list.length === 0 ? null : list.reduce((a, b)=> a.combine(b));
 	}
 
 
@@ -81,14 +83,20 @@ export default class VideoIndex {
 
 		for(let key in data) {
 			if (data.hasOwnProperty(key)) {
-				this[Data][key] = this.videoFrom(data[key], this);
+				this[Data][key] = this.mediaFrom(data[key], this);
 			}
 		}
 	}
 
 
 	videoFrom (data, parent) {
-		return getVideo(this[Service], parent, data);
+		console.warn('Deprecated: Use mediaFrom instead.');
+		return this.mediaFrom(data, parent);
+	}
+
+
+	mediaFrom (data, parent) {
+		return getMedia(this[Service], parent, data);
 	}
 
 
@@ -100,7 +108,7 @@ export default class VideoIndex {
 		let data = Object.assign({}, this[Data], that[Data]);
 		let containers = Object.assign({}, this[Containers], that[Containers]);
 
-		return new VideoIndex(this[Service], this[Parent], data, order, containers);
+		return new MediaIndex(this[Service], this[Parent], data, order, containers);
 	}
 
 
@@ -133,7 +141,7 @@ export default class VideoIndex {
 		}
 
 
-		return new VideoIndex(this[Service], this[Parent], data, order, containers);
+		return new MediaIndex(this[Service], this[Parent], data, order, containers);
 	}
 
 
