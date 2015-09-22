@@ -308,7 +308,7 @@ export default class Collection extends Base {
 
 	getAssignment (assessmentId) {
 		const findIt = x => find(this.getAssignments() || [], x);
-		const {visibleAssignments: {items: map}} = this;
+		const {visibleAssignments: {items: map = {}}} = this;
 
 		return map[assessmentId] || findIt(assessmentId);
 	}
