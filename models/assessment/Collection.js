@@ -7,6 +7,7 @@
  */
 
 import Base from '../Base';
+import PageSource from '../ListBackedPageSource';
 import {
 	Parser as parse
 } from '../../CommonSymbols';
@@ -254,9 +255,11 @@ export default class Collection extends Base {
 	 */
 	getAssignmentsBy (order, search) {
 		const searchFn = a => (a.title || '').toLowerCase().indexOf(search.toLowerCase()) >= 0;
+		const flatten = groups => groups.reduce((a, g) => a.concat(g.items), []);
 
 		try {
-			return Promise.resolve(this[order](search && searchFn));
+			return Promise.resolve(this[order](search && searchFn))
+				.then(items => ({ items, pageSource: new PageSource(flatten(items)) }));
 		} catch (e) {
 			return Promise.reject('Bad Arguments');
 		}
