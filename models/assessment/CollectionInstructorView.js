@@ -19,8 +19,8 @@ export default class CollectionInstructorView extends Base {
 	 * @returns {void}
 	 */
 	constructor (service, parent, assignments, assessments, historyLink, gradebook) {
-		super(service, parent, assignments, assessments);
-		Object.assign(this, {historyLink, gradebook});
+		super(service, parent, assignments, assessments, historyLink);
+		Object.assign(this, {gradebook});
 	}
 
 }

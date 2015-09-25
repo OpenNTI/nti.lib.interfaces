@@ -1,5 +1,5 @@
 import Base from './Collection';
-import {Service} from '../../CommonSymbols';
+// import {Service} from '../../CommonSymbols';
 
 export default class CollectionStudentView extends Base {
 
@@ -18,19 +18,20 @@ export default class CollectionStudentView extends Base {
 	 * @returns {void}
 	 */
 	constructor (service, parent, assignments, assessments, historyLink) {
-		super(service, parent, assignments, assessments);
-		Object.assign(this, {historyLink});
+		super(service, parent, assignments, assessments, historyLink);
 	}
 
 
 
 	getHistory () {
-		this[Service].get(this.historyLink)
-			.then(a => console.log(a));
+		return this.fetchLinkParsed('History');
 	}
 
 
-	getHistoryItem (assignmentId) {
+	/*getHistoryItem (assignmentId) {
+		return this.getHistory()
+			.then(history => {
 
-	}
+			})
+	}*/
 }

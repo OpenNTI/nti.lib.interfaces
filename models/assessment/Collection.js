@@ -63,10 +63,16 @@ export default class Collection extends Base {
 	 * @param  {object} assessments          Object of keys where each key is an
 	 *                                       array of Non-Assignment assessments
 	 *                                       visible to the current user.
+	 * @param  {string} historyLink          URL to fetch assignment histories.
 	 * @returns {void}
 	 */
-	constructor (service, parent, assignments, assessments) {
+	constructor (service, parent, assignments, assessments, historyLink) {
 		super(service, parent);
+		Object.assign(this, {
+			Links: [
+				{rel: 'History', href: historyLink}
+			]
+		});
 
 		const process = (k, v, o) => fillMaps(o[k] = this[parse](v), o, k);
 		const getItems = o => o.Items || o;

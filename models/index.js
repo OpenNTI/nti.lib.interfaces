@@ -115,6 +115,7 @@ import AssessmentWordEntry from './assessment/WordEntry';
 
 import AssessmentGrade from './assessment/Grade';
 import AssessmentAssignmentHistoryItem from './assessment/AssignmentHistoryItem';
+import AssessmentAssignmentHistoryCollection from './assessment/AssignmentHistoryCollection'
 import AssessmentAssignmentFeedback from './assessment/AssignmentFeedback';
 import AssessmentAssignmentFeedbackContainer from './assessment/AssignmentFeedbackContainer';
 
@@ -323,6 +324,7 @@ const PARSERS = {
 	'grade': AssessmentGrade,
 	'gradebook.grade': 'grade',
 	'assessment.assignmenthistoryitem': AssessmentAssignmentHistoryItem,
+	'assessment.userscourseassignmenthistory': AssessmentAssignmentHistoryCollection,
 	'assessment.userscourseassignmenthistoryitem': 'assessment.assignmenthistoryitem',
 	'assessment.userscourseassignmenthistoryitemfeedback': AssessmentAssignmentFeedback,
 	'assessment.userscourseassignmenthistoryitemfeedbackcontainer': AssessmentAssignmentFeedbackContainer,
