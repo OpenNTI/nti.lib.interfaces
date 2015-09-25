@@ -1,4 +1,5 @@
 import Base from './Collection';
+import {Service} from '../../CommonSymbols';
 
 export default class CollectionStudentView extends Base {
 
@@ -21,4 +22,15 @@ export default class CollectionStudentView extends Base {
 		Object.assign(this, {historyLink});
 	}
 
+
+
+	getHistory () {
+		this[Service].get(this.historyLink)
+			.then(a => console.log(a));
+	}
+
+
+	getHistoryItem (assignmentId) {
+
+	}
 }

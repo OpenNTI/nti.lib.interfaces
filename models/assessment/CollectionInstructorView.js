@@ -13,13 +13,14 @@ export default class CollectionInstructorView extends Base {
 	 * @param  {object} assessments          Object of keys where each key is an
 	 *                                       array of Non-Assignment assessments
 	 *                                       visible to the current user.
+	 * @param  {string} historyLink          URL to fetch assignment histories.
 	 * @param  {object} gradebook            GradeBook summery with Links to "GradeBookSummary"
 	 *                                       and "GradeBookByAssignment"
 	 * @returns {void}
 	 */
-	constructor (service, parent, assignments, assessments, gradebook) {
+	constructor (service, parent, assignments, assessments, historyLink, gradebook) {
 		super(service, parent, assignments, assessments);
-		Object.assign(this, {gradebook});
+		Object.assign(this, {historyLink, gradebook});
 	}
 
 }

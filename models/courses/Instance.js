@@ -143,7 +143,7 @@ export default class Instance extends Base {
 				B //NonAssignmentAssessmentItemsByOutlineNode
 			])
 				.then(a => isAdministrative
-					? new AssessmentCollectionInstructorView(i, this, ...a, this.GradeBook)
+					? new AssessmentCollectionInstructorView(i, this, ...a, historyLink, this.GradeBook)
 					: new AssessmentCollectionStudentView(i, this, ...a, historyLink));
 		}
 
