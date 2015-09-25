@@ -48,6 +48,7 @@ export default class Assignment extends Base {
 		return inst;
 	}
 
+
 	constructor (service, parent, data) {
 		super(service, parent, data, {isSubmittable: true});
 
@@ -56,6 +57,7 @@ export default class Assignment extends Base {
 		this[RENAME]('GradeAssignmentSubmittedCount', 'submittedCount'); //number of submissions with grades?
 		//this[RENAME]('GradeSubmittedCount', 'gradeCount'); // just number of grades?
 	}
+
 
 	[DateFields] () {
 		return super[DateFields]().concat([
@@ -100,9 +102,11 @@ export default class Assignment extends Base {
 		return date > this.getDueDate();
 	}
 
+
 	getAssignedDate () {
 		return this.getAvailableForSubmissionBeginning();
 	}
+
 
 	getDueDate () {
 		return this.getAvailableForSubmissionEnding();
@@ -144,12 +148,24 @@ export default class Assignment extends Base {
 	}
 
 
+	/**
+	 * Interface method. Called to load the last submission (Savepoint or final submission).
+	 * Intended to be called by the assessment Store in the Mobile App when viewing an assessment.
+	 *
+	 * @return {Promise} The history.
+	 */
 	loadPreviousSubmission () {
 		return this.loadHistory()
 			.catch(() => this.loadSavePoint());
 	}
 
 
+	/**
+	 * Load the history directly from the Link on this object.
+	 *
+	 * @private
+	 * @return {Promise} The history.
+	 */
 	loadHistory () {
 		return this.fetchLinkParsed('History');
 	}
