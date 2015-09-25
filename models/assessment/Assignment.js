@@ -3,7 +3,8 @@ import {
 	Service,
 	ReParent,
 	DateFields,
-	Parser as parse
+	Parser as parse,
+	MODEL_INSTANCE_CACHE_KEY
 } from '../../CommonSymbols';
 import parseDate from '../../utils/parse-date';
 
@@ -15,7 +16,8 @@ const ActiveSavePointPost = Symbol('ActiveSavePointPost');
 
 export default class Assignment extends Base {
 	static parse (service, parent, data) {
-		const map = this.instances = (this.instances || {});
+		const cache = service.getDataCache();
+		const map = cache.get(MODEL_INSTANCE_CACHE_KEY + '-assignments', {}, true);
 		const {NTIID: id} = data;
 
 		//#smh

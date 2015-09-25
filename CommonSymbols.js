@@ -16,3 +16,5 @@ export const Progress = Symbol.for('Progress');
 export const Summary = Symbol('Container-Summary');
 
 export const DELETED = Symbol.for('DELETED');
+
+export const MODEL_INSTANCE_CACHE_KEY = '%%model.instances%%';

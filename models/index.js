@@ -1,3 +1,4 @@
+import {MODEL_INSTANCE_CACHE_KEY} from '../CommonSymbols';
 
 import identity from '../utils/identity';
 
@@ -497,10 +498,9 @@ export function parseListFn (scope, service) {
 
 //Basic managed-instance tracker (invoke with .call or .apply!!)
 function trackInstances (service, data, make) {
-	const MODEL_INSTANCE_CACHE = '%%model.instances%%';
 	const MOD_TIME = 'Last Modified';
 	const cache = service.getDataCache();
-	const map = cache.get(MODEL_INSTANCE_CACHE, {}, true);
+	const map = cache.get(MODEL_INSTANCE_CACHE_KEY, {}, true);
 	const {NTIID: id} = data;
 
 	let inst = map[id];
