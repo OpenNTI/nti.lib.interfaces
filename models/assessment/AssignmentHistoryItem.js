@@ -31,7 +31,7 @@ export default class AssignmentHistoryItem extends Base {
 
 	getGradeValue () {
 		let g = this.Grade;
-		return g && g.getValue();
+		return g && g.value;
 	}
 
 }
