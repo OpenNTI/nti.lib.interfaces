@@ -1,6 +1,8 @@
 import Base from '../Base';
 import names from '../mixins/CourseAndAssignmentNameResolving';
 
+import pluck from '../../utils/pluck';
+
 const ENDS_IN_LETTER_REGEX = /\s[a-fiw\-]$/i;
 
 const LETTER = Symbol('Letter');
@@ -92,7 +94,39 @@ export default class Grade extends Base {
 	}
 
 
+	isExcusable () { return this.hasLink('excuse') || this.hasLink('unexcuse'); }
+
+
 	isPredicted () {
 		return !!this.IsPredicted;
+	}
+
+
+	excuseGrade () {
+		const A = 'excuse';
+		const B = 'unexcuse';
+
+		let link = this.hasLink(A) ? A : B;
+
+		return this.postToLink(link)
+			.then(o => this.refresh(pluck(o, 'NTIID', 'Links')))
+			.then(() => this.onChange('excuse'));
+	}
+
+
+	/**
+	 * looks at the values set and compares them to the ones passed
+	 * treat a letter grade value of '-' the same as no letter grade
+	 *
+	 * @param  {string} value the value of the grade
+	 * @param  {char} letter the letter value of the grade
+	 * @return {Boolean}        if they are the same values
+	 */
+	equals (value, letter) {
+		const normalizeLetter = x => (!x || x === '-') ? false : x;
+		const ltr = normalizeLetter(this[LETTER]);
+		const val = this[VALUE];
+
+		return ltr === normalizeLetter(letter) && val === value;
 	}
 }
