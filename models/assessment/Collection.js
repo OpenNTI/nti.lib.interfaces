@@ -282,7 +282,7 @@ export default class Collection extends Base {
 	[GetListFrom] (dict, outlineNodeId) {
 		let {items} = dict;
 		let ids = outlineNodeId && (this.getAssessmentIdsUnder(outlineNodeId) || []);
-		let nodeIdsToInclude = ids || Object.keys(items);
+		let nodeIdsToInclude = ids || Object.keys(items || {});
 
 		return nodeIdsToInclude.reduce((agg, id) =>
 			items[id] ? agg.concat(items[id]) : agg, []);
