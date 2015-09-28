@@ -115,7 +115,7 @@ import AssessmentWordEntry from './assessment/WordEntry';
 
 import AssessmentGrade from './assessment/Grade';
 import AssessmentAssignmentHistoryItem from './assessment/AssignmentHistoryItem';
-import AssessmentAssignmentHistoryCollection from './assessment/AssignmentHistoryCollection'
+import AssessmentAssignmentHistoryCollection from './assessment/AssignmentHistoryCollection';
 import AssessmentAssignmentFeedback from './assessment/AssignmentFeedback';
 import AssessmentAssignmentFeedbackContainer from './assessment/AssignmentFeedbackContainer';
 

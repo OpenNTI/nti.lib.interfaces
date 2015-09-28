@@ -1,6 +1,6 @@
 import EnrollmentOption from './EnrollmentOption';
 import {
-	DateFields,
+	DateFields
 	// Parser as parse
 } from '../../CommonSymbols';
 

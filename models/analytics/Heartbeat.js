@@ -158,7 +158,7 @@ function remove (heartbeat) {
  */
 export default class Heartbeat {
 
-	constructor (callback, interval=defaultInterval) {
+	constructor (callback, interval = defaultInterval) {
 		if (!isFunction(callback)) {
 			console.error('Callback must be a function. %o', callback);
 			callback = noop;

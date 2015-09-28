@@ -1,7 +1,7 @@
 import Base from '../Base';
 import {
 	Service,
-	Parser as parse,
+	Parser as parse
 } from '../../CommonSymbols';
 
 import GetContents from '../mixins/GetContents';
