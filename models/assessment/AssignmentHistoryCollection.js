@@ -36,4 +36,9 @@ export default class AssignmentHistoryCollection extends Base {
 	map (fn) {
 		return Array.from(this).map(fn);
 	}
+
+
+	getItem (assignmentId) {
+		return (this.Items || {})[assignmentId];
+	}
 }
