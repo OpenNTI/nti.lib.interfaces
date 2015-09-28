@@ -155,10 +155,9 @@ export default class Assignment extends Base {
 	 * @return {Promise} The history.
 	 */
 	loadPreviousSubmission () {
-		return this.loadHistory()
+		return this.getHistory()
 			.catch(() => this.loadSavePoint());
 	}
-
 
 	/**
 	 * Load the history directly from the Link on this object.
@@ -166,7 +165,7 @@ export default class Assignment extends Base {
 	 * @private
 	 * @return {Promise} The history.
 	 */
-	loadHistory () {
+	getHistory () {
 		return this.fetchLinkParsed('History');
 	}
 
