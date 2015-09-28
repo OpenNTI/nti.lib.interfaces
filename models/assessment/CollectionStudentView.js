@@ -1,7 +1,7 @@
 import Base from './Collection';
 // import {Service} from '../../CommonSymbols';
 
-import HistoryItem from './AssignmentHistoryItem';
+import HistoryCollection from './AssignmentHistoryCollection';
 
 const HISTORY = Symbol();
 
@@ -33,7 +33,7 @@ export default class CollectionStudentView extends Base {
 		if (!promise || refresh) {
 			console.debug('Loading assignment history for %s...', this.parent().title);
 			this[HISTORY] = promise = this.fetchLinkParsed('History')
-				.then(x => x instanceof HistoryItem ? x : Promise.reject('Wrong Type'))
+				.then(x => x instanceof HistoryCollection ? x : Promise.reject('Wrong Type'))
 				.catch(() => Promise.reject('No History'));
 		}
 
