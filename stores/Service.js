@@ -71,7 +71,8 @@ export default class ServiceDocument {
 				} else {
 					console.warn('No FriendsLists Collection');
 				}
-			})
+			},
+			e => console.log(e.stack || e.message || e))
 		);
 
 		if (context) {
