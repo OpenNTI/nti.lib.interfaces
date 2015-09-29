@@ -1,7 +1,9 @@
 import Base from '../Base';
 import {
+	DateFields,
 	Parser as parse
 } from '../../CommonSymbols';
+import pluck from '../../utils/pluck';
 
 export default class AssignmentHistoryCollection extends Base {
 	constructor (service, parent, data) {
@@ -12,6 +14,11 @@ export default class AssignmentHistoryCollection extends Base {
 		for(let key of Object.keys(items)) {
 			items[key] = this[parse](items[key]);
 		}
+	}
+
+
+	[DateFields] () {
+		return super[DateFields]().concat(['lastViewed']);
 	}
 
 
@@ -40,5 +47,12 @@ export default class AssignmentHistoryCollection extends Base {
 
 	getItem (assignmentId) {
 		return (this.Items || {})[assignmentId];
+	}
+
+
+	markSeen () {
+		return this.putToLink('lastViewed', new Date().getTime() / 1000)
+			.then(o => this.refresh(pluck(o, 'NTIID', 'Links', 'lastViewed')))
+			.then(() => this.onChange('lastViewed'));
 	}
 }

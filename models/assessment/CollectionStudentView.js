@@ -26,6 +26,11 @@ export default class CollectionStudentView extends Base {
 	}
 
 
+	onChange (e) {
+		super.onChange(e);
+		//delete this[HISTORY];
+	}
+
 
 	getHistory (refresh = false) {
 		let {[HISTORY]: promise} = this;
@@ -44,5 +49,21 @@ export default class CollectionStudentView extends Base {
 	getHistoryItem (assignmentId, refresh = false) {
 		return this.getHistory(refresh)
 			.then(history => history.getItem(assignmentId));
+	}
+
+
+	getActivity () {
+		return this.getHistory()
+			.then(history =>
+				this.getAssignments()
+					.then(assignments =>
+						assignments.reduce((events, a) => events.concat(
+							this.deriveEvents(a,
+								history.getItem(a.getID()),
+								history.getLastViewed()
+							)
+						), [])
+					));
+
 	}
 }

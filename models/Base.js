@@ -27,6 +27,20 @@ import parseDate from '../utils/parse-date';
 
 let CONTENT_VISIBILITY_MAP = {OU: 'OUID'};
 
+function clone (obj) {
+	if (typeof obj !== 'object') {
+		return obj;
+	}
+
+	let out = {};
+	for(let key of Object.keys(obj)) {
+		out[key] = clone(obj[key]);
+	}
+
+	return out;
+}
+
+
 function GenEnumerabilityOf (obj, propName) {
 	let desc = obj && Object.getOwnPropertyDescriptor(obj, propName);
 	return desc && desc.enumerable;
@@ -74,7 +88,7 @@ export default class Base extends EventEmitter {
 		this[Parent] = parent;
 
 		if (data) {
-			data = JSON.parse(JSON.stringify(data));//deep clone
+			data = clone(data);
 			Object.assign(this, data);
 		}
 
@@ -104,6 +118,12 @@ export default class Base extends EventEmitter {
 			this[TakeOver]('Creator', 'creator');
 		}
 	}
+
+
+	get isCreatedByAppUser () {
+		return this[Service].getAppUsername() === this.creator;
+	}
+
 
 	ensureProperty (name, isRequired, type, value) {
 		if(isRequired && !this[name] || (this[name] && typeof this[name] !== type)) {

@@ -12,6 +12,8 @@ import {
 	Parser as parse
 } from '../../CommonSymbols';
 
+import ActivityMixin from './AssignmentActivityMixin';
+
 const ORDER_BY_COMPLETION = Symbol('ORDER_BY_COMPLETION');
 const ORDER_BY_DUE_DATE = Symbol('ORDER_BY_DUE_DATE');
 const ORDER_BY_LESSON = Symbol('ORDER_BY_LESSON');
@@ -67,14 +69,22 @@ export default class Collection extends Base {
 	 * @returns {void}
 	 */
 	constructor (service, parent, assignments, assessments, historyLink) {
-		super(service, parent);
-		Object.assign(this, {
+		super(service, parent, void 0, ActivityMixin, {
 			Links: [
 				{rel: 'History', href: historyLink}
 			]
 		});
 
-		const process = (k, v, o) => fillMaps(o[k] = this[parse](v), o, k);
+		this.onChange = this.onChange.bind(this);
+
+		const parseItem = (o) => {
+			o = this[parse](o);
+			if(o && this.onChange) {
+				o.on('change', this.onChange);
+			}
+			return o;
+		};
+		const process = (k, v, o) => fillMaps(o[k] = parseItem(v), o, k);
 		const getItems = o => o.Items || o;
 		const isIgnoredKey = RegExp.prototype.test.bind(/^href$/i);
 		const consume = (obj, dict) => Object.keys(getItems(dict))
@@ -113,6 +123,9 @@ export default class Collection extends Base {
 
 		Object.assign(this, {outlineMap, assessmentToOutlineMap});
 	}
+
+
+	onChange () {}
 
 
 	sortComparatorDueDate (a, b) { //eslint-disable-line
