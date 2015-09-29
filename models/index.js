@@ -409,6 +409,8 @@ function getType (o) {
 		type = o.Class;
 		if (type) {
 			console.error('Object does not have a MimeType and has fallen back to Class name resolve: ' + type, o);
+		} else {
+			console.error('Object does not have an identity', o);
 		}
 	}
 	return type;
