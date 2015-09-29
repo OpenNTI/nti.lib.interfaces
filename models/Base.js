@@ -28,7 +28,7 @@ import parseDate from '../utils/parse-date';
 let CONTENT_VISIBILITY_MAP = {OU: 'OUID'};
 
 function clone (obj) {
-	if (typeof obj !== 'object') {
+	if (typeof obj !== 'object' || obj == null) {
 		return obj;
 	}
 
