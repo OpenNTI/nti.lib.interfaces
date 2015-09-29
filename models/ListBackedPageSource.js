@@ -1,22 +1,24 @@
 import {encodeForURI} from '../utils/ntiids';
+import {join} from 'path';
 
-function buildRef (node) {
+function buildRef (node, pathPrefix) {
 	return node && {
 		ntiid: node.getID(),
 		title: node.title,
-		ref: encodeForURI(node.getID())
+		ref: join(pathPrefix, encodeForURI(node.getID()))
 	};
 }
 
 export default class ListBackedPageSource {
 
-	constructor (list) {
+	constructor (list, pathPrefix = '') {
 		this.list = list;
+		this.pathPrefix = pathPrefix;
 	}
 
 
 	getPagesAround (pageId) {
-		const nodes = this.list;
+		const {list: nodes, pathPrefix} = this;
 		const index = nodes.reduce(
 			(found, node, ix) =>
 				(typeof found !== 'number' && node.getID() === pageId) ? ix : found,
@@ -28,8 +30,8 @@ export default class ListBackedPageSource {
 		return {
 			total: nodes.length,
 			index: index,
-			next: buildRef(next),
-			prev: buildRef(prev)
+			next: buildRef(next, pathPrefix),
+			prev: buildRef(prev, pathPrefix)
 		};
 	}
 
