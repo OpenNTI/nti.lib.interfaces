@@ -72,7 +72,13 @@ export default class TableOfContentsBackedPageSource extends Base {
 
 			do { node = this.pages[index--]; } while(node && !suppressed(node));
 
-			return node ? nodes.findIndex(matcher) : -1;
+			if (node) {
+				nodeId = node.id;
+				index = nodes.findIndex(matcher);
+
+			} else {
+				index = -1;
+			}
 		}
 
 		return index;
