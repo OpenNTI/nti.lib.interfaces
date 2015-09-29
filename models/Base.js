@@ -32,7 +32,7 @@ function clone (obj) {
 		return obj;
 	}
 
-	let out = {};
+	let out = Array.isArray(obj) ? [] : {};
 	for(let key of Object.keys(obj)) {
 		out[key] = clone(obj[key]);
 	}
