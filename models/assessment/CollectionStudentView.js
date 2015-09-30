@@ -60,7 +60,7 @@ export default class CollectionStudentView extends Base {
 								history.getItem(a.getID()),
 								history.getLastViewed()
 							)
-						), [])
+						), []).sort((a, b) => b.date - a.date)
 				);
 
 	}
