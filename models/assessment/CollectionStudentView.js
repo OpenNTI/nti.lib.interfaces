@@ -55,15 +55,13 @@ export default class CollectionStudentView extends Base {
 	getActivity () {
 		return this.getHistory()
 			.then(history =>
-				this.getAssignments()
-					.then(assignments =>
-						assignments.reduce((events, a) => events.concat(
+				this.getAssignments().reduce((events, a) => events.concat(
 							this.deriveEvents(a,
 								history.getItem(a.getID()),
 								history.getLastViewed()
 							)
 						), [])
-					));
+				);
 
 	}
 }
