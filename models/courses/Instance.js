@@ -7,7 +7,6 @@ import {
 import {MEDIA_BY_OUTLINE_NODE} from '../../constants';
 
 import Url from 'url';
-import Stream from '../../stores/Stream';
 
 import emptyFunction from '../../utils/empty-function';
 import binDiscussions from '../../utils/forums-bin-discussions';
@@ -15,6 +14,8 @@ import binDiscussions from '../../utils/forums-bin-discussions';
 import AssessmentCollectionStudentView from '../assessment/CollectionStudentView';
 import AssessmentCollectionInstructorView from '../assessment/CollectionInstructorView';
 import MediaIndex from '../MediaIndex';
+
+import ActivityStream from './BucketedActivityStream';
 
 const NOT_DEFINED = {reason: 'Not defined'};
 const EMPTY_CATALOG_ENTRY = {getAuthorLine: emptyFunction};
@@ -105,16 +106,19 @@ export default class Instance extends Base {
 			return null;
 		}
 
-		return new Stream(
+		const courseStart = this.CatalogEntry.getStartDate();
+
+		return new ActivityStream(
 			this[Service],
 			this,
-			this.getLink('CourseRecursiveStreamByBucket'),
-			{
-				sortOn: 'createdTime',
-				sortOrder: 'descending',
-				batchStart: 0,
-				batchSize: 10
-			}
+			this.getLink('CourseRecursiveStreamByBucket', {
+				NonEmptyBucketCount: 2,
+				BucketSize: 50,
+				//the server is expecting seconds
+				Oldest: Math.round(courseStart.getTime() / 1000)
+			}),
+			this.getOutline(),
+			this.getAssignments()
 		);
 	}
 

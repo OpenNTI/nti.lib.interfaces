@@ -62,7 +62,9 @@ import CourseSharingScopes from './courses/SharingScopes';
 import CourseOutline from './courses/Outline';
 import CourseOutlineNode from './courses/OutlineNode';
 import CourseOutlineNodeProgress from './courses/OutlineNodeProgress';
-import CourseRecursiveStreamBucket from './courses/CourseRecursiveStreamBucket';
+
+import CourseRecursiveStreamBucket from './courses/activity/RecursiveStreamBucket';
+import CourseRecursiveStreamByBucket from './courses/activity/RecursiveStreamByBucket';
 
 import CourseProgress from './courses/Progress';
 
@@ -199,7 +201,7 @@ const PARSERS = {
 	'courses.courseenrollment': CourseEnrollment,
 
 	'courseware.courserecursivestreambucket': CourseRecursiveStreamBucket,
-	'CourseRecursiveStreamBucket': 'courseware.courserecursivestreambucket',
+	'courseware.courserecursivestreambybucket': CourseRecursiveStreamByBucket,
 
 	'courseware.enrollmentoptions': CourseEnrollmentOptions,
 
