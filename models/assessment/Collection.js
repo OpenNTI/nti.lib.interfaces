@@ -78,9 +78,12 @@ export default class Collection extends Base {
 		this.onChange = this.onChange.bind(this);
 
 		const parseItem = (o) => {
-			o = this[parse](o);
-			if(o && this.onChange) {
-				o.on('change', this.onChange);
+			let i = o = this[parse](o);
+			if (!Array.isArray(i)) { i = [i]; }
+			for (let item of i) {
+				if(item && this.onChange) {
+					item.on('change', this.onChange);
+				}
 			}
 			return o;
 		};
