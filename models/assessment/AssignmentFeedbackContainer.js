@@ -27,4 +27,26 @@ export default class AssignmentFeedbackContainer extends Base {
 		return this[Service].post(link, payload);
 	}
 
+
+	[Symbol.iterator] () {
+		let snapshot = this.Items.slice();
+		let {length} = snapshot;
+		let index = 0;
+
+		return {
+
+			next () {
+				let done = index >= length;
+				let value = snapshot[index++];
+
+				return { value, done };
+			}
+
+		};
+	}
+
+
+	map (fn) {
+		return this.Items.map(fn);
+	}
 }
