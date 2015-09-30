@@ -1,5 +1,5 @@
 import Outline from './Outline';
-import {Progress, Summary, Parser as parse} from '../../CommonSymbols';
+import {Progress, Summary, DateFields, Parser as parse} from '../../CommonSymbols';
 
 import path from 'path';
 
@@ -21,6 +21,14 @@ export default class OutlineNode extends Outline {
 		let p = c=>c.map(o => this[parse](o));
 		this.contents = p(data.contents || []);
 	}
+
+	[DateFields] () {
+		return super[DateFields]().concat([
+			'AvailableBeginning',
+			'AvailableEnding'
+		]);
+	}
+
 
 	get label () { return this.DCTitle; }
 

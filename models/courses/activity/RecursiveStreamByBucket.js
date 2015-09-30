@@ -12,7 +12,17 @@ export default class RecursiveStreamByBucket extends Base {
 
 		this[parse]('Items');
 
+		if (this.Items) {
+			//Newest first
+			this.Items.sort((a, b) => b.MostRecentTimestamp - a.MostRecentTimestamp);
+		}
+
 		//TotalBucketCount: 2,
+	}
+
+	getMostRecentDate () {
+		const [item] = this.Items;
+		return item ? item.mostRecentDate : new Date(0);
 	}
 
 }
