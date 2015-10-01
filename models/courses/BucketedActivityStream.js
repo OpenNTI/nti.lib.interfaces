@@ -7,6 +7,7 @@ import browser from '../../utils/browser';
 const SOURCE = 'source';
 const ACTIVE_REQUEST = Symbol('active');
 const ADD_ITEM_TO_BIN = Symbol('protected method: addToBin');
+const BINS = Symbol();
 
 const getWeek = (date, side = 'end') => moment(date)[`${side}Of`]('isoWeek').toDate();
 const getWeekAsTimestamp = (date, side = 'end') => Math.round(getWeek(date, side).getTime() / 1000);
@@ -21,7 +22,9 @@ class Bucket extends Array {
 export default class BucketedActivityStream extends Base {
 
 	constructor (service, course, href, outline, assignments) {
-		super(service, course, { bins: [], Links: [ { rel: SOURCE, href } ] });
+		super(service, course, { Links: [ { rel: SOURCE, href } ] });
+
+		this[BINS] = [];
 
 		const start = Date.now();
 		const weekOf = getWeekAsTimestamp();
@@ -45,13 +48,37 @@ export default class BucketedActivityStream extends Base {
 			});
 	}
 
+
+	[Symbol.iterator] () {
+		let snapshot = this[BINS].filter(x => x.start > this.lastLoadedPage);
+		let {length} = snapshot;
+		let index = 0;
+
+		return {
+
+			next () {
+				let done = index >= length;
+				let value = snapshot[index++];
+
+				return { value, done };
+			}
+
+		};
+	}
+
+
+	map (fn) {
+		return Array.from(this).map(fn);
+	}
+
+
 	get loading () {
 		return !!this[ACTIVE_REQUEST];
 	}
 
 
 	[ADD_ITEM_TO_BIN] (item, dateToConsider) {
-		const {bins} = this;
+		const {[BINS]: bins} = this;
 		const today = new Date();
 		const date = dateToConsider > today ? today : dateToConsider;
 		const start = getWeek(date, 'start');
@@ -74,8 +101,9 @@ export default class BucketedActivityStream extends Base {
 
 
 	buildBins (outline, assignmentsCollection, initialActivity) {
-
 		const thisWeek = getWeek();
+
+		this.lastLoadedPage = getWeek(initialActivity.getOldestDate(), 'start');
 
 		const relevantLeasons = outline.getFlattenedList()
 								.filter(o => 'AvailableBeginning' in o && o.getAvailableBeginning() < thisWeek);
@@ -95,7 +123,4 @@ export default class BucketedActivityStream extends Base {
 			this[ADD_ITEM_TO_BIN](item, item.getLastModified());
 		}
 	}
-
-
-	map () {}
 }
