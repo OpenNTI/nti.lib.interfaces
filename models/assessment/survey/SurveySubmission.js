@@ -23,6 +23,6 @@ export default class SurveySubmission extends QuestionSetSubmission {
 
 
 	getID () {
-		return this.NTIID || this.surveyId;
+		return this.surveyId || this.NTIID;
 	}
 }

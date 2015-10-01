@@ -10,7 +10,7 @@ export default class PollSubmission extends QuestionSubmission {
 	}
 
 	getID () {
-		return this.NTIID || this.pollId;
+		return this.pollId || this.NTIID;
 	}
 
 
