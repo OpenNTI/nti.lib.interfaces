@@ -67,6 +67,8 @@ import CourseRecursiveStreamBucket from './courses/activity/RecursiveStreamBucke
 import CourseRecursiveStreamByBucket from './courses/activity/RecursiveStreamByBucket';
 
 import CourseProgress from './courses/Progress';
+import CourseLeasonOverview from './courses/overview/LeasonOverview';
+import CourseLeasonOverviewGroup from './courses/overview/Group';
 
 
 
@@ -185,6 +187,9 @@ const PARSERS = {
 	'ntivideoref': VideoRef,
 
 	'relatedworkref': RelatedWorkReference,
+
+	'ntilessonoverview': CourseLeasonOverview,
+	'nticourseoverviewgroup': CourseLeasonOverviewGroup,
 
 	'analytics.externalresourceevent': ExternalResourceEvent,
 	'analytics.assessmentevent': AssessmentEvent,

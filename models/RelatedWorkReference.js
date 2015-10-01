@@ -17,6 +17,10 @@ export default class RelatedWorkReference extends Base {
 
 	//Minimum keys required: NTIID. Links preferred.
 	constructor (service, data) {
+		if (data.creator && (!data.Creator || (data.Creator === data.creator))) {
+			data.Creator = data.creator;
+			delete data.creator;
+		}
 		super(service, null, data);
 	}
 

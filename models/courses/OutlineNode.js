@@ -89,9 +89,10 @@ export default class OutlineNode extends Outline {
 
 	getContent () {
 		let link = 'overview-content';
-		let getContent = this.hasLink(link) ?
+		let getContent = (this.hasLink(link) ?
 			this.fetchLink(link).then(collateVideo) :
-			getContentFallback(this);
+			getContentFallback(this))
+				.then(raw => this[parse](raw));
 
 		return Promise.all([this.getProgress(), this.getSummary(), getContent])
 			.then(progressAndContent=> {
