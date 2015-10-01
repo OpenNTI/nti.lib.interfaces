@@ -10,19 +10,40 @@ export default class RecursiveStreamByBucket extends Base {
 			this.Items = [];
 		}
 
-		this[parse]('Items');
-
-		if (this.Items) {
-			//Newest first
-			this.Items.sort((a, b) => b.MostRecentTimestamp - a.MostRecentTimestamp);
-		}
+		this[parse]('Items', []);
+		//Newest first
+		this.Items.sort((a, b) => b.MostRecentTimestamp - a.MostRecentTimestamp);
 
 		//TotalBucketCount: 2,
 	}
 
+	[Symbol.iterator] () {
+		let snapshot = this.Items.reduce((agg, bin) => agg.concat(Array.from(bin)), []);
+		let {length} = snapshot;
+		let index = 0;
+
+		return {
+
+			next () {
+				let done = index >= length;
+				let value = snapshot[index++];
+
+				return { value, done };
+			}
+
+		};
+	}
+
+
 	getMostRecentDate () {
 		const [item] = this.Items;
 		return item ? item.mostRecentDate : new Date(0);
+	}
+
+	getOldestDate () {
+		const {Items: items} = this;
+		const item = items[items.length - 1];
+		return item ? item.oldestDate : new Date(0);
 	}
 
 }

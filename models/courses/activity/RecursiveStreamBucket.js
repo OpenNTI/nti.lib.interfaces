@@ -19,4 +19,26 @@ export default class RecursiveStreamBucket extends Base {
 	get oldestDate () {
 		return new Date(this.OldestTimestamp * 1000);
 	}
+
+	[Symbol.iterator] () {
+		let snapshot = this.Items.slice();
+		let {length} = snapshot;
+		let index = 0;
+
+		return {
+
+			next () {
+				let done = index >= length;
+				let value = snapshot[index++];
+
+				return { value, done };
+			}
+
+		};
+	}
+
+
+	map (fn) {
+		return Array.from(this).map(fn);
+	}
 }
