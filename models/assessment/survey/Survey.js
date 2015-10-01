@@ -1,4 +1,4 @@
-import QuestionSet from './QuestionSet';
+import QuestionSet from '../QuestionSet';
 
 
 export default class Survey extends QuestionSet {

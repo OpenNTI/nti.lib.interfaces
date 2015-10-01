@@ -76,10 +76,10 @@ import AssessmentQuestionSet from './assessment/QuestionSet';
 import AssessmentQuestionSetRef from './assessment/QuestionSetReference';
 import AssessmentQuestion from './assessment/Question';
 
-import AssessmentSurvey from './assessment/Survey';
-import AssessmentSurveyReference from './assessment/SurveyReference';
-import AssessmentPoll from './assessment/Poll';
-import AssessmentPollReference from './assessment/PollReference';
+import AssessmentSurvey from './assessment/survey/Survey';
+import AssessmentSurveyReference from './assessment/survey/SurveyReference';
+import AssessmentPoll from './assessment/survey/Poll';
+import AssessmentPollReference from './assessment/survey/PollReference';
 
 import AssessmentAssignmentRef from './assessment/AssignmentReference';
 import AssessmentAssignment from './assessment/Assignment';
@@ -94,8 +94,8 @@ import AssessmentAssignmentSubmission from './assessment/AssignmentSubmission';
 import AssessmentQuestionSetSubmission from './assessment/QuestionSetSubmission';
 import AssessmentQuestionSubmission from './assessment/QuestionSubmission';
 
-import AssessmentPollSubmittion from './assessment/PollSubmission';
-import AssessmentSurveySubmittion from './assessment/SurveySubmission';
+import AssessmentPollSubmittion from './assessment/survey/PollSubmission';
+import AssessmentSurveySubmittion from './assessment/survey/SurveySubmission';
 
 import AssessmentResponse from './assessment/Response';
 

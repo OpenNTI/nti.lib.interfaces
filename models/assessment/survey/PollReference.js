@@ -1,4 +1,4 @@
-import Base from '../Base';
+import Base from '../../Base';
 
 export default class PollReference extends Base {
 	constructor (service, parent, data) {

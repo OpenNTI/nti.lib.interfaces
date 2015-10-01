@@ -1,4 +1,4 @@
-import QuestionSubmission from './QuestionSubmission';
+import QuestionSubmission from '../QuestionSubmission';
 
 export default class PollSubmission extends QuestionSubmission {
 	constructor (service, parent, data) {

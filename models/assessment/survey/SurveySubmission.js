@@ -1,8 +1,8 @@
-import QuestionSetSubmission from './QuestionSetSubmission';
+import QuestionSetSubmission from '../QuestionSetSubmission';
 
 import {
 	Parser as parse
-} from '../../CommonSymbols';
+} from '../../../CommonSymbols';
 
 export default class SurveySubmission extends QuestionSetSubmission {
 	constructor (service, parent, data) {
