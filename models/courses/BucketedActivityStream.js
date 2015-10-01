@@ -6,11 +6,14 @@ import browser from '../../utils/browser';
 
 const SOURCE = 'source';
 const ACTIVE_REQUEST = Symbol('active');
-const ADD_ITEM_TO_BIN = Symbol('protected method: addToBin');
+const ADD_ITEM_TO_BIN = Symbol('protected method: addItemToBin');
+const APPLY_ACTIVITY = Symbol('protected method: applyActivity');
+const BUILD_BINS = Symbol('protected method: buildBins');
 const BINS = Symbol();
 
 const getWeek = (date, side = 'end') => moment(date)[`${side}Of`]('isoWeek').toDate();
-const getWeekAsTimestamp = (date, side = 'end') => Math.round(getWeek(date, side).getTime() / 1000);
+const dateToTimestamp = date => Math.round(date.getTime() / 1000);
+const getWeekAsTimestamp = (date, side = 'end') => dateToTimestamp(getWeek(date, side));
 
 class Bucket extends Array {
 	constructor (start, end) {
@@ -39,7 +42,7 @@ export default class BucketedActivityStream extends Base {
 			Promise.resolve(assignments).catch(()=> null),
 			this.fetchLinkParsed(SOURCE, { MostRecent: weekOf })
 		])
-			.then(data => this.buildBins(...data))
+			.then(data => this[BUILD_BINS](...data))
 			.then(()=> delete this[ACTIVE_REQUEST])
 			.then(()=> {
 				const loaded = Date.now();
@@ -49,8 +52,28 @@ export default class BucketedActivityStream extends Base {
 	}
 
 
+	nextBatch () {
+		const start = new Date();
+		//Notice we're not returning this promise...
+		Promise.resolve(this[ACTIVE_REQUEST])
+			.catch(()=>{}) //ignore errors from that request. (they'll be handled by its caller)
+			.then(()=> {
+				// Because we're simply waiting for the current (if any) request to finish, we do
+				// not need to chain/pend the new request to it (by returning its promise)
+				this[ACTIVE_REQUEST] = this.fetchLinkParsed(SOURCE, { MostRecent: this.nextPageParam })
+					.then(data => this[APPLY_ACTIVITY](data))
+					.then(()=> delete this[ACTIVE_REQUEST])
+					.then(()=> {
+						const loaded = Date.now();
+						this.emit('load', this, `${(loaded - start)}ms`);
+						this.emit('change', this);
+					});
+			});
+	}
+
+
 	[Symbol.iterator] () {
-		let snapshot = this[BINS].filter(x => x.start > this.lastLoadedPage);
+		let snapshot = this[BINS].filter(x => x.start > this.bucketLimiter);
 		let {length} = snapshot;
 		let index = 0;
 
@@ -100,10 +123,29 @@ export default class BucketedActivityStream extends Base {
 	}
 
 
-	buildBins (outline, assignmentsCollection, initialActivity) {
-		const thisWeek = getWeek();
+	[APPLY_ACTIVITY] (recursiveStreamByBucket) {
+		const date = recursiveStreamByBucket.getOldestDate(); //if there isn't an oldest date, this method returns epoch.
 
-		this.lastLoadedPage = getWeek(initialActivity.getOldestDate(), 'start');
+		this.hasMore = false; //assume no more data.
+
+		// convert the Date object to a unix-timestamp.
+		this.nextPageParam = dateToTimestamp(date);
+
+		// Limit the iteration of bins to only include the data we've loaded, if we've finished loading,
+		// this should become unbounded by epoch.
+		this.bucketLimiter = getWeek(date, 'start');
+
+		for (let item of recursiveStreamByBucket) {
+			//if we enter this iteration, there might be more data... so set hasMore truthy.
+			this.hasMore = 'maybe';
+			//Deal with the data...
+			this[ADD_ITEM_TO_BIN](item, item.getLastModified());
+		}
+	}
+
+
+	[BUILD_BINS] (outline, assignmentsCollection, initialActivity) {
+		const thisWeek = getWeek();
 
 		const relevantLeasons = outline.getFlattenedList()
 								.filter(o => 'AvailableBeginning' in o && o.getAvailableBeginning() < thisWeek);
@@ -119,8 +161,6 @@ export default class BucketedActivityStream extends Base {
 			this[ADD_ITEM_TO_BIN](assignment, assignment.getDueDate() || thisWeek);
 		}
 
-		for (let item of initialActivity) {
-			this[ADD_ITEM_TO_BIN](item, item.getLastModified());
-		}
+		this[APPLY_ACTIVITY](initialActivity);
 	}
 }
