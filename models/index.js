@@ -81,6 +81,14 @@ import AssessmentSurvey from './assessment/survey/Survey';
 import AssessmentSurveyReference from './assessment/survey/SurveyReference';
 import AssessmentPoll from './assessment/survey/Poll';
 import AssessmentPollReference from './assessment/survey/PollReference';
+import AssessmentAggregatedSurvey from './assessment/survey/aggregated/Survey';
+import AssessmentAggregatedPoll from './assessment/survey/aggregated/Poll';
+
+import AssessmentAggregatedMultipleChoiceMultipleAnswerPart from './assessment/survey/aggregated/parts/MultipleChoiceMultipleAnswer';
+import AssessmentAggregatedMultipleChoicePart from './assessment/survey/aggregated/parts/MultipleChoice';
+import AssessmentAggregatedModeledContentPart from './assessment/survey/aggregated/parts/ModeledContent';
+import AssessmentAggregatedMatchingPart from './assessment/survey/aggregated/parts/Matching';
+import AssessmentAggregatedOrderingPart from './assessment/survey/aggregated/parts/Ordering';
 
 import AssessmentAssignmentRef from './assessment/assignment/AssignmentReference';
 import AssessmentAssignment from './assessment/assignment/Assignment';
@@ -255,6 +263,8 @@ const PARSERS = {
 	'pollref': AssessmentPollReference,
 	'assessment.pollsubmission': AssessmentPollSubmittion,
 	'assessment.surveysubmission': AssessmentSurveySubmittion,
+	'assessment.aggregatedsurvey': AssessmentAggregatedSurvey,
+	'assessment.aggregatedpoll': AssessmentAggregatedPoll,
 
 	'assessmentref': AssessmentAssignmentRef,
 	'assessment.assignment': AssessmentAssignment,
@@ -303,6 +313,12 @@ const PARSERS = {
 	'assessment.nongradablemultiplechoicepart': 'assessment.multiplechoicepart',
 	'assessment.nongradablemultiplechoicemultipleanswerpart': 'assessment.multiplechoicepart',
 	'assessment.nongradableorderingpart': 'assessment.orderingpart',
+
+	'assessment.aggregatedmultiplechoicemultipleanswerpart': AssessmentAggregatedMultipleChoiceMultipleAnswerPart,
+	'assessment.aggregatedmultiplechoicepart': AssessmentAggregatedMultipleChoicePart,
+	'assessment.aggregatedmatchingpart': AssessmentAggregatedMatchingPart,
+	'assessment.aggregatedorderingpart': AssessmentAggregatedOrderingPart,
+	'assessment.aggregatedmodeledcontentpart': AssessmentAggregatedModeledContentPart,
 
 	'assessment.fillintheblankshortanswersolution': 'assessment.solution',
 	'assessment.fillintheblankwithwordbanksolution': 'assessment.solution',
