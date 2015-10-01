@@ -11,8 +11,8 @@ import Url from 'url';
 import emptyFunction from '../../utils/empty-function';
 import binDiscussions from '../../utils/forums-bin-discussions';
 
-import AssessmentCollectionStudentView from '../assessment/CollectionStudentView';
-import AssessmentCollectionInstructorView from '../assessment/CollectionInstructorView';
+import AssessmentCollectionStudentView from '../assessment/assignment/CollectionStudentView';
+import AssessmentCollectionInstructorView from '../assessment/assignment/CollectionInstructorView';
 import MediaIndex from '../MediaIndex';
 
 import ActivityStream from './BucketedActivityStream';

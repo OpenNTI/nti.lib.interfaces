@@ -1,5 +1,5 @@
 import Base from './Collection';
-// import {Service} from '../../CommonSymbols';
+// import {Service} from '../../../CommonSymbols';
 
 import HistoryCollection from './AssignmentHistoryCollection';
 

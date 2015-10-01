@@ -48,6 +48,7 @@ import MediaSource from './MediaSource';
 import Video from './Video';
 import VideoRef from './VideoRef';
 
+import CourseGrade from './courses/Grade';
 import CourseGradeBookShell from './courses/GradeBookShell';
 import CourseCatalogEntry from './courses/CatalogEntry';
 import CourseInstance from './courses/Instance';
@@ -81,16 +82,16 @@ import AssessmentSurveyReference from './assessment/survey/SurveyReference';
 import AssessmentPoll from './assessment/survey/Poll';
 import AssessmentPollReference from './assessment/survey/PollReference';
 
-import AssessmentAssignmentRef from './assessment/AssignmentReference';
-import AssessmentAssignment from './assessment/Assignment';
-import AssessmentTimedAssignment from './assessment/TimedAssignment';
-import AssessmentAssignmentPart from './assessment/AssignmentPart';
+import AssessmentAssignmentRef from './assessment/assignment/AssignmentReference';
+import AssessmentAssignment from './assessment/assignment/Assignment';
+import AssessmentTimedAssignment from './assessment/assignment/TimedAssignment';
+import AssessmentAssignmentPart from './assessment/assignment/AssignmentPart';
 
 import AssessmentAssessedQuestionSet from './assessment/AssessedQuestionSet';
 import AssessmentAssessedQuestion from './assessment/AssessedQuestion';
 import AssessmentAssessedPart from './assessment/AssessedPart';
 
-import AssessmentAssignmentSubmission from './assessment/AssignmentSubmission';
+import AssessmentAssignmentSubmission from './assessment/assignment/AssignmentSubmission';
 import AssessmentQuestionSetSubmission from './assessment/QuestionSetSubmission';
 import AssessmentQuestionSubmission from './assessment/QuestionSubmission';
 
@@ -110,18 +111,17 @@ import AssessmentPartMatching from './assessment/parts/Matching';
 import AssessmentPartMultipleChoice from './assessment/parts/MultipleChoice';
 import AssessmentPartOrdering from './assessment/parts/Ordering';
 
-import AssessmentInquiryItem from './assessment/InquiryItem';
-import AssessmentInquiryItemResponse from './assessment/InquiryItemResponse';
-import AssessmentSavePointItem from './assessment/SavePointItem';
+import AssessmentInquiryItem from './assessment/survey/InquiryItem';
+import AssessmentInquiryItemResponse from './assessment/survey/InquiryItemResponse';
+import AssessmentSavePointItem from './assessment/assignment/SavePointItem';
 
 import AssessmentWordBank from './assessment/WordBank';
 import AssessmentWordEntry from './assessment/WordEntry';
 
-import AssessmentGrade from './assessment/Grade';
-import AssessmentAssignmentHistoryItem from './assessment/AssignmentHistoryItem';
-import AssessmentAssignmentHistoryCollection from './assessment/AssignmentHistoryCollection';
-import AssessmentAssignmentFeedback from './assessment/AssignmentFeedback';
-import AssessmentAssignmentFeedbackContainer from './assessment/AssignmentFeedbackContainer';
+import AssessmentAssignmentHistoryItem from './assessment/assignment/AssignmentHistoryItem';
+import AssessmentAssignmentHistoryCollection from './assessment/assignment/AssignmentHistoryCollection';
+import AssessmentAssignmentFeedback from './assessment/assignment/AssignmentFeedback';
+import AssessmentAssignmentFeedbackContainer from './assessment/assignment/AssignmentFeedbackContainer';
 
 import ForumsBoard from './forums/Board';
 import ForumsTopic from './forums/Topic';
@@ -328,7 +328,7 @@ const PARSERS = {
 	'naqwordbank': AssessmentWordBank,
 	'naqwordentry': AssessmentWordEntry,
 
-	'grade': AssessmentGrade,
+	'grade': CourseGrade,
 	'gradebook.grade': 'grade',
 	'assessment.assignmenthistoryitem': AssessmentAssignmentHistoryItem,
 	'assessment.userscourseassignmenthistory': AssessmentAssignmentHistoryCollection,

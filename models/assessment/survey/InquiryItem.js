@@ -1,8 +1,8 @@
-import Base from '../Base';
+import Base from '../../Base';
 
 import {
 	Parser as parse
-} from '../../CommonSymbols';
+} from '../../../CommonSymbols';
 
 export default class InqueryItem extends Base {
 	constructor (service, parent, data) {

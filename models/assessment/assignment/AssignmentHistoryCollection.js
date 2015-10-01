@@ -1,9 +1,9 @@
-import Base from '../Base';
+import Base from '../../Base';
 import {
 	DateFields,
 	Parser as parse
-} from '../../CommonSymbols';
-import pluck from '../../utils/pluck';
+} from '../../../CommonSymbols';
+import pluck from '../../../utils/pluck';
 
 export default class AssignmentHistoryCollection extends Base {
 	constructor (service, parent, data) {

@@ -1,7 +1,7 @@
-import Base from '../Base';
+import Base from '../../Base';
 import {
 	Parser as parse
-} from '../../CommonSymbols';
+} from '../../../CommonSymbols';
 
 export default class SavePointItem extends Base {
 	constructor (service, parent, data) {

@@ -1,8 +1,8 @@
-import Base from '../Base';
+import Base from '../../Base';
 import {
 	Service,
 	Parser as parse
-} from '../../CommonSymbols';
+} from '../../../CommonSymbols';
 
 
 export default class AssignmentFeedbackContainer extends Base {

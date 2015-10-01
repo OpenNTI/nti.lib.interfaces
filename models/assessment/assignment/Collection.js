@@ -6,11 +6,11 @@
  * assignments that we can currently see.
  */
 
-import Base from '../Base';
-import PageSource from '../ListBackedPageSource';
+import Base from '../../Base';
+import PageSource from '../../ListBackedPageSource';
 import {
 	Parser as parse
-} from '../../CommonSymbols';
+} from '../../../CommonSymbols';
 
 import ActivityMixin from './AssignmentActivityMixin';
 

@@ -1,12 +1,12 @@
-import Base from '../Base';
+import Base from '../../Base';
 import {
 	Service,
 	ReParent,
 	DateFields,
 	Parser as parse,
 	MODEL_INSTANCE_CACHE_KEY
-} from '../../CommonSymbols';
-import parseDate from '../../utils/parse-date';
+} from '../../../CommonSymbols';
+import parseDate from '../../../utils/parse-date';
 
 const RENAME = Symbol.for('TakeOver');
 

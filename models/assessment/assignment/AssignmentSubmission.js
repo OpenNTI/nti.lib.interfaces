@@ -1,9 +1,9 @@
-import Base from '../Base';
+import Base from '../../Base';
 import {
 	Parser as parse
-} from '../../CommonSymbols';
+} from '../../../CommonSymbols';
 
-import Submission from '../mixins/Submission';
+import Submission from '../../mixins/Submission';
 
 export default class AssignmentSubmission extends Base {
 
