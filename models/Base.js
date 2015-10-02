@@ -48,9 +48,11 @@ function GenEnumerabilityOf (obj, propName) {
 
 function dateGetter (key) {
 	const symbol = Symbol.for(`parsedDate:${key}`);
+	let last;
 	return function () {
-		if (typeof this[symbol] !== 'object') {
-			this[symbol] = parseDate(this[key]);
+		if (typeof this[symbol] !== 'object' || this[key] !== last) {
+			last = this[key];
+			this[symbol] = parseDate(last);
 		}
 		return this[symbol];
 	};
