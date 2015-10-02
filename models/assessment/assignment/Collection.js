@@ -46,6 +46,7 @@ function fillMaps (oValue, o, oKey) {
 	}
 }
 
+const omit = a => a.isNonSubmit() && a.title === 'Final Grade';
 
 const toNumeric = o => o ? o.getTime() : 0;
 const normalize = o => o === 0 ? 0 : o / Math.abs(o);
@@ -152,6 +153,7 @@ export default class Collection extends Base {
 	[ORDER_BY_COMPLETION] (filter) {
 		//The return value of getAssignments is volatile, and can be manipulated without worry.
 		const all = this.getAssignments()
+			.filter(a => !omit(a))
 			//pre-sort by title so when we group, they'll already be in order with in the groups.
 			.sort(this.sortComparatorTitle);
 
@@ -176,6 +178,7 @@ export default class Collection extends Base {
 	[ORDER_BY_DUE_DATE] (filter) {
 		//The return value of getAssignments is volatile, and can be manipulated without worry.
 		const all = this.getAssignments()
+			.filter(a => !omit(a))
 			//pre-sort by title so when we group, they'll already be in order with in the groups.
 			.sort(this.sortComparatorTitle);
 
@@ -232,7 +235,7 @@ export default class Collection extends Base {
 
 			delete ungrouped[assignmentId];
 
-			if (assignment && (!filter || filter(assignment))) {
+			if (assignment && !omit(assignment) && (!filter || filter(assignment))) {
 				let group = getGroup(node, order, binId);
 				group.items.push(assignment);
 			}
