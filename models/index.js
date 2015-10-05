@@ -70,6 +70,7 @@ import CourseRecursiveStreamByBucket from './courses/activity/RecursiveStreamByB
 import CourseProgress from './courses/Progress';
 import CourseLeasonOverview from './courses/overview/LeasonOverview';
 import CourseLeasonOverviewGroup from './courses/overview/Group';
+import CourseLeasonOverviewVideoSet from './courses/overview/VideoSet';
 
 
 
@@ -198,6 +199,7 @@ const PARSERS = {
 
 	'ntilessonoverview': CourseLeasonOverview,
 	'nticourseoverviewgroup': CourseLeasonOverviewGroup,
+	'ntivideoset': CourseLeasonOverviewVideoSet,
 
 	'analytics.externalresourceevent': ExternalResourceEvent,
 	'analytics.assessmentevent': AssessmentEvent,
@@ -266,7 +268,7 @@ const PARSERS = {
 	'assessment.aggregatedsurvey': AssessmentAggregatedSurvey,
 	'assessment.aggregatedpoll': AssessmentAggregatedPoll,
 
-	'assessmentref': AssessmentAssignmentRef,
+	'assignmentref': AssessmentAssignmentRef,
 	'assessment.assignment': AssessmentAssignment,
 	'assessment.timedassignment': AssessmentTimedAssignment,
 
