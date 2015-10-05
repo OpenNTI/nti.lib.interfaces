@@ -8,6 +8,7 @@ import {
 } from '../../../CommonSymbols';
 import parseDate from '../../../utils/parse-date';
 
+const HISTORY = 'History';
 const RENAME = Symbol.for('TakeOver');
 
 const isNewer = (x, i) => parseDate(x['Last Modified']) > i.getLastModified();
@@ -102,6 +103,9 @@ export default class Assignment extends Base {
 		return date > this.getDueDate();
 	}
 
+	get hasSubmission () {
+		return this.hasLink(HISTORY);
+	}
 
 	getAssignedDate () {
 		return this.getAvailableForSubmissionBeginning();
@@ -167,7 +171,7 @@ export default class Assignment extends Base {
 	 * @return {Promise} The history.
 	 */
 	loadHistory () {
-		return this.fetchLinkParsed('History');
+		return this.fetchLinkParsed(HISTORY);
 	}
 
 
