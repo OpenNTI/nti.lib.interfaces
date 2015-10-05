@@ -56,8 +56,8 @@ export default class BucketedActivityStream extends Base {
 		const start = new Date();
 		//Notice we're not returning this promise...
 		Promise.resolve(this[ACTIVE_REQUEST])
-			.catch(()=>{}) //ignore errors from that request. (they'll be handled by its caller)
-			.then(()=> {
+			.catch(() => {}) //ignore errors from that request. (they'll be handled by its caller)
+			.then(() => {
 				// Because we're simply waiting for the current (if any) request to finish, we do
 				// not need to chain/pend the new request to it (by returning its promise)
 				this[ACTIVE_REQUEST] = this.fetchLinkParsed(SOURCE, { MostRecent: this.nextPageParam })
