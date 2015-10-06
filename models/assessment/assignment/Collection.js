@@ -128,7 +128,7 @@ export default class Collection extends Base {
 					let assignment = find(this.getAssignments() || [], assessmentId);
 					if (assignment && assignment.getID() !== assessmentId) {
 						console.warn('Part of an assignment was given as the assignment, patching: "%s"', assessmentId);
-						assessmentToOutlineMap[assessmentId] = assignment.getID();
+						assessmentToOutlineMap[assignment.getID()] = nodeId;
 						outlineMap[nodeId].push(assignment.getID());
 					}
 				}
