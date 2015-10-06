@@ -1,5 +1,7 @@
 import Question from '../Question';
 
+import {HISTORY_LINK} from '../Constants';
+
 export default class Poll extends Question {
 	constructor (service, parent, data) {
 		super(service, parent, data, {isPoll: true});
@@ -22,6 +24,6 @@ export default class Poll extends Question {
 
 
 	loadPreviousSubmission () {
-		return this.fetchLinkParsed('History');
+		return this.fetchLinkParsed(HISTORY_LINK);
 	}
 }

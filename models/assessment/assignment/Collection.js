@@ -12,6 +12,8 @@ import {
 	Parser as parse
 } from '../../../CommonSymbols';
 
+import {HISTORY_LINK} from '../Constants';
+
 import ActivityMixin from './AssignmentActivityMixin';
 
 const ORDER_BY_COMPLETION = Symbol('ORDER_BY_COMPLETION');
@@ -72,7 +74,7 @@ export default class Collection extends Base {
 	constructor (service, parent, assignments, assessments, historyLink) {
 		super(service, parent, void 0, ActivityMixin, {
 			Links: [
-				{rel: 'History', href: historyLink}
+				{rel: HISTORY_LINK, href: historyLink}
 			]
 		});
 
@@ -155,7 +157,7 @@ export default class Collection extends Base {
 
 
 	sortComparatorComplete (a, b) {
-		const v = o => o.hasLink('History') ? 1 : -1;
+		const v = o => o.hasLink(HISTORY_LINK) ? 1 : -1;
 		return v(a) - v(b);
 	}
 
@@ -175,7 +177,7 @@ export default class Collection extends Base {
 		let [incomplete, complete] = groups;
 
 		for (let assignment of all) {
-			let group = (assignment.hasLink('History')) ? complete : incomplete;
+			let group = (assignment.hasLink(HISTORY_LINK)) ? complete : incomplete;
 			if (!filter || filter(assignment)) {
 				group.items.push(assignment);
 			}
