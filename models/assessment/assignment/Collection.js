@@ -121,6 +121,16 @@ export default class Collection extends Base {
 						console.warn('Duplicated key!', assessmentToOutlineMap[assessmentId], nodeId);
 					}
 					assessmentToOutlineMap[assessmentId] = nodeId;
+
+					//For some reason, we sometimes get QuestionSet/Question IDs
+					//here that belong to Assignments instead of the Assignment IDs...
+					//So, we have to make sure the Assignment ID is in these lists and are mapped.
+					let assignment = find(this.getAssignments() || [], assessmentId);
+					if (assignment && assignment.getID() !== assessmentId) {
+						console.warn('Part of an assignment was given as the assignment, patching: "%s"', assessmentId);
+						assessmentToOutlineMap[assessmentId] = assignment.getID();
+						outlineMap[nodeId].push(assignment.getID());
+					}
 				}
 			}
 		}
@@ -293,23 +303,13 @@ export default class Collection extends Base {
 
 
 	getAssessmentIdsUnder (outlineNodeId) {
-		const {outlineMap: map = {}} = this;
-		return map[outlineNodeId];
+		return this.outlineMap[outlineNodeId];
 	}
 
 
 	getOutlineNodeIdForAssessment (thing) {
-		const {outlineMap: map = {}} = this;
 		const assessmentId = typeof thing === 'string' ? thing : thing.getID();
-
-		for (let id of Object.keys(map)) {
-			const assessments = map[id] || [];
-			if (assessments.indexOf(assessmentId) !== -1) {
-				return id;
-			}
-		}
-
-		return void 0;
+		return this.assessmentToOutlineMap[assessmentId];
 	}
 
 
