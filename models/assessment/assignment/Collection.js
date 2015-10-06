@@ -293,8 +293,23 @@ export default class Collection extends Base {
 
 
 	getAssessmentIdsUnder (outlineNodeId) {
-		let {outlineMap: map = {}} = this;
+		const {outlineMap: map = {}} = this;
 		return map[outlineNodeId];
+	}
+
+
+	getOutlineNodeIdForAssessment (thing) {
+		const {outlineMap: map = {}} = this;
+		const assessmentId = typeof thing === 'string' ? thing : thing.getID();
+
+		for (let id of Object.keys(map)) {
+			const assessments = map[id] || [];
+			if (assessments.indexOf(assessmentId) !== -1) {
+				return id;
+			}
+		}
+
+		return void 0;
 	}
 
 
