@@ -11,4 +11,8 @@ export default class AggregatedPoll extends Base {
 		// pollId
 	}
 
+
+	getID () {
+		return this.pollId;
+	}
 }

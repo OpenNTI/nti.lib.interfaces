@@ -11,4 +11,7 @@ export default class AggregatedSurveyResults extends Base {
 		// surveyId
 	}
 
+	getQuestions () {
+		return this.questions;
+	}
 }

@@ -4,9 +4,9 @@ import Base from '../../../../Base';
 export default class Part extends Base {
 
 	constructor (service, parent, data) {
-		super(service, parent, data);
+		super(service, parent, data, {isAggregated: true});
 
-		console.log(this);
+		// console.log(this);
 	}
 
 }
