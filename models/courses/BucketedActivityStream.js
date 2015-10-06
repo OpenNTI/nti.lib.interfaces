@@ -3,6 +3,7 @@ import Base from '../Base';
 import moment from 'moment';
 
 import browser from '../../utils/browser';
+import ProxyObject from '../../utils/ProxyObject';
 
 const SOURCE = 'source';
 const ACTIVE_REQUEST = Symbol('active');
@@ -145,6 +146,17 @@ export default class BucketedActivityStream extends Base {
 
 
 	[BUILD_BINS] (outline, assignmentsCollection, initialActivity) {
+		const assignmentPropertiesToProxy = [
+			'MimeType',
+			'isLate',
+			'hasSubmission',
+			'getAssignedDate',
+			'getDueDate',
+			'getID',
+			'getQuestionCount',
+			'title'
+		];
+
 		const thisWeek = getWeek();
 
 		const relevantLessons = outline.getFlattenedList()
@@ -158,7 +170,13 @@ export default class BucketedActivityStream extends Base {
 		}
 
 		for (let assignment of openAssignments) {
-			this[ADD_ITEM_TO_BIN](assignment, assignment.getDueDate() || thisWeek);
+			const outlineNodeId = assignmentsCollection.getOutlineNodeIdForAssessment(assignment);
+			const outlineNode = outline.getNode(outlineNodeId);
+
+			const obj = new ProxyObject(assignment, assignmentPropertiesToProxy, { outlineNode });
+
+
+			this[ADD_ITEM_TO_BIN](obj, assignment.getDueDate() || thisWeek);
 		}
 
 		this[APPLY_ACTIVITY](initialActivity);
