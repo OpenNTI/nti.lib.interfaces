@@ -171,7 +171,7 @@ export default class BucketedActivityStream extends Base {
 
 		for (let assignment of openAssignments) {
 			const outlineNodeId = assignmentsCollection.getOutlineNodeIdForAssessment(assignment);
-			const outlineNode = outline.getNode(outlineNodeId);
+			const outlineNode = outlineNodeId && outline.getNode(outlineNodeId);
 
 			const obj = new ProxyObject(assignment, assignmentPropertiesToProxy, { outlineNode });
 
