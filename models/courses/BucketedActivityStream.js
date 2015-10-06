@@ -147,14 +147,14 @@ export default class BucketedActivityStream extends Base {
 	[BUILD_BINS] (outline, assignmentsCollection, initialActivity) {
 		const thisWeek = getWeek();
 
-		const relevantLeasons = outline.getFlattenedList()
+		const relevantLessons = outline.getFlattenedList()
 								.filter(o => 'AvailableBeginning' in o && o.getAvailableBeginning() < thisWeek);
 
 		const openAssignments = assignmentsCollection.getAssignments()
 								.filter(a => !a.getAssignedDate() || (a.getAssignedDate() < thisWeek));
 
-		for (let leason of relevantLeasons) {
-			this[ADD_ITEM_TO_BIN](leason, leason.getAvailableBeginning());
+		for (let lesson of relevantLessons) {
+			this[ADD_ITEM_TO_BIN](lesson, lesson.getAvailableBeginning());
 		}
 
 		for (let assignment of openAssignments) {
