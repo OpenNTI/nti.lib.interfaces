@@ -14,4 +14,9 @@ export default class AggregatedSurveyResults extends Base {
 	getQuestions () {
 		return this.questions;
 	}
+
+	getQuestion (id) {
+		return this.questions.reduce((found, q) =>
+			found || (q.getID() === id && q), null);
+	}
 }
