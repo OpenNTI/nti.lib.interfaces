@@ -78,7 +78,9 @@ export default class OutlineNode extends Outline {
 	get isOpen () {}
 
 
-	get isLeaf () {}
+	get isLeaf () {
+		return !this.contents || this.contents.length === 0;
+	}
 
 
 	get isHeading () {}
