@@ -31,6 +31,11 @@ export default class Question extends Base {
 	}
 
 
+	getPart (index) {
+		return (this.parts || [])[index];
+	}
+
+
 	getVideos () {
 		//Eeewww...
 		let all = this.getModel('assessment.part').prototype.getVideos.call(this);
