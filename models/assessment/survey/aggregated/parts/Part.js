@@ -9,4 +9,8 @@ export default class Part extends Base {
 		// console.log(this);
 	}
 
+
+	getResults (/*questionPart*/) {
+		console.error('Not Implemented');
+	}
 }

@@ -7,4 +7,9 @@ export default class AggregatedModeledContentPart extends Base {
 		super(service, parent, data);
 	}
 
+
+	getResults () {
+		const {Results: results} = this;
+		return results;
+	}
 }

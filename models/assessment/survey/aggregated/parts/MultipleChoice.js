@@ -7,4 +7,10 @@ export default class AggregatedMultipleChoicePart extends Base {
 		super(service, parent, data);
 	}
 
+
+	getResults (part) {
+		const {Results: results} = this;
+
+		return part.choices.map((label, index)=> ({label, index, count: results[index] || 0}));
+	}
 }
