@@ -9,8 +9,14 @@ export default class AggregatedMultipleChoicePart extends Base {
 
 
 	getResults (part) {
-		const {Results: results} = this;
-
-		return part.choices.map((label, index)=> ({label, index, count: results[index] || 0}));
+		const {Results: results, Total: total} = this;
+		return part.choices.map((label, index)=> ({
+			label,
+			index,
+			count: results[index] || 0,
+			get percent () {
+				return ((this.count || 0) / total) * 100;
+			}
+		}));
 	}
 }

@@ -9,7 +9,7 @@ export default class AggregatedMatchingPart extends Base {
 
 
 	getResults (part) {
-		const {Results: results} = this;
+		const {Results: results, Total: total} = this;
 		let mapped = [];
 
 		// console.groupCollapsed('Matching');
@@ -22,7 +22,12 @@ export default class AggregatedMatchingPart extends Base {
 			for (let valueIndex of Object.keys(mapping)) {
 				let value = part.values[valueIndex];
 				if (value) {
-					mapping[value] = mapping[valueIndex];
+					mapping[value] = {
+						count: mapping[valueIndex],
+						get percent () {
+							return ((this.count || 0) / total) * 100;
+						}
+					};
 				}
 				delete mapping[valueIndex];
 			}
