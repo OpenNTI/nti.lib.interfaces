@@ -4,30 +4,6 @@ import XML from 'elementtree';
 import PageSource from './TableOfContentsBackedPageSource';
 import Node from './TableOfContentsNode';
 
-function cleanNodes (x, o) {
-	function getParent (e) {
-		let key = 'ntiid',
-			id = e.get(key);
-
-		if (!id) {
-			key = 'target-ntiid';
-			id = e.get(key);
-		}
-
-		return x.find('*[@' + key + '="' + id + '"]/..') || {remove: ()=> {}};
-	}
-
-	let hiddenMethod = Symbol.for('ToC:PerformNodeFilter');
-
-	let p = o.parent(hiddenMethod);
-
-	if (p) {
-		p[hiddenMethod](x, e=>getParent(e).remove(e));
-	}
-
-	return x;
-}
-
 
 export default class XMLBasedTableOfContents extends Base {
 
@@ -45,8 +21,6 @@ export default class XMLBasedTableOfContents extends Base {
 			xml,
 			root: new Node(this, xml.getroot(), this)
 		});
-
-		cleanNodes(this.xml, this);
 	}
 
 
