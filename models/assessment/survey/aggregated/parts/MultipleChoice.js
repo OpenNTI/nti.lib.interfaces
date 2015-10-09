@@ -11,12 +11,15 @@ export default class AggregatedMultipleChoicePart extends Base {
 	getResults (part) {
 		const {Results: results, Total: total} = this;
 		return part.choices.map((label, index)=> ({
+			labelPrefix: String.fromCharCode(65 + index) + '.',
 			label,
-			index,
-			count: results[index] || 0,
-			get percent () {
-				return ((this.count || 0) / total) * 100;
-			}
+			items: [{
+				//label: 'Chosen',
+				count: results[index] || 0,
+				get percent () {
+					return ((this.count || 0) / total) * 100;
+				}
+			}]
 		}));
 	}
 }

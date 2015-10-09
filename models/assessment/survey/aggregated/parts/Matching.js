@@ -9,6 +9,8 @@ export default class AggregatedMatchingPart extends Base {
 
 
 	getResults (part) {
+		const ix = x => part.values.indexOf(x[0]);
+		const byValuesOrder = (a, b) => ix(a) - ix(b);
 		const {Results: results, Total: total} = this;
 		let mapped = [];
 
@@ -36,7 +38,20 @@ export default class AggregatedMatchingPart extends Base {
 			// console.log(label, '-> ', mapping);
 		}
 
+		// console.log('Value Order: ', part.values);
+
 		// console.groupEnd('Matching');
-		return mapped;
+		return mapped.map(item => {
+			const remap = Object.assign({items: []}, item);
+			const {matchedToValues: map} = item;
+
+			const entries = Object.entries(map).sort(byValuesOrder);
+
+			for (let [label, value] of entries) {
+				remap.items.push(Object.assign({label}, value));
+			}
+
+			return remap;
+		});
 	}
 }
