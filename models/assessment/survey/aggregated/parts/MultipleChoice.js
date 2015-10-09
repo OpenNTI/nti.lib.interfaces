@@ -16,6 +16,7 @@ export default class AggregatedMultipleChoicePart extends Base {
 			series: [{
 				//label: 'Chosen',
 				count: results[index] || 0,
+				total,
 				get percent () {
 					return ((this.count || 0) / total) * 100;
 				}

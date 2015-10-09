@@ -1,4 +1,4 @@
-import Base from './Part';
+import Base from './Ordering';
 // import {Parser as parse} from '../../../../../CommonSymbols';
 
 export default class AggregatedMatchingPart extends Base {
@@ -9,49 +9,23 @@ export default class AggregatedMatchingPart extends Base {
 
 
 	getResults (part) {
-		const ix = x => part.values.indexOf(x[0]);
-		const byValuesOrder = (a, b) => ix(a) - ix(b);
-		const {Results: results, Total: total} = this;
-		let mapped = [];
+		let results = super.getResults(part);
+		let pivotData = [];
 
-		// console.groupCollapsed('Matching');
+		for (let value of part.values) {
 
-		for (let labelIndex of Object.keys(results)) {
+			let series = results
+				.filter(x => value in x.matchedToValues)
+				.map(x => Object.assign({ label: x.label, labelIndex: x.labelIndex }, x.matchedToValues[value]));
 
-			let mapping = Object.assign({}, results[labelIndex]);
-			let label = part.labels[labelIndex];
 
-			for (let valueIndex of Object.keys(mapping)) {
-				let value = part.values[valueIndex];
-				if (value) {
-					mapping[value] = {
-						count: mapping[valueIndex],
-						get percent () {
-							return ((this.count || 0) / total) * 100;
-						}
-					};
-				}
-				delete mapping[valueIndex];
-			}
-
-			mapped.push({label, matchedToValues: mapping});
-			// console.log(label, '-> ', mapping);
+			pivotData.push({
+				label: value,
+				series
+			});
 		}
 
-		// console.log('Value Order: ', part.values);
-
-		// console.groupEnd('Matching');
-		return mapped.map(item => {
-			const remap = Object.assign({series: []}, item);
-			const {matchedToValues: map} = item;
-
-			const entries = Object.entries(map).sort(byValuesOrder);
-
-			for (let [label, value] of entries) {
-				remap.series.push(Object.assign({label}, value));
-			}
-
-			return remap;
-		});
+		console.log('Matching pivots the Ordering Data: ', results, '->', pivotData);
+		return pivotData;
 	}
 }
