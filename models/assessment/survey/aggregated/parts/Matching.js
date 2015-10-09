@@ -42,13 +42,13 @@ export default class AggregatedMatchingPart extends Base {
 
 		// console.groupEnd('Matching');
 		return mapped.map(item => {
-			const remap = Object.assign({items: []}, item);
+			const remap = Object.assign({series: []}, item);
 			const {matchedToValues: map} = item;
 
 			const entries = Object.entries(map).sort(byValuesOrder);
 
 			for (let [label, value] of entries) {
-				remap.items.push(Object.assign({label}, value));
+				remap.series.push(Object.assign({label}, value));
 			}
 
 			return remap;

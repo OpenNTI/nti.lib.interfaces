@@ -13,7 +13,7 @@ export default class AggregatedMultipleChoicePart extends Base {
 		return part.choices.map((label, index)=> ({
 			labelPrefix: String.fromCharCode(65 + index) + '.',
 			label,
-			items: [{
+			series: [{
 				//label: 'Chosen',
 				count: results[index] || 0,
 				get percent () {
