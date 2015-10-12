@@ -2,13 +2,23 @@ import QuestionSet from '../QuestionSet';
 
 import {HISTORY_LINK} from '../Constants'; //Assessment Constants
 
-import {AGGREGATED_LINK} from './Constants'; //Survey Constants
+import {AGGREGATED_LINK, REPORT_LINK} from './Constants'; //Survey Constants
 
 const AGGREGATED = Symbol(AGGREGATED_LINK);
 
 export default class Survey extends QuestionSet {
 	constructor (service, parent, data) {
 		super(service, parent, data);
+	}
+
+
+	get hasAggregationData () {
+		return this.hasLink(AGGREGATED_LINK);
+	}
+
+
+	get hasReport () {
+		return this.hasLink(REPORT_LINK);
 	}
 
 

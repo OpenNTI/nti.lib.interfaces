@@ -2,11 +2,21 @@ import Question from '../Question';
 
 import {HISTORY_LINK} from '../Constants'; //Assessment Constants
 
-import {AGGREGATED_LINK} from './Constants'; //Survey Constants
+import {AGGREGATED_LINK, REPORT_LINK} from './Constants'; //Survey Constants
 
 export default class Poll extends Question {
 	constructor (service, parent, data) {
 		super(service, parent, data, {isPoll: true});
+	}
+
+
+	get hasAggregationData () {
+		return this.hasLink(AGGREGATED_LINK);
+	}
+
+
+	get hasReport () {
+		return this.hasLink(REPORT_LINK);
 	}
 
 
