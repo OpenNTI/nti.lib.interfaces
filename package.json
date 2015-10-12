@@ -15,7 +15,7 @@
 	"dependencies": {
 		"btoa": "^1.1.2",
 		"elementtree": "^0.1.6",
-		"fbjs": "^0.2.1",
+		"fbjs": "^0.3.1",
 		"media-typer": "^0.3.0",
 		"moment": "^2.8.3",
 		"node-uuid": "^1.4.3",
