@@ -4,6 +4,8 @@ import {HISTORY_LINK} from '../Constants'; //Assessment Constants
 
 import {AGGREGATED_LINK, REPORT_LINK} from './Constants'; //Survey Constants
 
+import wait from '../../../utils/wait';
+
 const AGGREGATED = Symbol(AGGREGATED_LINK);
 
 export default class Survey extends QuestionSet {
@@ -27,6 +29,10 @@ export default class Survey extends QuestionSet {
 
 		if (!p) {
 			p = this[AGGREGATED] = this.fetchLinkParsed(AGGREGATED_LINK);
+			//cleanup
+			p.catch(()=> null)
+				.then(()=> wait(1000)) //one second after promise completes.
+				.then(()=> delete this[AGGREGATED]);
 		}
 
 		return p;
