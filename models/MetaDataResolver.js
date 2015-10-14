@@ -1,9 +1,11 @@
 import {Service} from '../CommonSymbols';
 
 import Vimeo from './MetaDataResolverForVimeo';
+import YouTube from './MetaDataResolverForYouTube';
 
 const services = {
-	vimeo: Vimeo
+	vimeo: Vimeo,
+	youtube: YouTube
 };
 
 const resolve = Promise.reject.bind(Promise, 'No resolver for service');

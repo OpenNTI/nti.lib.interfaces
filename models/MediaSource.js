@@ -18,17 +18,26 @@ export default class MediaSource extends Base {
 	}
 
 
-	getPoster () {
-		return this.poster ?
-			Promise.resolve(this.poster) :
+	getProperty (prop) {
+		return this[prop] ?
+			Promise.resolve(this[prop]) :
 			this.getResolver()
-				.then(()=>this.poster);
+				.then(()=>this[prop]);
 	}
 
+
+	getPoster () {
+		return this.getProperty('poster');
+	}
+
+
 	getThumbnail () {
-		return this.thumbnail ?
-			Promise.resolve(this.thumbnail) :
-			this.getResolver()
+		return this.getProperty('thumbnail')
 				.then(()=>this.thumbnail || this.poster);
+	}
+
+
+	getTitle () {
+		return this.getProperty('title');
 	}
 }

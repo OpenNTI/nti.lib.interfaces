@@ -30,7 +30,7 @@ import mixin from '../utils/mixin';
 import waitFor from '../utils/waitfor';
 import wait from '../utils/wait';
 
-import {Context, Server, Service, Pending} from '../CommonSymbols';
+import {Context, Server, Service, SiteName, Pending} from '../CommonSymbols';
 
 const ENROLLMENT = Symbol('enrollment');
 
@@ -83,6 +83,11 @@ export default class ServiceDocument {
 
 			pending.push(this.waitForPending());
 		}
+	}
+
+
+	getSiteName () {
+		return this[Server].config.siteName || (this[Context] || {})[SiteName];
 	}
 
 

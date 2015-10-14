@@ -170,10 +170,10 @@ export default class Instance extends Base {
 		}
 
 		let contents = o => o ? o.getContents() : Promise.reject(NOT_DEFINED);
-		let getId = o => o ? o.getID() : null;
+		let getID = o => o ? o.getID() : null;
 
-		let sectionId = getId(this.Discussions);
-		let parentId = getId(this.ParentDiscussions);
+		let sectionId = getID(this.Discussions);
+		let parentId = getID(this.ParentDiscussions);
 
 		return Promise.all([
 			contents(this.Discussions).catch(logAndResume),
