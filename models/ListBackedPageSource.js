@@ -35,4 +35,17 @@ export default class ListBackedPageSource {
 		};
 	}
 
+
+	contains (node) {
+		return this.find(node) >= 0;
+	}
+
+
+	find (node) {
+		let nodes = this.pagesInRange;
+		let nodeId = node && (typeof node === 'string' ? node : node.getID());
+		let matcher = n => n.getID() === nodeId;
+
+		return nodes.findIndex(matcher);
+	}
 }
