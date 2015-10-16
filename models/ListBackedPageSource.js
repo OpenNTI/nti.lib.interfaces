@@ -42,10 +42,8 @@ export default class ListBackedPageSource {
 
 
 	find (node) {
-		let nodes = this.pagesInRange;
 		let nodeId = node && (typeof node === 'string' ? node : node.getID());
 		let matcher = n => n.getID() === nodeId;
-
-		return nodes.findIndex(matcher);
+		return this.list.findIndex(matcher);
 	}
 }
