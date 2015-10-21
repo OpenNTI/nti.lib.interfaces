@@ -50,6 +50,8 @@ import VideoRef from './VideoRef';
 
 import CourseGrade from './courses/Grade';
 import CourseGradeBookShell from './courses/GradeBookShell';
+import CourseGradeByAssignment from './courses/GradeBookByAssignment';
+import CourseGradeUserSummary from './courses/GradeBookUserSummary';
 import CourseCatalogEntry from './courses/CatalogEntry';
 import CourseInstance from './courses/Instance';
 import CourseAdministrativeRole from './courses/AdministrativeRole';
@@ -128,6 +130,7 @@ import AssessmentWordBank from './assessment/WordBank';
 import AssessmentWordEntry from './assessment/WordEntry';
 
 import AssessmentAssignmentHistoryItem from './assessment/assignment/AssignmentHistoryItem';
+import AssessmentAssignmentHistoryItemSummary from './assessment/assignment/AssignmentHistoryItemSummary';
 import AssessmentAssignmentHistoryCollection from './assessment/assignment/AssignmentHistoryCollection';
 import AssessmentAssignmentFeedback from './assessment/assignment/AssignmentFeedback';
 import AssessmentAssignmentFeedbackContainer from './assessment/assignment/AssignmentFeedbackContainer';
@@ -179,6 +182,9 @@ const PARSERS = {
 	'openbadges.badge': 'badge',
 	'openbadges.issuer': BadgeIssuer,
 	'gradebookshell': CourseGradeBookShell,
+
+	'GradeBookByAssignmentSummary': CourseGradeByAssignment,
+	'UserGradeBookSummary': CourseGradeUserSummary,
 
 	'contentpackage': ContentPackage,
 	'contentpackagebundle': ContentBundle,
@@ -349,6 +355,8 @@ const PARSERS = {
 	'grade': CourseGrade,
 	'gradebook.grade': 'grade',
 	'assessment.assignmenthistoryitem': AssessmentAssignmentHistoryItem,
+	'assessment.assignmenthistoryitemsummary': AssessmentAssignmentHistoryItemSummary,
+	'assessment.userscourseassignmenthistoryitemsummary': 'assessment.assignmenthistoryitemsummary',
 	'assessment.userscourseassignmenthistory': AssessmentAssignmentHistoryCollection,
 	'assessment.userscourseassignmenthistoryitem': 'assessment.assignmenthistoryitem',
 	'assessment.userscourseassignmenthistoryitemfeedback': AssessmentAssignmentFeedback,
@@ -433,7 +441,7 @@ function getType (o) {
 	if (!type) {
 		type = o.Class;
 		if (type) {
-			console.error('Object does not have a MimeType and has fallen back to Class name resolve: ' + type, o);
+			console.error('Object does not have a MimeType and has fallen back to Class name resolve: ' + type, JSON.stringify(o).substr(0, 50));
 		} else {
 			console.error('Object does not have an identity', o);
 		}
