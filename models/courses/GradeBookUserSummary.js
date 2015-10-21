@@ -34,6 +34,6 @@ export default class GradeBookUserSummary extends Base {
 	get grade () {
 		const {HistoryItemSummary: item} = this;
 		const {grade} = item || {};
-		return grade ? grade.value : null;
+		return grade;
 	}
 }
