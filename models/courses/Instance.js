@@ -31,7 +31,9 @@ export default class Instance extends Base {
 
 		let bundle = this[parse]('ContentPackageBundle');
 
-		bundle.on('change', this.onChange.bind(this));
+		if (bundle) {
+			bundle.on('change', this.onChange.bind(this));
+		}
 
 		this[parse]('GradeBook');
 		this[parse]('ParentDiscussions');
