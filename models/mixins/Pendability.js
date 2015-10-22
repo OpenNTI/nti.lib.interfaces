@@ -50,7 +50,7 @@ export default {
 
 
 	waitForPending () {
-		return waitFor(this[Pending]);
+		return waitFor(this[Pending]).then(()=> this);
 	}
 
 };

@@ -362,7 +362,11 @@ function resolveCatalogEntry (service, inst) {
 	if (cached) {
 		work = Promise.resolve(cached);
 	} else {
-		work = service.get(url).then(d=> cache.set(url, d) && d);
+		work = service.get(url)
+			.then(d => {
+				cache.set(url, d);
+				return d;
+			});
 	}
 
 	return work.then(cce =>

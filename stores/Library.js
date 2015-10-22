@@ -1,21 +1,18 @@
 import {EventEmitter} from 'events';
 
 import mixin from '../utils/mixin';
-import waitFor from '../utils/waitfor';
 import unique from '../utils/array-unique';
 
 import {parseListFn} from '../models';
 import Pendability from '../models/mixins/Pendability';
 
-import {Pending, Service} from '../CommonSymbols';
+import {Service} from '../CommonSymbols';
 
 let instances = {};
 
 export default class Library extends EventEmitter {
 
 	static load (service, name, reload) {
-		let instance = instances[name];
-
 		function make (contentPackages, contentBundles, enrolledCourses, administeredCourses) {
 			return new Library(service, name, contentPackages, contentBundles, enrolledCourses, administeredCourses);
 		}
@@ -26,12 +23,12 @@ export default class Library extends EventEmitter {
 			resolveCollection(service, service.getCoursesEnrolledURL(), reload),
 			resolveCollection(service, service.getCoursesAdministeringURL(), reload)
 		])
-			.then(data=>waitFor((instance = make(...data))[Pending]))
-			.then(()=>instances[name] = instance))
+			.then(data=> make(...data).waitForPending())
+			.then(instance => instances[name] = instance)
 			.catch(e=> {
 				console.error(e.stack || e.message || e);
 				return Promise.reject(e);
-			});
+			}));
 	}
 
 
@@ -166,7 +163,10 @@ function resolveCollection (s, url, ignoreCache) {
 	if (!cached || ignoreCache) {
 		result = s.get(url)
 			.catch(()=>({titles: [], Items: []}))
-			.then(data =>cache.set(url, data) && data);
+			.then(data => {
+				cache.set(url, data);
+				return data;
+			});
 	}
 	else {
 		result = Promise.resolve(cached);
