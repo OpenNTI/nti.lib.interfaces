@@ -2,7 +2,7 @@ import {EventEmitter} from 'events';
 
 import browser from '../utils/browser';
 import mixin from '../utils/mixin';
-import {thread} from '../utils/UserDataThreader';
+import {threadThreadables, topLevelOnly} from '../utils/UserDataThreader';
 
 import Pendability from '../models/mixins/Pendability';
 
@@ -12,50 +12,8 @@ import {parseListFn} from '../models';
 
 const insert = Symbol();
 
-/**
- * A filter decision function.  Filters out non-"Top Level" items.
- *
- * @param {Model} item A User Generated Data model instance (Note, Highlight, etc)
- * @param {string[]} ids All the IDs in the response.
- *
- * @return {boolean} Returns true if the item's references are not in the set of all ids.
- */
-function topLevelOnly (item, ids) {
-	// I'm not convinced this will (in a single pass) filter out all non-top-level items.
-	// It has fixed my initial case. Must test further.
-	return item && (!item.references || item.references
-		.filter(x => ids.includes(x))
-		.length === 0
-		);
-}
 
-/**
- * The user data comes back as a flat list. Relevant items from others, and all the current users.
- * We perform a filter to remove extranious items that would be fetched by a 'replies' link, leaving
- * only the nodes needed to generate a placeholder node.
- *
- * The purpose of this function is to reduce the list down to the un-threadable annotations (non-notes)
- * and the Root notes...where a Root note may have been deleted and only its children remain. (hence
- * threading will recreate the placeholder)
- *
- * @param {Annotation[]} list All the user data for a container.
- *
- * @return {Annotation[]} All the top-level user data, note rootes, and placeholder roots.
- */
-function threadThreadables (list) {
-	let A = [], B = []; //To sets. Lets call A non-threadable, and B threadable.
-
-	for (let x of list) {
-		//separate the wheat from the chaff...
-		(x.isThreadable ? B : A).push(x);
-	}
-
-	//rejoin every body (after threading the threadables)
-	return A.concat(thread(B));
-}
-
-
-function binId (i, rootId) {
+export function binId (i, rootId) {
 	let id = i.getContainerID ? i.getContainerID() : 'root';
 	return id !== rootId ? binId : 'root';
 }

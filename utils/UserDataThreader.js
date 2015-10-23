@@ -10,6 +10,51 @@ const GETTERS = {
 
 
 /**
+ * A filter decision function.  Filters out non-"Top Level" items.
+ *
+ * @param {Model} item A User Generated Data model instance (Note, Highlight, etc)
+ * @param {string[]} ids All the IDs in the response.
+ *
+ * @return {boolean} Returns true if the item's references are not in the set of all ids.
+ */
+export function topLevelOnly (item, ids) {
+	// I'm not convinced this will (in a single pass) filter out all non-top-level items.
+	// It has fixed my initial case. Must test further.
+	return item && (!item.references || item.references
+		.filter(x => ids.includes(x))
+		.length === 0
+		);
+}
+
+
+/**
+ * The user data comes back as a flat list. Relevant items from others, and all
+ * the current users. We perform a filter to remove extranious items that would
+ * be fetched by a 'replies' link, leaving only the nodes needed to generate a
+ * placeholder node.
+ *
+ * The purpose of this function is to reduce the list down to the un-threadable
+ * items and the Root items...where a Root item may have been deleted and only
+ * its children remain. (hence threading will recreate the placeholder)
+ *
+ * @param {object[]} list All the user data for a container.
+ *
+ * @return {object[]} All the top-level user data, rootes, and placeholder roots.
+ */
+export function threadThreadables (list) {
+	let A = [], B = []; //To sets. Lets call A non-threadable, and B threadable.
+
+	for (let x of list) {
+		//separate the wheat from the chaff...
+		(x.isThreadable ? B : A).push(x);
+	}
+
+	//rejoin every body (after threading the threadables)
+	return A.concat(thread(B));
+}
+
+
+/**
  * Given a set of Threadables, in the form of bins of arrays or just an array,
  * this will return an array of Threadable trees.
  *
