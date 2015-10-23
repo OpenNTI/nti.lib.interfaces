@@ -1,11 +1,17 @@
 import Base from '../../Base';
+import {threadThreadables} from '../../../utils/UserDataThreader';
 import {Parser as parse} from '../../../CommonSymbols';
 
 export default class RecursiveStreamBucket extends Base {
 
 	constructor (service, parent, data) {
 		super(service, parent, data);
-		this[parse]('Items');
+		const thread = x => {
+			this[parse](x);
+			this[x] = threadThreadables(this[x]);
+		};
+
+		thread('Items');
 
 		// "BatchPage": 1,
 		// "BucketItemCount": 1,
