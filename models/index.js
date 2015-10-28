@@ -183,7 +183,8 @@ const PARSERS = {
 	'openbadges.issuer': BadgeIssuer,
 	'gradebookshell': CourseGradeBookShell,
 
-	'GradeBookByAssignmentSummary': CourseGradeByAssignment,
+	'gradebook.gradebookbyassignmentsummary': CourseGradeByAssignment,
+	'GradeBookByAssignmentSummary': 'gradebook.gradebookbyassignmentsummary',
 	'UserGradeBookSummary': CourseGradeUserSummary,
 
 	'contentpackage': ContentPackage,
