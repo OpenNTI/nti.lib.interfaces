@@ -50,7 +50,6 @@ export default class ServiceDocument {
 		this[Service] = this; //So the parser can access it
 		this[Server] = server;
 		this[Context] = context;
-		this.inflightRequests = {};
 
 		mixin(this, Pendability);
 
@@ -165,7 +164,7 @@ export default class ServiceDocument {
 
 	get (url) {
 		let key = typeof url === 'string' ? url : JSON.stringify(url);
-		let {inflightRequests: inflight} = this;
+		const inflight = this.inflightRequests = (this.inflightRequests || {});
 
 		if (inflight[key]) {
 			return inflight[key];
