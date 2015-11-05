@@ -33,11 +33,6 @@ export default class OutlineNode extends Outline {
 	get label () { return this.DCTitle; }
 
 
-	getID () {
-		return this.ContentNTIID;
-	}
-
-
 	get href () {
 		let courseId = (getCourse(this) || emptyCourseObject).getID();
 		let ref = this.ref;
@@ -51,13 +46,13 @@ export default class OutlineNode extends Outline {
 
 
 	get ref () {
-		let id = this.getID();
+		let id = this.ContentNTIID;
 
 		if (!id) {
 			return undefined;
 		}
 
-		return path.join(encodeForURI(id));
+		return encodeForURI(id);
 	}
 
 
@@ -241,11 +236,11 @@ function applyProgressAndSummary (content, progress, summary) {
  * FALLBACK TEMPORARY STUFF BELOW THIS POINT
  */
 function getContentFallback (outlineNode) {
-	console.debug('[FALLBACK] Deriving OutlineNode(%s) content', outlineNode.getID());
+	console.debug('[FALLBACK] Deriving OutlineNode(%s) content', outlineNode.ContentNTIID);
 	let course = getCourse(outlineNode);
 	let bundle = course && course.ContentPackageBundle;
 	let pkg = ((bundle && bundle.ContentPackages) || [])[0];
-	let contentId = outlineNode.getID();
+	let contentId = outlineNode.ContentNTIID;
 
 	let p = pkg ? pkg.getTableOfContents() : Promise.reject('No Content Package');
 
