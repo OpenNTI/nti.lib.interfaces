@@ -149,6 +149,14 @@ export default class Library extends EventEmitter {
 
 		return found;
 	}
+
+
+	getLastEnrolledCourse () {
+		const getDate = x => x ? x.getCreatedTime() : 0;
+		const {courses = []} = this;
+		const sortedCopy = courses.slice().sort((a, b)=> getDate(b) - getDate(a));
+		return sortedCopy[0];
+	}
 }
 
 
