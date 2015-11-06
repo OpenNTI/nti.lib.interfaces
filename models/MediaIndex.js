@@ -84,7 +84,15 @@ export default class MediaIndex {
 
 		for(let key in data) {
 			if (data.hasOwnProperty(key)) {
-				this[Data][key] = this.mediaFrom(data[key], this);
+				try {
+					this[Data][key] = this.mediaFrom(data[key], this);
+				} catch (e) {
+					if (/No Parser/i.test(e.message)) {
+						console.warn(e.message, data[key]);
+					} else {
+						console.error(e.stack || e.message || e);
+					}
+				}
 			}
 		}
 	}
