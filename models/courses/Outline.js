@@ -68,7 +68,7 @@ export default class Outline extends Base {
 
 
 	getNode (id) {
-		if (this.getID() === id) {
+		if (this.getID() === id || this.ContentNTIID === id) {
 			return this;
 		}
 
