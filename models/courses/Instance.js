@@ -261,7 +261,7 @@ export default class Instance extends Base {
 
 		if (this.hasLink(MEDIA_BY_OUTLINE_NODE)) {
 			return this.getMediaIndex()
-				.then(i => i.filter(x => x.isVideo));
+				.then(i => i.filter(x => x && x.isVideo));
 		}
 
 		return Promise.all([
