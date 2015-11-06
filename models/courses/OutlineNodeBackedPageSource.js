@@ -3,7 +3,9 @@ import {
 	Service
 } from '../../CommonSymbols';
 
-const buildRef = node => node && { ntiid: node.getID(), title: node.title, ref: node.ref };
+const getNodeId = node => node.ContentNTIID || node.getID();
+const buildRef = node => node && { ntiid: getNodeId(node), title: node.title, ref: node.ref };
+const suppressed = node => node && node.href;
 
 export default class OutlineNodeBackedPageSource extends Base {
 
@@ -26,7 +28,7 @@ export default class OutlineNodeBackedPageSource extends Base {
 	getPagesAround (pageId) {
 		const nodes = this.pagesInRange;
 		const index = nodes.reduce((found, node, ix) =>
-			(typeof found !== 'number' && node.getID() === pageId) ? ix : found, null);
+			(typeof found !== 'number' && getNodeId(node) === pageId) ? ix : found, null);
 
 		let next = nodes[index + 1];
 		let prev = nodes[index - 1];
@@ -39,9 +41,4 @@ export default class OutlineNodeBackedPageSource extends Base {
 		};
 	}
 
-}
-
-
-function suppressed (node) {
-	return node && node.href;
 }
