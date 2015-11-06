@@ -39,6 +39,10 @@ export default class EnrollmentOptionStore extends EnrollmentOption {
 
 
 	getPurchasableForGifting () {
-		return this.getPurchasable(this[Purchasables].DefaultGiftingNTIID);
+		let p = this.getPurchasable(this[Purchasables].DefaultGiftingNTIID);
+		if(p && p.Giftable) {
+			return p;
+		}
+		return null;
 	}
 }
