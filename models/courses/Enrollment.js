@@ -39,6 +39,11 @@ export default class Enrollment extends Base {
 	}
 
 
+	get title () {
+		return this.CourseInstance.title;
+	}
+
+
 	drop () {
 		return this[Service].delete(this.href);
 	}
