@@ -34,7 +34,7 @@ export default class Grade extends Base {
 		// assignmentName string
 		// assignmentContainer string
 
-		if (value) {
+		if (value != null) {
 			if (typeof value === 'number') {
 				let n = value.toFixed(1);
 				if (n.split('.')[1] === '0') {
