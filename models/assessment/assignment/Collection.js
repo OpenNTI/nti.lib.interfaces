@@ -170,7 +170,6 @@ export default class Collection extends Base {
 	[ORDER_BY_COMPLETION] (filter) {
 		//The return value of getAssignments is volatile, and can be manipulated without worry.
 		const all = this.getAssignments()
-			.filter(a => !omit(a))
 			//pre-sort by title so when we group, they'll already be in order with in the groups.
 			.sort(this.sortComparatorTitle);
 
@@ -195,7 +194,6 @@ export default class Collection extends Base {
 	[ORDER_BY_DUE_DATE] (filter) {
 		//The return value of getAssignments is volatile, and can be manipulated without worry.
 		const all = this.getAssignments()
-			.filter(a => !omit(a))
 			//pre-sort by title so when we group, they'll already be in order with in the groups.
 			.sort(this.sortComparatorTitle);
 
@@ -325,8 +323,9 @@ export default class Collection extends Base {
 		let ids = outlineNodeId && (this.getAssessmentIdsUnder(outlineNodeId) || []);
 		let nodeIdsToInclude = ids || Object.keys(items || {});
 
-		return nodeIdsToInclude.reduce((agg, id) =>
-			items[id] ? agg.concat(items[id]) : agg, []);
+		return nodeIdsToInclude
+			.reduce((agg, id) => items[id] ? agg.concat(items[id]) : agg, [])
+			.filter(a => !omit(a));
 	}
 
 
@@ -357,8 +356,8 @@ export default class Collection extends Base {
 
 
 	getAssignment (assessmentId) {
-		const findIt = x => find(this.getAssignments() || [], x);
 		const {visibleAssignments: {items: map = {}}} = this;
+		const findIt = x => find(Object.values(map), x);
 
 		return map[assessmentId] || findIt(assessmentId);
 	}
