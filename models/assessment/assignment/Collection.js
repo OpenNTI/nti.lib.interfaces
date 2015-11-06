@@ -81,21 +81,26 @@ export default class Collection extends Base {
 		this.onChange = this.onChange.bind(this);
 
 		const parseItem = (o) => {
-			let i = o = this[parse](o);
-			if (!Array.isArray(i)) { i = [i]; }
-			for (let item of i) {
-				if(item && this.onChange) {
-					item.on('change', this.onChange);
+			const i = Array.isArray(o) ? o : [o];
+
+			for (let ix = i.length - 1; ix >= 0; ix--) {
+				let item = i[ix] = this[parse](i[ix]);
+				if(item) {
+					if (this.onChange) {
+						item.on('change', this.onChange);
+					}
 				}
 			}
-			return o;
+
+			return Array.isArray(o) ? i : i[0];
 		};
 		const process = (k, v, o) => fillMaps(o[k] = parseItem(v), o, k);
 		const getItems = o => o.Items || o;
 		const isIgnoredKey = RegExp.prototype.test.bind(/^href$/i);
 		const consume = (obj, dict) => Object.keys(getItems(dict))
 											.filter(x => !isIgnoredKey(x))
-											.forEach(key => process(key, getItems(dict)[key], obj));
+											.forEach(key => process(key, getItems(dict)[key], obj))
+											.filter(x => x);
 
 		let a =	this.visibleAssignments = {};
 		consume(a, assignments);
