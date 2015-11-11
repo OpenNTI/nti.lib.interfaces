@@ -1,19 +1,10 @@
 import Outline from './Outline';
 import {Progress, Summary, DateFields, Parser as parse} from '../../CommonSymbols';
 
-import path from 'path';
-
 import fallbackOverview from './_fallbacks.OverviewFromToC';
 
 import applyIf from '../../utils/applyif';
 import {encodeForURI} from '../../utils/ntiids';
-import emptyFunction from 'fbjs/lib/emptyFunction';
-
-let emptyCourseObject = {getID: emptyFunction};
-
-function getCourse (node) {
-	return node.root.parent();
-}
 
 export default class OutlineNode extends Outline {
 	constructor (service, parent, data) {
@@ -31,18 +22,6 @@ export default class OutlineNode extends Outline {
 
 
 	get label () { return this.DCTitle; }
-
-
-	get href () {
-		let courseId = (getCourse(this) || emptyCourseObject).getID();
-		let ref = this.ref;
-
-		if (!ref) {
-			return undefined;
-		}
-
-		return path.join('course', encodeForURI(courseId), 'lessons', ref) + '/';
-	}
 
 
 	get ref () {
@@ -235,18 +214,21 @@ function applyProgressAndSummary (content, progress, summary) {
 /* *****************************************************************************
  * FALLBACK TEMPORARY STUFF BELOW THIS POINT
  */
+
+
 function getContentFallback (outlineNode) {
 	console.debug('[FALLBACK] Deriving OutlineNode(%s) content', outlineNode.ContentNTIID);
-	let course = getCourse(outlineNode);
-	let bundle = course && course.ContentPackageBundle;
-	let pkg = ((bundle && bundle.ContentPackages) || [])[0];
-	let contentId = outlineNode.ContentNTIID;
+	const getCourse = node => node.root.parent();
+	const course = getCourse(outlineNode);
+	const bundle = course && course.ContentPackageBundle;
+	const pkg = ((bundle && bundle.ContentPackages) || [])[0];
+	const contentId = outlineNode.ContentNTIID;
 
-	let p = pkg ? pkg.getTableOfContents() : Promise.reject('No Content Package');
+	const p = pkg ? pkg.getTableOfContents() : Promise.reject('No Content Package');
 
 	return p.then(function (toc) {
-		let tocNode = toc.getNode(contentId);
-		let content = fallbackOverview(tocNode, outlineNode);
+		const tocNode = toc.getNode(contentId);
+		const content = fallbackOverview(tocNode, outlineNode);
 		if (!content) {
 			console.error('Fallback Content failed');
 		}
