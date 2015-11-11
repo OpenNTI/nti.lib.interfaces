@@ -5,7 +5,7 @@ import {
 
 const getNodeId = node => node.ContentNTIID || node.getID();
 const buildRef = node => node && { ntiid: getNodeId(node), title: node.title, ref: node.ref };
-const suppressed = node => node && node.href;
+const suppressed = node => node && node.ref;
 
 export default class OutlineNodeBackedPageSource extends Base {
 
