@@ -23,7 +23,7 @@ export default class Video {
 			NO_TRANSCRIPT_LANG
 		});
 
-		let sources = data.sources;
+		const {sources = []} = data;
 
 		Object.assign(this, data);
 
