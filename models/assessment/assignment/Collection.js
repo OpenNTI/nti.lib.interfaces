@@ -48,7 +48,7 @@ function fillMaps (oValue, o, oKey) {
 	}
 }
 
-const omit = a => a.isNonSubmit() && a.title === 'Final Grade';
+const omit = a => a.isNonSubmit && a.isNonSubmit() && a.title === 'Final Grade';
 
 const toNumeric = o => o ? o.getTime() : 0;
 const normalize = o => o === 0 ? 0 : o / Math.abs(o);
@@ -99,8 +99,7 @@ export default class Collection extends Base {
 		const isIgnoredKey = RegExp.prototype.test.bind(/^href$/i);
 		const consume = (obj, dict) => Object.keys(getItems(dict))
 											.filter(x => !isIgnoredKey(x))
-											.forEach(key => process(key, getItems(dict)[key], obj))
-											.filter(x => x);
+											.forEach(key => process(key, getItems(dict)[key], obj));
 
 		let a =	this.visibleAssignments = {};
 		consume(a, assignments);
