@@ -67,8 +67,19 @@ export default class Outline extends Base {
 	get root () { return this; }
 
 
+	getID () {
+		console.error('Do you really want the OutlineNode\'s ID or its Content ID?');
+		return super.getID();
+	}
+
+
+	getContentId () {
+		return this.ContentNTIID;
+	}
+
+
 	getNode (id) {
-		if (this.getID() === id || this.ContentNTIID === id) {
+		if (this.getContentId() === id/* || this.getID() === id*/) {
 			return this;
 		}
 

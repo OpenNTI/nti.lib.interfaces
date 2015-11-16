@@ -262,11 +262,12 @@ export default class Collection extends Base {
 
 		return this.parent().getOutline()
 			.then(outline => outline.getFlattenedList())
+			.filter(list = list.filter(x => x.getContentId()))
 			.then(list => {
 
 				list.forEach((n, index) => {
 
-					let assessments = outlineMap[n.getID()];
+					let assessments = outlineMap[n.getContentId()];
 					if (!assessments) { return; }
 
 					for (let assessmentId of assessments) {

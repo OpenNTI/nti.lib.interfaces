@@ -217,12 +217,12 @@ function applyProgressAndSummary (content, progress, summary) {
 
 
 function getContentFallback (outlineNode) {
-	console.debug('[FALLBACK] Deriving OutlineNode(%s) content', outlineNode.ContentNTIID);
+	console.debug('[FALLBACK] Deriving OutlineNode(%s) content', outlineNode.getContentId());
 	const getCourse = node => node.root.parent();
 	const course = getCourse(outlineNode);
 	const bundle = course && course.ContentPackageBundle;
 	const pkg = ((bundle && bundle.ContentPackages) || [])[0];
-	const contentId = outlineNode.ContentNTIID;
+	const contentId = outlineNode.getContentId();
 
 	const p = pkg ? pkg.getTableOfContents() : Promise.reject('No Content Package');
 
