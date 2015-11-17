@@ -262,7 +262,7 @@ export default class Collection extends Base {
 
 		return this.parent().getOutline()
 			.then(outline => outline.getFlattenedList())
-			.filter(list = list.filter(x => x.getContentId()))
+			.filter(list => list.filter(x => x.getContentId()))
 			.then(list => {
 
 				list.forEach((n, index) => {
