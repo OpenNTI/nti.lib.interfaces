@@ -8,13 +8,11 @@ module.exports = function (config) {
 		frameworks: ['jasmine'],
 
 		files: [
-			'test/**/*.js',
-			'**/__test__/*.spec.js'
+			'test/**/*.js'
 		],
 
 		preprocessors: {
-			'test/**/*.js': ['webpack'],
-			'**/__test__/*.spec.js': ['webpack', 'sourcemap']
+			'test/**/*.js': ['webpack', 'sourcemap']
 		},
 
 		// exclude: [],
@@ -107,9 +105,26 @@ module.exports = function (config) {
 			],
 
 			module: {
+				preLoaders: [
+					{
+						test: /\.js$/,
+						loader: 'isparta-instrumenter',
+						exclude: [
+							/node_modules/,
+							/__test__/,
+							/test\//
+						]
+					}
+				],
 				loaders: [
-					{ test: /\.js(x)?$/, loader: 'babel', exclude: /node_modules/ },
-					{ test: /\.json$/, loader: 'json' }
+					{ test: /\.json$/, loader: 'json' },
+					{
+						test: /\.js$/,
+						loader: 'babel',
+						exclude:[
+							/node_modules/
+						]
+					}
 				]
 			}
 		}
