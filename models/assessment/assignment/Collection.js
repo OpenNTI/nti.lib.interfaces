@@ -233,6 +233,8 @@ export default class Collection extends Base {
 
 		let groups = {};
 
+		const getBinId = node => (node && node.getContentId()) || 'Unknown';
+
 		function getGroup (node, sortBy, key) {
 			groups[key] = groups[key] || {
 				label: (node || {}).label || 'Unknown',
@@ -244,7 +246,7 @@ export default class Collection extends Base {
 		}
 
 		function bin (assignmentId, order, node) {
-			let binId = (node && node.getID()) || 'Unknown';
+			let binId = getBinId(node);
 			let assignment = assignments[assignmentId];
 
 			delete ungrouped[assignmentId];
@@ -272,6 +274,12 @@ export default class Collection extends Base {
 
 					for (let assessmentId of assessments) {
 						bin(assessmentId, index, n);
+					}
+
+					const binId = getBinId(n);
+					if (groups[binId]) {
+						groups[binId].items
+							.sort(this.sortComparatorDueDate);
 					}
 				});
 
