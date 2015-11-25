@@ -245,7 +245,7 @@ export default class Instance extends Base {
 	getVideoIndex () {
 
 		function getForNode (node, index, output) {
-			let id = node.getID();
+			let id = node.getContentId();
 
 			let scoped = id && index.scoped(id);
 

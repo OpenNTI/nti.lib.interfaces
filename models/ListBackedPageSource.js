@@ -1,11 +1,14 @@
 import {encodeForURI} from '../utils/ntiids';
 import {join} from 'path';
 
+const getNodeId = node => node.getContentId ? node.getContentId() : node.getID();
+
 function buildRef (node, pathPrefix) {
+	const id = getNodeId(node);
 	return node && {
-		ntiid: node.getID(),
+		ntiid: id,
 		title: node.title,
-		ref: join(pathPrefix, encodeForURI(node.getID()))
+		ref: join(pathPrefix, encodeForURI(id))
 	};
 }
 
@@ -21,7 +24,7 @@ export default class ListBackedPageSource {
 		const {list: nodes, pathPrefix} = this;
 		const index = nodes.reduce(
 			(found, node, ix) =>
-				(typeof found !== 'number' && node.getID() === pageId) ? ix : found,
+				(typeof found !== 'number' && getNodeId(node) === pageId) ? ix : found,
 			null);
 
 		let next = nodes[index + 1];
@@ -42,7 +45,7 @@ export default class ListBackedPageSource {
 
 
 	find (node) {
-		let nodeId = node && (typeof node === 'string' ? node : node.getID());
+		let nodeId = node && (typeof node === 'string' ? node : getNodeId(node));
 		let matcher = n => n.getID() === nodeId;
 		return this.list.findIndex(matcher);
 	}

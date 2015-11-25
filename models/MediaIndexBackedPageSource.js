@@ -4,9 +4,10 @@ import {encodeForURI as encodeNTIIDForURI} from '../utils/ntiids';
 
 import {Parent, Service} from '../CommonSymbols';
 
+const getNodeId = node => node.getContentId ? node.getContentId() : node.getID();
 
 function buildRef (node) {
-	let id = node && node.getID();
+	const id = node && getNodeId(node);
 	return id && {
 		ntiid: id,
 		title: node.title,
@@ -25,7 +26,7 @@ export default class MediaIndexBackedPageSource extends Base {
 	getPagesAround (pageId) {
 		let nodes = this[Parent];
 		let index = nodes.reduce(
-			(found, node, ix) => (typeof found !== 'number' && node.getID() === pageId) ? ix : found,
+			(found, node, ix) => (typeof found !== 'number' && getNodeId(node) === pageId) ? ix : found,
 			null);
 
 
