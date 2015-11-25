@@ -4,7 +4,7 @@ import {encodeForURI as encodeNTIIDForURI} from '../utils/ntiids';
 
 import {Parent, Service} from '../CommonSymbols';
 
-const getNodeId = node => node.getContentId ? node.getContentId() : node.getID();
+const getNodeId = node => node && (node.getContentId ? node.getContentId() : node.getID());
 
 function buildRef (node) {
 	const id = node && getNodeId(node);

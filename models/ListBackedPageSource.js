@@ -1,7 +1,7 @@
 import {encodeForURI} from '../utils/ntiids';
 import {join} from 'path';
 
-const getNodeId = node => node.getContentId ? node.getContentId() : node.getID();
+const getNodeId = node => node && (node.getContentId ? node.getContentId() : node.getID());
 
 function buildRef (node, pathPrefix) {
 	const id = getNodeId(node);
