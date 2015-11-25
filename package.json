@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "description": "Provides an interface for interacting with the dataserver via javascript.",
   "main": "index.js",
+  "engines": {
+      "node": ">=5.0.0"
+      "npm": ">=3.3.0"
+  },
   "scripts": {
     "test": "grunt test"
   },
