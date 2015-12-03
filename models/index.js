@@ -50,8 +50,8 @@ import VideoRef from './VideoRef';
 
 import CourseGrade from './courses/Grade';
 import CourseGradeBookShell from './courses/GradeBookShell';
-import CourseGradeByAssignment from './courses/GradeBookByAssignment';
-import CourseGradeUserSummary from './courses/GradeBookUserSummary';
+import CourseGradeBookByAssignment from './courses/GradeBookByAssignment';
+import CourseGradeBookUserSummary from './courses/GradeBookUserSummary';
 import CourseCatalogEntry from './courses/CatalogEntry';
 import CourseInstance from './courses/Instance';
 import CourseAdministrativeRole from './courses/AdministrativeRole';
@@ -183,9 +183,9 @@ const PARSERS = {
 	'openbadges.issuer': BadgeIssuer,
 	'gradebookshell': CourseGradeBookShell,
 
-	'gradebook.gradebookbyassignmentsummary': CourseGradeByAssignment,
+	'gradebook.gradebookbyassignmentsummary': CourseGradeBookByAssignment,
 	'GradeBookByAssignmentSummary': 'gradebook.gradebookbyassignmentsummary',
-	'UserGradeBookSummary': CourseGradeUserSummary,
+	'gradebook.userassignmentsummary': CourseGradeBookUserSummary,
 
 	'contentpackage': ContentPackage,
 	'contentpackagebundle': ContentBundle,
