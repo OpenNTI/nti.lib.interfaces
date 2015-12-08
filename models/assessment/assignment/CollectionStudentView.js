@@ -30,7 +30,7 @@ export default class CollectionStudentView extends Base {
 
 	onChange (e) {
 		super.onChange(e);
-		//delete this[HISTORY];
+		delete this[HISTORY];
 	}
 
 

@@ -55,6 +55,9 @@ export default class AssignmentSubmission extends Base {
 			return;
 		}
 
-		return p.refresh();
+		return p.refresh().then(r => {
+			p.onChange('submit-state');
+			return r;
+		});
 	}
 }
