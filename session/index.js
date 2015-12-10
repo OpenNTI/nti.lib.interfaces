@@ -49,19 +49,19 @@ export default class SessionManager {
 			.then(service => {
 				context[ServiceStash] = service;
 
-				//Check ToS
-				const user = service.getAppUserSync();
-				if (user.acceptTermsOfService) {
-					logger.error('User needs to accept terms of service.');
-					return Promise.reject(TOS);
-				}
-
-				return Promise.all([
-					service,
-					//Catalog.load(service),
-					Library.load(service, 'Main')//,
-					//Notifications.load(service)
-				]);
+				return service.getAppUser()
+					.then(user => {
+						if (user.acceptTermsOfService) {
+							logger.error('User needs to accept terms of service.');
+							return Promise.reject(TOS);
+						}
+					})
+					.then(() => Promise.all([
+						service,
+						Library.load(service, 'Main')//,
+						//Catalog.load(service),
+						//Notifications.load(service)
+					]));
 
 			});
 	}
