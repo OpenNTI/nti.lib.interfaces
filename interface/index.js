@@ -140,7 +140,7 @@ export default class DataServerInterface {
 
 			let active = request(opts, (error, res, body) => {
 				if (!res) {
-					logger.info('Request Options: ', opts, arguments);
+					// logger.info('Request Options: ', /*opts,*/ error);
 					res = {headers: {}};
 				}
 
