@@ -8,7 +8,7 @@ import Pendability from '../models/mixins/Pendability';
 
 import {Service} from '../CommonSymbols';
 
-let instances = {};
+const getInstances = service => service.getDataCache().get('LibraryInstances', {}, true);
 
 export default class Library extends EventEmitter {
 
@@ -16,6 +16,8 @@ export default class Library extends EventEmitter {
 		function make (contentPackages, contentBundles, enrolledCourses, administeredCourses) {
 			return new Library(service, name, contentPackages, contentBundles, enrolledCourses, administeredCourses);
 		}
+
+		const instances = getInstances(service);
 
 		return (instances[name] = Promise.all([
 			resolveCollection(service, service.getContentPackagesURL(), reload),
@@ -35,7 +37,7 @@ export default class Library extends EventEmitter {
 	static get (service, name, reload) {
 		function reloading (i) { i.emit('reloading'); }
 
-		let instance = instances[name];
+		const instance = getInstances(service)[name];
 
 		if (instance) {
 			if (!reload) {
