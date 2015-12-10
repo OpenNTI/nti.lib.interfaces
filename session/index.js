@@ -76,11 +76,13 @@ export default class SessionManager {
 		req.responseHeaders = {};
 
 		req.setMaxListeners(0);//unlimited
-		res.on('close', ()=> {
+		req.socket.setKeepAlive(true, 1000);
+		req.on('close', ()=> {
 			req.dead = true;
-			req.emit('abort');
-			next();
+			req.emit('aborted');
+			next('aborted');
 		});
+
 
 		logger.debug('SESSION [BEGIN] %s %s', req.method, url);
 

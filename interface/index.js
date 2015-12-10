@@ -129,13 +129,15 @@ export default class DataServerInterface {
 			}
 
 			if (context && context.on) {
-				let abort = ()=> abortMethod();
-				let n = ()=> context.removeListener('abort', abort);
+				const abort = ()=> abortMethod();
+				const clean = event => context.removeListener(event, abort);
+				const n = ()=> (clean('aborted'), clean('close'));
 
 				fulfill = chain(fulfill, n);
 				reject = chain(reject, n);
 
-				context.on('abort', abort);
+				context.on('aborted', abort);
+				context.on('close', abort);
 			}
 
 			let active = request(opts, (error, res, body) => {
