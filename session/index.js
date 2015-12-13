@@ -1,9 +1,11 @@
 //import Catalog from '../stores/Catalog';
 import Library from '../stores/Library';
-import logger from '../logger';
+import Logger from '../logger';
 // import Notifications from '../stores/Notifications';
 
 import {ServiceStash} from '../CommonSymbols';
+
+const logger = Logger.get('SessionManager');
 
 const TOS = Symbol();
 
@@ -84,7 +86,7 @@ export default class SessionManager {
 		});
 
 
-		logger.debug('SESSION [BEGIN] %s %s', req.method, url);
+		logger.info('SESSION [BEGIN] %s %s', req.method, url);
 
 		function finish () {
 			if (req.dead) {
@@ -96,14 +98,14 @@ export default class SessionManager {
 			} catch (e) {
 				logger.warn('Could not set headers because: %s (headers: %o)', e.message, req.responseHeaders);
 			}
-			logger.debug('SESSION [END] %s %s (User: %s, %dms)',
+			logger.info('SESSION [END] %s %s (User: %s, %dms)',
 				req.method, url, req.username, Date.now() - start);
 			next();
 		}
 
 		this.getUser(req)
 			.then(user => req.username = user)
-			.then(()=> logger.debug('SESSION [VALID] %s %s', req.method, url))
+			.then(()=> logger.info('SESSION [VALID] %s %s', req.method, url))
 			.then(()=> !req.dead && this.setupIntitalData(req))
 			.then(finish)
 			.catch(reason => {
@@ -120,13 +122,13 @@ export default class SessionManager {
 						return next();
 					}
 
-					logger.debug('SESSION [TOS NEEDS ACCEPTING] %s %s REDIRECT %stos/ (User: %s, %dms)',
+					logger.info('SESSION [TOS NEEDS ACCEPTING] %s %s REDIRECT %stos/ (User: %s, %dms)',
 						req.method, url, basepath, req.username, Date.now() - start);
 
 					res.redirect(basepath + 'tos/?return=' + encodeURIComponent(req.originalUrl));
 				}
 				else if (!/^(api|login)/.test(scope)) {
-					logger.debug('SESSION [INVALID] %s %s REDIRECT %slogin/ (User: annonymous, %dms)',
+					logger.info('SESSION [INVALID] %s %s REDIRECT %slogin/ (User: annonymous, %dms)',
 						req.method, url, basepath, Date.now() - start);
 
 					res.redirect(basepath + 'login/?return=' + encodeURIComponent(req.originalUrl));

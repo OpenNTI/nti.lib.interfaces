@@ -1,63 +1,41 @@
-let clfmonth = [
-  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-];
+import logger from 'debug';
 
-function dateString (str) {
-	let pad = s=> (s <= 9 ? '0' : '') + s;
+const pattern = logger.load() || ['info', 'error', 'warn'].map(x => `*:${x}`).join(',');
+logger.enable(pattern);
 
-	let now = new Date();
-	//now = now.toUTCString();
+const COLORS = {
+	'error': 1, //red
+	'info': 2, //green
+	'warn': 3, //yellow/orange
+	'debug': 4 //blue
+	//'': 5, //magenta
+	//'': 6, //lightblue
+};
 
-	let date = pad(now.getUTCDate());
-	let hour = pad(now.getUTCHours());
-	let mins = pad(now.getUTCMinutes());
-	let secs = pad(now.getUTCSeconds());
-	let year = now.getUTCFullYear();
-	let month = clfmonth[now.getUTCMonth()];
+export default class Logger {
 
-	//10/Oct/2000:13:55:36 +0000
-	now = `${date}/${month}/${year}:${hour}:${mins}:${secs} +0000`;
+	static get (name) {
+		const cache = this.loggers = this.loggers || {};
 
-	return `- - [${now}] ${str}`;
-}
-
-
-class Logger {
-
-	quiet() { this.noize = false; }
-
-	info (str, ...args) {
-		if (this.noize === false) { return; }
-
-		console.log(dateString(str), ...args);
-	}
-
-
-	error (str, ...args) {
-		if (str instanceof Error) {
-			args.unshift(str);
-			str = str.stack || str.message || (str+ '');
-
+		if (!cache[name]) {
+			cache[name] = new Logger(name);
 		}
 
-		console.error(dateString(str), ...args);
+		return cache[name];
+	}
+
+	static quiet () {
+		logger.disable();
 	}
 
 
-	debug (str, ...args) {
-		if (this.noize === false) { return; }
-		if (console.debug) {
-			console.debug(dateString(str), ...args);
-		} else {
-			console.info(dateString(str), ...args);
+	constructor (name) {
+		for (let key of ['info', 'error', 'warn', 'debug']) {
+			this[key] = logger(`${name}:${key}`);
+			this[key].color = COLORS[key];
 		}
-	}
 
-
-	log (str, ...args) {
-		console.log(dateString(str), ...args);
+		this.name = name;
+		this.log = this.info;
 	}
 }
-
-export default new Logger();

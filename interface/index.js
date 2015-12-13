@@ -2,8 +2,9 @@ import Url from 'url';
 //If the login method is invoked on the NodeJS side, we will need this function...
 import base64decode from 'btoa';
 
+import Logger from '../logger';
+
 import request from '../utils/request';
-import logger from '../logger';
 import DataCache from '../utils/datacache';
 import MimeComparator from '../utils/MimeComparator';
 
@@ -18,6 +19,8 @@ import Service from '../stores/Service';
 
 import {Pending, SiteName} from '../CommonSymbols';
 import {TOS_NOT_ACCEPTED} from '../constants';
+
+const logger = Logger.get('DataServerInterface');
 
 const btoa = global.bota || base64decode;
 const jsonContent = /(application|json)/i;
@@ -120,9 +123,7 @@ export default class DataServerInterface {
 		}
 
 		result = new Promise((fulfill, reject) => {
-			if(!isBrowser) {
-				logger.info('REQUEST <- %s %s', opts.method, url);
-			}
+			logger.debug('REQUEST <- %s %s', opts.method, url);
 
 			if (context && context.dead) {
 				return reject('request/connection aborted');
@@ -142,7 +143,6 @@ export default class DataServerInterface {
 
 			let active = request(opts, (error, res, body) => {
 				if (!res) {
-					// logger.info('Request Options: ', /*opts,*/ error);
 					res = {headers: {}};
 				}
 
@@ -156,10 +156,8 @@ export default class DataServerInterface {
 				//Don't care... let it pass to the client as a string
 				} catch (e) {} // eslint-disable-line no-empty
 
-				if(!isBrowser) {
-					logger.info('REQUEST -> %s %s %s %dms',
+				logger.debug('REQUEST -> %s %s %s %dms',
 						opts.method, url, error || code, Date.now() - start);
-				}
 
 				if (error || code >= 300 || code === 0) {
 					if(res) {
@@ -198,7 +196,7 @@ export default class DataServerInterface {
 			abortMethod = ()=> { active.abort(); reject('aborted'); };
 		});
 
-		result.abort = abortMethod || (()=> logger.info('Attempting to abort request, but missing abort() method.'));
+		result.abort = abortMethod || (()=> logger.warn('Attempting to abort request, but missing abort() method.'));
 
 		pending.push(result);
 		return result;
