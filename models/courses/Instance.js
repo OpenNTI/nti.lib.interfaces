@@ -16,6 +16,7 @@ import AssessmentCollectionInstructorView from '../assessment/assignment/Collect
 import MediaIndex from '../MediaIndex';
 
 import ActivityStream from './BucketedActivityStream';
+import Roster from '../../stores/CourseRosterStream';
 
 const NOT_DEFINED = {reason: 'Not defined'};
 const EMPTY_CATALOG_ENTRY = {getAuthorLine: emptyFunction};
@@ -41,6 +42,17 @@ export default class Instance extends Base {
 		this[parse]('Outline');
 		this[parse]('SharingScopes');
 		this[parse]('ParentSharingScopes');
+
+		/*try {
+			console.log(`
+			Title:  ${this.title}
+			Total:  ${data.TotalEnrolledCount}
+			Open:   ${data.TotalLegacyOpenEnrolledCount}
+			Credit: ${data.TotalLegacyForCreditEnrolledCount}
+			`);
+		} catch (e) {
+			console.error(e.stack);
+		}*/
 
 		this[RENAME]('TotalEnrolledCount', 'enrolledTotalCount');
 		this[RENAME]('TotalLegacyOpenEnrolledCount', 'enrolledOpenlyTotalCount');
@@ -98,10 +110,23 @@ export default class Instance extends Base {
 	}
 
 
-	//Should only show assignments if there is an AssignmentsByOutlineNode link
-	shouldShowAssignments () {
-		return !!this.getLink('AssignmentsByOutlineNode');
+	getRoster () {
+		const link = this.getLink('CourseEnrollmentRoster');
+		if (!link) {
+			return null;
+		}
+
+		return new Roster(
+			this[Service],
+			this,
+			link,
+			{
+				batchSize: 50,
+				batchStart: 0
+			}
+		);
 	}
+
 
 	getActivity () {
 		if (!this.hasLink('CourseRecursiveStreamByBucket')) {
@@ -122,6 +147,12 @@ export default class Instance extends Base {
 			this.getOutline(),
 			this.getAssignments()
 		);
+	}
+
+
+	//Should only show assignments if there is an AssignmentsByOutlineNode link
+	shouldShowAssignments () {
+		return !!this.getLink('AssignmentsByOutlineNode');
 	}
 
 
