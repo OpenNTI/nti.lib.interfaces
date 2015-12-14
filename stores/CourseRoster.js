@@ -40,8 +40,8 @@ export default class CourseRosterStream extends Stream {
 	}
 
 
-	get parseListFn () {
-		return items => items.map(x => x && new RosterRecord(this[Service], x)).filter(x => x);
+	parseList (items) {
+		return items.map(x => x && new RosterRecord(this[Service], x)).filter(x => x);
 	}
 
 

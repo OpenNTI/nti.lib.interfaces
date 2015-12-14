@@ -16,10 +16,11 @@ import Logger from '../logger';
 
 import {parseListFn} from '../models';
 
+const PRIVATE = new WeakMap();
 
 const logger = Logger.get('stores:Stream');
 
-const DATA = Symbol();
+const load = (scope, url) => scope[Service].get(url).then(o => (scope.applyBatch(o), scope.parseList(o.Items || [])));
 
 export default class Stream extends EventEmitter {
 	/**
@@ -36,28 +37,17 @@ export default class Stream extends EventEmitter {
 		super();
 		Object.assign(this, {
 			[Service]: service,
-			[DATA]: [],
 			owner,
 			href,
 			options,
 			collator,
-			continuous: true
+			continuous: true,
+			onChange: (...args) => this.onChange(...args)
 		});
 
+		PRIVATE.set(this, {data: []});
+
 		mixin(this, Pendability);
-		this.onChange = this.onChange.bind(this);
-
-		let parseList = this.parseListFn;
-
-		const batchUnderflowed = o => !o || (o.length < this.options.batchSize);
-
-		this.load = url => service.get(url)
-								.then(o => {
-									this.next = !batchUnderflowed(o.Items) && getLink(o, 'batch-next');
-									this.prev = getLink(o, 'batch-prev');
-									logger.debug('Stream has more? ', !!this.next);
-									return parseList(o.Items || []);
-								});
 
 		if (browser) {
 			this.on('load', (_, time) => logger.log('Load: %s %o', time, this));
@@ -75,13 +65,30 @@ export default class Stream extends EventEmitter {
 	}
 
 
-	get parseListFn () {
-		return parseListFn(this, this[Service]);
+	applyBatch (data) {
+		const batchUnderflowed = o => !o || (o.length < this.options.batchSize);
+
+		this.next = !batchUnderflowed(data.Items) && getLink(data, 'batch-next');
+
+		this.prev = getLink(data, 'batch-prev');
+
+		logger.debug('Stream has more? ', !!this.next);
+	}
+
+
+	get parseList () {
+		const p = PRIVATE.get(this);
+
+		if (!p.parseListFn) {
+			p.parseListFn = parseListFn(this, this[Service]);
+		}
+
+		return p.parseListFn;
 	}
 
 
 	onChange (who, what) {
-		let data = this[DATA];
+		const {data} = PRIVATE.get(this);
 		if (what === DELETED) {
 			let index = data.findIndex(x => x.getID() === who.getID());
 			if (index < 0) {
@@ -108,6 +115,7 @@ export default class Stream extends EventEmitter {
 
 
 	nextBatch (prev = false) {
+		const store = PRIVATE.get(this);
 		this.loading = true;
 		let start = Date.now();
 		this.emit('change', this);
@@ -138,8 +146,8 @@ export default class Stream extends EventEmitter {
 
 			let next = (prev ? this.prev : this.next) || getHref(this.href, this.options);
 
-			let loads = this.load(next)
-				.then(v => this[DATA] = this.continuous ? this[DATA].concat(v) : v)
+			let loads = load(this, next)
+				.then(v => store.data = this.continuous ? store.data.concat(v) : v)
 				.catch(er => {
 					logger.error(er);
 					this.error = true;
@@ -159,8 +167,8 @@ export default class Stream extends EventEmitter {
 
 
 	get items () {
-		let {collator} = this;
-		let data = this[DATA];
+		const {collator} = this;
+		const {data} = PRIVATE.get(this);
 
 		return collator ? collator(data) : data;
 	}
@@ -187,7 +195,8 @@ export default class Stream extends EventEmitter {
 			//Not on the first page... so just drop.
 			return;
 		}
-		this[DATA].unshift(item);
+		const {data} = PRIVATE.get(this);
+		data.unshift(item);
 		item.on('change', this.onChange);
 		this.emit('change');
 	}
