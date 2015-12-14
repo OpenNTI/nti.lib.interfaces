@@ -12,10 +12,10 @@ export default {
 	 * @param {number} page Page number. (1...n)
 	 * @return {void}
 	 */
-	loadPage (page) {
+	loadPage (page = 1) {
 		delete this.next;
 		delete this.prev;
-		this.options.batchStart = (page - 1) * this.getPageSize();
+		this.options.batchStart = Math.max(0, (page - 1) * this.getPageSize());
 		this.nextBatch();
 	},
 
@@ -28,7 +28,7 @@ export default {
 
 	setPageSize (size) {
 		this.options.batchSize = isPositiveFiniteNumber(size) ? size : 50;
-		this.loadPage(0);
+		this.loadPage(1);
 	},
 
 
@@ -41,6 +41,6 @@ export default {
 			delete this.options.search;
 		}
 
-		this.loadPage(0);
+		this.loadPage(1);
 	}
 };
