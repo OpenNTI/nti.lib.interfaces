@@ -46,7 +46,7 @@ export default class SessionManager {
 
 	setupIntitalData (context) {
 		let url = context.originalUrl || context.url;
-		logger.debug('SESSION [PRE-FETCHING DATA] %s %s (User: %s)', context.method, url, context.username);
+		logger.info('SESSION [PRE-FETCHING DATA] %s %s (User: %s)', context.method, url, context.username);
 		return this.server.getServiceDocument(context)
 			.then(service => {
 				context[ServiceStash] = service;
