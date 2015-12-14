@@ -15,7 +15,7 @@ export default {
 	loadPage (page) {
 		delete this.next;
 		delete this.prev;
-		this.options.batchStart = (page - 1) * this.options.batchSize;
+		this.options.batchStart = (page - 1) * this.getPageSize();
 		this.nextBatch();
 	},
 
@@ -32,7 +32,7 @@ export default {
 	},
 
 
-	getPageSize () { return this.options.batchSize; },
+	getPageSize () { return this.options.batchSize || 50; },
 
 
 	search (query) {
