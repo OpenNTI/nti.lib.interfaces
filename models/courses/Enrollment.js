@@ -36,7 +36,7 @@ export default class Enrollment extends Base {
 		let i = this[parse]('CourseInstance');
 
 		if (!i) {
-			throw new Error('Illegal State: No CourseInstance. (You are probably trying to parse a GradeBookSummery or Roster)');
+			throw new Error('Illegal State: No CourseInstance. (You are probably trying to parse a GradeBookSummary or Roster)');
 		}
 
 		i.on('change', this.onChange.bind(this));

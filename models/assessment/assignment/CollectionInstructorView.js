@@ -14,7 +14,7 @@ export default class CollectionInstructorView extends Base {
 	 *                                       array of Non-Assignment assessments
 	 *                                       visible to the current user.
 	 * @param  {string} historyLink          URL to fetch assignment histories.
-	 * @param  {object} gradebook            GradeBook summery with Links to "GradeBookSummary"
+	 * @param  {object} gradebook            GradeBook summary with Links to "GradeBookSummary"
 	 *                                       and "GradeBookByAssignment"
 	 * @returns {void}
 	 */
