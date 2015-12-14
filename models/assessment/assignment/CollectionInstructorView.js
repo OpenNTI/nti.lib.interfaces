@@ -1,4 +1,4 @@
-import {Service} from '../CommonSymbols';
+import {Service} from '../../../CommonSymbols';
 import Base from './Collection';
 
 import GradeBookSummary from '../../../stores/GradeBookSummary';
