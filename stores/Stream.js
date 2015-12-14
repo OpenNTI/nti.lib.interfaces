@@ -1,6 +1,7 @@
 import {EventEmitter} from 'events';
 
 import QueryString from 'query-string';
+import Url from 'url';
 
 import browser from '../utils/browser';
 import mixin from '../utils/mixin';
@@ -40,7 +41,7 @@ export default class Stream extends EventEmitter {
 		mixin(this, Pendability);
 		this.onChange = this.onChange.bind(this);
 
-		let parseList = parseListFn(this, service);
+		let parseList = this.parseListFn;
 
 		this.load = url => service.get(url)
 								.then(o => {
@@ -63,6 +64,11 @@ export default class Stream extends EventEmitter {
 		}
 
 		this.nextBatch();
+	}
+
+
+	get parseListFn () {
+		return parseListFn(this, this[Service]);
 	}
 
 
@@ -106,9 +112,18 @@ export default class Stream extends EventEmitter {
 
 			start = Date.now();
 
-			let query = this.options ? QueryString.stringify(this.options) : '';
+			const getHref = (ref, params = {}) => ref && (
+				ref = Url.parse(ref),
+				ref.search = QueryString.stringify(
+								Object.assign(
+									QueryString.parse(ref.search),
+									params
+								)
+							),
+				ref.format()
+			);
 
-			let next = this.next || this.href && (this.href + (this.href.indexOf('?') === -1 ? '?' : '&') + query);
+			let next = this.next || getHref(this.href, this.options);
 
 			let loads = this.load(next)
 				.then(v => this[DATA] = this[DATA].concat(v))
