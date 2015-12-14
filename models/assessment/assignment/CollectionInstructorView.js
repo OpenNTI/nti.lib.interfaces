@@ -1,7 +1,10 @@
 import {Service} from '../../../CommonSymbols';
 import Base from './Collection';
 
+import AssignmentSummary from '../../../stores/AssignmentSummary';
 import GradeBookSummary from '../../../stores/GradeBookSummary';
+
+const PRIVATE = new WeakMap();
 
 export default class CollectionInstructorView extends Base {
 
@@ -24,20 +27,40 @@ export default class CollectionInstructorView extends Base {
 	constructor (service, parent, assignments, assessments, historyLink, gradebook) {
 		super(service, parent, assignments, assessments, historyLink);
 		Object.assign(this, {gradebook});
+		PRIVATE.set(this, {});
+	}
+
+
+	getAssignmentSummary (assignmentId) {
+		const data = PRIVATE.get(this);
+
+		if (!data.assignmentSummary) {
+			const assignment = this.getAssignment(assignmentId);
+			const link = assignment && assignment.getLink('GradeBookByAssignment');
+
+			data.assignmentSummary = link && new AssignmentSummary(
+				this[Service],
+				this,
+				link
+			);
+		}
+
+		return data.assignmentSummary;
 	}
 
 
 	getSummary () {
+		const data = PRIVATE.get(this);
 
-		if (!this.summary) {
-			this.summary = new GradeBookSummary(
+		if (!data.summary) {
+			data.summary = new GradeBookSummary(
 				this[Service],
 				this,
 				this.gradebook.getLink('GradeBookSummary')
 			);
 		}
 
-		return this.summary;
+		return data.summary;
 	}
 
 
