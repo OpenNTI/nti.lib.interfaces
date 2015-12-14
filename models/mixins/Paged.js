@@ -35,12 +35,15 @@ export default {
 	getPageSize () { return this.options.batchSize || 50; },
 
 
-	search (query) {
+	setSearch (query) {
 		this.options.search = query;
 		if (typeof query !== 'string' || query === '' || /\s/) {
 			delete this.options.search;
 		}
 
 		this.loadPage(1);
-	}
+	},
+
+
+	getSearch () { return this.options.search; }
 };
