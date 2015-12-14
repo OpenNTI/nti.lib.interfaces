@@ -33,7 +33,7 @@ export default class CollectionInstructorView extends Base {
 			this.summary = new GradeBookSummary(
 				this[Service],
 				this,
-				this.getLink('GradeBookSummary')
+				this.gradebook.getLink('GradeBookSummary')
 			);
 		}
 
