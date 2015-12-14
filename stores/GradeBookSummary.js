@@ -40,7 +40,7 @@ export default class GradeBookSummary extends Stream {
 	 * @param {string} value Either: 'open', 'forCredit' or null to clear the filter.
 	 * @returns {void}
 	 */
-	setTypeFitler (value) {
+	setTypeFilter (value) {
 		const data = PRIVATE.get(this);
 		data.typeFilter = FILTERS[(value || '').toLowerCase()];
 		setFilter(this);
