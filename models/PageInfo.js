@@ -8,7 +8,7 @@ import {REL_USER_GENERATED_DATA, REL_RELEVANT_CONTAINED_USER_GENERATED_DATA} fro
 
 import fixRefs from '../utils/rebase-references';
 
-import {Service, Pending, Parser as parse} from '../CommonSymbols';
+import {Service, Parser as parse} from '../CommonSymbols';
 
 import UserDataStore from '../stores/UserData';
 
@@ -119,7 +119,7 @@ export default class PageInfo extends Base {
 				this.getLink(REL_RELEVANT_CONTAINED_USER_GENERATED_DATA)
 			);
 
-			this.addToPending(...store[Pending]);
+			this.addToPending(store.waitForPending());
 		}
 
 		return Promise.resolve(store);//in the future, this may need to be async...

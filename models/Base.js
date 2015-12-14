@@ -17,8 +17,7 @@ import {
 	Service,
 	ReParent,
 	DateFields,
-	Parser,
-	Pending
+	Parser
 } from '../CommonSymbols';
 
 
@@ -223,8 +222,8 @@ export default class Base extends EventEmitter {
 
 
 		let o = raw && doParse(this, raw);
-		if (o && o[Pending]) {
-			this.addToPending(...o[Pending]);
+		if (o && o.addToPending) {
+			this.addToPending(o);
 		}
 
 		if (key) {//If the paramater was a key, assign the parsed object back to the key...

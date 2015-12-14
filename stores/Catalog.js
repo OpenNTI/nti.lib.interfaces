@@ -2,21 +2,20 @@ import {EventEmitter} from 'events';
 
 
 import forwardFunctions from '../utils/function-forwarding';
-import waitFor from '../utils/waitfor';
 import mixin from '../utils/mixin';
 
 import {parseListFn} from '../models';
 
 import Pendability from '../models/mixins/Pendability';
 
-import {Service, Pending} from '../CommonSymbols';
+import {Service} from '../CommonSymbols';
 
 export default class Catalog extends EventEmitter {
 	static load (service, reload) {
 		return get(service, service.getCoursesCatalogURL(), reload)
 			.then(data => {
 				let catalog = new this(service, data);
-				return waitFor(catalog[Pending]).then(() => catalog);
+				return catalog.waitForPending();
 			});
 	}
 

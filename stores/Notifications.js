@@ -1,6 +1,5 @@
 import {
-	Service,
-	Pending
+	Service
 } from '../CommonSymbols';
 
 import Url from 'url';
@@ -145,8 +144,8 @@ function resolveUIData (service, data) {
 	data.Items = data.Items.map(o => {
 		try {
 			o = parse(service, null, o);
-			if (o && o[Pending]) {
-				pending.push(...o[Pending]);
+			if (o && o.waitForPending) {
+				pending.push(o.waitForPending());
 			}
 		} catch(e) {
 			console.warn(e.NoParser ? e.message : (e.stack || e.message || e));

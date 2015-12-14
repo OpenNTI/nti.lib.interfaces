@@ -8,7 +8,7 @@ export const Context = Symbol.for('Context');
 export const ReParent = Symbol('ReParent');
 export const DateFields = Symbol('DateFields');
 export const Parser = Symbol('Parser');
-export const Pending = Symbol.for('PendingRequests');
+
 export const SiteName = Symbol.for('nti:site-name');
 export const ServiceStash = Symbol.for('nti:service');
 

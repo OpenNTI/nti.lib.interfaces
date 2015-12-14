@@ -15,9 +15,11 @@ import getLink, {asMap as getLinksAsMap} from '../utils/getlink';
 
 import chain from '../utils/function-chain';
 
+import {attach as attachPendingQueue} from '../models/mixins/Pendability';
+
 import Service from '../stores/Service';
 
-import {Pending, SiteName} from '../CommonSymbols';
+import {SiteName} from '../CommonSymbols';
 import {TOS_NOT_ACCEPTED} from '../constants';
 
 const logger = Logger.get('DataServerInterface');
@@ -59,7 +61,6 @@ export default class DataServerInterface {
 
 		let result;
 		let abortMethod;
-		let pending = context ? (context[Pending] = (context[Pending] || [])) : [];
 		let start = Date.now();
 		let url = (options || {}).url;
 
@@ -198,7 +199,9 @@ export default class DataServerInterface {
 
 		result.abort = abortMethod || (()=> logger.warn('Attempting to abort request, but missing abort() method.'));
 
-		pending.push(result);
+		if (context) {
+			attachPendingQueue(context).addToPending(result);
+		}
 		return result;
 	}
 

@@ -5,7 +5,7 @@ import {parse} from '../models';
 
 import Capabilities from '../models/Capabilities';
 
-import Pendability from '../models/mixins/Pendability';
+import Pendability, {attach as attachPendingQueue} from '../models/mixins/Pendability';
 
 
 import ContactsStore from './Contacts';
@@ -30,7 +30,7 @@ import mixin from '../utils/mixin';
 import waitFor from '../utils/waitfor';
 import wait from '../utils/wait';
 
-import {Context, Server, Service, SiteName, Pending} from '../CommonSymbols';
+import {Context, Server, Service, SiteName} from '../CommonSymbols';
 
 const ENROLLMENT = Symbol('enrollment');
 
@@ -75,12 +75,7 @@ export default class ServiceDocument {
 		);
 
 		if (context) {
-			let pending = context[Pending];
-			if (!pending) {
-				pending = context[Pending] = [];
-			}
-
-			pending.push(this.waitForPending());
+			attachPendingQueue(context).addToPending(this.waitForPending());
 		}
 	}
 

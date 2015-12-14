@@ -1,16 +1,22 @@
 import noop from 'fbjs/lib/emptyFunction';
 import waitFor from '../../utils/waitfor';
-import { Pending } from '../../CommonSymbols';
 
-export default {
+const PRIVATE_PENDING = new WeakMap();
+
+const getPending = p => PRIVATE_PENDING.get(p) || [];
+const setPending = (p, list) => (PRIVATE_PENDING.set(p, list), list);
+
+const mixin = {
 
 	constructor () {
-		this[Pending] = [];
+		setPending(this, []);
 	},
 
 
 	addToPending (...pending) {
-		let list = this[Pending] = (this[Pending] || []);
+		let list = getPending(this);
+		setPending(this, list); //ensure (for request contexts that don't get the constructor call)
+
 
 		function remove (p) {
 			return ()=> {
@@ -29,9 +35,8 @@ export default {
 				continue;
 			}
 
-			if (Array.isArray(p[Pending])) {
-				this.addToPending(...p[Pending]);
-
+			if (p.addToPending) {
+				this.addToPending(...getPending(p));
 			}
 			else if (p.then) {
 
@@ -49,8 +54,26 @@ export default {
 	},
 
 
-	waitForPending () {
-		return waitFor(this[Pending]).then(()=> this);
+	waitForPending (timeout) {
+		return waitFor(getPending(this), timeout).then(()=> this);
 	}
 
 };
+
+export default mixin;
+
+export function attach (context) {
+	setPending(context, getPending(context));
+
+	for (let method of Object.keys(mixin)) {
+		if (method === 'constructor') { continue; }
+
+		if (!context[method]) {
+			context[method] = function (...pending) {
+				return mixin[method].apply(context, pending);
+			};
+		}
+	}
+
+	return context;
+}
