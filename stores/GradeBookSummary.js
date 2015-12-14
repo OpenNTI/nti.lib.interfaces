@@ -29,6 +29,6 @@ export default class GradeBookSummary extends Stream {
 		});
 
 		delete this.next;
-		this.loadPage(0);
+		this.loadPage(1);
 	}
 }
