@@ -49,9 +49,11 @@ export default class Stream extends EventEmitter {
 
 		let parseList = this.parseListFn;
 
+		const batchUnderflowed = o => !o || (o.length < this.options.batchSize);
+
 		this.load = url => service.get(url)
 								.then(o => {
-									this.next = getLink(o, 'batch-next');
+									this.next = !batchUnderflowed(o.Items) && getLink(o, 'batch-next');
 									this.prev = getLink(o, 'batch-prev');
 									logger.debug('Stream has more? ', !!this.next);
 									return parseList(o.Items || []);
