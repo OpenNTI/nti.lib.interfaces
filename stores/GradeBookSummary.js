@@ -8,27 +8,58 @@ const FILTERS = {
 	open: 'Open'
 };
 
+const CATEGORIES = {
+	actionable: 'actionable',
+	overdue: 'overdue',
+	ungraded: 'ungraded'
+};
+
+const PRIVATE = new WeakMap();
+
+function setFilter (scope, type = scope.typeFilter, category = scope.categoryFilter) {
+	Object.assign(scope.options, {
+		filter: [type, category].filter(x => x).join(',')
+	});
+
+	delete scope.next;
+	scope.loadPage(1);
+}
+
 export default class GradeBookSummary extends Stream {
 
 	constructor (...args) {
 		super(...args);
 		mixin(this, Paged);
+		PRIVATE.set(this, {});
 	}
+
 
 	/**
-	 * Clears the store, and reloads with a given filter.
+	 * Clears the store, and reloads with a given type filter.
 	 *
-	 * @param {string} filter Either: 'open', 'forCredit' or null to clear the filter.
+	 * @param {string} value Either: 'open', 'forCredit' or null to clear the filter.
 	 * @returns {void}
 	 */
-	setFilter (filter) {
-
-		Object.assign(this.options, {
-			batchStart: 0,
-			filter: FILTERS[(filter || '').toLowerCase()]
-		});
-
-		delete this.next;
-		this.loadPage(1);
+	setTypeFitler (value) {
+		const data = PRIVATE.get(this);
+		data.typeFilter = FILTERS[(value || '').toLowerCase()];
+		setFilter(this);
 	}
+
+
+	/**
+	 * Clears the store, and reloads with a given type category.
+	 *
+	 * @param {string} value Either: 'actionable', 'overdue', 'ungraded' or null to clear the filter.
+	 * @returns {void}
+	 */
+	setCategoryFilter (value) {
+		const data = PRIVATE.get(this);
+		data.typeCategory = CATEGORIES[(value || '').toLowerCase()];
+		setFilter(this);
+	}
+
+
+	get typeFilter () { return PRIVATE.get(this).typeFilter; }
+	get categoryFilter () { return PRIVATE.get(this).typeCategory; }
 }
