@@ -1,4 +1,5 @@
 import logger from 'debug';
+import browser from './utils/browser';
 
 const pattern = logger.load() || ['info', 'error', 'warn'].map(x => `*:${x}`).join(',');
 logger.enable(pattern);
@@ -33,6 +34,12 @@ export default class Logger {
 		for (let key of ['info', 'error', 'warn', 'debug']) {
 			this[key] = logger(`${name}:${key}`);
 			this[key].color = COLORS[key];
+		}
+
+		if (browser) {
+			this.error.log = console.error.bind(console);
+			this.warn.log = console.warn.bind(console);
+			this.debug.log = console.debug.bind(console);
 		}
 
 		this.name = name;
