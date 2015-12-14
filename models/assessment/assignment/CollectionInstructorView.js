@@ -1,4 +1,7 @@
+import {Service} from '../CommonSymbols';
 import Base from './Collection';
+
+import GradeBookSummary from '../../../stores/GradeBookSummary';
 
 export default class CollectionInstructorView extends Base {
 
@@ -21,6 +24,25 @@ export default class CollectionInstructorView extends Base {
 	constructor (service, parent, assignments, assessments, historyLink, gradebook) {
 		super(service, parent, assignments, assessments, historyLink);
 		Object.assign(this, {gradebook});
+	}
+
+
+	getSummary () {
+
+		if (!this.summary) {
+			this.summary = new GradeBookSummary(
+				this[Service],
+				this,
+				this.getLink('GradeBookSummary')
+			);
+		}
+
+		return this.summary;
+	}
+
+
+	getActivity () {
+		//parent(CourseInstance) -> CourseActivity
 	}
 
 }

@@ -12,7 +12,12 @@ import getLink from '../utils/getlink';
 
 import {Service, DELETED} from '../CommonSymbols';
 
+import Logger from '../logger';
+
 import {parseListFn} from '../models';
+
+
+const logger = Logger.get('stores:Stream');
 
 const DATA = Symbol();
 
@@ -35,7 +40,8 @@ export default class Stream extends EventEmitter {
 			owner,
 			href,
 			options,
-			collator
+			collator,
+			continuous: true
 		});
 
 		mixin(this, Pendability);
@@ -46,13 +52,13 @@ export default class Stream extends EventEmitter {
 		this.load = url => service.get(url)
 								.then(o => {
 									this.next = getLink(o, 'batch-next');
-									// this.prev = getLink(o, 'batch-prev');
-									console.debug('Stream has more? ', !!this.next);
+									this.prev = getLink(o, 'batch-prev');
+									logger.debug('Stream has more? ', !!this.next);
 									return parseList(o.Items || []);
 								});
 
 		if (browser) {
-			this.on('load', (_, time) => console.log('Load: %s %o', time, this));
+			this.on('load', (_, time) => logger.log('Load: %s %o', time, this));
 		}
 
 		if (href.then) {
@@ -83,7 +89,7 @@ export default class Stream extends EventEmitter {
 			let item = data.splice(index, 1)[0];//remove it;
 
 			item.removeListener('change', this.onChange);
-			console.debug('Removed deleted item: %o', item);
+			logger.debug('Removed deleted item: %o', item);
 		}
 
 		this.emit('change', this);
@@ -99,15 +105,20 @@ export default class Stream extends EventEmitter {
 	}
 
 
-	nextBatch () {
+	nextBatch (prev = false) {
 		this.loading = true;
 		let start = Date.now();
 		this.emit('change', this);
 
+		if (prev && this.continuous) {
+			//nothing to do. We already have the previous values still in memory.
+			return Promise.resolve(this);
+		}
+
 		return this.waitForPending().then(() => {
 			let delay = Date.now() - start;
 			if (delay > 1) {
-				console.debug('Now Loading... Delayed %sms', delay);
+				logger.debug('Now Loading... Delayed %sms', delay);
 			}
 
 			start = Date.now();
@@ -123,12 +134,12 @@ export default class Stream extends EventEmitter {
 				ref.format()
 			);
 
-			let next = this.next || getHref(this.href, this.options);
+			let next = (prev ? this.prev : this.next) || getHref(this.href, this.options);
 
 			let loads = this.load(next)
-				.then(v => this[DATA] = this[DATA].concat(v))
+				.then(v => this[DATA] = this.continuous ? this[DATA].concat(v) : v)
 				.catch(er => {
-					console.log(er);
+					logger.error(er);
 					this.error = true;
 				})
 				.then(() => {

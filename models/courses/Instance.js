@@ -16,7 +16,7 @@ import AssessmentCollectionInstructorView from '../assessment/assignment/Collect
 import MediaIndex from '../MediaIndex';
 
 import ActivityStream from './BucketedActivityStream';
-import Roster from '../../stores/CourseRosterStream';
+import Roster from '../../stores/CourseRoster';
 
 const NOT_DEFINED = {reason: 'Not defined'};
 const EMPTY_CATALOG_ENTRY = {getAuthorLine: emptyFunction};

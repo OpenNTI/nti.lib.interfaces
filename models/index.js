@@ -186,6 +186,7 @@ const PARSERS = {
 	'gradebook.gradebookbyassignmentsummary': CourseGradeBookByAssignment,
 	'GradeBookByAssignmentSummary': 'gradebook.gradebookbyassignmentsummary',
 	'gradebook.userassignmentsummary': CourseGradeBookUserSummary,
+	'gradebook.usergradebooksummary': 'gradebook.userassignmentsummary',
 
 	'contentpackage': ContentPackage,
 	'contentpackagebundle': ContentBundle,

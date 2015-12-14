@@ -1,5 +1,8 @@
 import Base from '../models/Base';
+import Paged from '../models/mixins/Paged';
 import Stream from './Stream';
+
+import mixin from '../utils/mixin';
 
 import {Service, Parser as parse} from '../CommonSymbols';
 
@@ -7,7 +10,7 @@ const RENAME = Symbol.for('TakeOver');
 
 //@private
 const FILTERS = {
-	forCredit: 'LegacyEnrollmentStatusForCredit',
+	forcredit: 'LegacyEnrollmentStatusForCredit',
 	open: 'LegacyEnrollmentStatusOpen'
 };
 
@@ -33,6 +36,7 @@ export default class CourseRosterStream extends Stream {
 
 	constructor (...args) {
 		super(...args);
+		mixin(this, Paged);
 	}
 
 
@@ -51,7 +55,7 @@ export default class CourseRosterStream extends Stream {
 
 		Object.assign(this.options, {
 			batchStart: 0,
-			filter: FILTERS[filter]
+			filter: FILTERS[(filter || '').toLowerCase()]
 		});
 
 		delete this.next;

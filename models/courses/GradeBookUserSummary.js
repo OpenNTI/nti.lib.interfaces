@@ -3,19 +3,24 @@ import {
 	Parser as parse
 } from '../../CommonSymbols';
 
-const TakeOver = Symbol.for('TakeOver');
+const RENAME = Symbol.for('TakeOver');
 
 export default class GradeBookUserSummary extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
-		const rename = (x, y) => this[TakeOver](x, y);
 
 		this[parse]('HistoryItemSummary');
 		this[parse]('User');
 
-		rename('User', 'user');
-		rename('Username', 'username');
+		this[RENAME]('User', 'user');
+		this[RENAME]('Username', 'username');
+		this[RENAME]('Alias', 'displayName');
+
+
+		this[RENAME]('OverdueAssignmentCount', 'overdue');
+		this[RENAME]('UngradedAssignmentCount', 'ungraded');
 	}
+
 
 	get completed () {
 		const {HistoryItemSummary: item} = this;
@@ -24,16 +29,13 @@ export default class GradeBookUserSummary extends Base {
 
 
 	get feedbackCount () {
-		const {HistoryItemSummary: item} = this;
-		const {FeedbackCount: count} = item || {};
+		const {HistoryItemSummary: {FeedbackCount: count} = {}} = this;
 		return count;
-
 	}
 
 
 	get grade () {
-		const {HistoryItemSummary: item} = this;
-		const {grade} = item || {};
+		const {HistoryItemSummary: {grade} = {}} = this;
 		return grade;
 	}
 }
