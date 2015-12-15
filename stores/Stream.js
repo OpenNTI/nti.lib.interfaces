@@ -1,4 +1,5 @@
 import {EventEmitter} from 'events';
+import invariant from 'invariant';
 
 import QueryString from 'query-string';
 import Url from 'url';
@@ -11,7 +12,7 @@ import Pendability from '../models/mixins/Pendability';
 import getLink from '../utils/getlink';
 
 import {Service, DELETED} from '../CommonSymbols';
-
+import {SortOrder} from '../constants';
 import Logger from '../logger';
 
 import {parseListFn} from '../models';
@@ -103,6 +104,41 @@ export default class Stream extends EventEmitter {
 
 		this.emit('change', this);
 	}
+
+
+	setSort (sortOn, sortOrder = SortOrder.ASC) {
+		const {options: op} = this;
+
+		invariant(
+			Object.values(SortOrder).includes(sortOrder),
+			'sortOrder must be one of SortOrder\'s values.'
+		);
+
+		Object.assign(op, {
+			sortOn,
+			sortOrder,
+
+			batchStart: 0 //reset to begining
+		});
+
+		if (!sortOn) {
+			delete op.sortOn;
+			delete op.sortOrder;
+		}
+
+		//reload date... (but reload from the begining and with updated args... )
+		delete this.next;
+		delete this.prev;
+
+		this.nextBatch();
+	}
+
+
+	getSort () {
+		const {sortOn, sortOrder} = this.options;
+		return { sortOn, sortOrder };
+	}
+
 
 	/**
 	 * Returns true if there is more to load from the stream. (show a load more button)
