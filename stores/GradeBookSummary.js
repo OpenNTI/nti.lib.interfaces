@@ -54,12 +54,17 @@ export default class GradeBookSummary extends Stream {
 			data.scopeFilter = EnrollmentScope;
 		}
 
-		// BatchPage: 1
 		// EnrollmentScope: "ForCredit"
+		// BatchPage: 1
 		// ItemCount: 1
 		// TotalItemCount: 1
 
+		data.total = input.TotalItemCount;
 	}
+
+
+	get total () { return PRIVATE.get(this).total || this.length; }
+	getTotal () { return this.total; } //expected by Paged mixin
 
 
 	/**

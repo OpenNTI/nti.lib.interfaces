@@ -26,8 +26,9 @@ export default {
 	},
 
 
-	getLastPage () {
+	getPageCount () {
 		//expects this.getTotal() to be implemented
+		return Math.ceil(this.getTotal() / this.getPageSize()) || 1;
 	},
 
 
