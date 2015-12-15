@@ -20,7 +20,7 @@ const CATEGORIES = {
 
 const PRIVATE = new WeakMap();
 
-function setFilter (instance, scope = scope.scopeFilter, category = scope.categoryFilter) {
+function setFilter (instance, scope = instance.scopeFilter, category = instance.categoryFilter) {
 	const {options} = instance;
 
 	options.filter = [scope, category].filter(x => x).join(',');

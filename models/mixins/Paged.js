@@ -26,6 +26,11 @@ export default {
 	},
 
 
+	getLastPage () {
+		//expects this.getTotal() to be implemented
+	},
+
+
 	setPageSize (size) {
 		this.options.batchSize = isPositiveFiniteNumber(size) ? size : 50;
 		this.loadPage(1);
