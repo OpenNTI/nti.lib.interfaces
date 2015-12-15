@@ -5,12 +5,12 @@ const pattern = logger.load() || ['info', 'error', 'warn'].map(x => `*:${x}`).jo
 logger.enable(pattern);
 
 const COLORS = {
-	'error': 1, //red
-	'info': 2, //green
-	'warn': 3, //yellow/orange
-	'debug': 4 //blue
-	//'': 5, //magenta
-	//'': 6, //lightblue
+	'error': browser ? 'crimson' : 1, //red
+	'info': browser ? 'forestgreen' : 2, //green
+	'warn': browser ? 'goldenrod' : 3, //yellow/orange
+	'debug': browser ? 'dodgerblue' : 4 //blue
+	//'': browser ? 'darkorchid' : 5, //magenta
+	//'': browser ? 'lightseagreen' : 6, //lightblue
 };
 
 export default class Logger {
