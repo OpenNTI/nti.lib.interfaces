@@ -1,4 +1,5 @@
 import {Service} from '../../../CommonSymbols';
+import Logger from '../../../logger';
 
 import {HISTORY_LINK} from '../Constants';
 
@@ -6,6 +7,8 @@ import Base from './Collection';
 
 import CollectionSummary from './CollectionSummary';
 import HistoryCollection from './AssignmentHistoryCollection';
+
+const logger = Logger.get('assignment:Collection:Student');
 
 const PRIVATE = new WeakMap();
 
@@ -43,7 +46,7 @@ export default class CollectionStudentView extends Base {
 		let {history: promise} = data;
 
 		if (!promise || refresh) {
-			console.debug('Loading assignment history for %s...', this.parent().title);
+			logger.debug('Loading assignment history for %s...', this.parent().title);
 			data.history = promise = this.fetchLinkParsed(HISTORY_LINK)
 				.then(x => x instanceof HistoryCollection ? x : Promise.reject('Wrong Type'))
 				.catch(() => Promise.reject('No History'));

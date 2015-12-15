@@ -12,9 +12,13 @@ import {
 	Parser as parse
 } from '../../../CommonSymbols';
 
+import Logger from '../../../logger';
+
 import {HISTORY_LINK} from '../Constants';
 
 import ActivityMixin from './AssignmentActivityMixin';
+
+const logger = Logger.get('assignment:Collection:Base');
 
 const ORDER_BY_COMPLETION = Symbol('ORDER_BY_COMPLETION');
 const ORDER_BY_DUE_DATE = Symbol('ORDER_BY_DUE_DATE');
@@ -124,7 +128,14 @@ export default class Collection extends Base {
 
 				for (let assessmentId of map[nodeId]) {
 					if (assessmentToOutlineMap[assessmentId]) {
-						console.warn('Duplicated key!', assessmentToOutlineMap[assessmentId], nodeId);
+						logger.warn('Duplicated key! (assessment referenced on multiple outlines?)\n\tassessmentId: %s\n\t\tnodeId (old): %s\n\t\tnodeId (new): %s',
+							assessmentId,
+							assessmentToOutlineMap[assessmentId],
+							nodeId);
+					} else {
+						logger.debug('New key:\n\tassessmentId: %s\n\t\tmappted to nodeId (new): %s',
+							assessmentId,
+							nodeId);
 					}
 					assessmentToOutlineMap[assessmentId] = nodeId;
 
@@ -133,7 +144,7 @@ export default class Collection extends Base {
 					//So, we have to make sure the Assignment ID is in these lists and are mapped.
 					let assignment = find(this.getAssignments() || [], assessmentId);
 					if (assignment && assignment.getID() !== assessmentId) {
-						console.warn('Part of an assignment was given as the assignment, patching: "%s"', assessmentId);
+						logger.warn('Part of an assignment was given as the assignment,\n\tpatching:\n\t\t%s\n\tto:\n\t\t%s', assessmentId, assignment.getID());
 						assessmentToOutlineMap[assignment.getID()] = nodeId;
 						outlineMap[nodeId].push(assignment.getID());
 					}

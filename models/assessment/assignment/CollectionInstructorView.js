@@ -2,6 +2,7 @@ import Url from 'url';
 import path from 'path';
 
 import {Service} from '../../../CommonSymbols';
+import Logger from '../../../logger';
 
 import {HISTORY_LINK} from '../Constants';
 
@@ -11,6 +12,8 @@ import CollectionSummary from './CollectionSummary';
 
 import AssignmentSummary from '../../../stores/AssignmentSummary';
 import GradeBookSummary from '../../../stores/GradeBookSummary';
+
+const logger = Logger.get('assignment:Collection:Instructor');
 
 const keyForUser = userId => `${HISTORY_LINK}:${userId}`;
 const HISTORY_LINK_PREFIX = new RegExp('^' + keyForUser(''));
@@ -111,6 +114,7 @@ export default class CollectionInstructorView extends Base {
 
 
 	getActivity () {
+		logger.error('Not Implemented');
 		//parent(CourseInstance) -> CourseActivity
 	}
 
