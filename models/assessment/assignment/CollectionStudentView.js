@@ -1,11 +1,13 @@
+import {Service} from '../../../CommonSymbols';
+
 import {HISTORY_LINK} from '../Constants';
 
 import Base from './Collection';
-// import {Service} from '../../../CommonSymbols';
 
+import CollectionSummary from './CollectionSummary';
 import HistoryCollection from './AssignmentHistoryCollection';
 
-const HISTORY = Symbol();
+const PRIVATE = new WeakMap();
 
 export default class CollectionStudentView extends Base {
 
@@ -25,21 +27,24 @@ export default class CollectionStudentView extends Base {
 	 */
 	constructor (service, parent, assignments, assessments, historyLink) {
 		super(service, parent, assignments, assessments, historyLink);
+		PRIVATE.set(this, {});
 	}
 
 
 	onChange (e) {
 		super.onChange(e);
-		delete this[HISTORY];
+		const data = PRIVATE.get(this);
+		delete data.history;
 	}
 
 
 	getHistory (refresh = false) {
-		let {[HISTORY]: promise} = this;
+		const data = PRIVATE.get(this);
+		let {history: promise} = data;
 
 		if (!promise || refresh) {
 			console.debug('Loading assignment history for %s...', this.parent().title);
-			this[HISTORY] = promise = this.fetchLinkParsed(HISTORY_LINK)
+			data.history = promise = this.fetchLinkParsed(HISTORY_LINK)
 				.then(x => x instanceof HistoryCollection ? x : Promise.reject('Wrong Type'))
 				.catch(() => Promise.reject('No History'));
 		}
@@ -51,6 +56,17 @@ export default class CollectionStudentView extends Base {
 	getHistoryItem (assignmentId, refresh = false) {
 		return this.getHistory(refresh)
 			.then(history => history.getItem(assignmentId));
+	}
+
+
+	getStudentSummary () {
+		const data = PRIVATE.get(this);
+
+		if (!data.summary) {
+			data.summary = new CollectionSummary(this[Service], this, this.getHistory());
+		}
+
+		return data.summary;
 	}
 
 

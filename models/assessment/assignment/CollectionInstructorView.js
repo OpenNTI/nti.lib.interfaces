@@ -1,8 +1,24 @@
+import Url from 'url';
+import path from 'path';
+
 import {Service} from '../../../CommonSymbols';
+
+import {HISTORY_LINK} from '../Constants';
+
 import Base from './Collection';
+
+import CollectionSummary from './CollectionSummary';
 
 import AssignmentSummary from '../../../stores/AssignmentSummary';
 import GradeBookSummary from '../../../stores/GradeBookSummary';
+
+const keyForUser = userId => `${HISTORY_LINK}:${userId}`;
+const HISTORY_LINK_PREFIX = new RegExp('^' + keyForUser(''));
+
+const forUser = (ref, userId) => (
+					ref = Url.parse(ref),
+					ref.pathname = path.join(path.dirname(ref.pathname), encodeURIComponent(userId)),
+					ref.format());
 
 const PRIVATE = new WeakMap();
 
@@ -31,6 +47,20 @@ export default class CollectionInstructorView extends Base {
 	}
 
 
+	getLink (rel, ...rest) {
+		let link = super.getLink(rel, ...rest);
+
+		if (!link && HISTORY_LINK_PREFIX.test(rel)) {
+
+			let userId = rel.replace(HISTORY_LINK_PREFIX, '');
+
+			return forUser(super.getLink(HISTORY_LINK), userId);
+		}
+
+		return link;
+	}
+
+
 	getAssignmentSummary (assignmentId) {
 		const data = PRIVATE.get(this);
 
@@ -46,6 +76,22 @@ export default class CollectionInstructorView extends Base {
 		}
 
 		return data.assignmentSummary;
+	}
+
+
+	getStudentSummary (studentUserId) {
+		const data = PRIVATE.get(this);
+
+		data.studentSummaries = data.studentSummaries || {};
+
+		if (!data.studentSummaries[studentUserId]) {
+
+			let history = this.fetchLinkParsed(keyForUser(studentUserId));
+
+			data.studentSummaries[studentUserId] = new CollectionSummary(this[Service], this, history);
+		}
+
+		return data.studentSummaries[studentUserId];
 	}
 
 
