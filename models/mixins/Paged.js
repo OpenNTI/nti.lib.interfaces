@@ -21,8 +21,8 @@ export default {
 
 
 	getCurrentPage () {
-		const {batchStart, batchSize} = this.options;
-		return (batchStart / batchSize) + 1;
+		const {batchStart = 0} = this.options;
+		return (batchStart / this.getPageSize()) + 1;
 	},
 
 
