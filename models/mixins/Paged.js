@@ -43,7 +43,7 @@ export default {
 
 	setSearch (query) {
 		this.options.search = query;
-		if (typeof query !== 'string' || query === '' || /\s/) {
+		if (typeof query !== 'string' || query === '' || /^\s+$/.test(query)) {
 			delete this.options.search;
 		}
 
