@@ -119,6 +119,35 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 	}
 
 
+	getHistoryForPromise (assignmentId) {
+		const store = this;
+		return new Promise((fulfill, reject) => {
+			const finish = () => {
+				store.removeListener('load', finish);
+				store.removeListener('error', finish);
+				if (store.error) {
+					return reject(store.error);
+				}
+
+				const item = store.getHistoryFor(assignmentId);
+				// if (!item) {
+				// 	return reject('No History');
+				// }
+
+				fulfill(item);
+			};
+
+			if (store.loading) {
+				store.on('load', finish);
+				store.on('error', finish);
+				return;
+			}
+
+			finish();
+		});
+	}
+
+
 	//@private ... use the iterator or map to access items. Or Array.from if you _need_ an array.
 	get items () {
 		const data = getPrivate(this);

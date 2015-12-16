@@ -116,32 +116,7 @@ export default class CollectionInstructorView extends Base {
 
 
 	getHistoryItem (assignmentId, studentUserId) {
-		const store = this.getStudentSummary(studentUserId);
-
-		return new Promise((fulfill, reject) => {
-			const finish = () => {
-				store.removeListener('load', finish);
-				store.removeListener('error', finish);
-				if (store.error) {
-					return reject(store.error);
-				}
-
-				const item = store.getHistoryFor(assignmentId);
-				if (!item) {
-					return reject('No History');
-				}
-
-				fulfill(item);
-			};
-
-			if (store.loading) {
-				store.on('load', finish);
-				store.on('error', finish);
-				return;
-			}
-
-			finish();
-		});
+		return this.getStudentSummary(studentUserId).getHistoryForPromise(assignmentId);
 	}
 
 

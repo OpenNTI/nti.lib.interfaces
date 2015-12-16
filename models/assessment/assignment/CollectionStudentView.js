@@ -43,24 +43,17 @@ export default class CollectionStudentView extends Base {
 	}
 
 
-	getHistory (refresh = false) {
-		const data = getPrivate(this);
-		let {history: promise} = data;
-
-		if (!promise || refresh) {
-			logger.debug('Loading assignment history for %s...', this.parent().title);
-			data.history = promise = this.fetchLinkParsed(HISTORY_LINK)
-				.then(x => x instanceof HistoryCollection ? x : Promise.reject('Wrong Type'))
-				.catch(() => Promise.reject('No History'));
-		}
-
-		return promise;
+	//@private
+	getHistory () {
+		logger.debug('Loading assignment history for %s...', this.parent().title);
+		return this.fetchLinkParsed(HISTORY_LINK)
+			.then(x => x instanceof HistoryCollection ? x : Promise.reject('Wrong Type'))
+			.catch(() => Promise.reject('No History'));
 	}
 
 
-	getHistoryItem (assignmentId, refresh = false) {
-		return this.getHistory(refresh)
-			.then(history => history.getItem(assignmentId));
+	getHistoryItem (assignmentId) {
+		return this.getStudentSummary().getHistoryForPromise(assignmentId);
 	}
 
 
