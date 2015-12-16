@@ -156,7 +156,7 @@ function assessmentItemOrder (a, b) {
 
 
 function setupAssessmentItems (items, pageInfo) {
-	items = items.map(o=>pageInfo[parse](o));
+	items = items.map(o=>pageInfo[parse](o)).filter(x => x);
 	items.sort(assessmentItemOrder);
 
 	let sets = items.filter(o=>o && o.containsId);
