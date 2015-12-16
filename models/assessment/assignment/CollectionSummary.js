@@ -190,6 +190,21 @@ function comparatorFor (property, order) {
 	const MORE = direction;
 	const SAME = 0;
 
+	if (property === 'completed') {
+		return (oA, oB) => {
+			const a = +oA[property];
+			const b = +oB[property];
+			const aD = +oA.dueDate;
+			const bD = +oB.dueDate;
+
+			if (!a) {
+				return b ? LESS : aD === bD ? SAME : aD < bD ? LESS : MORE;
+			}
+
+			return !b ? MORE : a === b ? SAME : a < b ? LESS : MORE;
+		};
+	}
+
 	return (oA, oB) => {
 		const a = oA[property];
 		const b = oB[property];
