@@ -62,6 +62,9 @@ export default {
 
 
 	getContentRoot () {
-		return this.ContentRoot || this.parent('getContentRoot').getContentRoot();
+		const findRootValue  = x => (x = this.parent('ContentRoot'), x && x.ContentRoot);
+		const findRootGetter = x => (x = this.parent('getContentRoot'), x && x.getContentRoot());
+
+		return this.ContentRoot || findRootValue() || findRootGetter();
 	}
 };
