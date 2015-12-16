@@ -201,7 +201,7 @@ export default class Stream extends EventEmitter {
 		});
 	}
 
-
+	//@private ... use the iterator or map to access items. Or Array.from if you _need_ an array. 
 	get items () {
 		const {collator} = this;
 		const {data} = PRIVATE.get(this);

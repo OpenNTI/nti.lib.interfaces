@@ -10,7 +10,7 @@ class AssignmentSummary extends EventEmitter {
 	constructor (assignment, history) {
 		super();
 		initPrivate(this, {assignment, history});
-		console.log(this);
+		// console.log(this);
 	}
 
 	get title () {
@@ -97,6 +97,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 	get loading () { return !getPrivate(this).history; }
 
 
+	//@private ... use the iterator or map to access items. Or Array.from if you _need_ an array. 
 	get items () {
 		const data = getPrivate(this);
 		const {parent, history} = data;
