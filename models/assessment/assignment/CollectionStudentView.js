@@ -11,6 +11,8 @@ import HistoryCollection from './AssignmentHistoryCollection';
 const logger = Logger.get('assignment:Collection:Student');
 
 const PRIVATE = new WeakMap();
+const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
+const getPrivate = x => PRIVATE.get(x);
 
 export default class CollectionStudentView extends Base {
 
@@ -30,19 +32,19 @@ export default class CollectionStudentView extends Base {
 	 */
 	constructor (service, parent, assignments, assessments, historyLink) {
 		super(service, parent, assignments, assessments, historyLink);
-		PRIVATE.set(this, {});
+		initPrivate(this);
 	}
 
 
 	onChange (e) {
 		super.onChange(e);
-		const data = PRIVATE.get(this);
+		const data = getPrivate(this);
 		delete data.history;
 	}
 
 
 	getHistory (refresh = false) {
-		const data = PRIVATE.get(this);
+		const data = getPrivate(this);
 		let {history: promise} = data;
 
 		if (!promise || refresh) {
@@ -63,7 +65,7 @@ export default class CollectionStudentView extends Base {
 
 
 	getStudentSummary () {
-		const data = PRIVATE.get(this);
+		const data = getPrivate(this);
 
 		if (!data.summary) {
 			data.summary = new CollectionSummary(this[Service], this, this.getHistory());

@@ -24,6 +24,8 @@ const forUser = (ref, userId) => (
 					ref.format());
 
 const PRIVATE = new WeakMap();
+const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
+const getPrivate = x => PRIVATE.get(x);
 
 export default class CollectionInstructorView extends Base {
 
@@ -46,7 +48,7 @@ export default class CollectionInstructorView extends Base {
 	constructor (service, parent, assignments, assessments, historyLink, gradebook) {
 		super(service, parent, assignments, assessments, historyLink);
 		Object.assign(this, {gradebook});
-		PRIVATE.set(this, {});
+		initPrivate(this);
 	}
 
 
@@ -65,7 +67,7 @@ export default class CollectionInstructorView extends Base {
 
 
 	getAssignmentSummary (assignmentId) {
-		const data = PRIVATE.get(this);
+		const data = getPrivate(this);
 
 		if (!data.assignmentSummary) {
 			const assignment = this.getAssignment(assignmentId);
@@ -83,7 +85,7 @@ export default class CollectionInstructorView extends Base {
 
 
 	getStudentSummary (studentUserId) {
-		const data = PRIVATE.get(this);
+		const data = getPrivate(this);
 
 		data.studentSummaries = data.studentSummaries || {};
 
@@ -99,7 +101,7 @@ export default class CollectionInstructorView extends Base {
 
 
 	getSummary () {
-		const data = PRIVATE.get(this);
+		const data = getPrivate(this);
 
 		if (!data.summary) {
 			data.summary = new GradeBookSummary(

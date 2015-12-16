@@ -19,6 +19,8 @@ const CATEGORIES = {
 };
 
 const PRIVATE = new WeakMap();
+const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
+const getPrivate = x => PRIVATE.get(x);
 
 function setFilter (instance, scope = instance.scopeFilter, category = instance.categoryFilter) {
 	const {options} = instance;
@@ -37,12 +39,12 @@ export default class GradeBookSummary extends Stream {
 	constructor (service, owner, href, options, ...args) {
 		super(service, owner, href, options, ...args);
 		mixin(this, Paged);
-		PRIVATE.set(this, {});
+		initPrivate(this);
 	}
 
 
 	applyBatch (input) {
-		const data = PRIVATE.get(this);
+		const data = getPrivate(this);
 		super.applyBatch(input);
 
 		const {EnrollmentScope} = input;
@@ -74,7 +76,7 @@ export default class GradeBookSummary extends Stream {
 	 * @returns {void}
 	 */
 	setScopeFilter (scope) {
-		const data = PRIVATE.get(this);
+		const data = getPrivate(this);
 		const value = FILTERS[(scope || '').toLowerCase()];
 		if (!value) {
 			throw new Error('Scope must be Open or ForCredit');
@@ -91,12 +93,12 @@ export default class GradeBookSummary extends Stream {
 	 * @returns {void}
 	 */
 	setCategoryFilter (value) {
-		const data = PRIVATE.get(this);
+		const data = getPrivate(this);
 		data.categoryFilter = CATEGORIES[(value || '').toLowerCase()];
 		setFilter(this);
 	}
 
 
-	get scopeFilter () { return PRIVATE.get(this).scopeFilter; }
-	get categoryFilter () { return PRIVATE.get(this).categoryFilter; }
+	get scopeFilter () { return getPrivate(this).scopeFilter; }
+	get categoryFilter () { return getPrivate(this).categoryFilter; }
 }

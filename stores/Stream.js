@@ -18,6 +18,8 @@ import Logger from '../logger';
 import {parseListFn} from '../models';
 
 const PRIVATE = new WeakMap();
+const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
+const getPrivate = x => PRIVATE.get(x);
 
 const logger = Logger.get('stores:Stream');
 
@@ -46,7 +48,7 @@ export default class Stream extends EventEmitter {
 			onChange: (...args) => this.onChange(...args)
 		});
 
-		PRIVATE.set(this, {data: []});
+		initPrivate(this, {data: []});
 
 		mixin(this, Pendability);
 
@@ -78,7 +80,7 @@ export default class Stream extends EventEmitter {
 
 
 	get parseList () {
-		const p = PRIVATE.get(this);
+		const p = getPrivate(this);
 
 		if (!p.parseListFn) {
 			p.parseListFn = parseListFn(this, this[Service]);
@@ -89,7 +91,7 @@ export default class Stream extends EventEmitter {
 
 
 	onChange (who, what) {
-		const {data} = PRIVATE.get(this);
+		const {data} = getPrivate(this);
 		if (what === DELETED) {
 			let index = data.findIndex(x => x.getID() === who.getID());
 			if (index < 0) {
@@ -151,7 +153,7 @@ export default class Stream extends EventEmitter {
 
 
 	nextBatch (prev = false) {
-		const store = PRIVATE.get(this);
+		const store = getPrivate(this);
 		this.loading = true;
 		let start = Date.now();
 		this.emit('change', this);
@@ -201,10 +203,10 @@ export default class Stream extends EventEmitter {
 		});
 	}
 
-	//@private ... use the iterator or map to access items. Or Array.from if you _need_ an array. 
+	//@private ... use the iterator or map to access items. Or Array.from if you _need_ an array.
 	get items () {
 		const {collator} = this;
-		const {data} = PRIVATE.get(this);
+		const {data} = getPrivate(this);
 
 		return collator ? collator(data) : data;
 	}
@@ -231,7 +233,7 @@ export default class Stream extends EventEmitter {
 			//Not on the first page... so just drop.
 			return;
 		}
-		const {data} = PRIVATE.get(this);
+		const {data} = getPrivate(this);
 		data.unshift(item);
 		item.on('change', this.onChange);
 		this.emit('change');
