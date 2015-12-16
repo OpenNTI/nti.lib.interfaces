@@ -113,6 +113,12 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 	get loading () { return !getPrivate(this).history; }
 
 
+	getHistoryFor (assignmentId) {
+		const {history} = getPrivate(this);
+		return history && history.getItem(assignmentId);
+	}
+
+
 	//@private ... use the iterator or map to access items. Or Array.from if you _need_ an array.
 	get items () {
 		const data = getPrivate(this);
