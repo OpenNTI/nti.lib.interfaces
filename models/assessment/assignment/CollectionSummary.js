@@ -33,6 +33,18 @@ class AssignmentSummary extends EventEmitter {
 		return getPrivate(this).assignment.getDueDate();
 	}
 
+	get late () {
+		const {completed, dueDate} = this;
+		return !completed
+			? dueDate > Date.now()
+			: completed > dueDate;
+	}
+
+	get overTime () {
+		const {assignment: a} = getPrivate(this);
+		return a.isOverTime && a.isOverTime();
+	}
+
 	get completed () {
 		const {history} = getPrivate(this);
 		return history && history.getCreatedTime();
