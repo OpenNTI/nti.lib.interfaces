@@ -116,6 +116,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 
 			if (sortOn) {
 				logger.info('TODO: sort on: %s, %s', sortOn, sortOrder);
+				data.cache.sort(comparatorFor(sortOn, sortOrder));
 			}
 		}
 
@@ -167,4 +168,29 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 		return {sortOn, sortOrder};
 	}
 
+}
+
+
+function comparatorFor (property, order) {
+
+	const direction = order === SortOrder.ASC ? 1 : -1;
+	const LESS = -direction;
+	const MORE = direction;
+	const SAME = 0;
+
+	return (oA, oB) => {
+		const a = oA[property];
+		const b = oB[property];
+		const tA = typeof a;
+
+		if (a === b) { return SAME; }
+		if (!a && b) { return LESS; }
+		if (a && !b) { return MORE; }
+
+		if (tA === 'string') {
+			return a.localeCompare(b);
+		}
+
+		return a < b ? LESS : MORE;
+	};
 }
