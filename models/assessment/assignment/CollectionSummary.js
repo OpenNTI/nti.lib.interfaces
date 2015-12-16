@@ -1,6 +1,11 @@
 import {EventEmitter} from 'events';
 import invariant from 'invariant';
 
+import Logger from '../../../logger';
+import {SortOrder} from '../../../constants';
+
+const logger = Logger.get('assignment:AssignmentCollectionSummary');
+
 const PRIVATE = new WeakMap();
 const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
 const getPrivate = x => PRIVATE.get(x);
@@ -10,7 +15,6 @@ class AssignmentSummary extends EventEmitter {
 	constructor (assignment, history) {
 		super();
 		initPrivate(this, {assignment, history});
-		// console.log(this);
 	}
 
 	get title () {
@@ -97,10 +101,10 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 	get loading () { return !getPrivate(this).history; }
 
 
-	//@private ... use the iterator or map to access items. Or Array.from if you _need_ an array. 
+	//@private ... use the iterator or map to access items. Or Array.from if you _need_ an array.
 	get items () {
 		const data = getPrivate(this);
-		const {parent, history} = data;
+		const {parent, history, sortOn, sortOrder = SortOrder.ASC} = data;
 
 		if (this.error || this.loading) {
 			return [];
@@ -109,6 +113,10 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 		if (!data.cache) {
 			data.cache = parent.getAssignments().map(assignment =>
 				new AssignmentSummary(assignment, history.getItem(assignment.getID())));
+
+			if (sortOn) {
+				logger.info('TODO: sort on: %s, %s', sortOn, sortOrder);
+			}
 		}
 
 		return data.cache;
@@ -127,6 +135,36 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 
 	[Symbol.iterator] () {
 		return this.items[Symbol.iterator]();
+	}
+
+
+	setSort (sortOn, sortOrder = SortOrder.ASC) {
+		const data = getPrivate(this);
+
+		invariant(
+			Object.values(SortOrder).includes(sortOrder),
+			'sortOrder must be one of SortOrder\'s values.'
+		);
+
+		Object.assign(data, {
+			sortOn,
+			sortOrder
+		});
+
+		if (!sortOn) {
+			delete data.sortOn;
+			delete data.sortOrder;
+		}
+
+		delete data.cache;
+		this.emit('change', 'sort');
+	}
+
+
+	getSort () {
+		const data = getPrivate(this);
+		const {sortOn, sortOrder = SortOrder.ASC} = data;
+		return {sortOn, sortOrder};
 	}
 
 }
