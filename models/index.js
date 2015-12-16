@@ -510,7 +510,7 @@ export function parse (service, parent, obj) {
 
 	args.push(obj);
 
-	return (Cls && Cls.parse(...args)) || error(obj);
+	return Cls ? Cls.parse(...args) : error(obj);
 }
 
 
