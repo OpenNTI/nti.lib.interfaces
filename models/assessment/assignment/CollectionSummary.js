@@ -188,7 +188,8 @@ function comparatorFor (property, order) {
 		if (a && !b) { return MORE; }
 
 		if (tA === 'string') {
-			return a.localeCompare(b);
+			let cmp = a.localeCompare(b);
+			return cmp === 0 ? SAME : cmp < 0 ? LESS : MORE;
 		}
 
 		return a < b ? LESS : MORE;
