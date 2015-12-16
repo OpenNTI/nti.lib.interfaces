@@ -8,6 +8,7 @@
 
 import Base from '../../Base';
 import PageSource from '../../ListBackedPageSource';
+import InstanceCacheContainer from '../../mixins/InstanceCacheContainer';
 import {
 	Parser as parse
 } from '../../../CommonSymbols';
@@ -76,7 +77,7 @@ export default class Collection extends Base {
 	 * @returns {void}
 	 */
 	constructor (service, parent, assignments, assessments, historyLink) {
-		super(service, parent, void 0, ActivityMixin, {
+		super(service, parent, void 0, ActivityMixin, InstanceCacheContainer, {
 			Links: [
 				{rel: HISTORY_LINK, href: historyLink}
 			]
