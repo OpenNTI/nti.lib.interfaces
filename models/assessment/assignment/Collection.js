@@ -60,6 +60,10 @@ const normalize = o => o === 0 ? 0 : o / Math.abs(o);
 
 const GetListFrom = Symbol();
 
+const PRIVATE = new WeakMap();
+const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
+const getPrivate = x => PRIVATE.get(x);
+
 export default class Collection extends Base {
 
 	/**
@@ -106,10 +110,13 @@ export default class Collection extends Base {
 											.filter(x => !isIgnoredKey(x))
 											.forEach(key => process(key, getItems(dict)[key], obj));
 
-		let a =	this.visibleAssignments = {};
+		const data = {};
+		initPrivate(this, data);
+		
+		let a =	data.visibleAssignments = {};
 		consume(a, assignments);
 
-		let b = this.notAssignments = {};
+		let b = data.notAssignments = {};
 		consume(b, assessments);
 
 		let outlineMap = {};
@@ -153,7 +160,7 @@ export default class Collection extends Base {
 			}
 		}
 
-		Object.assign(this, {outlineMap, assessmentToOutlineMap});
+		Object.assign(data, {outlineMap, assessmentToOutlineMap});
 	}
 
 
@@ -239,7 +246,7 @@ export default class Collection extends Base {
 		const {
 			outlineMap,
 			visibleAssignments: {items: assignments}
-		} = this;
+		} = getPrivate(this);
 
 		let ungrouped = Object.assign({}, assignments);
 
@@ -328,13 +335,13 @@ export default class Collection extends Base {
 
 
 	getAssessmentIdsUnder (outlineNodeId) {
-		return this.outlineMap[outlineNodeId];
+		return getPrivate(this).outlineMap[outlineNodeId];
 	}
 
 
 	getOutlineNodeIdForAssessment (thing) {
 		const assessmentId = typeof thing === 'string' ? thing : thing.getID();
-		return this.assessmentToOutlineMap[assessmentId];
+		return getPrivate(this).assessmentToOutlineMap[assessmentId];
 	}
 
 
@@ -358,7 +365,7 @@ export default class Collection extends Base {
 	 * @return {array} An array of Assignments.
 	 */
 	getAssignments (outlineNodeId) {
-		return this[GetListFrom](this.visibleAssignments, outlineNodeId);
+		return this[GetListFrom](getPrivate(this).visibleAssignments, outlineNodeId);
 	}
 
 
@@ -371,12 +378,12 @@ export default class Collection extends Base {
 	 * @return {array} An array of Assessments.
 	 */
 	getAssessments (outlineNodeId) {
-		return this[GetListFrom](this.notAssignments, outlineNodeId);
+		return this[GetListFrom](getPrivate(this).notAssignments, outlineNodeId);
 	}
 
 
 	getAssignment (assessmentId) {
-		const {visibleAssignments: {items: map = {}}} = this;
+		const {visibleAssignments: {items: map = {}}} = getPrivate(this);
 		const findIt = x => find(Object.values(map), x);
 
 		return map[assessmentId] || findIt(assessmentId);

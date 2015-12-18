@@ -39,16 +39,7 @@ export default class CollectionStudentView extends Base {
 	onChange (e) {
 		super.onChange(e);
 		const data = getPrivate(this);
-		delete data.history;
-	}
-
-
-	//@private
-	getHistory () {
-		logger.debug('Loading assignment history for %s...', this.parent().title);
-		return this.fetchLinkParsed(HISTORY_LINK)
-			.then(x => x instanceof HistoryCollection ? x : Promise.reject('Wrong Type'))
-			.catch(() => Promise.reject('No History'));
+		delete data.summary;
 	}
 
 
@@ -61,7 +52,7 @@ export default class CollectionStudentView extends Base {
 		const data = getPrivate(this);
 
 		if (!data.summary) {
-			data.summary = new CollectionSummary(this[Service], this, this.getHistory());
+			data.summary = new CollectionSummary(this[Service], this, getHistoryFrom(this));
 		}
 
 		return data.summary;
@@ -69,7 +60,7 @@ export default class CollectionStudentView extends Base {
 
 
 	getActivity () {
-		return this.getHistory()
+		return getHistoryFrom(this)
 			.then(history =>
 				this.getAssignments()
 					.reduce((events, a) => events.concat(
@@ -82,4 +73,12 @@ export default class CollectionStudentView extends Base {
 				);
 
 	}
+}
+
+
+function getHistoryFrom (inst) {
+	logger.debug('Loading assignment history for %s...', inst.parent().title);
+	return inst.fetchLinkParsed(HISTORY_LINK)
+		.then(x => x instanceof HistoryCollection ? x : Promise.reject('Wrong Type'))
+		.catch(() => Promise.reject('No History'));
 }
