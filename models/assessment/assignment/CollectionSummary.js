@@ -224,6 +224,13 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 
 }
 
+//Sort specs:
+// sortOn: ['completed', 'title']
+// sortOn: ['title', 'due']
+// sortOn: ['assigned', 'due', 'title']
+// sortOn: ['due', 'assigned', 'title']
+// sortOn: ['score', 'due']
+
 
 function comparatorFor (property, order) {
 
