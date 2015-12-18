@@ -247,6 +247,15 @@ function comparatorFor (property, order) {
 		};
 	}
 
+	if (property === 'grade') {
+		const grade = x => parseFloat((x['grade'] || {}).value, 10) || -1;
+		return (oA, oB) => {
+			const a = grade(oA);
+			const b = grade(oB);
+			return a === b ? SAME : a < b ? LESS : MORE;
+		};
+	}
+
 	return (oA, oB) => {
 		const a = oA[property];
 		const b = oB[property];
