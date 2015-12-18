@@ -62,14 +62,17 @@ export default class CollectionStudentView extends Base {
 	getActivity () {
 		return getHistoryFrom(this)
 			.then(history =>
-				this.getAssignments()
+				Object.assign(this.getAssignments()
 					.reduce((events, a) => events.concat(
 						this.deriveEvents(a,
 							history.getItem(a.getID()),
 							history.getLastViewed()
 						)), [])
 					.filter(x => x.date)
-					.sort((a, b) => b.date - a.date)
+					.sort((a, b) => b.date - a.date),
+					{
+						markSeen: () => history.markSeen()
+					})
 				);
 
 	}
