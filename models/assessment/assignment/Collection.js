@@ -7,7 +7,6 @@
  */
 
 import Base from '../../Base';
-import PageSource from '../../ListBackedPageSource';
 import InstanceCacheContainer from '../../mixins/InstanceCacheContainer';
 import {
 	Parser as parse
@@ -17,6 +16,7 @@ import Logger from '../../../logger';
 
 import {HISTORY_LINK} from '../Constants';
 
+import AssignmentsByX from './AssignmentsByX';
 import ActivityMixin from './AssignmentActivityMixin';
 
 const logger = Logger.get('assignment:Collection:Base');
@@ -57,6 +57,15 @@ const omit = a => a.isNonSubmit && a.isNonSubmit() && a.title === 'Final Grade';
 
 const toNumeric = o => o ? o.getTime() : 0;
 const normalize = o => o === 0 ? 0 : o / Math.abs(o);
+
+const sortComparatorDueDate = (a, b) => (
+	a = toNumeric(a.getDueDate()),
+	b = toNumeric(b.getDueDate()),
+	normalize(a - b));
+
+
+const sortComparatorTitle = (a, b) => (a.title || '').localeCompare(b.title);
+
 
 const GetListFrom = Symbol();
 
@@ -112,7 +121,7 @@ export default class Collection extends Base {
 
 		const data = {};
 		initPrivate(this, data);
-		
+
 		let a =	data.visibleAssignments = {};
 		consume(a, assignments);
 
@@ -167,29 +176,11 @@ export default class Collection extends Base {
 	onChange () {}
 
 
-	sortComparatorDueDate (a, b) { //eslint-disable-line
-		let aD = toNumeric(a.getDueDate());
-		let bD = toNumeric(b.getDueDate());
-		return normalize(aD - bD);
-	}
-
-
-	sortComparatorTitle (a, b) {
-		return (a.title || '').localeCompare(b.title);
-	}
-
-
-	sortComparatorComplete (a, b) {
-		const v = o => o.hasLink(HISTORY_LINK) ? 1 : -1;
-		return v(a) - v(b);
-	}
-
-
 	[ORDER_BY_COMPLETION] (filter) {
 		//The return value of getAssignments is volatile, and can be manipulated without worry.
 		const all = this.getAssignments()
 			//pre-sort by title so when we group, they'll already be in order with in the groups.
-			.sort(this.sortComparatorTitle);
+			.sort(sortComparatorTitle);
 
 		const groups = [
 			{label: 'Incomplete', items: []},
@@ -213,7 +204,7 @@ export default class Collection extends Base {
 		//The return value of getAssignments is volatile, and can be manipulated without worry.
 		const all = this.getAssignments()
 			//pre-sort by title so when we group, they'll already be in order with in the groups.
-			.sort(this.sortComparatorTitle);
+			.sort(sortComparatorTitle);
 
 		let groups = {};
 
@@ -278,7 +269,7 @@ export default class Collection extends Base {
 
 
 		const ungroupedByName = (a, b) =>
-			this.sortComparatorTitle(ungrouped[a], ungrouped[b]);
+			sortComparatorTitle(ungrouped[a], ungrouped[b]);
 
 
 		return this.parent().getOutline()
@@ -298,7 +289,7 @@ export default class Collection extends Base {
 					const binId = getBinId(n);
 					if (groups[binId]) {
 						groups[binId].items
-							.sort(this.sortComparatorDueDate);
+							.sort(sortComparatorDueDate);
 					}
 				});
 
@@ -318,18 +309,34 @@ export default class Collection extends Base {
 	 * @param {enum}   order   One of the ORDER_BY_* static constants on this class.
 	 * @param {string} search  A search filter string
 	 *
-	 * @return {Promise} A promise that will fulfill with the collection ordered by the requested type.
+	 * @returns {Store} A read only store that can be iterated & mapped. (order &
+	 * search are exposed as properties) To reorder/regroup the store, call this
+	 * method again to get another store. (it will be the same instance, but
+	 * treat it as though it may not be)
 	 */
 	getAssignmentsBy (order, search) {
+		const data = getPrivate(this);
 		const searchFn = a => (a.title || '').toLowerCase().indexOf(search.toLowerCase()) >= 0;
-		const flatten = groups => groups.reduce((a, g) => a.concat(g.items), []);
+
+
+		if (!data.assignmentsBy) {
+			data.assignmentsBy = new AssignmentsByX (this);
+		}
 
 		try {
-			return Promise.resolve(this[order](search && searchFn))
-				.then(items => ({ items, pageSource: new PageSource(flatten(items)) }));
+			// the AssignmentsByX store listens for our new-filter event.
+			this.emit('new-filter',
+				Promise.resolve(this[order](search && searchFn))
+					.then(groups => ({ order, search, groups })),
+				order,
+				search
+			);
+
 		} catch (e) {
-			return Promise.reject('Bad Arguments');
+			throw new Error('Bad Arguments');
 		}
+
+		return data.assignmentsBy;
 	}
 
 
