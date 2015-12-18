@@ -1,6 +1,8 @@
 import {EventEmitter} from 'events';
 import invariant from 'invariant';
 
+import PageSource from '../../ListBackedPageSource';
+
 import Logger from '../../../logger';
 import {SortOrder} from '../../../constants';
 
@@ -111,6 +113,11 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 
 	get error () { return getPrivate(this).error; }
 	get loading () { return !getPrivate(this).history; }
+
+
+	getPageSource (pathPrefix = '') {
+		return new PageSource(this, pathPrefix);
+	}
 
 
 	getHistoryFor (assignmentId) {
