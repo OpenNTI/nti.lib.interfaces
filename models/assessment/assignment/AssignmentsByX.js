@@ -45,10 +45,11 @@ export default class AssignmentsByX extends EventEmitter {
 	}
 
 
+	get length () { return (getPrivate(this).groups || []).length; }
 	get loading () { return getPrivate(this).busy; }
 	get order () { return getPrivate(this).order; }
+	get pageSource () { return this.loading ? null : getPrivate(this).pageSource; }
 	get search () { return getPrivate(this).search; }
-	get length () { return (getPrivate(this).groups || []).length; }
 
 	setOrder (order) {
 		Object.assign(getPrivate(this), {order});
