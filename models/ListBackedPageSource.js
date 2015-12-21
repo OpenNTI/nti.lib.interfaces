@@ -21,7 +21,11 @@ export default class ListBackedPageSource {
 
 
 	getPagesAround (pageId) {
-		const {list: nodes, pathPrefix} = this;
+		const {list, pathPrefix} = this;
+
+		//list maybe array like, and not actually an array
+		const nodes = list.reduce ? list : Array.from(list); 
+
 		const index = nodes.reduce(
 			(found, node, ix) =>
 				(typeof found !== 'number' && getNodeId(node) === pageId) ? ix : found,
