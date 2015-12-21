@@ -66,6 +66,9 @@ class AssignmentSummary extends EventEmitter {
 		const {history} = getPrivate(this);
 		return history && history.FeedbackCount;
 	}
+
+	getContentId () { return this.assignmentId; }
+	// getID () { return this.assignmentId; }
 }
 
 
