@@ -66,7 +66,7 @@ export default class OutlineNode extends Outline {
 	getContent () {
 		let link = 'overview-content';
 		let doFetch = (this.hasLink(link) ?
-			this.fetchLink(link).then(collateVideo) :
+			this.fetchLink(link) :
 			getContentFallback(this))
 				.then(raw => this[parse](raw));
 
@@ -110,39 +110,6 @@ export default class OutlineNode extends Outline {
 			filter: 'TopLevel'
 		});
 	}
-}
-
-
-function collateVideo (json) {
-	let re = /ntivideo$/;
-	function collate (list, current) {
-		let last = list[list.length - 1];
-		if (re.test(current.MimeType)) {
-			//last was a video...
-			if (last && re.test(last.MimeType)) {
-				last = list[list.length - 1] = {
-					MimeType: 'application/vnd.nextthought.videoroll',
-					Items: [last]
-				};
-			}
-
-			//The previous item is a video set...(or we just created it)
-			if (last && /videoroll$/.test(last.MimeType)) {
-				last.Items.push(current);
-				return list;
-			}
-
-		} else if (current.Items) {
-			current = collateVideo(current);
-		}
-
-		list.push(current);
-		return list;
-	}
-
-	json.Items = json.Items.reduce(collate, []);
-
-	return json;
 }
 
 
