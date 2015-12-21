@@ -72,7 +72,7 @@ import CourseRecursiveStreamByBucket from './courses/activity/RecursiveStreamByB
 import CourseProgress from './courses/Progress';
 import CourseLeasonOverview from './courses/overview/LeasonOverview';
 import CourseLeasonOverviewGroup from './courses/overview/Group';
-import CourseLeasonOverviewVideoSet from './courses/overview/VideoSet';
+import CourseLeasonOverviewVideoRoll from './courses/overview/VideoRoll';
 
 
 
@@ -207,7 +207,7 @@ const PARSERS = {
 
 	'ntilessonoverview': CourseLeasonOverview,
 	'nticourseoverviewgroup': CourseLeasonOverviewGroup,
-	'ntivideoset': CourseLeasonOverviewVideoSet,
+	'videoroll': CourseLeasonOverviewVideoRoll,
 
 	'analytics.externalresourceevent': ExternalResourceEvent,
 	'analytics.assessmentevent': AssessmentEvent,

@@ -152,7 +152,7 @@ export default function buildFromToc (element, outlineNode) {
 
 		if (type === 'video') {
 			if (grouping.Items.length === 0) {
-				grouping.Items.push({MimeType: 'application/vnd.nextthought.ntivideoset', Items: []});
+				grouping.Items.push({MimeType: 'application/vnd.nextthought.videoroll', Items: []});
 			}
 			grouping = grouping.Items[0];
 		}

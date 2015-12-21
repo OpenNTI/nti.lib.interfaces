@@ -121,13 +121,13 @@ function collateVideo (json) {
 			//last was a video...
 			if (last && re.test(last.MimeType)) {
 				last = list[list.length - 1] = {
-					MimeType: 'application/vnd.nextthought.ntivideoset',
+					MimeType: 'application/vnd.nextthought.videoroll',
 					Items: [last]
 				};
 			}
 
 			//The previous item is a video set...(or we just created it)
-			if (last && /ntivideoset$/.test(last.MimeType)) {
+			if (last && /videoroll$/.test(last.MimeType)) {
 				last.Items.push(current);
 				return list;
 			}
