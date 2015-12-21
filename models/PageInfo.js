@@ -73,6 +73,19 @@ export default class PageInfo extends Base {
 	}
 
 
+	getAssessmentQuestion (questionId) {
+		function find (found, item) {
+			return found || (
+				//Find in Assignments/QuestionSets
+				(item.getQuestion && item.getQuestion(questionId)) ||
+				//or find the top-level question:
+				(item.getID() === questionId && item)
+			);
+		}
+		return (this.AssessmentItems || []).reduce(find, null);
+	}
+
+
 	getUserDataLastOfType (mimeType) {
 		let link = this.getLink(REL_USER_GENERATED_DATA);
 		let url = link && Url.parse(link);
