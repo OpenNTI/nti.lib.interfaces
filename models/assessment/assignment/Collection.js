@@ -170,10 +170,17 @@ export default class Collection extends Base {
 		}
 
 		Object.assign(data, {outlineMap, assessmentToOutlineMap});
+
+		data.viewStore = new AssignmentsByX (this, ORDER_BY_LESSON);
 	}
 
 
 	onChange () {}
+
+
+	getGrouppedStore () {
+		return getPrivate(this).viewStore;
+	}
 
 
 	[ORDER_BY_COMPLETION] (filter) {
@@ -304,39 +311,28 @@ export default class Collection extends Base {
 
 
 	/**
-	 * Returns assignments grouped by a particular ordering.
+	 * Returns filtered assignments grouped by a particular ordering.
 	 *
 	 * @param {enum}   order   One of the ORDER_BY_* static constants on this class.
 	 * @param {string} search  A search filter string
 	 *
-	 * @returns {Store} A read only store that can be iterated & mapped. (order &
-	 * search are exposed as properties) To reorder/regroup the store, call this
-	 * method again to get another store. (it will be the same instance, but
-	 * treat it as though it may not be)
+	 * @returns {Promise} fulfills with an object with key: groups, order, and search
 	 */
 	getAssignmentsBy (order, search) {
-		const data = getPrivate(this);
 		const searchFn = a => (a.title || '').toLowerCase().indexOf(search.toLowerCase()) >= 0;
 
-
-		if (!data.assignmentsBy) {
-			data.assignmentsBy = new AssignmentsByX (this);
-		}
-
 		try {
+			const work = Promise.resolve(this[order](search && searchFn))
+				.then(groups => ({ order, search, groups }));
+
 			// the AssignmentsByX store listens for our new-filter event.
-			this.emit('new-filter',
-				Promise.resolve(this[order](search && searchFn))
-					.then(groups => ({ order, search, groups })),
-				order,
-				search
-			);
+			this.emit('new-filter', work, order, search);
+
+			return work;
 
 		} catch (e) {
 			throw new Error('Bad Arguments');
 		}
-
-		return data.assignmentsBy;
 	}
 
 

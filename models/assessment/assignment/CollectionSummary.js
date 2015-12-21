@@ -91,6 +91,9 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 			'Must be a promise.');
 
 		super();
+
+		this.setMaxListeners(100);
+
 		const data = {
 			service,
 			parent

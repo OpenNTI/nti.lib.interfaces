@@ -6,18 +6,24 @@ const PRIVATE = new WeakMap();
 const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
 const getPrivate = x => PRIVATE.get(x);
 
-const getItems = x => (getPrivate(x).groups || []);
+const flatten = groups => groups && groups.reduce((a, g) => a.concat(g.items), []);
 
-const flatten = groups => groups ? groups.reduce((a, g) => a.concat(g.items), []) : [];
+//ORDER_BY_COMPLETION, ORDER_BY_DUE_DATE, ORDER_BY_LESSON
+
+const refresh = Symbol();
 
 export default class AssignmentsByX extends EventEmitter {
 
-	constructor (collection) {
+	constructor (collection, defaultOrder) {
 		super();
-		let data = {};
+		let data = {collection, order: defaultOrder};
 		initPrivate(this, data);
 
 		let latest;
+
+		const assertAndAssign = (o) => {
+			Object.assign(data, o);
+		};
 
 		collection.on('new-filter', work => {
 			let token = latest = {};
@@ -29,7 +35,7 @@ export default class AssignmentsByX extends EventEmitter {
 			work
 				.then(({groups, order, search}) =>
 					uninterupted() ?
-						Object.assign(data, {groups, order, search, busy: false}) :
+						assertAndAssign({groups, order, search, busy: false}) :
 						Promise.reject('Ignore'))
 
 				//these will be skiped if the previous "then" returns the rejected promise.
@@ -42,15 +48,43 @@ export default class AssignmentsByX extends EventEmitter {
 	get loading () { return getPrivate(this).busy; }
 	get order () { return getPrivate(this).order; }
 	get search () { return getPrivate(this).search; }
-	get length () { return getItems(this).length; }
+	get length () { return (getPrivate(this).groups || []).length; }
+
+	setOrder (order) {
+		Object.assign(getPrivate(this), {order});
+		this[refresh]();
+	}
+
+	setSearch (search) {
+		Object.assign(getPrivate(this), {search});
+		this[refresh]();
+	}
 
 
-	map (...args) {
-		return getItems(this).map(...args);
+	[refresh] () {
+		const {collection, order, search} = getPrivate(this);
+		collection.getAssignmentsBy(order, search);
+	}
+
+	map (fn) {
+		const out = [];
+		let i = 0;
+
+		for (let v of this) {
+			out.push(fn(v, i++, this));
+		}
+
+		return out;
 	}
 
 
 	[Symbol.iterator] () {
-		return getItems(this)[Symbol.iterator]();
+		const {groups, busy} = getPrivate(this);
+
+		if (!busy && groups == null) {
+			this[refresh]();
+		}
+
+		return (groups || [])[Symbol.iterator]();
 	}
 }
