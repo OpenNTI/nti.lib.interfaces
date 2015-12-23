@@ -66,30 +66,32 @@ export default class CollectionInstructorView extends Base {
 	}
 
 
-	getAssignmentSummary (assignmentId) {
+	getAssignmentSummary (assignmentId, createIfDoesNotExist = true) {
 		const data = getPrivate(this);
 
-		if (!data.assignmentSummary) {
+		data.assignmentSummary = data.assignmentSummary || {};
+
+		if (!data.assignmentSummary[assignmentId] && createIfDoesNotExist) {
 			const assignment = this.getAssignment(assignmentId);
 			const link = assignment && assignment.getLink('GradeBookByAssignment');
 
-			data.assignmentSummary = link && new AssignmentSummary(
+			data.assignmentSummary[assignmentId] = link && new AssignmentSummary(
 				this[Service],
 				this,
 				link
 			);
 		}
 
-		return data.assignmentSummary;
+		return data.assignmentSummary[assignmentId];
 	}
 
 
-	getStudentSummary (studentUserId) {
+	getStudentSummary (studentUserId, createIfDoesNotExist = true) {
 		const data = getPrivate(this);
 
 		data.studentSummaries = data.studentSummaries || {};
 
-		if (!data.studentSummaries[studentUserId]) {
+		if (!data.studentSummaries[studentUserId] && createIfDoesNotExist) {
 
 			let history = this.fetchLinkParsed(keyForUser(studentUserId));
 
