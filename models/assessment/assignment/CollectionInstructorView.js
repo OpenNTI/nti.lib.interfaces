@@ -15,7 +15,7 @@ import GradeBookSummary from '../../../stores/GradeBookSummary';
 
 const logger = Logger.get('assignment:Collection:Instructor');
 
-const keyForUser = userId => `${HISTORY_LINK}:${userId}`;
+const keyForUser = userId => userId != null ? `${HISTORY_LINK}:${userId}` : HISTORY_LINK;
 const HISTORY_LINK_PREFIX = new RegExp('^' + keyForUser(''));
 
 const forUser = (ref, userId) => (
