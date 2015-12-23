@@ -89,10 +89,6 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 	 */
 	constructor (service, parent, HistoryPromise) {
 
-		invariant(
-			HistoryPromise && typeof HistoryPromise.then === 'function',
-			'Must be a promise.');
-
 		super();
 
 		this.setMaxListeners(100);
@@ -103,6 +99,23 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 		};
 
 		initPrivate(this, data);
+
+		this.setHistory(HistoryPromise);
+	}
+
+
+	//@private
+	setHistory (HistoryPromise) {
+		const data = getPrivate(this);
+
+		if (data.history) {
+			delete data.history;
+			this.emit('change', this);
+		}
+
+		invariant(
+			HistoryPromise && typeof HistoryPromise.then === 'function',
+			'Must be a promise.');
 
 		HistoryPromise
 			.then(history => {
