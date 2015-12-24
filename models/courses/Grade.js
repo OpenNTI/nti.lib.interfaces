@@ -3,6 +3,8 @@ import names from '../mixins/CourseAndAssignmentNameResolving';
 
 import pluck from '../../utils/pluck';
 
+import {cacheClassInstances} from '../mixins/InstanceCacheable';
+
 const ENDS_IN_LETTER_REGEX = /\s[a-fiw\-]$/i;
 
 const LETTER = Symbol('Letter');
@@ -130,3 +132,5 @@ export default class Grade extends Base {
 		return ltr === normalizeLetter(letter) && val === value;
 	}
 }
+
+cacheClassInstances(Grade);
