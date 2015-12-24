@@ -118,13 +118,21 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 			'Must be a promise.');
 
 		HistoryPromise
+			.catch(error =>
+				(error.status === 404)
+					? null
+					: Promise.reject(Object.assign(new Error(error.statusText), error)))
 			.then(history => {
 				Object.assign(data, {history});
 				this.emit('load', this);
 			})
 			.catch(error => {
 				Object.assign(data, {error});
-				this.emit('error', this);
+				try {
+					this.emit('error', this);
+				} catch (e) {
+					//don't care
+				}
 			})
 			.then(() => this.emit('change', this));
 	}
