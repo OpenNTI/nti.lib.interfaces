@@ -9,7 +9,7 @@ export default class AssignmentHistoryCollection extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
-		let {Items: items = {}} = this;
+		const items = this.Items = (this.Items || {});
 
 		for(let key of Object.keys(items)) {
 			items[key] = this[parse](items[key]);
@@ -46,7 +46,32 @@ export default class AssignmentHistoryCollection extends Base {
 
 
 	getItem (assignmentId) {
-		return (this.Items || {})[assignmentId];
+		return this.Items[assignmentId];
+	}
+
+
+	setItem (assignmentId, historyItem) {
+		const {Items: items} = this;
+		const newItemAssignmentId = (historyItem.grade || {}).AssignmentId;
+
+		if (historyItem && newItemAssignmentId !== assignmentId) {
+			throw new Error('HistoryItem does not match the Assignment');
+		}
+
+		const existing = items[assignmentId];
+		if (existing && historyItem) {
+			if (historyItem.getLastModified() <= existing.getLastModified()) {
+				return;
+			}
+		}
+
+		if (!historyItem) {
+			delete items[assignmentId];
+		} else {
+			items[assignmentId] = historyItem;
+		}
+
+		this.onChange('data');
 	}
 
 

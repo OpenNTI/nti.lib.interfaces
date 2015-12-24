@@ -54,7 +54,7 @@ class AssignmentSummary extends EventEmitter {
 
 	get grade () {
 		const {history} = getPrivate(this);
-		return history && history.Grade;
+		return history && history.grade;
 	}
 
 	get feedback () {
@@ -147,6 +147,22 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 	}
 
 
+	addHistoryItem (assignmentId, historyItem) {
+		const {error, history} = getPrivate(this);
+		if (error || !history) {
+			//no history means either: there is an inflight request, or there was an error.
+			//If error, drop and return.
+			//
+			//TODO: There is an edge case: Request in flight, no error. (the response
+			// from in flight request may not have this history item)
+			return;
+		}
+
+		history.setItem(assignmentId, historyItem);
+		this.emit('change', this);
+	}
+
+
 	getHistoryFor (assignmentId) {
 		const {history} = getPrivate(this);
 		return history && history.getItem(assignmentId);
@@ -164,10 +180,6 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 				}
 
 				const item = store.getHistoryFor(assignmentId);
-				// if (!item) {
-				// 	return reject('No History');
-				// }
-
 				fulfill(item);
 			};
 

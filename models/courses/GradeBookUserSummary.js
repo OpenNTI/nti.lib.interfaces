@@ -13,7 +13,6 @@ export default class GradeBookUserSummary extends Base {
 		this[parse]('User');
 
 		this[RENAME]('User', 'user');
-		this[RENAME]('Username', 'username');
 		this[RENAME]('Alias', 'displayName');
 
 
@@ -22,9 +21,14 @@ export default class GradeBookUserSummary extends Base {
 	}
 
 
+	get username () {
+		return this.user.getID();
+	}
+
+
 	get completed () {
 		const {HistoryItemSummary: item} = this;
-		return item ? item.getSubmissionCreatedTime() : null;
+		return item ? item.completed : null;
 	}
 
 

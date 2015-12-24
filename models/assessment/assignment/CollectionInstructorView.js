@@ -140,16 +140,32 @@ export default class CollectionInstructorView extends Base {
 
 		const grade = getGrade(gradeOrAssignmentId);
 
-		const action = grade.save
-			? grade.save(letter ? {value, letter} : {value})
-			: this[Service].post(grade.href, grade)
-				.then(o => o && this[Service].getParsedObject(o, this));
+		//existing grade
+		if (grade.save) {
+			return grade.save(letter ? {value, letter} : {value});
+		}
 
-		return action
-			.then(o => {
-				console.log(o);
+		//new grade
+		return this[Service].post(grade.href, grade)
+			.then(o => o && this[Service].getParsedObject(o, this))
+			.then(historyItem => {
+				if (!historyItem) { return; }
+				const {AssignmentId: assignmentId} = grade;
+
+				const as = this.getAssignmentSummary(assignmentId, false);
+				if (as) {
+					const record = as.find(x => x.username === Username);
+					if (record) {
+						record.HistoryItemSummary = historyItem;
+						record.onChange('HistoryItemSummary');
+					}
+				}
+
+				const us = this.getStudentSummary(Username, false);
+				if (us) {
+					us.addHistoryItem(assignmentId, historyItem);
+				}
 			});
-
 	}
 
 }

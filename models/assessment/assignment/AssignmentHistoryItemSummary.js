@@ -4,7 +4,7 @@ import {
 	Parser as parse
 } from '../../../CommonSymbols';
 
-const TakeOver = Symbol.for('TakeOver');
+const rename = Symbol.for('TakeOver');
 
 export default class AssignmentHistoryItemSummary extends Base {
 	constructor (service, parent, data) {
@@ -12,8 +12,8 @@ export default class AssignmentHistoryItemSummary extends Base {
 		for(let prop of ['Grade']) {
 			this[parse](prop);
 		}
-		const rename = (x, y) => this[TakeOver](x, y);
-		rename('Grade', 'grade');
+
+		this[rename]('Grade', 'grade');
 
 		// FeedbackCount: 0,
 		// Grade
@@ -29,5 +29,9 @@ export default class AssignmentHistoryItemSummary extends Base {
 
 	[DateFields] () {
 		return super[DateFields]().concat('SubmissionCreatedTime');
+	}
+
+	get completed () {
+		return this.getSubmissionCreatedTime();
 	}
 }
