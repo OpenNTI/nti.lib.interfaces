@@ -127,4 +127,29 @@ export default class CollectionInstructorView extends Base {
 		//parent(CourseInstance) -> CourseActivity
 	}
 
+
+	setGrade (gradeOrAssignmentId, Username, value, letter) {
+		//const data = getPrivate(this);
+		const getGrade = thing => typeof thing === 'object' ? thing : {
+			AssignmentId: thing, Username,
+			href: this.gradebook.getLink('SetGrade'),
+			IsExcused: false,
+			MimeType: 'application/vnd.nextthought.grade',
+			value: `${value} ${letter || '-'}`
+		};
+
+		const grade = getGrade(gradeOrAssignmentId);
+
+		const action = grade.save
+			? grade.save(letter ? {value, letter} : {value})
+			: this[Service].post(grade.href, grade)
+				.then(o => o && this[Service].getParsedObject(o, this));
+
+		return action
+			.then(o => {
+				console.log(o);
+			});
+
+	}
+
 }
