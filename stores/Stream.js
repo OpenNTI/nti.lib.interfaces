@@ -11,7 +11,7 @@ import Pendability from '../models/mixins/Pendability';
 
 import getLink from '../utils/getlink';
 
-import {Service, DELETED} from '../CommonSymbols';
+import {Service, Parent, DELETED} from '../CommonSymbols';
 import {SortOrder} from '../constants';
 import Logger from '../logger';
 
@@ -40,7 +40,7 @@ export default class Stream extends EventEmitter {
 		super();
 		Object.assign(this, {
 			[Service]: service,
-			owner,
+			[Parent]: owner,
 			href,
 			options,
 			collator,
@@ -83,7 +83,8 @@ export default class Stream extends EventEmitter {
 		const p = getPrivate(this);
 
 		if (!p.parseListFn) {
-			p.parseListFn = parseListFn(this, this[Service]);
+			const parent = this.parentItems ? this : null;
+			p.parseListFn = parseListFn(this, this[Service], parent);
 		}
 
 		return p.parseListFn;

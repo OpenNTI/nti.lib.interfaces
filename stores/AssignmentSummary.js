@@ -20,6 +20,18 @@ export default class AssignmentSummary extends Stream {
 		initPrivate(this);
 	}
 
+	get parseList () {
+		const p = getPrivate(this);
+
+		if (!p.parseListFn) {
+			this.parentItems = true;
+			p.parseListFn = super.parseList;
+			delete this.parentItems;
+		}
+
+		return p.parseListFn;
+	}
+
 
 	applyBatch (input) {
 		const data = getPrivate(this);
