@@ -45,7 +45,7 @@ export default class Stream extends EventEmitter {
 			options,
 			collator,
 			continuous: true,
-			onChange: (...args) => this.onChange(...args)
+			onChange: this.onChange.bind(this)
 		});
 
 		initPrivate(this, {data: []});
