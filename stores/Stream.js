@@ -218,6 +218,11 @@ export default class Stream extends EventEmitter {
 	}
 
 
+	find (fn) {
+		return this.items.find(fn);
+	}
+
+
 	map (...args) {
 		return this.items.map(...args);
 	}
