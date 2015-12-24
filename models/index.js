@@ -514,10 +514,10 @@ export function parse (service, parent, obj) {
 }
 
 
-export function parseListFn (scope, service) {
+export function parseListFn (scope, service, parent = null) {
 	let m = o => {
 		try {
-			o = parse(service, null, o);
+			o = parse(service, parent, o);
 			scope.addToPending(o);
 			if(o && o.on && scope.onChange) {
 				o.on('change', scope.onChange);
