@@ -12,6 +12,16 @@ const flatten = groups => groups && groups.reduce((a, g) => a.concat(g.items), [
 
 const refresh = Symbol();
 
+function getGroups (x) {
+	const {groups, busy} = getPrivate(x);
+
+	if (!busy && groups == null) {
+		x[refresh]();
+	}
+
+	return groups || [];
+}
+
 export default class AssignmentsByX extends EventEmitter {
 
 	constructor (collection, defaultOrder) {
@@ -45,7 +55,7 @@ export default class AssignmentsByX extends EventEmitter {
 	}
 
 
-	get length () { return (getPrivate(this).groups || []).length; }
+	get length () { return getGroups(this).length; }
 	get loading () { return getPrivate(this).busy; }
 	get order () { return getPrivate(this).order; }
 	get pageSource () { return this.loading ? null : getPrivate(this).pageSource; }
@@ -63,7 +73,9 @@ export default class AssignmentsByX extends EventEmitter {
 
 
 	[refresh] () {
-		const {collection, order, search} = getPrivate(this);
+		const data = getPrivate(this);
+		const {collection, order, search} = data;
+		data.busy = true;
 		collection.getAssignmentsBy(order, search);
 	}
 
@@ -80,12 +92,6 @@ export default class AssignmentsByX extends EventEmitter {
 
 
 	[Symbol.iterator] () {
-		const {groups, busy} = getPrivate(this);
-
-		if (!busy && groups == null) {
-			this[refresh]();
-		}
-
-		return (groups || [])[Symbol.iterator]();
+		return getGroups(this)[Symbol.iterator]();
 	}
 }
