@@ -439,6 +439,10 @@ export default class Base extends EventEmitter {
 	parent (...query) {
 		let p = this[Parent];
 
+		if (p && typeof p.parent !== 'function' && p[Parent]) {
+			p = p[Parent];
+		}
+
 		if (p && (query.length === 0 || (p[is] && p[is](...query)))) {
 			return p;
 		}
