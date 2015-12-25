@@ -1,7 +1,6 @@
 .PHONY:
 	clean \
-	check \
-	install link
+	check
 
 
 #SRC = $(wildcard src/**/*.js)
@@ -10,10 +9,6 @@ LIB = $(SRC:src/%.js=lib/%.js)
 LIBDIR = lib
 
 all: node_modules lib
-
-install link: node_modules
-	@npm $@
-
 
 node_modules: package.json
 	@rm -rf node_modules
