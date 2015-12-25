@@ -1,4 +1,3 @@
-import * as constants from './constants';
 import Session from './session';
 import Interface from './interface';
 import cache from './utils/datacache';
@@ -9,6 +8,8 @@ import Library from './stores/Library';
 import Notifications from './stores/Notifications';
 
 import {getModelByType as lookup} from './models';
+
+export * from './constants';
 
 export default function (config) {
 	let i = new Interface(config);
@@ -25,8 +26,6 @@ export default function (config) {
 }
 
 export {
-	constants,
-
 	Catalog,
 	Library,
 	Logger,
