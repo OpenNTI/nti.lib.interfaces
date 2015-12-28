@@ -1,9 +1,11 @@
 import parseDate from '../../utils/parse-date';
+import Logger from '../../logger';
 
 import {getCacheFor} from './InstanceCacheContainer';
 
 const isNewer = (x, i) => parseDate(x['Last Modified']) > i.getLastModified();
 
+const logger = Logger.get('InstanceCacheable');
 
 export function getInstanceCache (parent) {
 	const test = p => !!getCacheFor(p);
@@ -21,13 +23,14 @@ export function parseOrRefresh (service, parent, data) {
 
 	let inst = map[id];
 	if (!inst) {
+		let allowNewInstance = Boolean(cache) || Cls.AllowWildDisconntectedInstances;
 		if (!cache) {
-			console.warn('Rogue Instance! This parent does not desend from an InstanceCacheContainer: %o', parent);
-			//TODO: Add exceptions...Ex: Grades in Notifications should not beholden to this...
+			logger.warn('Rogue Instance! %o This parent does not desend from an InstanceCacheContainer: %o', data, parent);
 		}
 
-		// parent = cache ? parent : null;
-		inst = map[id] = !cache ? void 0 : new Cls(service, parent, data);
+		inst = map[id] = allowNewInstance
+			? new Cls(service, parent, data)
+			: void 0;
 	}
 
 	//Refresh if newer data

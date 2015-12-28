@@ -133,4 +133,6 @@ export default class Grade extends Base {
 	}
 }
 
+Grade.AllowWildDisconntectedInstances = true;
+
 cacheClassInstances(Grade);
