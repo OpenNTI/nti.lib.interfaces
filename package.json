@@ -1,5 +1,5 @@
 {
-  "name": "nti.lib.interfaces",
+  "name": "nti-lib-interfaces",
   "version": "1.0.0",
   "author": "nextthought",
   "description": "Provides an interface for interacting with the dataserver via javascript.",
@@ -12,7 +12,9 @@
     "npm": ">=3.3.0"
   },
   "scripts": {
-    "test": "karma start --single-run --reporters dots,html,junit,coverage"
+    "test": "karma start --single-run --reporters dots,html,junit,coverage",
+    "start": "make check",
+    "prepublish": "karma start --single-run && make"
   },
   "repository": {
     "type": "git",
