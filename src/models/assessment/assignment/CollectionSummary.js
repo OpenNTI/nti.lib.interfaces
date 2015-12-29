@@ -95,7 +95,9 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 
 		const data = {
 			service,
-			parent
+			parent,
+			sortOn: 'title',
+			sortOrder: SortOrder.ASC
 		};
 
 		initPrivate(this, data);
@@ -264,24 +266,40 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 }
 
 //Sort specs:
-// sortOn: ['completed', 'title']
-// sortOn: ['title', 'due']
-// sortOn: ['assigned', 'due', 'title']
-// sortOn: ['due', 'assigned', 'title']
-// sortOn: ['score', 'due']
-
+const SORT_SPECS = {
+	completed: ['completed', 'title'],
+	title: ['title', 'due'],
+	assigned: ['assigned', 'due', 'title'],
+	due: ['due', 'assigned', 'title'],
+	grade: ['completed:bool', 'grade', 'due', 'title']
+};
 
 function comparatorFor (property, order) {
+	const spec = (SORT_SPECS[property] || [property]).map(p => comparatorFnFor(p, order));
+
+	return (...args) => spec.reduce((r, fn) => r !== 0 ? r : fn(...args), 0);
+}
+
+function comparatorFnFor (property, order) {
+	if (Array.isArray(property)) {
+		[property, order] = property;
+	}
 
 	const direction = order === SortOrder.ASC ? 1 : -1;
 	const LESS = -direction;
 	const MORE = direction;
 	const SAME = 0;
 
+	function grade (x) {
+		let g = x.grade == null ? x.grade : (x.grade.value || void 0);
+		let v = parseFloat(g, 10);
+		return g && (isNaN(v) ? g : v);
+	}
+
 	if (property === 'completed') {
 		return (oA, oB) => {
-			const a = +oA[property];
-			const b = +oB[property];
+			const a = +oA.completed;
+			const b = +oB.completed;
 			const aD = +oA.dueDate;
 			const bD = +oB.dueDate;
 
@@ -293,13 +311,51 @@ function comparatorFor (property, order) {
 		};
 	}
 
+	if (property === 'completed:bool') {
+		return (oA, oB) => {
+			const a = !!oA.completed;
+			const b = !!oB.completed;
+			return a === b
+				? SAME
+				: !a
+					? LESS
+					: MORE;
+		};
+	}
+
 	if (property === 'grade') {
-		const grade = x => parseFloat((x['grade'] || {}).value, 10) || -1;
+
 		return (oA, oB) => {
 			const a = grade(oA);
 			const b = grade(oB);
+
+			const tA = typeof a;
+			const tB = typeof b;
+
+			if (a == null && b != null) {
+				return LESS;
+			}
+
+			if (a != null && b == null) {
+				return MORE;
+			}
+
+			if (tA === 'string' && tB === 'string') {
+				let c = -a.localeCompare(b); //Grade "string compare" inverts alphabetical order
+				return c === 0 ? SAME : (c < 0) ? LESS : MORE;
+			}
+
+			if (tA === 'string' && tB !== 'string') {
+				return LESS;
+			}
+
+			if (tA !== 'string' && tB === 'string') {
+				return MORE;
+			}
+
 			return a === b ? SAME : a < b ? LESS : MORE;
 		};
+
 	}
 
 	return (oA, oB) => {
