@@ -18,7 +18,7 @@ then \
 	watchman -j <<< '\
 	["trigger", "$(ROOT_DIR)", { \
 		"name": "compile", \
-		"expression": ["match", "src/*.js", "wholename"], \
+		"expression": ["match", "src/**/*.js", "wholename"], \
 		"command": ["make"], \
 		"append_files": false \
 	}] \
