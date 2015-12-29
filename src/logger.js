@@ -36,10 +36,13 @@ export default class Logger {
 			this[key].color = COLORS[key];
 		}
 
+		const getLog = lvl => console[console.trace ? 'trace' : lvl].bind(console);
+
 		if (browser) {
-			this.error.log = console.error.bind(console);
-			this.warn.log = console.warn.bind(console);
-			this.debug.log = console.debug.bind(console);
+			this.error.log = getLog('error');
+			this.warn.log = getLog('warn');
+			this.debug.log = getLog('debug');
+			this.info.log = getLog('log');
 		}
 
 		this.name = name;
