@@ -4,6 +4,12 @@ import isEmpty from 'fbjs/lib/isEmpty';
 const COMMON_PREFIX = 'tag:nextthought.com,2011-10:';
 
 
+export function PropType (props, propName, ComponentName) {
+	if (!/tag\:nextthought\.com/.test(props[propName])) {
+		throw new Error(`"${props[propName]}" is not a invalid NTIID (${propName} on ${ComponentName})`);
+	}
+}
+
 /**
  * Parses an id and returns an object containing the split portions
  * See http://excelsior.nextthought.com/server-docs/ntiid-structure/
