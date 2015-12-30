@@ -39,5 +39,7 @@ export const TOS_NOT_ACCEPTED = 'content.initial_tos_page';
 
 export const SortOrder = {
 	ASC: 'ascending',
-	DESC: 'descending'
+	DESC: 'descending',
+
+	reverse (dir) { return dir === SortOrder.ASC ? SortOrder.DESC : SortOrder.ASC; }
 };
