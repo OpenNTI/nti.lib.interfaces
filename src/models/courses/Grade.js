@@ -92,7 +92,7 @@ export default class Grade extends Base {
 
 
 	isExcused () {
-		return !!this.IsExcused;
+		return this.hasLink('unexcuse');
 	}
 
 
@@ -111,7 +111,7 @@ export default class Grade extends Base {
 		let link = this.hasLink(A) ? A : B;
 
 		return this.postToLink(link)
-			.then(o => this.refresh(pluck(o, 'NTIID', 'Links')))
+			.then(o => this.refresh(pluck(o, 'NTIID', 'Links', 'IsExcused')))
 			.then(() => this.onChange('excuse'));
 	}
 
