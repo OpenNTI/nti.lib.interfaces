@@ -2,7 +2,9 @@ import logger from 'debug';
 import browser from './utils/browser';
 
 const pattern = logger.load() || ['info', 'error', 'warn'].map(x => `*:${x}`).join(',');
-logger.enable(pattern);
+if (!browser) {
+	logger.enable(pattern);
+}
 
 const COLORS = {
 	'error': browser ? 'crimson' : 1, //red
