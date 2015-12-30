@@ -30,8 +30,9 @@ endef
 all: node_modules lib
 
 node_modules: package.json
-	@rm -rf node_modules
-	@npm install
+#	@rm -rf node_modules
+#	@npm install
+	@npm update
 	@touch $@
 
 check:
