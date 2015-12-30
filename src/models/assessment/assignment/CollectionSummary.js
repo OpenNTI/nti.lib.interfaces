@@ -229,7 +229,6 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 				new AssignmentSummary(assignment, history.getItem(assignment.getID()), history.creator));
 
 			if (sortOn) {
-				logger.info('TODO: sort on: %s, %s', sortOn, sortOrder);
 				data.cache.sort(comparatorFor(sortOn, sortOrder));
 			}
 		}
