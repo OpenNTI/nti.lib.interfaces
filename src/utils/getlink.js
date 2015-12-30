@@ -16,7 +16,7 @@ export default function getLink (o, rel, raw) {
  */
 export function asMap (o) {
 
-	//console.error('Prefer getLink(data, linkName)...');
+	console.error('Depricated! Use getLink("rel-name"), this method throws away important information about the Link (method, etc)');
 
 	if (o && o.Links) { o = o.Links; }
 	if (!Array.isArray(o)) {
