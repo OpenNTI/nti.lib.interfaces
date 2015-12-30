@@ -5,7 +5,7 @@ import QueryString from 'query-string';
 
 import {parse, getModelByType} from './';
 
-import getLinkImpl, {asMap as getLinksAsMap} from '../utils/getlink';
+import getLinkImpl from '../utils/getlink';
 import mixin from '../utils/mixin';
 
 import JSONValue from './mixins/JSONValue';
@@ -364,13 +364,8 @@ export default class Base extends EventEmitter {
 	}
 
 
-	getLinkMap () {
-		return getLinksAsMap(this);
-	}
-
-
 	hasLink (rel) {
-		return rel in this.getLinkMap() && !!this.getLink(rel);
+		return !!this.getLink(rel);
 	}
 
 
