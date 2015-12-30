@@ -53,7 +53,8 @@ function fillMaps (oValue, o, oKey) {
 	}
 }
 
-const omit = a => a.isNonSubmit && a.isNonSubmit() && a.title === 'Final Grade';
+const isFinalGrade = a => a.isNonSubmit && a.isNonSubmit() && a.title === 'Final Grade';
+const omit = a => isFinalGrade(a);
 
 const toNumeric = o => o ? o.getTime() : 0;
 const normalize = o => o === 0 ? 0 : o / Math.abs(o);
@@ -400,6 +401,15 @@ export default class Collection extends Base {
 
 		let maybe = this.getAssessments();
 		return !maybe || !find(maybe, assessmentId);
+	}
+
+
+	getFinalGradeAssignmentId () {
+		const data = getPrivate(this);
+		const assignments = Object.values(data.visibleAssignments);
+		const finalGrade = assignments.find(a => isFinalGrade(a));
+
+		return finalGrade ? finalGrade.getID() : void 0;
 	}
 }
 
