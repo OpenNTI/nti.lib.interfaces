@@ -66,6 +66,10 @@ export default class AssignmentHistoryCollection extends Base {
 		}
 
 		if (!historyItem) {
+			if (items[assignmentId]) {
+				items[assignmentId].removeAllListeners();
+			}
+
 			delete items[assignmentId];
 		} else {
 			items[assignmentId] = historyItem;

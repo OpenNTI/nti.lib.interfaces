@@ -24,7 +24,9 @@ class AssignmentSummary extends EventEmitter {
 	constructor (assignment, history, username) {
 		super();
 		initPrivate(this, {assignment, history, username});
-		history.on('change', (...args) => this.emit('change', ...args));
+		if (history) {
+			history.on('change', (...args) => this.emit('change', ...args));
+		}
 	}
 
 	get username () {
