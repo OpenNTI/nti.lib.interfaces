@@ -2,7 +2,8 @@
 	clean \
 	check \
 	test \
-	watch
+	watch \
+	watch-stop
 
 
 ROOT_DIR = $(patsubst %/,%, $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
