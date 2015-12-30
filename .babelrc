@@ -6,6 +6,6 @@
 	"plugins": [
 		"transform-runtime"
 	],
-	"compact": true,
+	"compact": false,
 	"sourceMaps": "both"
 }
