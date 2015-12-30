@@ -123,8 +123,9 @@ export default class CollectionInstructorView extends Base {
 
 
 	getActivity () {
-		logger.error('Not Implemented');
 		//parent(CourseInstance) -> CourseActivity
+
+		return Promise.reject('Not Implemented');
 	}
 
 
