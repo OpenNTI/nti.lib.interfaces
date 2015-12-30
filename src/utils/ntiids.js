@@ -5,10 +5,22 @@ const COMMON_PREFIX = 'tag:nextthought.com,2011-10:';
 
 
 export function PropType (props, propName, ComponentName) {
+	try {
+		PropType.isRequired(props, propName, ComponentName);
+	} catch (e) {
+		if (props[propName] != null) {
+			throw e;
+		}
+	}
+}
+
+PropType.isRequired = function (props, propName, ComponentName) {
 	if (!/tag\:nextthought\.com/.test(props[propName])) {
 		throw new Error(`"${props[propName]}" is not a invalid NTIID (${propName} on ${ComponentName})`);
 	}
-}
+};
+
+
 
 /**
  * Parses an id and returns an object containing the split portions
