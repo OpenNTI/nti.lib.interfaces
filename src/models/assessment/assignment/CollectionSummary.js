@@ -12,6 +12,13 @@ const PRIVATE = new WeakMap();
 const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
 const getPrivate = x => PRIVATE.get(x);
 
+function clearCache (x) {
+	const data = getPrivate(x);
+	if (data.cache) {
+		data.cache.forEach(i => i.removeAllListeners());
+		delete data.cache;
+	}
+}
 
 class AssignmentSummary extends EventEmitter {
 	constructor (assignment, history) {
@@ -160,8 +167,10 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 			return;
 		}
 
+		clearCache(this);
+
 		history.setItem(assignmentId, historyItem);
-		this.emit('change', this);
+		this.emit('change', 'new-history');
 	}
 
 
@@ -252,7 +261,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 			delete data.sortOrder;
 		}
 
-		delete data.cache;
+		clearCache(this);
 		this.emit('change', 'sort');
 	}
 
