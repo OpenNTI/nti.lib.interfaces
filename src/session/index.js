@@ -77,7 +77,7 @@ export default class SessionManager {
 
 		req.responseHeaders = {};
 
-		req.setMaxListeners(0);//unlimited
+		req.setMaxListeners(100);
 		req.socket.setKeepAlive(true, 1000);
 		req.on('close', ()=> {
 			req.dead = true;
