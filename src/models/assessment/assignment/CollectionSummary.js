@@ -76,6 +76,11 @@ class AssignmentSummary extends EventEmitter {
 
 	getContentId () { return this.assignmentId; }
 	// getID () { return this.assignmentId; }
+
+	//TODO: Normalize the surface of the "summary" items and delete this accessor.
+	get HistoryItemSummary () {
+		return getPrivate(this).history;
+	}
 }
 
 
@@ -156,7 +161,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 	}
 
 
-	addHistoryItem (assignmentId, historyItem) {
+	setHistoryItem (assignmentId, historyItem) {
 		const {error, history} = getPrivate(this);
 		if (error || !history) {
 			//no history means either: there is an inflight request, or there was an error.

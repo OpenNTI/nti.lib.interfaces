@@ -2,7 +2,7 @@ import Url from 'url';
 import path from 'path';
 
 import {Service} from '../../../constants';
-import Logger from '../../../logger';
+// import Logger from '../../../logger';
 
 import {HISTORY_LINK} from '../Constants';
 
@@ -13,7 +13,7 @@ import CollectionSummary from './CollectionSummary';
 import AssignmentSummary from '../../../stores/AssignmentSummary';
 import GradeBookSummary from '../../../stores/GradeBookSummary';
 
-const logger = Logger.get('assignment:Collection:Instructor');
+// const logger = Logger.get('assignment:Collection:Instructor');
 
 const keyForUser = userId => userId != null ? `${HISTORY_LINK}:${userId}` : HISTORY_LINK;
 const HISTORY_LINK_PREFIX = new RegExp('^' + keyForUser(''));
@@ -164,11 +164,33 @@ export default class CollectionInstructorView extends Base {
 
 				const us = this.getStudentSummary(Username, false);
 				if (us) {
-					us.addHistoryItem(assignmentId, historyItem);
+					us.setHistoryItem(assignmentId, historyItem);
 				}
 
 				this.emit('new-grade', assignmentId);
 			});
 	}
 
+
+	resetAssignment (assignmentId, username) {
+		return this.getHistoryItem(assignmentId, username)
+			.then(history => history && history.delete())
+			.then(() => {
+
+				const as = this.getAssignmentSummary(assignmentId, false);
+				if (as) {
+					const record = as.find(x => x.username === username);
+					if (record) {
+						delete record.HistoryItemSummary;
+						record.onChange('HistoryItemSummary');
+					}
+				}
+
+				const us = this.getStudentSummary(username, false);
+				if (us) {
+					us.setHistoryItem(assignmentId, null);
+				}
+
+			});
+	}
 }
