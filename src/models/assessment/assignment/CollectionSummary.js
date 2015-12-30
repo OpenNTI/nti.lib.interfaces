@@ -21,9 +21,14 @@ function clearCache (x) {
 }
 
 class AssignmentSummary extends EventEmitter {
-	constructor (assignment, history) {
+	constructor (assignment, history, username) {
 		super();
-		initPrivate(this, {assignment, history});
+		initPrivate(this, {assignment, history, username});
+		history.on('change', (...args) => this.emit('change', ...args));
+	}
+
+	get username () {
+		return getPrivate(this).username;
 	}
 
 	get title () {
@@ -74,13 +79,13 @@ class AssignmentSummary extends EventEmitter {
 		return history && history.FeedbackCount;
 	}
 
+	get isCreatedByAppUser () {
+		const {history} = getPrivate(this);
+		return history.isCreatedByAppUser;
+	}
+
 	getContentId () { return this.assignmentId; }
 	// getID () { return this.assignmentId; }
-
-	//TODO: Normalize the surface of the "summary" items and delete this accessor.
-	get HistoryItemSummary () {
-		return getPrivate(this).history;
-	}
 }
 
 
@@ -221,7 +226,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 
 		if (!data.cache) {
 			data.cache = parent.getAssignments().map(assignment =>
-				new AssignmentSummary(assignment, history.getItem(assignment.getID())));
+				new AssignmentSummary(assignment, history.getItem(assignment.getID()), history.creator));
 
 			if (sortOn) {
 				logger.info('TODO: sort on: %s, %s', sortOn, sortOrder);
