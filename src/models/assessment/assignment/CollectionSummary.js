@@ -3,10 +3,7 @@ import invariant from 'invariant';
 
 import PageSource from '../../ListBackedPageSource';
 
-import Logger from '../../../logger';
 import {SortOrder} from '../../../constants';
-
-const logger = Logger.get('assignment:AssignmentCollectionSummary');
 
 const PRIVATE = new WeakMap();
 const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
