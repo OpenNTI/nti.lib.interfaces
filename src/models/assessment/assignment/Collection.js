@@ -405,8 +405,8 @@ export default class Collection extends Base {
 
 
 	getFinalGradeAssignmentId () {
-		const data = getPrivate(this);
-		const assignments = Object.values(data.visibleAssignments);
+		const {visibleAssignments: {items}} = getPrivate(this);
+		const assignments = Object.values(items);
 		const finalGrade = assignments.find(a => isFinalGrade(a));
 
 		return finalGrade ? finalGrade.getID() : void 0;
