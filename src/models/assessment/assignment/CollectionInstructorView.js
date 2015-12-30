@@ -165,6 +165,8 @@ export default class CollectionInstructorView extends Base {
 				if (us) {
 					us.addHistoryItem(assignmentId, historyItem);
 				}
+
+				this.emit('new-grade', assignmentId);
 			});
 	}
 
