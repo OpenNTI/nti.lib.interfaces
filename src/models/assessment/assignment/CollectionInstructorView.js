@@ -118,6 +118,9 @@ export default class CollectionInstructorView extends Base {
 
 
 	getHistoryItem (assignmentId, studentUserId) {
+		if (!this.getAssignment(assignmentId)) {
+			return Promise.reject('Assignment Not Found.');
+		}
 		return this.getStudentSummary(studentUserId).getHistoryForPromise(assignmentId);
 	}
 
@@ -173,6 +176,10 @@ export default class CollectionInstructorView extends Base {
 
 
 	resetAssignment (assignmentId, username) {
+		if (!assignmentId || !username) {
+			throw new Error('Invalid Arguments');
+		}
+
 		return this.getHistoryItem(assignmentId, username)
 			.then(history => history && history.delete())
 			.then(() => {
