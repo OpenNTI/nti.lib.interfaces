@@ -179,7 +179,7 @@ export default class Collection extends Base {
 	onChange () {}
 
 
-	getGrouppedStore () {
+	getGroupedStore () {
 		return getPrivate(this).viewStore;
 	}
 
