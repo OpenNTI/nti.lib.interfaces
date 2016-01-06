@@ -9,7 +9,13 @@ import Notifications from './stores/Notifications';
 
 import {getModelByType as lookup} from './models';
 
-export * from './constants';
+// export * from './constants';
+import * as constants from './constants';
+Object.keys(constants).forEach((key) =>
+	Object.defineProperty(exports, key, {
+		enumerable: true,
+		get: () => constants[key]
+	}));
 
 export default function (config) {
 	let i = new Interface(config);
