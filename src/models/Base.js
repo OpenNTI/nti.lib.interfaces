@@ -504,7 +504,7 @@ export default class Base extends EventEmitter {
 
 
 		let u = this[Service].getAppUserSync() || {},
-			visibilityKey = getProp('visibility'),
+			visibilityKey = el && getProp('visibility'),
 			attr = CONTENT_VISIBILITY_MAP[visibilityKey] || visibilityKey;
 
 		// NOTE: Some pieces of content within a course may have limited access (mainly on Copyright issues).
