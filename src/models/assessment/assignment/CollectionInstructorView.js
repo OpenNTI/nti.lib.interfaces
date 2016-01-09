@@ -145,8 +145,8 @@ export default class CollectionInstructorView extends Base {
 		const grade = getGrade(gradeOrAssignmentId);
 
 		//existing grade
-		if (grade.save) {
-			return grade.save(letter ? {value, letter} : {value});
+		if (grade.change) {
+			return grade.change(value, letter);
 		}
 
 		//new grade

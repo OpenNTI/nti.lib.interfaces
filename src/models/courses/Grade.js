@@ -7,8 +7,35 @@ import {cacheClassInstances} from '../mixins/InstanceCacheable';
 
 const ENDS_IN_LETTER_REGEX = /\s[a-fiw\-]$/i;
 
-const LETTER = Symbol('Letter');
-const VALUE = Symbol('Value');
+const PRIVATE = new WeakMap();
+
+function processValue (value) {
+	if (typeof value === 'number') {
+		let n = value.toFixed(1);
+		if (n.split('.')[1] === '0') {
+			n = value.toFixed(0);
+		}
+		value = n;
+	}
+
+	//When the grade is a predicted value, the "value" contains just the predicted letter grade,
+	//and "Correctness" contains the percentage.
+	//
+	//getto... we should really REALLY consider splitting value into two fields so this
+	//crap doesn't confuse people... have a dedicated "letter" field and a dedicated "value"
+	//field for profs to fill what ever they want...
+
+	if (this.isPredicted()) {
+		PRIVATE.get(this).value = this.Correctness;
+		PRIVATE.get(this).letter = value;
+	}
+	else {
+		let v = value.split(' ');
+
+		PRIVATE.get(this).letter = v.length > 1 && ENDS_IN_LETTER_REGEX.test(value) ? v.pop() : null;
+		PRIVATE.get(this).value = v.join(' ');
+	}
+}
 
 export default class Grade extends Base {
 	static isEmpty (value, letter) {
@@ -27,6 +54,7 @@ export default class Grade extends Base {
 
 		super(service, parent, data, names);
 
+		PRIVATE.set(this, {});
 		// Correctness string
 		// IsPredicted bool
 		// IsExcused bool
@@ -37,31 +65,7 @@ export default class Grade extends Base {
 		// assignmentContainer string
 
 		if (value != null) {
-			if (typeof value === 'number') {
-				let n = value.toFixed(1);
-				if (n.split('.')[1] === '0') {
-					n = value.toFixed(0);
-				}
-				value = n;
-			}
-
-			//When the grade is a predicted value, the "value" contains just the predicted letter grade,
-			//and "Correctness" contains the percentage.
-			//
-			//getto... we should really REALLY consider splitting value into two fields so this
-			//crap doesn't confuse people... have a dedicated "letter" field and a dedicated "value"
-			//field for profs to fill what ever they want...
-
-			if (this.isPredicted()) {
-				this[VALUE] = this.Correctness;
-				this[LETTER] = value;
-			}
-			else {
-				let v = value.split(' ');
-
-				this[LETTER] = v.length > 1 && ENDS_IN_LETTER_REGEX.test(value) ? v.pop() : null;
-				this[VALUE] = v.join(' ');
-			}
+			processValue.call(this, value);
 		}
 	}
 
@@ -73,10 +77,28 @@ export default class Grade extends Base {
 	}
 
 
-	get value () { return this[VALUE]; }
-	set value (v) { this[VALUE] = v; }
+	change (value, letter = this.letter) {
 
-	get letter () { return this[LETTER]; }
+		if (letter) {
+			value = [value, letter].join(' ');
+		}
+
+		return this.save({value});
+	}
+
+
+	get value () { return PRIVATE.get(this).value; }
+
+	//Models are supposed to Immutable, so this is mostly going to be called by super.refresh().
+	set value (v) {
+		if (v) {
+			processValue.call(this, v);
+		}
+		// this[VALUE] = v;
+		this.onChange();
+	}
+
+	get letter () { return PRIVATE.get(this).letter; }
 	set letter (l) {
 		if (!l || l == null) {
 			l = null;
@@ -87,7 +109,8 @@ export default class Grade extends Base {
 			throw new Error('Illegal Value');
 		}
 
-		this[LETTER] = l;
+		PRIVATE.get(this).letter = l;
+		this.onChange();
 	}
 
 
@@ -126,8 +149,8 @@ export default class Grade extends Base {
 	 */
 	equals (value, letter) {
 		const normalizeLetter = x => (!x || x === '-') ? false : x;
-		const ltr = normalizeLetter(this[LETTER]);
-		const val = this[VALUE];
+		const ltr = normalizeLetter(this.letter);
+		const val = this.value;
 
 		return ltr === normalizeLetter(letter) && val === value;
 	}
