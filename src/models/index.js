@@ -12,6 +12,11 @@ import Change from './Change';
 import Badge from './Badge';
 import BadgeIssuer from './BadgeIssuer';
 
+//Slides
+import Slide from './Slide';
+import SlideVideo from './SlideVideo';
+import SlideDeck from './SlideDeck';
+
 import RelatedWorkReference from './RelatedWorkReference';
 
 //chat
@@ -182,6 +187,10 @@ const PARSERS = {
 	'openbadges.badge': 'badge',
 	'openbadges.issuer': BadgeIssuer,
 	'gradebookshell': CourseGradeBookShell,
+
+	'slide': Slide,
+	'ntislidevideo': SlideVideo,
+	'ntislidedeck': SlideDeck,
 
 	'gradebook.gradebookbyassignmentsummary': CourseGradeBookByAssignment,
 	'GradeBookByAssignmentSummary': 'gradebook.gradebookbyassignmentsummary',
