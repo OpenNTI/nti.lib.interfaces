@@ -12,6 +12,8 @@ import Change from './Change';
 import Badge from './Badge';
 import BadgeIssuer from './BadgeIssuer';
 
+import SuggestedContacts from './SuggestedContacts';
+
 //Slides
 import Slide from './Slide';
 import SlideVideo from './SlideVideo';
@@ -183,6 +185,8 @@ const PARSERS = {
 	'pageinfo': PageInfo,
 	'sharingpagepreference': SharingPagePreference,
 	'SharingPagePreference': 'sharingpagepreference',
+	'suggestedcontacts': SuggestedContacts,
+
 	'badge': Badge,
 	'openbadges.badge': 'badge',
 	'openbadges.issuer': BadgeIssuer,
