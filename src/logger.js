@@ -1,16 +1,15 @@
 import logger from 'debug';
-import browser from './utils/browser';
 
 const pattern = logger.load() || ['info', 'error', 'warn'].map(x => `*:${x}`).join(',');
-if (!browser) {
+if (!process.browser) {
 	logger.enable(pattern);
 }
 
 const COLORS = {
-	'error': browser ? 'crimson' : 1, //red
-	'info': browser ? 'forestgreen' : 2, //green
-	'warn': browser ? 'goldenrod' : 3, //yellow/orange
-	'debug': browser ? 'dodgerblue' : 4 //blue
+	'error': process.browser ? 'crimson' : 1, //red
+	'info': process.browser ? 'forestgreen' : 2, //green
+	'warn': process.browser ? 'goldenrod' : 3, //yellow/orange
+	'debug': process.browser ? 'dodgerblue' : 4 //blue
 	//'': browser ? 'darkorchid' : 5, //magenta
 	//'': browser ? 'lightseagreen' : 6, //lightblue
 };
@@ -40,7 +39,7 @@ export default class Logger {
 
 		const getLog = lvl => console[console.trace ? 'trace' : lvl].bind(console);
 
-		if (browser) {
+		if (process.browser) {
 			this.error.log = getLog('error');
 			this.warn.log = getLog('warn');
 			this.debug.log = getLog('debug');

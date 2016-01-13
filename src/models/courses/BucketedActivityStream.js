@@ -2,7 +2,6 @@ import Base from '../Base';
 
 import moment from 'moment';
 
-import browser from '../../utils/browser';
 import ProxyObject from '../../utils/ProxyObject';
 
 const SOURCE = 'source';
@@ -33,7 +32,7 @@ export default class BucketedActivityStream extends Base {
 		const start = Date.now();
 		const weekOf = getWeekAsTimestamp();
 
-		if (browser) {
+		if (process.browser) {
 			this.on('load', (_, time) => console.log('Load: %s %o', time, this));
 		}
 

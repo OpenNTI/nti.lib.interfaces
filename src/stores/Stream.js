@@ -4,7 +4,6 @@ import invariant from 'invariant';
 import QueryString from 'query-string';
 import Url from 'url';
 
-import browser from '../utils/browser';
 import mixin from '../utils/mixin';
 
 import Pendability from '../models/mixins/Pendability';
@@ -52,7 +51,7 @@ export default class Stream extends EventEmitter {
 
 		mixin(this, Pendability);
 
-		if (browser) {
+		if (process.browser) {
 			this.on('load', (_, time) => logger.log('Load: %s %o', time, this));
 		}
 

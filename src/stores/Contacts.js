@@ -1,7 +1,5 @@
 import {EventEmitter} from 'events';
 
-import browser from '../utils/browser';
-
 // import QueryString from 'query-string';
 
 import Pendability from '../models/mixins/Pendability';
@@ -83,7 +81,7 @@ export default class Contacts extends EventEmitter {
 		let parseList = parseListFn(this, service);
 		this.load = url => service.get(url).then(o => parseList(Object.values(o.Items || [])));
 
-		if (browser) {
+		if (process.browser) {
 			this.on('load', (_, time) => console.log('Load: %s %o', time, this));
 		}
 

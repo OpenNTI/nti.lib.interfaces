@@ -1,4 +1,3 @@
-import isBrowser from './browser';
 
 const GLOBAL_PROPERTY_NAME = '%%app-data%%';
 const CONTEXT_PROPERTY_NAME = Symbol.for(GLOBAL_PROPERTY_NAME);
@@ -7,7 +6,7 @@ export default class DataCache {
 
 	constructor () {
 		this.data = {};
-		if (isBrowser) {
+		if (process.browser) {
 			this.data = global[GLOBAL_PROPERTY_NAME] || {};
 			delete global[GLOBAL_PROPERTY_NAME];
 		}
@@ -94,7 +93,7 @@ export default class DataCache {
 				cache = context[CONTEXT_PROPERTY_NAME] = new this();
 			}
 		} else {
-			if (!isBrowser) {
+			if (!process.browser) {
 				throw new Error('There must be an active context passed if we are called on the server');
 			}
 

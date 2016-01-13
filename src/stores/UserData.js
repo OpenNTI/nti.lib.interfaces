@@ -1,6 +1,5 @@
 import {EventEmitter} from 'events';
 
-import browser from '../utils/browser';
 import mixin from '../utils/mixin';
 import {threadThreadables, topLevelOnly} from '../utils/UserDataThreader';
 
@@ -74,7 +73,7 @@ export default class UserData extends EventEmitter {
 
 		this.addToPending(load);
 
-		if (browser) {
+		if (process.browser) {
 			this.on('load', (_, time) => console.log('Load: %s %o', time, this));
 		}
 	}

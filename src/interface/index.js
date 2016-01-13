@@ -10,7 +10,6 @@ import MimeComparator from '../utils/MimeComparator';
 
 import isEmpty from 'fbjs/lib/isEmpty';
 
-import isBrowser from '../utils/browser';
 import getLink, {asMap as getLinksAsMap} from '../utils/getlink';
 
 import chain from '../utils/function-chain';
@@ -102,7 +101,7 @@ export default class DataServerInterface {
 			delete opts.headers['content-type'];
 			delete opts.headers['referer'];
 
-		} else if (!isBrowser) {
+		} else if (!process.browser) {
 			throw new Error('Calling request w/o context!');
 		}
 
