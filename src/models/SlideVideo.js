@@ -4,6 +4,7 @@ import Base from './Base';
 export default class SlideVideo extends Base {
 
 	constructor (service, parent, data) {
+		delete data.creator;
 		super(service, parent, data);
 
 		/*

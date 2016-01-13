@@ -5,6 +5,7 @@ import {Parser as parse} from '../constants';
 export default class SlideDeck extends Base {
 
 	constructor (service, parent, data) {
+		delete data.creator;
 		super(service, parent, data);
 		this[parse]('Slides');
 		this[parse]('Videos');
