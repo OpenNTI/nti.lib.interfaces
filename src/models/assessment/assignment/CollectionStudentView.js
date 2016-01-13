@@ -1,5 +1,5 @@
 import {Service} from '../../../constants';
-import Logger from '../../../logger';
+import Logger from 'nti-util-logger';
 
 import {HISTORY_LINK} from '../Constants';
 

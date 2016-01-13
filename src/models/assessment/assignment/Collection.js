@@ -12,7 +12,7 @@ import {
 	Parser as parse
 } from '../../../constants';
 
-import Logger from '../../../logger';
+import Logger from 'nti-util-logger';
 
 import {HISTORY_LINK} from '../Constants';
 

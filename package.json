@@ -23,13 +23,13 @@
   },
   "dependencies": {
     "btoa": "^1.1.2",
-    "debug": "^2.2.0",
     "elementtree": "^0.1.6",
     "fbjs": "^0.4.0",
     "invariant": "^2.2.0",
     "media-typer": "^0.3.0",
     "moment": "^2.8.3",
     "node-uuid": "^1.4.3",
+    "nti-util-logger": "^1.0.0",
     "query-string": "^3.0.0",
     "request": "^2.44.0",
     "url": "^0.11.0"

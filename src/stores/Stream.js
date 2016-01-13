@@ -12,7 +12,7 @@ import getLink from '../utils/getlink';
 
 import {Service, Parent, DELETED} from '../constants';
 import {SortOrder} from '../constants';
-import Logger from '../logger';
+import Logger from 'nti-util-logger';
 
 import {parseListFn} from '../models';
 

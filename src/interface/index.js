@@ -2,7 +2,7 @@ import Url from 'url';
 //If the login method is invoked on the NodeJS side, we will need this function...
 import base64decode from 'btoa';
 
-import Logger from '../logger';
+import Logger from 'nti-util-logger';
 
 import request from '../utils/request';
 import DataCache from '../utils/datacache';

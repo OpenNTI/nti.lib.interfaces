@@ -1,6 +1,6 @@
 //import Catalog from '../stores/Catalog';
 import Library from '../stores/Library';
-import Logger from '../logger';
+import Logger from 'nti-util-logger';
 // import Notifications from '../stores/Notifications';
 
 import {ServiceStash} from '../constants';

@@ -2,7 +2,7 @@ import Stream from './Stream';
 import Paged from '../models/mixins/Paged';
 import mixin from '../utils/mixin';
 
-import Logger from '../logger';
+import Logger from 'nti-util-logger';
 
 const logger = Logger.get('store:GradeBookSummary');
 

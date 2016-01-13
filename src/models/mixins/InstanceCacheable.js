@@ -1,5 +1,5 @@
 import parseDate from '../../utils/parse-date';
-import Logger from '../../logger';
+import Logger from 'nti-util-logger';
 
 import {getCacheFor} from './InstanceCacheContainer';
 

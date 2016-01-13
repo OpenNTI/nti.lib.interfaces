@@ -1,7 +1,6 @@
 import Session from './session';
 import Interface from './interface';
 import cache from './utils/datacache';
-import Logger from './logger';
 
 import Catalog from './stores/Catalog';
 import Library from './stores/Library';
@@ -20,10 +19,6 @@ Object.keys(constants).forEach((key) =>
 export default function (config) {
 	let i = new Interface(config);
 
-	if (config.silent) {
-		Logger.quiet();
-	}
-
 	return {
 		datacache: cache,
 		interface: i,
@@ -34,7 +29,6 @@ export default function (config) {
 export {
 	Catalog,
 	Library,
-	Logger,
 	Notifications
 };
 
