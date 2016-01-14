@@ -1,4 +1,5 @@
 import Base from './Base';
+import mime from 'mime-types';
 
 import UserDataStore from '../stores/UserData';
 
@@ -9,6 +10,32 @@ import {Service} from '../constants';
 import {isNTIID} from '../utils/ntiids';
 
 const UserData = Symbol('UserData');
+
+/*
+Internal Links:
+			NTIID: "tag:nextthought.com,2011-10:OU-RelatedWorkRef...:digestion_and_metabolism_textbook1"
+		creator: "Openstax, Heather Ketchum, and Eric Bright"
+			desc: "Read this material about Digestion and Metabolism."
+			icon: "resources/.../fd35e23767020999111e1f49239199b4c5eff23e.png"
+			label: "Digestion and Metabolism Textbook Reading 1"
+			href: "tag:nextthought.com,2011-10:OU-HTML-...:digestion_and_metabolism_textbook1"
+	target-NTIID: "tag:nextthought.com,2011-10:OU-HTML-...:digestion_and_metabolism_textbook1"
+	targetMimeType: "application/vnd.nextthought.content"
+
+
+External Links:
+			NTIID: "tag:nextthought.com,2011-10:OU-RelatedWorkRef-...:library_guide_ou.2"
+		creator: "University of Oklahoma Libraries"
+			desc: "This guide is designed to provide additional resources to help you study."
+			icon: "resources/.../fd35e23767020999111e1f49239199b4c5eff23e.png"
+			label: "Library Guide for Human Physiology"
+			href: "http://guides.ou.edu/biol2124_humanphysiology"
+	target-NTIID: "tag:nextthought.com,2011-10:NTI-UUID-dbbb93c8d79d8de6e1edcbe8685c07c9"
+	targetMimeType: "application/vnd.nextthought.externallink"
+*/
+
+const CONTENT_TYPE = 'application/vnd.nextthought.content';
+const EXTERNAL_TYPE = 'application/vnd.nextthought.externallink';
 
 export default class RelatedWorkReference extends Base {
 	static fromID (service, id) {
@@ -25,8 +52,25 @@ export default class RelatedWorkReference extends Base {
 	}
 
 
+	get isContent () {
+		return [this.type, this.targetMimeType].some(x => x === CONTENT_TYPE)
+			|| isNTIID(this.href);
+	}
+
+
 	get isExternal () {
-		return /external/i.test(this.type) || !isNTIID(this.href);
+		return [this.type, this.targetMimeType].some(x => x === EXTERNAL_TYPE)
+			|| !isNTIID(this.href);
+	}
+
+
+	get isDocument () {
+		return !this.isContent && !this.isExternal;
+	}
+
+
+	get isEmbeddableDocument () {
+		return !this.isDocument && [this.type, this.targetMimeType].some(x => mime.extension(x) === 'pdf');
 	}
 
 
@@ -41,5 +85,16 @@ export default class RelatedWorkReference extends Base {
 		}
 
 		return Promise.resolve(store);//in the future, this may need to be async...
+	}
+
+
+	getFileExtentionFor () {
+		const ext = [this.type, this.targetMimeType].reduce((a, x) => a || mime.extension(x), null);
+
+		if (!ext && this.isExternal) {
+			return 'www';
+		}
+
+		return ext;
 	}
 }
