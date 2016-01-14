@@ -16,6 +16,8 @@ function processValue (value) {
 			n = value.toFixed(0);
 		}
 		value = n;
+	} else if (value == null) {
+		value = '';
 	}
 
 	//When the grade is a predicted value, the "value" contains just the predicted letter grade,
@@ -64,9 +66,7 @@ export default class Grade extends Base {
 		// assignmentName string
 		// assignmentContainer string
 
-		if (value != null) {
-			processValue.call(this, value);
-		}
+		processValue.call(this, value);
 	}
 
 
@@ -91,10 +91,7 @@ export default class Grade extends Base {
 
 	//Models are supposed to Immutable, so this is mostly going to be called by super.refresh().
 	set value (v) {
-		if (v) {
-			processValue.call(this, v);
-		}
-		// this[VALUE] = v;
+		processValue.call(this, v);
 		this.onChange();
 	}
 
