@@ -114,6 +114,35 @@ export function parseNTIID (id) {
 }
 
 
+function normalizeSpecificProvider (id) {
+	const o = parseNTIID(id);
+	o.specific.provider = 'system';
+	return o.toString();
+}
+
+
+export function ntiidEquals (a, b, ignoreSpecificProvider = true) {
+	if (a === b) {
+		return true;
+	}
+
+	if (!ignoreSpecificProvider) {
+		return false;
+	}
+
+	const idA = normalizeSpecificProvider(a);
+	const idB = normalizeSpecificProvider(b);
+
+	try {
+
+		return idA === idB;
+
+	} catch (e) {
+		return false;
+	}
+}
+
+
 export function isNTIID (id) {
 	return Boolean(parseNTIID(id));
 }

@@ -7,6 +7,7 @@ import {parse, getModelByType} from './';
 
 import getLinkImpl from '../utils/getlink';
 import mixin from '../utils/mixin';
+import {ntiidEquals} from '../utils/ntiids';
 
 import JSONValue from './mixins/JSONValue';
 import Pendability from './mixins/Pendability';
@@ -247,7 +248,7 @@ export default class Base extends EventEmitter {
 			this[Service].getObject(this.getID());
 
 		return fetch.then(o => {
-			if (this.NTIID !== o.NTIID) {
+			if (!ntiidEquals(this.NTIID, o.NTIID, true/*ignore "specific provider" differences*/)) {
 				throw new Error('Mismatch!');
 			}
 
