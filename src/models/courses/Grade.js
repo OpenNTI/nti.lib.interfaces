@@ -112,7 +112,7 @@ export default class Grade extends Base {
 
 
 	isExcused () {
-		return this.hasLink('unexcuse');
+		return this.hasLink('unexcuse') || this.IsExcused;
 	}
 
 
