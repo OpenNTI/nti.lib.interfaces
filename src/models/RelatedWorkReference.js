@@ -1,6 +1,9 @@
 import Base from './Base';
 import mime from 'mime-types';
 
+import {parse as parseUrl} from 'url';
+import {extname} from 'path';
+
 import UserDataStore from '../stores/UserData';
 
 import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA} from '../constants';
@@ -44,10 +47,10 @@ export default class RelatedWorkReference extends Base {
 
 	//Minimum keys required: NTIID. Links preferred.
 	constructor (service, data) {
-		if (data.creator && (!data.Creator || (data.Creator === data.creator))) {
+		if (!data.Creator || (data.Creator === data.creator)) {
 			data.Creator = data.creator;
-			delete data.creator;
 		}
+		delete data.creator;
 		super(service, null, data);
 	}
 
@@ -93,6 +96,10 @@ export default class RelatedWorkReference extends Base {
 
 		if (!ext && this.isExternal) {
 			return 'www';
+		}
+
+		if (ext === 'bin') {
+			return extname(parseUrl(this.href).pathname).replace(/\./, '');
 		}
 
 		return ext;
