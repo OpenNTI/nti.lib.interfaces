@@ -26,7 +26,7 @@ export default class AssignmentActivityStore extends Stream {
 
 		const newViewed = new Date();
 
-		return this[Service].post(link, newViewed.getTime() / 1000)
+		return this[Service].put(link, newViewed.getTime() / 1000)
 			.then(() => (this.lastViewed = newViewed, this.emit('change', 'lastViewed')));
 	}
 
