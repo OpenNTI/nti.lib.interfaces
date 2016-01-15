@@ -9,6 +9,7 @@ import {HISTORY_LINK} from '../Constants';
 import Base from './Collection';
 
 import CollectionSummary from './CollectionSummary';
+import ActivityStore from './AssignmentActivityStore';
 
 import AssignmentSummary from '../../../stores/AssignmentSummary';
 import GradeBookSummary from '../../../stores/GradeBookSummary';
@@ -126,9 +127,23 @@ export default class CollectionInstructorView extends Base {
 
 
 	getActivity () {
-		//parent(CourseInstance) -> CourseActivity
+		const p = getPrivate(this);
+		if (!p.activityStore) {
 
-		return Promise.reject('Not Implemented');
+			const baseActivity = (lastViewed) => this.getAssignments()
+						.reduce((events, a) => events.concat(this.deriveEvents(a, null, lastViewed)), [])
+						.filter(x => x.date);
+
+			//parent(CourseInstance) -> CourseActivity
+			const href = this.parent().getLink('CourseActivity');
+			if (!href) {
+				return Promise.reject('No Link');
+			}
+
+			p.activityStore = new ActivityStore(this[Service], this, href, baseActivity);
+		}
+
+		return Promise.resolve(p.activityStore);
 	}
 
 

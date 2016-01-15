@@ -18,7 +18,7 @@ import {parseListFn} from '../models';
 
 const PRIVATE = new WeakMap();
 const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
-const getPrivate = x => PRIVATE.get(x);
+export const getPrivate = x => PRIVATE.get(x);
 
 const logger = Logger.get('stores:Stream');
 

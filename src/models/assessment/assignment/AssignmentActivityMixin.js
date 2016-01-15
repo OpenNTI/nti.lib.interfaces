@@ -1,41 +1,3 @@
-/*
-import React from 'react';
-import cx from 'classnames';
-
-import If from 'common/components/Conditional';
-import {scoped} from 'common/locale';
-
-const t = scoped('COURSE.ASSIGNMENTS.ACTIVITY');
-
-export default React.createClass({
-	displayName: 'ActivityItem',
-
-	render () {
-		const {props: {event, collection}} = this;
-		const {date, title, type, suffix, assignment, unread} = event;
-		const today = new Date((new Date()).setHours(0, 0, 0, 0));
-
-		let format = 'MMM D'; // "Jan 2" ... Short month, Day of month without zero padding
-		if (date > today) {
-			format = 'h:mm a'; // "8:05 pm" ...Hours without zero padding, ":", minutes with zero padding, lower-case "am/pm"
-		}
-
-		return (
-			<div className={cx('item', {unread})}>
-				<DateTime date={date} showToday format={format}/>
-				<span className="type">{t(type)}</span>
-				<span className="assignment-name">{title}</span>
-				<If condition={suffix}>
-					<span className="label suffix">{suffix}</span>
-				</If>
-			</div>
-		);
-	}
-});
-
-
- */
-
 
 export default {
 
@@ -69,6 +31,16 @@ export default {
 				lastViewed
 			)
 		);
+	},
+
+
+	buildSubmissionEvents (s, lastViewed) {
+		const {creator: user} = s;
+		const assignment = this.getAssignment(s.assignmentId);
+		const out = this.deriveEvents(assignment, {Submission: s}, lastViewed);
+		return out
+			.filter(x => !/new|late/.test(x.type))
+			.map(e => Object.assign(e, {user, type: `user-${e.type}`}));
 	},
 
 
