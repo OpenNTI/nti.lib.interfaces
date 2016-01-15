@@ -171,6 +171,7 @@ export default class CollectionInstructorView extends Base {
 				}
 
 				this.emit('new-grade', assignmentId);
+				this.onChange('new-grade', this);
 			});
 	}
 
@@ -198,6 +199,8 @@ export default class CollectionInstructorView extends Base {
 					us.setHistoryItem(assignmentId, null);
 				}
 
+				this.emit('reset-grade', assignmentId);
+				this.onChange('reset-grade', this);
 			});
 	}
 }
