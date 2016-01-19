@@ -1,6 +1,6 @@
-import {
-	Service
-} from '../constants';
+import Logger from 'nti-util-logger';
+
+import { Service } from '../constants';
 
 import Url from 'url';
 import {EventEmitter} from 'events';
@@ -16,13 +16,11 @@ import QueryString from 'query-string';
 
 import waitFor from '../utils/waitfor';
 
-let BATCH_SIZE = 5;
-
 let inflight;
 
-const ApplyData = Symbol('Apply Data');
-
-function cleanInflight () { inflight = null; }
+const BATCH_SIZE = 5;
+const logger = Logger.get('store:notifications');
+const cleanInflight = () => inflight = null;
 
 
 export default class Notifications extends EventEmitter {
@@ -52,19 +50,19 @@ export default class Notifications extends EventEmitter {
 				return url.format();
 			})
 
-		//Load the notifications...
-		.then(url => get(service, url, reload))
-		.catch(reason => {
-			console.warn(reason);
-			return {};
-		})
+			//Load the notifications...
+			.then(url => get(service, url, reload))
+			.catch(reason => {
+				logger.warn(reason);
+				return {};
+			})
 
-		//Now we can build the Notifications store object.
-		.then(data => {
-			return new Notifications(service, data);
-		});
+			//Now we can build the Notifications store object.
+			.then(data => new Notifications(service, data));
 
-		inflight.then(cleanInflight, cleanInflight);
+		inflight
+			.catch(()=>{})
+			.then(cleanInflight);
 
 		return inflight;
 	}
@@ -80,17 +78,19 @@ export default class Notifications extends EventEmitter {
 		Object.assign(this, forwardFunctions(['every', 'filter', 'forEach', 'map', 'reduce'], 'Items'));
 
 
-		this[ApplyData](data);
+		applyData(this, data);
 
 		this.lastViewed = new Date(parseFloat(data.lastViewed || 0) * 1000);
 	}
 
+
 	get isBusy () { return !!inflight; }
+
 
 	get hasMore () { return !!this.nextBatchSrc; }
 
-	get length () { return (this.Items || []).length; }
 
+	get length () { return (this.Items || []).length; }
 
 
 	nextBatch () {
@@ -99,7 +99,7 @@ export default class Notifications extends EventEmitter {
 		if (!inflight) {
 			if (this.nextBatchSrc) {
 				inflight = get(this[Service], this.nextBatchSrc, true)
-					.then(this[ApplyData].bind(this));
+					.then(data => applyData(this, data));
 
 				inflight.then(clean, clean);
 
@@ -110,31 +110,31 @@ export default class Notifications extends EventEmitter {
 
 		return inflight;
 	}
-
-
-	[ApplyData] (data) {
-		this.Items = this.Items.concat(data.Items || []);
-		this.nextBatchSrc = (data.TotalItemCount > this.Items.length) &&
-			getLink(data, 'batch-next');
-
-		return this;
-	}
 }
 
 
-function get (s, url, ignoreCache) {
-	let cache = s.getDataCache();
+function applyData (scope, data) {
+
+	scope.Items = scope.Items.concat(data.Items || []);
+	scope.nextBatchSrc = (data.TotalItemCount > scope.Items.length) && getLink(data, 'batch-next');
+
+	return scope;
+}
+
+
+function get (service, url, ignoreCache) {
+	let cache = service.getDataCache();
 
 	let cached = cache.get(url), result;
 	if (!cached || ignoreCache) {
-		result = s.get(url)
+		result = service.get(url)
 		.then(data => cache.set(url, data) && data)
 		.catch(()=>({titles: [], Items: []}));
 	} else {
 		result = Promise.resolve(cached);
 	}
 
-	return result.then(resolveUIData.bind(null, s));
+	return result.then(data => resolveUIData(service, data));
 }
 
 
@@ -148,7 +148,7 @@ function resolveUIData (service, data) {
 				pending.push(o.waitForPending());
 			}
 		} catch(e) {
-			console.warn(e.NoParser ? e.message : (e.stack || e.message || e));
+			logger.warn(e.NoParser ? e.message : (e.stack || e.message || e));
 		}
 		return o;
 	});
