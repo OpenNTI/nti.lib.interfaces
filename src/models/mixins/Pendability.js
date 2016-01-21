@@ -1,8 +1,7 @@
-import noop from 'fbjs/lib/emptyFunction';
 import waitFor from '../../utils/waitfor';
 
+const noop = () => {};
 const PRIVATE_PENDING = new WeakMap();
-
 const getPending = p => PRIVATE_PENDING.get(p) || [];
 const setPending = (p, list) => (PRIVATE_PENDING.set(p, list), list);
 

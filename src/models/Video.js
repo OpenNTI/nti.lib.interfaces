@@ -1,4 +1,4 @@
-import isEmpty from 'fbjs/lib/isEmpty';
+import isEmpty from 'isempty';
 
 import MediaSource from './MediaSource';
 import UserDataStore from '../stores/UserData';

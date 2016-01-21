@@ -1,5 +1,5 @@
 import urlJoin from '../../utils/urljoin';
-import isEmpty from 'fbjs/lib/isEmpty';
+import isEmpty from 'isempty';
 
 const ASSET_MAP = {
 	thumb: 'contentpackage-thumb-60x60.png',

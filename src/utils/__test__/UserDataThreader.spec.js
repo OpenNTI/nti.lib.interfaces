@@ -1,5 +1,5 @@
 import * as UserDataThreader from '../UserDataThreader';
-import isEmpty from 'fbjs/lib/isEmpty';
+import isEmpty from 'isempty';
 
 describe('UserDataThreader utils', ()=> {
 

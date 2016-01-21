@@ -8,7 +8,7 @@ import request from '../utils/request';
 import DataCache from '../utils/datacache';
 import MimeComparator from '../utils/MimeComparator';
 
-import isEmpty from 'fbjs/lib/isEmpty';
+import isEmpty from 'isempty';
 
 import getLink, {asMap as getLinksAsMap} from '../utils/getlink';
 

@@ -1,5 +1,5 @@
 
-import emptyFunction from 'fbjs/lib/emptyFunction';
+const emptyFunction = () => {};
 
 
 const NEVER_FAIL = thenable =>

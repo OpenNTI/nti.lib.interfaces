@@ -1,4 +1,4 @@
-import isEmpty from 'fbjs/lib/isEmpty';
+import isEmpty from 'isempty';
 
 const anchors = /<a([^>]*)>(.*?)<\/a>/igm;
 const pars = /<(\/)?p([^>]*)>/igm;

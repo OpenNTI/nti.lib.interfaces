@@ -1,6 +1,6 @@
 import Part from '../Part';
 
-import isEmpty from 'fbjs/lib/isEmpty';
+import isEmpty from 'isempty';
 //import escapeStringForRegExp from '../../../utils/...';
 
 function getRegExp (pattern, regExpFormat) {

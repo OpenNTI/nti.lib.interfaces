@@ -8,7 +8,6 @@ import {MEDIA_BY_OUTLINE_NODE} from '../../constants';
 
 import Url from 'url';
 
-import emptyFunction from 'fbjs/lib/emptyFunction';
 import binDiscussions from '../../utils/forums-bin-discussions';
 
 import AssessmentCollectionStudentView from '../assessment/assignment/CollectionStudentView';
@@ -18,6 +17,7 @@ import MediaIndex from '../MediaIndex';
 import ActivityStream from './BucketedActivityStream';
 import Roster from '../../stores/CourseRoster';
 
+const emptyFunction = () => {};
 const NOT_DEFINED = {reason: 'Not defined'};
 const EMPTY_CATALOG_ENTRY = {getAuthorLine: emptyFunction};
 

@@ -2,7 +2,7 @@ import {parse} from './';
 import PageSourceModel from './MediaIndexBackedPageSource';
 import {Service, Parent} from '../constants';
 
-import isEmpty from 'fbjs/lib/isEmpty';
+import isEmpty from 'isempty';
 
 import urlJoin from '../utils/urljoin';
 

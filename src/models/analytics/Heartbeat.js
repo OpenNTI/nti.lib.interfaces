@@ -1,5 +1,5 @@
 import isFunction from '../../utils/isfunction';
-import noop from 'fbjs/lib/emptyFunction';
+const noop = () => {};
 
 const Interval = Symbol();
 
