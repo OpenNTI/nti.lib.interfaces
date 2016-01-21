@@ -7,7 +7,7 @@ import {parse, getModelByType} from './';
 
 import getLinkImpl from '../utils/getlink';
 import mixin from '../utils/mixin';
-import {ntiidEquals} from '../utils/ntiids';
+import {ntiidEquals} from 'nti-lib-ntiids';
 
 import JSONValue from './mixins/JSONValue';
 import Pendability from './mixins/Pendability';

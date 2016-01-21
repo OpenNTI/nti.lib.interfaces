@@ -1,6 +1,6 @@
 import BasicEvent from './Base';
 import {WATCH_VIDEO} from './MimeTypes';
-import {isNTIID} from '../../utils/ntiids';
+import {isNTIID} from 'nti-lib-ntiids';
 
 export default class WatchVideoEvent extends BasicEvent {
 

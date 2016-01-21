@@ -1,6 +1,6 @@
 import Topic from './Topic';
 
-import {isNTIID} from '../../utils/ntiids';
+import {isNTIID} from 'nti-lib-ntiids';
 
 
 export default class BlogEntry extends Topic {

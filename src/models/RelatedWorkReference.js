@@ -10,7 +10,7 @@ import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA} from '../constants';
 
 import {Service} from '../constants';
 
-import {isNTIID} from '../utils/ntiids';
+import {isNTIID} from 'nti-lib-ntiids';
 
 const UserData = Symbol('UserData');
 

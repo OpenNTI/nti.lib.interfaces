@@ -4,7 +4,7 @@ import {Progress, Summary, DateFields, Parser as parse} from '../../constants';
 import fallbackOverview from './_fallbacks.OverviewFromToC';
 
 import applyIf from '../../utils/applyif';
-import {encodeForURI} from '../../utils/ntiids';
+import {encodeForURI} from 'nti-lib-ntiids';
 
 export default class OutlineNode extends Outline {
 	constructor (service, parent, data) {

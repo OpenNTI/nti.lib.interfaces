@@ -1,4 +1,4 @@
-import {encodeForURI} from '../utils/ntiids';
+import {encodeForURI} from 'nti-lib-ntiids';
 import {join} from 'path';
 
 const getNodeId = node => node && (node.getContentId ? node.getContentId() : node.getID());

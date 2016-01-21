@@ -25,7 +25,7 @@ import {
 import DataCache from '../utils/datacache';
 import getLink from '../utils/getlink';
 import joinWithURL from '../utils/urljoin';
-import {isNTIID} from '../utils/ntiids';
+import {isNTIID} from 'nti-lib-ntiids';
 import mixin from '../utils/mixin';
 import waitFor from '../utils/waitfor';
 import wait from '../utils/wait';
