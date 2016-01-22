@@ -64,11 +64,14 @@ export default class OutlineNode extends Outline {
 
 
 	getContent () {
-		let link = 'overview-content';
-		let doFetch = (this.hasLink(link) ?
-			this.fetchLink(link) :
-			getContentFallback(this))
-				.then(raw => this[parse](raw));
+		const link = 'overview-content';
+
+		let doFetch = (this.hasLink(link)
+			? this.fetchLink(link)
+			: this.parent('isLegacy')
+				? getContentFallback(this)
+				: Promise.reject('empty')
+			).then(raw => this[parse](raw));
 
 		return Promise.all([this.getProgress(), this.getSummary(), doFetch])
 			.then(progressAndContent=> {
@@ -77,6 +80,14 @@ export default class OutlineNode extends Outline {
 				applyProgressAndSummary(content, progress, summary);
 
 				return content;
+			})
+			.catch(e => {
+
+				if (e === 'empty') {
+					return {};
+				}
+
+				return Promise.reject(e);
 			});
 	}
 
@@ -195,7 +206,7 @@ function getContentFallback (outlineNode) {
 
 	return p.then(function (toc) {
 		const tocNode = toc.getNode(contentId);
-		const content = fallbackOverview(tocNode, outlineNode);
+		const content = tocNode && fallbackOverview(tocNode, outlineNode);
 		if (!content) {
 			console.error('Fallback Content failed');
 		}

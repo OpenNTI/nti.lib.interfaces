@@ -31,6 +31,9 @@ export default class Instance extends Base {
 		super(service, parent, data, {isCourse: true});
 
 		let bundle = this[parse]('ContentPackageBundle');
+		if (/legacy/i.test(this.MimeType)) {
+			Object.defineProperty(this, 'isLegacy', {get:() => true});
+		}
 
 		if (bundle) {
 			bundle.on('change', this.onChange.bind(this));
