@@ -6,7 +6,7 @@ export default class SlideDeck extends Base {
 
 	constructor (service, parent, data) {
 		delete data.creator;
-		super(service, parent, data);
+		super(service, parent, data, {isSlideDeck: true});
 		this[parse]('Slides');
 		this[parse]('Videos');
 

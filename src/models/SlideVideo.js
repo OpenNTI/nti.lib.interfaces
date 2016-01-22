@@ -19,4 +19,8 @@ export default class SlideVideo extends Base {
 		video-ntiid: "tag:nextthought.com,2011-10:OU-NTIVideo-CS1323_SU_2015_Intro_to_Computer_Programming.ntivideo.video_04.01.02_Yahtzee_1"
 		*/
 	}
+
+	get videoId () {
+		return this['video-ntiid'];
+	}
 }

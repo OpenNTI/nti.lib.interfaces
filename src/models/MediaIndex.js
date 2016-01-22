@@ -2,9 +2,12 @@ import {parse} from './';
 import PageSourceModel from './MediaIndexBackedPageSource';
 import {Service, Parent} from '../constants';
 
+import Logger from 'nti-util-logger';
 import isEmpty from 'isempty';
 
 import urlJoin from '../utils/urljoin';
+
+const logger = Logger.get('lib:models:MediaIndex');
 
 const PageSource = Symbol('PageSource');
 const Order = Symbol('Order');
@@ -16,7 +19,7 @@ const getMedia = (s, i, v) => (v && v[Service]) ? v : parse(s, i, v);
 export default class MediaIndex {
 
 	static parse (service, parent, data, order, containers) {
-		console.error('Where ?');
+		logger.error('Where ?');
 		return new MediaIndex(service, parent, data, order, containers);
 	}
 
@@ -44,7 +47,7 @@ export default class MediaIndex {
 		try {
 			keys.sort(order);
 		} catch (e) {
-			console.warn('Potentially unsorted: %o', e.stack || e.message || e);
+			logger.warn('Potentially unsorted: %o', e.stack || e.message || e);
 		}
 
 		keys.forEach(k => {
@@ -82,15 +85,26 @@ export default class MediaIndex {
 
 		delete data[Order];
 
-		for(let key in data) {
-			if (data.hasOwnProperty(key)) {
-				try {
-					this[Data][key] = this.mediaFrom(data[key], this);
-				} catch (e) {
-					if (/No Parser/i.test(e.message)) {
-						console.warn(e.message, data[key]);
-					} else {
-						console.error(e.stack || e.message || e);
+		for(let key of Object.keys(data)) {
+
+			try {
+				this[Data][key] = this.mediaFrom(data[key], this);
+			} catch (e) {
+				if (/No Parser/i.test(e.message)) {
+					logger.warn(e.message, data[key]);
+				} else {
+					logger.error(e.stack || e.message || e);
+				}
+			}
+
+		}
+
+		for (let media of this) {
+			if (media.isSlideDeck) {
+				for(let videoRef of media.Videos || []) {
+					const video = this.get(videoRef.videoId);
+					if (video && (video.slidedecks || []).indexOf(media.getID) < 0) {
+						(video.slidedecks = video.slidedecks || []).push(media.getID());
 					}
 				}
 			}
@@ -98,8 +112,29 @@ export default class MediaIndex {
 	}
 
 
+	[Symbol.iterator] () {
+		const data = this[Data];
+		const snapshot = this[Order];
+		const {length} = snapshot;
+
+		let index = 0;
+
+		return {
+
+			next () {
+				const done = index >= length;
+				const value = data[snapshot[index++]];
+
+				return { value, done };
+			}
+
+		};
+	}
+
+
+	// This can be removed after the app (@ f029a9165) has been released to all environments.
+	// @deprecated Use mediaFrom instead.
 	videoFrom (data, parent) {
-		console.warn('Deprecated: Use mediaFrom instead.');
 		return this.mediaFrom(data, parent);
 	}
 
