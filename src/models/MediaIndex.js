@@ -101,10 +101,11 @@ export default class MediaIndex {
 
 		for (let media of this) {
 			if (media.isSlideDeck) {
+				let mId = media.getID();
 				for(let videoRef of media.Videos || []) {
 					const video = this.get(videoRef.videoId);
-					if (video && (video.slidedecks || []).indexOf(media.getID) < 0) {
-						(video.slidedecks = video.slidedecks || []).push(media.getID());
+					if (video && !(video.slidedecks || []).includes(mId)) {
+						(video.slidedecks = video.slidedecks || []).push(mId);
 					}
 				}
 			}
