@@ -1,5 +1,6 @@
 import QueryString from 'query-string';
 import Url from 'url';
+import Logger from 'nti-util-logger';
 
 import {parse} from '../models';
 
@@ -45,6 +46,8 @@ const Groups = Symbol('Groups');
 const Lists = Symbol('Lists');
 const RequestEntityResolve = Symbol('RequestEntityResolve');
 
+const logger = Logger.get('Service');
+
 export default class ServiceDocument {
 	constructor (json, server, context) {
 		this[Service] = this; //So the parser can access it
@@ -68,10 +71,10 @@ export default class ServiceDocument {
 					this[Contacts] = new ContactsStore(this, href, u);
 					return this[Contacts].waitForPending();
 				} else {
-					console.warn('No FriendsLists Collection');
+					logger.warn('No FriendsLists Collection');
 				}
 			},
-			e => console.log(e.stack || e.message || e))
+			e => logger.log(e.stack || e.message || e))
 		);
 
 		if (context) {
@@ -107,7 +110,7 @@ export default class ServiceDocument {
 			if (href) {
 				this[Communities] = new CommunitiesStore(this, href, u);
 			} else {
-				console.warn('No Communities Collection');
+				logger.warn('No Communities Collection');
 			}
 		}
 
@@ -122,7 +125,7 @@ export default class ServiceDocument {
 			if (href) {
 				this[Groups] = new GroupsStore(this, href, u);
 			} else {
-				console.warn('No Groups Collection');
+				logger.warn('No Groups Collection');
 			}
 		}
 
@@ -233,7 +236,7 @@ export default class ServiceDocument {
 
 	getEnrollment () {
 		if (!this[ENROLLMENT]) {
-			console.warn('TODO: Move the guts of store/Enrollent into the app as API.');
+			logger.warn('TODO: Move the guts of store/Enrollent into the app as API.');
 			this[ENROLLMENT] = new Enrollment(this);
 		}
 		return this[ENROLLMENT];
@@ -247,7 +250,8 @@ export default class ServiceDocument {
 			return Promise.reject('Bad NTIID');
 		}
 
-		return this.getObject(ntiid, mime).then(info=>parse(this, this, info));
+		return this.getObject(ntiid, mime)
+			.then(info=>parse(this, this, info));
 	}
 
 
@@ -279,7 +283,41 @@ export default class ServiceDocument {
 					delete o.Message;
 					return o;
 				}
+
+				if (o.statusCode === 403) {
+					return this.getObjectRelatedContext(ntiid)
+						.catch(()=> null)
+						.then(e => {
+
+							if (e) {
+								e.statusCode = 403;
+							}
+
+							return Promise.reject(e || o);
+						});
+				}
+
 				return Promise.reject(o);
+			});
+	}
+
+
+	getObjectRelatedContext (ntiid) {
+		if (!isNTIID(ntiid)) {
+			return Promise.reject('Bad NTIID');
+		}
+
+		const url = this.getObjectRelatedContextURL(ntiid);
+
+		return this.get(url)
+			.catch(() => null)
+			.then(o => {
+
+				// if (o && o.Items) {
+				// 	o.Items = parse(this, this, o.Items);
+				// }
+
+				return (!o || !o.Items || !o.Items.length) ? null : o;
 			});
 	}
 
@@ -538,7 +576,7 @@ export default class ServiceDocument {
 	getLogoutURL (succssURL) {
 		let url = this.getDataCache().get(LOGOUT_URL);
 		if (!url) {
-			console.error('No Logout URL defined! Pulling a URL out of thin air.');
+			logger.error('No Logout URL defined! Pulling a URL out of thin air.');
 			url = '/dataserver2/logon.logout';
 		}
 
@@ -609,6 +647,11 @@ export default class ServiceDocument {
 		}
 
 		return parts.join('/');
+	}
+
+
+	getObjectRelatedContextURL (ntiid) {
+		return [this.getObjectURL(ntiid), '@@forbidden_related_context'].join('/');
 	}
 
 
