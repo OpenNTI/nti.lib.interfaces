@@ -9,7 +9,7 @@ export default class Slide {
 		// super(service, parent);
 
 		const define = (name, value) => Object.defineProperty(this, name, {value, writable: false});
-		const root = getRoot(parent.parent('root'));
+		const root = getRoot((parent && parent.parent) ? parent.parent('root') : null);
 
 		define('deckId', data.slidedeckid);
 		define('image', join(root, data.slideimage));
