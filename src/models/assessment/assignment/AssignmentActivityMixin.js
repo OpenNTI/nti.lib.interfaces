@@ -1,3 +1,6 @@
+import Logger from 'nti-util-logger';
+
+const logger = Logger.get('assignments:Activity');
 
 export default {
 
@@ -5,7 +8,7 @@ export default {
 		if (typeof target === 'string') {
 			target = this.getAssignment(target);
 			if (!target) {
-				console.error('Dropping event, no assignment found in the map for:', target);
+				logger.error('Dropping event, no assignment found in the map for:', target);
 				return null;
 			}
 		}
@@ -46,7 +49,7 @@ export default {
 
 	deriveEvents (assignment, historyItem, lastViewed) {
 		let now = new Date();
-		const {Submission, Feedback, Grade} = historyItem || {};
+		const {Submission, Feedback, grade} = historyItem || {};
 
 		let dateCompleted = Submission && Submission.getCreatedTime();
 
@@ -67,8 +70,8 @@ export default {
 		const EVENT_SPECS = [
 			{
 				type: 'grade-received',
-				checkRequirements: ()=> Grade && Grade.value,
-				getEventSpec: ()=> getConfig('grade-received', Grade.getLastModified())
+				checkRequirements: ()=> grade && grade.value,
+				getEventSpec: ()=> getConfig('grade-received', grade.getLastModified())
 			},
 
 			{
