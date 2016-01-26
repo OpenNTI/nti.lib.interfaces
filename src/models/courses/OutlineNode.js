@@ -5,6 +5,9 @@ import fallbackOverview from './_fallbacks.OverviewFromToC';
 
 import applyIf from '../../utils/applyif';
 import {encodeForURI} from 'nti-lib-ntiids';
+import Logger from 'nti-util-logger';
+
+const logger = Logger.get('models:courses:OutlineNode');
 
 export default class OutlineNode extends Outline {
 	constructor (service, parent, data) {
@@ -64,14 +67,32 @@ export default class OutlineNode extends Outline {
 
 
 	getContent () {
+		const isLegacy = Boolean(this.parent('isLegacy'));
 		const link = 'overview-content';
 
-		let doFetch = (this.hasLink(link)
-			? this.fetchLink(link)
-			: this.parent('isLegacy')
-				? getContentFallback(this)
-				: Promise.reject('empty')
-			).then(raw => this[parse](raw));
+		let doFetch = (
+			this.hasLink(link)
+				//Has the link:
+				? this.fetchLink(link)
+					.then(content => //link fetched...stored in "content" argument.
+
+						isLegacy //Next question: is this course legacy?
+
+							? collateVideo(content)	//Has Link, but is legacy
+
+							: content				//Has Link, is NOT legacy
+					)
+
+				//Does NOT have the link:
+				: isLegacy	//Next question: is this course legacy?
+
+					? getContentFallback(this)	//no link, and isLegacy
+
+					: Promise.reject('empty')	//no link, and NOT isLegacy
+			)
+
+			//contents fetched or derived, now parse.
+			.then(raw => this[parse](raw));
 
 		return Promise.all([this.getProgress(), this.getSummary(), doFetch])
 			.then(progressAndContent=> {
@@ -194,8 +215,44 @@ function applyProgressAndSummary (content, progress, summary) {
  */
 
 
+function collateVideo (json) {
+	let re = /ntivideo$/;
+	function collate (list, current) {
+		let last = list[list.length - 1];
+		if (re.test(current.MimeType)) {
+			//last was a video...
+			if (last && re.test(last.MimeType)) {
+				last = list[list.length - 1] = {
+					MimeType: 'application/vnd.nextthought.videoroll',
+					Items: [last]
+				};
+			}
+
+			//The previous item is a video set...(or we just created it)
+			if (last && /videoroll$/.test(last.MimeType)) {
+				last.Items.push(current);
+				return list;
+			}
+
+		} else if (current.Items) {
+			current = collateVideo(current);
+		}
+
+		list.push(current);
+		return list;
+	}
+
+	json.Items = json.Items.reduce(collate, []);
+
+	return json;
+}
+
+
+
+
+
 function getContentFallback (outlineNode) {
-	console.debug('[FALLBACK] Deriving OutlineNode(%s) content', outlineNode.getContentId());
+	logger.debug('[FALLBACK] Deriving OutlineNode(%s) content', outlineNode.getContentId());
 	const getCourse = node => node.root.parent();
 	const course = getCourse(outlineNode);
 	const bundle = course && course.ContentPackageBundle;
@@ -208,7 +265,7 @@ function getContentFallback (outlineNode) {
 		const tocNode = toc.getNode(contentId);
 		const content = tocNode && fallbackOverview(tocNode, outlineNode);
 		if (!content) {
-			console.error('Fallback Content failed');
+			logger.error('Fallback Content failed');
 		}
 		return content;
 	});
