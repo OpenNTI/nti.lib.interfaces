@@ -20,7 +20,7 @@ const PRIVATE = new WeakMap();
 const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
 export const getPrivate = x => PRIVATE.get(x);
 
-const logger = Logger.get('stores:Stream');
+const logger = Logger.get('store:Stream');
 
 const load = (scope, url) => scope[Service].get(url).then(o => (scope.applyBatch(o), scope.parseList(o.Items || [])));
 
@@ -52,7 +52,7 @@ export default class Stream extends EventEmitter {
 		mixin(this, Pendability);
 
 		if (process.browser) {
-			this.on('load', (_, time) => logger.log('Load: %s %o', time, this));
+			this.on('load', (_, time) => logger.info('Load: %s %o', time, this));
 		}
 
 		if (href.then) {

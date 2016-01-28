@@ -25,12 +25,10 @@ export default class DynamicFriendsList extends FriendsList {
 		let {Links} = this;
 		return this[Service].delete(this.getLink('my_membership'))
 			.then(() => {
-				try {
-					//remove the link so we do not look like we are a member.
-					Links.splice(Links.findIndex(x => x.rel === 'my_membership'), 1);
-				}
-				catch (e) {
-					console.warn(e);
+				//remove the link so we do not look like we are a member.
+				let ix = Links.findIndex(x => x && x.rel === 'my_membership');
+				if (ix >= 0) {
+					Links.splice(ix, 1);
 				}
 
 				delete this.isMember;

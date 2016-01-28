@@ -1,3 +1,5 @@
+import Logger from 'nti-util-logger';
+
 import Base from '../Base';
 import {
 	Service,
@@ -16,6 +18,8 @@ import MediaIndex from '../MediaIndex';
 
 import ActivityStream from './BucketedActivityStream';
 import Roster from '../../stores/CourseRoster';
+
+const logger = Logger.get('models:courses:Instance');
 
 const emptyFunction = () => {};
 const NOT_DEFINED = {reason: 'Not defined'};
@@ -47,14 +51,14 @@ export default class Instance extends Base {
 		this[parse]('ParentSharingScopes');
 
 		/*try {
-			console.log(`
+			logger.debug(`
 			Title:  ${this.title}
 			Total:  ${data.TotalEnrolledCount}
 			Open:   ${data.TotalLegacyOpenEnrolledCount}
 			Credit: ${data.TotalLegacyForCreditEnrolledCount}
 			`);
 		} catch (e) {
-			console.error(e.stack);
+			logger.error(e.stack);
 		}*/
 
 		this[RENAME]('TotalEnrolledCount', 'enrolledTotalCount');
@@ -66,7 +70,7 @@ export default class Instance extends Base {
 		try {
 			this.addToPending(resolveCatalogEntry(service, this));
 		} catch (e) {
-			console.warn('There was a problem resolving the CatalogEntry! %o', e.stack || e.message || e);
+			logger.warn('There was a problem resolving the CatalogEntry! %o', e.stack || e.message || e);
 		}
 	}
 
@@ -166,7 +170,7 @@ export default class Instance extends Base {
 		const {isAdministrative} = this;
 
 		if (!parent || !parent.isEnrollment) {
-			console.warn('Potentially Wrong CourseInstance reference');
+			logger.warn('Potentially Wrong CourseInstance reference');
 		}
 
 
@@ -201,7 +205,7 @@ export default class Instance extends Base {
 	getDiscussions () {
 		function logAndResume (reason) {
 			if (reason !== NOT_DEFINED) {
-				console.warn('Could not load board: %o', reason);
+				logger.warn('Could not load board: %o', reason);
 			}
 		}
 
@@ -340,7 +344,7 @@ export default class Instance extends Base {
 	getSharingSuggestions () {
 		const parent = this.parent();
 		if (!parent || !parent.isEnrollment) {
-			console.warn('Potentially Wrong CourseInstance reference');
+			logger.warn('Potentially Wrong CourseInstance reference');
 		}
 
 		if (parent && parent.getSharingSuggestions) {

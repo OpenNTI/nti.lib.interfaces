@@ -1,3 +1,4 @@
+import Logger from 'nti-util-logger';
 import {EventEmitter} from 'events';
 
 // import QueryString from 'query-string';
@@ -13,6 +14,8 @@ import {parse, parseListFn} from '../models';
 import {Service, DELETED} from '../constants';
 
 export const MIME_TYPE = 'application/vnd.nextthought.friendslist';
+
+const logger = Logger.get('store:Contacts');
 
 const DATA = Symbol();
 const CREATE = Symbol();
@@ -82,7 +85,7 @@ export default class Contacts extends EventEmitter {
 		this.load = url => service.get(url).then(o => parseList(Object.values(o.Items || [])));
 
 		if (process.browser) {
-			this.on('load', (_, time) => console.log('Load: %s %o', time, this));
+			this.on('load', (_, time) => logger.info('Load: %s %o', time, this));
 		}
 
 		this.loading = true;
@@ -92,7 +95,7 @@ export default class Contacts extends EventEmitter {
 			.then(x => this[DATA].push(...x))
 			.then(()=> this[ENSURE_CONTACT_GROUP]())
 			.catch(er => {
-				console.log(er.message || er);
+				logger.error(er.message || er);
 				this.error = true;
 			})
 			.then(() => {
@@ -187,7 +190,7 @@ export default class Contacts extends EventEmitter {
 			let item = data.splice(index, 1)[0];//remove it;
 
 			item.removeListener('change', this.onChange);
-			console.debug('Removed deleted list: %o', item);
+			logger.debug('Removed deleted list: %o', item);
 		}
 
 		this.emit('change', this);

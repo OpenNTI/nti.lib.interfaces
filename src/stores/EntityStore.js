@@ -1,4 +1,5 @@
 import {EventEmitter} from 'events';
+import Logger from 'nti-util-logger';
 
 // import QueryString from 'query-string';
 
@@ -11,6 +12,7 @@ import {parseListFn} from '../models';
 
 import {Service} from '../constants';
 
+const logger = Logger.get('store:EntityStore');
 const DATA = Symbol();
 
 export default class EntityStore extends EventEmitter {
@@ -40,7 +42,7 @@ export default class EntityStore extends EventEmitter {
 		this.load = url => service.get(url).then(o => parseList(Object.values(o.Items || [])));
 
 		if (process.browser) {
-			this.on('load', (_, time) => console.log('Load: %s %o', time, this));
+			this.on('load', (_, time) => logger.info('Load: %s %o', time, this));
 		}
 
 		this.loading = true;
@@ -49,7 +51,7 @@ export default class EntityStore extends EventEmitter {
 		let load = this.load(entryPoint)
 			.then(x => this[DATA].push(...x))
 			.catch(er => {
-				console.log(er.message || er);
+				logger.error(er.message || er);
 				this.error = true;
 			})
 			.then(() => {

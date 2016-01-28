@@ -22,7 +22,7 @@ export default class MetaDataResolverForVimeo {
 		id = Array.isArray(id) ? id[0] : id;
 
 		return getAPIKey(service)
-			.catch(e => console.error(e) || Promise.reject('No API'))
+			.catch(e => console.error(e) || Promise.reject('No API'))  //eslint-disable-line no-console
 
 			.then(key => URL.replace('{0}', id) + QueryString.stringify({ key, part: 'snippet,statistics', id }))
 			.then(url => service.get(url))
@@ -34,7 +34,7 @@ export default class MetaDataResolverForVimeo {
 				thumbnail: getThumbnail(o, 'default') || FAIL_THUMB.replace('{id}', id),
 				title: (o.snippet || {}).title
 			}))
-			.catch(failure => console.error(failure) || ({
+			.catch(failure => console.error(failure) || ({ //eslint-disable-line no-console
 				failure,
 				poster: FAIL_POSTER.replace('{0}', id),
 				thumbnail: FAIL_THUMB.replace('{0}', id)

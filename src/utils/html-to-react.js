@@ -278,7 +278,7 @@ export default function (html, isWidgetCallback) {
 			);
 	}
 	catch (e) {
-		console.error('There was an error processing HTML into a React render Function %s', e.stack || e.message || e);
+		console.error('There was an error processing HTML into a React render Function %s', e.stack || e.message || e); //eslint-disable-line no-console
 	}
 }
 

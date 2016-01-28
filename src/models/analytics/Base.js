@@ -20,7 +20,7 @@ export default class BasicEvent {
 	constructor (mimeType, courseId, RootContextID = courseId, startTime = Date.now(), minimumDurationSeconds = 1) {
 
 		if (!mimeType || !mimeTypes[mimeType]) {
-			console.warn('Unrecognized MimeType for analytics event: \'%s\'', mimeType);
+			console.warn('Unrecognized MimeType for analytics event: \'%s\'', mimeType); //eslint-disable-line no-console
 		}
 
 		this[StartTime] = startTime;
@@ -56,7 +56,7 @@ export default class BasicEvent {
 		}
 
 		if (event.finished) {
-			console.warn('finish invoked on an already-finished analytics event. %O', event);
+			console.warn('finish invoked on an already-finished analytics event. %O', event); //eslint-disable-line no-console
 		}
 
 		// If more than heartbeatInterval has passed between lastBeat and endTime, use lastBeat.

@@ -1,3 +1,5 @@
+import Logger from 'nti-util-logger';
+
 import {MODEL_INSTANCE_CACHE_KEY} from '../constants';
 
 import User from './User';
@@ -169,6 +171,8 @@ import StripeConnectKey from './store/StripeConnectKey';
 import StripePricedPurchasable from './store/StripePricedPurchasable';
 import StripePurchaseItem from './store/StripePurchaseItem';
 import StripePurchaseOrder from './store/StripePurchaseOrder';
+
+const logger = Logger.get('models:index');
 
 const ignored = {parse: x => x};
 
@@ -454,9 +458,9 @@ function getType (o) {
 	if (!type) {
 		type = o.Class;
 		if (type) {
-			console.error('Object does not have a MimeType and has fallen back to Class name resolve: ' + type, JSON.stringify(o).substr(0, 50));
+			logger.error('Object does not have a MimeType and has fallen back to Class name resolve: ' + type, JSON.stringify(o).substr(0, 50));
 		} else {
-			console.error('Object does not have an identity', o);
+			logger.error('Object does not have an identity', o);
 		}
 	}
 	return type;
@@ -500,7 +504,7 @@ export function parse (service, parent, obj) {
 				if (!e.NoParser) {
 					throw e;
 				}
-				console.warn(e.message);
+				logger.warn(e.message);
 			}
 			return o;
 		});
@@ -508,7 +512,7 @@ export function parse (service, parent, obj) {
 
 	if (Object.getPrototypeOf(obj) !== Object.getPrototypeOf({})) {
 		let message = 'Attempting to parse somthing other than an object-literal';
-		console.error('%s %o', message, obj);
+		logger.error('%s %o', message, obj);
 		throw new Error(message);
 	}
 
@@ -534,7 +538,7 @@ export function parseListFn (scope, service, parent = null) {
 				o.on('change', scope.onChange);
 			}
 		} catch(e) {
-			console.error(e.stack || e.message || e);
+			logger.error(e.stack || e.message || e);
 			o = null;
 		}
 

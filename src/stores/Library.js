@@ -1,3 +1,4 @@
+import Logger from 'nti-util-logger';
 import {EventEmitter} from 'events';
 
 import mixin from '../utils/mixin';
@@ -8,6 +9,7 @@ import Pendability from '../models/mixins/Pendability';
 
 import {Service} from '../constants';
 
+const logger = Logger.get('store:Library');
 const getInstances = service => service.getDataCache().get('LibraryInstances', {}, true);
 
 export default class Library extends EventEmitter {
@@ -28,7 +30,7 @@ export default class Library extends EventEmitter {
 			.then(data=> make(...data).waitForPending())
 			.then(instance => instances[name] = instance)
 			.catch(e=> {
-				console.error(e.stack || e.message || e);
+				logger.error(e.stack || e.message || e);
 				return Promise.reject(e);
 			}));
 	}
@@ -73,7 +75,7 @@ export default class Library extends EventEmitter {
 		contentBundles = contentBundles.filter(o => {
 			let invalid = !o.ContentPackages || !o.ContentPackages.length;
 			if (invalid) {
-				console.warn('%o Bundle is empty. Missing packages.', o);
+				logger.warn('%o Bundle is empty. Missing packages.', o);
 			}
 			return !invalid;
 		});

@@ -1,3 +1,4 @@
+/*eslint no-console:0*/
 function reflect (fn, key) {
 	let keys = key.split('.');
 

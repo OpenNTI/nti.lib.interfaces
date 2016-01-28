@@ -45,7 +45,7 @@ export default class XMLBasedTableOfContents extends Base {
 			let list = xml.findall('.//*[@ntiid="' + id + '"]') || [];
 
 			if (list.length > 1) {
-				console.warn('Found multiple elements for id %s: %o', id, list);
+				console.warn('Found multiple elements for id %s: %o', id, list); //eslint-disable-line no-console
 			}
 
 			node = list[0];

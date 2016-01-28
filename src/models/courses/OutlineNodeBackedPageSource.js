@@ -15,13 +15,7 @@ export default class OutlineNodeBackedPageSource extends Base {
 		this.root = root;
 		this.current = node;
 
-		try {
-			this.pagesInRange = root.getFlattenedList().filter(suppressed);
-		}
-		catch(e) {
-			console.error(e.stack || e.message || e);
-			throw e;
-		}
+		this.pagesInRange = root.getFlattenedList().filter(suppressed);
 	}
 
 

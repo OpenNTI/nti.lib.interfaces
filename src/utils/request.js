@@ -121,7 +121,7 @@ const request = SERVER ? //SERVER is declared in th WebPack config file
 					try {
 						callback(false, response, req.responseText);
 					} catch(badCallback) {
-						console.error('Yo, your call back sucks: %o', badCallback);
+						console.error('Yo, your call back sucks: %o', badCallback); //eslint-disable-line no-console
 					}
 					callback = null;
 
@@ -149,7 +149,7 @@ const request = SERVER ? //SERVER is declared in th WebPack config file
 						req.abort();
 					}
 				} catch(e) {
-					console.warn(e.stack || e.message || e);
+					console.warn(e.stack || e.message || e); //eslint-disable-line no-console
 				}
 			}
 		};

@@ -1,4 +1,9 @@
+import Logger from 'nti-util-logger';
+
 import isFunction from '../../utils/isfunction';
+
+const logger = Logger.get('models:analytics:Heartbeat');
+
 const noop = () => {};
 
 const Interval = Symbol();
@@ -30,7 +35,7 @@ class Pacemaker {
 			throw new Error('pulseInterval argument must be a number.');
 		}
 		if (pulseInterval < defaultInterval) {
-			console.warn('Creating a Pacemaker with a fast interval (%d).', pulseInterval);
+			logger.warn('Creating a Pacemaker with a fast interval (%d).', pulseInterval);
 		}
 		this.interval = pulseInterval;
 		this.beats = new Set();
@@ -124,7 +129,7 @@ function keyForPacemaker (interval) {
 function pacemakerForInterval (interval) {
 	let key = keyForPacemaker(interval);
 	if (!PacemakersByInterval[key]) {
-		console.debug('new Pacemaker: interval: %d', interval);
+		logger.debug('new Pacemaker: interval: %d', interval);
 		PacemakersByInterval[key] = new Pacemaker(interval);
 	}
 	return PacemakersByInterval[key];
@@ -160,7 +165,7 @@ export default class Heartbeat {
 
 	constructor (callback, interval = defaultInterval) {
 		if (!isFunction(callback)) {
-			console.error('Callback must be a function. %o', callback);
+			logger.error('Callback must be a function. %o', callback);
 			callback = noop;
 		}
 		this[Interval] = interval;

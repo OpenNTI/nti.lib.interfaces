@@ -17,7 +17,7 @@ export default class XMLBasedTableOfContentsNode {
 			//FIXME: We should be using the depth of the tree instead of relying on an ATTRIBUTE of a topic...
 			this.level = parseInt(this.get('levelnum'), 10);
 		} catch (e) {
-			console.warn('This node does not have a valid `levelnum` attribute: %o', data);
+			console.warn('This node does not have a valid `levelnum` attribute: %o', data); //eslint-disable-line no-console
 			this.level = -1;
 		}
 	}
@@ -69,7 +69,7 @@ export default class XMLBasedTableOfContentsNode {
 
 
 	getID () {
-		return this.get('ntiid') || console.warn('No ntiid', this);
+		return this.get('ntiid') || console.warn('No ntiid', this); //eslint-disable-line no-console
 	}
 
 

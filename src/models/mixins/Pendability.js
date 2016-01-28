@@ -45,7 +45,7 @@ const mixin = {
 					.then(remove(p));
 			}
 			else {
-				console.warn('Unexpected object in the pending queue: ', p);
+				console.warn('Unexpected object in the pending queue: ', p); //eslint-disable-line no-console
 			}
 		}
 

@@ -1,3 +1,5 @@
+import Logger from 'nti-util-logger';
+
 import Base from '../Base';
 import {
 	Service,
@@ -13,6 +15,8 @@ import assets from '../mixins/PresentationResources';
 
 import TablesOfContents from '../TablesOfContents';
 import MediaIndex from '../MediaIndex';
+
+const logger = Logger.get('models:content:Bundle');
 
 export default class Bundle extends Base {
 	constructor (service, parent, data) {
@@ -51,7 +55,7 @@ export default class Bundle extends Base {
 		let {length} = pks;
 
 		if (length > 1) {
-			console.warn(	'Ambiguous content root. By the time we see this, I hope we ' +
+			logger.warn(	'Ambiguous content root. By the time we see this, I hope we ' +
 							'have absolute paths for content references! Ex: transcripts' +
 							' in videos, images in question content, etc');
 		}
@@ -96,7 +100,7 @@ export default class Bundle extends Base {
 				.reduce((agg, o) => agg || o.root, null);
 
 		if (!root) {
-			console.error('No root for bundle: ',
+			logger.error('No root for bundle: %s %o',
 				this.getID(),
 				this.ContentPackages.map(o => o.getID())
 				);

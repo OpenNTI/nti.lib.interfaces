@@ -1,8 +1,12 @@
+import Logger from 'nti-util-logger';
+
 import { Service, Parser as parse } from '../../constants';
 
 import Highlight from './Highlight';
 
 import Threadable from '../mixins/Threadable';
+
+const logger = Logger.get('models:annotations:Note');
 
 export default class Note extends Highlight {
 
@@ -20,7 +24,7 @@ export default class Note extends Highlight {
 		let service = this[Service];
 		let target = (service.getCollectionFor(this, null, tryScopes) || {}).href;
 		if (!target) {
-			console.error('No where to save object: %o', this);
+			logger.error('No where to save object: %o', this);
 		}
 
 		if (!Array.isArray(body)) {

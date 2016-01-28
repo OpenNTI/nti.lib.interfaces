@@ -1,3 +1,5 @@
+import Logger from 'nti-util-logger';
+
 import Base from '../Base';
 
 import moment from 'moment';
@@ -14,6 +16,8 @@ const BINS = Symbol();
 const getWeek = (date, side = 'end') => moment(date)[`${side}Of`]('isoWeek').toDate();
 const dateToTimestamp = date => Math.round(date.getTime() / 1000);
 const getWeekAsTimestamp = (date, side = 'end') => dateToTimestamp(getWeek(date, side));
+
+const logger = Logger.get('models:courses:BucketedActivityStream');
 
 class Bucket extends Array {
 	constructor (start, end) {
@@ -33,7 +37,7 @@ export default class BucketedActivityStream extends Base {
 		const weekOf = getWeekAsTimestamp();
 
 		if (process.browser) {
-			this.on('load', (_, time) => console.log('Load: %s %o', time, this));
+			this.on('load', (_, time) => logger.log('Load: %s %o', time, this));
 		}
 
 		this[ACTIVE_REQUEST] = Promise.all([

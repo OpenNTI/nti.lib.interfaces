@@ -6,7 +6,7 @@ function cleanupContentString (content) {
 		let root = this.getContentRoot();
 		content = fixRefs(content, root);
 	} catch (e) {
-		console.error('Content cannot be rooted. %s', e.stack || e.message || e);
+		console.error('Content cannot be rooted. %s', e.stack || e.message || e); //eslint-disable-line no-console
 	}
 
 	return clean(content);

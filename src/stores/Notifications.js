@@ -18,8 +18,9 @@ import waitFor from '../utils/waitfor';
 
 let inflight;
 
-const BATCH_SIZE = 5;
 const logger = Logger.get('store:notifications');
+
+const BATCH_SIZE = 5;
 const cleanInflight = () => inflight = null;
 
 

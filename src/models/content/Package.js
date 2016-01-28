@@ -1,3 +1,5 @@
+import Logger from 'nti-util-logger';
+
 import Base from '../Base';
 import {
 	Service
@@ -12,6 +14,8 @@ import assets from '../mixins/PresentationResources';
 import MediaIndex from '../MediaIndex';
 import TablesOfContents from '../TablesOfContents';
 import ToC from '../XMLBasedTableOfContents';
+
+const logger = Logger.get('models:content:Package');
 
 const VideoIndexReqest = Symbol('VideoIndexReqest');
 
@@ -49,7 +53,7 @@ export default class Package extends Base {
 		let {root} = this;
 
 		if (!root) {
-			console.error('No root for content package: ', this);
+			logger.error('No root for content package: ', this);
 			return '';
 		}
 

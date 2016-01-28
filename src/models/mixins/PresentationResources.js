@@ -21,7 +21,7 @@ function getDefaultAssetRoot (scope) {
 		return scope.getDefaultAssetRoot();
 	}
 
-	console.warn('Missing implementation of "getDefaultAssetRoot" in', scope);
+	console.warn('Missing implementation of "getDefaultAssetRoot" in', scope); //eslint-disable-line no-console
 	return '';
 }
 

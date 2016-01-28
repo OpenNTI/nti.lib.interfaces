@@ -25,7 +25,7 @@ export default class AggregatedMatchingPart extends Base {
 			});
 		}
 
-		console.log('Matching pivots the Ordering Data: ', results, '->', pivotData);
+		// console.log('Matching pivots the Ordering Data: ', results, '->', pivotData);
 		return pivotData;
 	}
 }

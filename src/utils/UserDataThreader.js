@@ -1,7 +1,11 @@
+import Logger from 'nti-util-logger';
+
 import isEmpty from 'isempty';
 
 export const PARENT = Symbol('Thread Links:Parent');
 export const CHILDREN = Symbol('Thread Links:Children');
+
+const logger = Logger.get('lib:UserDataThreader');
 
 const identity = x => x;
 const GETTERS = {
@@ -71,7 +75,7 @@ export function thread (data) {
 		cleanupTree(tree);
 	}
 	else {
-		console.warn('Not all items in data were threadable', data);
+		logger.warn('Not all items in data were threadable %o', data);
 	}
 
 
@@ -122,8 +126,7 @@ export function cleanupTree (tree) {
 //Exported only for tests
 export function buildItemTree (items, tree) {
 	let threadables = {};
-	//console.group("Build Tree");
-	//console.log('Using list of objects', items);
+	logger.debug('Using list of objects', items);
 
 	//Flatten an preexisting relationships of list into the array ignoring duplicates.
 	function flattenNode (n, result) {
@@ -144,9 +147,9 @@ export function buildItemTree (items, tree) {
 
 	let list = Object.values(threadables);
 
-	//console.log('Flattened list is ', list);
+	logger.debug('Flattened list is ', list);
 
-	// console.log('Flattened list of size ', items.length, 'to flattened list of size', list.length);
+	logger.debug('Flattened list of size ', items.length, 'to flattened list of size', list.length);
 
 	for (let r of list) {
 		if (!r.placeholder) {
@@ -171,7 +174,7 @@ export function buildItemTree (items, tree) {
 				p = (tree[parent] = threadables[parent]);
 			}
 			if (!p) {
-				//console.log('Generating placeholder for id:',parent, '  child:',oid);
+				logger.debug('Generating placeholder for id: %o\t\tchild: %o', parent, oid);
 				p = (tree[parent] = g.toParentPlaceHolder());
 				buildTree(p);
 			}
@@ -182,8 +185,6 @@ export function buildItemTree (items, tree) {
 			r[PARENT] = p;
 		}
 	});
-
-	// console.groupEnd("Build Tree");
 }
 
 

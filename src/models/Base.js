@@ -1,3 +1,4 @@
+import Logger from 'nti-util-logger';
 import {EventEmitter} from 'events';
 
 import Url from 'url';
@@ -24,8 +25,9 @@ import {
 
 import parseDate from '../utils/parse-date';
 
+const logger = Logger.get('models:Base');
 
-let CONTENT_VISIBILITY_MAP = {OU: 'OUID'};
+const CONTENT_VISIBILITY_MAP = {OU: 'OUID'};
 
 function clone (obj) {
 	if (typeof obj !== 'object' || obj == null) {
@@ -68,7 +70,7 @@ function doParse (parent, data) {
 		if (e.NoParser) {
 			m = e.message;
 		}
-		console.warn(m.stack || m.message || m);
+		logger.warn(m.stack || m.message || m);
 		return data;
 	}
 }
@@ -159,12 +161,12 @@ export default class Base extends EventEmitter {
 			}
 
 			m = new Error(`Access to ${x} is deprecated. ${m}`);
-			console.error(m.stack || m.message || m);
+			logger.error(m.stack || m.message || m);
 			return scope[name];
 		}
 
 		if (scope[name] && x !== name) {
-			console.warn('%s is already defined.', name);
+			logger.warn('%s is already defined.', name);
 			return;
 		}
 
@@ -217,7 +219,7 @@ export default class Base extends EventEmitter {
 
 
 		if (raw && raw[Parser]) {
-			console.error('Attempting to re-parse a model, aborting');
+			logger.error('Attempting to re-parse a model, aborting');
 			return raw;
 		}
 
@@ -300,7 +302,7 @@ export default class Base extends EventEmitter {
 						try {
 							value = this[Parser](value);
 						} catch(e) {
-							console.warn('Attempted to parse new value, and something went wrong... %o', e.stack || e.message || e);
+							logger.warn('Attempted to parse new value, and something went wrong... %o', e.stack || e.message || e);
 						}
 					}
 
@@ -384,7 +386,7 @@ export default class Base extends EventEmitter {
 		return this.fetchLink(rel, params)
 			.then(x=> {
 				if (x.Items && !x.MimeType) {
-					if (x.Links) { console.warn('Dropping Collection Links'); }
+					if (x.Links) { logger.warn('Dropping Collection Links'); }
 					x = x.Items;
 				}
 

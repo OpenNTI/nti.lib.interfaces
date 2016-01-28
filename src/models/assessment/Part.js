@@ -49,7 +49,6 @@ export default class Part extends Base {
 
 	getVideos () {
 		if (!global.DOMParser) {
-			console.error('Environment does not support DOMParser() no related videos');
 			return [];
 		}
 

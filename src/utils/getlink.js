@@ -16,7 +16,7 @@ export default function getLink (o, rel, raw) {
  */
 export function asMap (o) {
 
-	console.error('Deprecated! Use getLink("rel-name"), this method throws away important information about the Link (method, etc)');
+	console.error('Deprecated! Use getLink("rel-name"), this method throws away important information about the Link (method, etc)'); //eslint-disable-line no-console
 
 	if (o && o.Links) { o = o.Links; }
 	if (!Array.isArray(o)) {
@@ -26,7 +26,7 @@ export function asMap (o) {
 	let m = {};
 	for (let i = o.length - 1; i >= 0; i--) {
 		let v = o[i];
-		if (m[v.rel]) { console.warn('There are more than one instances of %s', v.rel); }
+		if (m[v.rel]) { console.warn('There are more than one instances of %s', v.rel); } //eslint-disable-line no-console
 		m[v.rel] = v.href;
 	}
 

@@ -12,6 +12,6 @@ export default class SuggestedContacts extends Base {
 			"href": "/dataserver2/users/local2/SuggestedContacts"
 		}
 	*/
-		console.debug(data);
+		console.debug(data); //eslint-disable-line no-console
 	}
 }

@@ -1,3 +1,5 @@
+import Logger from 'nti-util-logger';
+
 import {EventEmitter} from 'events';
 
 import mixin from '../utils/mixin';
@@ -8,6 +10,9 @@ import Pendability from '../models/mixins/Pendability';
 import {Service, DELETED} from '../constants';
 
 import {parseListFn} from '../models';
+
+
+const logger = Logger.get('store:UserData');
 
 const insert = Symbol();
 
@@ -35,7 +40,7 @@ export default class UserData extends EventEmitter {
 		let getBin = name => (this.Items[name] = (this.Items[name] || []));
 
 		let pushUnique = (array, item) => array.map(x=>x.getID()).includes(item.getID()) ?
-							console.warn('Item is not unique in dataset:', item) :
+							logger.warn('Item is not unique in dataset:', item) :
 							array.push(item);
 
 		let bin = (name, item) => pushUnique(getBin(name), item);
@@ -74,7 +79,7 @@ export default class UserData extends EventEmitter {
 		this.addToPending(load);
 
 		if (process.browser) {
-			this.on('load', (_, time) => console.log('Load: %s %o', time, this));
+			this.on('load', (_, time) => logger.info('Load: %s %o', time, this));
 		}
 	}
 
@@ -108,7 +113,7 @@ export default class UserData extends EventEmitter {
 		}
 
 		if (item.isThreadable && item.isReply()) {
-			return console.warn('Inserting a reply!! Ignoring.');
+			return logger.warn('Inserting a reply!! Ignoring.');
 		}
 
 		//TODO: think through the scenario of if the item is a threadable, rethread? ignore replies?
@@ -133,7 +138,7 @@ export default class UserData extends EventEmitter {
 				let item = bin.splice(index, 1)[0];//remove it;
 
 				item.removeListener('change', this.onChange);
-				console.debug('Removed deleted item: %o', item);
+				logger.debug('Removed deleted item: %o', item);
 			}
 		}
 

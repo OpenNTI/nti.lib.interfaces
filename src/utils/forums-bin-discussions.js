@@ -40,7 +40,7 @@ export default function binDiscussions (section, parent) {
 			}
 
 			if (bin[key].id !== group.NTIID) {
-				console.error('Bad ID match');
+				console.error('Bad ID match'); //eslint-disable-line no-console
 			}
 
 			bin[key].forums.push(item);

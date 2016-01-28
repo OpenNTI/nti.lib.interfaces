@@ -59,7 +59,6 @@ export default class FiveMinuteInterface {
 	}
 
 	requestAdmission (data) {
-		console.debug('five minute service requestAdmission');
 		let getLink = this[getUserLink]('fmaep.admission');
 		let r = getLink.then(link => this.post(link, data));
 		return r;
@@ -71,7 +70,6 @@ export default class FiveMinuteInterface {
 	}
 
 	getPayAndEnroll (link, ntiCrn, ntiTerm, returnUrl) {
-		console.debug(link);
 		return this.post(link, {
 			crn: ntiCrn,
 			term: ntiTerm,

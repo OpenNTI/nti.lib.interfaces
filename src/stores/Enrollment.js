@@ -48,9 +48,9 @@ export default class Enrollment {
 		}
 
 		if (purchasable.getLink) {
-			console.error('Use model@getLink');
+			console.error('Use model@getLink'); //eslint-disable-line no-console
 		} else {
-			console.error('purchasable needs to be a model');
+			console.error('purchasable needs to be a model'); //eslint-disable-line no-console
 		}
 
 		let link = getLink(purchasable, 'redeem_gift');

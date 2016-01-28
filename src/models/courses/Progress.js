@@ -31,7 +31,6 @@ export default class Progress extends Base {
 
 	hasCompleted () {
 		let progress = (this.getProgress() || 0).toFixed(2);
-		console.debug(progress);
 		return progress === '1.00';
 	}
 

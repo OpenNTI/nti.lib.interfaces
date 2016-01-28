@@ -11,6 +11,6 @@ export default class Part extends Base {
 
 
 	getResults (/*questionPart*/) {
-		console.error('Not Implemented');
+		console.error('Not Implemented'); //eslint-disable-line no-console
 	}
 }

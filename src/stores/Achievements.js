@@ -1,3 +1,4 @@
+import Logger from 'nti-util-logger';
 import {EventEmitter} from 'events';
 
 import mixin from '../utils/mixin';
@@ -8,6 +9,7 @@ import {Service} from '../constants';
 
 import {parseListFn} from '../models';
 
+const logger = Logger.get('store:Achievements');
 
 export default class Achievements extends EventEmitter {
 
@@ -40,7 +42,7 @@ export default class Achievements extends EventEmitter {
 
 		loads = Promise.all(loads)
 			.catch(er => {
-				console.log(er);
+				logger.error(er);
 				this.error = true;
 			})
 			.then(() => {
@@ -52,7 +54,7 @@ export default class Achievements extends EventEmitter {
 
 		this.addToPending(loads);
 
-		this.on('load', (_, time) => console.log('Load: %s %o', time, this));
+		this.on('load', (_, time) => logger.info('Load: %s %o', time, this));
 	}
 
 

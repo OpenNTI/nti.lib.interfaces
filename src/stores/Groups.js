@@ -1,3 +1,5 @@
+import Logger from 'nti-util-logger';
+
 import EntityStore from './EntityStore';
 
 import {parse} from '../models';
@@ -7,6 +9,8 @@ import {Service, DELETED} from '../constants';
 import {getNewListData} from './Contacts';
 
 export const MIME_TYPE = 'application/vnd.nextthought.dynamicfriendslist';
+
+const logger = Logger.get('store:Groups');
 
 const CREATE = Symbol();
 
@@ -53,7 +57,7 @@ export default class Groups extends EntityStore {
 			let item = data.splice(index, 1)[0];//remove it;
 
 			item.removeListener('change', this.onChange);
-			console.debug('Removed deleted/left group: %o', item);
+			logger.debug('Removed deleted/left group: %o', item);
 		}
 
 		this.emit('change', this);

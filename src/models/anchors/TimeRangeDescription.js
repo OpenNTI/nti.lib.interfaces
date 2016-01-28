@@ -15,7 +15,6 @@ export default class TimeRangeDescription extends ContentRangeDescription {
 		this.isEmpty = false;
 
 		if (!this.isTimeContentPointer(this.start)) {
-			console.error('Missing or invalid time start', arguments);
 			throw new Error('Invalid contents');
 		}
 
