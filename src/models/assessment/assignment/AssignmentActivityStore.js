@@ -12,7 +12,7 @@ const EVENT_MAP = {
 
 export default class AssignmentActivityStore extends Stream {
 	constructor (service, owner, href, staticActivityFactory) {
-		super(service, owner, href);
+		super(service, owner, href, {batchSize: 20, batchStart: 0});
 		getPrivate(this).getStaticActivity = staticActivityFactory;
 
 	}
@@ -38,10 +38,12 @@ export default class AssignmentActivityStore extends Stream {
 		p.lastViewed = getLink(data, 'lastViewed');
 		this.lastViewed = Date(data.lastViewed * 1000);
 
-		if (p.getStaticActivity) {
-			p.data = p.getStaticActivity(this.lastViewed);
-			p.data.sort((a, b) => a.date - b.date);
+		if (p.getStaticActivity && !this.more) {
+			let staticEvents = p.getStaticActivity(this.lastViewed);
 			delete p.getStaticActivity;
+
+			p.data = staticEvents.concat(p.data || []);
+			p.needsSort = true;
 		}
 	}
 
@@ -65,12 +67,20 @@ export default class AssignmentActivityStore extends Stream {
 			result.push(...o);
 		}
 
-		result.sort((a, b) => a.date - b.date);
+		if (result.length) {
+			getPrivate(this).needsSort = true;
+		}
 		return result;
 	}
 
 
 	get items () {
+		const p = getPrivate(this);
+		if (p.needsSort) {
+			delete p.needsSort;
+			p.data.sort((a, b) => a.date - b.date);
+		}
+
 		const i = super.items.slice();
 		i.reverse();
 		return i;

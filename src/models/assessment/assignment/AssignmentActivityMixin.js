@@ -8,7 +8,7 @@ export default {
 		if (typeof target === 'string') {
 			target = this.getAssignment(target);
 			if (!target) {
-				logger.error('Dropping event, no assignment found in the map for:', target);
+				logger.error('Dropping event, no assignment found in the map for: %o', target);
 				return null;
 			}
 		}
@@ -40,6 +40,11 @@ export default {
 	buildSubmissionEvents (s, lastViewed) {
 		const {creator: user} = s;
 		const assignment = this.getAssignment(s.assignmentId);
+		if (!assignment) {
+			logger.warn('Dropping events for submission, no assignment found in the map for: %o', s);
+			return [];
+		}
+
 		const out = this.deriveEvents(assignment, {Submission: s}, lastViewed);
 		return out
 			.filter(x => !/new|late/.test(x.type))

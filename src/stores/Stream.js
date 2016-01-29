@@ -141,20 +141,27 @@ export default class Stream extends EventEmitter {
 		return { sortOn, sortOrder };
 	}
 
+	get error () { return getPrivate(this).error; }
+	get loaded () { return getPrivate(this).loaded; }
+	get loading () { return getPrivate(this).loading; }
 
 	/**
 	 * Returns true if there is more to load from the stream. (show a load more button)
 	 *
 	 * @return {boolean} True, if there is more, False, otherwise.
 	 */
-	get more () {
-		return !!this.next;
-	}
+	get more () { return !!this.next; }
 
 
 	nextBatch (prev = false) {
 		const store = getPrivate(this);
-		this.loading = true;
+
+		if (store.loading) {
+			return Promise.resolve(this);
+		}
+
+		store.loading = true;
+
 		let start = Date.now();
 		this.emit('change', this);
 
@@ -184,16 +191,18 @@ export default class Stream extends EventEmitter {
 
 			let next = (prev ? this.prev : this.next) || getHref(this.href, this.options);
 
+
+
 			let loads = load(this, next)
 				.then(v => store.data = this.continuous ? store.data.concat(v) : v)
 				.catch(er => {
 					logger.error(er);
-					this.error = true;
+					store.error = true;
 				})
 				.then(() => {
-					this.loading = false;
-					this.loaded = Date.now();
-					this.emit('load', this, `${(this.loaded - start)}ms`);
+					store.loading = false;
+					store.loaded = Date.now();
+					this.emit('load', this, `${(store.loaded - start)}ms`);
 					this.emit('change', this);
 				});
 
