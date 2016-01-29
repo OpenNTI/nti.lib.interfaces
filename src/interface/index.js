@@ -10,7 +10,7 @@ import MimeComparator from '../utils/MimeComparator';
 
 import isEmpty from 'isempty';
 
-import getLink, {asMap as getLinksAsMap} from '../utils/getlink';
+import getLink, {getLinks} from '../utils/getlink';
 
 import chain from '../utils/function-chain';
 
@@ -309,7 +309,7 @@ export default class DataServerInterface {
 		return me.get('logon.ping', context)//ping
 			//pong
 			.then(data => {
-				let urls = getLinksAsMap(data);
+				let urls = toMap(getLinks(data));
 
 				if (!urls['logon.handshake']) {
 					return Promise.reject('No handshake present');
@@ -330,9 +330,7 @@ export default class DataServerInterface {
 						{links: urls} :
 						//There is a continue link, but we need our username to handshake...
 						me.getServiceDocument(context)
-							.then(d =>
-								me.handshake(urls, (username = d.getAppUsername()), context)
-							);
+							.then(d => me.handshake(urls, (username = d.getAppUsername()), context));
 				}
 
 				return me.handshake(urls, username, context);
@@ -344,7 +342,7 @@ export default class DataServerInterface {
 	handshake (urls, username, context) {
 		return this.post(urls['logon.handshake'], {[AsFormSubmittion]: true, username}, context)
 			.then(data => {
-				let result = {links: Object.assign({}, urls, getLinksAsMap(data))};
+				const result = {links: Object.assign({}, urls, toMap(getLinks(data)))};
 				if (!getLink(data, 'logon.continue')) {
 					result.reason = 'Not authenticated, no continue after handshake.';
 					return Promise.reject(result);
@@ -432,4 +430,12 @@ export default class DataServerInterface {
 			);
 	}
 
+}
+
+
+//Used to flatten links into a dictionary of rel: link.
+//ONLY used for login where all the metadata is not needed. (yet)
+function toMap (o, m = {}) {
+	for (let v of o) { m[v.rel] = v.href; }
+	return m;
 }
