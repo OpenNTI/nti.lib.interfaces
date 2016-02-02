@@ -20,6 +20,11 @@ export default {
 	},
 
 
+	reloadPage () {
+		this.loadPage(this.getCurrentPage());
+	},
+
+
 	getCurrentPage () {
 		const {batchStart = 0} = this.options;
 		return (batchStart / this.getPageSize()) + 1;
