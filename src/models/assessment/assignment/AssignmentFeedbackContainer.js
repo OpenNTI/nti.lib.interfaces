@@ -45,6 +45,9 @@ export default class AssignmentFeedbackContainer extends Base {
 		};
 	}
 
+	get length () {
+		return this.Items.length;
+	}
 
 	map (fn) {
 		return this.Items.map(fn);

@@ -21,6 +21,12 @@ export default class AssignmentHistoryItem extends Base {
 	}
 
 
+	get feedbackCount () {
+		const {Feedback: list} = this;
+		return (list || []).length;
+	}
+
+
 	get completed () {
 		const {Submission: s = null} = this;
 		return s && s.getCreatedTime();

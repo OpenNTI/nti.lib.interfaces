@@ -13,10 +13,9 @@ export default class AssignmentHistoryItemSummary extends Base {
 			this[parse](prop);
 		}
 
+		this[rename]('FeedbackCount', 'feedbackCount');
 		this[rename]('Grade', 'grade');
 
-		// FeedbackCount: 0,
-		// Grade
 		// Metadata:
 		// { CatalogEntryNTIID: 'tag:nextthought.com,2011-10:NTI-CourseInfo-Fall2015_BIOL_2124',
 		//  CreatedTime: 1445285838.886532,

@@ -75,7 +75,7 @@ class AssignmentSummary extends EventEmitter {
 
 	get feedbackCount () {
 		const {history} = getPrivate(this);
-		return history && history.FeedbackCount;
+		return history && history.feedbackCount;
 	}
 
 	get isCreatedByAppUser () {
