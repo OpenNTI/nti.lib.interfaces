@@ -93,12 +93,13 @@ export default class RelatedWorkReference extends Base {
 
 	getFileExtentionFor () {
 		const ext = [this.type, this.targetMimeType].reduce((a, x) => a || mime.extension(x), null);
+		const isPlatformType = [this.type, this.targetMimeType].some(x => /nextthought/i.test(x));
 
-		if (!ext && this.isExternal) {
+		if (!ext && this.isExternal && isPlatformType) {
 			return 'www';
 		}
 
-		if (ext === 'bin') {
+		if (!ext || ext === 'bin') {
 			return extname(parseUrl(this.href).pathname).replace(/\./, '');
 		}
 
