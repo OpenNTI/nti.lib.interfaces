@@ -1,4 +1,6 @@
 import {Parser} from '../../constants';
+import {ntiidEquals} from 'nti-lib-ntiids';
+
 import {thread, CHILDREN, PARENT} from '../../utils/UserDataThreader';
 
 export default {
@@ -74,6 +76,54 @@ export default {
 		// }
 
 		return !shouldHaveParent && !hasParent;
+	},
+
+
+	getReply (itemId) {
+		function find (found, item) {
+			if (found) {
+				return found;
+			}
+
+			if (ntiidEquals(item.getID(), itemId)) {
+				return item;
+			}
+
+			let children = item[CHILDREN] || {};
+			if (children.reduce) {
+				return children.reduce(find, null);
+			}
+		}
+
+		function search (list) {
+			//perform the search:
+			const item = list.reduce(find, null);
+			//get the list of children promises. (if we have an hit, short-circuit)
+			const pendingChildren = item ? [] : list.map(x => x[CHILDREN]).filter(x => (x || {}).then);
+
+			//if our search didn't yeild anything, and we have pending children... wait on them, and then search them.
+			if (!item &&  pendingChildren.length > 0) {
+
+				return Promise.all(pendingChildren) //These will resolve to lists... so
+				//flatten the list-of-lists to a single list.
+				.then(x => x.reduce((l, a) => l.concat(a), []))
+				//then start the search over with the new children
+				.then(get);
+			}
+
+			return item;
+		}
+
+		function get (waitOn) {
+			//the list waitOn can contain items and/or Promises...
+			//passing it through "Promise.all" normalizes it for us.
+			//And waits for all the actual promises to resolve.
+			return Promise.all(waitOn).then(search);
+		}
+
+		return this.getReplies()
+			.then(x => get(x))
+			.then(x => !x ? Promise.reject(`Not Found: "${itemId}"`) : x);
 	},
 
 
