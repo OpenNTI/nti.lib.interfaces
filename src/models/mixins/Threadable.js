@@ -1,10 +1,19 @@
-import {Parser} from '../../constants';
 import {ntiidEquals} from 'nti-lib-ntiids';
 
+import {DELETED, Parser} from '../../constants';
 import {thread, CHILDREN, PARENT} from '../../utils/UserDataThreader';
 
 export default {
 	isThreadable: true,
+
+	constructor () {
+		this.on('change', (_, what)=> {
+			if (what === DELETED) {
+				console.log('threaded thing deleted');
+			}
+		});
+	},
+
 
 	toParentPlaceHolder (threadableReply = this) {
 		let result = {};
