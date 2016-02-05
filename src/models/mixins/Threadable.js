@@ -97,11 +97,7 @@ export default {
 			this.fetchLinkParsed('replies') :
 			Promise.resolve();
 
-		this[CHILDREN] = request;
-
-
-
-		return request
+		return (this[CHILDREN] = request
 			.then(x => {
 				//do we have replies?
 				if (!x || !x.length) {
@@ -133,7 +129,8 @@ export default {
 
 				delete this[CHILDREN];
 				return Promise.reject(x);//continue the error
-			});
+			})
+		);
 	},
 
 
