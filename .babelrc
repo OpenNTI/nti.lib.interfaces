@@ -7,5 +7,6 @@
 		"transform-runtime"
 	],
 	"compact": false,
-	"sourceMaps": "both"
+	"sourceMaps": "both",
+	"sourceRoot": "./"
 }
