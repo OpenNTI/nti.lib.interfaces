@@ -1,7 +1,10 @@
 import {ntiidEquals} from 'nti-lib-ntiids';
+import Logger from 'nti-util-logger';
 
 import {DELETED, Parser} from '../../constants';
 import {thread, CHILDREN, PARENT} from '../../utils/UserDataThreader';
+
+const logger = Logger.get('models:mixins:Threadable');
 
 export default {
 	isThreadable: true,
@@ -9,7 +12,33 @@ export default {
 	constructor () {
 		this.on('change', (_, what)=> {
 			if (what === DELETED) {
-				console.log('threaded thing deleted');
+				this.refresh({
+					NTIID: this.getID(),
+					Creator: '',
+					body: ['This message has been deleted.'],
+					phantom: void 0,
+					placeholder: true
+				});
+
+				if (this.isLeaf()) {
+					//Remove refs
+					const parent = this[PARENT];
+					const parentRefs = (parent || {})[CHILDREN];
+
+					if (parentRefs && parent) {
+						const ix = parentRefs.indexOf(this);
+						if (ix < 0) {
+							logger.warn('Could not find reference in parent children list');
+							return;
+						}
+
+						parentRefs.splice(ix, 1);
+						parent.onChange('child deleted');
+						if (parent.placeholder) {
+							parent.onChange(DELETED, parent.getID());
+						}
+					}
+				}
 			}
 		});
 	},
@@ -68,6 +97,18 @@ export default {
 		});
 
 		return result;
+	},
+
+
+	isLeaf () {
+		const impliedLeaf = !this.hasLink('replies') || !this.ReferencedByCount;
+		const leafLike = (x => (!x || !x.length && !x.then))(this[CHILDREN]);
+
+		if (impliedLeaf && !leafLike) {
+			//wut?
+		}
+
+		return impliedLeaf || leafLike;
 	},
 
 
@@ -194,7 +235,7 @@ export default {
 
 
 	appendNewChild (newChild) {
-
+		this.ReferencedByCount ++;
 		newChild[PARENT] = this;
 
 		let children = this[CHILDREN] || [];
