@@ -33,6 +33,7 @@ export default {
 						}
 
 						parentRefs.splice(ix, 1);
+						parent.ReferencedByCount --;
 						parent.onChange('child deleted');
 						if (parent.placeholder) {
 							parent.onChange(DELETED, parent.getID());
@@ -108,7 +109,7 @@ export default {
 			//wut?
 		}
 
-		return impliedLeaf || leafLike;
+		return leafLike;
 	},
 
 
@@ -183,7 +184,12 @@ export default {
 		if (this.placeholder) {
 			//If we're a placeholder, we need to aggregate the replies from our children.
 			//We want to wait on the children's getReplies, but we want to fulfill with OUR direct children.
-			return Promise.all(children.map(x => x.getReplies().then(() => x)));
+			if (!Array.isArray(children) && children) {
+				if (children.then) { return children; }
+
+				children = [children];
+			}
+			return Promise.all(children || []).then(c => c.map(x => x.getReplies().then(() => x)));
 		}
 
 		if (children) {
