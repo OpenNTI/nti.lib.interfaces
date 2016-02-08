@@ -207,7 +207,7 @@ export default {
 			.then(x => {
 				//do we have replies?
 				if (!x || !x.length) {
-					return []; //no? resolve with empty list
+					return (this[CHILDREN] = []); //no? resolve with empty list
 				}
 
 				let parent = this[PARENT];
