@@ -54,7 +54,7 @@ export default class SessionManager {
 				return service.getAppUser()
 					.then(user => {
 						if (user.acceptTermsOfService) {
-							logger.error('User needs to accept terms of service.');
+							logger.info('User needs to accept terms of service.');
 							return Promise.reject(TOS);
 						}
 					})
