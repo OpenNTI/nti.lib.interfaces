@@ -70,7 +70,9 @@ export default class Instance extends Base {
 		try {
 			this.addToPending(resolveCatalogEntry(service, this));
 		} catch (e) {
-			logger.warn('There was a problem resolving the CatalogEntry! %o', e.stack || e.message || e);
+			let x = e.stack || e.message || e;
+			let t = typeof x === 'string' ? '%s' : '%o';
+			logger.warn('There was a problem resolving the CatalogEntry!\n' + t, x);
 		}
 	}
 

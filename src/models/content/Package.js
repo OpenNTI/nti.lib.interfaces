@@ -53,7 +53,7 @@ export default class Package extends Base {
 		let {root} = this;
 
 		if (!root) {
-			logger.error('No root for content package: ', this);
+			logger.warn('No root for content package: ', this);
 			return '';
 		}
 

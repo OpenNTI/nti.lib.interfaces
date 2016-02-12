@@ -100,10 +100,12 @@ export default class Bundle extends Base {
 				.reduce((agg, o) => agg || o.root, null);
 
 		if (!root) {
-			logger.error('No root for bundle: %s %o',
-				this.getID(),
-				this.ContentPackages.map(o => o.getID())
-				);
+			if (this.ContentPackages.length > 0) {
+				logger.warn('No root for bundle: %s %o',
+					this.getID(),
+					this.ContentPackages.map(o => o.getID())
+					);
+			}
 			return '';
 		}
 
