@@ -255,7 +255,7 @@ export default class Collection extends Base {
 
 		function getGroup (node, sortBy, key) {
 			groups[key] = groups[key] || {
-				label: (node || {}).label || 'Unknown',
+				label: (node || {}).label || 'Other Assignments',
 				sortBy,
 				items: []
 			};
