@@ -244,12 +244,24 @@ export default class Base extends EventEmitter {
 
 
 	refresh (newRaw) {
+		const INFLIGHT = 'Base:inflight-refresh';
 
-		let fetch = newRaw ?
+		if (this[INFLIGHT]) {
+			if (newRaw) {
+				logger.debug('Waiting to refresh until previous refresh %o', this);
+				return this[INFLIGHT].then(()=> this.refresh(newRaw));
+			}
+
+			logger.debug('Ignoring duplicate request to refresh. %o', this);
+			return this[INFLIGHT];
+		}
+		logger.debug('Refresh %o', this);
+
+		const fetch = newRaw ?
 			Promise.resolve(newRaw) :
 			this[Service].getObject(this.getID());
 
-		return fetch.then(o => {
+		const inflight = fetch.then(o => {
 			if (!ntiidEquals(this.NTIID, o.NTIID, true/*ignore "specific provider" differences*/)) {
 				throw new Error('Mismatch!');
 			}
@@ -282,6 +294,8 @@ export default class Base extends EventEmitter {
 						(Array.isArray(current) && current.every(MightBeModel)); //If the current value is an array, and each element of the array is Model-like...
 						//then the current value Might be a list of models...
 
+					let newValueHasMimeType = value && (!!value.MimeType || !!value.Class);
+
 					//Lets inspect the new value...
 					let newValueIsArrayOfObjects =
 						Array.isArray(value) && //If its an array,
@@ -293,6 +307,8 @@ export default class Base extends EventEmitter {
 					if (
 						//if the current value was a model,
 						currentIsModel ||
+						//or if the new value looks parsable
+						newValueHasMimeType ||
 						(
 							//or the current value was unset, or a list of Models,
 							currentMightBeListOfModels &&
@@ -325,6 +341,13 @@ export default class Base extends EventEmitter {
 			return this;
 		});
 
+		inflight
+			.catch(()=>{}) //swallow all errors so we can cleanup
+			.then(()=> delete this[INFLIGHT]);
+
+		this[INFLIGHT] = inflight;
+
+		return inflight;
 	}
 
 
