@@ -5,8 +5,14 @@ export default class InstanceAdministrativeRole extends Enrollment {
 		super(service, data);
 
 		this.isAdministrative = true;
-
 		//RoleName
+	}
+
+
+	get isInstructor () {
+		const value = Boolean((this.CourseInstance || {}).GradeBook);
+		Object.defineProperty(this, 'isInstructor', {value});
+		return value;
 	}
 
 
