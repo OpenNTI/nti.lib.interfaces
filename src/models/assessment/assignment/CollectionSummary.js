@@ -141,6 +141,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 					? null
 					: Promise.reject(Object.assign(new Error(error.statusText), error)))
 			.then(history => {
+				// AvailableAssignmentNTIIDs
 				Object.assign(data, {history});
 				this.emit('load', this);
 			})
@@ -224,8 +225,14 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 		}
 
 		if (!data.cache) {
-			data.cache = parent.getAssignments().map(assignment =>
-				new AssignmentSummary(assignment, history.getItem(assignment.getID()), history.creator));
+			data.cache = parent.getAssignments()
+							.filter(a => history.isRelevantFor(a.getID()))
+							.map(assignment => new AssignmentSummary(
+													assignment,
+													history.getItem(assignment.getID()),
+													history.creator
+												)
+											);
 
 			if (sortOn) {
 				data.cache.sort(comparatorFor(sortOn, sortOrder));

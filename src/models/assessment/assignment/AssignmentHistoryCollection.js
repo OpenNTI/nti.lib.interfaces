@@ -17,6 +17,16 @@ export default class AssignmentHistoryCollection extends Base {
 	}
 
 
+	isRelevantFor (ntiid) {
+		const {AvailableAssignmentNTIIDs: ids} = this;
+		if (!Array.isArray(ids)) {
+			return true; //backwards compat
+		}
+
+		return ids.indexOf(ntiid) >= 0;
+	}
+
+
 	[DateFields] () {
 		return super[DateFields]().concat(['lastViewed']);
 	}
