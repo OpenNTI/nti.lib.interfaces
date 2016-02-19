@@ -8,7 +8,7 @@ const isNewer = (x, i) => parseDate(x['Last Modified']) > i.getLastModified();
 const logger = Logger.get('InstanceCacheable');
 
 export function getInstanceCache (parent) {
-	const test = p => !!getCacheFor(p);
+	const test = p => !!getCacheFor(p) || !p || !p.parent;
 	const container = test(parent) ? parent : parent.parent({test});
 
 	return getCacheFor(container);
