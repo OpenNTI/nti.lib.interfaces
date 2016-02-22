@@ -249,8 +249,6 @@ function collateVideo (json) {
 
 
 
-
-
 function getContentFallback (outlineNode) {
 	logger.debug('[FALLBACK] Deriving OutlineNode(%s) content', outlineNode.getContentId());
 	const getCourse = node => node.root.parent();

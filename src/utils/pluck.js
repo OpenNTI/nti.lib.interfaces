@@ -1,4 +1,3 @@
-
 /**
  * Given the first argument is an object, copy the keys passed in the var args to a new object.
  *

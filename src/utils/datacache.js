@@ -1,4 +1,3 @@
-
 const GLOBAL_PROPERTY_NAME = '%%app-data%%';
 const CONTEXT_PROPERTY_NAME = Symbol.for(GLOBAL_PROPERTY_NAME);
 

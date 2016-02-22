@@ -1,4 +1,3 @@
-
 //const URL = '//vimeo.com/api/v2/video/{0}.json',
 const URL = 'https://vimeo.com/api/oembed.json?url=https%3A//vimeo.com/{0}';
 

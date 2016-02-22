@@ -1,4 +1,3 @@
-
 export function getAPIKey (service) {
 
 	return new Promise((done, reject) => {

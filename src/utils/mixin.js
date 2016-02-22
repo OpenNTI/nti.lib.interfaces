@@ -1,4 +1,3 @@
-
 function inPrototype (o, key) {
 	let proto = Object.getPrototypeOf(o || {});
 	return proto.hasOwnProperty(key);
