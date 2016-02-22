@@ -6,6 +6,7 @@ const getPurchasables = Symbol('getPurchasables');
 const Purchasables = Symbol('Purchasables');
 
 export default class EnrollmentOptionStore extends EnrollmentOption {
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
