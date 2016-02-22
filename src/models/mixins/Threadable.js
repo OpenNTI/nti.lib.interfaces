@@ -189,7 +189,8 @@ export default {
 
 				children = [children];
 			}
-			return Promise.all(children || []).then(c => c.map(x => x.getReplies().then(() => x)));
+			return Promise.all(children || [])
+					.then(c => Promise.all(  c.map(  x => x.getReplies().then(() => x)  )  ));
 		}
 
 		if (children) {
