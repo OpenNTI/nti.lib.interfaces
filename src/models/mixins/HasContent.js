@@ -3,7 +3,7 @@ import clean from '../../utils/sanitize-markup';
 
 function cleanupContentString (content) {
 	try {
-		let root = this.getContentRoot();
+		let root = this.getContentRoot() || '/content/missing-root/';
 		content = fixRefs(content, root);
 	} catch (e) {
 		console.error('Content cannot be rooted. %s', e.stack || e.message || e); //eslint-disable-line no-console

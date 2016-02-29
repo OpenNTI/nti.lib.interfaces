@@ -28,7 +28,7 @@ export default function rebaseReferences (string, basePath) {
 			absolute = firstChar === '/',
 			anchor = firstChar === '#',
 			external = externalUriRegex.test(url),
-			host = absolute ? '' : basePath,
+			host = absolute ? '' : (basePath || ''),
 			params;
 
 		if (/src/i.test(attr) && /youtube/i.test(url)) {
