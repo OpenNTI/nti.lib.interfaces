@@ -262,7 +262,7 @@ export default class Contacts extends EventEmitter {
 	}
 
 
-	search (query, allowAnyEntityType = false) {
+	search (query, allowAnyEntityType = false, allowContacts = false) {
 		let service = this[Service];
 		let {context: appUser} = this;
 		let parseList = parseListFn(this, service);
@@ -284,7 +284,7 @@ export default class Contacts extends EventEmitter {
 			}
 		};
 
-		const resultFilter = x => (allowAnyEntityType || isUser(x)) && notInContacts(x);
+		const resultFilter = x => (allowAnyEntityType || isUser(x)) && (allowContacts || notInContacts(x));
 
 		clean();
 
