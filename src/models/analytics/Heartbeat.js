@@ -1,6 +1,6 @@
 import Logger from 'nti-util-logger';
 
-import isFunction from '../../utils/isfunction';
+import isFunction from 'is-function';
 
 const logger = Logger.get('models:analytics:Heartbeat');
 

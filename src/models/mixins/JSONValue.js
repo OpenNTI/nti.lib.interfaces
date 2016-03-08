@@ -1,4 +1,4 @@
-import isFunction from '../../utils/isfunction';
+import isFunction from 'is-function';
 
 const BLACK_LISTED = {
 	Class: true,

@@ -1,4 +1,4 @@
-import isFunction from '../../utils/isfunction';
+import isFunction from 'is-function';
 import * as MimeTypes from './MimeTypes';
 import uuid from 'node-uuid';
 import HeartbeatManager from './Heartbeat';
