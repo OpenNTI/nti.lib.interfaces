@@ -181,6 +181,20 @@ export default {
 	},
 
 
+	getRecentReplies (count = 1) {
+		let shouldRequest = this.hasLink('replies') && this.ReferencedByCount > 0;
+		let request = shouldRequest ?
+			this.fetchLinkParsed('replies', {
+				sortOn: 'createdTime',
+				sortOrder: 'descending',
+				batchSize: count
+			}) :
+			Promise.resolve();
+
+		// reverse to date-ascending order
+		return request.then(results => (results || []).reverse());
+	},
+
 	getReplies () {
 		let children = this[CHILDREN];
 
