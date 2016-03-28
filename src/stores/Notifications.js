@@ -7,8 +7,6 @@ import {EventEmitter} from 'events';
 
 import {parse} from '../models';
 
-import ensureInstanceCountDoesNotReach from '../utils/debugging-invoke-limiter';
-
 import {ROOT_NTIID, REL_MESSAGE_INBOX} from '../constants';
 import getLink from '../utils/getlink';
 import forwardFunctions from '../utils/function-forwarding';
@@ -71,7 +69,6 @@ export default class Notifications extends EventEmitter {
 
 	constructor (service, data) {
 		super();
-		ensureInstanceCountDoesNotReach(this, 2);
 
 		this[Service] = service;
 		this.Items = [];
