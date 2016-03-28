@@ -28,7 +28,7 @@ const jsonContent = /(application|json)/i;
 const mightBeJson = /^(\s*)(\{|\[|"|')/i;
 
 const Request = Symbol('Request Adaptor');
-const AsFormSubmittion = Symbol('');
+const AsFormSubmission = Symbol('');
 
 export default class DataServerInterface {
 
@@ -107,10 +107,10 @@ export default class DataServerInterface {
 
 		if (data) {
 			opts.form = data;
-			if (typeof data === 'object' && !data[AsFormSubmittion]) {
+			if (typeof data === 'object' && !data[AsFormSubmission]) {
 				opts.headers['Content-type'] = 'application/json';
 			}
-			delete data[AsFormSubmittion];
+			delete data[AsFormSubmission];
 		}
 
 		function getContentType (headers) {
@@ -340,7 +340,7 @@ export default class DataServerInterface {
 
 
 	handshake (urls, username, context) {
-		return this.post(urls['logon.handshake'], {[AsFormSubmittion]: true, username}, context)
+		return this.post(urls['logon.handshake'], {[AsFormSubmission]: true, username}, context)
 			.then(data => {
 				const result = {links: Object.assign({}, urls, toMap(getLinks(data)))};
 				if (!getLink(data, 'logon.continue')) {
@@ -370,7 +370,7 @@ export default class DataServerInterface {
 			.then(result =>
 
 				this.post(result.links['logon.forgot.username'], {
-					[AsFormSubmittion]: true,
+					[AsFormSubmission]: true,
 					email
 				}, context)
 
@@ -383,7 +383,7 @@ export default class DataServerInterface {
 			.then(result =>
 
 				this.post(result.links['logon.forgot.passcode'], {
-					[AsFormSubmittion]: true,
+					[AsFormSubmission]: true,
 					email, username,
 					success: returnURL
 				}, context)
@@ -396,7 +396,7 @@ export default class DataServerInterface {
 		return this.ping(context)
 			.then(result =>
 				this.post(result.links['logon.reset.passcode'], {
-					[AsFormSubmittion]: true,
+					[AsFormSubmission]: true,
 					id, username, password
 				}, context)
 			);
