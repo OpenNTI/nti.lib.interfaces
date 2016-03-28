@@ -1,13 +1,9 @@
-//import Catalog from '../stores/Catalog';
-import Library from '../stores/Library';
 import Logger from 'nti-util-logger';
-// import Notifications from '../stores/Notifications';
-
 import {ServiceStash} from '../constants';
 
-const logger = Logger.get('SessionManager');
+import {sessionSetup} from './setup';
 
-const TOS = Symbol();
+const logger = Logger.get('SessionManager');
 
 export default class SessionManager {
 	constructor (server) {
@@ -48,36 +44,22 @@ export default class SessionManager {
 		let url = context.originalUrl || context.url;
 		logger.info('SESSION [PRE-FETCHING DATA] %s %s (User: %s)', context.method, url, context.username);
 		return this.server.getServiceDocument(context)
-			.then(service => {
-				context[ServiceStash] = service;
-
-				return service.getAppUser()
-					.then(user => {
-						if (user.acceptTermsOfService) {
-							logger.info('User needs to accept terms of service.');
-							return Promise.reject(TOS);
-						}
-					})
-					.then(() => Promise.all([
-						service,
-						Library.load(service, 'Main')//,
-						//Catalog.load(service),
-						//Notifications.load(service)
-					]));
-
-			});
+			.then(service => (
+				context[ServiceStash] = service,
+				sessionSetup(service)
+			));
 	}
 
 
 	middleware (req, res, next) {
-		let start = Date.now();
-		let url = req.originalUrl || req.url;
-		let basepath = this.config.basepath || '/';
-		let scope = url.substr(0, basepath.length) === basepath ? url.substr(basepath.length) : url;
+		const start = Date.now();
+		const url = req.originalUrl || req.url;
+		const basepath = this.config.basepath || '/';
+		const scope = url.substr(0, basepath.length) === basepath ? url.substr(basepath.length) : url;
 
 		req.responseHeaders = {};
 
-		req.setMaxListeners(100);
+		req.setMaxListeners(1000);
 		req.socket.setKeepAlive(true, 1000);
 		req.on('close', ()=> {
 			req.dead = true;
@@ -117,15 +99,15 @@ export default class SessionManager {
 					return next(reason);
 				}
 
-				if (reason === TOS) {
-					if(/^tos/.test(scope)) {
+				if (reason != null && reason.isLoginAction) {
+					if(scope.startsWith(reason.route)) {
 						return next();
 					}
 
-					logger.info('SESSION [TOS NEEDS ACCEPTING] %s %s REDIRECT %stos/ (User: %s, %dms)',
-						req.method, url, basepath, req.username, Date.now() - start);
+					logger.info('SESSION [TOS NEEDS ACCEPTING] %s %s REDIRECT %s%s (User: %s, %dms)',
+						req.method, url, basepath, reason.route, req.username, Date.now() - start);
 
-					res.redirect(basepath + 'tos/?return=' + encodeURIComponent(req.originalUrl));
+					res.redirect(`${basepath}${reason.route}?return=${encodeURIComponent(req.originalUrl)}`);
 				}
 				else if (!/^(api|login)/.test(scope)) {
 					logger.info('SESSION [INVALID] %s %s REDIRECT %slogin/ (User: annonymous, %dms)',
