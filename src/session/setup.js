@@ -15,6 +15,14 @@ export function sessionSetup (service) {
 				logger.info('User needs to accept terms of service.');
 				return needsAttention('onboarding/tos');
 			}
+			return user;
+		})
+
+		.then(user => {
+			if(user.hasLink('SubmitRegistration')) {
+				logger.info('User needs to submit i2 registration survey.');
+				return needsAttention('onboarding/i2-survey');
+			}
 		})
 
 		//TODO: Add More Login Actions HERE.
