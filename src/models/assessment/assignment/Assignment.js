@@ -64,7 +64,8 @@ export default class Assignment extends Base {
 
 
 	isLate (date) {
-		return date > this.getDueDate();
+		const due = this.getDueDate();
+		return date && due && date > due;
 	}
 
 	get hasSubmission () {
