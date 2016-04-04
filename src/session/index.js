@@ -5,6 +5,8 @@ import {sessionSetup} from './setup';
 
 const logger = Logger.get('SessionManager');
 
+const ensureEndsWithSlash = (str = '') => /\/$/.test(str) ? str : `${str}/`;
+
 export default class SessionManager {
 	constructor (server) {
 		if (!server) {
@@ -54,7 +56,7 @@ export default class SessionManager {
 	middleware (req, res, next) {
 		const start = Date.now();
 		const url = req.originalUrl || req.url;
-		const basepath = this.config.basepath || '/';
+		const basepath = ensureEndsWithSlash(req.baseUrl);
 		const scope = url.substr(0, basepath.length) === basepath ? url.substr(basepath.length) : url;
 
 		req.responseHeaders = {};
@@ -104,7 +106,7 @@ export default class SessionManager {
 						return next();
 					}
 
-					logger.info('SESSION [TOS NEEDS ACCEPTING] %s %s REDIRECT %s%s (User: %s, %dms)',
+					logger.info('SESSION [LOGIN ACTION REQUIRED] %s %s REDIRECT %s%s (User: %s, %dms)',
 						req.method, url, basepath, reason.route, req.username, Date.now() - start);
 
 					res.redirect(`${basepath}${reason.route}?return=${encodeURIComponent(req.originalUrl)}`);

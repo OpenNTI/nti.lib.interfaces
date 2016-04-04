@@ -37,7 +37,7 @@
     "node-uuid": "^1.4.3",
     "nti-lib-ntiids": "^1.0.0",
     "nti-util-logger": "^1.0.0",
-    "query-string": "^3.0.0",
+    "query-string": "^4.0.0",
     "request": "^2.44.0",
     "url": "^0.11.0"
   },
