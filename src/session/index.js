@@ -5,8 +5,6 @@ import {sessionSetup} from './setup';
 
 const logger = Logger.get('SessionManager');
 
-const ensureEndsWithSlash = (str = '') => /\/$/.test(str) ? str : `${str}/`;
-
 export default class SessionManager {
 	constructor (server) {
 		if (!server) {
@@ -53,10 +51,9 @@ export default class SessionManager {
 	}
 
 
-	middleware (req, res, next) {
+	middleware (basepath, req, res, next) {
 		const start = Date.now();
 		const url = req.originalUrl || req.url;
-		const basepath = ensureEndsWithSlash(req.baseUrl);
 		const scope = url.substr(0, basepath.length) === basepath ? url.substr(basepath.length) : url;
 
 		req.responseHeaders = {};
@@ -127,7 +124,7 @@ export default class SessionManager {
 	}
 
 
-	anonymousMiddleware (context, res, next) {
+	anonymousMiddleware (basepath, context, res, next) {
 		this.server.ping(context)
 			.then(() => next())
 			.catch(err => {
