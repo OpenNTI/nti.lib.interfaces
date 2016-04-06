@@ -15,7 +15,9 @@
   "scripts": {
     "test": "karma start --single-run --reporters dots,html,junit,coverage",
     "start": "make check",
-    "prepublish": "not-in-install && make || in-install"
+    "prepublish": "not-in-install && make || in-install",
+    "patch": "npm version patch; git push --all; npm publish",
+    "minor": "npm version minor; git push --all; npm publish"
   },
   "repository": {
     "type": "git",
