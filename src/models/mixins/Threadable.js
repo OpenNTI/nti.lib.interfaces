@@ -34,8 +34,14 @@ export default {
 
 						parentRefs.splice(ix, 1);
 
-						delete parent.ReferencedByCount;
-						Object.defineProperty(parent, 'ReferencedByCount', {value: parent.ReferencedByCount - 1});
+						if (!parent.placeholder) {
+							try {
+								delete parent.ReferencedByCount;
+								Object.defineProperty(parent, 'ReferencedByCount', {value: parent.ReferencedByCount - 1});
+							} catch (e) {
+								logger.warn(e.stack || e.message || e);
+							}
+						}
 
 						parent.onChange('child deleted');
 						if (parent.placeholder) {
