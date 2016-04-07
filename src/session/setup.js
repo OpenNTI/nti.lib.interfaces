@@ -20,8 +20,8 @@ export function sessionSetup (service) {
 
 		.then(user => {
 			if(user.hasLink('SubmitRegistration')) {
-				logger.info('User needs to submit i2 registration survey.');
-				return needsAttention('onboarding/i2-survey');
+				logger.info('User needs to submit registration survey.');
+				return needsAttention('onboarding/survey');
 			}
 		})
 
