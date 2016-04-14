@@ -26,6 +26,12 @@ export default class CourseCatalogEntry extends Base {
 			this.getAsset('background').then(setAndEmit(this, 'background'))
 		);
 
+		if (!this.Video) {
+			this.addToPending(
+				this.getAsset('promo', true).then(setAndEmit(this, 'promoImage'))
+			);
+		}
+
 		this[parse]('EnrollmentOptions');
 
 		this[rename]('EnrollmentOptions', EnrollmentOptions);

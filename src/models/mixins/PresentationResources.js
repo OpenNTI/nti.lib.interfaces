@@ -1,10 +1,12 @@
+import {Service} from '../../constants';
 import urlJoin from '../../utils/urljoin';
 import isEmpty from 'isempty';
 
 const ASSET_MAP = {
 	thumb: 'contentpackage-thumb-60x60.png',
 	landing: 'contentpackage-landing-232x170.png',
-	background: 'background.png'
+	background: 'background.png',
+	promo: 'course-promo-large-16x9.png'
 };
 
 let MISSING_ASSET_DATA = {};
@@ -45,22 +47,46 @@ export default {
 
 
 	/**
-	 * builds the url for the asset and returns a promise that fulfills if the img loads or rejects if it fails.
-	 * @param  {string} name asset name to load
-	 * @return {Promise} whether or not the asset exists
+	 * builds the url for the asset and returns a promise that fulfills with that image url.
+	 * Optionally adding a HEAD request to check existence.
+	 *
+	 * @param {string} name asset name to load
+	 * @param {boolean} resolve flag to ask to make a head request to check exists.
+	 * @return {Promise} fulfills with the assets url. If resolve is true, then if the asset exists, otherwise rejects.
 	 */
-	getAsset (name) {
-		let assetPath = ASSET_MAP[name] || ('missing-' + name + '-asset.png'),
-			root = this.getAssetRoot(),
-			url = root && urlJoin(root, assetPath);
-			// cache = this[Service].getDataCache(),
-			// cacheKey = 'asset-' + url;
+	getAsset (name, resolve = false) {
+		const assetPath = ASSET_MAP[name] || `missing-${name}-asset.png`;
+		const root = this.getAssetRoot();
+		const url = root && urlJoin(root, assetPath);
+
+		const service = this[Service];
+		const cache = service.getDataCache();
+		const cacheKey = 'asset-' + url;
 
 		if (isEmpty(root)) {
 			return Promise.reject('No root');
 		}
 
-		return Promise.resolve(url);
+		if (!resolve || cache.get(cacheKey) === true) {
+			return Promise.resolve(url);
+		}
+
+		const cached = cache.get(cacheKey);
+		if (cached && cached.then) {
+			return cached;
+		}
+
+		const pending = service.head(url)
+			.then(
+				() => url,
+				() => Promise.reject(`no asset: ${url}`)
+			);
+
+		cache.set(cacheKey, pending);
+
+		pending.then(() => cache.set(cacheKey, true));
+
+		return pending;
 	}
 
 };
