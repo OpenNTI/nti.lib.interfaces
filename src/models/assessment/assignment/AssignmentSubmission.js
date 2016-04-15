@@ -19,6 +19,16 @@ export default class AssignmentSubmission extends Base {
 	}
 
 
+	/**
+	 * Load the history directly from the Link on this object.
+	 *
+	 * @return {Promise} The history.
+	 */
+	getHistory () {
+		return this.fetchLinkParsed('AssignmentHistoryItem');
+	}
+
+
 	getID () {
 		return this.NTIID || this.assignmentId;
 	}
