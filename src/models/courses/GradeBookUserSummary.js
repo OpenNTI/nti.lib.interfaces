@@ -42,4 +42,9 @@ export default class GradeBookUserSummary extends Base {
 		const {HistoryItemSummary: {grade} = {}} = this;
 		return grade;
 	}
+
+
+	get hasFinalGrade () {
+		return this.AvailableFinalGrade;
+	}
 }

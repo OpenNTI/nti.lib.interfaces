@@ -60,7 +60,13 @@ export default class GradeBookSummary extends Stream {
 		const data = getPrivate(this);
 		super.applyBatch(input);
 
-		const {EnrollmentScope} = input;
+		const {EnrollmentScope, AvailableFinalGrade} = input;
+		// AvailableFinalGrade: true
+		// EnrollmentScope: "ForCredit"
+		// BatchPage: 1
+		// ItemCount: 1
+		// TotalItemCount: 1
+
 		if (EnrollmentScope && data.scopeFilter !== EnrollmentScope) {
 			if (data.scopeFilter) { //don't warn if not initialized
 				logger.warn('EnrollmentScope resolved to a different value than requested.');
@@ -69,10 +75,8 @@ export default class GradeBookSummary extends Stream {
 			data.scopeFilter = EnrollmentScope;
 		}
 
-		// EnrollmentScope: "ForCredit"
-		// BatchPage: 1
-		// ItemCount: 1
-		// TotalItemCount: 1
+		data.hasFinalGrade = Boolean(AvailableFinalGrade);
+
 
 		data.total = input.TotalItemCount;
 	}
@@ -80,6 +84,9 @@ export default class GradeBookSummary extends Stream {
 
 	get total () { return PRIVATE.get(this).total || this.length; }
 	getTotal () { return this.total; } //expected by Paged mixin
+
+
+	get hasFinalGrade () { return PRIVATE.get(this).hasFinalGrade; }
 
 
 	/**
