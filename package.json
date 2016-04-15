@@ -1,6 +1,6 @@
 {
   "name": "nti-lib-interfaces",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "author": "nextthought",
   "license": "UNLICENSED",
   "description": "Provides an interface for interacting with the dataserver via javascript.",
