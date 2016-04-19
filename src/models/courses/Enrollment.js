@@ -39,6 +39,7 @@ export default class Enrollment extends Base {
 			throw new Error('Illegal State: No CourseInstance. (You are probably trying to parse a GradeBookSummary or Roster)');
 		}
 
+		this.addToPending(i.waitForPending());
 		i.on('change', this.onChange.bind(this));
 	}
 
