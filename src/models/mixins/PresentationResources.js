@@ -82,7 +82,7 @@ export default {
 				() => Promise.reject(`no asset: ${url}`)
 			);
 
-		cache.set(cacheKey, pending);
+		cache.setVolatile(cacheKey, pending);
 
 		pending.then(() => cache.set(cacheKey, true));
 
