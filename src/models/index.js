@@ -19,7 +19,9 @@ import Slide from './Slide';
 import SlideVideo from './SlideVideo';
 import SlideDeck from './SlideDeck';
 
+import DiscussionReference from './DiscussionReference';
 import RelatedWorkReference from './RelatedWorkReference';
+import Timeline from './Timeline';
 
 //chat
 import MessageInfo from './chat/MessageInfo';
@@ -76,7 +78,8 @@ import CourseOutlineNodeProgress from './courses/OutlineNodeProgress';
 import CourseRecursiveStreamBucket from './courses/activity/RecursiveStreamBucket';
 import CourseRecursiveStreamByBucket from './courses/activity/RecursiveStreamByBucket';
 
-import CourseProgress from './courses/Progress';
+import Progress from './Progress';
+
 import CourseLeasonOverview from './courses/overview/LeasonOverview';
 import CourseLeasonOverviewGroup from './courses/overview/Group';
 import CourseLeasonOverviewVideoRoll from './courses/overview/VideoRoll';
@@ -211,6 +214,7 @@ const PARSERS = {
 	'ContentPackageBundle': 'contentpackagebundle',
 	'CourseInstanceSharingScopes': 'courseinstancesharingscopes',
 
+	'ntitimeline': Timeline,
 
 	'mediasource': MediaSource,
 	'videosource': MediaSource,
@@ -218,6 +222,7 @@ const PARSERS = {
 	'ntivideo': 'video',
 	'ntivideoref': VideoRef,
 
+	'discussionref': DiscussionReference,
 	'relatedworkref': RelatedWorkReference,
 
 	'ntilessonoverview': CourseLeasonOverview,
@@ -262,8 +267,9 @@ const PARSERS = {
 	'CourseOutlineNodeProgress': 'courseoutlinenodeprogress',
 	'progresscontainer': 'courseoutlinenodeprogress',
 
-	'progress': CourseProgress,
+	'progress': Progress,
 	'Progress': 'progress',
+	'videoprogress': 'progress',
 
 	'courses.coursecataloglegacyentry': 'courses.catalogentry',//Really?! Two packages?! :P
 	'courseware.coursecataloglegacyentry': 'courses.catalogentry',
