@@ -120,6 +120,8 @@ function getConfigForNode (node, outlineNode) {
 	return Object.assign(obj, parser(node, obj.MimeType, outlineNode));
 }
 
+const getEnrollmentStatus = outlineNode => outlineNode.parent('isEnrollment').getStatus();
+const isVisible = (outlineNode, overviewItem) => outlineNode.hasVisibility(overviewItem, getEnrollmentStatus(outlineNode));
 
 export default function buildFromToc (element, outlineNode) {
 	let sections = {},
@@ -129,7 +131,7 @@ export default function buildFromToc (element, outlineNode) {
 		let obj = getConfigForNode(node, outlineNode);
 		let type = obj && (obj.section || SECTION_TYPE_MAP[obj.MimeType] || 'Unknown');
 
-		if (!type) { continue; }
+		if (!type || !isVisible(outlineNode, obj)) { continue; }
 
 		if (obj.MimeType === 'application/vnd.nextthought.topic') {
 			items.push(obj);
