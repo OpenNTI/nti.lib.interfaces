@@ -84,7 +84,10 @@ export default {
 
 		cache.setVolatile(cacheKey, pending);
 
-		pending.then(() => cache.set(cacheKey, true));
+		pending.then(
+			() => cache.set(cacheKey, true),
+			()=> {} //don't care
+		);
 
 		return pending;
 	}
