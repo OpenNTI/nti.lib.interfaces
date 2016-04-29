@@ -9,6 +9,10 @@ export default class OutlineNodeProgress extends Base {
 		let {Items} = this;
 		for (let o of Object.keys(Items)) {
 			Items[o] = this[parse](Items[o]);
+			if (!Items[o] || !Items[o][parse]) {
+				//Item did not parse!
+				delete Items[o];
+			}
 		}
 	}
 
