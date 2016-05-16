@@ -250,12 +250,11 @@ export default class ServiceDocument {
 			return Promise.reject('Bad NTIID');
 		}
 
-		return this.getObject(ntiid, mime)
-			.then(info=>parse(this, this, info));
+		return this.getObject(ntiid, this, void 0, mime);
 	}
 
 
-	getObject (ntiid, type, field) {
+	getObjectRaw (ntiid, field, type) {
 		if (!isNTIID(ntiid)) {
 			return Promise.reject('Bad NTIID');
 		}
@@ -302,6 +301,19 @@ export default class ServiceDocument {
 	}
 
 
+
+	getObjectsRaw (ntiids) {
+		if (!Array.isArray(ntiids)) {
+			ntiids = [ntiids];
+		}
+
+		return Promise.all(ntiids.map(n => this.getObjectRaw(n)))
+				.then(results =>
+					(!Array.isArray(results) ? [results] : results)
+						.map(o => o && o.MimeType ? o : null));
+	}
+
+
 	getObjectRelatedContext (ntiid) {
 		if (!isNTIID(ntiid)) {
 			return Promise.reject('Bad NTIID');
@@ -322,31 +334,29 @@ export default class ServiceDocument {
 	}
 
 
-	getObjects (ntiids) {
-		if (!Array.isArray(ntiids)) {
-			ntiids = [ntiids];
-		}
-
-		return Promise.all(ntiids.map(n => this.getObject(n)))
-				.then(results =>
-					(!Array.isArray(results) ? [results] : results)
-						.map(o => o && o.MimeType ? o : null));
-	}
+	//Deprecated
+	getParsedObject (ntiid, parent, type, field) {
+		logger.error('[Deprecated] use .getObject instead');
+		return this.getObject(ntiid, parent, field, type); }
+	//Deprecated
+	getParsedObjects (ntiid, parent) {
+		logger.error('[Deprecated] use .getObjects instead');
+		return this.getObjects(ntiid, parent); }
 
 
-	getParsedObject (ntiid, parent, field, type) {
+	getObject (ntiid, parent, field, type) {
 		let p = o => parse(this, parent || this, o);
 
 		if (typeof ntiid === 'object') {
 			return Promise.resolve(p(ntiid));
 		}
 
-		return this.getObject(ntiid, type, field).then(p);
+		return this.getObjectRaw(ntiid, field, type).then(p);
 	}
 
 
-	getParsedObjects (ntiids, parent) {
-		return this.getObjects(ntiids).then(o => parse(this, parent || this, o));
+	getObjects (ntiids, parent) {
+		return this.getObjectsRaw(ntiids).then(o => parse(this, parent || this, o));
 	}
 
 

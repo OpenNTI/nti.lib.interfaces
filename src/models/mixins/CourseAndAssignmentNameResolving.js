@@ -23,7 +23,7 @@ export default {
 		//... the assignment title is already known... use it.
 			Promise.resolve(a) :
 		//Otherwise, load the assignment object
-			service.getObject(assignmentId)
+			service.getObjectRaw(assignmentId)
 		)
 		//then... Pluck the assignment object title...
 			.then(assignment=>

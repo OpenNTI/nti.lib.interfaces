@@ -259,7 +259,7 @@ export default class Base extends EventEmitter {
 
 		const fetch = newRaw ?
 			Promise.resolve(newRaw) :
-			this[Service].getObject(this.getID());
+			this[Service].getObjectRaw(this.getID());
 
 		const inflight = fetch.then(o => {
 			if (!ntiidEquals(this.NTIID, o.NTIID, true/*ignore "specific provider" differences*/)) {
