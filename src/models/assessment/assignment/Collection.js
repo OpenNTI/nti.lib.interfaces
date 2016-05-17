@@ -7,7 +7,7 @@
  */
 
 import Base from '../../Base';
-import InstanceCacheContainer from '../../mixins/InstanceCacheContainer';
+
 import {
 	Parser as parse
 } from '../../../constants';
@@ -91,7 +91,7 @@ export default class Collection extends Base {
 	 * @returns {void}
 	 */
 	constructor (service, parent, assignments, assessments, historyLink) {
-		super(service, parent, void 0, ActivityMixin, InstanceCacheContainer, {
+		super(service, parent, void 0, ActivityMixin, {
 			Links: [
 				{rel: HISTORY_LINK, href: historyLink}
 			]

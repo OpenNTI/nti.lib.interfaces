@@ -7,7 +7,7 @@ import {parse} from '../models';
 import Capabilities from '../models/Capabilities';
 
 import Pendability, {attach as attachPendingQueue} from '../models/mixins/Pendability';
-
+import InstanceCacheContainer from '../models/mixins/InstanceCacheContainer';
 
 import ContactsStore from './Contacts';
 import CommunitiesStore from './EntityStore';
@@ -55,6 +55,7 @@ export default class ServiceDocument {
 		this[Context] = context;
 
 		mixin(this, Pendability);
+		mixin(this, InstanceCacheContainer);
 
 		let caps = json.CapabilityList || [];
 

@@ -1,3 +1,4 @@
+import {Service} from '../../constants';
 import parseDate from '../../utils/parse-date';
 import Logger from 'nti-util-logger';
 
@@ -8,8 +9,9 @@ const isNewer = (x, i) => parseDate(x['Last Modified']) > i.getLastModified();
 const logger = Logger.get('InstanceCacheable');
 
 export function getInstanceCache (parent) {
-	const test = p => !!getCacheFor(p) || !p || !p.parent;
-	const container = test(parent) ? parent : parent.parent({test});
+	// const test = p => !!getCacheFor(p) || !p || !p.parent;
+	// const container = test(parent) ? parent : parent.parent({test});
+	const container = parent[Service];
 
 	return getCacheFor(container);
 }
