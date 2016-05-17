@@ -1,22 +1,13 @@
-function min (a, b) {
-	return a < b ? a : b;
-}
+const {max, min} = Math;
 
-
-function max (a, b) {
-	return a > b ? a : b;
-}
-
-
-export default function between (i, a, b, inclusive = false) {
-	let x = min(a, b);
-	let y = max(a, b);
-
-	return inclusive ?
-		(i >= x && i <= y) :
-		(i > x && i < y);
+export default function between (i, a, b) {
+	let x = min(a, b),
+		y = max(a, b);
+	return (i > x && i < y);
 }
 
 between.inclusive = function (i, a, b) {
-	return between(i, a, b, true);
+	let x = min(a, b),
+		y = max(a, b);
+	return (i >= x && i <= y);
 };
