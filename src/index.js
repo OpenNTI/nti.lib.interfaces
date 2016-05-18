@@ -1,4 +1,3 @@
-import Session from './session';
 import Interface from './interface';
 import cache from './utils/datacache';
 
@@ -15,8 +14,7 @@ export default function (config) {
 
 	return {
 		datacache: cache,
-		interface: i,
-		session: new Session(i)
+		interface: i
 	};
 }
 
