@@ -1,7 +1,7 @@
 import Logger from 'nti-util-logger';
 import {EventEmitter} from 'events';
 
-import mixin from '../utils/mixin';
+import mixin from 'nti-commons/lib/mixin';
 
 import Pendability from '../models/mixins/Pendability';
 

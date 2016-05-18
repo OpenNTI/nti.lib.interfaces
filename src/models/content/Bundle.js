@@ -7,9 +7,9 @@ import {
 } from '../../constants';
 
 import setAndEmit from '../../utils/getsethandler';
-import urlJoin from '../../utils/urljoin';
 
-import forwardFunctions from '../../utils/function-forwarding';
+import urlJoin from 'nti-commons/lib/urljoin';
+import forwardFunctions from 'nti-commons/lib/function-forwarding';
 
 import assets from '../mixins/PresentationResources';
 

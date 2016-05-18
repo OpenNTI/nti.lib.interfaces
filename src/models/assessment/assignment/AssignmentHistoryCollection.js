@@ -3,7 +3,7 @@ import {
 	DateFields,
 	Parser as parse
 } from '../../../constants';
-import pluck from '../../../utils/pluck';
+import pluck from 'nti-commons/lib/pluck';
 
 export default class AssignmentHistoryCollection extends Base {
 	constructor (service, parent, data) {

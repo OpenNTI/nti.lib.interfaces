@@ -5,7 +5,7 @@ import {Service, Parent} from '../constants';
 import Logger from 'nti-util-logger';
 import isEmpty from 'isempty';
 
-import urlJoin from '../utils/urljoin';
+import urlJoin from 'nti-commons/lib/urljoin';
 
 const logger = Logger.get('lib:models:MediaIndex');
 

@@ -4,7 +4,7 @@ import invariant from 'invariant';
 import QueryString from 'query-string';
 import Url from 'url';
 
-import mixin from '../utils/mixin';
+import mixin from 'nti-commons/lib/mixin';
 
 import Pendability from '../models/mixins/Pendability';
 

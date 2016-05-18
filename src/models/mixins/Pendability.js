@@ -1,4 +1,4 @@
-import waitFor from '../../utils/waitfor';
+import waitFor from 'nti-commons/lib/waitfor';
 
 const noop = () => {};
 const PRIVATE_PENDING = new WeakMap();

@@ -1,6 +1,6 @@
 const DATA = Symbol('data');
 
-import escape from '../utils/regexp-escape';
+import escape from 'nti-commons/lib/regexp-escape';
 
 const flat = (a, n)=> a.concat(n.flatten());
 

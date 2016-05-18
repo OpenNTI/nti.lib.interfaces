@@ -25,11 +25,11 @@ import {
 
 import DataCache from '../utils/datacache';
 import getLink from '../utils/getlink';
-import joinWithURL from '../utils/urljoin';
+import joinWithURL from 'nti-commons/lib/urljoin';
 import {isNTIID} from 'nti-lib-ntiids';
-import mixin from '../utils/mixin';
-import waitFor from '../utils/waitfor';
-import wait from '../utils/wait';
+import mixin from 'nti-commons/lib/mixin';
+import waitFor from 'nti-commons/lib/waitfor';
+import wait from 'nti-commons/lib/wait';
 
 import {Context, Server, Service, SiteName} from '../constants';
 

@@ -1,8 +1,8 @@
 import {EventEmitter} from 'events';
 
 
-import forwardFunctions from '../utils/function-forwarding';
-import mixin from '../utils/mixin';
+import forwardFunctions from 'nti-commons/lib/function-forwarding';
+import mixin from 'nti-commons/lib/mixin';
 
 import {parseListFn} from '../models';
 

@@ -1,18 +1,17 @@
-import Logger from 'nti-util-logger';
+import QueryString from 'query-string';
 
-import { Service } from '../constants';
+import Logger from 'nti-util-logger';
+import forwardFunctions from 'nti-commons/lib/function-forwarding';
+import waitFor from 'nti-commons/lib/waitfor';
+
 
 import Url from 'url';
 import {EventEmitter} from 'events';
 
+import { Service, ROOT_NTIID, REL_MESSAGE_INBOX} from '../constants';
 import {parse} from '../models';
-
-import {ROOT_NTIID, REL_MESSAGE_INBOX} from '../constants';
 import getLink from '../utils/getlink';
-import forwardFunctions from '../utils/function-forwarding';
-import QueryString from 'query-string';
 
-import waitFor from '../utils/waitfor';
 
 let inflight;
 

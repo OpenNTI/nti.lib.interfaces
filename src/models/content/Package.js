@@ -6,7 +6,7 @@ import {
 } from '../../constants';
 
 import setAndEmit from '../../utils/getsethandler';
-import urlJoin from '../../utils/urljoin';
+import urlJoin from 'nti-commons/lib/urljoin';
 
 
 import assets from '../mixins/PresentationResources';

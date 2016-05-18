@@ -1,6 +1,6 @@
 import Stream from './Stream';
 import Paged from '../models/mixins/Paged';
-import mixin from '../utils/mixin';
+import mixin from 'nti-commons/lib/mixin';
 
 //@private
 const FILTERS = {

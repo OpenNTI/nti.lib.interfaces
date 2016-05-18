@@ -1,5 +1,5 @@
-import fixRefs from '../../utils/rebase-references';
-import clean from '../../utils/sanitize-markup';
+import fixRefs from 'nti-commons/lib/rebase-references';
+import clean from 'nti-commons/lib/sanitize-markup';
 
 function cleanupContentString (content) {
 	try {

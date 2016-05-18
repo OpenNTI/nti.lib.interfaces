@@ -6,7 +6,7 @@ import QueryString from 'query-string';
 
 import {REL_USER_GENERATED_DATA, REL_RELEVANT_CONTAINED_USER_GENERATED_DATA} from '../constants';
 
-import fixRefs from '../utils/rebase-references';
+import fixRefs from 'nti-commons/lib/rebase-references';
 
 import {Service, Parser as parse} from '../constants';
 

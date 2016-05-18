@@ -7,7 +7,8 @@ import QueryString from 'query-string';
 import {parse, getModelByType} from './';
 
 import getLinkImpl from '../utils/getlink';
-import mixin from '../utils/mixin';
+import mixin from 'nti-commons/lib/mixin';
+import parseDate from 'nti-commons/lib/parse-date';
 import {ntiidEquals} from 'nti-lib-ntiids';
 
 import JSONValue from './mixins/JSONValue';
@@ -23,7 +24,6 @@ import {
 } from '../constants';
 
 
-import parseDate from '../utils/parse-date';
 
 const logger = Logger.get('models:Base');
 

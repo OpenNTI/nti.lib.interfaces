@@ -1,8 +1,8 @@
 import Logger from 'nti-util-logger';
 import {EventEmitter} from 'events';
 
-import mixin from '../utils/mixin';
-import unique from '../utils/array-unique';
+import mixin from 'nti-commons/lib/mixin';
+import unique from 'nti-commons/lib/array-unique';
 
 import {parseListFn} from '../models';
 import Pendability from '../models/mixins/Pendability';

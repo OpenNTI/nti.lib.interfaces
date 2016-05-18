@@ -1,7 +1,7 @@
 import Part from '../Part';
 
 import isEmpty from 'isempty';
-//import escapeStringForRegExp from '../../../utils/...';
+//import escapeStringForRegExp from 'nti-commons/lib/...';
 
 function getRegExp (pattern, regExpFormat) {
 	//TODO: get the RegExp#escape impl form WebApp... (escape is not part of the spec)

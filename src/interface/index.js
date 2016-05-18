@@ -12,7 +12,7 @@ import isEmpty from 'isempty';
 
 import getLink, {getLinks} from '../utils/getlink';
 
-import chain from '../utils/function-chain';
+import chain from 'nti-commons/lib/function-chain';
 
 import {attach as attachPendingQueue} from '../models/mixins/Pendability';
 

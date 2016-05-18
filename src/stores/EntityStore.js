@@ -5,7 +5,7 @@ import Logger from 'nti-util-logger';
 
 import Pendability from '../models/mixins/Pendability';
 
-import mixin from '../utils/mixin';
+import mixin from 'nti-commons/lib/mixin';
 // import getLink from '../utils/getlink';
 
 import {parseListFn} from '../models';

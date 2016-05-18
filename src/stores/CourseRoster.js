@@ -2,7 +2,7 @@ import Base from '../models/Base';
 import Paged from '../models/mixins/Paged';
 import Stream from './Stream';
 
-import mixin from '../utils/mixin';
+import mixin from 'nti-commons/lib/mixin';
 
 import {Service, Parser as parse} from '../constants';
 

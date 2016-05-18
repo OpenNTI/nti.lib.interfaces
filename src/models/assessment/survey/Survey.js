@@ -4,7 +4,7 @@ import {HISTORY_LINK} from '../Constants'; //Assessment Constants
 
 import {AGGREGATED_LINK, REPORT_LINK} from './Constants'; //Survey Constants
 
-import wait from '../../../utils/wait';
+import wait from 'nti-commons/lib/wait';
 
 const AGGREGATED = Symbol(AGGREGATED_LINK);
 

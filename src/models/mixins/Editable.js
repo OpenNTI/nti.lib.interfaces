@@ -1,4 +1,4 @@
-import pluck from '../../utils/pluck';
+import pluck from 'nti-commons/lib/pluck';
 
 import { Service, DELETED } from '../../constants';
 

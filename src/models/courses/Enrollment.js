@@ -4,7 +4,7 @@ import {
 	Service
 } from '../../constants';
 
-import forwardFunctions from '../../utils/function-forwarding';
+import forwardFunctions from 'nti-commons/lib/function-forwarding';
 
 
 export default class Enrollment extends Base {
