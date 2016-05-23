@@ -17,7 +17,7 @@
     "start": "make check",
     "prepublish": "not-in-install && make || in-install",
     "bump": "npm version",
-    "postbump": "git push --all && npm publish"
+    "postbump": "git push --tags && npm publish"
   },
   "repository": {
     "type": "git",
