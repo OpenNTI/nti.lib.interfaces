@@ -218,12 +218,12 @@ export default class Collection extends Base {
 
 		const getGroup = a => {
 			let due = a.getDueDate();
-			let key = (new Date(due)).setHours(0, 0, 0);
-			let sortBy = new Date(key);
+			let key = !due ? 'no-due-date' : (new Date(due)).setHours(0, 0, 0);
+			let sortBy = due ? new Date(key) : Number.MAX_VALUE;
 
 			groups[key] = groups[key] || {
 				sortBy,
-				label: due == null ? '' : sortBy,
+				label: due == null ? key : sortBy,
 				items: []
 			};
 
