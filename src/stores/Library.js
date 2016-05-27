@@ -15,14 +15,13 @@ const getInstances = service => service.getDataCache().get('LibraryInstances', {
 export default class Library extends EventEmitter {
 
 	static load (service, name, reload) {
-		function make (contentPackages, contentBundles, enrolledCourses, administeredCourses) {
-			return new Library(service, name, contentPackages, contentBundles, enrolledCourses, administeredCourses);
+		function make (contentBundles, enrolledCourses, administeredCourses) {
+			return new Library(service, name, contentBundles, enrolledCourses, administeredCourses);
 		}
 
 		const instances = getInstances(service);
 
 		return (instances[name] = Promise.all([
-			resolveCollection(service, service.getContentPackagesURL(), reload),
 			resolveCollection(service, service.getContentBundlesURL(), reload),
 			resolveCollection(service, service.getCoursesEnrolledURL(), reload),
 			resolveCollection(service, service.getCoursesAdministeringURL(), reload)
@@ -61,7 +60,7 @@ export default class Library extends EventEmitter {
 	}
 
 
-	constructor (service, name, contentPackages, contentBundles, enrolledCourses, administeredCourses) {
+	constructor (service, name, contentBundles, enrolledCourses, administeredCourses) {
 		super();
 		mixin(this, Pendability);
 		this[Service] = service;
@@ -75,20 +74,22 @@ export default class Library extends EventEmitter {
 		contentBundles = contentBundles.filter(o => {
 			let invalid = !o.ContentPackages || !o.ContentPackages.length;
 			if (invalid) {
-				logger.warn('%o Bundle is empty. Missing packages.', o);
+				logger.warn('Bundle is empty. Missing packages. %o', o);
 			}
 			return !invalid;
 		});
 
-		contentPackages = contentPackages
-			.filter(pkg => !pkg.isCourse //not a course, and not referenced in a bundle...
-						&& !contentBundles.find(x=>
-							x.ContentPackages.find(p=> p.NTIID === pkg.NTIID)));
 
-		this.packages = parseList(contentPackages);
 		this.bundles = parseList(contentBundles);
 		this.courses = parseList(enrolledCourses);
 		this.administeredCourses = parseList(administeredCourses);
+
+		Object.defineProperty(this, 'packages', {
+			get () {
+				logger.error('Dead Property.');
+				return [];
+			}
+		});
 	}
 
 
@@ -129,7 +130,6 @@ export default class Library extends EventEmitter {
 		let referencedPackages = bundles.reduce((set, bundle) => set.concat(bundle.ContentPackages), []);
 
 		let packs = unique([].concat(
-				this.packages,
 				referencedPackages,
 				bundles //Also search over Bundles as they have the same "interface" as Packages.
 			));
