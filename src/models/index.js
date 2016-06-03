@@ -283,6 +283,7 @@ const PARSERS = {
 	'questionset': AssessmentQuestionSet,
 	'questionsetref': AssessmentQuestionSetRef,
 	'naquestionset': 'questionset',
+	'narandomizedquestionset': 'questionset',
 	'naquestionbank': 'questionset',
 	'question': AssessmentQuestion,
 	'naquestion': 'question',
