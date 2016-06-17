@@ -1,3 +1,5 @@
+import pluck from 'nti-commons/lib/pluck';
+
 import Base from '../Base';
 import {
 	Service,
@@ -12,6 +14,30 @@ export default class QuestionSet extends Base {
 		super(service, parent, data, {isSubmittable: true});
 
 		this[parse]('questions', []);
+	}
+
+	/**
+	 * Is the question order set to be randomized.
+	 *
+	 * @return {boolean} yes or no.
+	 */
+	get isRandomized () {
+		if (!this.hasLink('edit')) {
+			throw new Error('Illegal Access. This instance is not editable.');
+		}
+		return this.hasLink('Unrandomize');
+	}
+
+	/**
+	 * Are the question parts set to use the Randomized Part variant?
+	 *
+	 * @return {boolean} yes or no.
+	 */
+	get isPartTypeRandomized () {
+		if (!this.hasLink('edit')) {
+			throw new Error('Illegal Access. This instance is not editable.');
+		}
+		return this.hasLink('UnrandomizePartsType');
 	}
 
 	/**
@@ -69,5 +95,27 @@ export default class QuestionSet extends Base {
 		}
 
 		return dataProvider.getUserDataLastOfType(SUBMITTED_TYPE);
+	}
+
+
+	/**
+	 * Toggle the Randomization state of Questions or Parts.
+	 *
+	 * @param  {boolean} parts if true toggles the parts randomization. if false (default) it will toggle the randomization of questions.
+	 * @return {Promise} The promise of the work being done.
+	 */
+	toggleRandomized (parts) {
+		const cap = (s) => s[0].toUpperCase() + s.substr(1);
+		const rel = 'randomize' + (parts ? 'PartsType' : '');
+
+		let link = this.hasLink(cap(rel)) ? cap(rel) : cap(`un${rel}`);
+		return this.postToLink(link)
+			.then(o => this.refresh(pluck(o, 'NTIID', 'Links')))
+			.then(() => this.onChange('Randomize'));
+	}
+
+
+	toggleRandomizedPartTypes () {
+		return this.toggleRandomized(true);
 	}
 }
