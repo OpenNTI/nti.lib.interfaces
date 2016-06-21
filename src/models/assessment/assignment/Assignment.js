@@ -21,6 +21,7 @@ export default class Assignment extends Base {
 
 		this[RENAME]('GradeAssignmentSubmittedCount', 'submittedCount'); //number of submissions with grades?
 		//this[RENAME]('GradeSubmittedCount', 'gradeCount'); // just number of grades?
+		this[RENAME]('total_points', 'totalPoints');
 	}
 
 
@@ -29,6 +30,11 @@ export default class Assignment extends Base {
 			'available_for_submission_beginning',//becomes getAvailableForSubmissionBeginning (use getAssignedDate)
 			'available_for_submission_ending'//becomes getAvailableForSubmissionEnding (use getDueDate)
 		]);
+	}
+
+
+	get isAutoGraded () {
+		return this['auto_grade'] || this.parts.some(x => x['auto_grade']);
 	}
 
 
@@ -164,6 +170,16 @@ export default class Assignment extends Base {
 		});
 
 		return result;
+	}
+
+
+	setTotalPoints (points) {
+		return this.save({'total_points': points});
+	}
+
+
+	setAutoGrade (state) {
+		return this.save({'auto_grade': state});
 	}
 
 }
