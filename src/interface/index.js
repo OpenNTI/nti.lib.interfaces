@@ -4,13 +4,15 @@ import base64decode from 'btoa';
 
 import Logger from 'nti-util-logger';
 
-import request from '../utils/request';
 import DataCache from '../utils/datacache';
 import MimeComparator from '../utils/MimeComparator';
 
-import isEmpty from 'isempty';
 
+import parseBody from '../utils/attempt-json-parse';
+import getContentType from '../utils/get-content-type-header';
 import getLink, {getLinks} from '../utils/getlink';
+import encodeFormData from '../utils/encode-form-data';
+import toObject from '../utils/to-object';
 
 import chain from 'nti-commons/lib/function-chain';
 
@@ -24,11 +26,10 @@ import {TOS_NOT_ACCEPTED} from '../constants';
 const logger = Logger.get('DataServerInterface');
 
 const btoa = global.bota || base64decode;
-const jsonContent = /(application|json)/i;
-const mightBeJson = /^(\s*)(\{|\[|"|')/i;
 
 const Request = Symbol('Request Adaptor');
 const AsFormSubmission = Symbol('');
+
 
 export default class DataServerInterface {
 
@@ -57,143 +58,145 @@ export default class DataServerInterface {
 	 * @private
 	 */
 	[Request] (options, context) {
+		//covers more than just undefined. (false, 0, null, and undefined.)
+		//Make sure options is the normalize shape.
+		options = (options && (typeof options === 'object' ? options : {url: options})) || {};
 
-		let result;
-		let abortMethod;
-		let start = Date.now();
-		let url = (options || {}).url;
+		const start = Date.now();
+		const url = Url.parse(this.config.server)
+						.resolve(options.url || '');
 
-		if (!options) {
-			options = {};
-		}
 
-		if (typeof options === 'string') {
-			url = options;
-			options = {};
-		}
+		const {data} = options;
+		const {accept} = options.headers || {};
+		const mime = accept && new MimeComparator(accept);
 
-		url = Url.parse(this.config.server).resolve(url || '');
+		const init = {
+			credentials: 'same-origin',
+			method: data ? 'POST' : 'GET',
+			...options
+		};
 
-		let mime = (options.headers || {}).accept;
-		let data = options.data;
-		let opts = Object.assign({}, {
-			method: data ? 'POST' : 'GET'
-		}, options, {
-			url: url//ensure the resolved url is used.
-		});
+		if (options.headers !== null) {
+			init.headers = {
+				...options.headers,
 
-		if ((options || {}).headers !== null) {
-			opts.headers = Object.assign( true, ((options || {}).headers || {}), {
 				//Always override these headers
 				'accept': mime || 'application/json',
 				'X-Requested-With': 'XMLHttpRequest'
-			});
+			};
 		}
 
 		if(context) {
-			opts.headers = Object.assign({},
-				context.headers || {},
-				opts.headers,
-				{'accept-encoding': ''}
-			);
+			init.headers = {
+				...(context.headers || {}),
+				...init.headers,
+				'accept-encoding': ''
+			};
 
-			delete opts.headers['content-length'];
-			delete opts.headers['content-type'];
-			delete opts.headers['referer'];
+			delete init.headers['content-length'];
+			delete init.headers['content-type'];
+			delete init.headers['referer'];
 
 		} else if (!process.browser) {
 			throw new Error('Calling request w/o context!');
 		}
 
-		if (data) {
-			opts.form = data;
-			if (typeof data === 'object' && !data[AsFormSubmission]) {
-				opts.headers['Content-type'] = 'application/json';
+		if (data && typeof data === 'object') {
+			if (data[AsFormSubmission]) {
+				delete data[AsFormSubmission];
+				init.body = encodeFormData(data);
 			}
-			delete data[AsFormSubmission];
-		}
-
-		function getContentType (headers) {
-			let reg = /Content-Type/i;
-			let key = Object.keys(headers).reduce((i, k) => i || (reg.test(k) && k), null);
-
-			if (key) {
-				return headers[key];
+			else {
+				init.body = JSON.stringify(data);
+				init.headers['Content-Type'] = 'application/json';
 			}
 		}
 
-		result = new Promise((fulfill, reject) => {
-			logger.debug('REQUEST <- %s %s', opts.method, url);
+		let abortMethod; //defined inside the promise
+		const result = new Promise((fulfill, reject) => {
+			let abortFlag = false;
 
-			if (context && context.dead) {
-				return reject('request/connection aborted');
-			}
+			logger.debug('REQUEST <- %s %s', init.method, url);
 
-			if (context && context.on) {
-				const abort = ()=> abortMethod();
-				const clean = event => context.removeListener(event, abort);
-				const n = ()=> (clean('aborted'), clean('close'));
-
-				fulfill = chain(fulfill, n);
-				reject = chain(reject, n);
-
-				context.on('aborted', abort);
-				context.on('close', abort);
-			}
-
-			let active = request(opts, (error, res, body) => {
-				if (!res) {
-					res = {headers: {}};
+			if (context) {
+				if(context.dead) {
+					return reject('request/connection aborted');
 				}
 
-				let contentType = getContentType(res.headers);
-				let code = res.statusCode;
+				if (context.on) {
+					const abort = ()=> abortMethod();
+					const clean = event => context.removeListener(event, abort);
+					const n = ()=> (clean('aborted'), clean('close'));
 
-				try {
-					if (isEmpty(contentType) || jsonContent.test(contentType) || mightBeJson.test(body)) {
-						body = JSON.parse(body);
+					fulfill = chain(fulfill, n);
+					reject = chain(reject, n);
+
+					context.on('aborted', abort);
+					context.on('close', abort);
+				}
+			}
+
+			const maybeFulfill = (...args) => !abortFlag && fulfill(...args);
+			const maybeReject = (...args) => !abortFlag && reject(...args);
+
+			function checkStatus (response) {
+				if (response.ok) {
+					return response;
+				} else {
+					logger.debug('REQUEST -> %s %s %s %dms', init.method, url, response.statusText, Date.now() - start);
+
+					let error = Object.assign(new Error(response.statusText), {
+						Message: response.statusText,
+						response,
+						statusCode: response.status
+					});
+
+					return response.json()
+						.then(json => {
+							Object.assign(error, json);
+							return Promise.reject(error);
+						})
+						.catch(() =>
+							Promise.reject(error)
+						);
+				}
+			}
+
+			fetch(url, init)
+				.catch(() => Promise.reject({Message: 'Request Failed.', statusCode: 0}))
+				.then(checkStatus)
+				.then(response => abortFlag
+									? Promise.reject('Aborted')
+									: response.text()//we don't use .json() because we need to fallback if it doesn't parse.
+										.then(parseBody)
+										.then(body => ({response, body})))
+				.then(({body, response}) => {
+
+					const headers = toObject(response.headers);
+					if (headers['set-cookie'] && context) {
+						context.responseHeaders = context.responseHeaders || {};
+						context.responseHeaders['set-cookie'] = headers['set-cookie'];
 					}
-				//Don't care... let it pass to the client as a string
-				} catch (e) {} // eslint-disable-line no-empty
 
-				logger.debug('REQUEST -> %s %s %s %dms',
-						opts.method, url, error || code, Date.now() - start);
-
-				if (error || code >= 300 || code === 0) {
-					if(res) {
-						if (typeof body === 'object') {
-							res = Object.assign(body, {
-								Message: body.Message || res.statusText,
-								statusCode: code
-							});
+					//If sent an explicit Accept header the server
+					//may return a 406 if the Accept value is not supported
+					//or it may just return whatever it wants.  If we send
+					//Accept we check the Content-Type to see if that is what
+					//we get back.  If it's not, we reject.
+					if (mime) {
+						const contentType = getContentType(headers);
+						if (!mime.is(contentType)) {
+							return Promise.reject('Requested with an explicit accept value of ' +
+											mime + ' but got ' + contentType + '.  Rejecting.');
 						}
 					}
-					return reject(error || res);
-				}
 
-				if (res.headers['set-cookie'] && context) {
-					context.responseHeaders = context.responseHeaders || {};
-					context.responseHeaders['set-cookie'] = res.headers['set-cookie'];
-				}
+					return body;
+				})
+				.then(maybeFulfill, maybeReject);
 
-				//If sent an explicit Accept header the server
-				//may return a 406 if the Accept value is not supported
-				//or it may just return whatever it wants.  If we send
-				//Accept we check the Content-Type to see if that is what
-				//we get back.  If it's not, we reject.
-				if (mime) {
-					mime = new MimeComparator(mime);
-					if (!mime.is(contentType)) {
-						return reject('Requested with an explicit accept value of ' +
-										mime + ' but got ' + contentType + '.  Rejecting.');
-					}
-				}
-
-
-				fulfill(body);
-			});
-
-			abortMethod = ()=> { active.abort(); reject('aborted'); };
+			abortMethod = ()=> { abortFlag = true; reject('aborted'); };
 		});
 
 		result.abort = abortMethod || (()=> logger.warn('Attempting to abort request, but missing abort() method.'));
