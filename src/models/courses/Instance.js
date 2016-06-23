@@ -165,6 +165,10 @@ export default class Instance extends Base {
 	}
 
 
+	getResources () {
+		return this.fetchLinkParsed('resources');
+	}
+
 	//Should only show assignments if there is an AssignmentsByOutlineNode link
 	shouldShowAssignments () {
 		return !!this.getLink('AssignmentsByOutlineNode');

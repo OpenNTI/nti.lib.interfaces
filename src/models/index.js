@@ -52,6 +52,9 @@ import TranscriptRangeDescription from './anchors/TranscriptRangeDescription';
 
 import ContentPackage from './content/Package';
 import ContentBundle from './content/Bundle';
+import ContentFile from './content/File';
+import ContentFolder from './content/Folder';
+import ContentRootFolder from './content/Root';
 
 import MediaSource from './MediaSource';
 import Video from './Video';
@@ -213,6 +216,14 @@ const PARSERS = {
 	'ContentPackage': 'contentpackage',
 	'ContentPackageBundle': 'contentpackagebundle',
 	'CourseInstanceSharingScopes': 'courseinstancesharingscopes',
+
+	'contentfile': ContentFile,
+	'contentfolder': ContentFolder,
+	'contentrootfolder': ContentRootFolder,
+	'courseware.contentfile': 'contentfile',
+	'courseware.contentfolder': 'contentfolder',
+	'courserootfolder': 'contentrootfolder',
+	'resources.courserootfolder': 'contentrootfolder',
 
 	'ntitimeline': Timeline,
 
