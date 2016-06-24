@@ -1,6 +1,7 @@
 import {HISTORY_LINK} from '../Constants';
 import Base from '../../Base';
 import {cacheClassInstances} from '../../mixins/InstanceCacheable';
+import Publishable from '../../mixins/Publishable';
 import {
 	Service,
 	ReParent,
@@ -15,7 +16,7 @@ const ActiveSavePointPost = Symbol('ActiveSavePointPost');
 export default class Assignment extends Base {
 
 	constructor (service, parent, data) {
-		super(service, parent, data, {isSubmittable: true});
+		super(service, parent, data, Publishable, {isSubmittable: true});
 
 		this[parse]('parts', []);
 
