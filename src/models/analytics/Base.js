@@ -103,11 +103,11 @@ export default class BasicEvent {
 	}
 
 	getData () {
-		let k, v, d = {};
+		const d = {};
 
-		for (k in this) {
+		for (let k in this) {
 			if (!this.hasOwnProperty(k)) { continue; }
-			v = this[k];
+			let v = this[k];
 			if (v != null && !isFunction(v)) {
 
 				if (v && isFunction(v.getData)) {
@@ -120,4 +120,7 @@ export default class BasicEvent {
 
 		return d;
 	}
+
+
+	toJSON () { return this.getData(); }
 }
