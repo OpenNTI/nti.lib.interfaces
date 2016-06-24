@@ -5,6 +5,7 @@ import Logger from 'nti-util-logger';
 import {parse} from '../models';
 
 import Capabilities from '../models/Capabilities';
+import AbstractPlaceholder from '../models/AbstractPlaceholder';
 
 import Pendability, {attach as attachPendingQueue} from '../models/mixins/Pendability';
 import InstanceCacheContainer from '../models/mixins/InstanceCacheContainer';
@@ -353,6 +354,11 @@ export default class ServiceDocument {
 		}
 
 		return this.getObjectRaw(ntiid, field, type).then(p);
+	}
+
+
+	getObjectPlaceholder (obj) {
+		return new AbstractPlaceholder(this, this, obj);
 	}
 
 
