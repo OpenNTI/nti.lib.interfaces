@@ -267,6 +267,7 @@ export default class Base extends EventEmitter {
 			}
 
 			const MightBeModel = x=> !x || !!x[Service];
+			const HasMimeType = x=>  x && (!!x.MimeType || !!x.Class);
 			const Objects = x=> typeof x === 'object';
 
 			for(let prop in o) {
@@ -294,7 +295,10 @@ export default class Base extends EventEmitter {
 						(Array.isArray(current) && current.every(MightBeModel)); //If the current value is an array, and each element of the array is Model-like...
 						//then the current value Might be a list of models...
 
-					let newValueHasMimeType = value && (!!value.MimeType || !!value.Class);
+					let newValueHasMimeType = HasMimeType(value);
+
+					//If the new value is an array and any item has a MimeType or Class
+					let newValueMightBeListOfModels = Array.isArray(value) && value.some(HasMimeType);
 
 					//Lets inspect the new value...
 					let newValueIsArrayOfObjects =
@@ -309,6 +313,7 @@ export default class Base extends EventEmitter {
 						currentIsModel ||
 						//or if the new value looks parsable
 						newValueHasMimeType ||
+						newValueMightBeListOfModels ||
 						(
 							//or the current value was unset, or a list of Models,
 							currentMightBeListOfModels &&
