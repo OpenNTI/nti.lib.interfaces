@@ -297,8 +297,8 @@ export default class Base extends EventEmitter {
 
 					let newValueHasMimeType = HasMimeType(value);
 
-					//If the new value is an array and any item has a MimeType or Class
-					let newValueMightBeListOfModels = Array.isArray(value) && value.some(HasMimeType);
+					//If the new value is an array and any item has a MimeType or Class, and its not Links (which don't have models yet...)
+					let newValueMightBeListOfModels = Array.isArray(value) && prop !== 'Links' && value.some(HasMimeType);
 
 					//Lets inspect the new value...
 					let newValueIsArrayOfObjects =
