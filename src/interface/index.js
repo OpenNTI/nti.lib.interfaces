@@ -104,7 +104,6 @@ export default class DataServerInterface {
 
 		if (data && typeof data === 'object') {
 			if (data[AsFormSubmission]) {
-				delete data[AsFormSubmission];
 				init.body = encodeFormData(data);
 			}
 			else {
@@ -140,7 +139,7 @@ export default class DataServerInterface {
 			const maybeFulfill = (...args) => !abortFlag && fulfill(...args);
 			const maybeReject = (...args) => !abortFlag && reject(...args);
 
-			function checkStatus (response) {
+			const checkStatus = (response) => {
 				if (response.ok) {
 					return response;
 				} else {
@@ -155,13 +154,20 @@ export default class DataServerInterface {
 					return response.json()
 						.then(json => {
 							Object.assign(error, json);
+
+							const confirm = response.status === 409 && getLink(json, 'confirm');
+
+							if (confirm) {
+								error.confirm = () => this.put(confirm, data, context);
+							}
+
 							return Promise.reject(error);
 						})
 						.catch(() =>
 							Promise.reject(error)
 						);
 				}
-			}
+			};
 
 			fetch(url, init)
 				.catch(() => Promise.reject({Message: 'Request Failed.', statusCode: 0}))
