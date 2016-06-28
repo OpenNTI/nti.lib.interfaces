@@ -169,26 +169,34 @@ export default class DataServerInterface extends EventEmitter {
 								// Allowing for a Centralized Conflict Resolver.  If this is not handled, we will
 								// continue to reject (leaving a confirm method).
 								if (this.emit(REQUEST_CONFLICT_EVENT, {...json, confirm})) {
-									return waitOn;
+									//Reject with an object that has a key 'skip' which is our confirm Promise
+									//...so we can skip the parsing and body handling below. (the confirm will
+									// do that work for itself)
+									return Promise.reject({skip: waitOn});
 								}
 							}
 
 							return Promise.reject(error);
 						})
-						.catch(() =>
-							Promise.reject(error)
-						);
+						.catch(reason =>
+							// If this is our skip object, pass it on. Otherwise,
+							// its an unknown error and just reject with the error above.
+							Promise.reject(reason.skip ? reason : error));
 				}
 			};
 
 			fetch(url, init)
 				.catch(() => Promise.reject({Message: 'Request Failed.', statusCode: 0}))
 				.then(checkStatus)
+
+				//Parsing response
 				.then(response => abortFlag
 									? Promise.reject('Aborted')
 									: response.text()//we don't use .json() because we need to fallback if it doesn't parse.
 										.then(parseBody)
 										.then(body => ({response, body})))
+
+				//Handle cookies and validate mimes. (server side stuff mostly)
 				.then(({body, response}) => {
 
 					const headers = toObject(response.headers);
@@ -212,6 +220,12 @@ export default class DataServerInterface extends EventEmitter {
 
 					return body;
 				})
+
+				//handle some checkStatus errors, or pass them on
+				.catch(reason =>
+					reason.skip || Promise.reject(reason))
+
+				//finally, finish
 				.then(maybeFulfill, maybeReject);
 
 			abortMethod = ()=> { abortFlag = true; reject('aborted'); };
