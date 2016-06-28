@@ -1,3 +1,4 @@
+import EventEmitter from 'events';
 import Url from 'url';
 //If the login method is invoked on the NodeJS side, we will need this function...
 import base64decode from 'btoa';
@@ -20,8 +21,7 @@ import {attach as attachPendingQueue} from '../models/mixins/Pendability';
 
 import Service from '../stores/Service';
 
-import {SiteName} from '../constants';
-import {TOS_NOT_ACCEPTED} from '../constants';
+import {SiteName, REQUEST_CONFLICT_EVENT, TOS_NOT_ACCEPTED} from '../constants';
 
 const logger = Logger.get('DataServerInterface');
 
@@ -31,9 +31,10 @@ const Request = Symbol('Request Adaptor');
 const AsFormSubmission = Symbol('');
 
 
-export default class DataServerInterface {
+export default class DataServerInterface extends EventEmitter {
 
 	constructor (config) {
+		super();
 		if (!config || !config.server) {
 			throw new Error('No configuration');
 		}
@@ -155,10 +156,21 @@ export default class DataServerInterface {
 						.then(json => {
 							Object.assign(error, json);
 
-							const confirm = response.status === 409 && getLink(json, 'confirm');
+							const confirmLink = response.status === 409 && getLink(json, 'confirm');
 
-							if (confirm) {
-								error.confirm = () => this.put(confirm, data, context);
+							if (confirmLink) {
+								error.confirm = () => this.put(confirmLink, data, context);
+								let confirm;
+								const waitOn = new Promise((...args) => {
+									confirm = () => error.confirm().then(...args);
+								});
+
+								// We're expecting a top-level App-Wide component to listen and handle this event.
+								// Allowing for a Centralized Conflict Resolver.  If this is not handled, we will
+								// continue to reject (leaving a confirm method).
+								if (this.emit(REQUEST_CONFLICT_EVENT, {...json, confirm})) {
+									return waitOn;
+								}
 							}
 
 							return Promise.reject(error);

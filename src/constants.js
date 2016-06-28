@@ -16,6 +16,8 @@ export const Summary = Symbol('Container-Summary');
 
 export const DELETED = Symbol.for('DELETED');
 
+export const REQUEST_CONFLICT_EVENT = 'request-needs-confirmation';
+
 export const MODEL_INSTANCE_CACHE_KEY = '%%model.instances%%';
 
 
