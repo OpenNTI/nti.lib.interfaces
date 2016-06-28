@@ -1,3 +1,9 @@
+const Base = require('Base');
+const HISTORY_LINK = require('HISTORY_LINK');
+const Publishable = require('Publishable');
+
+const cacheClassInstances = require('cacheClassInstances');
+
 import {HISTORY_LINK} from '../Constants';
 import Base from '../../Base';
 import {cacheClassInstances} from '../../mixins/InstanceCacheable';
@@ -107,6 +113,11 @@ export default class Assignment extends Base {
 	}
 
 
+	getPublishDate () {
+		return this.isPublished() ? this.getAssignedDate() : null;
+	}
+
+
 	getSubmission () {
 		let Model = this.getModel('assessment.assignmentsubmission');
 		let s = new Model(this[Service], this, {
@@ -183,6 +194,22 @@ export default class Assignment extends Base {
 		return this.save({'auto_grade': state});
 	}
 
+	/**
+	 * Sets the publish state of the assignment
+	 *
+	 * @param {boolean|Date} state Publish States: Publish - True, Unpublish - False, or Schedule - Date
+	 * @returns {Promise} Fulfills when the state is set
+	 */
+	setPublishState (state) {
+		const isDate = state instanceof Date;
+		const value = isDate ? true : !!state;
+
+		const work = (!isDate && !value)
+			? Promise.resolve()
+			: this.save({ 'available_for_submission_beginning': isDate ? state : null});
+
+		return work.then(() => Publishable.setPublishState.call(this, value, 'available_for_submission_beginning'));
+	}
 }
 
 cacheClassInstances(Assignment);
