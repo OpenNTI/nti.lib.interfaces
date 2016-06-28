@@ -1,9 +1,3 @@
-const Base = require('Base');
-const HISTORY_LINK = require('HISTORY_LINK');
-const Publishable = require('Publishable');
-
-const cacheClassInstances = require('cacheClassInstances');
-
 import {HISTORY_LINK} from '../Constants';
 import Base from '../../Base';
 import {cacheClassInstances} from '../../mixins/InstanceCacheable';
