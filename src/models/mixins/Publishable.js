@@ -10,13 +10,13 @@ export default {
 		return parseDate(this.publishBeginning);
 	},
 
-	setPublishState (state) {
+	setPublishState (state, ...additionalChangingFields) {
 		const publish = !!state;
 		const link = publish ? 'publish' : 'unpublish';
 		const payload = state instanceof Date ? {'publishBeginning': state.getTime() / 1000} : void state;
 
-		return this.postToLink(link, payload)
-			.then(o => this.refresh(pluck(o, 'NTIID', 'Links', 'publishBeginning', 'PublicationState')))
+		return this.putToLink(link, payload)
+			.then(o => this.refresh(pluck(o, 'NTIID', 'Links', 'publishBeginning', 'PublicationState', ...additionalChangingFields)))
 			.then(() => this.onChange('publish'));
 	}
 };
