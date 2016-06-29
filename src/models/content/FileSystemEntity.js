@@ -25,6 +25,11 @@ export default class FileSystemEntity extends Base {
 	}
 
 
+	can (action) {
+		return this.hasLink(action);
+	}
+
+
 	getParentFolder () {
 		const parent = this.parent();
 		return (parent instanceof FileSystemEntity) ? parent : void parent;
