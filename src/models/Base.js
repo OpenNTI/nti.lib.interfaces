@@ -29,51 +29,6 @@ const logger = Logger.get('models:Base');
 
 const CONTENT_VISIBILITY_MAP = {OU: 'OUID'};
 
-function clone (obj) {
-	if (typeof obj !== 'object' || obj == null) {
-		return obj;
-	}
-
-	let out = Array.isArray(obj) ? [] : {};
-	for(let key of Object.keys(obj)) {
-		out[key] = clone(obj[key]);
-	}
-
-	return out;
-}
-
-
-function GenEnumerabilityOf (obj, propName) {
-	let desc = obj && Object.getOwnPropertyDescriptor(obj, propName);
-	return desc && desc.enumerable;
-}
-
-function dateGetter (key) {
-	const symbol = Symbol.for(`parsedDate:${key}`);
-	let last;
-	return function () {
-		if (typeof this[symbol] !== 'object' || this[key] !== last) {
-			last = this[key];
-			this[symbol] = parseDate(last);
-		}
-		return this[symbol];
-	};
-}
-
-function doParse (parent, data) {
-	let service = parent[Service];
-
-	try {
-		return data && parse(service, parent, data);
-	} catch (e) {
-		let m = e;
-		if (e.NoParser) {
-			m = e.message;
-		}
-		logger.warn(m.stack || m.message || m);
-		return data;
-	}
-}
 
 const NO_LINK = 'No Link';
 const PASCAL_CASE_REGEX = /(?:^|[^a-z0-9])([a-z0-9])?/igm;
@@ -549,5 +504,58 @@ export default class Base extends EventEmitter {
 		// TODO: we need to define what this 'visibility' means for an AppUser in general (rather than just OU) or
 		// have a convention on how have we resolve it.
 		return !attr || u.hasOwnProperty(attr) || attr === status || (/everyone/i).test(attr);
+	}
+}
+
+
+
+/*** Utility private functions ***/
+
+
+function clone (obj) {
+	if (typeof obj !== 'object' || obj == null) {
+		return obj;
+	}
+
+	let out = Array.isArray(obj) ? [] : {};
+	for(let key of Object.keys(obj)) {
+		out[key] = clone(obj[key]);
+	}
+
+	return out;
+}
+
+
+function GenEnumerabilityOf (obj, propName) {
+	let desc = obj && Object.getOwnPropertyDescriptor(obj, propName);
+	return desc && desc.enumerable;
+}
+
+
+function dateGetter (key) {
+	const symbol = Symbol.for(`parsedDate:${key}`);
+	let last;
+	return function () {
+		if (typeof this[symbol] !== 'object' || this[key] !== last) {
+			last = this[key];
+			this[symbol] = parseDate(last);
+		}
+		return this[symbol];
+	};
+}
+
+
+function doParse (parent, data) {
+	let service = parent[Service];
+
+	try {
+		return data && parse(service, parent, data);
+	} catch (e) {
+		let m = e;
+		if (e.NoParser) {
+			m = e.message;
+		}
+		logger.warn(m.stack || m.message || m);
+		return data;
 	}
 }
