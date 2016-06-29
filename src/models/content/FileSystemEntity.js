@@ -17,7 +17,7 @@ export default class FileSystemEntity extends Base {
 		//	export   - download archive of directory
 		//	import   - upload an archived directory structure and import it (unzip in place)
 		//	mkdir    - make a new child directory
-		//	mkdirs   - make n new child directories
+		//	mkdirs   - make all the directories in a path.
 		//	move     - move this entry
 		//	rename   - rename this entry
 		//	tree     - get a tree snapshot view (shallow data)
