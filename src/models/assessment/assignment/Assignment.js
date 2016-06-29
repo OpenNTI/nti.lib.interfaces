@@ -35,7 +35,8 @@ export default class Assignment extends Base {
 
 
 	get isAutoGraded () {
-		return this['auto_grade'] || this.parts.some(x => x['auto_grade']);
+		const {parts} = this;
+		return this['auto_grade'] || (parts && parts.some(x => x['auto_grade']));
 	}
 
 
