@@ -50,7 +50,7 @@ export default class FileSystemEntity extends Base {
 
 
 	getFileName () {
-		return this.filename || this.title || this.name || '?unknown?';
+		return this.filename || this.name || '?unknown?';
 	}
 
 
