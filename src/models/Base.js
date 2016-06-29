@@ -355,47 +355,39 @@ export default class Base extends EventEmitter {
 	}
 
 
-	fetchLink (rel, params) {
+	fetchLinkParsed (rel, params) {
+		return this.fetchLink(rel, params, true);
+	}
+
+
+	fetchLink (rel, params, parseResponse) {
+		return this.requestLink(rel, 'get', void 0, params, parseResponse);
+	}
+
+
+	postToLink (rel, data, parseResponse) {
+		return this.requestLink(rel, 'post', data, void 0, parseResponse);
+	}
+
+
+	putToLink (rel, data, parseResponse) {
+		return this.requestLink(rel, 'put',data, void 0, parseResponse);
+	}
+
+
+	requestLink (rel, method, data, params, parseResponse) {
+	
 		let link = this.getLink(rel, params);
 		if (!link) {
 			return Promise.reject(NO_LINK);
 		}
 
-		return this[Service].get(link);
-	}
-
-
-	fetchLinkParsed (rel, params) {
-		return this.fetchLink(rel, params)
-			.then(x=> {
-				if (x.Items && !x.MimeType) {
-					if (x.Links) { logger.warn('Dropping Collection Links'); }
-					x = x.Items;
-				}
-
-				return x;
-			})
-			.then(x=> this[Parser](x));
-	}
-
-
-	postToLink (rel, data) {
-		let link = this.getLink(rel);
-		if (!link) {
-			return Promise.reject('No Link');
+		let result = this[Service][method](link, data);
+		if (parseResponse) {
+			result = parseResult(this, result);
 		}
 
-		return this[Service].post(link, data);
-	}
-
-
-	putToLink (rel, data) {
-		let link = this.getLink(rel);
-		if (!link) {
-			return Promise.reject('No Link');
-		}
-
-		return this[Service].put(link, data);
+		return result;
 	}
 
 
@@ -558,4 +550,17 @@ function doParse (parent, data) {
 		logger.warn(m.stack || m.message || m);
 		return data;
 	}
+}
+
+
+function parseResult (scope, requestPromise) {
+	return requestPromise.then(x=> {
+		if (x.Items && !x.MimeType) {
+			if (x.Links) { logger.warn('Dropping Collection Links'); }
+			x = x.Items;
+		}
+
+		return x;
+	})
+	.then(x=> scope[Parser](x));
 }
