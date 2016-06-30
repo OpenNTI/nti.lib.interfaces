@@ -1,3 +1,5 @@
+import pluck from 'nti-commons/lib/pluck';
+
 import Base from '../Base';
 
 //Think of this as an AbstractClass...or a Base class that noone directly instantiates.
@@ -41,6 +43,11 @@ export default class FileSystemEntity extends Base {
 	}
 
 
+	getExportDownloadURL () {
+		return this.getLink('export');
+	}
+
+
 	/**
 	 * @return {string} The url-safe slugified version of the filename.
 	 */
@@ -57,4 +64,32 @@ export default class FileSystemEntity extends Base {
 	getPath () {
 		return this.path || '/';
 	}
+
+
+	clear () {
+		return this.postToLink('clear');
+	}
+
+
+	delete () {
+		return this.requestLink('delete', 'delete');
+	}
+
+
+
+	rename (newName) {
+
+		let keys = ['NTIID', 'Links', 'filename', 'name'];
+
+		this.postToLink('rename', {filename: newName})
+			.then(o => this.refresh(pluck(o, ...keys)))
+			.then(() => this.onChange(keys));
+	}
+
+
+	mkdir () {
+		return this.postToLink('mkdir', {}, true);
+	}
+
+
 }
