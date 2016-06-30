@@ -159,7 +159,7 @@ export default class DataServerInterface extends EventEmitter {
 							const confirmLink = response.status === 409 && getLink(json, 'confirm');
 
 							if (confirmLink) {
-								error.confirm = () => this[Request]({...init, url: confirmLink}, context);
+								error.confirm = () => this[Request]({ url: confirmLink, method: init.method, data }, context);
 								let confirm;
 								const waitOn = new Promise((...args) => {
 									confirm = () => error.confirm().then(...args);
