@@ -181,7 +181,7 @@ export default class ServiceDocument {
 		let p = inflight[key] = this.getServer().get(url, this[Context]);
 
 		waitFor(p) //once the request finishes
-			.then(()=>wait(1000)) //wait one second before
+			// .then(()=>wait(1000)) //wait one second before
 			.then(clean, clean); //we remove the request's promise from the in-flight cache.
 
 		return p;
