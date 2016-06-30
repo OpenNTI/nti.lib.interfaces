@@ -130,6 +130,10 @@ export default class Assignment extends Base {
 	}
 
 
+	getVisability () {
+		return this['is_non_public'] ? 'ForCredit' : 'Everyone';
+	}
+
 	/**
 	 * Interface method. Called to load the last submission (Savepoint or final submission).
 	 * Intended to be called by the assessment Store in the Mobile App when viewing an assessment.
@@ -205,6 +209,12 @@ export default class Assignment extends Base {
 
 		return work.then(() => Publishable.setPublishState.call(this, value, 'available_for_submission_beginning'));
 	}
+
+
+	setVisability (value) {
+		return this.save({'is_non_public': value === 'ForCredit'});
+	}
+
 
 	/**
 	 * DANGER: Resets all submissions on an assignment across all students.
