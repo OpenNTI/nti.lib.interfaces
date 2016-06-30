@@ -205,6 +205,14 @@ export default class Assignment extends Base {
 
 		return work.then(() => Publishable.setPublishState.call(this, value, 'available_for_submission_beginning'));
 	}
+
+	/**
+	 * DANGER: Resets all submissions on an assignment across all students.
+	 * @returns {Promise} Promise that fulfills with request code.
+	 */
+	resetAllSubmissions () {
+		return this.postToLink('Reset');
+	}
 }
 
 cacheClassInstances(Assignment);
