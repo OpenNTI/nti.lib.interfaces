@@ -40,6 +40,7 @@ export default class QuestionSet extends Base {
 		return this.hasLink('UnrandomizePartsType');
 	}
 
+
 	/**
 	 * Checks to see if the NTIID is within this QuestionSet
 	 *
@@ -48,6 +49,15 @@ export default class QuestionSet extends Base {
 	 */
 	containsId (id) {
 		return !!this.getQuestion(id);
+	}
+
+
+	/**
+	 * Returns the max number of questions from the set to pick from.
+	 * @return {number} max or null if unrestricted
+	 */
+	getQuestionLimit () {
+		return this.draw;
 	}
 
 
@@ -117,5 +127,16 @@ export default class QuestionSet extends Base {
 
 	toggleRandomizedPartTypes () {
 		return this.toggleRandomized(true);
+	}
+
+
+	/**
+	 * Set the draw limit. A draw of 'None' or empty will convert the question bank back into a question set.
+	 * A limit with an acutal value will convert to a question bank.
+	 * @param {number|null} n The limit to set to. Use null if you want to convert back to question set.
+	 * @returns {Promise} A promise of the save is returned.
+	 */
+	setQuestionLimit (n) {
+		return this.save({'draw': n});
 	}
 }
