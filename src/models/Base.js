@@ -29,51 +29,6 @@ const logger = Logger.get('models:Base');
 
 const CONTENT_VISIBILITY_MAP = {OU: 'OUID'};
 
-function clone (obj) {
-	if (typeof obj !== 'object' || obj == null) {
-		return obj;
-	}
-
-	let out = Array.isArray(obj) ? [] : {};
-	for(let key of Object.keys(obj)) {
-		out[key] = clone(obj[key]);
-	}
-
-	return out;
-}
-
-
-function GenEnumerabilityOf (obj, propName) {
-	let desc = obj && Object.getOwnPropertyDescriptor(obj, propName);
-	return desc && desc.enumerable;
-}
-
-function dateGetter (key) {
-	const symbol = Symbol.for(`parsedDate:${key}`);
-	let last;
-	return function () {
-		if (typeof this[symbol] !== 'object' || this[key] !== last) {
-			last = this[key];
-			this[symbol] = parseDate(last);
-		}
-		return this[symbol];
-	};
-}
-
-function doParse (parent, data) {
-	let service = parent[Service];
-
-	try {
-		return data && parse(service, parent, data);
-	} catch (e) {
-		let m = e;
-		if (e.NoParser) {
-			m = e.message;
-		}
-		logger.warn(m.stack || m.message || m);
-		return data;
-	}
-}
 
 const NO_LINK = 'No Link';
 const PASCAL_CASE_REGEX = /(?:^|[^a-z0-9])([a-z0-9])?/igm;
@@ -400,47 +355,39 @@ export default class Base extends EventEmitter {
 	}
 
 
-	fetchLink (rel, params) {
+	fetchLinkParsed (rel, params) {
+		return this.fetchLink(rel, params, true);
+	}
+
+
+	fetchLink (rel, params, parseResponse) {
+		return this.requestLink(rel, 'get', void 0, params, parseResponse);
+	}
+
+
+	postToLink (rel, data, parseResponse) {
+		return this.requestLink(rel, 'post', data, void 0, parseResponse);
+	}
+
+
+	putToLink (rel, data, parseResponse) {
+		return this.requestLink(rel, 'put',data, void 0, parseResponse);
+	}
+
+
+	requestLink (rel, method, data, params, parseResponse) {
+	
 		let link = this.getLink(rel, params);
 		if (!link) {
 			return Promise.reject(NO_LINK);
 		}
 
-		return this[Service].get(link);
-	}
-
-
-	fetchLinkParsed (rel, params) {
-		return this.fetchLink(rel, params)
-			.then(x=> {
-				if (x.Items && !x.MimeType) {
-					if (x.Links) { logger.warn('Dropping Collection Links'); }
-					x = x.Items;
-				}
-
-				return x;
-			})
-			.then(x=> this[Parser](x));
-	}
-
-
-	postToLink (rel, data) {
-		let link = this.getLink(rel);
-		if (!link) {
-			return Promise.reject('No Link');
+		let result = this[Service][method](link, data);
+		if (parseResponse) {
+			result = parseResult(this, result);
 		}
 
-		return this[Service].post(link, data);
-	}
-
-
-	putToLink (rel, data) {
-		let link = this.getLink(rel);
-		if (!link) {
-			return Promise.reject('No Link');
-		}
-
-		return this[Service].put(link, data);
+		return result;
 	}
 
 
@@ -550,4 +497,70 @@ export default class Base extends EventEmitter {
 		// have a convention on how have we resolve it.
 		return !attr || u.hasOwnProperty(attr) || attr === status || (/everyone/i).test(attr);
 	}
+}
+
+
+
+/*** Utility private functions ***/
+
+
+function clone (obj) {
+	if (typeof obj !== 'object' || obj == null) {
+		return obj;
+	}
+
+	let out = Array.isArray(obj) ? [] : {};
+	for(let key of Object.keys(obj)) {
+		out[key] = clone(obj[key]);
+	}
+
+	return out;
+}
+
+
+function GenEnumerabilityOf (obj, propName) {
+	let desc = obj && Object.getOwnPropertyDescriptor(obj, propName);
+	return desc && desc.enumerable;
+}
+
+
+function dateGetter (key) {
+	const symbol = Symbol.for(`parsedDate:${key}`);
+	let last;
+	return function () {
+		if (typeof this[symbol] !== 'object' || this[key] !== last) {
+			last = this[key];
+			this[symbol] = parseDate(last);
+		}
+		return this[symbol];
+	};
+}
+
+
+function doParse (parent, data) {
+	let service = parent[Service];
+
+	try {
+		return data && parse(service, parent, data);
+	} catch (e) {
+		let m = e;
+		if (e.NoParser) {
+			m = e.message;
+		}
+		logger.warn(m.stack || m.message || m);
+		return data;
+	}
+}
+
+
+function parseResult (scope, requestPromise) {
+	return requestPromise.then(x=> {
+		if (x.Items && !x.MimeType) {
+			if (x.Links) { logger.warn('Dropping Collection Links'); }
+			x = x.Items;
+		}
+
+		return x;
+	})
+	.then(x=> scope[Parser](x));
 }
