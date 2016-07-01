@@ -130,7 +130,7 @@ export default class Assignment extends Base {
 	}
 
 
-	getVisability () {
+	getVisibility () {
 		return this['is_non_public'] ? 'ForCredit' : 'Everyone';
 	}
 
@@ -211,7 +211,7 @@ export default class Assignment extends Base {
 	}
 
 
-	setVisability (value) {
+	setVisibility (value) {
 		return this.save({'is_non_public': value === 'ForCredit'});
 	}
 
