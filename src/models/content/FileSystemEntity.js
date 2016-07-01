@@ -76,12 +76,19 @@ export default class FileSystemEntity extends Base {
 	}
 
 
+	moveTo (path) {
+		let keys = ['NTIID', 'Links', 'path'];
+		return this.postToLink('move', {path})
+			.then(o => this.refresh(pluck(o, ...keys)))
+			.then(() => this.onChange(keys));
+	}
+
 
 	rename (newName) {
 
 		let keys = ['NTIID', 'Links', 'filename', 'name'];
 
-		this.postToLink('rename', {filename: newName})
+		return this.postToLink('rename', {filename: newName})
 			.then(o => this.refresh(pluck(o, ...keys)))
 			.then(() => this.onChange(keys));
 	}
