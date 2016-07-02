@@ -15,6 +15,10 @@ export const Progress = Symbol.for('Progress');
 export const Summary = Symbol('Container-Summary');
 
 export const DELETED = Symbol.for('DELETED');
+export const SAVE = Symbol.for('SAVE');
+
+export const EVENT_BEGIN = 'begin';
+export const EVENT_FINISH = 'finish';
 
 export const REQUEST_CONFLICT_EVENT = 'request-needs-confirmation';
 
