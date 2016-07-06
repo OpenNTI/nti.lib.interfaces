@@ -1,5 +1,5 @@
 import Logger from 'nti-util-logger';
-import {EventEmitter} from 'events';
+import EventEmitter from 'events';
 
 import Url from 'url';
 import QueryString from 'query-string';

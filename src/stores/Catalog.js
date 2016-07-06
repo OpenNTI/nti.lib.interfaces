@@ -1,4 +1,4 @@
-import {EventEmitter} from 'events';
+import EventEmitter from 'events';
 
 
 import forwardFunctions from 'nti-commons/lib/function-forwarding';

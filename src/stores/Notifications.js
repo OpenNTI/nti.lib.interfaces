@@ -6,7 +6,7 @@ import waitFor from 'nti-commons/lib/waitfor';
 
 
 import Url from 'url';
-import {EventEmitter} from 'events';
+import EventEmitter from 'events';
 
 import { Service, ROOT_NTIID, REL_MESSAGE_INBOX} from '../constants';
 import {parse} from '../models';
