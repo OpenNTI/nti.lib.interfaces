@@ -441,13 +441,7 @@ export default class DataServerInterface extends EventEmitter {
 	preflightAccountCreate (fields, context) {
 		return this.ping(context)
 			.then(result =>
-				this[Request]({
-					url: result.links['account.preflight.create'],
-					headers: {
-						'Content-type': 'application/json'
-					},
-					data: JSON.stringify(fields)
-				}, context)
+				this.post(result.links['account.preflight.create'], fields, context)
 			);
 	}
 
@@ -455,13 +449,7 @@ export default class DataServerInterface extends EventEmitter {
 	createAccount (fields, context) {
 		return this.ping(context)
 			.then(result =>
-				this[Request]({
-					url: result.links['account.create'],
-					headers: {
-						'Content-type': 'application/json'
-					},
-					data: JSON.stringify(fields)
-				}, context)
+				this.post(result.links['account.create'], fields, context)
 			);
 	}
 
