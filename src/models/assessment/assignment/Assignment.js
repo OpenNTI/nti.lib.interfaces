@@ -117,6 +117,7 @@ export default class Assignment extends Base {
 		let Model = this.getModel('assessment.assignmentsubmission');
 		let s = new Model(this[Service], this, {
 			assignmentId: this.getID(),
+			version: this.version,
 			parts: []
 		});
 
