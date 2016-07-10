@@ -26,6 +26,7 @@ export default {
 
 		let keys = [...Object.keys(newValues), 'NTIID', 'Links'];
 
+		this.savingValues = newValues;
 
 		begin(this, SAVE);
 
