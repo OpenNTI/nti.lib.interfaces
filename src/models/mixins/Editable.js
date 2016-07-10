@@ -26,14 +26,21 @@ export default {
 
 		let keys = [...Object.keys(newValues), 'NTIID', 'Links'];
 
-		this.savingValues = newValues;
+		const data = {
+			fields: newValues
+		};
 
 		begin(this, SAVE);
 
-		return this.putToLink('edit', newValues)
-			.then(o => this.refresh(pluck(o, ...keys)))
-			.then(onAfterRefresh)
-			.then(...finishers(this, SAVE))
+		this.saving = this.putToLink('edit', newValues)
+			.then(o => this.refresh(pluck(o, ...keys), o))
+			.then(o => (onAfterRefresh(o), o))
+			.then(...finishers(this, SAVE, data))
 			.then(() => this.onChange(keys));
+
+		const clean = () => delete this.saving;
+		this.saving.then(clean, clean);
+
+		return this.saving;
 	}
 };
