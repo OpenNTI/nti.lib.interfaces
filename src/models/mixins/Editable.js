@@ -38,7 +38,7 @@ export default {
 			.then(...finishers(this, SAVE, data))
 			.then(() => this.onChange(keys));
 
-		const clean = () => delete this.saving;
+		const clean = () => (delete this.saving.values, delete this.saving);
 
 		this.saving.values = newValues;
 		this.saving.then(clean, clean);
