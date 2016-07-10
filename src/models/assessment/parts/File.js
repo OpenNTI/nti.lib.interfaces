@@ -22,7 +22,7 @@ export default class File extends Part {
 			r = this.reasons = [];
 
 		if (!name) {
-			r.push('Name does not have an acceptible extention: ' + this.allowed_extentions.join(', '));
+			r.push('Name does not have an acceptible extention: ' + this.allowed_extensions.join(', '));
 		}
 
 		if (!type) {
@@ -49,7 +49,7 @@ export default class File extends Part {
 
 
 	checkFileExtention (name) {
-		let allowed = this.allowed_extentions || ['*.*'];
+		let allowed = this.allowed_extensions || ['*.*'];
 		return allowed.some(o =>getRegExp(o, '{0}$').test(name));
 	}
 
