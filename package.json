@@ -32,7 +32,6 @@
     "invariant": "^2.2.0",
     "is-function": "^1.0.1",
     "isempty": "0.0.1",
-    "media-typer": "^0.3.0",
     "mime-types": "^2.1.0",
     "moment": "^2.8.3",
     "node-uuid": "^1.4.3",

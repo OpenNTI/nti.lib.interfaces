@@ -6,7 +6,6 @@ import base64decode from 'btoa';
 import Logger from 'nti-util-logger';
 
 import DataCache from '../utils/datacache';
-import MimeComparator from '../utils/MimeComparator';
 
 
 import parseBody from '../utils/attempt-json-parse';
@@ -15,6 +14,7 @@ import getLink, {getLinks} from '../utils/getlink';
 import encodeFormData from '../utils/encode-form-data';
 import toObject from '../utils/to-object';
 
+import MimeComparator from 'nti-commons/lib/MimeComparator';
 import chain from 'nti-commons/lib/function-chain';
 
 import {attach as attachPendingQueue} from '../models/mixins/Pendability';
