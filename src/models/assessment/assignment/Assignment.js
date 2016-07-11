@@ -36,7 +36,12 @@ export default class Assignment extends Base {
 
 	get isAutoGraded () {
 		const {parts} = this;
-		return this['auto_grade'] || (parts && parts.some(x => x['auto_grade']));
+		// dance around the model being stale (if they add a question after this is on...
+		// and they confirm that they want to add that question... the server will turn
+		// this off, and we wont know until we refresh the assignment.)
+		const autoGradable = this.getQuestions().every(x => x.isAutoGradable);
+
+		return autoGradable && (this['auto_grade'] || (parts && parts.some(x => x['auto_grade'])));
 	}
 
 
