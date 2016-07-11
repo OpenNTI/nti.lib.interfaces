@@ -20,6 +20,25 @@ export default class Question extends Base {
 	}
 
 
+	[Symbol.iterator] () {
+		let snapshot = this.parts.slice();
+		let {length} = snapshot;
+		let index = 0;
+
+		return {
+
+			next () {
+				let done = index >= length;
+				let value = snapshot[index++];
+
+				return { value, done };
+			}
+
+		};
+	}
+
+
+
 	get individual () {
 		let result = this[Individual];
 		if (!this.hasOwnProperty(Individual)) {

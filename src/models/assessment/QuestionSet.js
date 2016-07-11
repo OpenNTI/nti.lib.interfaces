@@ -16,6 +16,23 @@ export default class QuestionSet extends Base {
 		this[parse]('questions', []);
 	}
 
+
+	[Symbol.iterator] () {
+		let snapshot = this.getQuestions();
+		let {length} = snapshot;
+		let index = 0;
+
+		return {
+
+			next () {
+				let done = index >= length;
+				let value = snapshot[index++];
+
+				return { value, done };
+			}
+
+		};
+	}
 	/**
 	 * Is the question order set to be randomized.
 	 *
