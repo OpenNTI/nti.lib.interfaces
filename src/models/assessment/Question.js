@@ -50,6 +50,30 @@ export default class Question extends Base {
 	}
 
 
+	get isAutoGradable () {
+		for (let part of this) {
+			if (!part.AutoGradable) { return false; }
+		}
+
+		return true;
+	}
+
+
+	getAutoGradableConflicts () {
+		const conflicts = [];
+		for (let part of this.parts) {
+			if (!part.AutoGradable) {
+				conflicts.push({
+					index: this.parts.indexOf(part),
+					part
+				});
+			}
+		}
+
+		return conflicts;
+	}
+
+
 	getPart (index) {
 		return (this.parts || [])[index];
 	}
@@ -92,7 +116,6 @@ export default class Question extends Base {
 		// return dataProvider.getUserDataLastOfType(SUBMITTED_TYPE);
 		return Promise.reject('Individual Question history not implemented');
 	}
-
 
 
 	isAnswered (questionSubmission) {

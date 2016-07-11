@@ -33,6 +33,33 @@ export default class QuestionSet extends Base {
 
 		};
 	}
+
+
+	get isAutoGradable () {
+		for (let question of this) {
+			if (!question.isAutoGradable) { return false; }
+		}
+
+		return true;
+	}
+
+
+	getAutoGradableConflicts () {
+		const conflicts = [];
+		for (let question of this.questions) {
+			if (!question.isAutoGradable) {
+				conflicts.push({
+					index: this.questions.indexOf(question),
+					reason: question.getAutoGradableConflicts(),
+					question
+				});
+			}
+		}
+
+		return conflicts;
+	}
+
+
 	/**
 	 * Is the question order set to be randomized.
 	 *
