@@ -69,7 +69,7 @@ export default class QuestionSet extends Base {
 		if (!this.hasLink('edit')) {
 			throw new Error('Illegal Access. This instance is not editable.');
 		}
-		return this.hasLink('Unrandomize');
+		return this.Randomized;
 	}
 
 	/**
@@ -81,7 +81,7 @@ export default class QuestionSet extends Base {
 		if (!this.hasLink('edit')) {
 			throw new Error('Illegal Access. This instance is not editable.');
 		}
-		return this.hasLink('UnrandomizePartsType');
+		return this.RandomizedPartsType;
 	}
 
 
@@ -164,7 +164,7 @@ export default class QuestionSet extends Base {
 
 		let link = this.hasLink(cap(rel)) ? cap(rel) : cap(`un${rel}`);
 		return this.postToLink(link)
-			.then(o => this.refresh(pluck(o, 'NTIID', 'Links')))
+			.then(o => this.refresh(pluck(o, 'NTIID', 'Links', 'Randomized', 'RandomizedPartsType')))
 			.then(() => this.onChange('Randomize'));
 	}
 
