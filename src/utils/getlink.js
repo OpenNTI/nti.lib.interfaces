@@ -8,7 +8,7 @@ export default function getLink (o, rel, raw) {
 
 	for (let i = o && o.length - 1; i >= 0; i--) {
 		let v = o[i];
-		if (v && v.rel === rel) {
+		if (v && (v.rel === rel || (typeof rel === 'string' && v.rel.toLowerCase() === rel.toLowerCase()))) {
 			return raw === true ? v : v.href;
 		}
 	}
