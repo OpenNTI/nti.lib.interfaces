@@ -70,6 +70,7 @@ export default class Base extends EventEmitter {
 			this[methodName] = dateGetter(fieldName);
 		}
 
+		this.setMaxListeners(100);
 		this[TakeOver]('_events');
 		this[TakeOver]('_maxListeners');
 
@@ -376,7 +377,7 @@ export default class Base extends EventEmitter {
 
 
 	requestLink (rel, method, data, params, parseResponse) {
-	
+
 		let link = this.getLink(rel, params);
 		if (!link) {
 			return Promise.reject(NO_LINK);
