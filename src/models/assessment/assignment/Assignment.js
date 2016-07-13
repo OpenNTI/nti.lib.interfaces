@@ -222,7 +222,9 @@ export default class Assignment extends Base {
 	 * @returns {Promise} Promise that fulfills with request code.
 	 */
 	resetAllSubmissions () {
-		return this.postToLink('Reset');
+		return this.postToLink('Reset')
+			.then(()=> this.refresh())//temporarilly refresh the object from the server after the empty post. (the post *should* echo back the updated assignment)
+			.then(() => this.onChange('all'));
 	}
 }
 
