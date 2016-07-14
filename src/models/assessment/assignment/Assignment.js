@@ -1,3 +1,5 @@
+import pluck from 'nti-commons/lib/pluck';
+
 import {HISTORY_LINK} from '../Constants';
 import Base from '../../Base';
 import {cacheClassInstances} from '../../mixins/InstanceCacheable';
@@ -222,8 +224,11 @@ export default class Assignment extends Base {
 	 * @returns {Promise} Promise that fulfills with request code.
 	 */
 	resetAllSubmissions () {
+
+		const keys = ['NTIID', 'Links']; //keys on the response to refresh on ourself from.
+
 		return this.postToLink('Reset')
-			.then(()=> this.refresh())//temporarilly refresh the object from the server after the empty post. (the post *should* echo back the updated assignment)
+			.then(o => this.refresh(pluck(o, ...keys)))
 			.then(() => this.onChange('all'));
 	}
 }
