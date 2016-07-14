@@ -1,5 +1,3 @@
-import pluck from 'nti-commons/lib/pluck';
-
 import {HISTORY_LINK} from '../Constants';
 import Base from '../../Base';
 import {cacheClassInstances} from '../../mixins/InstanceCacheable';
