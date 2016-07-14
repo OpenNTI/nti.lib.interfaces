@@ -53,6 +53,12 @@ export default class Assignment extends Base {
 	}
 
 
+	isLocked () {
+		// See NTI-1414, the presence of this link signafies the assignment may be structually modified.
+		return !this.hasLink('InsertPart');
+	}
+
+
 	isNonSubmit () {
 		let p = this.parts;
 
