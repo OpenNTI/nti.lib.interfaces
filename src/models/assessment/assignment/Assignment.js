@@ -231,10 +231,8 @@ export default class Assignment extends Base {
 	 */
 	resetAllSubmissions () {
 
-		const keys = ['NTIID', 'Links']; //keys on the response to refresh on ourself from.
-
 		return this.postToLink('Reset')
-			.then(o => this.refresh(pluck(o, ...keys)))
+			.then(o => this.refresh(o))
 			.then(() => this.onChange('all'));
 	}
 }
