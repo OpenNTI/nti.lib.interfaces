@@ -33,7 +33,7 @@ export default {
 		begin(this, SAVE);
 
 		this.saving = this.putToLink('edit', newValues)
-			.then(o => this.refresh(pluck(o, ...keys), o))
+			.then(o => this.refresh(pluck(o, ...keys)))
 			.then(o => (onAfterRefresh(o), o))
 			.then(...finishers(this, SAVE, data))
 			.then(() => this.onChange(keys));
