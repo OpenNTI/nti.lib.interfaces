@@ -17,7 +17,7 @@ function MarkerFactory (obj) {
 		if (obj.onChange) {
 			obj.onChange();
 		}
-	}
+	};
 
 	return function (name, ...clears) {
 		Object.defineProperty(obj, name, {
@@ -25,10 +25,10 @@ function MarkerFactory (obj) {
 			get: () => markers[name],
 			set: (value) => {
 				if (value) { unmark(...clears); }
-				mark(name, value)
+				mark(name, value);
 			}
 		});
-	}
+	};
 }
 
 
