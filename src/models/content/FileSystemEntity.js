@@ -69,21 +69,21 @@ export default class FileSystemEntity extends Base {
 
 	clear () {
 		return this.postToLink('clear')
-			.catch(er => er !== NO_LINK ? er
+			.catch(er => Promise.reject(er !== NO_LINK ? er
 				: Object.assign(new Error(`${this.getFileName()} cannot be cleared.`), {
 					code: 'PermissionDeniedNoLink',
 					statusCode: 401
-				}));
+				})));
 	}
 
 
 	delete () {
 		return this.requestLink('delete', 'delete')
-			.catch(er => er !== NO_LINK ? er
+			.catch(er => Promise.reject(er !== NO_LINK ? er
 				: Object.assign(new Error(`${this.getFileName()} cannot be deleted.`), {
 					code: 'PermissionDeniedNoLink',
 					statusCode: 401
-				}));
+				})));
 	}
 
 
@@ -92,11 +92,11 @@ export default class FileSystemEntity extends Base {
 		return this.postToLink('move', {path})
 			.then(o => this.refresh(pluck(o, ...keys)))
 			.then(() => this.onChange(keys))
-			.catch(er => er !== NO_LINK ? er
+			.catch(er => Promise.reject(er !== NO_LINK ? er
 				: Object.assign(new Error(`${this.getFileName()} cannot be moved.`), {
 					code: 'PermissionDeniedNoLink',
 					statusCode: 401
-				}));
+				})));
 	}
 
 
@@ -107,21 +107,21 @@ export default class FileSystemEntity extends Base {
 		return this.postToLink('rename', {filename: newName})
 			.then(o => this.refresh(pluck(o, ...keys)))
 			.then(() => this.onChange(keys))
-			.catch(er => er !== NO_LINK ? er
+			.catch(er => Promise.reject(er !== NO_LINK ? er
 				: Object.assign(new Error(`${this.getFileName()} cannot be renamed.`), {
 					code: 'PermissionDeniedNoLink',
 					statusCode: 401
-				}));
+				})));
 	}
 
 
 	mkdir () {
 		return this.postToLink('mkdir', {}, true)
-		.catch(er => er !== NO_LINK ? er
+		.catch(er => Promise.reject(er !== NO_LINK ? er
 			: Object.assign(new Error(`New folders are not permitted under ${this.getFileName()}.`), {
 				code: 'PermissionDeniedNoLink',
 				statusCode: 401
-			}));
+			})));
 	}
 
 
