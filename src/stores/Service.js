@@ -30,7 +30,6 @@ import joinWithURL from 'nti-commons/lib/urljoin';
 import {isNTIID} from 'nti-lib-ntiids';
 import mixin from 'nti-commons/lib/mixin';
 import waitFor from 'nti-commons/lib/waitfor';
-import wait from 'nti-commons/lib/wait';
 
 import {Context, Server, Service, SiteName} from '../constants';
 
