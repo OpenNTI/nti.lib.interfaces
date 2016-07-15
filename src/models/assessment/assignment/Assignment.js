@@ -165,7 +165,13 @@ export default class Assignment extends Base {
 
 
 	loadSavePoint () {
-		return this.fetchLinkParsed('Savepoint');
+		return this.fetchLinkParsed('Savepoint')
+			.then(save =>
+				(save.version !== this.version)
+				//Drop savepoints that have missmatched versions
+					? Promise.reject(`Version Missmatch: SavePoint(${save.version}) != Assignment(${this.version})`)
+					: save
+				);
 	}
 
 
