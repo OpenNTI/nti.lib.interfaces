@@ -40,6 +40,7 @@ export const ROOT_NTIID = 'tag:nextthought.com,2011-10:Root';
 
 export const MEDIA_BY_OUTLINE_NODE = 'MediaByOutlineNode';
 
+export const NO_LINK = 'No Link';
 export const TOS_NOT_ACCEPTED = 'content.initial_tos_page';
 
 export const SortOrder = {

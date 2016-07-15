@@ -20,7 +20,8 @@ import {
 	Service,
 	ReParent,
 	DateFields,
-	Parser
+	Parser,
+	NO_LINK
 } from '../constants';
 
 
@@ -30,7 +31,6 @@ const logger = Logger.get('models:Base');
 const CONTENT_VISIBILITY_MAP = {OU: 'OUID'};
 
 
-const NO_LINK = 'No Link';
 const PASCAL_CASE_REGEX = /(?:^|[^a-z0-9])([a-z0-9])?/igm;
 
 const TakeOver = Symbol.for('TakeOver');
