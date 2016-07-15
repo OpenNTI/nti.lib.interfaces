@@ -1,6 +1,7 @@
 import pluck from 'nti-commons/lib/pluck';
 
 import Base from '../Base';
+import {NO_LINK} from '../../constants';
 
 //Think of this as an AbstractClass...or a Base class that noone directly instantiates.
 export default class FileSystemEntity extends Base {
@@ -67,12 +68,22 @@ export default class FileSystemEntity extends Base {
 
 
 	clear () {
-		return this.postToLink('clear');
+		return this.postToLink('clear')
+			.catch(er => er !== NO_LINK ? er
+				: Object.assign(new Error(`${this.getFileName()} cannot be cleared.`), {
+					code: 'PermissionDeniedNoLink',
+					statusCode: 401
+				}));
 	}
 
 
 	delete () {
-		return this.requestLink('delete', 'delete');
+		return this.requestLink('delete', 'delete')
+			.catch(er => er !== NO_LINK ? er
+				: Object.assign(new Error(`${this.getFileName()} cannot be deleted.`), {
+					code: 'PermissionDeniedNoLink',
+					statusCode: 401
+				}));
 	}
 
 
@@ -80,7 +91,12 @@ export default class FileSystemEntity extends Base {
 		let keys = ['NTIID', 'Links', 'filename', 'name', 'path'];
 		return this.postToLink('move', {path})
 			.then(o => this.refresh(pluck(o, ...keys)))
-			.then(() => this.onChange(keys));
+			.then(() => this.onChange(keys))
+			.catch(er => er !== NO_LINK ? er
+				: Object.assign(new Error(`${this.getFileName()} cannot be moved.`), {
+					code: 'PermissionDeniedNoLink',
+					statusCode: 401
+				}));
 	}
 
 
@@ -90,12 +106,22 @@ export default class FileSystemEntity extends Base {
 
 		return this.postToLink('rename', {filename: newName})
 			.then(o => this.refresh(pluck(o, ...keys)))
-			.then(() => this.onChange(keys));
+			.then(() => this.onChange(keys))
+			.catch(er => er !== NO_LINK ? er
+				: Object.assign(new Error(`${this.getFileName()} cannot be renamed.`), {
+					code: 'PermissionDeniedNoLink',
+					statusCode: 401
+				}));
 	}
 
 
 	mkdir () {
-		return this.postToLink('mkdir', {}, true);
+		return this.postToLink('mkdir', {}, true)
+		.catch(er => er !== NO_LINK ? er
+			: Object.assign(new Error(`New folders are not permitted under ${this.getFileName()}.`), {
+				code: 'PermissionDeniedNoLink',
+				statusCode: 401
+			}));
 	}
 
 
