@@ -1,8 +1,7 @@
-import FileSystemEntity from './FileSystemEntity';
+import Folder from './Folder';
 
-export default class Root extends FileSystemEntity {
+export default class Root extends Folder {
 	static MimeType = 'application/vnd.nextthought.resources.courserootfolder'
-	get isFolder () { return true; }
 
 	constructor (service, parent, data) {
 		super(service, parent, data);
