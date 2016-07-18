@@ -80,7 +80,7 @@ export default {
 			},
 
 			{
-				type: 'grade-received',
+				type: 'new-assignment',
 				checkRequirements: ()=> dateOpens < now,
 				getEventSpec: ()=> getConfig('new-assignment', dateOpens)
 			},
