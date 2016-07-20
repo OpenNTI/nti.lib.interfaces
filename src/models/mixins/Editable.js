@@ -4,6 +4,8 @@ import { Service, DELETED, SAVE } from '../../constants';
 
 import {begin, finishers} from '../../utils/events-begin-finish';
 
+const after = (task, call) => task.catch(()=>{}).then(()=>call());
+
 
 export default {
 	delete () {
@@ -13,7 +15,9 @@ export default {
 
 		begin(this, DELETED);
 
-		return this[Service].delete(this.href)
+		const previousSave = this.saving || Promise.resolve();
+
+		return after(previousSave, ()=> this[Service].delete(this.href))
 			.then(() => this.onChange(DELETED, this.getID()))
 			.then(...finishers(this, DELETED))
 			.then(() => true);//control the success result
@@ -32,15 +36,24 @@ export default {
 
 		begin(this, SAVE);
 
-		this.saving = this.putToLink('edit', newValues)
+		const previousSave = this.saving || Promise.resolve();
+
+		const worker = this.saving = after(previousSave, () => this.putToLink('edit', newValues))
 			.then(o => this.refresh(pluck(o, ...keys)))
 			.then(o => (onAfterRefresh(o), o))
 			.then(...finishers(this, SAVE, data))
 			.then(() => this.onChange(keys));
 
-		const clean = () => (delete this.saving.values, delete this.saving);
+		const clean = () => {
+			if (this.saving === worker) {
+				delete this.saving.values;
+				delete this.saving;
+			}
+		};
 
-		this.saving.values = newValues;
+		const otherQueued = (this.saving || {}).values || {};
+
+		this.saving.values = {...otherQueued, ...newValues};
 		this.saving.then(clean, clean);
 
 		return this.saving;
