@@ -114,14 +114,14 @@ export default class DataServerInterface extends EventEmitter {
 		}
 
 		let abortMethod; //defined inside the promise
-		const result = new Promise((fulfill, reject) => {
+		const result = new Promise((fulfillRequest, rejectRequest) => {
 			let abortFlag = false;
 
 			logger.debug('REQUEST <- %s %s', init.method, url);
 
 			if (context) {
 				if(context.dead) {
-					return reject('request/connection aborted');
+					return rejectRequest('request/connection aborted');
 				}
 
 				if (context.on) {
@@ -129,16 +129,16 @@ export default class DataServerInterface extends EventEmitter {
 					const clean = event => context.removeListener(event, abort);
 					const n = ()=> (clean('aborted'), clean('close'));
 
-					fulfill = chain(fulfill, n);
-					reject = chain(reject, n);
+					fulfillRequest = chain(fulfillRequest, n);
+					rejectRequest = chain(rejectRequest, n);
 
 					context.on('aborted', abort);
 					context.on('close', abort);
 				}
 			}
 
-			const maybeFulfill = (...args) => !abortFlag && fulfill(...args);
-			const maybeReject = (...args) => !abortFlag && reject(...args);
+			const maybeFulfill = (...args) => !abortFlag && fulfillRequest(...args);
+			const maybeReject = (...args) => !abortFlag && rejectRequest(...args);
 
 			const checkStatus = (response) => {
 				if (response.ok) {
@@ -161,14 +161,16 @@ export default class DataServerInterface extends EventEmitter {
 							if (confirmLink) {
 								error.confirm = () => this[Request]({ url: confirmLink, method: init.method, data }, context);
 								let confirm;
-								const waitOn = new Promise((...args) => {
-									confirm = () => error.confirm().then(...args);
+								let reject;
+								const waitOn = new Promise((continueRequest, rejectConflict) => {
+									confirm = () => error.confirm().then(continueRequest, rejectConflict);
+									reject = () => rejectConflict(error);
 								});
 
 								// We're expecting a top-level App-Wide component to listen and handle this event.
 								// Allowing for a Centralized Conflict Resolver.  If this is not handled, we will
 								// continue to reject (leaving a confirm method).
-								if (this.emit(REQUEST_CONFLICT_EVENT, {...json, confirm})) {
+								if (this.emit(REQUEST_CONFLICT_EVENT, {...json, confirm, reject})) {
 									//Reject with an object that has a key 'skip' which is our confirm Promise
 									//...so we can skip the parsing and body handling below. (the confirm will
 									// do that work for itself)
@@ -228,7 +230,7 @@ export default class DataServerInterface extends EventEmitter {
 				//finally, finish
 				.then(maybeFulfill, maybeReject);
 
-			abortMethod = ()=> { abortFlag = true; reject('aborted'); };
+			abortMethod = ()=> { abortFlag = true; rejectRequest('aborted'); };
 		});
 
 		result.abort = abortMethod || (()=> logger.warn('Attempting to abort request, but missing abort() method.'));
