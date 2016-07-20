@@ -140,6 +140,15 @@ export default class Assignment extends Base {
 		return this['is_non_public'] ? 'ForCredit' : 'Everyone';
 	}
 
+
+	isAvailable () {
+		const now = new Date();
+		const available = this.getAvailableForSubmissionBeginning();
+
+		//If the assignment is published and the available is in the past
+		return this.isPublished() && now > available;
+	}
+
 	/**
 	 * Interface method. Called to load the last submission (Savepoint or final submission).
 	 * Intended to be called by the assessment Store in the Mobile App when viewing an assessment.
