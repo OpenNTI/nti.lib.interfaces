@@ -1,4 +1,4 @@
-import Interface from './interface';
+import Interface from './interface/DataServerInterface';
 import cache from './utils/datacache';
 
 import Catalog from './stores/Catalog';
