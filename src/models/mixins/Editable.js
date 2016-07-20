@@ -28,7 +28,7 @@ export default {
 			return Promise.reject('No Edit Link.');
 		}
 
-		let keys = [...Object.keys(newValues), 'NTIID', 'Links'];
+		let keys = [...Object.keys(newValues), 'NTIID', 'Links', 'Last Modified'];
 
 		const data = {
 			fields: newValues
