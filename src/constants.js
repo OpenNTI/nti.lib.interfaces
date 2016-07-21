@@ -17,6 +17,8 @@ export const Summary = Symbol('Container-Summary');
 export const DELETED = Symbol.for('DELETED');
 export const SAVE = Symbol.for('SAVE');
 
+export const MAY_EFFECT_PROPERTIES = Symbol('Properties Might Be Effected');
+
 export const EVENT_BEGIN = 'begin';
 export const EVENT_FINISH = 'finish';
 

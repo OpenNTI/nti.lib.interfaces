@@ -1,6 +1,6 @@
 import pluck from 'nti-commons/lib/pluck';
 
-import { Service, DELETED, SAVE } from '../../constants';
+import { Service, DELETED, SAVE, MAY_EFFECT_PROPERTIES } from '../../constants';
 
 import {begin, finishers} from '../../utils/events-begin-finish';
 
@@ -28,17 +28,22 @@ export default {
 			return Promise.reject('No Edit Link.');
 		}
 
-		let keys = [...Object.keys(newValues), 'NTIID', 'Links', 'Last Modified'];
+		const {[MAY_EFFECT_PROPERTIES]: additionKeys, ...values} = newValues;
+
+		const keys = ['NTIID', 'Links', 'Last Modified'];
+
+		[...Object.keys(values), ...(additionKeys || [])]
+			.forEach(x => !keys.includes(x) && keys.push(x));
 
 		const data = {
-			fields: newValues
+			fields: values
 		};
 
 		begin(this, SAVE);
 
 		const previousSave = this.saving || Promise.resolve();
 
-		const worker = this.saving = after(previousSave, () => this.putToLink('edit', newValues))
+		const worker = this.saving = after(previousSave, () => this.putToLink('edit', values))
 			.then(o => this.refresh(pluck(o, ...keys)))
 			.then(o => (onAfterRefresh(o), o))
 			.then(...finishers(this, SAVE, data))
@@ -53,7 +58,7 @@ export default {
 
 		const otherQueued = (this.saving || {}).values || {};
 
-		this.saving.values = {...otherQueued, ...newValues};
+		this.saving.values = {...otherQueued, ...values};
 		this.saving.then(clean, clean);
 
 		return this.saving;
