@@ -220,6 +220,7 @@ const PARSERS = {
 	'contentfile': ContentFile,
 	'contentfolder': ContentFolder,
 	'contentrootfolder': ContentRootFolder,
+	'contentblobfile': 'contentfile',
 	'courseware.contentfile': 'contentfile',
 	'courseware.contentfolder': 'contentfolder',
 	'courserootfolder': 'contentrootfolder',
