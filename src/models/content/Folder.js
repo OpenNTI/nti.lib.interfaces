@@ -33,4 +33,11 @@ export default class Folder extends FileSystemEntity {
 		return file;
 	}
 
+
+
+	search (query, recursive) {
+		const additional = recursive ? {recursive: true} : {};
+		return this.fetchLinkParsed('search', {name: query, ...additional});
+	}
+
 }
