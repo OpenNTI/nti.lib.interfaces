@@ -4,7 +4,8 @@ import Base from '../Base';
 import {
 	Service,
 	ReParent,
-	Parser as parse
+	Parser as parse,
+	MAY_EFFECT_PROPERTIES
 } from '../../constants';
 
 let SUBMITTED_TYPE = 'application/vnd.nextthought.assessment.assessedquestionset';
@@ -164,7 +165,7 @@ export default class QuestionSet extends Base {
 
 		let link = this.hasLink(cap(rel)) ? cap(rel) : cap(`un${rel}`);
 		return this.postToLink(link)
-			.then(o => this.refresh(pluck(o, 'NTIID', 'Links', 'Randomized', 'RandomizedPartsType')))
+			.then(o => this.refresh(pluck(o, 'NTIID', 'Links', 'Randomized', 'RandomizedPartsType', 'draw')))
 			.then(() => this.onChange('Randomize'));
 	}
 
@@ -181,6 +182,9 @@ export default class QuestionSet extends Base {
 	 * @returns {Promise} A promise of the save is returned.
 	 */
 	setQuestionLimit (n) {
-		return this.save({'draw': n});
+		return this.save({
+			'draw': n,
+			[MAY_EFFECT_PROPERTIES]: ['Randomized', 'RandomizedPartsType']
+		});
 	}
 }
