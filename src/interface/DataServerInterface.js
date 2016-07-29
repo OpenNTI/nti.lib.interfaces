@@ -341,46 +341,56 @@ export default class DataServerInterface extends EventEmitter {
 	ping (context, username) {
 		username = username || (context && context.cookies && context.cookies.username);
 
-		let me = this;
-
-		return me.get('logon.ping', context)//ping
+		return this.get('logon.ping', context)//ping
 			//pong
-			.then(data => {
-				let urls = toMap(getLinks(data));
+			.then(pong => {
 
-				if (!urls['logon.handshake']) {
+				if (!getLink(pong, 'logon.handshake')) {
 					return Promise.reject('No handshake present');
 				}
 
-				if (context && data && data.Site) {
-					context[SiteName] = data.Site;
+				if (context && pong && pong.Site) {
+					context[SiteName] = pong.Site;
 				}
-
-				return urls;
-
-			})
-			.then(urls => {
 
 				if (!username) {
-					return (!urls['logon.continue']) ?
+					return (!getLink(pong, 'logon.continue'))
 						//Not logged in... we need the urls
-						{links: urls} :
+						? {
+							pong,
+							//FIXME: This version of "links" is deprecated... use getLink() or hasLink() on the result object.
+							links: toMap(getLinks(pong)),
+							getLink: (rel) => getLink(pong, rel),
+							hasLink: (rel) => !!getLink(pong, rel)
+						}
 						//There is a continue link, but we need our username to handshake...
-						me.getServiceDocument(context)
-							.then(d => me.handshake(urls, (username = d.getAppUsername()), context));
+						: this.handshake(pong, (username = pong.AuthenticatedUsername), context);
 				}
 
-				return me.handshake(urls, username, context);
+				return this.handshake(pong, username, context);
 
 			});
 	}
 
 
-	handshake (urls, username, context) {
-		return this.post(urls['logon.handshake'], {[AsFormSubmission]: true, username}, context)
-			.then(data => {
-				const result = {links: Object.assign({}, urls, toMap(getLinks(data)))};
-				if (!getLink(data, 'logon.continue')) {
+	handshake (pong, username, context) {
+
+		return this.post(getLink(pong, 'logon.handshake'), {[AsFormSubmission]: true, username}, context)
+			.then(handshake => {
+
+				const result = {
+					pong,
+					handshake,
+					//FIXME: This version of "links" is deprecated... use getLink() or hasLink() on the result object.
+					links: {
+						...toMap(getLinks(pong)),
+						...toMap(getLinks(handshake))
+					},
+					getLink: (rel) => getLink(handshake, rel) || getLink(pong, rel),
+					hasLink: (rel) => !!(getLink(handshake, rel) || getLink(pong, rel))
+				};
+
+				if (!getLink(handshake, 'logon.continue')) {
 					result.reason = 'Not authenticated, no continue after handshake.';
 					return Promise.reject(result);
 				}
