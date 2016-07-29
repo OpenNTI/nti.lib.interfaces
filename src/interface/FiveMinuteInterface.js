@@ -1,76 +1,55 @@
-/**
- * This is an OU API, perhaps we should bury this deeper in to the package?
- *
- * Like:
- *	/interface/thirdparties/ou/FiveMinute.js
- *
- */
+import {Service} from '../constants';
 
-import ServiceModel from '../stores/Service';
-
-import {Context, Server} from '../constants';
-
-const getAppUser = 'Get the Active User';
-const getUserLink = 'Get Link from User';
 
 export default class FiveMinuteInterface {
 	static fromService (service) {
-		let server = service[Server];
-		let context = service[Context];
-		return new this(server, context);
+		return new FiveMinuteInterface(service);
 	}
 
 
-	constructor (server, context) {
-		Object.assign(this, {
-			get: ServiceModel.prototype.get,
-			post: ServiceModel.prototype.post
-		});
-		this[Server] = server;
-		this[Context] = context;
+	constructor (service) {
+		this[Service] = service;
 	}
 
-	getServer () { return this[Server]; }
 
-	[getAppUser] () {
-		//FIXME: This doesn't leverage our instance cache.
-		//This will create a new Service Doc instance (as well
-		// as a new App User model instance)
-		return this[Server].getServiceDocument().then(doc=>doc.getAppUser());
+	getAppUser () {
+		return this[Service].getAppUser();
 	}
+
 
 	getAdmissionStatus () {
-		return this[getAppUser]()
+		return this.getAppUser()
 			.then(user=>(user || {}).fmaep_admission_state);
 	}
 
-	[getUserLink] (rel) {
-		return this[getAppUser]().then(user=>user.getLink(rel));
+
+	getUserLink (rel) {
+		return this.getAppUser().then(user=>user.getLink(rel));
 	}
+
 
 	preflight (data) {
 		// get the preflight link.
-		let p = this[getUserLink]('fmaep.admission.preflight');
-
+		return this.getUserLink('fmaep.admission.preflight')
 		// post the data to the link
-		let r = p.then(link => this.post(link, data));
-
-		return r;
-	}
-
-	requestAdmission (data) {
-		let getLink = this[getUserLink]('fmaep.admission');
-		let r = getLink.then(link => this.post(link, data));
-		return r;
-	}
-
-	requestConcurrentEnrollment (data) {
-		return this[getUserLink]('concurrent.enrollment.notify')
 			.then(link => this.post(link, data));
 	}
 
+
+	requestAdmission (data) {
+		return this.getUserLink('fmaep.admission')
+			.then(link => this.post(link, data));
+	}
+
+
+	requestConcurrentEnrollment (data) {
+		return this.getUserLink('concurrent.enrollment.notify')
+			.then(link => this.post(link, data));
+	}
+
+
 	getPayAndEnroll (link, ntiCrn, ntiTerm, returnUrl) {
-		return this.post(link, {
+		return this[Service].post(link, {
 			crn: ntiCrn,
 			term: ntiTerm,
 			//We don't control the name "return_url", so ignore the error
