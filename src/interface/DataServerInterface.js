@@ -292,7 +292,9 @@ export default class DataServerInterface extends EventEmitter {
 		//No? okay... get the data and build and instance
 		}
 		else {
-			promise = this.get(null, context)
+			promise = this.ping(context)
+				.then(result => result.getLink('logon.continue') || Promise.reject('No Service URL'))
+				.then(serviceUrl => this.get(serviceUrl, context))
 				.then(json =>
 					cache.set('service-doc', json) &&
 					new Service(json, this, context));
