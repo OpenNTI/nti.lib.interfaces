@@ -32,19 +32,19 @@ export default class FiveMinuteInterface {
 		// get the preflight link.
 		return this.getUserLink('fmaep.admission.preflight')
 		// post the data to the link
-			.then(link => this.post(link, data));
+			.then(link => this[Service].post(link, data));
 	}
 
 
 	requestAdmission (data) {
 		return this.getUserLink('fmaep.admission')
-			.then(link => this.post(link, data));
+			.then(link => this[Service].post(link, data));
 	}
 
 
 	requestConcurrentEnrollment (data) {
 		return this.getUserLink('concurrent.enrollment.notify')
-			.then(link => this.post(link, data));
+			.then(link => this[Service].post(link, data));
 	}
 
 
