@@ -19,7 +19,7 @@ export default class Outline extends Base {
 	}
 
 
-	getContent () {
+	getContent (showUnpublished) {
 		let promise = this[OUTLINE_CONTENT_CACHE];
 
 		if (this.contents) {
@@ -27,7 +27,7 @@ export default class Outline extends Base {
 		}
 
 		else if (!promise) {
-			promise = this.fetchLinkParsed('contents')
+			promise = this.fetchLinkParsed('contents', { 'omit_unpublished' : !showUnpublished })
 				.then(contents => {
 					Object.assign(this, { contents });
 					delete this[OUTLINE_CONTENT_CACHE];
