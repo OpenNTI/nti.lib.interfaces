@@ -252,7 +252,7 @@ export default class Instance extends Base {
 	}
 
 
-	getOutline (showUnpublished) {
+	getOutline (includeUnpublished) {
 		if (!this[OutlineCache]) {
 			//We have to wait for the CCE to load to know if its in preview mode or not.
 			this[OutlineCache] = this.waitForPending().then(()=>
@@ -260,14 +260,14 @@ export default class Instance extends Base {
 					this.CatalogEntry.Preview ?
 						Promise.reject('Preview') :
 						//not preview, Load contents...
-						this.Outline.getContent(showUnpublished));
+						this.Outline.getContent(includeUnpublished));
 		}
 		return this[OutlineCache];
 	}
 
 
-	getOutlineNode (id, showUnpublished) {
-		return this.getOutline(showUnpublished)
+	getOutlineNode (id, includeUnpublished) {
+		return this.getOutline(includeUnpublished)
 			.then(outline => outline.getNode(id) || Promise.reject('Outline Node not found'));
 	}
 
