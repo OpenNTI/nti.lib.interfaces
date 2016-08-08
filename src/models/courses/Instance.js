@@ -1,4 +1,8 @@
 import Logger from 'nti-util-logger';
+import Url from 'url';
+
+import waitFor from 'nti-commons/lib/waitfor';
+import wait from 'nti-commons/lib/wait';
 
 import Base from '../Base';
 import {
@@ -7,8 +11,6 @@ import {
 } from '../../constants';
 
 import {MEDIA_BY_OUTLINE_NODE} from '../../constants';
-
-import Url from 'url';
 
 import binDiscussions from '../../utils/forums-bin-discussions';
 
@@ -28,6 +30,7 @@ const EMPTY_CATALOG_ENTRY = {getAuthorLine: emptyFunction};
 const MEDIA_INDEX = Symbol('Media Index');
 
 const OutlineCache = Symbol('OutlineCache');
+const OutlineCacheUnpublished = Symbol('OutlineCacheUnpublished');
 const RENAME = Symbol.for('TakeOver');
 
 export default class Instance extends Base {
@@ -253,16 +256,35 @@ export default class Instance extends Base {
 
 
 	getOutline (includeUnpublished) {
-		if (!this[OutlineCache]) {
+		const FIVE_MINUTES = 300000;//5min in milliseconds.
+		const key = includeUnpublished ? OutlineCacheUnpublished : OutlineCache;
+
+		if (!this[key]) {
 			//We have to wait for the CCE to load to know if its in preview mode or not.
-			this[OutlineCache] = this.waitForPending().then(()=>
+			this[key] = this.waitForPending().then(()=>
 					//If preview, block outline
 					this.CatalogEntry.Preview ?
 						Promise.reject('Preview') :
 						//not preview, Load contents...
 						this.Outline.getContent(includeUnpublished));
 		}
-		return this[OutlineCache];
+
+		//Simple Promise wrapper... if the wrapped promise rejects, this will also reject.
+		const p = this[key] = Promise.resolve(this[key]);
+
+		//Keep the promise for the life of the request,
+		//and if the normal published-only, add an additional 5 minutes.
+		//If requested again, reset the wait timer.
+		waitFor(p)
+			.then(() => key === OutlineCache && wait(FIVE_MINUTES))
+			.then(() => {
+				//only perform the cleanup op if and only if the promise at the key is OUR promise.
+				if (this[key] === p) {
+					delete this[key];
+				}
+			});
+
+		return this[key];
 	}
 
 
