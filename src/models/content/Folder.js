@@ -1,4 +1,4 @@
-import FileSystemEntity from './FileSystemEntity';
+import FileSystemEntity, {validateSortObject} from './FileSystemEntity';
 import {Service, ReParent} from '../../constants';
 
 export default class Folder extends FileSystemEntity {
@@ -34,9 +34,16 @@ export default class Folder extends FileSystemEntity {
 	}
 
 
+	search (query, sort, recursive) {
+		//backwards compatibility (delete after next release)
+		if (typeof sort === 'boolean') {
+			recursive = sort;
+			sort = void 0;
+		}
 
-	search (query, recursive) {
-		const additional = recursive ? {recursive: true} : {};
+		sort = validateSortObject(sort) || {};
+		const additional = recursive ? {recursive: true, ...sort} : sort;
+
 		return this.fetchLinkParsed('search', {name: query, ...additional});
 	}
 

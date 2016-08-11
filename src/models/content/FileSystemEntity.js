@@ -39,8 +39,10 @@ export default class FileSystemEntity extends Base {
 	}
 
 
-	getContents () {
-		return this.fetchLinkParsed('contents');
+	getContents (sort) {
+		sort = validateSortObject(sort);
+
+		return this.fetchLinkParsed('contents', sort);
 	}
 
 
@@ -125,4 +127,19 @@ export default class FileSystemEntity extends Base {
 	}
 
 
+}
+
+
+export function validateSortObject (sort) {
+	let {sortOn, sortOrder} = sort || {};
+
+	if (typeof sortOn === 'string' && typeof sortOrder === 'string') {
+		//The server only looks for 'ascending'...all other values it treats as descending.
+		//we want to allow short-hand 'ASC' or 'asc'.
+		sortOrder = (/asc/i.test(sortOrder)) ? 'ascending' : 'descending';
+
+		return {sortOn, sortOrder};
+	}
+
+	//return void;
 }
