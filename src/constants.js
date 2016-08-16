@@ -40,6 +40,10 @@ export const REL_USER_GENERATED_DATA_SEARCH = 'UGDSearch';
 export const REL_USER_UNIFIED_SEARCH = 'UnifiedSearch';
 export const ROOT_NTIID = 'tag:nextthought.com,2011-10:Root';
 
+export const ASSESSMENT_HISTORY_LINK = 'History';
+export const SURVEY_REPORT_LINK = 'report-InquiryReport.pdf';
+export const SURVEY_AGGREGATED_LINK = 'Aggregated';
+
 export const MEDIA_BY_OUTLINE_NODE = 'MediaByOutlineNode';
 
 export const NO_LINK = 'No Link';

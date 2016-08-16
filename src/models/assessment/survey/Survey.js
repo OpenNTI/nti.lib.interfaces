@@ -1,12 +1,14 @@
 import QuestionSet from '../QuestionSet';
 
-import {HISTORY_LINK} from '../Constants'; //Assessment Constants
-
-import {AGGREGATED_LINK, REPORT_LINK} from './Constants'; //Survey Constants
+import {
+	ASSESSMENT_HISTORY_LINK,
+	SURVEY_AGGREGATED_LINK,
+	SURVEY_REPORT_LINK
+} from '../../../constants';
 
 import wait from 'nti-commons/lib/wait';
 
-const AGGREGATED = Symbol(AGGREGATED_LINK);
+const AGGREGATED = Symbol(SURVEY_AGGREGATED_LINK);
 
 export default class Survey extends QuestionSet {
 	constructor (service, parent, data) {
@@ -15,12 +17,12 @@ export default class Survey extends QuestionSet {
 
 
 	get hasAggregationData () {
-		return this.hasLink(AGGREGATED_LINK);
+		return this.hasLink(SURVEY_AGGREGATED_LINK);
 	}
 
 
 	get hasReport () {
-		return this.hasLink(REPORT_LINK);
+		return this.hasLink(SURVEY_REPORT_LINK);
 	}
 
 
@@ -28,7 +30,7 @@ export default class Survey extends QuestionSet {
 		let p = this[AGGREGATED];
 
 		if (!p) {
-			p = this[AGGREGATED] = this.fetchLinkParsed(AGGREGATED_LINK);
+			p = this[AGGREGATED] = this.fetchLinkParsed(SURVEY_AGGREGATED_LINK);
 			//cleanup
 			p.catch(()=> null)
 				.then(()=> wait(1000)) //one second after promise completes.
@@ -54,6 +56,6 @@ export default class Survey extends QuestionSet {
 
 
 	loadPreviousSubmission () {
-		return this.fetchLinkParsed(HISTORY_LINK);
+		return this.fetchLinkParsed(ASSESSMENT_HISTORY_LINK);
 	}
 }

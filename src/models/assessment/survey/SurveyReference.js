@@ -1,6 +1,6 @@
 import Base from '../../Base';
 
-import {HISTORY_LINK} from '../Constants';
+import {ASSESSMENT_HISTORY_LINK} from '../../../constants';
 
 export default class SurveyReference extends Base {
 	constructor (service, parent, data) {
@@ -8,7 +8,7 @@ export default class SurveyReference extends Base {
 	}
 
 	get isSubmitted () {
-		return this.hasLink(HISTORY_LINK);
+		return this.hasLink(ASSESSMENT_HISTORY_LINK);
 	}
 
 	getQuestionCount () {

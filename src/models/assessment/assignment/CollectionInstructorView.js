@@ -1,10 +1,12 @@
 import Url from 'url';
 import path from 'path';
 
-import {Service} from '../../../constants';
+import {
+	Service,
+	ASSESSMENT_HISTORY_LINK
+} from '../../../constants';
 // import Logger from 'nti-util-logger';
 
-import {HISTORY_LINK} from '../Constants';
 
 import Base from './Collection';
 
@@ -16,8 +18,8 @@ import GradeBookSummary from '../../../stores/GradeBookSummary';
 
 // const logger = Logger.get('assignment:Collection:Instructor');
 
-const keyForUser = userId => userId != null ? `${HISTORY_LINK}:${userId}` : HISTORY_LINK;
-const HISTORY_LINK_PREFIX = new RegExp('^' + keyForUser(''));
+const keyForUser = userId => userId != null ? `${ASSESSMENT_HISTORY_LINK}:${userId}` : ASSESSMENT_HISTORY_LINK;
+const ASSESSMENT_HISTORY_LINK_PREFIX = new RegExp('^' + keyForUser(''));
 
 const forUser = (ref, userId) => (
 					ref = Url.parse(ref),
@@ -56,11 +58,11 @@ export default class CollectionInstructorView extends Base {
 	getLink (rel, ...rest) {
 		let link = super.getLink(rel, ...rest);
 
-		if (!link && HISTORY_LINK_PREFIX.test(rel)) {
+		if (!link && ASSESSMENT_HISTORY_LINK_PREFIX.test(rel)) {
 
-			let userId = rel.replace(HISTORY_LINK_PREFIX, '');
+			let userId = rel.replace(ASSESSMENT_HISTORY_LINK_PREFIX, '');
 
-			return forUser(super.getLink(HISTORY_LINK), userId);
+			return forUser(super.getLink(ASSESSMENT_HISTORY_LINK), userId);
 		}
 
 		return link;

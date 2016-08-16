@@ -9,12 +9,12 @@
 import Base from '../../Base';
 
 import {
-	Parser as parse
+	Parser as parse,
+	ASSESSMENT_HISTORY_LINK
 } from '../../../constants';
 
 import Logger from 'nti-util-logger';
 
-import {HISTORY_LINK} from '../Constants';
 
 import AssignmentsByX from './AssignmentsByX';
 import ActivityMixin from './AssignmentActivityMixin';
@@ -93,7 +93,7 @@ export default class Collection extends Base {
 	constructor (service, parent, assignments, assessments, historyLink) {
 		super(service, parent, void 0, ActivityMixin, {
 			Links: [
-				{rel: HISTORY_LINK, href: historyLink}
+				{rel: ASSESSMENT_HISTORY_LINK, href: historyLink}
 			]
 		});
 
@@ -198,7 +198,7 @@ export default class Collection extends Base {
 		let [incomplete, complete] = groups;
 
 		for (let assignment of all) {
-			let group = (assignment.hasLink(HISTORY_LINK)) ? complete : incomplete;
+			let group = (assignment.hasLink(ASSESSMENT_HISTORY_LINK)) ? complete : incomplete;
 			if (!filter || filter(assignment)) {
 				group.items.push(assignment);
 			}

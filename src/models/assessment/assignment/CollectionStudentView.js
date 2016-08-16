@@ -1,7 +1,9 @@
-import {Service} from '../../../constants';
+import {
+	Service,
+	ASSESSMENT_HISTORY_LINK
+} from '../../../constants';
 import Logger from 'nti-util-logger';
 
-import {HISTORY_LINK} from '../Constants';
 
 import Base from './Collection';
 
@@ -81,7 +83,7 @@ export default class CollectionStudentView extends Base {
 
 function getHistoryFrom (inst) {
 	logger.debug('Loading assignment history for %s...', inst.parent().title);
-	return inst.fetchLinkParsed(HISTORY_LINK)
+	return inst.fetchLinkParsed(ASSESSMENT_HISTORY_LINK)
 		.then(x => x instanceof HistoryCollection ? x : Promise.reject('Wrong Type'))
 		.catch(() => Promise.reject('No History'));
 }

@@ -1,4 +1,3 @@
-import {HISTORY_LINK} from '../Constants';
 import Base from '../../Base';
 import {cacheClassInstances} from '../../mixins/InstanceCacheable';
 import Publishable from '../../mixins/Publishable';
@@ -6,7 +5,8 @@ import {
 	Service,
 	ReParent,
 	DateFields,
-	Parser as parse
+	Parser as parse,
+	ASSESSMENT_HISTORY_LINK
 } from '../../../constants';
 
 const RENAME = Symbol.for('TakeOver');
@@ -82,7 +82,7 @@ export default class Assignment extends Base {
 	}
 
 	get hasSubmission () {
-		return this.hasLink(HISTORY_LINK);
+		return this.hasLink(ASSESSMENT_HISTORY_LINK);
 	}
 
 	getAssignedDate () {
@@ -168,7 +168,7 @@ export default class Assignment extends Base {
 	 * @return {Promise} The history.
 	 */
 	loadHistory () {
-		return this.fetchLinkParsed(HISTORY_LINK);
+		return this.fetchLinkParsed(ASSESSMENT_HISTORY_LINK);
 	}
 
 

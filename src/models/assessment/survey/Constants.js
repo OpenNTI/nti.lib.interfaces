@@ -1,3 +1,6 @@
-export const REPORT_LINK = 'report-InquiryReport.pdf';
-export const AGGREGATED_LINK = 'Aggregated';
-export const CLOSE_LINK = 'Aggregated';
+import {SURVEY_REPORT_LINK, SURVEY_AGGREGATED_LINK} from '../../../constants';
+//for backward compatability
+export {
+	SURVEY_REPORT_LINK as REPORT_LINK,
+	SURVEY_AGGREGATED_LINK as AGGREGATED_LINK
+};

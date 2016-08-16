@@ -1,8 +1,10 @@
 import Question from '../Question';
 
-import {HISTORY_LINK} from '../Constants'; //Assessment Constants
-
-import {AGGREGATED_LINK, REPORT_LINK} from './Constants'; //Survey Constants
+import {
+	ASSESSMENT_HISTORY_LINK,
+	SURVEY_AGGREGATED_LINK,
+	SURVEY_REPORT_LINK
+} from '../../../constants';
 
 export default class Poll extends Question {
 	constructor (service, parent, data) {
@@ -11,24 +13,24 @@ export default class Poll extends Question {
 
 
 	get hasAggregationData () {
-		return this.hasLink(AGGREGATED_LINK);
+		return this.hasLink(SURVEY_AGGREGATED_LINK);
 	}
 
 
 	get hasReport () {
-		return this.hasLink(REPORT_LINK);
+		return this.hasLink(SURVEY_REPORT_LINK);
 	}
 
 
 	getAggregated () {
 		let parent = this.parent();
 
-		if (!this.hasLink(AGGREGATED_LINK) && parent.getAggregated) {
+		if (!this.hasLink(SURVEY_AGGREGATED_LINK) && parent.getAggregated) {
 			return parent.getAggregated()
 				.then(x=> x.getQuestion(this.getID()));
 		}
 
-		return this.fetchLinkParsed(AGGREGATED_LINK);
+		return this.fetchLinkParsed(SURVEY_AGGREGATED_LINK);
 	}
 
 
@@ -48,6 +50,6 @@ export default class Poll extends Question {
 
 
 	loadPreviousSubmission () {
-		return this.fetchLinkParsed(HISTORY_LINK);
+		return this.fetchLinkParsed(ASSESSMENT_HISTORY_LINK);
 	}
 }
