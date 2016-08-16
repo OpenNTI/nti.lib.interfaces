@@ -27,3 +27,5 @@ export {
 export function getModel (...args) {
 	return lookup(...args);
 }
+
+export getLink from './utils/getlink';
