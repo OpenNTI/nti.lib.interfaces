@@ -4,7 +4,7 @@ import EventEmitter from 'events';
 import Url from 'url';
 import QueryString from 'query-string';
 
-import {parse, getModelByType} from './';
+import {parse, getModelByType} from './index';
 
 import getLinkImpl from '../utils/getlink';
 import mixin from 'nti-commons/lib/mixin';

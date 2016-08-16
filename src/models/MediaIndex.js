@@ -1,4 +1,4 @@
-import {parse} from './';
+import {parse} from './index';
 import PageSourceModel from './MediaIndexBackedPageSource';
 import {Service, Parent} from '../constants';
 
