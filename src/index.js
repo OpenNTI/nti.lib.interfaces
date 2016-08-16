@@ -1,4 +1,5 @@
 import Interface from './interface/DataServerInterface';
+import FiveMinuteEnrollmentInterface from './interface/FiveMinuteInterface';
 import cache from './utils/datacache';
 
 import Catalog from './stores/Catalog';
@@ -21,7 +22,9 @@ export default function (config) {
 export {
 	Catalog,
 	Library,
-	Notifications
+	Notifications,
+
+	FiveMinuteEnrollmentInterface
 };
 
 export function getModel (...args) {
