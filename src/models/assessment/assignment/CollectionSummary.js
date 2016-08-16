@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 import invariant from 'invariant';
 
-import PageSource from '../../ListBackedPageSource';
+import PageSource from 'nti-commons/lib/ListBackedPageSource';
 
 import {SortOrder} from '../../../constants';
 
