@@ -1,4 +1,4 @@
-import {Service} from '../../Base';
+import {Service} from '../../../constants';
 import Assignment from './Assignment';
 
 
