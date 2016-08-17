@@ -508,42 +508,6 @@ export default class ServiceDocument {
 	}
 
 
-	ensureAnalyticsSession () {
-		let workspace = this.getWorkspace('Analytics');
-		let url = getLink(workspace, 'analytics_session');
-
-		return this.hasCookie('nti.da_session') ? Promise.resolve() : this.post(url);
-	}
-
-
-	endAnalyticsSession () {
-		let workspace = this.getWorkspace('Analytics');
-		let url = getLink(workspace, 'end_analytics_session');
-		let timestamp = Math.floor(new Date() / 1000);
-		return url ? this.post(url, { timestamp }) : Promise.reject('No link for end_analytics_session.');
-	}
-
-
-	postAnalytics (events) {
-		let workspace = this.getWorkspace('Analytics');
-		let url = getLink(workspace, 'batch_events');
-		let payload = {
-			MimeType: 'application/vnd.nextthought.analytics.batchevents',
-			events: events
-		};
-
-		if (!url) {
-			return Promise.reject({
-				statusCode: NOT_IMPLEMENTED,
-				message: 'No Analytics End-point.'
-			});
-		}
-
-		return this.ensureAnalyticsSession()
-				.then(this.post.bind(this, url, payload));
-	}
-
-
 	/**
 	 *
 	 * @param {string} mimeType The mimetype of what we're looking for
