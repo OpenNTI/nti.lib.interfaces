@@ -1,31 +1,9 @@
-.PHONY:
-	clean \
-	check \
-	test \
-	watch \
-	watch-stop
+.PHONY: clean check test
 
-
-ROOT_DIR = $(patsubst %/,%, $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 SRC = $(shell find src -name '*.js')
 LIB = $(SRC:src/%.js=lib/%.js)
 LIBDIR = lib
-
-define add-watch-trigger
-TRIGGERS=`watchman trigger-list $(ROOT_DIR)`; \
-if [[ $$TRIGGERS != *compile* ]]; \
-then \
-	watchman -j <<< '\
-	["trigger", "$(ROOT_DIR)", { \
-		"name": "compile", \
-		"expression": ["match", "src/**/*.js", "wholename"], \
-		"command": ["make"], \
-		"append_files": false \
-	}] \
-	'; \
-fi
-endef
 
 all: node_modules lib
 
@@ -46,13 +24,5 @@ clean:
 
 lib: $(LIB)
 lib/%.js: src/%.js
-#	@echo babel	$@...
 	@mkdir -p $(@D)
 	babel $< -o $@
-
-watch:
-	@watchman watch $(ROOT_DIR)
-	@$(call add-watch-trigger)
-
-watch-stop:
-	@watchman shutdown-server
