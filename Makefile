@@ -22,7 +22,10 @@ test: node_modules check
 clean:
 	@rm -rf $(LIBDIR)
 
-lib: $(LIB)
-lib/%.js: src/%.js
-	@mkdir -p $(@D)
-	babel $< -o $@
+lib: clean
+	@rollup -c
+
+# lib: $(LIB)
+# lib/%.js: src/%.js
+# 	@mkdir -p $(@D)
+# 	babel $< -o $@
