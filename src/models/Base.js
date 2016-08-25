@@ -459,13 +459,21 @@ export default class Base extends EventEmitter {
 
 	[is] (attributeQuery, attributeQueryValue) {
 		if (attributeQueryValue === undefined) {
-			if (attributeQuery.test) {
+			//like array::filter() callback...
+			if (typeof attributeQuery === 'function') {
+				return attributeQuery(this);
+			}
+
+			//RegExp::test()
+			if (attributeQuery && attributeQuery.test) {
 				return attributeQuery.test(this);
 			}
 
+			//fallback
 			return this[attributeQuery] !== undefined;
 		}
 
+		//RegExp
 		if (attributeQueryValue && attributeQueryValue.test) {
 			return attributeQueryValue.test(this[attributeQuery]);
 		}
