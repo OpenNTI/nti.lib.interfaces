@@ -7,12 +7,15 @@ import Submission from '../../mixins/Submission';
 
 export default class AssignmentSubmission extends Base {
 
-	constructor (service, parent, data) {
+	constructor (service, parent, data, submitTo) {
 		super(service, parent, data, Submission, {
 			MimeType: 'application/vnd.nextthought.assessment.assignmentsubmission'
 		});
 
-		Object.defineProperty(this, 'SubmitsToObjectURL', {value: true});
+		Object.defineProperties(this, {
+			SubmissionHref: {value: submitTo},
+			SubmitsToObjectURL: {value: true}
+		});
 
 		// CreatorRecordedEffortDuration: 0
 		this[parse]('parts', []);

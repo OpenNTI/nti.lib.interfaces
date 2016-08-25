@@ -119,20 +119,26 @@ export default class Assignment extends Base {
 
 
 	getSubmission () {
-		let Model = this.getModel('assessment.assignmentsubmission');
-		let s = new Model(this[Service], this, {
+		const Model = this.getModel('assessment.assignmentsubmission');
+		const data = {
 			assignmentId: this.getID(),
 			version: this.version,
 			parts: []
-		});
+		};
 
-		s.parts = (this.parts || []).map(p => {
+		const FindCourse = (o) => o && o.isCourse && o.hasLink('Assignments');
+		const course = this.parent(FindCourse);
+		const submitTo = course && course.getLink('Assignments');
+
+		const submission = new Model(this[Service], this, data, submitTo);
+
+		submission.parts = (this.parts || []).map(p => {
 			p = p.getSubmission();
-			p[ReParent](s);
+			p[ReParent](submission);
 			return p;
 		});
 
-		return s;
+		return submission;
 	}
 
 
