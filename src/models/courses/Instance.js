@@ -1,5 +1,6 @@
 import Logger from 'nti-util-logger';
 import Url from 'url';
+import path from 'path';
 
 import waitFor from 'nti-commons/lib/waitfor';
 import wait from 'nti-commons/lib/wait';
@@ -214,6 +215,35 @@ export default class Instance extends Base {
 		}
 
 		return p;
+	}
+
+
+	getAssignment (ntiid) {
+		const service = this[Service];
+		const href = this.getLink('Assignments');
+		// href will be something like this...
+		//		/dataserver2/%2B%2Betc...site/Courses/Alpha/NTI%201000/@@Assignments
+		//
+		// we will want to append the ntiid to the end:
+		//		/dataserver2/%2B%2Betc...site/Courses/Alpha/NTI%201000/@@Assignments/<ntiid>
+
+		if (!href) {
+			return Promise.reject('No Link');
+		}
+
+		const assignemntParentRef = this;//the CourseInstance,
+		//tho, probably should be the Assignemnts Collection but we may not have that...
+		//the instance caches are on the service doc so we're covered there.
+
+		const parseResult = o => service.getObject(o, assignemntParentRef);
+		const uri = Url.parse(href);
+
+		uri.pathname = path.join(uri.pathname, encodeURIComponent(ntiid));
+
+		const url = uri.format();
+
+		return service.get(url)
+			.then(parseResult);
 	}
 
 
