@@ -23,7 +23,7 @@ clean:
 	@rm -rf $(LIBDIR)
 
 lib: clean
-	@rollup -c
+	@NODE_ENV=rollup rollup -c
 
 # lib: $(LIB)
 # lib/%.js: src/%.js
