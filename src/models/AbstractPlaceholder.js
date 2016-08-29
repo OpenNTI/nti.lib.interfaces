@@ -21,6 +21,7 @@ function MarkerFactory (obj) {
 
 	return function (name, ...clears) {
 		Object.defineProperty(obj, name, {
+			configurable: true, //allow these properties to be deleted?
 			enumerable: false,
 			get: () => markers[name],
 			set: (value) => {
