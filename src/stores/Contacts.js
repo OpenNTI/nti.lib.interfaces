@@ -95,7 +95,7 @@ export default class Contacts extends EventEmitter {
 			.then(x => this[DATA].push(...x))
 			.then(()=> this[ENSURE_CONTACT_GROUP]())
 			.catch(er => {
-				logger.error(er.message || er);
+				logger.error('%s: %o', er.message || 'There was a problem.', er.ContactsGroup || er);
 				this.error = true;
 			})
 			.then(() => {
@@ -113,8 +113,14 @@ export default class Contacts extends EventEmitter {
 		const {RESERVED_GROUP_ID} = this;
 
 		if(!this[DATA].find(x=> x.getID() === RESERVED_GROUP_ID)) {
-			return this[CREATE](getNewListData(['My Contacts', RESERVED_GROUP_ID], false, MIME_TYPE, this.context))
-				.catch(e => e.statusCode !== 409 ? 0 : Promise.reject(e));
+
+			const ContactsGroup = getNewListData(['My Contacts', RESERVED_GROUP_ID], false, MIME_TYPE, this.context);
+
+			return this[CREATE](ContactsGroup)
+				.catch(e => e.statusCode !== 409
+						? Promise.resolve() //409? ok... it was created by another process (or a previous request)
+						: Promise.reject({...e, ContactsGroup})
+				);
 		}
 	}
 
