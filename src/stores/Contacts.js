@@ -81,7 +81,7 @@ export default class Contacts extends EventEmitter {
 
 		this.onChange = this.onChange.bind(this);
 
-		let parseList = parseListFn(this, service);
+		const parseList = parseListFn(this, service);
 		this.load = url => service.get(url).then(o => parseList(Object.values(o.Items || [])));
 
 		if (process.browser) {
@@ -89,9 +89,9 @@ export default class Contacts extends EventEmitter {
 		}
 
 		this.loading = true;
-		let start = Date.now();
+		const start = Date.now();
 
-		let load = this.load(entryPoint)
+		const load = this.load(entryPoint)
 			.then(x => this[DATA].push(...x))
 			.then(()=> this[ENSURE_CONTACT_GROUP]())
 			.catch(er => {
@@ -110,7 +110,7 @@ export default class Contacts extends EventEmitter {
 
 
 	[ENSURE_CONTACT_GROUP] () {
-		let {RESERVED_GROUP_ID} = this;
+		const {RESERVED_GROUP_ID} = this;
 
 		if(!this[DATA].find(x=> x.getID() === RESERVED_GROUP_ID)) {
 			return this[CREATE](getNewListData(['My Contacts', RESERVED_GROUP_ID], false, MIME_TYPE, this.context))
