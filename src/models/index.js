@@ -21,6 +21,7 @@ import SlideDeck from './SlideDeck';
 
 import DiscussionReference from './DiscussionReference';
 import RelatedWorkReference from './RelatedWorkReference';
+import RelatedWorkReferencePointer from './RelatedWorkReferencePointer';
 import Timeline from './Timeline';
 
 //chat
@@ -226,6 +227,7 @@ const PARSERS = {
 
 	'discussionref': DiscussionReference,
 	'relatedworkref': RelatedWorkReference,
+	'relatedworkrefpointer': RelatedWorkReferencePointer,
 
 	'ntilessonoverview': CourseLeasonOverview,
 	'nticourseoverviewgroup': CourseLeasonOverviewGroup,
