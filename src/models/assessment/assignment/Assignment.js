@@ -126,9 +126,11 @@ export default class Assignment extends Base {
 			parts: []
 		};
 
-		const FindCourse = (o) => o && o.isCourse && o.hasLink('Assignments');
+		const REL = 'Assessments';
+
+		const FindCourse = (o) => o && o.isCourse && o.hasLink(REL);
 		const course = this.parent(FindCourse);
-		const submitTo = course && course.getLink('Assessments');
+		const submitTo = course && course.getLink(REL);
 
 		const submission = new Model(this[Service], this, data, submitTo);
 
