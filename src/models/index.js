@@ -109,6 +109,7 @@ import AssessmentAggregatedOrderingPart from './assessment/survey/aggregated/par
 
 import AssessmentAssignmentRef from './assessment/assignment/AssignmentReference';
 import AssessmentAssignment from './assessment/assignment/Assignment';
+import AssessmentAssignmentMetadataItem from './assessment/assignment/AssignmentMetadataItem';
 import AssessmentTimedAssignment from './assessment/assignment/TimedAssignment';
 import AssessmentAssignmentPart from './assessment/assignment/AssignmentPart';
 
@@ -295,6 +296,7 @@ const PARSERS = {
 	'assignmentref': AssessmentAssignmentRef,
 	'assessment.assignment': AssessmentAssignment,
 	'assessment.timedassignment': AssessmentTimedAssignment,
+	'assessment.userscourseassignmentmetadataitem': AssessmentAssignmentMetadataItem,
 
 	'assessment.assignmentpart': AssessmentAssignmentPart,
 
