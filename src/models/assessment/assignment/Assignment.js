@@ -132,7 +132,7 @@ export default class Assignment extends Base {
 		const FindCourse = (o) => o && o.isCourse && o.hasLink(REL);
 		const course = this.parent(FindCourse);
 		//Its odd to me that we have to augment the rel link with the assignmentId when we're including it in the payload...
-		const submitTo = course && urlJoin(course.getLink(REL), encodeURIComponent(this.getId()));
+		const submitTo = course && urlJoin(course.getLink(REL), encodeURIComponent(this.getID()));
 
 		const submission = new Model(this[Service], this, data, submitTo);
 
