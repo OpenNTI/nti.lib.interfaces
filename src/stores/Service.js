@@ -244,34 +244,42 @@ export default class ServiceDocument {
 	}
 
 
-	getPageInfo (ntiid) {
-		let mime = 'application/vnd.nextthought.pageinfo+json';
+	getPageInfo (ntiid, params) {
+		const mime = 'application/vnd.nextthought.pageinfo+json';
 
 		if (!isNTIID(ntiid)) {
 			return Promise.reject('Bad NTIID');
 		}
 
-		return this.getObject(ntiid, this, void 0, mime);
+		return this.getObject(ntiid, this, void 0, mime, params);
 	}
 
 
-	getObjectRaw (ntiid, field, type) {
+	getObjectRaw (ntiid, field, type, params) {
 		if (!isNTIID(ntiid)) {
 			return Promise.reject('Bad NTIID');
 		}
 
 
-		let headers = {};
 		let url = this.getObjectURL(ntiid, field);
 
-		if (type) {
+		if (type || params) {
+			const headers = {};
+			const extras = {
+				...(params || {}),
+				...(type ? {type} : {})
+			};
+
+			if (type) {
+				headers.accept = type;
+			}
+
 			url = Url.parse(url);
-			url.search = QueryString.stringify(Object.assign(
-				QueryString.parse(url.query), { type }));
-
+			url.search = QueryString.stringify({
+				...QueryString.parse(url.query),
+				...extras
+			});
 			url = url.format();
-
-			headers.accept = type;
 
 			url = {url, headers};
 		}
@@ -334,14 +342,14 @@ export default class ServiceDocument {
 	}
 
 
-	getObject (ntiid, parent, field, type) {
+	getObject (ntiid, parent, field, type, params) {
 		let p = o => parse(this, parent || this, o);
 
 		if (typeof ntiid === 'object') {
 			return Promise.resolve(p(ntiid));
 		}
 
-		return this.getObjectRaw(ntiid, field, type).then(p);
+		return this.getObjectRaw(ntiid, field, type, params).then(p);
 	}
 
 
