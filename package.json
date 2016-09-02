@@ -35,7 +35,7 @@
     "mime-types": "^2.1.0",
     "moment": "^2.8.3",
     "node-uuid": "^1.4.3",
-    "nti-commons": "^1.0.19",
+    "nti-commons": "^1.0.31",
     "nti-lib-ntiids": "^1.0.0",
     "nti-util-logger": "^1.0.0",
     "query-string": "^4.0.0",

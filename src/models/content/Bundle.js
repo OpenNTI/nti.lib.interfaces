@@ -8,7 +8,7 @@ import {
 
 import setAndEmit from '../../utils/getsethandler';
 
-import urlJoin from 'nti-commons/lib/urljoin';
+import urlJoin from 'nti-commons/lib/url-join';
 import forwardFunctions from 'nti-commons/lib/function-forwarding';
 
 import assets from '../mixins/PresentationResources';

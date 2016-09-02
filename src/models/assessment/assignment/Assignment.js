@@ -1,4 +1,4 @@
-import urlJoin from 'nti-commons/lib/urljoin';
+import urlJoin from 'nti-commons/lib/url-join';
 import Base from '../../Base';
 import {cacheClassInstances} from '../../mixins/InstanceCacheable';
 import Publishable from '../../mixins/Publishable';

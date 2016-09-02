@@ -1,4 +1,4 @@
-import join from 'nti-commons/lib/urljoin';
+import join from 'nti-commons/lib/url-join';
 
 const getRoot = x => (x ? x.root : x) || '/missing-root/';
 

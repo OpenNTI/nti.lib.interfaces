@@ -1,5 +1,5 @@
 import {Service} from '../../constants';
-import urlJoin from 'nti-commons/lib/urljoin';
+import urlJoin from 'nti-commons/lib/url-join';
 import isEmpty from 'isempty';
 
 const ASSET_MAP = {
