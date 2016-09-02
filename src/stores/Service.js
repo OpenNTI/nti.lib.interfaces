@@ -302,7 +302,6 @@ export default class ServiceDocument {
 	}
 
 
-
 	getObjectsRaw (ntiids) {
 		if (!Array.isArray(ntiids)) {
 			ntiids = [ntiids];
@@ -333,16 +332,6 @@ export default class ServiceDocument {
 				return (!o || !o.Items || !o.Items.length) ? null : o;
 			});
 	}
-
-
-	//Deprecated
-	getParsedObject (ntiid, parent, type, field) {
-		logger.error('[Deprecated] use .getObject instead');
-		return this.getObject(ntiid, parent, field, type); }
-	//Deprecated
-	getParsedObjects (ntiid, parent) {
-		logger.error('[Deprecated] use .getObjects instead');
-		return this.getObjects(ntiid, parent); }
 
 
 	getObject (ntiid, parent, field, type) {

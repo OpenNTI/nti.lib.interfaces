@@ -18,6 +18,6 @@ export default class Annotation extends Base {
 
 	getContextData () {
 		// return this[Service].get('/mobile/api/ugd/context-data/' + encodeURIComponent(this.getID()));
-		return this[Service].getParsedObject(this.getContainerID());
+		return this[Service].getObject(this.getContainerID());
 	}
 }
