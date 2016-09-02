@@ -1,4 +1,4 @@
-import join from 'nti-commons/lib/url-join';
+import resolve from 'nti-commons/lib/url-resolve';
 
 const getRoot = x => (x ? x.root : x) || '/missing-root/';
 
@@ -12,7 +12,7 @@ export default class Slide {
 		const root = getRoot((parent && parent.parent) ? parent.parent('root') : null);
 
 		define('deckId', data.slidedeckid);
-		define('image', join(root, data.slideimage));
+		define('image', resolve(root, data.slideimage));
 		define('number', data.slidenumber);
 
 		//Start & End are in seconds.

@@ -5,7 +5,7 @@ import {Service, Parent} from '../constants';
 import Logger from 'nti-util-logger';
 import isEmpty from 'isempty';
 
-import urlJoin from 'nti-commons/lib/urljoin';
+import urlResolve from 'nti-commons/lib/url-resolve';
 
 const logger = Logger.get('lib:models:MediaIndex');
 
@@ -29,8 +29,8 @@ export default class MediaIndex {
 		let root = parent.root;
 
 		function prefix (o) {
-			o.src = urlJoin(root, o.src);
-			o.srcjsonp = urlJoin(root, o.srcjsonp);
+			o.src = urlResolve(root, o.src);
+			o.srcjsonp = urlResolve(root, o.srcjsonp);
 			return o;
 		}
 

@@ -1,5 +1,5 @@
 import {Service} from '../../constants';
-import urlJoin from 'nti-commons/lib/url-join';
+import urlResolve from 'nti-commons/lib/url-resolve';
 import isEmpty from 'isempty';
 
 const ASSET_MAP = {
@@ -57,7 +57,7 @@ export default {
 	getAsset (name, resolve = false) {
 		const assetPath = ASSET_MAP[name] || `missing-${name}-asset.png`;
 		const root = this.getAssetRoot();
-		const url = root && urlJoin(root, assetPath);
+		const url = root && urlResolve(root, assetPath);
 
 		const service = this[Service];
 		const cache = service.getDataCache();
