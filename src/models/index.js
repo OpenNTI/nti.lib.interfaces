@@ -101,6 +101,7 @@ import AssessmentPollReference from './assessment/survey/PollReference';
 import AssessmentAggregatedSurvey from './assessment/survey/aggregated/Survey';
 import AssessmentAggregatedPoll from './assessment/survey/aggregated/Poll';
 
+import AssessmentAggregatedFreeResponsePart from './assessment/survey/aggregated/parts/FreeResponse';
 import AssessmentAggregatedMultipleChoiceMultipleAnswerPart from './assessment/survey/aggregated/parts/MultipleChoiceMultipleAnswer';
 import AssessmentAggregatedMultipleChoicePart from './assessment/survey/aggregated/parts/MultipleChoice';
 import AssessmentAggregatedModeledContentPart from './assessment/survey/aggregated/parts/ModeledContent';
@@ -342,6 +343,7 @@ const PARSERS = {
 	'assessment.nongradablemultiplechoicemultipleanswerpart': 'assessment.multiplechoicepart',
 	'assessment.nongradableorderingpart': 'assessment.orderingpart',
 
+	'assessment.aggregatedfreeresponsepart': AssessmentAggregatedFreeResponsePart,
 	'assessment.aggregatedmultiplechoicemultipleanswerpart': AssessmentAggregatedMultipleChoiceMultipleAnswerPart,
 	'assessment.aggregatedmultiplechoicepart': AssessmentAggregatedMultipleChoicePart,
 	'assessment.aggregatedmatchingpart': AssessmentAggregatedMatchingPart,
