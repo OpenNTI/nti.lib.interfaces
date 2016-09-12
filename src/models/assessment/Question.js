@@ -59,6 +59,11 @@ export default class Question extends Base {
 	}
 
 
+	getAssociations () {
+		return this.fetchLinkParsed('Assessments');
+	}
+
+
 	getAutoGradableConflicts () {
 		const conflicts = [];
 		for (let part of this.parts) {

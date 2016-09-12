@@ -45,6 +45,11 @@ export default class QuestionSet extends Base {
 	}
 
 
+	getAssociations () {
+		return this.fetchLinkParsed('Lessons');
+	}
+
+
 	getAutoGradableConflicts () {
 		const conflicts = [];
 		for (let question of this.questions) {

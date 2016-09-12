@@ -86,6 +86,10 @@ export default class Assignment extends Base {
 		return this.hasLink(ASSESSMENT_HISTORY_LINK);
 	}
 
+	getAssociations () {
+		return this.fetchLinkParsed('Lessons');
+	}
+
 	getAssignedDate () {
 		return this.getAvailableForSubmissionBeginning();
 	}
