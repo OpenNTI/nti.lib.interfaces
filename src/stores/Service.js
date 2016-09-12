@@ -536,7 +536,7 @@ export default class ServiceDocument {
 
 				//TODO: make the Collection an official model and turn accepts into a method that returns boolean.
 				//if (collection.accepts(mimeType)) {
-				if (collection.accepts.indexOf(mimeType) > -1) {
+				if (collection && collection.accepts.indexOf(mimeType) > -1) {
 
 					if (!title || collection.Title === title) {
 						return collection;
