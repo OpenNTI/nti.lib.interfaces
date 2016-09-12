@@ -242,7 +242,7 @@ function collateVideo (json) {
 		return list;
 	}
 
-	json.Items = json.Items.reduce(collate, []);
+	json.Items = (json.Items || []).reduce(collate, []);
 
 	return json;
 }
