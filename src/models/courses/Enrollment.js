@@ -49,6 +49,11 @@ export default class Enrollment extends Base {
 	}
 
 
+	get ProviderUniqueID () {
+		return this.CourseInstance.ProviderUniqueID;
+	}
+
+
 	drop () {
 		return this[Service].delete(this.href);
 	}

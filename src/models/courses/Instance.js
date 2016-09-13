@@ -93,6 +93,11 @@ export default class Instance extends Base {
 	}
 
 
+	get ProviderUniqueID () {
+		return (this.CatalogEntry || EMPTY_CATALOG_ENTRY).ProviderUniqueID;
+	}
+
+
 	get root () {
 		//This needs to go away. fast.
 		//We're using this to prefix the RELATIVE hrefs in the Video Transcript data.
