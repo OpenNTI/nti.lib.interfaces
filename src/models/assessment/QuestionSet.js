@@ -133,26 +133,8 @@ export default class QuestionSet extends Base {
 		return this.questions.length;
 	}
 
-	getSubmissionModel () {
-		return QuestionSetSubmission;
-	}
-
 	getSubmission () {
-		let Model = this.getSubmissionModel();
-		let s = Model.build(this[Service], {
-			questionSetId: this.getID(),
-			ContainerId: this.containerId,
-			CreatorRecordedEffortDuration: null,
-			questions: []
-		});
-
-		s.questions = this.questions.map(q => {
-			q = q.getSubmission();
-			q[ReParent](s);
-			return q;
-		});
-
-		return s;
+		return QuestionSetSubmission.build(this);
 	}
 
 

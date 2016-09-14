@@ -5,8 +5,18 @@ import {
 } from '../../../constants';
 
 export default class SurveySubmission extends QuestionSetSubmission {
-	constructor (service, parent, data) {
-		super(service, parent, data);
+
+	static COURSE_SUBMISSION_REL = 'CourseInquiries'
+
+	build (survey) {
+		const s = super.build(survey);
+		s.surveyId = s.questionSetId;
+		delete s.questionSetId;
+		return s;
+	}
+
+	constructor (service, parent, data, submitTo) {
+		super(service, parent, data, submitTo);
 		Object.defineProperty(this, 'SubmitsToObjectURL', {value: true});
 		Object.assign(this, {
 			MimeType: 'application/vnd.nextthought.assessment.surveysubmission'

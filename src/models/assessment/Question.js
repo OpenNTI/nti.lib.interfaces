@@ -1,6 +1,5 @@
 import Base from '../Base';
 import {
-	Service,
 	Parser as parse
 } from '../../constants';
 
@@ -104,20 +103,8 @@ export default class Question extends Base {
 	}
 
 
-	getSubmissionModel () {
-		return QuestionSubmission;
-	}
-
-
 	getSubmission () {
-		let Model = this.getSubmissionModel();
-		let {parts} = this;
-		return Model.build(this[Service], {
-			ContainerId: this.containerId,
-			NTIID: this.getID(),
-			questionId: this.getID(),
-			parts: parts && parts.map(()=>null)
-		});
+		return QuestionSubmission.build(this);
 	}
 
 

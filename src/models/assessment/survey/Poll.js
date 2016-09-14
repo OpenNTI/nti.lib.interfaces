@@ -36,18 +36,8 @@ export default class Poll extends Question {
 	}
 
 
-	getSubmissionModel () {
-		return PollSubmission;
-	}
-
-
 	getSubmission () {
-		let s = super.getSubmission();
-
-		s.pollId = s.questionId;
-		delete s.questionId;
-
-		return s;
+		return PollSubmission.build(this);
 	}
 
 

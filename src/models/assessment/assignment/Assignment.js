@@ -1,5 +1,5 @@
-import urlJoin from 'nti-commons/lib/url-join';
 import Base from '../../Base';
+import {resolveSubmitTo} from '../utils';
 import {cacheClassInstances} from '../../mixins/InstanceCacheable';
 import Publishable from '../../mixins/Publishable';
 import {
@@ -10,9 +10,8 @@ import {
 	ASSESSMENT_HISTORY_LINK
 } from '../../../constants';
 
-import AssignmentSubmission from './AssignmentSubmission';
-
 import PlacementProvider from './AssignmentPlacementProvider';
+import AssignmentSubmission from './AssignmentSubmission';
 
 const RENAME = Symbol.for('TakeOver');
 
@@ -137,23 +136,13 @@ export default class Assignment extends Base {
 		const data = {
 			assignmentId: this.getID(),
 			version: this.version,
-			parts: []
+			parts: (this.parts || []).map(p => p.getSubmission())
 		};
 
-		const REL = 'Assessments';
-
-		const FindCourse = (o) => o && o.isCourse && o.hasLink(REL);
-		const course = this.parent(FindCourse);
-		//Its odd to me that we have to augment the rel link with the assignmentId when we're including it in the payload...
-		const submitTo = course && urlJoin(course.getLink(REL), encodeURIComponent(this.getID()));
-
+		const submitTo = resolveSubmitTo(this);
 		const submission = new AssignmentSubmission(this[Service], this, data, submitTo);
 
-		submission.parts = (this.parts || []).map(p => {
-			p = p.getSubmission();
-			p[ReParent](submission);
-			return p;
-		});
+		submission.parts.forEach(s => s[ReParent](submission));
 
 		return submission;
 	}
