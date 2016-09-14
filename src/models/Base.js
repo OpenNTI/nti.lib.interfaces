@@ -225,6 +225,7 @@ export default class Base extends EventEmitter {
 			const MightBeModel = x=> !x || !!x[Service];
 			const HasMimeType = x=>  x && (!!x.MimeType || !!x.Class);
 			const Objects = x=> typeof x === 'object';
+			const dateFields = this[DateFields]();
 
 			for(let prop in o) {
 				if (o.hasOwnProperty(prop)) {
@@ -241,6 +242,11 @@ export default class Base extends EventEmitter {
 
 					if (current === value) {
 						continue;
+					}
+
+					//Reset the parsedDate cache.
+					if (dateFields.includes(prop)) {
+						delete this[getParsedDateKey(prop)];
 					}
 
 					//If the current value is truthy, and Model-like, then declare it to be a Model.
@@ -532,9 +538,12 @@ function GenEnumerabilityOf (obj, propName) {
 	return desc && desc.enumerable;
 }
 
+function getParsedDateKey (key) {
+	return Symbol.for(`parsedDate:${key}`);
+}
 
 function dateGetter (key) {
-	const symbol = Symbol.for(`parsedDate:${key}`);
+	const symbol = getParsedDateKey(key);
 	let last;
 	return function () {
 		if (typeof this[symbol] !== 'object' || this[key] !== last) {
