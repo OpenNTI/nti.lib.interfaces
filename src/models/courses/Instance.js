@@ -225,12 +225,12 @@ export default class Instance extends Base {
 
 	getAssignment (ntiid) {
 		const service = this[Service];
-		const href = this.getLink('Assignments');
+		const href = this.getLink('Assessments');
 		// href will be something like this...
-		//		/dataserver2/%2B%2Betc...site/Courses/Alpha/NTI%201000/@@Assignments
+		//		/dataserver2/%2B%2Betc...site/Courses/Alpha/NTI%201000/@@Assessments
 		//
 		// we will want to append the ntiid to the end:
-		//		/dataserver2/%2B%2Betc...site/Courses/Alpha/NTI%201000/@@Assignments/<ntiid>
+		//		/dataserver2/%2B%2Betc...site/Courses/Alpha/NTI%201000/@@Assessments/<ntiid>
 
 		if (!href) {
 			return Promise.reject('No Link');
