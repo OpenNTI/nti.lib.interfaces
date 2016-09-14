@@ -8,6 +8,8 @@ import {
 	MAY_EFFECT_PROPERTIES
 } from '../../constants';
 
+import PlacementProvider from './QuestionSetPlacementProvider';
+
 let SUBMITTED_TYPE = 'application/vnd.nextthought.assessment.assessedquestionset';
 
 export default class QuestionSet extends Base {
@@ -47,6 +49,11 @@ export default class QuestionSet extends Base {
 
 	getAssociations () {
 		return this.fetchLinkParsed('Lessons');
+	}
+
+
+	getPlacementProvider (scope, accepts) {
+		return new PlacementProvider(scope, this, accepts);
 	}
 
 

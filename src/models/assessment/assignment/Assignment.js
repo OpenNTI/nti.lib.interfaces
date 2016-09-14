@@ -10,6 +10,8 @@ import {
 	ASSESSMENT_HISTORY_LINK
 } from '../../../constants';
 
+import PlacementProvider from './AssignmentPlacementProvider';
+
 const RENAME = Symbol.for('TakeOver');
 
 const ActiveSavePointPost = Symbol('ActiveSavePointPost');
@@ -89,6 +91,12 @@ export default class Assignment extends Base {
 	getAssociations () {
 		return this.fetchLinkParsed('Lessons');
 	}
+
+
+	getPlacementProvider (scope, accepts) {
+		return new PlacementProvider(scope, this, accepts);
+	}
+
 
 	getAssignedDate () {
 		return this.getAvailableForSubmissionBeginning();

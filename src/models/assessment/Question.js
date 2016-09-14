@@ -6,6 +6,8 @@ import {
 
 import HasContent from '../mixins/HasContent';
 
+import PlacementProvider from './QuestionPlacementProvider';
+
 const Individual = Symbol('Individual');
 
 export default class Question extends Base {
@@ -61,6 +63,11 @@ export default class Question extends Base {
 
 	getAssociations () {
 		return this.fetchLinkParsed('Assessments');
+	}
+
+
+	getPlacementProvider (scope, accepts) {
+		return new PlacementProvider(scope, this, accepts);
 	}
 
 
