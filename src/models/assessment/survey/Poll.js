@@ -6,6 +6,8 @@ import {
 	SURVEY_REPORT_LINK
 } from '../../../constants';
 
+import PollSubmission from './PollSubmission';
+
 export default class Poll extends Question {
 	constructor (service, parent, data) {
 		super(service, parent, data, {isPoll: true});
@@ -35,7 +37,7 @@ export default class Poll extends Question {
 
 
 	getSubmissionModel () {
-		return this.getModel('assessment.pollsubmission');
+		return PollSubmission;
 	}
 
 

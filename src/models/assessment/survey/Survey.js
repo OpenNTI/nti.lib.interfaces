@@ -8,6 +8,8 @@ import {
 
 import wait from 'nti-commons/lib/wait';
 
+import SurveySubmission from './SurveySubmission';
+
 const AGGREGATED = Symbol(SURVEY_AGGREGATED_LINK);
 
 export default class Survey extends QuestionSet {
@@ -42,7 +44,7 @@ export default class Survey extends QuestionSet {
 
 
 	getSubmissionModel () {
-		return this.getModel('assessment.surveysubmission');
+		return SurveySubmission;
 	}
 
 	getSubmission () {

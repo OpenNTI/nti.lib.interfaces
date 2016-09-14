@@ -10,6 +10,8 @@ import {
 	ASSESSMENT_HISTORY_LINK
 } from '../../../constants';
 
+import AssignmentSubmission from './AssignmentSubmission';
+
 import PlacementProvider from './AssignmentPlacementProvider';
 
 const RENAME = Symbol.for('TakeOver');
@@ -132,7 +134,6 @@ export default class Assignment extends Base {
 
 
 	getSubmission () {
-		const Model = this.getModel('assessment.assignmentsubmission');
 		const data = {
 			assignmentId: this.getID(),
 			version: this.version,
@@ -146,7 +147,7 @@ export default class Assignment extends Base {
 		//Its odd to me that we have to augment the rel link with the assignmentId when we're including it in the payload...
 		const submitTo = course && urlJoin(course.getLink(REL), encodeURIComponent(this.getID()));
 
-		const submission = new Model(this[Service], this, data, submitTo);
+		const submission = new AssignmentSubmission(this[Service], this, data, submitTo);
 
 		submission.parts = (this.parts || []).map(p => {
 			p = p.getSubmission();

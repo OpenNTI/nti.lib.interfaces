@@ -1,4 +1,5 @@
 import DomContentPointer from './DomContentPointer';
+import ElementDomContentPointer from './ElementDomContentPointer';
 
 import { Parser as parse } from '../../constants';
 
@@ -30,7 +31,6 @@ export default class TextDomContentPointer extends DomContentPointer {
 
 
 	validateAncestor (a) {
-		let ElementDomContentPointer = this.getModel('contentrange.elementdomcontentpointer');
 		if (!a || !(a instanceof DomContentPointer)) {
 			throw new Error('Ancestor must be supplied');
 		}

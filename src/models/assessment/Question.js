@@ -6,7 +6,10 @@ import {
 
 import HasContent from '../mixins/HasContent';
 
+import Part from './Part';
 import PlacementProvider from './QuestionPlacementProvider';
+import QuestionSet from './QuestionSet';
+import QuestionSubmission from './QuestionSubmission';
 
 const Individual = Symbol('Individual');
 
@@ -44,8 +47,7 @@ export default class Question extends Base {
 	get individual () {
 		let result = this[Individual];
 		if (!this.hasOwnProperty(Individual)) {
-			let Model = this.getModel('questionset');
-			result = !this.parent({test: p=>p instanceof Model});
+			result = !this.parent({test: p=>p instanceof QuestionSet});
 			this[Individual] = result; //stop computing
 		}
 		return result;
@@ -93,7 +95,7 @@ export default class Question extends Base {
 
 	getVideos () {
 		//Eeewww...
-		let all = this.getModel('assessment.part').prototype.getVideos.call(this);
+		let all = Part.prototype.getVideos.call(this);
 
 		for(let p of this.parts) {
 			all.push.apply(all, p.getVideos());
@@ -103,7 +105,7 @@ export default class Question extends Base {
 
 
 	getSubmissionModel () {
-		return this.getModel('assessment.questionsubmission');
+		return QuestionSubmission;
 	}
 
 

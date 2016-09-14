@@ -1,4 +1,5 @@
 import ContentRangeDescription from './ContentRangeDescription';
+import DomContentPointer from './DomContentPointer';
 
 import { Parser as parse } from '../../constants';
 
@@ -36,7 +37,6 @@ export default class DomContentRangeDescription extends ContentRangeDescription 
 
 
 	isDomContentPointer (o) {
-		let pointer = this.getModel('contentrange.domcontentpointer');
-		return (o && o instanceof pointer);
+		return (o && o instanceof DomContentPointer);
 	}
 }

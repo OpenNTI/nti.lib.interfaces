@@ -9,8 +9,9 @@ import {
 } from '../../constants';
 
 import PlacementProvider from './QuestionSetPlacementProvider';
+import QuestionSetSubmission from './QuestionSetSubmission';
 
-let SUBMITTED_TYPE = 'application/vnd.nextthought.assessment.assessedquestionset';
+const SUBMITTED_TYPE = 'application/vnd.nextthought.assessment.assessedquestionset';
 
 export default class QuestionSet extends Base {
 	constructor (service, parent, data) {
@@ -133,7 +134,7 @@ export default class QuestionSet extends Base {
 	}
 
 	getSubmissionModel () {
-		return this.getModel('assessment.questionsetsubmission');
+		return QuestionSetSubmission;
 	}
 
 	getSubmission () {

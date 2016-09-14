@@ -1,4 +1,5 @@
 import ContentRangeDescription from './ContentRangeDescription';
+import TimeContentPointer from './TimeContentPointer';
 
 import { Parser as parse } from '../../constants';
 
@@ -27,7 +28,6 @@ export default class TimeRangeDescription extends ContentRangeDescription {
 
 
 	isTimeContentPointer (o) {
-		let pointer = this.getModel('contentrange.timecontentpointer');
-		return Boolean(o && o instanceof pointer);
+		return Boolean(o && o instanceof TimeContentPointer);
 	}
 }
