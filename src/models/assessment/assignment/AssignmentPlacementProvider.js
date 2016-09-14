@@ -20,7 +20,8 @@ export default class AssignmentPlacementProvider {
 
 
 	/**
-	 * @returns {Promise} Fulfills with an array of items that the given "item" (Assignment) can be placed. Rejects on errors.
+	 * @returns {Promise} Fulfills with an array of items that the given
+	 *                    "item" (Assignment) can be placed. Rejects on errors.
 	 */
 	getItems () {
 		return Promise.resolve([]);
