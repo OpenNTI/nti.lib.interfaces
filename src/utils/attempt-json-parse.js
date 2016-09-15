@@ -8,7 +8,7 @@ export default function attemptJSONParse (value, warn) {
 	}
 	catch (e) {
 		if (warn) {
-			logger.warn('Attempted to parse string into json but encoundered an error: %s', e.stack || e.message);
+			logger.warn('Attempted to parse string into json but encountered an error: %s', e.stack || e.message);
 		}
 	}
 
