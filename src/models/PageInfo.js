@@ -17,8 +17,8 @@ const NOT_FOUND = {statusCode: 404, message: 'Not Found'};
 const UserData = Symbol('UserData');
 
 export default class PageInfo extends Base {
-	constructor (service, data) {
-		super(service, null, data);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 
 		if (data.AssessmentItems) {
 			this.AssessmentItems = setupAssessmentItems(data.AssessmentItems, this);

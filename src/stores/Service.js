@@ -244,14 +244,25 @@ export default class ServiceDocument {
 	}
 
 
-	getPageInfo (ntiid, params) {
+	/**
+	 * Get a PageInfo
+	 *
+	 * @param {string} ntiid - the page id.
+	 * @param {object} [options] - an object of additional options
+	 * @param {object} [options.parent] - the parent reference to assign the PageInfo
+	 * @param {object} [options.params] - params to add to the request url.
+	 * @return {Promise} resolves with a PageInfo
+	 */
+	getPageInfo (ntiid, options) {
+		const field = void 0; //must be undefined.
 		const mime = 'application/vnd.nextthought.pageinfo+json';
+		const {parent, params} = options || {};
 
 		if (!isNTIID(ntiid)) {
 			return Promise.reject('Bad NTIID');
 		}
 
-		return this.getObject(ntiid, this, void 0, mime, params);
+		return this.getObject(ntiid, parent || this, field, mime, params);
 	}
 
 
