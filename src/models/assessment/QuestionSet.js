@@ -6,7 +6,7 @@ import {
 	MAY_EFFECT_PROPERTIES
 } from '../../constants';
 
-import PlacementProvider from './QuestionSetPlacementProvider';
+import PlacementProvider from '../../authoring/placement/providers/QuestionSet';
 import QuestionSetSubmission from './QuestionSetSubmission';
 
 const SUBMITTED_TYPE = 'application/vnd.nextthought.assessment.assessedquestionset';

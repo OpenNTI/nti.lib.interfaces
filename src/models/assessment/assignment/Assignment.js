@@ -11,7 +11,7 @@ import {
 	MAY_EFFECT_PROPERTIES
 } from '../../../constants';
 
-import PlacementProvider from './AssignmentPlacementProvider';
+import PlacementProvider from '../../../authoring/placement/providers/Assignment';
 import AssignmentSubmission from './AssignmentSubmission';
 
 const RENAME = Symbol.for('TakeOver');
