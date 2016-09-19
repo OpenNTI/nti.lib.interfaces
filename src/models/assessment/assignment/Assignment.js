@@ -25,6 +25,7 @@ export default class Assignment extends Base {
 		this[parse]('parts', []);
 
 		this[RENAME]('GradeAssignmentSubmittedCount', 'submittedCount'); //number of submissions with grades?
+		this[RENAME]('GradeSubmittedStudentPopulationCount', 'submittedCountTotalPossible'); //number of people who can see it
 		//this[RENAME]('GradeSubmittedCount', 'gradeCount'); // just number of grades?
 		this[RENAME]('total_points', 'totalPoints');
 	}
