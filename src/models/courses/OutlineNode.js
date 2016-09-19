@@ -1,5 +1,6 @@
 import Outline from './Outline';
 import {Progress, Summary, DateFields, Parser as parse} from '../../constants';
+import Publishable from '../mixins/Publishable';
 
 import fallbackOverview from './_fallbacks.OverviewFromToC';
 
@@ -11,7 +12,7 @@ const logger = Logger.get('models:courses:OutlineNode');
 
 export default class OutlineNode extends Outline {
 	constructor (service, parent, data) {
-		super(service, parent, data);
+		super(service, parent, data, Publishable);
 		const p = c => c.map(o => this[parse](o));
 		updateValue(this, 'contents', p(data.contents || []));
 	}
