@@ -1,5 +1,7 @@
 import {defineProtected} from 'nti-commons';
 
+import {placeItemInParent} from '../factories';
+
 const ContentNodeMimeType = 'application/vnd.nextthought.courses.courseoutlinecontentnode';
 
 function getContentNodes (acc, node) {
@@ -44,4 +46,8 @@ export default class AssignmentPlacementProvider {
 			});
 	}
 
+
+	placeInParent (parent) {
+		placeItemInParent(this.item, parent, this.scope);
+	}
 }
