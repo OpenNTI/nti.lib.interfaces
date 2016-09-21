@@ -48,6 +48,6 @@ export default class AssignmentPlacementProvider {
 
 
 	placeInParent (parent) {
-		placeItemInParent(this.item, parent, this.scope);
+		return placeItemInParent(this.item, parent, this.scope);
 	}
 }
