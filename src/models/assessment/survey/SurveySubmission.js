@@ -8,7 +8,7 @@ export default class SurveySubmission extends QuestionSetSubmission {
 
 	static COURSE_SUBMISSION_REL = 'CourseInquiries'
 
-	build (survey) {
+	static build (survey) {
 		const s = super.build(survey);
 		s.surveyId = s.questionSetId;
 		delete s.questionSetId;
