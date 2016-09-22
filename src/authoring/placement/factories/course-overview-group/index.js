@@ -19,5 +19,18 @@ export default {
 		}
 
 		return Promise.reject('No handler for item');
+	},
+
+
+	removeItemFrom (item, container, scope) {
+		const type = item.MimeType;
+
+		for (let itemType of ITEM_TYPES) {
+			if (itemType.type === type) {
+				return itemType.removeItemFrom(item, container, scope);
+			}
+		}
+
+		return Promise.reject('No handler for item');
 	}
 };
