@@ -1,6 +1,6 @@
 import {defineProtected} from 'nti-commons';
 
-import {placeItemInParent} from '../factories';
+import {placeItemIn} from '../factories';
 
 const ContentNodeMimeType = 'application/vnd.nextthought.courses.courseoutlinecontentnode';
 
