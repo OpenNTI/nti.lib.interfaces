@@ -9,12 +9,12 @@ const ITEM_TYPES = [
 export default {
 	type: OverviewGroup,
 
-	placeItemInParent (item, parent, scope) {
+	placeItemIn (item, container, scope) {
 		const type = item.MimeType;
 
 		for (let itemType of ITEM_TYPES) {
 			if (itemType.type === type) {
-				return itemType.placeItemInParent(item, parent, scope);
+				return itemType.placeItemIn(item, container, scope);
 			}
 		}
 

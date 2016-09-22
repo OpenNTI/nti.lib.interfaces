@@ -47,7 +47,7 @@ export default class AssignmentPlacementProvider {
 	}
 
 
-	placeInParent (parent) {
-		return placeItemInParent(this.item, parent, this.scope);
+	placeIn (container) {
+		return placeItemIn(this.item, container, this.scope);
 	}
 }

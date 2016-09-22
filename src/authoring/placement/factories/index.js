@@ -4,14 +4,14 @@ const PARENT_TYPES = [
 	CourseOverviewGroup
 ];
 
-export function placeItemInParent (item, parent, scope) {
-	const type = parent.MimeType;
+export function placeItemIn (item, container, scope) {
+	const type = container.MimeType;
 
 	for (const parentType of PARENT_TYPES) {
 		if (parentType.type === type) {
-			return parentType.placeItemInParent(item, parent, scope);
+			return parentType.placeItemIn(item, container, scope);
 		}
 	}
 
-	return Promise.reject('No handler for parent');
+	return Promise.reject('No handler for container');
 }
