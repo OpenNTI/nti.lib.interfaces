@@ -1,6 +1,6 @@
 import {defineProtected} from 'nti-commons';
 
-import {placeItemIn} from '../factories';
+import {placeItemIn, removeItemFrom} from '../factories';
 
 const ContentNodeMimeType = 'application/vnd.nextthought.courses.courseoutlinecontentnode';
 
@@ -49,5 +49,10 @@ export default class AssignmentPlacementProvider {
 
 	placeIn (container) {
 		return placeItemIn(this.item, container, this.scope);
+	}
+
+	removeFrom (container) {
+		debugger;
+		return removeItemFrom(this.item, container, this.scope);
 	}
 }

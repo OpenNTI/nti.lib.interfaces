@@ -1,7 +1,9 @@
 import CourseOverviewGroup from './course-overview-group';
+import OutlineContentNode from './outline-content-node';
 
 const PARENT_TYPES = [
-	CourseOverviewGroup
+	CourseOverviewGroup,
+	OutlineContentNode
 ];
 
 export function placeItemIn (item, container, scope) {
