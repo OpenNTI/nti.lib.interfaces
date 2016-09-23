@@ -1,4 +1,5 @@
 import QuestionSetSubmission from '../QuestionSetSubmission';
+import {resolveSubmitTo} from '../utils';
 
 import {
 	Parser as parse
@@ -10,13 +11,20 @@ export default class SurveySubmission extends QuestionSetSubmission {
 
 	static build (survey) {
 		const s = super.build(survey);
+
 		s.surveyId = s.questionSetId;
 		delete s.questionSetId;
+
+		const submitTo = resolveSubmitTo(survey, this.COURSE_SUBMISSION_REL);
+		if (submitTo) {
+			Object.defineProperty(this, 'SubmissionHref', {value: submitTo});
+		}
+
 		return s;
 	}
 
-	constructor (service, parent, data, submitTo) {
-		super(service, parent, data, submitTo);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 		Object.defineProperty(this, 'SubmitsToObjectURL', {value: true});
 		Object.assign(this, {
 			MimeType: 'application/vnd.nextthought.assessment.surveysubmission'

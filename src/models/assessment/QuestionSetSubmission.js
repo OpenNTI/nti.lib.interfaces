@@ -5,11 +5,8 @@ import {
 	Parser as parse
 } from '../../constants';
 import submission from '../mixins/Submission';
-import {resolveSubmitTo} from './utils';
 
 export default class QuestionSetSubmission extends Base {
-
-	static COURSE_SUBMISSION_REL = 'Assessments';
 
 	static build (questionSet) {
 		const data = {
@@ -19,18 +16,15 @@ export default class QuestionSetSubmission extends Base {
 			questions: questionSet.questions.map(q => q.getSubmission())
 		};
 
-		const submitTo = resolveSubmitTo(questionSet, this.COURSE_SUBMISSION_REL);
-		const s = new this(questionSet[Service], null, data, submitTo);
+		const s = new this(questionSet[Service], null, data);
 		s.questions.forEach(q => q[ReParent](s));
 		return s;
 	}
 
-	constructor (service, parent, data, submitTo) {
+	constructor (service, parent, data) {
 		super(service, parent, data, submission, {
 			MimeType: 'application/vnd.nextthought.assessment.questionsetsubmission'
 		});
-
-		Object.defineProperty(this, 'SubmissionHref', {value: submitTo});
 
 		// CreatorRecordedEffortDuration: 0
 		this[parse]('questions', []);

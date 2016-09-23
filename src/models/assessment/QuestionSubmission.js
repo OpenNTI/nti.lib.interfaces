@@ -1,11 +1,8 @@
 import Base from '../Base';
 import {Service} from '../../constants';
 import Submission from '../mixins/Submission';
-import {resolveSubmitTo} from './utils';
 
 export default class QuestionSubmission extends Base {
-
-	static COURSE_SUBMISSION_REL = 'Assessments';
 
 	static build (question) {
 		const {parts} = question;
@@ -16,17 +13,14 @@ export default class QuestionSubmission extends Base {
 			parts: parts && parts.map(()=>null)
 		};
 
-		const submitTo = resolveSubmitTo(question, this.COURSE_SUBMISSION_REL);
-		return new this(question[Service], null, data, submitTo);
+		return new this(question[Service], null, data);
 	}
 
 
-	constructor (service, parent, data, submitTo) {
+	constructor (service, parent, data) {
 		super(service, parent, data, Submission, {
 			MimeType: 'application/vnd.nextthought.assessment.questionsubmission'
 		});
-
-		Object.defineProperty(this, 'SubmissionHref', {value: submitTo});
 
 		// questionId
 		// parts -> parse
