@@ -22,7 +22,7 @@ export default class Folder extends FileSystemEntity {
 	 */
 	castFile (file) {
 		if (file && !(file instanceof FileSystemEntity)) {
-			file = this[Service].getObject(file, this);
+			file = this[Service].getObject(file, {parent: this});
 		}
 
 		if (file && file[ReParent]) {

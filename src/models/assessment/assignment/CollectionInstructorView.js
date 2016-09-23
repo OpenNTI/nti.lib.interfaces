@@ -168,7 +168,7 @@ export default class CollectionInstructorView extends Base {
 
 		//new grade
 		return this[Service].post(grade.href, grade)
-			.then(o => o && this[Service].getObject(o, this))
+			.then(o => o && this[Service].getObject(o, {parent: this}))
 			.then(historyItem => {
 				if (!historyItem) { return; }
 				const {AssignmentId: assignmentId} = grade;

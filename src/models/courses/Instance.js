@@ -240,7 +240,7 @@ export default class Instance extends Base {
 		//tho, probably should be the Assignemnts Collection but we may not have that...
 		//the instance caches are on the service doc so we're covered there.
 
-		const parseResult = o => service.getObject(o, assignemntParentRef);
+		const parseResult = o => service.getObject(o, {parent: assignemntParentRef});
 		const uri = Url.parse(href);
 
 		uri.pathname = path.join(uri.pathname, encodeURIComponent(ntiid));

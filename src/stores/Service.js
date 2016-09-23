@@ -254,7 +254,6 @@ export default class ServiceDocument {
 	 * @return {Promise} resolves with a PageInfo
 	 */
 	getPageInfo (ntiid, options) {
-		const field = void 0; //must be undefined.
 		const mime = 'application/vnd.nextthought.pageinfo+json';
 		const {parent, params} = options || {};
 
@@ -262,7 +261,11 @@ export default class ServiceDocument {
 			return Promise.reject('Bad NTIID');
 		}
 
-		return this.getObject(ntiid, parent || this, field, mime, params);
+		return this.getObject(ntiid, {
+			params,
+			parent: parent || this,
+			type: mime
+		});
 	}
 
 
@@ -353,8 +356,20 @@ export default class ServiceDocument {
 	}
 
 
-	getObject (ntiid, parent, field, type, params) {
-		let p = o => parse(this, parent || this, o);
+	/**
+	 * Get an Object
+	 *
+	 * @param {string|object} ntiid - the object's id, or a raw JSO to parse into a Model.
+	 * @param {object} [options] - an object of additional options
+	 * @param {string} [options.field] - field of the object to retrieve.
+	 * @param {Model} [options.parent] - the parent reference to assign the returned Model
+	 * @param {object} [options.params] - params to add to the request url.
+	 * @param {string} [options.type] - enforce an expected type.
+	 * @return {Promise} resolves with a Model instance of the object
+	 */
+	getObject (ntiid, options) {
+		const {field, params, parent, type} = options || {};
+		const p = o => parse(this, parent || this, o);
 
 		if (typeof ntiid === 'object') {
 			return Promise.resolve(p(ntiid));
