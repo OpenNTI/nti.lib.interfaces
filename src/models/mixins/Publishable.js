@@ -19,5 +19,15 @@ export default {
 		return this.postToLink(link, payload)
 			.then(o => this.refresh(pluck(o, 'NTIID', 'Links', 'publishBeginning', 'PublicationState', ...additionalChangingFields)))
 			.then(() => this.onChange('publish'));
+	},
+
+
+	canPublish () {
+		return this.hasLink('publish');
+	},
+
+
+	canUnpublish () {
+		return this.hasLink('unpublish');
 	}
 };
