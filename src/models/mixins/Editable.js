@@ -23,8 +23,8 @@ export default {
 			.then(() => true);//control the success result
 	},
 
-	save (newValues, onAfterRefresh = x=>x) {
-		if (!this.hasLink('edit')) {
+	save (newValues, onAfterRefresh = x=>x, rel = 'edit') {
+		if (!this.hasLink(rel)) {
 			return Promise.reject('No Edit Link.');
 		}
 
@@ -43,7 +43,7 @@ export default {
 
 		const previousSave = this.saving || Promise.resolve();
 
-		const worker = this.saving = after(previousSave, () => this.putToLink('edit', values))
+		const worker = this.saving = after(previousSave, () => this.putToLink(rel, values))
 			.then(o => this.refresh(pluck(o, ...keys)))
 			.then(o => (onAfterRefresh(o), o))
 			.then(...finishers(this, SAVE, data))
