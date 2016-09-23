@@ -240,9 +240,13 @@ export default class Assignment extends Base {
 
 		const work = (!isDate && !value)
 			? Promise.resolve()
-			: this.save({ 'available_for_submission_beginning': isDate ? state : null});
+			: this.save({ 'available_for_submission_beginning': isDate ? state : null}, void 0, 'date-edit');
 
-		return work.then(() => Publishable.setPublishState.call(this, value, 'available_for_submission_beginning'));
+		return work.then(() => {
+			if (this.canPublish() || this.canUnpublish()) {
+				return Publishable.setPublishState.call(this, value, 'available_for_submission_beginning');
+			}
+		});
 	}
 
 
