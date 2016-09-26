@@ -62,5 +62,10 @@ export default {
 		this.saving.then(clean, clean);
 
 		return this.saving;
+	},
+
+
+	canEdit () {
+		return this.hasLink('edit');
 	}
 };

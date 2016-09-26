@@ -219,13 +219,32 @@ export default class Assignment extends Base {
 	}
 
 
+	canSetTotalPoints () {
+		return this.hasLink('total-points');
+	}
+
+
 	setTotalPoints (points) {
-		return this.save({'total_points': points});
+		return this.save({'total_points': points}, void 0, 'total-points');
+	}
+
+
+	canSetAutoGrade () {
+		return this.hasLink('auto-grade');
 	}
 
 
 	setAutoGrade (state) {
-		return this.save({'auto_grade': state});
+		return this.save({'auto_grade': state}, void 0, 'auto-grade');
+	}
+
+	canSetDueDate () {
+		return this.hasLink('date-edit');
+	}
+
+
+	setDueDate (date) {
+		return this.save({'available_for_submission_beginning': date}, void 0, 'date-edit');
 	}
 
 	/**
