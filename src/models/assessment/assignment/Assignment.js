@@ -245,7 +245,7 @@ export default class Assignment extends Base {
 
 
 	setDueDate (date) {
-		return this.save({'available_for_submission_beginning': date}, void 0, 'date-edit');
+		return this.save({'available_for_submission_ending': date}, void 0, 'date-edit');
 	}
 
 	/**
