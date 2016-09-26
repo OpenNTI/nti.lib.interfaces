@@ -7,7 +7,8 @@ import {
 	ReParent,
 	DateFields,
 	Parser as parse,
-	ASSESSMENT_HISTORY_LINK
+	ASSESSMENT_HISTORY_LINK,
+	MAY_EFFECT_PROPERTIES
 } from '../../../constants';
 
 import PlacementProvider from './AssignmentPlacementProvider';
@@ -225,7 +226,7 @@ export default class Assignment extends Base {
 
 
 	setTotalPoints (points) {
-		return this.save({'total_points': points}, void 0, 'total-points');
+		return this.save({'total_points': points, [MAY_EFFECT_PROPERTIES]: ['auto_grade']}, void 0, 'total-points');
 	}
 
 
