@@ -80,9 +80,7 @@ export default class QuestionSet extends Base {
 	 * @return {boolean} yes or no.
 	 */
 	get isRandomized () {
-		if (!this.hasLink('edit')) {
-			throw new Error('Illegal Access. This instance is not editable.');
-		}
+		//TODO: this can just be a rename of this.Randomized
 		return this.Randomized;
 	}
 
@@ -92,9 +90,6 @@ export default class QuestionSet extends Base {
 	 * @return {boolean} yes or no.
 	 */
 	get isPartTypeRandomized () {
-		if (!this.hasLink('edit')) {
-			throw new Error('Illegal Access. This instance is not editable.');
-		}
 		return this.RandomizedPartsType;
 	}
 
