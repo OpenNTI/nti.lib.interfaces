@@ -103,12 +103,26 @@ export default class DataServerInterface extends EventEmitter {
 			throw new Error('Calling request w/o context!');
 		}
 
-		if (data && typeof data === 'object') {
-			if (data[AsFormSubmission]) {
-				init.body = encodeFormData(data);
-			}
-			else {
-				init.body = JSON.stringify(data);
+		if (data != null) {
+			//fetch() api only allows the init.body to be an instance of these things:
+			//ArrayBuffer, ArrayBufferView, Blob/File, URLSearchParams, FormData or a string
+			//typeof will return === 'object' for all but strings... so with the above, we will
+			//have an unset init.body unless we neeeded to encode it...
+			const useDataRaw = data instanceof FormData
+							|| data instanceof Blob
+							|| data instanceof File
+							|| (data.buffer != null && data.BYTES_PER_ELEMENT != null)//all TypedArrays (ArrayBufferView)
+							|| (typeof ArrayBuffer !== 'undefined' && data instanceof ArrayBuffer)
+							|| (typeof URLSearchParams !== 'undefined' && data instanceof URLSearchParams)
+							|| typeof data === 'string';
+
+			init.body = (data[AsFormSubmission])
+				? encodeFormData(data)
+				: useDataRaw
+					? data
+					: JSON.stringify(data);
+
+			if (!useDataRaw && !data[AsFormSubmission]) {
 				init.headers['Content-Type'] = 'application/json';
 			}
 		}
