@@ -289,19 +289,29 @@ export default class Instance extends Base {
 		return !!(this.Discussions || this.ParentDiscussions);
 	}
 
+	/**
+	 * Get the Outline for this course instance.
+	 *
+	 * @param {object} [options] - An object of options
+	 * @param {boolean} [options.force] - Force a new request, bypass & replace caches.
+	 * @param {boolean} [options.unpublished] - include the unpublished nodes.
+	 * @returns {Promise} fulfills with the outline, or rejects on error.
+	 */
+	getOutline (options) {
+		const legacy = (typeof options === 'boolean' && options); //backwards compatability
+		const {force, unpublished = legacy} = options || {};
 
-	getOutline (includeUnpublished) {
 		const FIVE_MINUTES = 300000;//5min in milliseconds.
-		const key = includeUnpublished ? OutlineCacheUnpublished : OutlineCache;
+		const key = unpublished ? OutlineCacheUnpublished : OutlineCache;
 
-		if (!this[key]) {
+		if (!this[key] || force) {
 			//We have to wait for the CCE to load to know if its in preview mode or not.
 			this[key] = this.waitForPending().then(()=>
 					//If preview, block outline
 					this.CatalogEntry.Preview ?
 						Promise.reject('Preview') :
 						//not preview, Load contents...
-						this.Outline.getContent(includeUnpublished));
+						this.Outline.getContent(unpublished));
 		}
 
 		//Simple Promise wrapper... if the wrapped promise rejects, this will also reject.
@@ -323,8 +333,14 @@ export default class Instance extends Base {
 	}
 
 
-	getOutlineNode (id, includeUnpublished) {
-		return this.getOutline(includeUnpublished)
+	/**
+	 * Gets an outline node by id.
+	 * @param {string} id - the outlineNode id. (ntiid)
+	 * @param {object} [options] - options to pass to getOutline().
+	 * @returns {Promise} fulfills with outline node, or rejects if not found.
+	 */
+	getOutlineNode (id, options) {
+		return this.getOutline(options)
 			.then(outline => outline.getNode(id) || Promise.reject('Outline Node not found'));
 	}
 
