@@ -17,7 +17,7 @@ export default class SurveySubmission extends QuestionSetSubmission {
 
 		const submitTo = resolveSubmitTo(survey, this.COURSE_SUBMISSION_REL);
 		if (submitTo) {
-			Object.defineProperty(this, 'SubmissionHref', {value: submitTo});
+			Object.defineProperty(s, 'SubmissionHref', {value: submitTo});
 		}
 
 		return s;
