@@ -2,7 +2,10 @@ import Base from '../Base';
 
 import PageSource from './OutlineNodeBackedPageSource';
 
-const OUTLINE_CONTENT_CACHE = Symbol('OutlineContents:cache');
+import updateValue from 'nti-commons/lib/object-define-update-value';
+import defineProtected from 'nti-commons/lib/object-define-protected';
+
+const INFLIGHT = Symbol('OutlineContents:RequestInflight');
 const MAX_DEPTH = Symbol('OutlineContents:maximum depth');
 
 function getMaxDepthFrom (n) {
@@ -15,26 +18,46 @@ export default class Outline extends Base {
 
 	constructor (service, parent, data) {
 		super(service, parent, data);
-		this.contents = null;
+		Object.defineProperties(this, {
+
+			...defineProtected({
+				contents: null,
+				unpublished: false
+			})
+		});
 	}
 
 
-	getContent (includeUnpublished) {
-		let promise = this[OUTLINE_CONTENT_CACHE];
+	/**
+	 * Fill in the Outline Contents.
+	 *
+	 * @param {object} [options] - An object of options
+	 * @param {boolean} [options.force] - Force a new request, bypass & replace caches.
+	 * @param {boolean} [options.unpublished] - include the unpublished nodes.
+	 * @returns {Promise} fulfills with `this` instance, or rejects on error.
+	 */
+	getContent (options) {
+		const {unpublished, force} = options || {};
 
-		if (this.contents) {
-			promise = Promise.resolve(this);
+		const changed = force || this.unpublished !== Boolean(unpublished);
+
+		if (this.contents && !changed) {
+			return Promise.resolve(this);
 		}
 
-		else if (!promise) {
-			promise = this.fetchLinkParsed('contents', { 'omit_unpublished' : !includeUnpublished })
+		updateValue(this, 'unpublished', Boolean(unpublished));
+
+		let promise = !changed ? this[INFLIGHT] : null;
+
+		if (!promise) {
+			promise = this.fetchLinkParsed('contents', { 'omit_unpublished' : !unpublished })
 				.then(contents => {
-					Object.assign(this, { contents });
-					delete this[OUTLINE_CONTENT_CACHE];
+					updateValue(this, 'contents', contents);
+					delete this[INFLIGHT];
 					return this;
 				});
 
-			this[OUTLINE_CONTENT_CACHE] = promise;
+			this[INFLIGHT] = promise;
 		}
 
 		return promise;

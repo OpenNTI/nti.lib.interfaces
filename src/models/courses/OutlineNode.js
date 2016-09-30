@@ -3,6 +3,8 @@ import {Progress, Summary, DateFields, Parser as parse} from '../../constants';
 
 import fallbackOverview from './_fallbacks.OverviewFromToC';
 
+import updateValue from 'nti-commons/lib/object-define-update-value';
+
 import applyIf from 'nti-commons/lib/applyif';
 import {encodeForURI} from 'nti-lib-ntiids';
 import Logger from 'nti-util-logger';
@@ -12,8 +14,8 @@ const logger = Logger.get('models:courses:OutlineNode');
 export default class OutlineNode extends Outline {
 	constructor (service, parent, data) {
 		super(service, parent, data);
-		let p = c=>c.map(o => this[parse](o));
-		this.contents = p(data.contents || []);
+		const p = c => c.map(o => this[parse](o));
+		updateValue(this, 'contents', p(data.contents || []));
 	}
 
 	[DateFields] () {

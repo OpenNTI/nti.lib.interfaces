@@ -311,7 +311,7 @@ export default class Instance extends Base {
 					this.CatalogEntry.Preview ?
 						Promise.reject('Preview') :
 						//not preview, Load contents...
-						this.Outline.getContent(unpublished));
+						this.Outline.getContent(options));
 		}
 
 		//Simple Promise wrapper... if the wrapped promise rejects, this will also reject.
