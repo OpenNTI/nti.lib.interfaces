@@ -4,7 +4,14 @@ import Logger from 'nti-util-logger';
 
 import {getCacheFor} from './InstanceCacheContainer';
 
-const isNewer = (x, i) => parseDate(x['Last Modified']) > i.getLastModified();
+//A model can implement a getter with this symbol that will return a boolean. (True if the model wants to be rereshed)
+//If the new data has a newer Modified time, it will always be refreshed.
+export const ShouldRefresh = Symbol('InstanceCacheable:ShouldRefresh');
+
+//After we refresh a model, if it implements this method, call it.
+export const AfterInstanceRefresh = Symbol('InstanceCacheableL:AfterInstanceRefresh');
+
+const shouldRefresh = (x, i) => i[ShouldRefresh] || parseDate(x['Last Modified']) > i.getLastModified();
 
 const logger = Logger.get('InstanceCacheable');
 
@@ -36,8 +43,10 @@ export function parseOrRefresh (service, parent, data) {
 	}
 
 	//Refresh if newer data
-	else if (isNewer(data, inst)) {
-		inst.refresh(data);
+	else if (shouldRefresh(data, inst)) {
+		inst.refresh(data)
+			//Check to see if the instance implements AfterInstanceRefresh.
+			.then(()=> (inst[AfterInstanceRefresh] && inst[AfterInstanceRefresh](data)), inst);
 	}
 
 	return inst;

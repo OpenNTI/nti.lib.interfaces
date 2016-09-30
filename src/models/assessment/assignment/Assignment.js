@@ -1,6 +1,6 @@
 import Base from '../../Base';
 import {resolveSubmitTo} from '../utils';
-import {cacheClassInstances} from '../../mixins/InstanceCacheable';
+import {cacheClassInstances, AfterInstanceRefresh, ShouldRefresh} from '../../mixins/InstanceCacheable';
 import Publishable from '../../mixins/Publishable';
 import {
 	Service,
@@ -29,6 +29,19 @@ export default class Assignment extends Base {
 		this[RENAME]('GradeSubmittedStudentPopulationCount', 'submittedCountTotalPossible'); //number of people who can see it
 		//this[RENAME]('GradeSubmittedCount', 'gradeCount'); // just number of grades?
 		this[RENAME]('total_points', 'totalPoints');
+	}
+
+
+	//Implement some special instance cache hooks: a getter for ShouldRefresh, and the method AfterInstanceRefresh
+	get [ShouldRefresh] () {
+		return Boolean(this.IsSummary) || true;
+	}
+
+	[AfterInstanceRefresh] (newData) {
+		if (!newData.IsSummary) {
+			delete this.IsSummary;
+		}
+		this.onChange();
 	}
 
 

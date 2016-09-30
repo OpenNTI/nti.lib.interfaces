@@ -205,8 +205,8 @@ export default class Instance extends Base {
 		if (!p) {
 			// A/B sets... Assignments are the Universe-Set minus the B set.
 			// The A set is the assignments you can see.
-			let A = this.fetchLink('AssignmentsByOutlineNode');
-			let B = this.fetchLink('NonAssignmentAssessmentItemsByOutlineNode');
+			let A = this.fetchLink('AssignmentSummaryByOutlineNode');
+			let B = this.fetchLink('NonAssignmentAssessmentSummaryItemsByOutlineNode');
 
 			let historyLink = getLink('AssignmentHistory');
 
