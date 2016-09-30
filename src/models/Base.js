@@ -313,6 +313,8 @@ export default class Base extends EventEmitter {
 
 		this[INFLIGHT] = inflight;
 
+		this.addToPending(inflight);
+
 		return inflight;
 	}
 
