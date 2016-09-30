@@ -6,32 +6,36 @@ import {
 export default class AssignmentPart extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
-		this[parse]('question_set', []);
+		this[parse]('question_set');
 	}
 
 
 	containsId (id) {
-		let qSet = this.question_set;
-		return qSet && (qSet.getID() === id || qSet.containsId(id));
+		const {question_set: o} = this;
+		return o && (o.getID() === id || o.containsId(id));
 	}
 
 	getQuestion (id) {
-		return this.question_set.getQuestion(id);
+		const {question_set: o} = this;
+		return o && o.getQuestion(id);
 	}
 
 
 	getQuestions () {
-		return this.question_set.getQuestions();
+		const {question_set: o} = this;
+		return o ? o.getQuestions() : [];
 	}
 
 
 	getQuestionCount () {
-		return this.question_set.getQuestionCount();
+		const {question_set: o} = this;
+		return o ? o.getQuestionCount() : 0;
 	}
 
 
 	getSubmission () {
-		return this.question_set.getSubmission();
+		const {question_set: o} = this;
+		return o && o.getSubmission();
 	}
 
 }
