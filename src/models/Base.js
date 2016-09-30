@@ -227,82 +227,81 @@ export default class Base extends EventEmitter {
 			const Objects = x=> typeof x === 'object';
 			const dateFields = this[DateFields]();
 
-			for(let prop in o) {
-				if (o.hasOwnProperty(prop)) {
-					let value = o[prop];
+			for(let prop of Object.keys(o)) {
+				let value = o[prop];
 
-					//The property may have been remapped...
-					let desc = Object.getOwnPropertyDescriptor(this, prop);
-					let {renamedTo} = (desc || {}).get || {};
-					if (desc && renamedTo) {
-						prop = renamedTo;
-					}
+				//The property may have been remapped...
+				let desc = Object.getOwnPropertyDescriptor(this, prop);
+				let {renamedTo} = (desc || {}).get || {};
+				if (desc && renamedTo) {
+					prop = renamedTo;
+				}
 
-					let current = this[prop];
+				let current = this[prop];
 
-					if (current === value) {
-						continue;
-					}
+				if (current === value) {
+					continue;
+				}
 
-					//Reset the parsedDate cache.
-					if (dateFields.includes(prop)) {
-						delete this[getParsedDateKey(prop)];
-					}
+				//Reset the parsedDate cache.
+				if (dateFields.includes(prop)) {
+					delete this[getParsedDateKey(prop)];
+				}
 
-					//If the current value is truthy, and Model-like, then declare it to be a Model.
-					let currentIsModel = current && MightBeModel(current);
+				//If the current value is truthy, and Model-like, then declare it to be a Model.
+				let currentIsModel = current && MightBeModel(current);
 
-					let currentMightBeListOfModels =
-						current == null || //If the current value is empty, we cannot presume... the new value should shed some light.
-						(Array.isArray(current) && current.every(MightBeModel)); //If the current value is an array, and each element of the array is Model-like...
-						//then the current value Might be a list of models...
+				let currentMightBeListOfModels =
+					current == null || //If the current value is empty, we cannot presume... the new value should shed some light.
+					(Array.isArray(current) && current.every(MightBeModel)); //If the current value is an array, and each element of the array is Model-like...
+					//then the current value Might be a list of models...
 
-					let newValueHasMimeType = HasMimeType(value);
+				let newValueHasMimeType = HasMimeType(value);
 
-					//If the new value is an array and any item has a MimeType or Class, and its not Links (which don't have models yet...)
-					let newValueMightBeListOfModels = Array.isArray(value) && prop !== 'Links' && value.some(HasMimeType);
+				//If the new value is an array and any item has a MimeType or Class, and its not Links (which don't have models yet...)
+				let newValueMightBeListOfModels = Array.isArray(value) && prop !== 'Links' && value.some(HasMimeType);
 
-					//Lets inspect the new value...
-					let newValueIsArrayOfObjects =
-						Array.isArray(value) && //If its an array,
-						value.length > 0 && // and its length is greater than zero (there are things in it)
-						value.every(Objects); // and every element is an Object
-						//then the new value sould be parsed... as long as the current value is also parsed.
+				//Lets inspect the new value...
+				let newValueIsArrayOfObjects =
+					Array.isArray(value) && //If its an array,
+					value.length > 0 && // and its length is greater than zero (there are things in it)
+					value.every(Objects); // and every element is an Object
+					//then the new value sould be parsed... as long as the current value is also parsed.
 
-					//So, should we parse?
-					if (
-						//if the current value was a model,
-						currentIsModel ||
-						//or if the new value looks parsable
-						newValueHasMimeType ||
-						newValueMightBeListOfModels ||
-						(
-							//or the current value was unset, or a list of Models,
-							currentMightBeListOfModels &&
-							newValueIsArrayOfObjects//and our new value is a list of objects...
-						)
-					) {// then, yes... parse
-						try {
-							value = this[Parser](value);
-						} catch(e) {
-							logger.warn('Attempted to parse new value, and something went wrong... %o', e.stack || e.message || e);
-						}
-					}
-
-					if (typeof current === 'function') {
-						throw new Error('a value was named as one of the methods on this model.');
-					}
-
-					desc = Object.getOwnPropertyDescriptor(this, prop);
-					if (desc && !desc.writable) {
-						delete this[prop];
-						desc.value = value;
-
-						Object.defineProperty(this, prop, desc);
-					} else {
-						this[prop] = value;
+				//So, should we parse?
+				if (
+					//if the current value was a model,
+					currentIsModel ||
+					//or if the new value looks parsable
+					newValueHasMimeType ||
+					newValueMightBeListOfModels ||
+					(
+						//or the current value was unset, or a list of Models,
+						currentMightBeListOfModels &&
+						newValueIsArrayOfObjects//and our new value is a list of objects...
+					)
+				) {// then, yes... parse
+					try {
+						value = this[Parser](value);
+					} catch(e) {
+						logger.warn('Attempted to parse new value, and something went wrong... %o', e.stack || e.message || e);
 					}
 				}
+
+				if (typeof current === 'function') {
+					throw new Error('a value was named as one of the methods on this model.');
+				}
+
+				desc = Object.getOwnPropertyDescriptor(this, prop);
+				if (desc && !desc.writable) {
+					delete this[prop];
+					desc.value = value;
+
+					Object.defineProperty(this, prop, desc);
+				} else {
+					this[prop] = value;
+				}
+
 			}
 
 			return this;
