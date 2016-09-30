@@ -51,9 +51,12 @@ export default class Outline extends Base {
 
 		if (!promise) {
 			promise = this.fetchLinkParsed('contents', { 'omit_unpublished' : !unpublished })
+				.catch(() => [])//make errors return an empty outline
 				.then(contents => {
-					updateValue(this, 'contents', contents);
-					delete this[INFLIGHT];
+					if (this[INFLIGHT] === promise) {
+						updateValue(this, 'contents', contents);
+						delete this[INFLIGHT];
+					}
 					return this;
 				});
 
