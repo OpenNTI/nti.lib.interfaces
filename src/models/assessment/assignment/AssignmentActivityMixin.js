@@ -25,10 +25,17 @@ export default {
 
 
 	buildFeedbackEvent (f, lastViewed) {
-		const {creator: user} = f;
+		const {creator, SubmissionCreator: student} = f;
+		const user = student || creator;
+
 		return Object.assign({ user },
 			this.getEventConfig(
-				f.isCreatedByAppUser ? 'you-feedback' : 'they-feedback',
+				f.isCreatedByAppUser
+					? (creator === student
+						? 'you-feedback'
+						: 'you-feedback-theirs'
+					)
+					: 'they-feedback',
 				f.AssignmentId,
 				f.getCreatedTime(),
 				lastViewed
