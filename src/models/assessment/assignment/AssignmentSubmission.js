@@ -38,13 +38,13 @@ export default class AssignmentSubmission extends Base {
 
 
 	getQuestion (id) {
-		return (this.parts || []).reduce((found, p) =>
+		return (this.parts || []).filter(x => x).reduce((found, p) =>
 			found || p.getQuestion(id), null);
 	}
 
 
 	getQuestions () {
-		return (this.parts || []).reduce((list, p) =>
+		return (this.parts || []).filter(x => x).reduce((list, p) =>
 			list.concat(p.getQuestions()), []);
 	}
 
@@ -57,7 +57,7 @@ export default class AssignmentSubmission extends Base {
 			throw new Error('Invalid Argument');
 		}
 
-		return parts.reduce((sum, q, i) =>
+		return parts.filter(x => x).reduce((sum, q, i) =>
 			sum + q.countUnansweredQuestions(assignment.parts[i].question_set), 0);
 	}
 
