@@ -2,8 +2,6 @@ import pluck from 'nti-commons/lib/pluck';
 
 import Base from '../Base';
 import {
-	Service,
-	ReParent,
 	Parser as parse,
 	MAY_EFFECT_PROPERTIES
 } from '../../constants';
