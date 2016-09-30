@@ -369,13 +369,17 @@ export default class ServiceDocument {
 	 */
 	getObject (ntiid, options) {
 		const {field, params, parent, type} = options || {};
-		const p = o => parse(this, parent || this, o);
 
-		if (typeof ntiid === 'object') {
-			return Promise.resolve(p(ntiid));
-		}
+		const resolve = (typeof ntiid === 'object')
+			? Promise.resolve(ntiid)
+			: this.getObjectRaw(ntiid, field, type, params);
 
-		return this.getObjectRaw(ntiid, field, type, params).then(p);
+		return resolve
+			.then(o => parse(this, parent || this, o))
+			.then(model => model && model.waitForPending
+					? model.waitForPending()
+					: model
+				);
 	}
 
 
