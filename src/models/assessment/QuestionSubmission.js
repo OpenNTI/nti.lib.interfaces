@@ -10,7 +10,7 @@ export default class QuestionSubmission extends Base {
 			ContainerId: question.containerId,
 			NTIID: question.getID(),
 			questionId: question.getID(),
-			parts: parts && parts.map(()=>null)
+			parts: parts && parts.map(p => p.getInitialValue ? p.getInitialValue() : null)
 		};
 
 		return new this(question[Service], null, data);
