@@ -1,5 +1,28 @@
 import {defineProtected} from 'nti-commons';
 
+const AssignmentType = 'application/vnd.nextthought.assessment.assignment';
+
+
+const Handlers = {
+	[AssignmentType]: (item, scope) => {
+		if (!scope && !scope.getAllAssignments()) {
+			return Promise.resolve();
+		}
+
+		return scope.getAllAssignments()
+			.then(assignments => assignments.filter(x => x.hasLink('edit')));
+	}
+};
+
+function resolveAll (item, scope) {
+	const keys = Object.keys(Handlers);
+
+	return Promise.all(keys.map(key => {
+		return Handlers[key](item, scope);
+	}));
+}
+
+
 export default class QuestionPlacementProvider {
 	/**
 	 * @param {Instance} scope - the course instance scope.
@@ -20,23 +43,37 @@ export default class QuestionPlacementProvider {
 
 
 	/**
+	 * @param {[String]} accepts list of mime types to accept, accept all if empty
 	 * @returns {Promise} Fulfills with an array of items that the given
 	 *                    "item" (Question) can be placed. Rejects on errors.
 	 */
-	getItems () {
+	getItems (accepts) {
 		//For now, Questions can be placed in QuestionSets... assignments reference questionsets.
 		//This should perform the appropriate lookups...
+		if (!Array.isArray(accepts)) {
+			accepts = [accepts];
+		}
 
-		return Promise.all([
-			this.getQuestionSets(),
-			this.getAssignments()
-		])
-			.then(([questionSets, assignments]) => {
-				//merge (dedupe)
+		const {item, scope} = this;
+		let resolve;
 
-				return [...questionSets, ...assignments];
-			})
-			.then(items => this.filter ? this.filter(items) : items);
+		if (accepts) {
+			resolve = Promise.all(accepts.map(accept => {
+				if (Handlers[accept]) {
+					return Handlers[accept](item, scope);
+				} else {
+					return Promise.resolve();
+				}
+			})).then(results => {
+				return results.reduce((acc, result) => {
+					return acc.concat(result);
+				}, []);
+			});
+		} else {
+			resolve = resolveAll(item, scope);
+		}
+
+		return resolve;
 	}
 
 

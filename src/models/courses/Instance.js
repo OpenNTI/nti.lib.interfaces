@@ -186,7 +186,7 @@ export default class Instance extends Base {
 	getAssignments () {
 		const KEY = Symbol.for('GetAssignmentsRequest');
 		const parent = this.parent();
-		const getLink = rel => (parent && parent.getLink(rel)) || this.getLink(rel);
+		const getLink = rel => (parent && parent.getLink && parent.getLink(rel)) || this.getLink(rel);
 		const {isAdministrative} = this;
 
 		if (!parent || !parent.isEnrollment) {
@@ -219,6 +219,12 @@ export default class Instance extends Base {
 		}
 
 		return p;
+	}
+
+
+	getAllAssignments () {
+		return this.getAssignments()
+			.then(assignments => assignments.getAssignments());
 	}
 
 

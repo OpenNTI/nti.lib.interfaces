@@ -62,6 +62,11 @@ export default class Question extends Base {
 	}
 
 
+	get associationCount () {
+		return this.AssessmentContainerCount;
+	}
+
+
 	getAssociations () {
 		return this.fetchLinkParsed('Assessments');
 	}
