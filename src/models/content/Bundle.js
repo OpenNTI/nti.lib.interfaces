@@ -8,7 +8,7 @@ import {
 
 import setAndEmit from '../../utils/getsethandler';
 
-import {URL, forward} from 'nti-common';
+import {URL, forward} from 'nti-commons';
 
 import assets from '../mixins/PresentationResources';
 
