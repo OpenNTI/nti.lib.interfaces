@@ -1,8 +1,6 @@
 import EventEmitter from 'events';
 
-
-import forwardFunctions from 'nti-commons/lib/function-forwarding';
-import mixin from 'nti-commons/lib/mixin';
+import {forward, mixin} from 'nti-commons';
 
 import {parseListFn} from '../models';
 
@@ -25,7 +23,7 @@ export default class Catalog extends EventEmitter {
 		this[Service] = service;
 
 		Object.assign(this, data,
-			forwardFunctions(['every', 'filter', 'forEach', 'map', 'reduce'], 'Items'));
+			forward(['every', 'filter', 'forEach', 'map', 'reduce'], 'Items'));
 
 		this.onChange = this.onChange.bind(this);
 

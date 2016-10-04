@@ -14,8 +14,7 @@ import getLink, {getLinks} from '../utils/getlink';
 import encodeFormData from '../utils/encode-form-data';
 import toObject from '../utils/to-object';
 
-import MimeComparator from 'nti-commons/lib/MimeComparator';
-import chain from 'nti-commons/lib/function-chain';
+import {chain, FileType} from 'nti-commons';
 
 import {attach as attachPendingQueue} from '../models/mixins/Pendability';
 
@@ -70,7 +69,7 @@ export default class DataServerInterface extends EventEmitter {
 
 		const {data} = options;
 		const {accept} = options.headers || {};
-		const mime = accept && new MimeComparator(accept);
+		const mime = accept && new FileType.MimeComparator(accept);
 
 		const init = {
 			credentials: 'same-origin',

@@ -2,8 +2,7 @@ import Logger from 'nti-util-logger';
 import Url from 'url';
 import path from 'path';
 
-import waitFor from 'nti-commons/lib/waitfor';
-import wait from 'nti-commons/lib/wait';
+import {wait} from 'nti-commons';
 
 import Base from '../Base';
 import {
@@ -320,7 +319,7 @@ export default class Instance extends Base {
 		//Keep the promise for the life of the request,
 		//and if the normal published-only, add an additional 5 minutes.
 		//If requested again, reset the wait timer.
-		waitFor(p)
+		wait.on(p)
 			.then(() => key === OutlineCache && wait(FIVE_MINUTES))
 			.then(() => {
 				//only perform the cleanup op if and only if the promise at the key is OUR promise.

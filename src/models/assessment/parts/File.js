@@ -1,11 +1,11 @@
 import Part from '../Part';
-import FileSetDescriptor from 'nti-commons/lib/FileSetDescriptor';
+import {FileType} from 'nti-commons';
 
 export default class File extends Part {
 
 	constructor (service, parent, data) {
 		super(service, parent, data);
-		this.fileSetDescriptor = new FileSetDescriptor(
+		this.fileSetDescriptor = new FileType.FileSetDescriptor(
 			this.allowed_extensions || ['*'],
 			this.allowed_mime_types || ['*/*']
 		);

@@ -1,6 +1,6 @@
 const DATA = Symbol('data');
 
-import escape from 'nti-commons/lib/regexp-escape';
+import {String as StringUtils} from 'nti-commons';
 
 const flat = (a, n)=> a.concat(n.flatten());
 
@@ -94,7 +94,7 @@ export default class XMLBasedTableOfContentsNode {
 
 
 	getMatchExp (substring) {
-		return new RegExp(`(${escape(substring)})`, 'igm');
+		return new RegExp(`(${StringUtils.escapeForRegExp(substring)})`, 'igm');
 	}
 
 

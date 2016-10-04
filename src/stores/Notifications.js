@@ -1,8 +1,7 @@
 import QueryString from 'query-string';
 
 import Logger from 'nti-util-logger';
-import forwardFunctions from 'nti-commons/lib/function-forwarding';
-import waitFor from 'nti-commons/lib/waitfor';
+import {forward, wait} from 'nti-commons';
 
 
 import Url from 'url';
@@ -72,7 +71,7 @@ export default class Notifications extends EventEmitter {
 		this[Service] = service;
 		this.Items = [];
 
-		Object.assign(this, forwardFunctions(['every', 'filter', 'forEach', 'map', 'reduce'], 'Items'));
+		Object.assign(this, forward(['every', 'filter', 'forEach', 'map', 'reduce'], 'Items'));
 
 
 		applyData(this, data);
@@ -150,5 +149,5 @@ function resolveUIData (service, data) {
 		return o;
 	});
 
-	return waitFor(pending).then(()=> data);
+	return wait.on(pending).then(()=> data);
 }

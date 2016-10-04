@@ -1,9 +1,10 @@
 import EventEmitter from 'events';
 import invariant from 'invariant';
-
-import PageSource from 'nti-commons/lib/ListBackedPageSource';
+import {Paging} from 'nti-commons';
 
 import {SortOrder} from '../../../constants';
+
+const PageSource = Paging.ListBackedPageSource;
 
 const PRIVATE = new WeakMap();
 const initPrivate = (x, o = {}) => PRIVATE.set(x, o);

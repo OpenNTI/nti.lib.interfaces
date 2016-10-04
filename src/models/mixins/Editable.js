@@ -1,4 +1,4 @@
-import pluck from 'nti-commons/lib/pluck';
+import {pluck} from 'nti-commons';
 
 import { Service, DELETED, SAVE, MAY_EFFECT_PROPERTIES } from '../../constants';
 

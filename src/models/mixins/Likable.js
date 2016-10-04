@@ -1,4 +1,4 @@
-import pluck from 'nti-commons/lib/pluck';
+import {pluck} from 'nti-commons';
 
 export default {
 	like () {

@@ -6,7 +6,7 @@ import {
 	SURVEY_REPORT_LINK
 } from '../../../constants';
 
-import wait from 'nti-commons/lib/wait';
+import {wait} from 'nti-commons';
 
 import SurveySubmission from './SurveySubmission';
 

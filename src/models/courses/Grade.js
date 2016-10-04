@@ -1,7 +1,7 @@
 import Base from '../Base';
 import names from '../mixins/CourseAndAssignmentNameResolving';
 
-import pluck from 'nti-commons/lib/pluck';
+import {pluck} from 'nti-commons';
 
 import {cacheClassInstances} from '../mixins/InstanceCacheable';
 

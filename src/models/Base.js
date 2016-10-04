@@ -7,8 +7,8 @@ import QueryString from 'query-string';
 import {parse, getModelByType} from './index';
 
 import getLinkImpl from '../utils/getlink';
-import mixin from 'nti-commons/lib/mixin';
-import parseDate from 'nti-commons/lib/parse-date';
+import {mixin, Parsing} from 'nti-commons';
+
 import {ntiidEquals} from 'nti-lib-ntiids';
 
 import JSONValue from './mixins/JSONValue';
@@ -25,11 +25,9 @@ import {
 } from '../constants';
 
 
-
 const logger = Logger.get('models:Base');
 
 const CONTENT_VISIBILITY_MAP = {OU: 'OUID'};
-
 
 const PASCAL_CASE_REGEX = /(?:^|[^a-z0-9])([a-z0-9])?/igm;
 
@@ -549,7 +547,7 @@ function dateGetter (key) {
 	return function () {
 		if (typeof this[symbol] !== 'object' || this[key] !== last) {
 			last = this[key];
-			this[symbol] = parseDate(last);
+			this[symbol] = Parsing.parseDate(last);
 		}
 		return this[symbol];
 	};

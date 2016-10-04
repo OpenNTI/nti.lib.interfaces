@@ -1,4 +1,4 @@
-import pluck from 'nti-commons/lib/pluck';
+import {pluck} from 'nti-commons';
 
 import Base from '../Base';
 import {

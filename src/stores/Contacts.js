@@ -5,7 +5,7 @@ import EventEmitter from 'events';
 
 import Pendability from '../models/mixins/Pendability';
 
-import mixin from 'nti-commons/lib/mixin';
+import {mixin} from 'nti-commons';
 import uuid from 'node-uuid';
 // import getLink from '../utils/getlink';
 

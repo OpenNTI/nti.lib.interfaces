@@ -1,4 +1,4 @@
-import waitFor from 'nti-commons/lib/waitfor';
+import {wait} from 'nti-commons';
 
 const noop = () => {};
 const PRIVATE_PENDING = new WeakMap();
@@ -54,7 +54,7 @@ const mixin = {
 
 
 	waitForPending (timeout) {
-		return waitFor(getPending(this), timeout).then(()=> this);
+		return wait.on(getPending(this), timeout).then(()=> this);
 	}
 
 };

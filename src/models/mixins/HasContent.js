@@ -1,15 +1,14 @@
-import fixRefs from 'nti-commons/lib/rebase-references';
-import clean from 'nti-commons/lib/sanitize-markup';
+import {Markup} from 'nti-commons';
 
 function cleanupContentString (content) {
 	try {
 		let root = this.getContentRoot() || '/content/missing-root/';
-		content = fixRefs(content, root);
+		content = Markup.rebaseReferences(content, root);
 	} catch (e) {
 		console.error('Content cannot be rooted. %s', e.stack || e.message || e); //eslint-disable-line no-console
 	}
 
-	return clean(content);
+	return Markup.sanitize(content);
 }
 
 function setup (data, keys) {

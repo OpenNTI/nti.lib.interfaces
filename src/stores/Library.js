@@ -1,13 +1,14 @@
 import Logger from 'nti-util-logger';
 import EventEmitter from 'events';
 
-import mixin from 'nti-commons/lib/mixin';
-import unique from 'nti-commons/lib/array-unique';
+import {mixin, Array as ArrayUtils} from 'nti-commons';
 
 import {parseListFn} from '../models';
 import Pendability from '../models/mixins/Pendability';
 
 import {Service} from '../constants';
+
+const {unique} = ArrayUtils;
 
 const logger = Logger.get('store:Library');
 const getInstances = service => service.getDataCache().get('LibraryInstances', {}, true);

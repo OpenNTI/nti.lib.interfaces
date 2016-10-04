@@ -1,5 +1,5 @@
 import {Service} from '../../constants';
-import parseDate from 'nti-commons/lib/parse-date';
+import {Parsing} from 'nti-commons';
 import Logger from 'nti-util-logger';
 
 import {getCacheFor} from './InstanceCacheContainer';
@@ -11,7 +11,7 @@ export const ShouldRefresh = Symbol('InstanceCacheable:ShouldRefresh');
 //After we refresh a model, if it implements this method, call it.
 export const AfterInstanceRefresh = Symbol('InstanceCacheableL:AfterInstanceRefresh');
 
-const shouldRefresh = (x, i) => i[ShouldRefresh] || parseDate(x['Last Modified']) > i.getLastModified();
+const shouldRefresh = (x, i) => i[ShouldRefresh] || Parsing.parseDate(x['Last Modified']) > i.getLastModified();
 
 const logger = Logger.get('InstanceCacheable');
 

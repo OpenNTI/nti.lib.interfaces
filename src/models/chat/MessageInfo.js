@@ -2,7 +2,7 @@ import Base from '../Base';
 
 import Threadable from '../mixins/Threadable';
 
-import pluck from 'nti-commons/lib/pluck';
+import {pluck} from 'nti-commons';
 
 export default class MessageInfo extends Base {
 	constructor (service, parent, data) {

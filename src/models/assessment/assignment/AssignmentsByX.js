@@ -1,6 +1,8 @@
 import EventEmitter from 'events';
 
-import PageSource from 'nti-commons/lib/ListBackedPageSource';
+import {Paging} from 'nti-commons';
+
+const PageSource = Paging.ListBackedPageSource;
 
 const PRIVATE = new WeakMap();
 const initPrivate = (x, o = {}) => PRIVATE.set(x, o);

@@ -1,5 +1,4 @@
-import pluck from 'nti-commons/lib/pluck';
-import parseDate from 'nti-commons/lib/parse-date';
+import {pluck, Parsing} from 'nti-commons';
 
 export default {
 	isPublished () {
@@ -7,7 +6,7 @@ export default {
 	},
 
 	getPublishDate () {
-		return parseDate(this.publishBeginning);
+		return Parsing.parseDate(this.publishBeginning);
 	},
 
 	setPublishState (state, ...additionalChangingFields) {

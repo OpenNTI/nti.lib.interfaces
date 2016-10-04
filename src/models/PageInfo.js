@@ -6,7 +6,7 @@ import QueryString from 'query-string';
 
 import {REL_USER_GENERATED_DATA, REL_RELEVANT_CONTAINED_USER_GENERATED_DATA} from '../constants';
 
-import fixRefs from 'nti-commons/lib/rebase-references';
+import {Markup} from 'nti-commons';
 
 import {Service, Parser as parse} from '../constants';
 
@@ -47,7 +47,7 @@ export default class PageInfo extends Base {
 		let root = this.getContentRoot();
 
 		return this.fetchLink('content')
-			.then(html=>fixRefs(html, root));
+			.then(html=>Markup.rebaseReferences(html, root));
 	}
 
 

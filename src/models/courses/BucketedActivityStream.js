@@ -4,7 +4,7 @@ import Base from '../Base';
 
 import moment from 'moment';
 
-import ProxyObject from 'nti-commons/lib/ProxyObject';
+import {Proxy as ProxyObject} from 'nti-commons';
 
 const SOURCE = 'source';
 const ACTIVE_REQUEST = Symbol('active');

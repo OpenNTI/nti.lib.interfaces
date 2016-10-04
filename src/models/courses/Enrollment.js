@@ -4,7 +4,7 @@ import {
 	Service
 } from '../../constants';
 
-import forwardFunctions from 'nti-commons/lib/function-forwarding';
+import {forward} from 'nti-commons';
 
 
 export default class Enrollment extends Base {
@@ -15,7 +15,7 @@ export default class Enrollment extends Base {
 				isEnrollment: true
 			},
 
-			forwardFunctions([
+			forward([
 				'containsPackage',
 				'getOutline',
 				'getPresentationProperties',
@@ -25,10 +25,9 @@ export default class Enrollment extends Base {
 			//From:
 			], 'CourseInstance'),
 
-			forwardFunctions([
+			forward([
 				'getEndDate',
 				'getStartDate'
-
 			//From:
 			], 'CourseInstance.CatalogEntry'));
 

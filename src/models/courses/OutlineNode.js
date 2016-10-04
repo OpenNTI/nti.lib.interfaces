@@ -3,9 +3,7 @@ import {Progress, Summary, DateFields, Parser as parse} from '../../constants';
 
 import fallbackOverview from './_fallbacks.OverviewFromToC';
 
-import updateValue from 'nti-commons/lib/object-define-update-value';
-
-import applyIf from 'nti-commons/lib/applyif';
+import {applyIf, updateValue} from 'nti-commons';
 import {encodeForURI} from 'nti-lib-ntiids';
 import Logger from 'nti-util-logger';
 

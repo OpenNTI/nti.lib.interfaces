@@ -26,10 +26,8 @@ import {
 
 import DataCache from '../utils/datacache';
 import getLink from '../utils/getlink';
-import joinWithURL from 'nti-commons/lib/url-join';
 import {isNTIID} from 'nti-lib-ntiids';
-import mixin from 'nti-commons/lib/mixin';
-import waitFor from 'nti-commons/lib/waitfor';
+import {URL as UrlUtils, mixin, wait} from 'nti-commons';
 
 import {Context, Server, Service, SiteName} from '../constants';
 
@@ -179,7 +177,7 @@ export default class ServiceDocument {
 
 		let p = inflight[key] = this.getServer().get(url, this[Context]);
 
-		waitFor(p) //once the request finishes
+		wait.on(p) //once the request finishes
 			// .then(()=>wait(1000)) //wait one second before
 			.then(clean, clean); //we remove the request's promise from the in-flight cache.
 
@@ -610,7 +608,7 @@ export default class ServiceDocument {
 		let base = this.getResolveAppUserURL();
 		let pageURI = encodeURIComponent(`Pages(${ntiid})`);
 
-		return joinWithURL(base, pageURI, postfix || '');
+		return UrlUtils.join(base, pageURI, postfix || '');
 	}
 
 
@@ -671,7 +669,7 @@ export default class ServiceDocument {
 			return null;
 		}
 
-		return joinWithURL(l, username && encodeURIComponent(username));
+		return UrlUtils.join(l, username && encodeURIComponent(username));
 	}
 
 
@@ -702,7 +700,7 @@ export default class ServiceDocument {
 			return null;
 		}
 
-		return joinWithURL(l, username && encodeURIComponent(username));
+		return UrlUtils.join(l, username && encodeURIComponent(username));
 	}
 
 

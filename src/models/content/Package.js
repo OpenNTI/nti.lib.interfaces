@@ -6,7 +6,7 @@ import {
 } from '../../constants';
 
 import setAndEmit from '../../utils/getsethandler';
-import urlJoin from 'nti-commons/lib/url-join';
+import {URL} from 'nti-commons';
 
 
 import assets from '../mixins/PresentationResources';
@@ -57,7 +57,7 @@ export default class Package extends Base {
 			return '';
 		}
 
-		return urlJoin(root, 'presentation-assets', 'webapp', 'v1');
+		return URL.join(root, 'presentation-assets', 'webapp', 'v1');
 	}
 
 
@@ -117,7 +117,7 @@ export default class Package extends Base {
 				.then(toc =>
 					Promise.resolve(toc)
 						.then(find)
-						.then(path => urlJoin(this.root, path))
+						.then(path => URL.join(this.root, path))
 						.then(get)
 						.then(data => MediaIndex.build(this[Service], this, toc, data)));
 		}

@@ -2,8 +2,7 @@ import Base from '../Base';
 
 import PageSource from './OutlineNodeBackedPageSource';
 
-import updateValue from 'nti-commons/lib/object-define-update-value';
-import defineProtected from 'nti-commons/lib/object-define-protected';
+import {updateValue, defineProtected} from 'nti-commons';
 
 const INFLIGHT = Symbol('OutlineContents:RequestInflight');
 const MAX_DEPTH = Symbol('OutlineContents:maximum depth');

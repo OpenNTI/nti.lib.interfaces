@@ -8,8 +8,7 @@ import {
 
 import setAndEmit from '../../utils/getsethandler';
 
-import urlJoin from 'nti-commons/lib/url-join';
-import forwardFunctions from 'nti-commons/lib/function-forwarding';
+import {URL, forward} from 'nti-common';
 
 import assets from '../mixins/PresentationResources';
 
@@ -23,7 +22,7 @@ export default class Bundle extends Base {
 		super(service, parent, data,
 			{isBundle: true},
 			assets,
-			forwardFunctions(
+			forward(
 				[
 					'every',
 					'filter',
@@ -109,7 +108,7 @@ export default class Bundle extends Base {
 			return '';
 		}
 
-		return urlJoin(root, 'presentation-assets', 'webapp', 'v1');
+		return URL.join(root, 'presentation-assets', 'webapp', 'v1');
 	}
 
 

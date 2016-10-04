@@ -1,7 +1,7 @@
 import Entity from './Entity';
 import {Parser as parse} from '../constants';
 
-import pluck from 'nti-commons/lib/pluck';
+import {pluck} from 'nti-commons';
 
 const getID = e => typeof e === 'object' ? e.getID() : e;
 
