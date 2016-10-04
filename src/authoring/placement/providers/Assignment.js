@@ -52,7 +52,6 @@ export default class AssignmentPlacementProvider {
 	}
 
 	removeFrom (container) {
-		debugger;
 		return removeItemFrom(this.item, container, this.scope);
 	}
 }

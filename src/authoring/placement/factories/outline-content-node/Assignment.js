@@ -21,10 +21,15 @@ export default {
 
 
 	removeItemFrom (item, container) {
+		container.getContent()
+			.then((content) => {
+				debugger;
+			});
+
 		return new Promise((fulfill, reject) => {
 			setTimeout(() => {
-				reject('Error Message')
-			})
+				reject('Error Message');
+			}, 3000);
 		});
 	}
 };

@@ -21,7 +21,7 @@ export default {
 
 		// return orderedContents.append(data);
 
-		return new Promise((fulfill) => {
+		return new Promise((fulfill, reject) => {
 			setTimeout(() => {
 				fulfill();
 			}, 3000);
