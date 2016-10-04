@@ -1,36 +1,26 @@
+import {Handlers} from 'nti-commons';
+
 import Assignment from './Assignment';
 
 const OverviewGroup = 'application/vnd.nextthought.nticourseoverviewgroup';
 
-const ITEM_TYPES = [
+const ITEM_TYPES = new Handlers([
 	Assignment
-];
+]);
 
 export default {
-	type: OverviewGroup,
+	handles: OverviewGroup,
 
 	placeItemIn (item, container, scope) {
-		const type = item.MimeType;
+		const handler = ITEM_TYPES.getHandlerFor(item);
 
-		for (let itemType of ITEM_TYPES) {
-			if (itemType.type === type) {
-				return itemType.placeItemIn(item, container, scope);
-			}
-		}
-
-		return Promise.reject('No handler for item');
+		return handler ? handler.placeItemIn(item, container, scope) : Promise.reject('No Handler for item');
 	},
 
 
 	removeItemFrom (item, container, scope) {
-		const type = item.MimeType;
+		const handler = ITEM_TYPES.getHandlerFor(item);
 
-		for (let itemType of ITEM_TYPES) {
-			if (itemType.type === type) {
-				return itemType.removeItemFrom(item, container, scope);
-			}
-		}
-
-		return Promise.reject('No handler for item');
+		return handler ? handler.removeItemFrom(item, container, scope) : Promise.reject('No Handler for item');
 	}
 };

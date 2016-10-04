@@ -1,32 +1,24 @@
+import {Handlers} from 'nti-commons';
+
 import CourseOverviewGroup from './course-overview-group';
 import OutlineContentNode from './outline-content-node';
+import Assignment from './assignment';
 
-const PARENT_TYPES = [
+const PARENT_TYPES = new Handlers([
 	CourseOverviewGroup,
-	OutlineContentNode
-];
+	OutlineContentNode,
+	Assignment
+]);
 
 export function placeItemIn (item, container, scope) {
-	const type = container.MimeType;
+	const handler = PARENT_TYPES.getHandlerFor(container);
 
-	for (const parentType of PARENT_TYPES) {
-		if (parentType.type === type) {
-			return parentType.placeItemIn(item, container, scope);
-		}
-	}
-
-	return Promise.reject('No handler for container');
+	return handler ? handler.placeItemIn(item, container, scope) : Promise.reject('No handler for container');
 }
 
 
 export function removeItemFrom (item, container, scope) {
-	const type = container.MimeType;
+	const handler = PARENT_TYPES.getHandlerFor(container);
 
-	for (const parentType of PARENT_TYPES) {
-		if (parentType.type === type) {
-			return parentType.removeItemFrom(item, container, scope);
-		}
-	}
-
-	return Promise.reject('No handler for container');
+	return handler ? handler.removeItemFrom(item, container, scope) : Promise.reject('No handler for container');
 }
