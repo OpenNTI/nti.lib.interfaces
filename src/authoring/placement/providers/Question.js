@@ -1,5 +1,7 @@
 import {defineProtected} from 'nti-commons';
 
+import {placeItemIn, removeItemFrom} from '../factories';
+
 const AssignmentType = 'application/vnd.nextthought.assessment.assignment';
 
 
@@ -82,5 +84,14 @@ export default class QuestionPlacementProvider {
 
 	//Get a list of assignments from the scope.
 	getAssignments () {}
+
+
+	placeIn (container) {
+		return placeItemIn(this.item, container, this.scope);
+	}
+
+	removeFrom (container) {
+		return removeItemFrom(this.item, container, this.scope);
+	}
 
 }
