@@ -13,7 +13,7 @@ function getDataForItem (item) {
 }
 
 export default {
-	type: AssignmentMimeType,
+	handles: AssignmentMimeType,
 
 	placeItemIn (/*item, container, scope*/) {
 		//TODO: fill this out
