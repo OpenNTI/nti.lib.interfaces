@@ -23,7 +23,7 @@ function create (handles, subHandlers, useContainer) {
 			const handler = getHandlerFor(item, container);
 
 			return handler && handler.removeItemFrom ?
-					handler.removeItmeFrom(item, container, scope) :
+					handler.removeItemFrom(item, container, scope) :
 					Promise.reject('No handler to remove item from');
 		}
 	};

@@ -238,11 +238,11 @@ export default class OrderedContents {
 
 		const insertLink = path.join(link, 'index', index.toString(10));
 
-		function getPostData (placeholder) {
+		const getPostData = (placeholder) => {
 			return isNTIID(placeholder.NTIID) ? {NTIID: placeholder.NTIID} : placeholder.getData();
-		}
+		};
 
-		function doSave (placeholder) {
+		const doSave = (placeholder) => {
 			return queue.queueTask(() => this[Service].postParseResponse(insertLink, getPostData(placeholder)))
 				//Make sure we wait at least a little bit
 				.then(minWait(SHORT))
@@ -252,7 +252,7 @@ export default class OrderedContents {
 
 					return Promise.reject(reason);
 				});
-		}
+		};
 
 
 		return this.optimisticallyAddAt(item, index, delaySave)
