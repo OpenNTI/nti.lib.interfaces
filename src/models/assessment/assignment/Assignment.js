@@ -34,7 +34,7 @@ export default class Assignment extends Base {
 
 	//Implement some special instance cache hooks: a getter for ShouldRefresh, and the method AfterInstanceRefresh
 	get [ShouldRefresh] () {
-		return Boolean(this.IsSummary) || true;
+		return Boolean(this.IsSummary);
 	}
 
 	[AfterInstanceRefresh] (newData) {
@@ -42,6 +42,15 @@ export default class Assignment extends Base {
 			delete this.IsSummary;
 		}
 		this.onChange();
+	}
+
+
+	refresh (data) {
+		if (data && data.IsSummary && !data.NoSubmit) {
+			delete data.parts;
+		}
+
+		return super.refresh(data);
 	}
 
 
