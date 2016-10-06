@@ -2,10 +2,11 @@ import path from 'path';
 
 import Logger from 'nti-util-logger';
 import {isNTIID} from 'nti-lib-ntiids';
-import minWait, {SHORT} from 'nti-commons/lib/wait-min';
-import Executor from 'nti-commons/lib/Executor';
+import {wait, Tasks} from 'nti-commons';
 
 import {Service} from '../../constants';
+
+const {Executor} = Tasks;
 
 const logger = Logger.get('lib:asssignment-editor:utils:OrderedContents');
 
@@ -245,7 +246,7 @@ export default class OrderedContents {
 		const doSave = (placeholder) => {
 			return queue.queueTask(() => this[Service].postParseResponse(insertLink, getPostData(placeholder)))
 				//Make sure we wait at least a little bit
-				.then(minWait(SHORT))
+				.then(wait.min(wait.SHORT))
 				.then((savedItem) => placeholder[REPLACE_WITH](savedItem))
 				.catch((reason) => {
 					placeholder[SET_ERROR](reason);
@@ -336,7 +337,7 @@ export default class OrderedContents {
 		}
 
 		return deleteRequest
-				.then(minWait(SHORT))
+				.then(wait.min(wait.SHORT))
 				.then(() => {
 					//After its removed from the server, remove it from the ordered contents
 					orderedContents = orderedContents.filter(a => a.NTIID !== item.NTIID);
@@ -416,7 +417,7 @@ export default class OrderedContents {
 		obj.onChange();
 
 		return queue.queueTask(() => moveRoot.moveRecord(item, newIndex, oldIndex, obj, oldParent))
-			.then(minWait(SHORT))
+			.then(wait.min(wait.SHORT))
 			.then((savedItem) => {
 				//update the item with the new one from the server
 				obj[orderedContentsField] = orderedContents.map((orderedItem) => {
