@@ -138,7 +138,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 
 		HistoryPromise
 			.catch(error =>
-				(error.status === 404)
+				(error.status === 404 || typeof error === 'string')
 					? null
 					: Promise.reject(Object.assign(new Error(error.statusText), error)))
 			.then(history => {
