@@ -19,7 +19,7 @@ export default {
 
 	placeItemIn (item, container, scope) {
 		//Make sure we don't have the summary
-		return container.refresh()
+		return container.getFullVersion()
 			.then((assignment) => {
 				const {parts} = assignment;
 				const part = parts && parts[0];//For now just use the first part
@@ -34,17 +34,35 @@ export default {
 
 	removeItemFrom (item, container, scope) {
 		//Make sure we don't have the summary
-		return container.refresh()
+		return container.getFullVersion()
 			.then((assignment) => {
 				const {parts} = assignment;
 				//TODO: iterate the parts looking for the questionSet that contains the
 				//question
 				const part = parts && parts[0];//For now just use the first part
 				const {question_set: questionSet} = part || {};
+				let remove;
 
-				return questionSet ?
-						removeItemFrom(item, questionSet, scope) :
-						Promise.reject('No question set');
+				//if its the last question in the question set remove the question set
+				//from the assignment
+				if (questionSet && questionSet.getQuestionCount() === 1) {
+					remove = removeItemFrom(questionSet, assignment, scope);
+				} else if (questionSet) {
+					remove = removeItemFrom(item, questionSet, scope);
+				} else {
+					remove = Promise.reject('No question set');
+				}
+
+				//TODO: handle removing the part and question set if the assignment
+				//becomes a no submit
+
+				return new Promise ((fulfill, reject) => {
+					setTimeout(() => {
+						fulfill();
+					}, 3000);
+				});
+
+				// return remove;
 			});
 	}
 };
