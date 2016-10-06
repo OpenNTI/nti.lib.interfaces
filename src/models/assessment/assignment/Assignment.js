@@ -54,6 +54,11 @@ export default class Assignment extends Base {
 	}
 
 
+	getFullVersion () {
+		return this.IsSummary ? this.refresh() : Promise.resolve(this);
+	}
+
+
 	[DateFields] () {
 		return super[DateFields]().concat([
 			'available_for_submission_beginning',//becomes getAvailableForSubmissionBeginning (use getAssignedDate)
