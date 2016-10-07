@@ -146,7 +146,7 @@ export default class Collection extends Base {
 
 				for (let assessmentId of map[nodeId]) {
 					if (assessmentToOutlineMap[assessmentId]) {
-						logger.warn('Duplicated key! (assessment referenced on multiple outlines?)\n\tassessmentId: %s\n\t\tnodeId (old): %s\n\t\tnodeId (new): %s',
+						logger.debug('Duplicated key! (assessment referenced on multiple outlines?)\n\tassessmentId: %s\n\t\tnodeId (old): %s\n\t\tnodeId (new): %s',
 							assessmentId,
 							assessmentToOutlineMap[assessmentId],
 							nodeId);
