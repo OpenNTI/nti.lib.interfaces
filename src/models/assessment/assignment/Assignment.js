@@ -18,13 +18,7 @@ const RENAME = Symbol.for('TakeOver');
 
 const ActiveSavePointPost = Symbol('ActiveSavePointPost');
 
-function isSummary (obj) {
-	const {parts} = obj;
-
-	return parts.some(x => {
-		return x.IsSummary;
-	});
-}
+const isSummary = ({parts}) => parts && parts.some(x => x.IsSummary);
 
 export default class Assignment extends Base {
 
