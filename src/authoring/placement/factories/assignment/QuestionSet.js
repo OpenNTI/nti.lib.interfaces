@@ -4,7 +4,7 @@ export default {
 	handles: QuestionSetType,
 
 	removeItemFrom (item, container/*, scope*/) {
-		return container.getFullVersion()
+		return container.ensureNotSummary()
 			.then((assignment) => {
 				const {parts} = assignment;
 

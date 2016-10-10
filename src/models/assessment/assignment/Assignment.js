@@ -18,6 +18,14 @@ const RENAME = Symbol.for('TakeOver');
 
 const ActiveSavePointPost = Symbol('ActiveSavePointPost');
 
+function isSummary(obj) {
+	const {parts} = obj;
+
+	return parts.some(x => {
+		return x.IsSummary
+	});
+}
+
 export default class Assignment extends Base {
 
 	constructor (service, parent, data) {
@@ -32,21 +40,19 @@ export default class Assignment extends Base {
 	}
 
 
+	get IsSummary () {
+		return isSummary(this);
+	}
+
+
 	//Implement some special instance cache hooks: a getter for ShouldRefresh, and the method AfterInstanceRefresh
 	get [ShouldRefresh] () {
 		return Boolean(this.IsSummary);
 	}
 
-	[AfterInstanceRefresh] (newData) {
-		if (!newData.IsSummary) {
-			delete this.IsSummary;
-		}
-		this.onChange();
-	}
-
 
 	refresh (data) {
-		if (data && data.IsSummary && !data.NoSubmit) {
+		if (data && isSummary(data) && !data.NoSubmit) {
 			delete data.parts;
 		}
 
@@ -54,7 +60,7 @@ export default class Assignment extends Base {
 	}
 
 
-	getFullVersion () {
+	ensureNotSummary () {
 		return this.IsSummary ? this.refresh() : Promise.resolve(this);
 	}
 

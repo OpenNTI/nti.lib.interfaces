@@ -19,7 +19,7 @@ export default {
 
 	placeItemIn (item, container, scope) {
 		//Make sure we don't have the summary
-		return container.getFullVersion()
+		return container.ensureNotSummary()
 			.then((assignment) => {
 				const {parts} = assignment;
 				const part = parts && parts[0];//For now just use the first part
@@ -34,7 +34,7 @@ export default {
 
 	removeItemFrom (item, container, scope) {
 		//Make sure we don't have the summary
-		return container.getFullVersion()
+		return container.ensureNotSummary()
 			.then((assignment) => {
 				const {parts} = assignment;
 				//TODO: iterate the parts looking for the questionSet that contains the
