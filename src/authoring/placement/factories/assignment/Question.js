@@ -53,16 +53,7 @@ export default {
 					remove = Promise.reject('No question set');
 				}
 
-				//TODO: handle removing the part and question set if the assignment
-				//becomes a no submit
-
-				return new Promise ((fulfill, reject) => {
-					setTimeout(() => {
-						fulfill();
-					}, 3000);
-				});
-
-				// return remove;
+				return remove;
 			});
 	}
 };
