@@ -18,11 +18,11 @@ const RENAME = Symbol.for('TakeOver');
 
 const ActiveSavePointPost = Symbol('ActiveSavePointPost');
 
-function isSummary(obj) {
+function isSummary (obj) {
 	const {parts} = obj;
 
 	return parts.some(x => {
-		return x.IsSummary
+		return x.IsSummary;
 	});
 }
 
@@ -42,6 +42,11 @@ export default class Assignment extends Base {
 
 	get IsSummary () {
 		return isSummary(this);
+	}
+
+
+	[AfterInstanceRefresh] () {
+		this.onChange();
 	}
 
 
