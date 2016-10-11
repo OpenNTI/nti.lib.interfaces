@@ -2,10 +2,7 @@ import OrderedContents from '../../../ordered-contents';
 
 const QuestionType = 'application/vnd.nextthought.naquestion';
 
-function refresh (item) {
-	return item.refresh()
-		.then(() => item.onChange());
-}
+const refresh = (item) => item.refresh().then(() => item.onChange());
 
 export default {
 	handles: QuestionType,
