@@ -13,10 +13,12 @@ const handlers = createHandlers([
 ]);
 
 export function placeItemIn (item, container, scope) {
-	return handlers.placeItemIn(item, container, scope);
+	return handlers.placeItemIn(item, container, scope)
+		.then(() => void 0);
 }
 
 
 export function removeItemFrom (item, container, scope) {
-	return handlers.removeItemFrom(item, container, scope);
+	return handlers.removeItemFrom(item, container, scope)
+		.then(() => void 0);
 }
