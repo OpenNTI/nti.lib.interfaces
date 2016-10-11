@@ -2,6 +2,10 @@ import OrderedContents from '../../../ordered-contents';
 
 const QuestionType = 'application/vnd.nextthought.naquestion';
 
+function refresh (item) {
+	return item.refresh()
+		.then(() => item.onChange());
+}
 
 export default {
 	handles: QuestionType,
@@ -9,14 +13,15 @@ export default {
 	placeItemIn (item, container/*, scope*/) {
 		const orderedContents = new OrderedContents(container);
 
-		return orderedContents.append(item);
+		return orderedContents.append(item)
+			.then(() => refresh(item));
 	},
 
 
 	removeItemFrom (item, container/*, scope*/) {
-		debugger;
 		const orderedContents = new OrderedContents(container);
 
-		return orderedContents.remove(item);
+		return orderedContents.remove(item)
+			.then(() => refresh(item));
 	}
 };
