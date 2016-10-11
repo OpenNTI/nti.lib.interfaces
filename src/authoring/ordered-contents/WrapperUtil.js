@@ -168,6 +168,11 @@ export default class OrderedContents {
 				newContents.splice(placeholderIndex, 1);
 			}
 
+			delete item.isSaving;
+			delete item[REPLACE_WITH];
+			delete item[SET_ERROR];
+			delete item[REMOVE];
+
 			obj[orderedContentsField] = newContents;
 			obj.onChange();
 		};
