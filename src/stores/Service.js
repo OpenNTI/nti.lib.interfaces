@@ -731,6 +731,6 @@ export default class ServiceDocument {
 		}
 
 		return this.get(href + '?' + QueryString.stringify({objectId: ntiid}))
-			.then(data => data.map(path => path.map(item => parse(this, parent || this, item))));
+			.then(data => data.map(path => path.map(item => parse(this, this, item))));
 	}
 }
