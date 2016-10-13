@@ -123,6 +123,12 @@ export default class Assignment extends Base {
 		return this.hasLink(ASSESSMENT_HISTORY_LINK);
 	}
 
+
+	get associationCount () {
+		return this.LessonContainerCount;
+	}
+
+
 	getAssociations () {
 		return this.fetchLinkParsed('Lessons');
 	}
