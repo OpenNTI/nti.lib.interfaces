@@ -42,7 +42,8 @@ export default class Base extends EventEmitter {
 		let dateFields = this[DateFields]();
 
 		this[Service] = service;
-		this[Parent] = parent;
+		//only allow null, and lib-interface models as "parents"
+		this[Parent] = (parent != null && parent[Service]) ? parent : null;
 
 		if (data) {
 			data = clone(data);
@@ -426,7 +427,9 @@ export default class Base extends EventEmitter {
 			return p;
 		}
 
-		return p && p.parent && p.parent(...query);
+		return (p && typeof p.parent === 'function')
+			? p.parent(...query)
+			: void 0;
 	}
 
 
