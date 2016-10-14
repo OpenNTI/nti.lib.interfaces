@@ -2,6 +2,8 @@ import Logger from 'nti-util-logger';
 
 import {MODEL_INSTANCE_CACHE_KEY} from '../constants';
 
+import Base from './Base';
+
 import User from './User';
 import Community from './Community';
 import FriendsList from './FriendsList';
@@ -176,6 +178,8 @@ const logger = Logger.get('models:index');
 const ignored = {parse: x => x};
 
 const PARSERS = {
+	'__base__': Base,
+
 	'link': ignored,
 	'change': Change,
 
@@ -456,6 +460,22 @@ const PARSERS = {
 	'transcript': Transcript,
 	'transcriptsummary': TranscriptSummary
 };
+
+export function register (o) {
+	if (!o || !o.MimeType || typeof o !== 'object') {
+		throw new TypeError('Illegial Argument: Model class expected');
+	}
+
+	const types = Array.isArray(o.MimeType) ? o.MimeType : [o.MimeType];
+
+	for (let type of types) {
+		if (PARSERS[type]) {
+			logger.warn('Overriding Type!! %s with %o was %o', type, o, PARSERS[type]);
+		}
+
+		PARSERS[type] = o;
+	}
+}
 
 
 function getType (o) {
