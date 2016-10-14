@@ -16,20 +16,9 @@ export default {
 	handles: AssignmentMimeType,
 
 	placeItemIn (item, container) {
-		// const orderedContents = new OrderedContents(container);
-		// const data = getDataForItem(item);
+		const orderedContents = new OrderedContents(container);
+		const data = getDataForItem(item);
 
-		// return orderedContents.append(data);
-
-		return new Promise((fulfill, reject) => {
-			setTimeout(() => {
-				fulfill();
-			}, 3000);
-		});
-	},
-
-
-	removeItemFrom (item, container) {
-		debugger;
+		return orderedContents.append(data);
 	}
 };

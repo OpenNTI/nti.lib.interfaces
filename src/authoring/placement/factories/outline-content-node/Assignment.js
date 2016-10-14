@@ -15,16 +15,8 @@ function getDataForItem (item) {
 export default {
 	handles: AssignmentMimeType,
 
-	placeItemIn (/*item, container, scope*/) {
-		//TODO: fill this out
-	},
-
-
 	removeItemFrom (item, container) {
-		container.getContent()
-			.then((content) => {
-				debugger;
-			});
+		debugger;
 
 		return new Promise((fulfill, reject) => {
 			setTimeout(() => {
