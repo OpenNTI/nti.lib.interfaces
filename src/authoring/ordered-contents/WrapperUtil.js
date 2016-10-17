@@ -18,7 +18,8 @@ const LINK_NAME = 'ordered-contents';
 
 const FIELDS = [
 	'questions',
-	'parts'
+	'parts',
+	'Items'
 ];
 
 const QUEUES = new WeakMap();
