@@ -7,4 +7,11 @@ export default class LeasonOverview extends Base {
 		super(service, parent, data);
 		this[parse]('Items');
 	}
+
+
+	getRefsTo (item) {
+		return this.Items.reduce((acc, group) => {
+			return acc.concat(group && group.getRefsTo ? group.getRefsTo(item) : []);
+		}, []);
+	}
 }
