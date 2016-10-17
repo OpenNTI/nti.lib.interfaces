@@ -2,12 +2,14 @@ import {createHandlers} from './createHandlers';
 
 import CourseOverviewGroup from './course-overview-group';
 import OutlineContentNode from './outline-content-node';
+import LessonOverview from './lesson-overview';
 import Assignment from './assignment';
 import QuestionSet from './question-set';
 
 const handlers = createHandlers([
 	CourseOverviewGroup,
 	OutlineContentNode,
+	LessonOverview,
 	Assignment,
 	QuestionSet
 ]);
