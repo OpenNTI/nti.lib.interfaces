@@ -63,6 +63,10 @@ export function hasOrderedContents (obj) {
 
 
 export default class OrderedContents {
+	static hasOrderedContents (obj) {
+		return hasOrderedContents(obj);
+	}
+
 	constructor (obj, service) {
 		this.backingObject = obj;
 		this[Service] = service || obj[Service];
