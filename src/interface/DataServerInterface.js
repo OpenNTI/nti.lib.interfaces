@@ -397,8 +397,8 @@ export default class DataServerInterface extends EventEmitter {
 
 
 	handshake (pong, username, context) {
-
-		return this.post(getLink(pong, 'logon.handshake'), {[AsFormSubmission]: true, username}, context)
+		const data = !username ? {} : {username};
+		return this.post(getLink(pong, 'logon.handshake'), {[AsFormSubmission]: true, ...data}, context)
 			.then(handshake => {
 
 				const result = {
