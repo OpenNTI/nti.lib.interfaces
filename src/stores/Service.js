@@ -218,6 +218,18 @@ export default class ServiceDocument {
 	}
 
 
+	putParseResponse (url, data, parent = this) {
+		return this.put(url, data)
+			.then(x => {
+				try {
+					return parse(this, parent, x);
+				} catch (e) {
+					return x;
+				}
+			});
+	}
+
+
 	hasCookie (cookie) {
 		let c = this[Context];
 		let d = global.document;

@@ -13,6 +13,8 @@ const logger = Logger.get('lib:asssignment-editor:utils:OrderedContents');
 const REPLACE_WITH = Symbol('Replace With');
 const SET_ERROR = Symbol('Set Error');
 const REMOVE = Symbol('Remove');
+const PLACE_ITEM_AT_INDEX = Symbol('Place Item At Index');
+const OPTIMISTICALLY_ADD_AT = Symbol('Optimistically Add At');
 
 const LINK_NAME = 'ordered-contents';
 
@@ -52,6 +54,11 @@ function getLinkFromObj (obj) {
 							obj.getLink(LINK_NAME) :
 							''
 					);
+}
+
+
+function getPostData (placeholder) {
+	return isNTIID(placeholder.NTIID) ? {NTIID: placeholder.NTIID} : placeholder.getData();
 }
 
 
@@ -119,6 +126,11 @@ export default class OrderedContents {
 	}
 
 
+	getLinkForIndex (index) {
+		return this.link && path.join(this.link, 'index', index.toString(10));
+	}
+
+
 	isSameContainer (record) {
 		const myId = this.backingObject.NTIID;
 		const theirId = record.NTIID ? record.NTIID : record;
@@ -155,7 +167,7 @@ export default class OrderedContents {
 	}
 
 
-	optimisticallyAddAt (item, index, delaySave) {
+	[OPTIMISTICALLY_ADD_AT] (item, index, delaySave, replace) {
 		const obj = this.backingObject;
 
 		let {orderedContents, orderedContentsField} = this;
@@ -166,7 +178,7 @@ export default class OrderedContents {
 			const placeholderIndex = newContents.findIndex(x => x === placeholder);
 
 			if (placeholderIndex < 0) {
-				logger.error('How did we get here?!?!?!?!');
+				logger.error('How did we get here?!?!?!?! Replacing a placeholder thats not in the ordered contents');
 			} else if (replacement) {
 				newContents[placeholderIndex] = replacement;
 			} else {
@@ -213,7 +225,14 @@ export default class OrderedContents {
 				placeholder[SET_ERROR] = error => setErrorOn(placeholder, error);
 				placeholder[REMOVE] = () => replaceItem(placeholder);
 
-				orderedContents = [...orderedContents.slice(0, index), placeholder, ...orderedContents.slice(index)];
+
+				if (replace) {
+					orderedContents[index] = placeholder;
+					orderedContents = orderedContents.slice();
+				} else {
+					orderedContents = [...orderedContents.slice(0, index), placeholder, ...orderedContents.slice(index)];
+				}
+
 				obj[orderedContentsField] = orderedContents;
 
 				obj.onChange();
@@ -222,53 +241,42 @@ export default class OrderedContents {
 			});
 	}
 
-	/**
-	 * Given an item and an index, insert it at the right place and try to save it to the server.
-	 * If it's successful, replace the optimistic placeholder with the item from the server.
-	 * If it fails, add an error to the optimistic placeholder and trigger a change
-	 * @param  {Object} item the item to append
-	 * @param {Number} index the index to insert the item at
-	 * @param {Boolean} delaySave insert the placeholder, but wait to save it
-	 * @return {Promise}      fulfills or rejects if the item is successfully added or not
-	 */
-	insertAt (item, index, delaySave) {
-		const queue = getQueueFor(this.backingObject);
-		const {link} = this;
 
-		if (!link) {
+	/**
+	 * Given an item and an index, place that the item to that index in the ordered contents
+	 *
+	 * @param {Object} item the item to place
+	 * @param {Number} index the index to place it at
+	 * @param {Boolean} delaySave whether or not to save immediately
+	 * @param {Boolean} replace replace the item at the index or insert
+	 * @return {Promise} fulfills or rejects if the item is placed
+	 */
+	[PLACE_ITEM_AT_INDEX] (item, index, delaySave, replace) {
+		const queue = getQueueFor(this.backingObject);
+		const insertLink = this.getLinkForIndex(index);
+
+		if (!insertLink) {
 			return Promise.reject('No Ordered Contents Link');
 		}
 
-		if (index === Infinity || index === undefined) {
-			index = this.length;
-		}
-
-		if (index < 0) {
-			index = 0;
-		}
-
-		const insertLink = path.join(link, 'index', index.toString(10));
-
-		const getPostData = (placeholder) => {
-			return isNTIID(placeholder.NTIID) ? {NTIID: placeholder.NTIID} : placeholder.getData();
-		};
-
 		const doSave = (placeholder) => {
-			return queue.queueTask(() => this[Service].postParseResponse(insertLink, getPostData(placeholder)))
-				//Make sure we wait at least a little bit
-				.then(wait.min(wait.SHORT))
-				.then((savedItem) => placeholder[REPLACE_WITH](savedItem))
-				.catch((reason) => {
-					placeholder[SET_ERROR](reason);
+			return queue.queueTask(() => {
+				return this[Service][replace ? 'putParseResponse' : 'postParseResponse'](insertLink, getPostData(placeholder));
+			})
+			//Make sure we wait at least a little bit
+			.then(wait.min(wait.SHORT))
+			.then(savedItem => placeholder[REPLACE_WITH](savedItem))
+			.catch(reason => {
+				placeholder[SET_ERROR](reason);
 
-					return Promise.reject(reason);
-				});
+				return Promise.reject(reason);
+			});
 		};
 
-
-		return this.optimisticallyAddAt(item, index, delaySave)
+		return this[OPTIMISTICALLY_ADD_AT](item, index, delaySave, replace)
 			.then((placeholder) => {
 				let save;
+
 				if (delaySave) {
 					save = new Promise((fulfill, reject) => {
 						placeholder.save = data => {
@@ -292,6 +300,28 @@ export default class OrderedContents {
 
 
 	/**
+	 * Given an item and an index, insert it at the right place and try to save it to the server.
+	 * If it's successful, replace the optimistic placeholder with the item from the server.
+	 * If it fails, add an error to the optimistic placeholder and trigger a change
+	 * @param  {Object} item the item to append
+	 * @param {Number} index the index to insert the item at
+	 * @param {Boolean} delaySave insert the placeholder, but wait to save it
+	 * @return {Promise}      fulfills or rejects if the item is successfully added or not
+	 */
+	insertAt (item, index, delaySave) {
+		if (index === Infinity || index === undefined) {
+			index = this.length;
+		}
+
+		if (index < 0) {
+			index = 0;
+		}
+
+		return this[PLACE_ITEM_AT_INDEX](item, index, delaySave);
+	}
+
+
+	/**
 	 * Given an item optimistically add it to the items, and try to save it to the server.
 	 * If it's successful, replace the optimistic placeholder with the item from the server.
 	 * If it fails, add an error to the optimistic placeholder and trigger a change
@@ -301,6 +331,35 @@ export default class OrderedContents {
 	 */
 	append (item, delaySave) {
 		return this.insertAt(item, Infinity, delaySave);
+	}
+
+
+	/**
+	 * Given an index and a replacement, replace that item at that index
+	 * in the ordered contents with the replacement.
+	 *
+	 * @param  {Object} replacement what to replace with
+	 * @param  {Object} index        the index to replace
+	 * @param  {Boolean} delaySave   insert the placeholder, but delay saving
+	 * @return {Promise}             fulfills or rejects if the item is successfully replaced or not
+	 */
+	replaceAt (replacement, index, delaySave) {
+		return this[PLACE_ITEM_AT_INDEX](replacement, index, delaySave, true);
+	}
+
+	/**
+	 * Given an item and a replacement, replace that item in the ordered contents with
+	 * the replacement.
+	 *
+	 * @param  {Object} item        the item to replace
+	 * @param  {Object} replacement what to replace with
+	 * @param  {Boolean} delaySave   insert the placeholder, but delay saving
+	 * @return {Promise}             fulfills or rejects if the item is successfully replaced or not
+	 */
+	replaceItem (item, replacement, delaySave) {
+		const index = this.indexOf(item);
+
+		return this.replaceAt(replacement, index, delaySave);
 	}
 
 
