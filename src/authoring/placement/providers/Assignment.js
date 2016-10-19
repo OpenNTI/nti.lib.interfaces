@@ -1,5 +1,21 @@
 import {defineProtected} from 'nti-commons';
 
+import {placeItemIn, removeItemFrom} from '../factories';
+
+const ContentNodeMimeType = 'application/vnd.nextthought.courses.courseoutlinecontentnode';
+
+function getContentNodes (acc, node) {
+	if (node.MimeType === ContentNodeMimeType) {
+		acc.push(node);
+	}
+
+	const {contents = []} = node;
+
+	return contents.reduce((a, content) => {
+		return getContentNodes(a, content);
+	}, acc);
+}
+
 export default class AssignmentPlacementProvider {
 	/**
 	 * @param {Instance} scope - the course instance scope.
@@ -24,7 +40,18 @@ export default class AssignmentPlacementProvider {
 	 *                    "item" (Assignment) can be placed. Rejects on errors.
 	 */
 	getItems () {
-		return Promise.resolve([]);
+		return this.scope.getOutline(true)
+			.then((outline) => {
+				return getContentNodes([], outline);
+			});
 	}
 
+
+	placeIn (container) {
+		return placeItemIn(this.item, container, this.scope);
+	}
+
+	removeFrom (container) {
+		return removeItemFrom(this.item, container, this.scope);
+	}
 }

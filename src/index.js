@@ -36,3 +36,6 @@ export function registerModel (o) {
 }
 
 export getLink from './utils/getlink';
+
+export OrderedContents from './authoring/ordered-contents';
+export MoveRoot from './authoring/ordered-contents/MoveRoot';

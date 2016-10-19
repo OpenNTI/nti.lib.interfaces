@@ -6,7 +6,7 @@ import {
 import HasContent from '../mixins/HasContent';
 
 import Part from './Part';
-import PlacementProvider from './QuestionPlacementProvider';
+import PlacementProvider from '../../authoring/placement/providers/Question';
 import QuestionSet from './QuestionSet';
 import QuestionSubmission from './QuestionSubmission';
 
@@ -59,6 +59,11 @@ export default class Question extends Base {
 		}
 
 		return true;
+	}
+
+
+	get associationCount () {
+		return this.AssessmentContainerCount;
 	}
 
 

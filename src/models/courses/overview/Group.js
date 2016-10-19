@@ -7,4 +7,11 @@ export default class OverviewGroup extends Base {
 		super(service, parent, data);
 		this[parse]('Items');
 	}
+
+
+	getRefsTo (item) {
+		const itemID = item.NTIID || item;
+
+		return (this.Items || []).filter((ref) => ref['Target-NTIID'] === itemID);
+	}
 }

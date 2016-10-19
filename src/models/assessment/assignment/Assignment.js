@@ -11,12 +11,14 @@ import {
 	MAY_EFFECT_PROPERTIES
 } from '../../../constants';
 
-import PlacementProvider from './AssignmentPlacementProvider';
+import PlacementProvider from '../../../authoring/placement/providers/Assignment';
 import AssignmentSubmission from './AssignmentSubmission';
 
 const RENAME = Symbol.for('TakeOver');
 
 const ActiveSavePointPost = Symbol('ActiveSavePointPost');
+
+const isSummary = ({parts}) => parts && parts.some(x => x.IsSummary);
 
 export default class Assignment extends Base {
 
@@ -32,16 +34,33 @@ export default class Assignment extends Base {
 	}
 
 
-	//Implement some special instance cache hooks: a getter for ShouldRefresh, and the method AfterInstanceRefresh
-	get [ShouldRefresh] () {
-		return Boolean(this.IsSummary) || true;
+	get IsSummary () {
+		return isSummary(this);
 	}
 
-	[AfterInstanceRefresh] (newData) {
-		if (!newData.IsSummary) {
-			delete this.IsSummary;
-		}
+
+	[AfterInstanceRefresh] () {
 		this.onChange();
+	}
+
+
+	//Implement some special instance cache hooks: a getter for ShouldRefresh, and the method AfterInstanceRefresh
+	get [ShouldRefresh] () {
+		return Boolean(this.IsSummary);
+	}
+
+
+	refresh (data) {
+		if (data && isSummary(data) && !data.NoSubmit) {
+			delete data.parts;
+		}
+
+		return super.refresh(data);
+	}
+
+
+	ensureNotSummary () {
+		return this.IsSummary ? this.refresh() : Promise.resolve(this);
 	}
 
 
@@ -103,6 +122,12 @@ export default class Assignment extends Base {
 	get hasSubmission () {
 		return this.hasLink(ASSESSMENT_HISTORY_LINK);
 	}
+
+
+	get associationCount () {
+		return this.LessonContainerCount;
+	}
+
 
 	getAssociations () {
 		return this.fetchLinkParsed('Lessons');

@@ -15,8 +15,8 @@ function getMaxDepthFrom (n) {
 
 export default class Outline extends Base {
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	constructor (service, parent, data, ...mixins) {
+		super(service, parent, data, ...mixins);
 		Object.defineProperties(this, {
 
 			...defineProtected({
