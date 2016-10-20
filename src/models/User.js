@@ -3,7 +3,7 @@ import Entity from './Entity';
 import Achievements from '../stores/Achievements';
 import Stream from '../stores/Stream';
 
-import { Service, Parser as parse } from '../constants';
+import { Service, DateFields, Parser as parse } from '../constants';
 import {TOS_NOT_ACCEPTED} from '../constants';
 
 const ONLY_COMMUNITIES = x => x.isCommunity;
@@ -47,6 +47,12 @@ export default class User extends Entity {
 			});
 
 		}
+	}
+
+	[DateFields] () {
+		return super[DateFields]().concat([
+			'lastLoginTime'
+		]);
 	}
 
 
