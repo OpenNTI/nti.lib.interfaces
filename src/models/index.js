@@ -462,7 +462,7 @@ const PARSERS = {
 };
 
 export function register (o) {
-	if (!o || !o.MimeType || typeof o !== 'object') {
+	if (!o || !o.MimeType || typeof o !== 'function') {
 		throw new TypeError('Illegial Argument: Model class expected');
 	}
 
