@@ -26,9 +26,7 @@ export default {
 
 	buildFeedbackEvent (f, lastViewed) {
 		const {creator, SubmissionCreator: student} = f;
-		const user = f.isCreatedByAppUser
-			? student || creator
-			: creator;
+		const user = student;
 
 		return Object.assign({ user },
 			this.getEventConfig(
