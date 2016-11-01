@@ -279,6 +279,12 @@ export default class ServiceDocument {
 	}
 
 
+	getObjectAtURL (url, ntiid) {
+		return this.get(url)
+			.catch(this.buildGetObjectErrorHandler(ntiid));
+	}
+
+
 	getObjectRaw (ntiid, field, type, params) {
 		if (!isNTIID(ntiid)) {
 			return Promise.reject('Bad NTIID');
@@ -308,29 +314,33 @@ export default class ServiceDocument {
 			url = {url, headers};
 		}
 
-		return this.get(url)
-			.catch(o => {
-				if (o.statusCode === 404 && 'MimeType' in o) {
-					delete o.statusCode;
-					delete o.Message;
-					return {...o};
-				}
+		return this.getObjectAtURL(url, ntiid);
+	}
 
-				if (o.statusCode === 403) {
-					return this.getObjectRelatedContext(ntiid)
-						.catch(()=> null)
-						.then(e => {
 
-							if (e) {
-								e.statusCode = 403;
-							}
+	buildGetObjectErrorHandler (ntiid) {
+		return o => {
+			if (o.statusCode === 404 && 'MimeType' in o) {
+				delete o.statusCode;
+				delete o.Message;
+				return {...o};
+			}
 
-							return Promise.reject(e || o);
-						});
-				}
+			if (o.statusCode === 403 && ntiid) {
+				return this.getObjectRelatedContext(ntiid)
+					.catch(()=> null)
+					.then(e => {
 
-				return Promise.reject(o);
-			});
+						if (e) {
+							e.statusCode = 403;
+						}
+
+						return Promise.reject(e || o);
+					});
+			}
+
+			return Promise.reject(o);
+		};
 	}
 
 

@@ -199,6 +199,7 @@ export default class Base extends EventEmitter {
 
 
 	refresh (newRaw) {
+		const service = this[Service];
 		const INFLIGHT = 'Base:inflight-refresh';
 
 		if (this[INFLIGHT]) {
@@ -214,7 +215,9 @@ export default class Base extends EventEmitter {
 
 		const fetch = newRaw ?
 			Promise.resolve(newRaw) :
-			this[Service].getObjectRaw(this.getID());
+			this.href ?
+				service.getObjectAtURL(this.href, this.getID()) :
+				service.getObjectRaw(this.getID());
 
 		const inflight = fetch.then(o => {
 			if (!ntiidEquals(this.NTIID, o.NTIID, true/*ignore "specific provider" differences*/)) {
