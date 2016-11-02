@@ -461,12 +461,14 @@ const PARSERS = {
 	'transcriptsummary': TranscriptSummary
 };
 
+const trimCommonPrefix = x => x.replace(/^application\/vnd.nextthought./, '');
+
 export function register (o) {
 	if (!o || !o.MimeType || typeof o !== 'function') {
 		throw new TypeError('Illegial Argument: Model class expected');
 	}
 
-	const types = Array.isArray(o.MimeType) ? o.MimeType : [o.MimeType];
+	const types = (Array.isArray(o.MimeType) ? o.MimeType : [o.MimeType]).map(trimCommonPrefix);
 
 	for (let type of types) {
 		if (PARSERS[type]) {
@@ -500,7 +502,7 @@ function error (obj) {
 
 
 export function getModelByType (type) {
-	type = type.replace(/^application\/vnd.nextthought./, '');
+	type = trimCommonPrefix(type);
 	let p = PARSERS[type];
 	if (typeof p === 'string') {
 		p = p !== type ? getModelByType(p) : undefined;
