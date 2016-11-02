@@ -1,3 +1,5 @@
+import {Parsing} from 'nti-commons';
+
 import Base from '../../Base';
 import {resolveSubmitTo} from '../utils';
 import {cacheClassInstances, AfterInstanceRefresh, ShouldRefresh} from '../../mixins/InstanceCacheable';
@@ -19,6 +21,8 @@ const RENAME = Symbol.for('TakeOver');
 const ActiveSavePointPost = Symbol('ActiveSavePointPost');
 
 const isSummary = ({parts}) => parts && parts.some(x => x.IsSummary);
+const getAssociationCount = (x) => x.LessonContainerCount;
+
 
 export default class Assignment extends Base {
 
@@ -39,14 +43,22 @@ export default class Assignment extends Base {
 	}
 
 
-	[AfterInstanceRefresh] () {
-		this.onChange();
+	[AfterInstanceRefresh] (newItem, oldItem) {
+		function getDateCompare (x) {
+			const date = Parsing.parseDate(x);
+
+			return date && date.getTime();
+		}
+
+		if (getDateCompare(this.getLastModified()) !== getDateCompare(oldItem['Last Modified'])) {
+			this.onChange();
+		}
 	}
 
 
 	//Implement some special instance cache hooks: a getter for ShouldRefresh, and the method AfterInstanceRefresh
 	get [ShouldRefresh] () {
-		return Boolean(this.IsSummary);
+		return this.IsSummary;
 	}
 
 
@@ -125,7 +137,7 @@ export default class Assignment extends Base {
 
 
 	get associationCount () {
-		return this.LessonContainerCount;
+		return getAssociationCount(this);
 	}
 
 

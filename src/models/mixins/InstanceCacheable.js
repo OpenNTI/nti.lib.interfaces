@@ -44,9 +44,10 @@ export function parseOrRefresh (service, parent, data) {
 
 	//Refresh if newer data
 	else if (shouldRefresh(data, inst)) {
+		const old = inst.toJSON();
 		inst.refresh(data)
 			//Check to see if the instance implements AfterInstanceRefresh.
-			.then(()=> (inst[AfterInstanceRefresh] && inst[AfterInstanceRefresh](data)), inst);
+			.then(()=> (inst[AfterInstanceRefresh] && inst[AfterInstanceRefresh](data, old)), inst);
 	}
 
 	return inst;
