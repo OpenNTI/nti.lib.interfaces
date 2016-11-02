@@ -28,7 +28,7 @@ export default {
 		const {creator, SubmissionCreator: student} = f;
 		const user = student;
 
-		return Object.assign({ user },
+		return Object.assign({ user, feedbackAuthor: creator },
 			this.getEventConfig(
 				f.isCreatedByAppUser
 					? (creator === student
