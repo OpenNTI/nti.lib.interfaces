@@ -309,11 +309,9 @@ export default class Base extends EventEmitter {
 			return this;
 		});
 
-		inflight
-			.catch(()=>{}) //swallow all errors so we can cleanup
-			.then(()=> delete this[INFLIGHT]);
-
-		this[INFLIGHT] = inflight;
+		this[INFLIGHT] = inflight
+			.catch((r) => (delete this[INFLIGHT], Promise.reject(r))) //swallow all errors so we can cleanup
+			.then((r)  => (delete this[INFLIGHT], r));
 
 		this.addToPending(inflight);
 
