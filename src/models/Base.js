@@ -343,7 +343,7 @@ export default class Base extends EventEmitter {
 
 
 	getLink (rel, params) {
-		let link = getLinkImpl(this, rel);
+		let link = getLinkImpl(this, rel) || (rel === 'self' && this.href);
 
 		if (link && params) {
 
