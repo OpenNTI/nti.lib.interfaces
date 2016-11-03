@@ -7,7 +7,7 @@ const AssignmentType = 'application/vnd.nextthought.assessment.assignment';
 
 const Handlers = {
 	[AssignmentType]: (item, scope) => {
-		if (!scope && !scope.getAllAssignments()) {
+		if (!scope && !scope.getAllAssignments) {
 			return Promise.resolve();
 		}
 
