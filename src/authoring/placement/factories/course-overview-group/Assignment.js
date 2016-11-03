@@ -4,7 +4,6 @@ const AssignmentMimeType = 'application/vnd.nextthought.assessment.assignment';
 const TimedAssignmentMimeType = 'application/vnd.nextthought.assessment.timedassignment';
 const RefMimeType = 'application/vnd.nextthought.assignmentref';
 
-const refresh = (item) => item.refresh().then(() => item.onChange());
 
 function getDataForItem (item) {
 	return {
@@ -22,7 +21,6 @@ export default {
 		const orderedContents = new OrderedContents(container);
 		const data = getDataForItem(item);
 
-		return orderedContents.append(data)
-			.then(() => refresh(item));
+		return orderedContents.append(data);
 	}
 };
