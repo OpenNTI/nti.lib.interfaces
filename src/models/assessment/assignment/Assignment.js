@@ -314,7 +314,7 @@ export default class Assignment extends Base {
 
 		return work.then(() => {
 			if (this.canPublish() || this.canUnpublish()) {
-				return Publishable.setPublishState.call(this, value, 'available_for_submission_beginning');
+				return Publishable.setPublishState.call(this, value, 'available_for_submission_beginning', 'parts');
 			}
 		});
 	}
