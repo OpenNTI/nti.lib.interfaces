@@ -1,7 +1,8 @@
 const QuestionSetType = 'application/vnd.nextthought.naquestionset';
+const QuestionBankType = 'application/vnd.nextthought.naquestionbank';
 
 export default {
-	handles: QuestionSetType,
+	handles: [QuestionSetType, QuestionBankType],
 
 	removeItemFrom (item, container/*, scope*/) {
 		return container.ensureNotSummary()
