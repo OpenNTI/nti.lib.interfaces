@@ -583,5 +583,6 @@ function parseResult (scope, requestPromise) {
 
 		return x;
 	})
-	.then(x=> scope[Parser](x));
+	.then(x=> scope[Parser](x))
+	.then(o => o.waitForPending());
 }
