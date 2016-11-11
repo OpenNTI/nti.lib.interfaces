@@ -447,9 +447,10 @@ export default class OrderedContents {
 	 * @param  {Number} oldIndex  the original index
 	 * @param  {Object|String} oldParent the original parent
 	 * @param  {Object} moveRoot  the root to move items between
+	 * @param {Boolean} delaySave wait to actually save, for now only works if adding a new item
 	 * @return {Promise}           fulfills or rejects if the move was successful
 	 */
-	move (item, newIndex, oldIndex, oldParent, moveRoot) {
+	move (item, newIndex, oldIndex, oldParent, moveRoot, delaySave) {
 		const obj = this.backingObject;
 		const queue = getQueueFor(obj);
 
@@ -466,7 +467,7 @@ export default class OrderedContents {
 		}
 
 		if (currentIndex === -1 || oldIndex == null) {
-			return this.insertAt(item, newIndex);
+			return this.insertAt(item, newIndex, delaySave);
 		}
 
 		orderedContents = orderedContents.slice(0);
