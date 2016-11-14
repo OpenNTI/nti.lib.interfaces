@@ -527,7 +527,7 @@ function clone (obj) {
 		return obj;
 	}
 
-	let out = Array.isArray(obj) ? [] : {};
+	const out = Array.isArray(obj) ? [] : {};
 	for(let key of Object.keys(obj)) {
 		out[key] = clone(obj[key]);
 	}
@@ -537,13 +537,15 @@ function clone (obj) {
 
 
 function GenEnumerabilityOf (obj, propName) {
-	let desc = obj && Object.getOwnPropertyDescriptor(obj, propName);
+	const desc = obj && Object.getOwnPropertyDescriptor(obj, propName);
 	return desc && desc.enumerable;
 }
+
 
 function getParsedDateKey (key) {
 	return Symbol.for(`parsedDate:${key}`);
 }
+
 
 function dateGetter (key) {
 	const symbol = getParsedDateKey(key);
@@ -577,18 +579,22 @@ function doParse (parent, data) {
 function parseResult (scope, requestPromise) {
 	const maybeWait = x => (x && x.waitForPending) ? x.waitForPending() : x;
 
-	return requestPromise.then(x=> {
-		if (x.Items && !x.MimeType) {
-			if (x.Links) { logger.warn('Dropping Collection Links'); }
-			x = x.Items;
+	function selectItems (x) {
+		const extract = x && x.Items && !x.MimeType;
+
+		if (extract && x.Links) {
+			logger.warn('Dropping Collection Links');
 		}
 
-		return x;
-	})
-	.then(x=> scope[Parser](x))
-	.then(o =>
-		Array.isArray(o)
-			? Promise.all( o.map(maybeWait) )
-			: maybeWait(o)
-	);
+		return extract ? x.Items : x;
+	}
+
+	return requestPromise
+		.then(selectItems)
+		.then(x=> scope[Parser](x))
+		.then(o =>
+			Array.isArray(o)
+				? Promise.all( o.map(maybeWait) )
+				: maybeWait(o)
+		);
 }
