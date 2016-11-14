@@ -192,6 +192,8 @@ export default class OrderedContents {
 
 			obj[orderedContentsField] = newContents;
 			obj.onChange();
+
+			return replacement;
 		};
 
 		const setErrorOn = (placeholder, error) => {
@@ -281,7 +283,7 @@ export default class OrderedContents {
 					save = new Promise((fulfill, reject) => {
 						placeholder.save = data => {
 							return doSave({...placeholder, ...data})
-								.then(response => (fulfill(), response))
+								.then(response => (fulfill(response), response))
 								.catch(reject);
 						};
 
