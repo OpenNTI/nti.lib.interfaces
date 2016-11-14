@@ -584,5 +584,11 @@ function parseResult (scope, requestPromise) {
 		return x;
 	})
 	.then(x=> scope[Parser](x))
-	.then(o => o.waitForPending());
+	.then(o => {
+		if (!Array.isArray(o)) {
+			o = [o];
+		}
+
+		return Promise.all(o.map(x => x.waitForPending()));
+	});
 }
