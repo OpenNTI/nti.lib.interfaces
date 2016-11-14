@@ -1,6 +1,7 @@
 import {Service} from '../../../constants';
 import Assignment from './Assignment';
 
+const secondsToMilliseconds = s => s * 1000;
 
 export default class TimedAssignment extends Assignment {
 	constructor (service, parent, data) {
@@ -14,13 +15,6 @@ export default class TimedAssignment extends Assignment {
 		//		Duration: int (seconds),
 		//		StartTime: int (seconds)
 		// }
-
-		this.MaximumTimeAllowed *= 1000;
-
-		if (this.Metadata) {
-			this.Metadata.Duration *= 1000;
-			this.Metadata.StartTime *= 1000;
-		}
 	}
 
 
@@ -55,18 +49,18 @@ export default class TimedAssignment extends Assignment {
 
 	getDuration () {
 		let md = this.Metadata;
-		return md && md.Duration;
+		return md && secondsToMilliseconds(md.Duration);
 	}
 
 
 	getStartTime () {
 		let md = this.Metadata;
-		return md && md.StartTime;
+		return md && secondsToMilliseconds(md.StartTime);
 	}
 
 
 	getMaximumTimeAllowed () {
-		return this.MaximumTimeAllowed;
+		return secondsToMilliseconds(this.MaximumTimeAllowed);
 	}
 
 
