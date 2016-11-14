@@ -575,6 +575,8 @@ function doParse (parent, data) {
 
 
 function parseResult (scope, requestPromise) {
+	const maybeWait = x => (x && x.waitForPending) ? x.waitForPending() : x;
+
 	return requestPromise.then(x=> {
 		if (x.Items && !x.MimeType) {
 			if (x.Links) { logger.warn('Dropping Collection Links'); }
@@ -585,10 +587,8 @@ function parseResult (scope, requestPromise) {
 	})
 	.then(x=> scope[Parser](x))
 	.then(o =>
-		Promise.all(
-			(Array.isArray(o) ? o : [o])
-				.map(x => x.waitForPending()
-			)
-		)
+		Array.isArray(o)
+			? Promise.all( o.map(maybeWait) )
+			: maybeWait(o)
 	);
 }
