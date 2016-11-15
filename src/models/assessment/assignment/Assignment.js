@@ -1,8 +1,5 @@
-import {Parsing} from 'nti-commons';
-
 import Base from '../../Base';
 import {resolveSubmitTo} from '../utils';
-import {cacheClassInstances, AfterInstanceRefresh, ShouldRefresh} from '../../mixins/InstanceCacheable';
 import Publishable from '../../mixins/Publishable';
 import {
 	Service,
@@ -40,34 +37,6 @@ export default class Assignment extends Base {
 
 	get IsSummary () {
 		return isSummary(this);
-	}
-
-
-	[AfterInstanceRefresh] (newItem, oldItem) {
-		function getDateCompare (x) {
-			const date = Parsing.parseDate(x);
-
-			return date && date.getTime();
-		}
-
-		if (getDateCompare(this.getLastModified()) !== getDateCompare(oldItem['Last Modified'])) {
-			this.onChange();
-		}
-	}
-
-
-	//Implement some special instance cache hooks: a getter for ShouldRefresh, and the method AfterInstanceRefresh
-	get [ShouldRefresh] () {
-		return this.IsSummary;
-	}
-
-
-	refresh (data) {
-		if (data && isSummary(data) && !data.NoSubmit) {
-			delete data.parts;
-		}
-
-		return super.refresh(data);
 	}
 
 
@@ -336,5 +305,3 @@ export default class Assignment extends Base {
 			.then(() => this.onChange('all'));
 	}
 }
-
-cacheClassInstances(Assignment);
