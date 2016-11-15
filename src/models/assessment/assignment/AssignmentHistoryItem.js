@@ -44,6 +44,11 @@ export default class AssignmentHistoryItem extends Base {
 	}
 
 
+	isSyntheticSubmission () {
+		return !!this.SyntheticSubmission;
+	}
+
+
 	getGradeValue () {
 		let g = this.grade;
 		return g && g.value;
