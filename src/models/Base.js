@@ -32,7 +32,6 @@ const CONTENT_VISIBILITY_MAP = {OU: 'OUID'};
 const PASCAL_CASE_REGEX = /(?:^|[^a-z0-9])([a-z0-9])?/igm;
 
 const TakeOver = Symbol.for('TakeOver');
-const SetProtectedProperty = Symbol.for('SetProtectedProperty');
 const is = Symbol('isTest');
 
 export default class Base extends EventEmitter {
@@ -103,10 +102,11 @@ export default class Base extends EventEmitter {
 
 
 	[TakeOver] (x, y) {
-		let scope = this;
-		let enumerable = !!y;
-		let name = y || x;
-		let value = scope[x];
+		const scope = this;
+		const enumerable = !!y;
+		const name = y || x;
+		const value = scope[x];
+		const renamedFrom = x !== name ? x : void 0;
 
 		function deprecated () {
 			let m = 'There is a new accessor to use instead.';
@@ -127,7 +127,7 @@ export default class Base extends EventEmitter {
 
 		delete scope[x];
 
-		this[SetProtectedProperty](name, value, scope, enumerable);
+		setProtectedProperty(name, value, scope, enumerable, renamedFrom);
 
 		if (x !== name) {
 			deprecated.renamedTo = name;
@@ -137,16 +137,6 @@ export default class Base extends EventEmitter {
 				get: deprecated
 			});
 		}
-	}
-
-
-	[SetProtectedProperty] (name, value, scope = this, enumerable = GenEnumerabilityOf(scope, name)) {
-		Object.defineProperty(scope, name, {
-			configurable: true,
-			enumerable,
-			writable: false,
-			value
-		});
 	}
 
 
@@ -235,7 +225,8 @@ export default class Base extends EventEmitter {
 				//The property may have been remapped...
 				let desc = Object.getOwnPropertyDescriptor(this, prop);
 				let {renamedTo} = (desc || {}).get || {};
-				if (desc && renamedTo) {
+				if (renamedTo) {
+					logger.debug('Refreshing renamed property: %s (%s)', prop, renamedTo);
 					prop = renamedTo;
 				}
 
@@ -297,9 +288,7 @@ export default class Base extends EventEmitter {
 				desc = Object.getOwnPropertyDescriptor(this, prop);
 				if (desc && !desc.writable) {
 					delete this[prop];
-					desc.value = value;
-
-					Object.defineProperty(this, prop, desc);
+					setProtectedProperty(prop, value, this, desc.enumerable, (desc.get || {}).renamedFrom);
 				} else {
 					this[prop] = value;
 				}
@@ -539,6 +528,23 @@ function clone (obj) {
 function GenEnumerabilityOf (obj, propName) {
 	const desc = obj && Object.getOwnPropertyDescriptor(obj, propName);
 	return desc && desc.enumerable;
+}
+
+
+function setProtectedProperty (name, value, scope, enumerable = GenEnumerabilityOf(scope, name), renamedFrom = null) {
+	const get = () => value;
+
+	let valueProperty = {writable: false, value};
+	if (renamedFrom) {
+		valueProperty = {get};
+		Object.assign(get, {renamedFrom});
+	}
+
+	Object.defineProperty(scope, name, {
+		configurable: true,
+		enumerable,
+		...valueProperty
+	});
 }
 
 

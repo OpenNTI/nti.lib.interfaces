@@ -33,7 +33,26 @@ export default {
 		const keys = ['NTIID', 'Links', 'Last Modified'];
 
 		[...Object.keys(values), ...(additionKeys || [])]
-			.forEach(x => !keys.includes(x) && keys.push(x));
+			//Add Unique keys to the refresh queue...
+			//If the key is a renamed key, map it back.
+			.forEach(x => {
+				const {get} = Object.getOwnPropertyDescriptor(this, x);
+				const originalName = get && get.renamedFrom;
+				const value = values[x];
+
+				const key = originalName || x;
+				if (!keys.includes(key)) {
+					keys.push(key);
+				}
+
+				if (originalName) {
+					// console.debug('Restoring renamed value "%s" to "%s"', x, originalName);
+					if (x in values) {
+						delete values[x];
+						values[originalName] = value;
+					}
+				}
+			});
 
 		const data = {
 			fields: values
