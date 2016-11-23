@@ -95,7 +95,7 @@ export default class Contacts extends EventEmitter {
 			.then(x => this[DATA].push(...x))
 			.then(()=> this[ENSURE_CONTACT_GROUP]())
 			.catch(er => {
-				logger.error('%s: %o', er.message || 'There was a problem.', er.ContactsGroup || er);
+				logger.error('%s: %s %o', er.stack || er.message || 'There was a problem (error message is empty)', er.ContactsGroup || er);
 				this.error = true;
 			})
 			.then(() => {
@@ -119,7 +119,7 @@ export default class Contacts extends EventEmitter {
 			return this[CREATE](ContactsGroup)
 				.catch(e => e.statusCode !== 409
 						? Promise.resolve() //409? ok... it was created by another process (or a previous request)
-						: Promise.reject({...e, ContactsGroup})
+						: Promise.reject(Object.assign(e, {ContactsGroup}))
 				);
 		}
 	}
@@ -131,7 +131,7 @@ export default class Contacts extends EventEmitter {
 			.then(x => parse(this[Service], null, x))
 
 			.then(x => this[DATA].find(i => i.getID() === x.getID())
-					? Promise.reject('Already contains item??')
+					? Promise.reject({statusCode: 409, message: 'Already contains item??'})
 					: (this[DATA].push(x) && x)
 			)
 
