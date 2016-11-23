@@ -36,7 +36,7 @@ export default {
 			//Add Unique keys to the refresh queue...
 			//If the key is a renamed key, map it back.
 			.forEach(x => {
-				const {get} = Object.getOwnPropertyDescriptor(this, x);
+				const {get} = Object.getOwnPropertyDescriptor(this, x) || {};
 				const originalName = get && get.renamedFrom;
 				const value = values[x];
 
