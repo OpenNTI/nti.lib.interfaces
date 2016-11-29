@@ -95,7 +95,7 @@ export default class Contacts extends EventEmitter {
 			.then(x => this[DATA].push(...x))
 			.then(()=> this[ENSURE_CONTACT_GROUP]())
 			.catch(er => {
-				logger.error('%s: %s %o', er.stack || er.message || 'There was a problem (error message is empty)', er.ContactsGroup || er);
+				logger.error('%s\n\tContracts Group: %o', er.stack || er.message || 'There was a problem (error message is empty)', er.ContactsGroup || (er.stack ? null : er));
 				this.error = true;
 			})
 			.then(() => {
