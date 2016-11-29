@@ -140,24 +140,26 @@ export default class ServiceDocument {
 
 
 	getLists () {
-		if (!this[Lists]) {
+		const contacts = this[Contacts];
+		if (!this[Lists] && contacts) {
 
-			let c = this[Contacts];
-			this[Lists] = Object.assign(Object.create(c), {
-				[Symbol.iterator] () {
-					let snapshot = this.getLists();
-					let {length} = snapshot;
-					let index = 0;
-					return {
+			this[Lists] = Object.create(contacts, {
+				[Symbol.iterator]: {
+					value: function () {
+						const snapshot = this.getLists();
+						const {length} = snapshot;
+						let index = 0;
+						return {
 
-						next () {
-							let done = index >= length;
-							let value = snapshot[index++];
+							next () {
+								const done = index >= length;
+								const value = snapshot[index++];
 
-							return { value, done };
-						}
+								return { value, done };
+							}
 
-					};
+						};
+					}
 				}
 			});
 		}
