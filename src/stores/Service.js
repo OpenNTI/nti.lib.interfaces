@@ -65,6 +65,13 @@ export default class ServiceDocument {
 			this.getAppUser().then(u => {
 				this[AppUser] = u;
 
+				//Not all apps that use this library are a Platform App... for those apps that do not need contacts,
+				//skip loading them.
+				if (server.config.SKIP_FRIENDSLISTS) {
+					logger.log('Skipping/Ignoring FriendsLists');
+					return;
+				}
+
 				let {href} = this.getCollection('FriendsLists', this.getAppUsername()) || {};
 				if (href) {
 					this[Contacts] = new ContactsStore(this, href, u);
