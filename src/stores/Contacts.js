@@ -117,7 +117,7 @@ export default class Contacts extends EventEmitter {
 			const ContactsGroup = getNewListData(['My Contacts', RESERVED_GROUP_ID], false, MIME_TYPE, this.context);
 
 			return this[CREATE](ContactsGroup)
-				.catch(e => e.statusCode !== 409
+				.catch(e => e.statusCode === 409
 						? Promise.resolve() //409? ok... it was created by another process (or a previous request)
 						: Promise.reject(Object.assign(e, {ContactsGroup}))
 				);
