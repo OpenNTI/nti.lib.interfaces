@@ -1,5 +1,6 @@
 import Logger from 'nti-util-logger';
 import EventEmitter from 'events';
+import url from 'url';
 
 // import QueryString from 'query-string';
 
@@ -26,6 +27,7 @@ const SEARCH_THROTTLE = Symbol();
 
 const CONTACTS_LIST_ID = e => `mycontacts-${e.getID()}`;
 
+const ensureSlash = x => /\/$/.test(x) ? x : `${x}/`;
 
 function generateID (name, context) {
 	//Dataserver blows chunks if on @@ or @( at the beginning
@@ -82,7 +84,8 @@ export default class Contacts extends EventEmitter {
 		this.onChange = this.onChange.bind(this);
 
 		const parseList = parseListFn(this, service);
-		this.load = url => service.get(url).then(o => parseList(Object.values(o.Items || [])));
+		this.load = uri => service.get(uri).then(o => parseList(Object.values(o.Items || [])));
+		this.get = id => service.get(url.resolve(ensureSlash(entryPoint),id)).then(o => service.getObject(o));
 
 		if (process.browser) {
 			this.on('load', (_, time) => logger.info('Load: %s %o', time, this));
@@ -118,7 +121,8 @@ export default class Contacts extends EventEmitter {
 
 			return this[CREATE](ContactsGroup)
 				.catch(e => e.statusCode === 409
-						? Promise.resolve() //409? ok... it was created by another process (or a previous request)
+						//409? ok... it was created by another process (or a previous request)...fetch it
+						? this.get(RESERVED_GROUP_ID).then(x => this[DATA].unshift(x))
 						: Promise.reject(Object.assign(e, {ContactsGroup}))
 				);
 		}
