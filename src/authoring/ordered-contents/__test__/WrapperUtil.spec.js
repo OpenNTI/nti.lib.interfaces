@@ -19,7 +19,7 @@ function createNewItem (id) {
 }
 
 
-fdescribe('OrderedContents Tests', () => {
+describe('OrderedContents Tests', () => {
 	let fakeService;
 	let fakeObject;
 	let items;
