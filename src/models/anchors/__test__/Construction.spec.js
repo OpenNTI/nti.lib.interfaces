@@ -16,39 +16,39 @@ describe('Model Tests', () => {
 			offset = 5,
 			ct = make(TextContext, {contextText: text, contextOffset: offset});
 
-		expect(ct).toBeTruthy();
-		expect(ct.getContextText()).toEqual(text);
-		expect(ct.getContextOffset()).toEqual(offset);
+		expect(ct).to.be.ok;
+		expect(ct.getContextText()).to.equal(text);
+		expect(ct.getContextOffset()).to.equal(offset);
 	});
 
 	it('Bad TextContent Creation', () => {
 		try {
 			make(TextContext, {contextText: '', contextOffset: 5});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toEqual('Text must have one or more characters');
+			expect(e.message).to.equal('Text must have one or more characters');
 		}
 		try {
 			make(TextContext, {contextOffset: 5});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toEqual('Text must have one or more characters');
+			expect(e.message).to.equal('Text must have one or more characters');
 		}
 		try {
 			make(TextContext, {contextText: 'text', contextOffset: -1});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toEqual('Offset must be greater than 0, supplied value: -1');
+			expect(e.message).to.equal('Offset must be greater than 0, supplied value: -1');
 		}
 		try {
 			make(TextContext, {contextText: 'text'});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toEqual('No offset supplied');
+			expect(e.message).to.equal('No offset supplied');
 		}
 	});
 
@@ -57,25 +57,25 @@ describe('Model Tests', () => {
 		let role = 'end',
 			ca = make(DomContentPointer, {role: role});
 
-		expect(ca.getRole()).toBe(role);
+		expect(ca.getRole()).to.equal(role);
 	});
 
 
 	it('Bad DomContentPointer Creation', () => {
 		try {
 			make(DomContentPointer, {role: 'invalid'});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toEqual('Role must be of the value start,end,ancestor, supplied invalid');
+			expect(e.message).to.equal('Role must be of the value start,end,ancestor, supplied invalid');
 		}
 
 		try {
 			make(DomContentPointer, {});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toEqual('Must supply a role');
+			expect(e.message).to.equal('Must supply a role');
 		}
 	});
 
@@ -85,56 +85,56 @@ describe('Model Tests', () => {
 			role = 'end',
 			ca = make(ElementDomContentPointer, {elementId: id, elementTagName: tagName, role: role});
 
-		expect(ca.getElementTagName()).toBe(tagName);
-		expect(ca.getElementId()).toBe(id);
-		expect(ca.getRole()).toBe(role);
+		expect(ca.getElementTagName()).to.equal(tagName);
+		expect(ca.getElementId()).to.equal(id);
+		expect(ca.getRole()).to.equal(role);
 	});
 
 	it('Good ElementDomContentPointer Creation via node', () => {
 		let id = 'a1234567',
 			tagName = 'SOMETAGNAME',
 			role = 'start',
-			element = document.createElement(tagName), ca;
+			element = {tagName, id, getAttribute: (name) => name==='id' ? id : '' },//fake it until you make it!
+			ca;
 
-		element.setAttribute('id', id);
 		ca = make(ElementDomContentPointer, {node: element, role: role});
 
-		expect(ca.getElementTagName()).toBe(tagName);
-		expect(ca.getElementId()).toBe(id);
-		expect(ca.getRole()).toBe(role);
+		expect(ca.getElementTagName()).to.equal(tagName);
+		expect(ca.getElementId()).to.equal(id);
+		expect(ca.getRole()).to.equal(role);
 	});
 
 	it('Bad ElementDomContentPointer Creation', () => {
 		try {
 			make(ElementDomContentPointer, {elementTagName: 'name', role: 'end'});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toBe('Must supply an Id');
+			expect(e.message).to.equal('Must supply an Id');
 		}
 
 		try {
 			make(ElementDomContentPointer, {elementId: 'id', role: 'start'});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toBe('Must supply a tag name');
+			expect(e.message).to.equal('Must supply a tag name');
 		}
 
 		try {
 			make(ElementDomContentPointer, {elementId: 'id', elementTagName: 'tagName', role: 'wrong'});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toBe('Role must be of the value start,end,ancestor, supplied wrong');
+			expect(e.message).to.equal('Role must be of the value start,end,ancestor, supplied wrong');
 		}
 
 		try {
 			make(ElementDomContentPointer, {elementId: 'id', elementTagName: 'tagName'});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toBe('Must supply a role');
+			expect(e.message).to.equal('Must supply a role');
 		}
 	});
 
@@ -155,13 +155,13 @@ describe('Model Tests', () => {
 			},
 			x = make(TextDomContentPointer, cfg);
 
-		expect(x.getEdgeOffset()).toEqual(cfg.edgeOffset);
-		expect(x.getContexts()).toBeTruthy();
-		expect(x.getContexts().length).toEqual(cfg.contexts.length);
-		expect(x.getAncestor().getRole()).toEqual('ancestor');
-		expect(x.getAncestor().getElementTagName()).toEqual('TAGNAME');
-		expect(x.getAncestor().getElementId()).toEqual('id');
-		expect(x.getRole()).toEqual(cfg.role);
+		expect(x.getEdgeOffset()).to.equal(cfg.edgeOffset);
+		expect(x.getContexts()).to.be.ok;
+		expect(x.getContexts().length).to.equal(cfg.contexts.length);
+		expect(x.getAncestor().getRole()).to.equal('ancestor');
+		expect(x.getAncestor().getElementTagName()).to.equal('TAGNAME');
+		expect(x.getAncestor().getElementId()).to.equal('id');
+		expect(x.getRole()).to.equal(cfg.role);
 	});
 
 	it('Bad TextDomContentPointer Creation', () => {
@@ -174,10 +174,10 @@ describe('Model Tests', () => {
 				// tests. (the message this was checking is now nearly impossible to get.)
 				contexts: []
 			});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toEqual('Must supply TextContexts');
+			expect(e.message).to.equal('Must supply TextContexts');
 		}
 
 		try {
@@ -185,10 +185,10 @@ describe('Model Tests', () => {
 				role: 'ancestor',
 				edgeOffset: 5
 			});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toEqual('Must supply TextContexts');
+			expect(e.message).to.equal('Must supply TextContexts');
 		}
 
 		// This test is in question, can we have a negative edgeOffset?, Ask Chris
@@ -201,10 +201,10 @@ describe('Model Tests', () => {
 					make(TextContext, {contextText: 'text3', contextOffset: 2})
 				]
 			});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toEqual('Offset must exist and be 0 or more');
+			expect(e.message).to.equal('Offset must exist and be 0 or more');
 		}*/
 
 		try {
@@ -217,10 +217,10 @@ describe('Model Tests', () => {
 					make(TextContext, {contextText: 'text3', contextOffset: 2})
 				]
 			});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toEqual('Ancestor must be supplied');
+			expect(e.message).to.equal('Ancestor must be supplied');
 		}
 
 		try {
@@ -238,10 +238,10 @@ describe('Model Tests', () => {
 					make(TextContext, {contextText: 'text3', contextOffset: 2})
 				]
 			});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toEqual('If ancestor is an ElementDomContentPointer, role must be of value ancestor');
+			expect(e.message).to.equal('If ancestor is an ElementDomContentPointer, role must be of value ancestor');
 		}
 	});
 
@@ -294,9 +294,9 @@ describe('Model Tests', () => {
 				ancestor: ca1
 			});
 
-		expect(dcrd.getStart()).toBeTruthy();
-		expect(dcrd.getEnd()).toBeTruthy();
-		expect(dcrd.getAncestor()).toBeTruthy();
+		expect(dcrd.getStart()).to.be.ok;
+		expect(dcrd.getEnd()).to.be.ok;
+		expect(dcrd.getAncestor()).to.be.ok;
 	});
 
 	it('Bad DomContentRangeDescription Creation', () => {
@@ -334,10 +334,10 @@ describe('Model Tests', () => {
 				start: tca1,
 				end: tca2
 			});
-			expect(false).toBeTruthy();
+			expect(false).to.be.ok;
 		}
 		catch (e) {
-			expect(e.message).toEqual('Invalid contents');
+			expect(e.message).to.equal('Invalid contents');
 		}
 	});
 });

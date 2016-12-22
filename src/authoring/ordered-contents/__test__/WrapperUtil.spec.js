@@ -1,3 +1,5 @@
+import sinon from 'sinon';
+
 import WrapperUtil from '../WrapperUtil';
 
 function makeLabel (id) {
@@ -65,9 +67,9 @@ describe('OrderedContents Tests', () => {
 
 
 
-		spyOn(fakeService, 'getObjectPlaceholder').and.callThrough();
-		spyOn(fakeService, 'postParseResponse').and.callThrough();
-		spyOn(fakeService, 'putParseResponse').and.callThrough();
+		sinon.spy(fakeService, 'getObjectPlaceholder');
+		sinon.spy(fakeService, 'postParseResponse');
+		sinon.spy(fakeService, 'putParseResponse');
 
 		orderedContents = new WrapperUtil(fakeObject, fakeService);
 	});
@@ -80,16 +82,15 @@ describe('OrderedContents Tests', () => {
 
 			orderedContents.append(item)
 				.then(() => {
-					expect(fakeService.postParseResponse).toHaveBeenCalledWith('orderedcontents/index/4', jasmine.objectContaining({
-						label: makeLabel(5)
-					}));
-					expect(fakeService.putParseResponse).not.toHaveBeenCalled();
+					expect(fakeService.postParseResponse).to.be.calledWith('orderedcontents/index/4', sinon.match({label: makeLabel(5)}));
+					expect(fakeService.putParseResponse).not.have.been.called;
 
-					expect(orderedContents.length).toEqual(5);
-					expect(orderedContents.orderedContents[4].label).toEqual(makeLabel(5));
+					expect(orderedContents.length).to.equal(5);
+					expect(orderedContents.orderedContents[4].label).to.equal(makeLabel(5));
 
 					done();
-				});
+				})
+				.catch(done);
 		});
 
 		it('Insert adds item at the index', (done) => {
@@ -97,16 +98,15 @@ describe('OrderedContents Tests', () => {
 
 			orderedContents.insertAt(item, 1)
 				.then(() => {
-					expect(fakeService.postParseResponse).toHaveBeenCalledWith('orderedcontents/index/1', jasmine.objectContaining({
-						label: makeLabel(5)
-					}));
-					expect(fakeService.putParseResponse).not.toHaveBeenCalled();
+					expect(fakeService.postParseResponse).to.be.calledWith('orderedcontents/index/1', sinon.match({label: makeLabel(5)}));
+					expect(fakeService.putParseResponse).not.have.been.called;
 
-					expect(orderedContents.length).toEqual(5);
-					expect(orderedContents.orderedContents[1].label).toEqual(makeLabel(5));
+					expect(orderedContents.length).to.equal(5);
+					expect(orderedContents.orderedContents[1].label).to.equal(makeLabel(5));
 
 					done();
-				});
+				})
+				.catch(done);
 		});
 	});
 
@@ -117,16 +117,17 @@ describe('OrderedContents Tests', () => {
 
 			orderedContents.replaceItem(oldItem, newItem)
 				.then(() => {
-					expect(fakeService.postParseResponse).not.toHaveBeenCalled();
-					expect(fakeService.putParseResponse).toHaveBeenCalledWith('orderedcontents/index/0', jasmine.objectContaining({
+					expect(fakeService.postParseResponse).not.been.called;
+					expect(fakeService.putParseResponse).to.be.calledWith('orderedcontents/index/0', sinon.match({
 						label: makeLabel(5)
 					}));
 
-					expect(orderedContents.length).toEqual(4);
-					expect(orderedContents.orderedContents[0].label).toEqual(makeLabel(5));
+					expect(orderedContents.length).to.equal(4);
+					expect(orderedContents.orderedContents[0].label).to.equal(makeLabel(5));
 
 					done();
-				});
+				})
+				.catch(done);
 		});
 
 		it('Replace at Index', (done) => {
@@ -134,16 +135,17 @@ describe('OrderedContents Tests', () => {
 
 			orderedContents.replaceAt(newItem, 1)
 				.then(() => {
-					expect(fakeService.postParseResponse).not.toHaveBeenCalled();
-					expect(fakeService.putParseResponse).toHaveBeenCalledWith('orderedcontents/index/1', jasmine.objectContaining({
+					expect(fakeService.postParseResponse).not.have.been.called;
+					expect(fakeService.putParseResponse).to.be.calledWith('orderedcontents/index/1', sinon.match({
 						label: makeLabel(5)
 					}));
 
-					expect(orderedContents.length).toEqual(4);
-					expect(orderedContents.orderedContents[1].label).toEqual(makeLabel(5));
+					expect(orderedContents.length).to.equal(4);
+					expect(orderedContents.orderedContents[1].label).to.equal(makeLabel(5));
 
 					done();
-				});
+				})
+				.catch(done);
 		});
 	});
 });
