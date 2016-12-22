@@ -1,6 +1,18 @@
 {
+	"globals": {
+		"expect": true
+	},
 	"extends": [
 		"nti-codestyle-js"
 	],
+
+	"env": {
+		"node": true,
+		"browser": false,
+		"jasmine": false,
+		"mocha": true
+		"es6": true
+	},
+
 	"parser": "babel-eslint"
 }
