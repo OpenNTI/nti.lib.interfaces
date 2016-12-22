@@ -1,4 +1,4 @@
-import {placeItemIn, removeItemFrom} from '../';
+import {placeItemIn, removeItemFrom} from '../place';
 
 const QuestionType = 'application/vnd.nextthought.naquestion';
 

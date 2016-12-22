@@ -1,3 +1,4 @@
+import {register} from '../registry';
 import {createHandlersFor} from '../createHandlers';
 
 import Question from './Question';
@@ -10,4 +11,4 @@ const handlers = [
 	QuestionSet
 ];
 
-export default createHandlersFor([AssignmentType, TimedAssignmentType], handlers);
+register(createHandlersFor([AssignmentType, TimedAssignmentType], handlers));

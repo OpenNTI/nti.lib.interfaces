@@ -1,3 +1,4 @@
+import {register} from '../registry';
 import {createHandlersFor} from '../createHandlers';
 
 import Question from './Question';
@@ -9,4 +10,4 @@ const handlers = [
 	Question
 ];
 
-export default createHandlersFor([QuestionSetType, QuestionBankType], handlers);
+register(createHandlersFor([QuestionSetType, QuestionBankType], handlers));

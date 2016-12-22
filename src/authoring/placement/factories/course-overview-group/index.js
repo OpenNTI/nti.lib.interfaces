@@ -1,3 +1,4 @@
+import {register} from '../registry';
 import {createHandlersFor} from '../createHandlers';
 
 import Assignment from './Assignment';
@@ -7,4 +8,4 @@ const handlers = [
 	Assignment
 ];
 
-export default createHandlersFor(OverviewGroup, handlers);
+register(createHandlersFor(OverviewGroup, handlers));
