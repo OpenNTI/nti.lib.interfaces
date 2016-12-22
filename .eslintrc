@@ -1,6 +1,11 @@
 {
 	"globals": {
-		"expect": true
+		"expect": true,
+		"fetch": true,
+		"FormData": true,
+		"File": true,
+		"Blob": true,
+		"URLSearchParams": true
 	},
 	"extends": [
 		"nti-codestyle-js"
@@ -10,7 +15,7 @@
 		"node": true,
 		"browser": false,
 		"jasmine": false,
-		"mocha": true
+		"mocha": true,
 		"es6": true
 	},
 

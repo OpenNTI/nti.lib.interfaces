@@ -94,7 +94,7 @@ describe('Model Tests', () => {
 		let id = 'a1234567',
 			tagName = 'SOMETAGNAME',
 			role = 'start',
-			element = {tagName, id, getAttribute: (name) => name==='id' ? id : '' },//fake it until you make it!
+			element = {tagName, id, getAttribute: (name) => name === 'id' ? id : '' },//fake it until you make it!
 			ca;
 
 		ca = make(ElementDomContentPointer, {node: element, role: role});
