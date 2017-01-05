@@ -17,6 +17,7 @@
     "start": "make check",
     "prepublish": "not-in-install && make || in-install",
     "bump": "npm version",
+    "preversion": "mocha",
     "postversion": "git push && git push --tags && npm publish"
   },
   "repository": {
