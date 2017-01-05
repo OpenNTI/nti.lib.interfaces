@@ -144,6 +144,8 @@ export default class Stream extends EventEmitter {
 	get error () { return getPrivate(this).error; }
 	get loaded () { return getPrivate(this).loaded; }
 	get loading () { return getPrivate(this).loading; }
+	get dirty () { return getPrivate(this).dirty; }
+	set dirty (dirty) { if (dirty) { getPrivate(this).dirty = true; } }
 
 	/**
 	 * Returns true if there is more to load from the stream. (show a load more button)
@@ -161,6 +163,7 @@ export default class Stream extends EventEmitter {
 		}
 
 		store.loading = true;
+		store.dirty = false;
 
 		let start = Date.now();
 		this.emit('change', this);
@@ -198,10 +201,12 @@ export default class Stream extends EventEmitter {
 				.catch(er => {
 					logger.error(er);
 					store.error = true;
+					store.dirty = true;
 				})
 				.then(() => {
 					store.loading = false;
 					store.loaded = Date.now();
+					store.dirty = store.dirty || false;
 					this.emit('load', this, `${(store.loaded - start)}ms`);
 					this.emit('change', this);
 				});

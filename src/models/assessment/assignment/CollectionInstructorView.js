@@ -115,8 +115,19 @@ export default class CollectionInstructorView extends Base {
 				this.gradebook.getLink('GradeBookSummary')
 			);
 		}
+		else if(data.summary.dirty) {
+			data.summary.reloadPage();
+		}
 
 		return data.summary;
+	}
+
+
+	markSummaryDirty () {
+		const data = getPrivate(this);
+		if (data.summary) {
+			data.summary.dirty = true;
+		}
 	}
 
 
@@ -160,6 +171,8 @@ export default class CollectionInstructorView extends Base {
 		};
 
 		const grade = getGrade(gradeOrAssignmentId);
+
+		this.markSummaryDirty();
 
 		//existing grade
 		if (grade.change) {
@@ -216,6 +229,7 @@ export default class CollectionInstructorView extends Base {
 					us.setHistoryItem(assignmentId, null);
 				}
 
+				this.markSummaryDirty();
 				this.emit('reset-grade', assignmentId);
 				this.onChange('reset-grade', this);
 			});
