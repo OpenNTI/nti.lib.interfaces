@@ -114,6 +114,7 @@ import AssessmentAssignmentRef from './assessment/assignment/AssignmentReference
 import AssessmentAssignment from './assessment/assignment/Assignment';
 import AssessmentAssignmentMetadataItem from './assessment/assignment/AssignmentMetadataItem';
 import AssessmentTimedAssignment from './assessment/assignment/TimedAssignment';
+import AssessmentDiscussionAssignment from './assessment/assignment/DiscussionAssignment';
 import AssessmentAssignmentPart from './assessment/assignment/AssignmentPart';
 
 import AssessmentAssessedQuestionSet from './assessment/AssessedQuestionSet';
@@ -301,6 +302,7 @@ const PARSERS = {
 	'assignmentref': AssessmentAssignmentRef,
 	'assessment.assignment': AssessmentAssignment,
 	'assessment.timedassignment': AssessmentTimedAssignment,
+	'assessment.discussionassignment': AssessmentDiscussionAssignment,
 	'assessment.userscourseassignmentmetadataitem': AssessmentAssignmentMetadataItem,
 
 	'assessment.assignmentpart': AssessmentAssignmentPart,
