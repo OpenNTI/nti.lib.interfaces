@@ -257,6 +257,26 @@ export default class Instance extends Base {
 	}
 
 
+	getCourseDiscussions () {
+		const service = this[Service];
+		const url = this.getLink('CourseDiscussions');
+		//For now make the course the parent.
+		const discussionParentRef = this;
+		const parseItem = o => service.getObject(o, {parent: discussionParentRef});
+
+		if (!url) {
+			return Promise.resolve([]);
+		}
+
+		return service.get(url)
+			.then((json) => {
+				const {Items:items} = json;
+
+				return Promise.all(items.map(parseItem));
+			});
+	}
+
+
 	getDiscussions () {
 		function logAndResume (reason) {
 			if (reason !== NOT_DEFINED) {
