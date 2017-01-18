@@ -64,6 +64,7 @@ import Video from './Video';
 import VideoRef from './VideoRef';
 
 import CourseGrade from './courses/Grade';
+import CourseDiscussion from './courses/CourseDiscussion';
 import CourseGradeBookShell from './courses/GradeBookShell';
 import CourseGradeBookByAssignment from './courses/GradeBookByAssignment';
 import CourseGradeBookUserSummary from './courses/GradeBookUserSummary';
@@ -275,7 +276,7 @@ const PARSERS = {
 	'courses.coursecataloglegacyentry': 'courses.catalogentry',//Really?! Two packages?! :P
 	'courseware.coursecataloglegacyentry': 'courses.catalogentry',
 
-
+	'courses.discussion': CourseDiscussion,
 
 	'assessment.assessedquestionset': AssessmentAssessedQuestionSet,
 	'assessment.assessedquestion': AssessmentAssessedQuestion,
