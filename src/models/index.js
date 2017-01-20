@@ -64,6 +64,7 @@ import Video from './Video';
 import VideoRef from './VideoRef';
 
 import CourseGrade from './courses/Grade';
+import CourseDiscussion from './courses/CourseDiscussion';
 import CourseGradeBookShell from './courses/GradeBookShell';
 import CourseGradeBookByAssignment from './courses/GradeBookByAssignment';
 import CourseGradeBookUserSummary from './courses/GradeBookUserSummary';
@@ -114,6 +115,7 @@ import AssessmentAssignmentRef from './assessment/assignment/AssignmentReference
 import AssessmentAssignment from './assessment/assignment/Assignment';
 import AssessmentAssignmentMetadataItem from './assessment/assignment/AssignmentMetadataItem';
 import AssessmentTimedAssignment from './assessment/assignment/TimedAssignment';
+import AssessmentDiscussionAssignment from './assessment/assignment/DiscussionAssignment';
 import AssessmentAssignmentPart from './assessment/assignment/AssignmentPart';
 
 import AssessmentAssessedQuestionSet from './assessment/AssessedQuestionSet';
@@ -160,6 +162,8 @@ import ForumsPost from './forums/Post';
 import ForumsComment from './forums/Comment';
 import BlogEntry from './forums/BlogEntry';
 import Blog from './forums/Blog';
+import UserTopicParticipationSummary from './forums/UserTopicParticipationSummary';
+import UserTopicParticipationContext from './forums/UserTopicParticipationContext';
 
 import PricedItem from './store/PricedItem';
 import PricingResults from './store/PricingResults';
@@ -274,7 +278,7 @@ const PARSERS = {
 	'courses.coursecataloglegacyentry': 'courses.catalogentry',//Really?! Two packages?! :P
 	'courseware.coursecataloglegacyentry': 'courses.catalogentry',
 
-
+	'courses.discussion': CourseDiscussion,
 
 	'assessment.assessedquestionset': AssessmentAssessedQuestionSet,
 	'assessment.assessedquestion': AssessmentAssessedQuestion,
@@ -301,6 +305,7 @@ const PARSERS = {
 	'assignmentref': AssessmentAssignmentRef,
 	'assessment.assignment': AssessmentAssignment,
 	'assessment.timedassignment': AssessmentTimedAssignment,
+	'assessment.discussionassignment': AssessmentDiscussionAssignment,
 	'assessment.userscourseassignmentmetadataitem': AssessmentAssignmentMetadataItem,
 
 	'assessment.assignmentpart': AssessmentAssignmentPart,
@@ -421,6 +426,9 @@ const PARSERS = {
 	'forums.generalforumcomment': 'forums.comment',
 	'forums.contentforumcomment': 'forums.comment',
 	'forums.personalblogcomment': 'forums.comment',
+
+	'forums.usertopicparticipationsummary': UserTopicParticipationSummary,
+	'forums.usertopicparticipationcontext': UserTopicParticipationContext,
 
 	'highlight': Highlight,
 	'note': Note,

@@ -10,6 +10,7 @@ const CAPABILITIES = {
 	canChangePassword: 'nti.platform.customization.can_change_password',
 	canCreateLists: 'nti.platform.p2p.friendslists',
 	canCreateGroups: 'nti.platform.p2p.dynamicfriendslists',
+	canDoAdvancedEditing: 'nti.platform.courseware.advanced_editing',
 
 	canShareRedaction: false,
 
@@ -50,7 +51,7 @@ export default class Capabilities {
 			let test = CAPABILITIES[cap];
 
 			if (typeof test === 'string') {
-				test = this.hasCapability(test);
+				test = this.has(test);
 			}
 			else if (test.call) {
 				test = test.call(this);
@@ -61,7 +62,7 @@ export default class Capabilities {
 	}
 
 
-	hasCapability (c) {
+	has (c) {
 		return this[list].indexOf(c) >= 0;
 	}
 }
