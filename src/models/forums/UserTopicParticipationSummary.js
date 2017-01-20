@@ -7,4 +7,16 @@ export default class UserTopicParticipationSummary extends Base {
 
 		this[parse]('Contexts');
 	}
+
+	get comments () {
+		return this.TopLevelCount;
+	}
+
+	get replies () {
+		return this.ReplyToCount;
+	}
+
+	get repliesTo () {
+		return this.NestedChildReplyCount;
+	}
 }
