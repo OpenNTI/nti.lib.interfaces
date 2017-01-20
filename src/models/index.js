@@ -162,6 +162,8 @@ import ForumsPost from './forums/Post';
 import ForumsComment from './forums/Comment';
 import BlogEntry from './forums/BlogEntry';
 import Blog from './forums/Blog';
+import UserTopicParticipationSummary from './forums/UserTopicParticipationSummary';
+import UserTopicParticipationContext from './forums/UserTopicParticipationContext';
 
 import PricedItem from './store/PricedItem';
 import PricingResults from './store/PricingResults';
@@ -424,6 +426,9 @@ const PARSERS = {
 	'forums.generalforumcomment': 'forums.comment',
 	'forums.contentforumcomment': 'forums.comment',
 	'forums.personalblogcomment': 'forums.comment',
+
+	'forums.usertopicparticipationsummary': UserTopicParticipationSummary,
+	'forums.usertopicparticipationcontext': UserTopicParticipationContext,
 
 	'highlight': Highlight,
 	'note': Note,

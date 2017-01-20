@@ -47,4 +47,11 @@ export default class Topic extends Base {
 
 		return service.post(link, payload);
 	}
+
+
+	loadUserSummary (user) {
+		const params = user ? {user} : {};
+
+		return this.fetchLinkParsed('UserTopicParticipationSummary', params);
+	}
 }
