@@ -11,4 +11,11 @@ export default class DiscussionAssignment extends Assignment {
 	get canManuallyEdit () {
 		return this[Service].capabilities.canDoAdvancedEditing;
 	}
+
+
+	resolveTopic (user) {
+		const params = user ? {user} : {};
+
+		return this.fetchLinkParsed('ResolveTopic', params);
+	}
 }
