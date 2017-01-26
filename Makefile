@@ -17,7 +17,7 @@ check:
 	@eslint --ext .js,.jsx ./src
 
 test: node_modules check
-	@karma start --single-run
+	@mocha
 
 clean:
 	@rm -rf $(LIBDIR)
