@@ -1,9 +1,9 @@
 import Base from '../Base';
-import names from '../mixins/CourseAndAssignmentNameResolving';
+import names from '../../mixins/CourseAndAssignmentNameResolving';
 
 import {pluck} from 'nti-commons';
 
-import {cacheClassInstances} from '../mixins/InstanceCacheable';
+import {cacheClassInstances} from '../../mixins/InstanceCacheable';
 
 const ENDS_IN_LETTER_REGEX = /\s[a-fiw\-]$/i;
 

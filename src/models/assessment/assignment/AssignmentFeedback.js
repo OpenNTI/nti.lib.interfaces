@@ -1,7 +1,7 @@
 import Base from '../../Base';
 import {Service} from '../../../constants';
 
-import names from '../../mixins/CourseAndAssignmentNameResolving';
+import names from '../../../mixins/CourseAndAssignmentNameResolving';
 
 export default class AssignmentFeedback extends Base {
 	constructor (service, parent, data) {

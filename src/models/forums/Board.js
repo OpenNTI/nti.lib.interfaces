@@ -1,6 +1,6 @@
 import Base from '../Base';
-import GetContents from '../mixins/GetContents';
-//import SharedWithList from '../mixins/SharedWithList';
+import GetContents from '../../mixins/GetContents';
+//import SharedWithList from '../../mixins/SharedWithList';
 
 
 export default class Board extends Base {

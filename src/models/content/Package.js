@@ -9,7 +9,7 @@ import setAndEmit from '../../utils/getsethandler';
 import {URL} from 'nti-commons';
 
 
-import assets from '../mixins/PresentationResources';
+import assets from '../../mixins/PresentationResources';
 
 import MediaIndex from '../MediaIndex';
 import TablesOfContents from '../TablesOfContents';

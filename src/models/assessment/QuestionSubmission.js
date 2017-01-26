@@ -1,6 +1,6 @@
 import Base from '../Base';
 import {Service} from '../../constants';
-import Submission from '../mixins/Submission';
+import Submission from '../../mixins/Submission';
 
 export default class QuestionSubmission extends Base {
 

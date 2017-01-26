@@ -1,5 +1,5 @@
 import Part from '../Part';
-import {ContentKeys} from '../../mixins/HasContent';
+import {ContentKeys} from '../../../mixins/HasContent';
 
 const isShortAnswer = RegExp.prototype.test.bind(/ShortAnswer/i);
 const hasInputs = RegExp.prototype.test.bind(/<input/i);

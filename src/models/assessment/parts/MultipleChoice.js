@@ -1,5 +1,5 @@
 import Part from '../Part';
-import {ContentKeys} from '../../mixins/HasContent';
+import {ContentKeys} from '../../../mixins/HasContent';
 
 export default class MultipleChoice extends Part {
 	constructor (service, parent, data) {

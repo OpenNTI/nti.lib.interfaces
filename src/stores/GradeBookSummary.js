@@ -1,5 +1,5 @@
 import Stream from './Stream';
-import Paged from '../models/mixins/Paged';
+import Paged from '../mixins/Paged';
 
 import {mixin} from 'nti-commons';
 import Logger from 'nti-util-logger';

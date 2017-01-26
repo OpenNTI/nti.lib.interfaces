@@ -6,7 +6,7 @@ import Url from 'url';
 
 import {mixin} from 'nti-commons';
 
-import Pendability from '../models/mixins/Pendability';
+import Pendability from '../mixins/Pendability';
 
 import getLink from '../utils/getlink';
 

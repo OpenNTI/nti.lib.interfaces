@@ -3,7 +3,7 @@ import {
 	Parser as parse
 } from '../../../constants';
 
-import Submission from '../../mixins/Submission';
+import Submission from '../../../mixins/Submission';
 
 export default class AssignmentSubmission extends Base {
 

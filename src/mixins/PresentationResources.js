@@ -1,4 +1,4 @@
-import {Service} from '../../constants';
+import {Service} from '../constants';
 import {URL} from 'nti-commons';
 import isEmpty from 'isempty';
 

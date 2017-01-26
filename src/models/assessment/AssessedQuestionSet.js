@@ -3,7 +3,7 @@ import {
 	Parser as parse
 } from '../../constants';
 
-import assessed from '../mixins/AssessedAssessmentPart';
+import assessed from '../../mixins/AssessedAssessmentPart';
 
 export default class AssessedQuestionSet extends Base {
 	constructor (service, parent, data) {

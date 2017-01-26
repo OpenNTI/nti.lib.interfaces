@@ -1,5 +1,5 @@
 import Base from '../models/Base';
-import Paged from '../models/mixins/Paged';
+import Paged from '../mixins/Paged';
 import Stream from './Stream';
 
 import {mixin} from 'nti-commons';

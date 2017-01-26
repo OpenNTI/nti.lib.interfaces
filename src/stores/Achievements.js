@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 
 import {mixin} from 'nti-commons';
 
-import Pendability from '../models/mixins/Pendability';
+import Pendability from '../mixins/Pendability';
 
 import {Service} from '../constants';
 

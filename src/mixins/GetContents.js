@@ -1,6 +1,6 @@
 import QueryString from 'query-string';
 
-import {Service, Parser as parse} from '../../constants';
+import {Service, Parser as parse} from '../constants';
 
 
 export default {

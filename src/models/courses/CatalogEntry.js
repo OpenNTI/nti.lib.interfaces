@@ -6,7 +6,7 @@ import {
 
 import setAndEmit from '../../utils/getsethandler';
 
-import assets from '../mixins/PresentationResources';
+import assets from '../../mixins/PresentationResources';
 
 const EnrollmentOptions = Symbol('EnrollmentOptions');
 

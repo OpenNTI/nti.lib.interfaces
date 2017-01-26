@@ -1,6 +1,6 @@
 import Outline from './Outline';
 import {Progress, Summary, DateFields, Parser as parse} from '../../constants';
-import Publishable from '../mixins/Publishable';
+import Publishable from '../../mixins/Publishable';
 
 import fallbackOverview from './_fallbacks.OverviewFromToC';
 

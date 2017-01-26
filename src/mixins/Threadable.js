@@ -1,8 +1,8 @@
 import {ntiidEquals} from 'nti-lib-ntiids';
 import Logger from 'nti-util-logger';
 
-import {DELETED, Parser} from '../../constants';
-import {thread, CHILDREN, PARENT} from '../../utils/UserDataThreader';
+import {DELETED, Parser} from '../constants';
+import {thread, CHILDREN, PARENT} from '../utils/UserDataThreader';
 
 const logger = Logger.get('models:mixins:Threadable');
 

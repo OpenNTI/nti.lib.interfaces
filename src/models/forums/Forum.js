@@ -4,8 +4,8 @@ import {
 	Parser as parse
 } from '../../constants';
 
-import GetContents from '../mixins/GetContents';
-//import SharedWithList from '../mixins/SharedWithList';
+import GetContents from '../../mixins/GetContents';
+//import SharedWithList from '../../mixins/SharedWithList';
 
 import getLink from '../../utils/getlink';
 

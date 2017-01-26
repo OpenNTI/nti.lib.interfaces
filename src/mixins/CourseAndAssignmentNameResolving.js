@@ -2,9 +2,9 @@
  * This is for Objects within an assignment history item.
  */
 
-import getLink from '../../utils/getlink';
+import getLink from '../utils/getlink';
 
-import {Service} from '../../constants';
+import {Service} from '../constants';
 
 export default {
 

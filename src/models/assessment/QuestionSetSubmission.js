@@ -4,7 +4,7 @@ import {
 	ReParent,
 	Parser as parse
 } from '../../constants';
-import submission from '../mixins/Submission';
+import submission from '../../mixins/Submission';
 
 export default class QuestionSetSubmission extends Base {
 

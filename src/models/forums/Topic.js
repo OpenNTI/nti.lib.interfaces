@@ -4,8 +4,8 @@ import {
 	Parser as parse
 } from '../../constants';
 
-import GetContents from '../mixins/GetContents';
-import Likable from '../mixins/Likable';
+import GetContents from '../../mixins/GetContents';
+import Likable from '../../mixins/Likable';
 
 export default class Topic extends Base {
 	constructor (service, parent, data) {

@@ -17,7 +17,7 @@ import toObject from '../utils/to-object';
 
 import {chain, FileType} from 'nti-commons';
 
-import {attach as attachPendingQueue} from '../models/mixins/Pendability';
+import {attach as attachPendingQueue} from '../mixins/Pendability';
 
 import Service from '../stores/Service';
 

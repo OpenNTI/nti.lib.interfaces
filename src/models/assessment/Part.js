@@ -6,7 +6,7 @@ import {
 import HasContent, {
 	ContentKeys,
 	SetupContentProperties
-} from '../mixins/HasContent';
+} from '../../mixins/HasContent';
 
 
 export default class Part extends Base {

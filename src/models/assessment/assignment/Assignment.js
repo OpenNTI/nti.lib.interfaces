@@ -1,6 +1,6 @@
 import Base from '../../Base';
 import {resolveSubmitTo} from '../utils';
-import Publishable from '../../mixins/Publishable';
+import Publishable from '../../../mixins/Publishable';
 import {
 	Service,
 	ReParent,
