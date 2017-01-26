@@ -5,7 +5,7 @@ import EventEmitter from 'events';
 import {mixin} from 'nti-commons';
 import {threadThreadables, topLevelOnly} from '../utils/UserDataThreader';
 
-import Pendability from '../mixins/Pendability';
+import {Mixin as Pendability} from '../mixins/Pendability';
 
 import {Service, DELETED} from '../constants';
 

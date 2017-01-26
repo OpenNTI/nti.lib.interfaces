@@ -12,7 +12,7 @@ import {mixin, Parsing} from 'nti-commons';
 import {ntiidEquals} from 'nti-lib-ntiids';
 
 import JSONValue from '../mixins/JSONValue';
-import Pendability from '../mixins/Pendability';
+import {Mixin as Pendability} from '../mixins/Pendability';
 import Editable from '../mixins/Editable';
 
 import {

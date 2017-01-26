@@ -3,7 +3,7 @@ import {
 	Parser as parse
 } from '../../constants';
 
-import HasContent from '../../mixins/HasContent';
+import {Mixin as HasContent} from '../../mixins/HasContent';
 
 import Part from './Part';
 import PlacementProvider from '../../authoring/placement/providers/Question';

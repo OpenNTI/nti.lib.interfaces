@@ -7,8 +7,8 @@ import {parse} from '../models';
 import Capabilities from '../models/Capabilities';
 import AbstractPlaceholder from '../models/AbstractPlaceholder';
 
-import Pendability, {attach as attachPendingQueue} from '../mixins/Pendability';
-import InstanceCacheContainer from '../mixins/InstanceCacheContainer';
+import {Mixin as Pendability, attach as attachPendingQueue} from '../mixins/Pendability';
+import {Mixin as InstanceCacheContainer} from '../mixins/InstanceCacheContainer';
 
 import ContactsStore from './Contacts';
 import CommunitiesStore from './EntityStore';

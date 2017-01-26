@@ -5,7 +5,7 @@ const PRIVATE_PENDING = new WeakMap();
 const getPending = p => PRIVATE_PENDING.get(p) || [];
 const setPending = (p, list) => (PRIVATE_PENDING.set(p, list), list);
 
-const mixin = {
+export const Mixin = {
 
 	constructor () {
 		setPending(this, []);
@@ -59,17 +59,16 @@ const mixin = {
 
 };
 
-export default mixin;
 
 export function attach (context) {
 	setPending(context, getPending(context));
 
-	for (let method of Object.keys(mixin)) {
+	for (let method of Object.keys(Mixin)) {
 		if (method === 'constructor') { continue; }
 
 		if (!context[method]) {
 			context[method] = function (...pending) {
-				return mixin[method].apply(context, pending);
+				return Mixin[method].apply(context, pending);
 			};
 		}
 	}

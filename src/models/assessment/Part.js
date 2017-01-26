@@ -3,7 +3,8 @@ import {
 	Parser as parse
 } from '../../constants';
 
-import HasContent, {
+import {
+	Mixin as HasContent,
 	ContentKeys,
 	SetupContentProperties
 } from '../../mixins/HasContent';

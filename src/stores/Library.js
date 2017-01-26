@@ -4,7 +4,7 @@ import EventEmitter from 'events';
 import {mixin, Array as ArrayUtils} from 'nti-commons';
 
 import {parseListFn} from '../models';
-import Pendability from '../mixins/Pendability';
+import {Mixin as Pendability} from '../mixins/Pendability';
 
 import {Service} from '../constants';
 

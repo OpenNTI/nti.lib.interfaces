@@ -44,7 +44,7 @@ function setup (data, keys) {
 export const ContentKeys = Symbol('ContentKeys');
 export const SetupContentProperties = Symbol('SetupContentProperties');
 
-export default {
+export const Mixin = {
 
 	constructor (data) {
 		let keys = this[ContentKeys] &&

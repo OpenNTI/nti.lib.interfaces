@@ -3,7 +3,7 @@ import Logger from 'nti-util-logger';
 
 // import QueryString from 'query-string';
 
-import Pendability from '../mixins/Pendability';
+import {Mixin as Pendability} from '../mixins/Pendability';
 
 import {mixin} from 'nti-commons';
 // import getLink from '../utils/getlink';
