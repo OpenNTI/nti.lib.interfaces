@@ -2,6 +2,8 @@ import OrderedContents from '../../../ordered-contents';
 
 const AssignmentMimeType = 'application/vnd.nextthought.assessment.assignment';
 const TimedAssignmentMimeType = 'application/vnd.nextthought.assessment.timedassignment';
+const DiscussionAssignmentType = 'application/vnd.nextthought.assessment.discussionassignment';
+
 const RefMimeType = 'application/vnd.nextthought.assignmentref';
 
 
@@ -15,7 +17,7 @@ function getDataForItem (item) {
 }
 
 export default {
-	handles: [AssignmentMimeType, TimedAssignmentMimeType],
+	handles: [AssignmentMimeType, TimedAssignmentMimeType, DiscussionAssignmentType],
 
 	placeItemIn (item, container) {
 		const orderedContents = new OrderedContents(container);
