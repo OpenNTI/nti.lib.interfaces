@@ -374,12 +374,15 @@ export default class Base extends EventEmitter {
 
 	requestLink (rel, method, data, params, parseResponse) {
 
-		let link = this.getLink(rel, params);
+		const link = this.getLink(rel, params);
 		if (!link) {
 			return Promise.reject(NO_LINK);
 		}
 
-		let result = this[Service][method](link, data);
+		let result = /^mock/i.test(link)
+			? Promise.resolve(getLinkImpl(this, rel, true).result || Promise.reject('Bad Mock Data'))
+			: this[Service][method](link, data);
+
 		if (parseResponse) {
 			result = parseResult(this, result);
 		}
