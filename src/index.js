@@ -9,6 +9,7 @@ import Notifications from './stores/Notifications';
 import {getModelByType as lookup, register} from './models';
 
 export * from './constants';
+export * as Mixins from './mixins';
 
 export default function (config) {
 	let i = new Interface(config);
