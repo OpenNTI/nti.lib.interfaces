@@ -12,6 +12,7 @@ export FiveMinuteEnrollmentInterface from './interface/FiveMinuteInterface';
 
 export * from './constants';
 export * as Mixins from './mixins';
+export UserDataThreader from './utils/UserDataThreader';
 
 
 //Main Entry Point:
