@@ -12,7 +12,7 @@ const Handlers = {
 		}
 
 		return scope.getAllAssignments()
-			.then(assignments => assignments.filter(x => x.hasLink('edit')));
+			.then(assignments => assignments.filter(x => x.hasLink('edit') && x.CanInsertQuestions));
 	}
 };
 
