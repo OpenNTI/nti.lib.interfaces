@@ -21,7 +21,7 @@ import {attach as attachPendingQueue} from '../mixins/Pendability';
 
 import Service from '../stores/Service';
 
-import {SiteName, REQUEST_CONFLICT_EVENT, TOS_NOT_ACCEPTED} from '../constants';
+import {SiteName, REQUEST_CONFLICT_EVENT, REQUEST_ERROR_EVENT, TOS_NOT_ACCEPTED} from '../constants';
 
 const logger = Logger.get('DataServerInterface');
 
@@ -160,7 +160,7 @@ export default class DataServerInterface extends EventEmitter {
 				} else {
 					logger.debug('REQUEST -> %s %s %s %dms', init.method, url, response.statusText, Date.now() - start);
 
-					let error = Object.assign(new Error(response.statusText), {
+					const error = Object.assign(new Error(response.statusText), {
 						Message: response.statusText,
 						response,
 						statusCode: response.status
@@ -194,10 +194,14 @@ export default class DataServerInterface extends EventEmitter {
 
 							return Promise.reject(error);
 						})
-						.catch(reason =>
+						.catch(reason => (
+							//Let the world know there was a request failure...and let them potentially display/act on it
+							!reason.skip && this.emit(REQUEST_ERROR_EVENT, error),
+
 							// If this is our skip object, pass it on. Otherwise,
 							// its an unknown error and just reject with the error above.
-							Promise.reject(reason.skip ? reason : error));
+							Promise.reject(reason.skip ? reason : error)
+						));
 				}
 			};
 
