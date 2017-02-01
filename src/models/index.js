@@ -212,6 +212,7 @@ const PARSERS = {
 
 	'contentpackage': ContentPackage,
 	'contentpackagebundle': ContentBundle,
+	'coursecontentpackagebundle': 'contentpackagebundle',
 	'courseinstancesharingscopes': CourseSharingScopes,
 
 	'ContentPackage': 'contentpackage',
