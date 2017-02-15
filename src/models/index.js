@@ -54,6 +54,7 @@ import TranscriptRangeDescription from './anchors/TranscriptRangeDescription';
 
 
 import ContentPackage from './content/Package';
+import RenderableContentPackage from './content/RenderablePackage';
 import ContentBundle from './content/Bundle';
 import ContentFile from './content/File';
 import ContentFolder from './content/Folder';
@@ -211,6 +212,7 @@ const PARSERS = {
 	'gradebook.usergradebooksummary': 'gradebook.userassignmentsummary',
 
 	'contentpackage': ContentPackage,
+	'renderablecontentpackage': RenderableContentPackage,
 	'contentpackagebundle': ContentBundle,
 	'coursecontentpackagebundle': 'contentpackagebundle',
 	'courseinstancesharingscopes': CourseSharingScopes,
