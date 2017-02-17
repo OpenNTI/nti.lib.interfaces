@@ -13,4 +13,9 @@ export default class RenderablePackage extends Base {
 	getContents () {
 		return this.requestLink('contents', 'get');
 	}
+
+
+	setContents (rst) {
+		return this.requestLink('contents', 'put', rst);
+	}
 }
