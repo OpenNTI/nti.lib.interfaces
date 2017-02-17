@@ -1,8 +1,4 @@
 import Base from '../Base';
-import {
-	Service
-} from '../../constants';
-
 
 export default class RenderablePackage extends Base {
 	constructor (service, parent, data) {
@@ -11,11 +7,11 @@ export default class RenderablePackage extends Base {
 
 
 	getContents () {
-		return this.requestLink('contents', 'get');
+		return this.fetchLink('contents');
 	}
 
 
 	setContents (rst) {
-		return this.requestLink('contents', 'put', rst);
+		return this.putToLink('contents', rst);
 	}
 }
