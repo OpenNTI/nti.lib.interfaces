@@ -7,9 +7,17 @@ export default class RenderablePackage extends Base {
 		super(service, parent, data);
 	}
 
+	isRenderable = true
 
 	getRSTContents () {
-		return this.fetchLink('contents');
+		return this.fetchLink('contents')
+			.then((contents) => {
+				if (contents.contentType !== RST_TYPE) {
+					throw new Error('Unexpected content type');
+				}
+
+				return contents.data;
+			});
 	}
 
 
