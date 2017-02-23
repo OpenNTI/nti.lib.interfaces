@@ -27,4 +27,18 @@ export default class RenderablePackage extends Base {
 			contents
 		});
 	}
+
+
+	publish () {
+		return this.postToLink('publish')
+			.then((updatedContentPackage) => this.refresh(updatedContentPackage))
+			.then(() => this.onChange());
+	}
+
+
+	unpublish () {
+		return this.postToLink('unpublish')
+			.then((updatedContentPackage) => this.refresh(updatedContentPackage))
+			.then(() => this.onChange());
+	}
 }
