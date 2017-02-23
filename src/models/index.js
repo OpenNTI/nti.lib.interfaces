@@ -55,6 +55,7 @@ import TranscriptRangeDescription from './anchors/TranscriptRangeDescription';
 
 import ContentPackage from './content/Package';
 import RenderableContentPackage from './content/RenderablePackage';
+import ContentPackageRenderJob from './content/ContentPackageRenderJob';
 import ContentBundle from './content/Bundle';
 import ContentFile from './content/File';
 import ContentFolder from './content/Folder';
@@ -213,6 +214,7 @@ const PARSERS = {
 
 	'contentpackage': ContentPackage,
 	'renderablecontentpackage': RenderableContentPackage,
+	'content.packagerenderjob': ContentPackageRenderJob,
 	'contentpackagebundle': ContentBundle,
 	'coursecontentpackagebundle': 'contentpackagebundle',
 	'courseinstancesharingscopes': CourseSharingScopes,
