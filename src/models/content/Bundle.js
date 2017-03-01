@@ -82,6 +82,17 @@ export default class Bundle extends Base {
 	}
 
 
+	getPackage (id) {
+		for (let pkg of this.ContentPackages) {
+			if (pkg.getID() === id || pkg.OID === id) {
+				return pkg;
+			}
+		}
+
+		return null;
+	}
+
+
 	getPresentationProperties () {
 		return {
 			author: this.author,
