@@ -40,11 +40,16 @@ export default class ContentPackageRenderJob extends Base {
 
 
 	startMonitor () {
-		this[ON_INTERVAL]();
+		if (!this.running) {
+			this[ON_INTERVAL]();
+		}
+
+		this.running = true;
 	}
 
 
 	stopMonitor () {
+		delete this.running;
 		clearTimeout(this[POLL_TIMEOUT]);
 	}
 
