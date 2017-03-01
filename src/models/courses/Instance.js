@@ -117,6 +117,10 @@ export default class Instance extends Base {
 		return this.ContentPackageBundle.containsPackage(id) || this.getID() === id;
 	}
 
+	getPackage (id) {
+		return this.ContentPackageBundle.getPackage(id);
+	}
+
 
 	getPresentationProperties () {
 		let cce = this.CatalogEntry || EMPTY_CATALOG_ENTRY,
