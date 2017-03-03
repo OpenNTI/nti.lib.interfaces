@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://repos.nextthought.com/git/nti.lib.interfaces"
+    "url": "https://github.com/NextThought/nti.lib.interfaces.git"
   },
   "publishConfig": {
     "registry": "https://npm.nextthought.com"
