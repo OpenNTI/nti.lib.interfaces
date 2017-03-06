@@ -80,8 +80,9 @@ export default class Package extends Base {
 		if (!toc) {
 			toc = cached ?
 				Promise.resolve(cached) :
-				service.get(this.index).then(data =>
-						cache.set(this.index, data) && data);
+				service.get(this.index)
+					.then(data => cache.set(this.index, data) && data)
+					.catch(() => '<toc></toc>');
 
 			toc = toc.then(o => new ToC(service, this, o, this.title));
 
