@@ -1,9 +1,9 @@
-import Base from '../Base';
+import Package from './Package';
 import {Parser as parse} from '../../constants';
 
 const RST_TYPE = 'text/x-rst';
 
-export default class RenderablePackage extends Base {
+export default class RenderablePackage extends Package {
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

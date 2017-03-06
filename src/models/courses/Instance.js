@@ -433,11 +433,12 @@ export default class Instance extends Base {
 
 	resolveContentURL (url) {
 		let bundle = this.ContentPackageBundle;
-		let pkg = ((bundle && bundle.ContentPackages) || [])[0];//probably should search all packages...
+		let pkgs = ((bundle && bundle.ContentPackages) || []);//probably should search all packages...
+		let pkg = pkgs.find(x => x.root);
 
-		let root = Url.parse(pkg.root);
+		let root = pkg && Url.parse(pkg.root);
 
-		return Promise.resolve(root.resolve(url));
+		return Promise.resolve(root ? root.resolve(url) : url);
 	}
 
 
