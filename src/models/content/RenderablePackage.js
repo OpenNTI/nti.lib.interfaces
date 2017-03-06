@@ -1,10 +1,13 @@
 import Base from '../Base';
+import {Parser as parse} from '../../constants';
 
 const RST_TYPE = 'text/x-rst';
 
 export default class RenderablePackage extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
+
+		this[parse]('LatestRenderJob');
 	}
 
 	isRenderable = true
@@ -32,6 +35,7 @@ export default class RenderablePackage extends Base {
 	publish () {
 		return this.postToLink('publish')
 			.then((updatedContentPackage) => this.refresh(updatedContentPackage))
+			.then(() => this[parse]('LatestRenderJob'))
 			.then(() => this.onChange());
 	}
 
@@ -39,6 +43,7 @@ export default class RenderablePackage extends Base {
 	unpublish () {
 		return this.postToLink('unpublish')
 			.then((updatedContentPackage) => this.refresh(updatedContentPackage))
+			.then(() => this[parse]('LatestRenderJob'))
 			.then(() => this.onChange());
 	}
 }
