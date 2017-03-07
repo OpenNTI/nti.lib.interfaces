@@ -1,16 +1,24 @@
+import {ntiidEquals} from 'nti-lib-ntiids';
+
 import Package from './Package';
-import {Parser as parse} from '../../constants';
+import {Parser as parse, RepresentsSameObject} from '../../constants';
 
 const RST_TYPE = 'text/x-rst';
 
 export default class RenderablePackage extends Package {
+	isRenderable = true
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
 		this[parse]('LatestRenderJob');
 	}
 
-	isRenderable = true
+
+	[RepresentsSameObject] (o) {
+		return ntiidEquals(this.NTIID, o.NTIID, true) || ntiidEquals(this.OID, o.OID, true);
+	}
+
 
 	getRSTContents () {
 		return this.fetchLink('contents')
