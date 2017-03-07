@@ -14,6 +14,8 @@ export const ServiceStash = Symbol.for('nti:service');
 export const Progress = Symbol.for('Progress');
 export const Summary = Symbol('Container-Summary');
 
+export const RepresentsSameObject = Symbol('Represents-Same-Object');
+
 export const DELETED = Symbol.for('DELETED');
 export const SAVE = Symbol.for('SAVE');
 

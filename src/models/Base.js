@@ -21,6 +21,7 @@ import {
 	ReParent,
 	DateFields,
 	Parser,
+	RepresentsSameObject,
 	NO_LINK
 } from '../constants';
 
@@ -188,6 +189,11 @@ export default class Base extends EventEmitter {
 	}
 
 
+	[RepresentsSameObject] (o) {
+		return ntiidEquals(this.NTIID, o.NTIID, true/*ignore "specific provider" differences*/);
+	}
+
+
 	refresh (newRaw) {
 		const service = this[Service];
 		const INFLIGHT = 'Base:inflight-refresh';
@@ -210,7 +216,7 @@ export default class Base extends EventEmitter {
 				service.getObjectRaw(this.getID());
 
 		const inflight = fetch.then(o => {
-			if (!ntiidEquals(this.NTIID, o.NTIID, true/*ignore "specific provider" differences*/)) {
+			if (!this[RepresentsSameObject](o)) {
 				throw new Error('Mismatch!');
 			}
 
