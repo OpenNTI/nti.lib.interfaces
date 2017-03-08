@@ -9,7 +9,9 @@ const after = (task, call) => task.catch(()=>{}).then(()=>call());
 
 export default {
 	delete () {
-		if (!this.hasLink('edit')) {
+		const link = this.href || this.getLink('edit');
+
+		if (!this.hasLink('edit') || !link) {
 			return Promise.reject('No Edit Link.');
 		}
 
@@ -17,7 +19,7 @@ export default {
 
 		const previousSave = this.saving || Promise.resolve();
 
-		return after(previousSave, ()=> this[Service].delete(this.href))
+		return after(previousSave, ()=> this[Service].delete(link))
 			.then(() => this.onChange(DELETED, this.getID()))
 			.then(...finishers(this, DELETED))
 			.then(() => true);//control the success result
