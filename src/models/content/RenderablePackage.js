@@ -27,15 +27,16 @@ export default class RenderablePackage extends Package {
 					throw new Error('Unexpected content type');
 				}
 
-				return contents.data;
+				return contents;
 			});
 	}
 
 
-	setRSTContents (contents) {
+	setRSTContents (contents, prevVersion) {
 		return this.putToLink('contents', {
 			contentType: RST_TYPE,
-			contents
+			contents,
+			version: prevVersion
 		});
 	}
 
@@ -43,7 +44,6 @@ export default class RenderablePackage extends Package {
 	publish () {
 		return this.postToLink('publish')
 			.then((updatedContentPackage) => this.refresh(updatedContentPackage))
-			.then(() => this[parse]('LatestRenderJob'))
 			.then(() => this.onChange());
 	}
 
@@ -51,7 +51,6 @@ export default class RenderablePackage extends Package {
 	unpublish () {
 		return this.postToLink('unpublish')
 			.then((updatedContentPackage) => this.refresh(updatedContentPackage))
-			.then(() => this[parse]('LatestRenderJob'))
 			.then(() => this.onChange());
 	}
 }
