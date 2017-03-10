@@ -1,7 +1,8 @@
 import {ntiidEquals} from 'nti-lib-ntiids';
 
-import Package from './Package';
 import {Parser as parse, RepresentsSameObject} from '../../constants';
+
+import Package from './Package';
 
 const RST_TYPE = 'text/x-rst';
 
@@ -37,7 +38,10 @@ export default class RenderablePackage extends Package {
 			contentType: RST_TYPE,
 			contents,
 			version: prevVersion
-		});
+		})
+			.then((updatedContentPackage) => this.refresh(updatedContentPackage))
+			.then(() => this.getRSTContents())
+			.then((newContents) => this.emit('contents-changed', newContents));
 	}
 
 
