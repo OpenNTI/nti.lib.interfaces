@@ -15,6 +15,9 @@ export default class RenderablePackage extends Package {
 		this[parse]('LatestRenderJob');
 	}
 
+	//no-op this for renderable packages, all the icons should
+	//be set as properties for now
+	setUpAssets () {}
 
 	[RepresentsSameObject] (o) {
 		return ntiidEquals(this.NTIID, o.NTIID, true) || ntiidEquals(this.OID, o.OID, true);
