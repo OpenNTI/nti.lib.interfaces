@@ -25,6 +25,10 @@ export default class Package extends Base {
 
 		this.author = (data.DCCreator || []).join(', ');
 
+		this.setUpAssets();
+	}
+
+	setUpAssets () {
 		this.addToPending(
 			this.getAsset('landing').then(setAndEmit(this, 'icon')),
 			this.getAsset('thumb').then(setAndEmit(this, 'thumb'))
