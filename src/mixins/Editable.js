@@ -32,7 +32,7 @@ export default {
 
 		const {[MAY_EFFECT_PROPERTIES]: additionKeys, ...values} = newValues;
 
-		const keys = ['NTIID', 'Links', 'Last Modified'];
+		const keys = ['NTIID', 'OID', 'Links', 'Last Modified'];
 
 		[...Object.keys(values), ...(additionKeys || [])]
 			//Add Unique keys to the refresh queue...
