@@ -1,6 +1,5 @@
 import Interface from './interface/DataServerInterface';
 import cache from './utils/datacache';
-
 import {getModelByType as lookup, register} from './models';
 
 

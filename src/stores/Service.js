@@ -1,35 +1,33 @@
-import QueryString from 'query-string';
 import Url from 'url';
+
+import QueryString from 'query-string';
 import Logger from 'nti-util-logger';
+import {isNTIID} from 'nti-lib-ntiids';
+import {URL as UrlUtils, mixin, wait} from 'nti-commons';
 
 import {parse} from '../models';
-
 import Capabilities from '../models/Capabilities';
 import AbstractPlaceholder from '../models/AbstractPlaceholder';
-
 import {Mixin as Pendability, attach as attachPendingQueue} from '../mixins/Pendability';
 import {Mixin as InstanceCacheContainer} from '../mixins/InstanceCacheContainer';
-
-import ContactsStore from './Contacts';
-import CommunitiesStore from './EntityStore';
-import GroupsStore from './Groups';
-
-import Enrollment from './Enrollment';
-
-
+import DataCache from '../utils/datacache';
+import getLink from '../utils/getlink';
 import {
 	REL_USER_SEARCH,
 	REL_USER_UNIFIED_SEARCH,
 	REL_USER_RESOLVE,
-	REL_BULK_USER_RESOLVE
+	REL_BULK_USER_RESOLVE,
+	Context,
+	Server,
+	Service,
+	SiteName
 } from '../constants';
 
-import DataCache from '../utils/datacache';
-import getLink from '../utils/getlink';
-import {isNTIID} from 'nti-lib-ntiids';
-import {URL as UrlUtils, mixin, wait} from 'nti-commons';
+import ContactsStore from './Contacts';
+import CommunitiesStore from './EntityStore';
+import GroupsStore from './Groups';
+import Enrollment from './Enrollment';
 
-import {Context, Server, Service, SiteName} from '../constants';
 
 const ENROLLMENT = Symbol('enrollment');
 
