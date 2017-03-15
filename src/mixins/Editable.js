@@ -1,17 +1,17 @@
 import {pluck} from 'nti-commons';
 
 import { Service, DELETED, SAVE, MAY_EFFECT_PROPERTIES } from '../constants';
-
 import {begin, finishers} from '../utils/events-begin-finish';
 
 const after = (task, call) => task.catch(()=>{}).then(()=>call());
 
 
 export default {
-	delete () {
-		const link = this.href || this.getLink('edit');
+	delete (rel = 'edit') {
+		const link = this.getLink(rel);
 
-		if (!this.hasLink('edit') || !link) {
+
+		if (!link) {
 			return Promise.reject('No Edit Link.');
 		}
 
