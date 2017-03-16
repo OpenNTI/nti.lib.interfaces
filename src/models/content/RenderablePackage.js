@@ -42,8 +42,15 @@ export default class RenderablePackage extends Package {
 			contents,
 			version: prevVersion
 		})
-			.then((updatedContentPackage) => this.refresh(updatedContentPackage))
-			.then(() => this.getRSTContents())
+			.then((updatedContentPackage) => {
+				const newContents = updatedContentPackage.contents;
+
+				delete updatedContentPackage.contents;
+
+				this.refresh(updatedContentPackage);
+
+				return newContents;
+			})
 			.then((newContents) => this.emit('contents-changed', newContents));
 	}
 
