@@ -1,16 +1,12 @@
 import Logger from 'nti-util-logger';
+import {URL} from 'nti-commons';
 
 import Base from '../Base';
 import {
 	Service
 } from '../../constants';
-
 import setAndEmit from '../../utils/getsethandler';
-import {URL} from 'nti-commons';
-
-
 import assets from '../../mixins/PresentationResources';
-
 import MediaIndex from '../MediaIndex';
 import TablesOfContents from '../TablesOfContents';
 import ToC from '../XMLBasedTableOfContents';
@@ -63,6 +59,9 @@ export default class Package extends Base {
 
 		return URL.join(root, 'presentation-assets', 'webapp', 'v1');
 	}
+
+
+	getPackage (id) { return id === this.getID() ? this : null; }
 
 
 	getDiscussions () { return Promise.reject('Not Implemented'); }
