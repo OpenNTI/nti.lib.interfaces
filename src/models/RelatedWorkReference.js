@@ -1,16 +1,14 @@
-import Base from './Base';
-import mime from 'mime-types';
-
 import {parse as parseUrl} from 'url';
 import {extname} from 'path';
 
-import UserDataStore from '../stores/UserData';
-
-import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA} from '../constants';
-
-import {Service} from '../constants';
-
+import mime from 'mime-types';
 import {isNTIID} from 'nti-lib-ntiids';
+
+import UserDataStore from '../stores/UserData';
+import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA, Service} from '../constants';
+
+import Base from './Base';
+
 
 const UserData = Symbol('UserData');
 
@@ -104,5 +102,18 @@ export default class RelatedWorkReference extends Base {
 		}
 
 		return ext;
+	}
+
+
+	resolveIcon (bundle) {
+		const {icon, isContent} = this;
+
+		if (icon || !isContent) {
+			return icon;
+		}
+
+		const p = bundle.getPackage(this['target-NTIID']);
+
+		return p && p.icon;
 	}
 }
