@@ -1,27 +1,25 @@
-import EventEmitter from 'events';
 import Url from 'url';
-//If the login method is invoked on the NodeJS side, we will need this function...
-import base64decode from 'btoa';
-import QueryString from 'query-string';
+import EventEmitter from 'events';
 
+import base64decode from 'btoa'; //If the login method is invoked on the NodeJS side, we will need this function...
+import QueryString from 'query-string';
 import Logger from 'nti-util-logger';
+import {chain, FileType} from 'nti-commons';
 
 import DataCache from '../utils/datacache';
-
-
 import parseBody from '../utils/attempt-json-parse';
 import getContentType from '../utils/get-content-type-header';
 import getLink, {getLinks} from '../utils/getlink';
 import encodeFormData from '../utils/encode-form-data';
 import toObject from '../utils/to-object';
-
-import {chain, FileType} from 'nti-commons';
-
 import {attach as attachPendingQueue} from '../mixins/Pendability';
-
 import Service from '../stores/Service';
-
-import {SiteName, REQUEST_CONFLICT_EVENT, REQUEST_ERROR_EVENT, TOS_NOT_ACCEPTED} from '../constants';
+import {
+	SiteName,
+	REQUEST_CONFLICT_EVENT,
+	REQUEST_ERROR_EVENT,
+	TOS_NOT_ACCEPTED
+} from '../constants';
 
 const logger = Logger.get('DataServerInterface');
 
