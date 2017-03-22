@@ -1,9 +1,10 @@
+import {pluck} from 'nti-commons';
+
 import Base from '../../Base';
 import {
 	DateFields,
 	Parser as parse
 } from '../../../constants';
-import {pluck} from 'nti-commons';
 
 export default class AssignmentHistoryCollection extends Base {
 	constructor (service, parent, data) {
