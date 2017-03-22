@@ -168,16 +168,29 @@ export default class DataServerInterface extends EventEmitter {
 						.then(json => {
 							Object.assign(error, json);
 
-							const confirmLink = response.status === 409 && getLink(json, 'confirm');
+							const isConflict = response.status === 409;
 
-							if (confirmLink) {
-								error.confirm = () => this[Request]({ url: confirmLink, method: init.method, data }, context);
+							if (isConflict) {
+								error.confirm = ({rel = 'confirm', data:conflictData}) => {
+									const link = getLink(json, rel, true);
+									const {method, href} = link;
+									const newData = method === 'GET' ? null : conflictData || data;
+
+									if (!href) {
+										return Promise.reject(error);
+									}
+
+									return this[Request]({url: href, method: method || init.method, data: newData}, context);
+								};
+
 								let confirm;
 								let reject;
+
 								const waitOn = new Promise((continueRequest, rejectConflict) => {
-									confirm = () => error.confirm().then(continueRequest, rejectConflict);
+									confirm = (...args) => error.confirm(...args).then(continueRequest, rejectConflict);
 									reject = () => rejectConflict(error);
 								});
+
 
 								// We're expecting a top-level App-Wide component to listen and handle this event.
 								// Allowing for a Centralized Conflict Resolver.  If this is not handled, we will
