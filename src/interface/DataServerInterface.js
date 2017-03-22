@@ -171,7 +171,8 @@ export default class DataServerInterface extends EventEmitter {
 							const isConflict = response.status === 409;
 
 							if (isConflict) {
-								error.confirm = ({rel = 'confirm', data:conflictData}) => {
+								error.confirm = (config = {}) => {
+									const {rel = 'confirm', data:conflictData} = config;
 									const link = getLink(json, rel, true);
 									const {method, href} = link;
 									const newData = method === 'GET' ? null : conflictData || data;
