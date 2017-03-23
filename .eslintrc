@@ -19,5 +19,9 @@
 		"es6": true
 	},
 
-	"parser": "babel-eslint"
+	"parser": "babel-eslint",
+
+	"rules": {
+		"import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/test/*.js", "**/*.spec.js"]}]
+	}
 }
