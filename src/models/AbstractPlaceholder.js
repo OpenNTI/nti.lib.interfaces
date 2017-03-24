@@ -1,5 +1,6 @@
+import uuid from 'uuid';
+
 import Base from './Base';
-import uuid from 'node-uuid';
 
 
 function MarkerFactory (obj) {
@@ -44,7 +45,7 @@ export default class Placeholder extends Base {
 				value: true
 			},
 			NTIID: {
-				value: uuid.v4()
+				value: uuid()
 			},
 			BLACK_LIST_OVERRIDE: {
 				value: {Class: true}

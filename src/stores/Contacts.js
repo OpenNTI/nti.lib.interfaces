@@ -1,17 +1,14 @@
-import Logger from 'nti-util-logger';
-import EventEmitter from 'events';
 import url from 'url';
+import EventEmitter from 'events';
 
+import Logger from 'nti-util-logger';
+import {mixin} from 'nti-commons';
+import uuid from 'uuid';
 // import QueryString from 'query-string';
 
 import {Mixin as Pendability} from '../mixins/Pendability';
-
-import {mixin} from 'nti-commons';
-import uuid from 'node-uuid';
 // import getLink from '../utils/getlink';
-
 import {parse, parseListFn} from '../models';
-
 import {Service, DELETED} from '../constants';
 
 export const MIME_TYPE = 'application/vnd.nextthought.friendslist';
@@ -35,7 +32,7 @@ function generateID (name, context) {
 	//when manipulating the list by the object url (say for deletion).
 	name = (name + '').replace(/@@|@\(/ig, '');
 	name = name.replace(/[^0-9A-Z\-@\+\._]/ig, '');
-	return name + '-' + context.getID() + '_' + uuid.v4();
+	return name + '-' + context.getID() + '_' + uuid();
 }
 
 
