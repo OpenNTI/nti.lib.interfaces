@@ -1,5 +1,6 @@
 {
 	"compact": false,
+	"sourceMaps": "both",
 	"env": {
 		"development": {
 			"presets": [
