@@ -1,3 +1,4 @@
+import EventEmitter from 'events';
 import Url from 'url';
 
 import QueryString from 'query-string';
@@ -28,7 +29,6 @@ import CommunitiesStore from './EntityStore';
 import GroupsStore from './Groups';
 import Enrollment from './Enrollment';
 
-
 const ENROLLMENT = Symbol('enrollment');
 
 const NOT_IMPLEMENTED = 501; //HTTP 501 means not implemented
@@ -44,8 +44,19 @@ const RequestEntityResolve = Symbol('RequestEntityResolve');
 
 const logger = Logger.get('Service');
 
-export default class ServiceDocument {
+export default class ServiceDocument extends EventEmitter {
 	constructor (json, server, context) {
+		super();
+
+		//Make EventEmitter properties non-enumerable
+		this.setMaxListeners(100);
+		for (let key of Object.keys(this)) {
+			const desc = Object.getOwnPropertyDescriptor(this, key);
+			desc.enumerable = false;
+			delete this[key];
+			Object.defineProperty(this, key, desc);
+		}
+
 		this[Service] = this; //So the parser can access it
 		this[Server] = server;
 		this[Context] = context;
