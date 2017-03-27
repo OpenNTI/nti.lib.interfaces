@@ -1,20 +1,15 @@
-import Logger from 'nti-util-logger';
 import EventEmitter from 'events';
-
 import Url from 'url';
+
 import QueryString from 'query-string';
-
-import {parse, getModelByType} from './index';
-
-import getLinkImpl from '../utils/getlink';
 import {mixin, Parsing} from 'nti-commons';
-
 import {ntiidEquals} from 'nti-lib-ntiids';
+import Logger from 'nti-util-logger';
 
 import JSONValue from '../mixins/JSONValue';
 import {Mixin as Pendability} from '../mixins/Pendability';
 import Editable from '../mixins/Editable';
-
+import getLinkImpl from '../utils/getlink';
 import {
 	Parent,
 	Service,
@@ -24,6 +19,8 @@ import {
 	RepresentsSameObject,
 	NO_LINK
 } from '../constants';
+
+import {parse, getModelByType} from './index';
 
 
 const logger = Logger.get('models:Base');
