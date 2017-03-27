@@ -36,6 +36,16 @@ export default class Base extends EventEmitter {
 
 	constructor (service, parent, data, ...mixins) {
 		super();
+		//Make EventEmitter properties non-enumerable
+		this.setMaxListeners(100);
+		for (let key of Object.keys(this)) {
+			const desc = Object.getOwnPropertyDescriptor(this, key);
+			desc.enumerable = false;
+
+			delete this[key];
+			Object.defineProperty(this, key, desc);
+		}
+
 		let dateFields = this[DateFields]();
 
 		this[Service] = service;
@@ -65,10 +75,6 @@ export default class Base extends EventEmitter {
 
 			this[methodName] = dateGetter(fieldName);
 		}
-
-		this.setMaxListeners(100);
-		this[TakeOver]('_events');
-		this[TakeOver]('_maxListeners');
 
 		if (this.hasOwnProperty('Creator')) {
 			this[TakeOver]('Creator', 'creator');
