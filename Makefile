@@ -1,31 +1,22 @@
 .PHONY: clean check test
 
-
-SRC = $(shell find src -name '*.js')
-LIB = $(SRC:src/%.js=lib/%.js)
-LIBDIR = lib
+LIB = lib
 
 all: node_modules lib
 
 node_modules: package.json
-#	@rm -rf node_modules
-#	@npm install
-	@npm update
-	@touch $@
+	@rm -rf node_modules
+	@npm install
 
 check:
 	@eslint --ext .js,.jsx ./src
 
-test: node_modules check
+test: node_modules clean check
 	@mocha
 
 clean:
-	@rm -rf $(LIBDIR)
+	@rm -rf $(LIB)
+	@rm -rf $(REPORTS)
 
 lib: clean
 	@NODE_ENV=rollup rollup -c
-
-# lib: $(LIB)
-# lib/%.js: src/%.js
-# 	@mkdir -p $(@D)
-# 	babel $< -o $@
