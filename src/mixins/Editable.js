@@ -86,7 +86,13 @@ export default {
 	},
 
 
+	/**
+	 * isModifiable
+	 * @deprecated
+	 * @return {bool} isModifiable
+	 */
 	canEdit () {
-		return this.hasLink('edit');
+		console.warn('Use isModifiable instead of canEdit()');//eslint-disable-line no-console
+		return this.isModifiable;
 	}
 };

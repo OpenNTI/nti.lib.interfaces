@@ -65,7 +65,7 @@ export default class FriendsList extends Entity {
 	 * @return {Promise} To fulfill if successfull, or reject with an error.
 	 */
 	add (...entities) {
-		if (!this.hasLink('edit')) {
+		if (!this.isModifiable) {
 			return Promise.reject('No Edit Link');
 		}
 
@@ -111,7 +111,7 @@ export default class FriendsList extends Entity {
 	remove (entity) {
 		let entityId = getID(entity);
 
-		if (!this.hasLink('edit')) {
+		if (!this.isModifiable) {
 			return Promise.reject('No Edit Link');
 		}
 
