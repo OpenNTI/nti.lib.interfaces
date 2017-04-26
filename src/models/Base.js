@@ -28,7 +28,7 @@ const logger = Logger.get('models:Base');
 const CONTENT_VISIBILITY_MAP = {OU: 'OUID'};
 
 const PASCAL_CASE_REGEX = /(?:^|[^a-z0-9])([a-z0-9])?/igm;
-
+const PHANTOM = Symbol.for('Phantom');
 const TakeOver = Symbol.for('TakeOver');
 const is = Symbol('isTest');
 
@@ -323,9 +323,16 @@ export default class Base extends EventEmitter {
 
 
 	get isModifiable () {
-		return this.hasLink('edit') || //has an edit link.
-			//or its a new object that has yet to be posted to the server.
-			(!this.Links && !this.href && this.getID() == null);
+		const maybeNewObject = !this.Links && !this.href;
+		if (maybeNewObject && !this[PHANTOM]) {
+			logger.warn('%s:\n\tObject declared Modifiable because it might be a new object... %o',
+				'FIXME: Use item[Symbol.for(`Phantom`)] = true to declare this as a new object',
+				this);
+		}
+		return this[PHANTOM] //declared a new object that has yet to be posted to the server
+			|| this.hasLink('edit') //has an edit link.
+			//TODO: remove this clause once all the warnings have been addressed.
+			|| maybeNewObject; //or ambiguous case: its a new object? or not.
 	}
 
 
