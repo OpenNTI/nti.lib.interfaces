@@ -334,7 +334,8 @@ export default class DataServerInterface extends EventEmitter {
 				.then(() => Promise.resolve(doc)));
 
 		//once we have an instance, stuff it in the cache so we don't keep building it.
-		promise.then(set);
+		promise.then(set, () => {});//This forked promise needs to handle the rejection (the noop).
+
 		//until the promise resolves, cache the promise itself. (Promise.resolve()
 		//when given a promise, will resolve when the passed promise resolves)
 		set(promise);
