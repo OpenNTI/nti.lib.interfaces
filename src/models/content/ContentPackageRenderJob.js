@@ -1,8 +1,10 @@
+import {Service} from '../../constants';
 import Base from '../Base';
 
 const POLL_INTERVAL = 3000;
 const POLL_TIMEOUT = Symbol('Poll Timeout');
 const ON_INTERVAL = Symbol('On Interval');
+const ON_FINISH = Symbol('On Finish');
 
 const SUCCESS = 'Success';
 const PENDING = 'Pending';
@@ -70,6 +72,8 @@ export default class ContentPackageRenderJob extends Base {
 
 							if (!this.isFinished) {
 								this[ON_INTERVAL]();
+							} else {
+								this[ON_FINISH]();
 							}
 						});
 				})
@@ -77,5 +81,17 @@ export default class ContentPackageRenderJob extends Base {
 					this.State = FAILED;
 				});
 		}, POLL_INTERVAL);
+	}
+
+
+	[ON_FINISH] () {
+		const service = this[Service];
+		const parent = this.parent();
+
+		if (parent) {
+			service.getObject(parent.NTIID, {type: parent.MimeType})
+				.then((obj) => parent.refresh(obj.toJSON()))
+				.then(() => parent.onChange());
+		}
 	}
 }
