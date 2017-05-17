@@ -1,10 +1,8 @@
-import Entity from './Entity';
-
 import Achievements from '../stores/Achievements';
 import Stream from '../stores/Stream';
+import { Service, DateFields, Parser as parse, TOS_NOT_ACCEPTED} from '../constants';
 
-import { Service, DateFields, Parser as parse } from '../constants';
-import {TOS_NOT_ACCEPTED} from '../constants';
+import Entity from './Entity';
 
 const ONLY_COMMUNITIES = x => x.isCommunity;
 

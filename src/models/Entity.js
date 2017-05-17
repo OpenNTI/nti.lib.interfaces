@@ -1,10 +1,8 @@
-import Base from './Base';
-
 import Stream from '../stores/Stream';
-
 import ActivityCollator from '../utils/activity-collator';
-
 import { Service } from '../constants';
+
+import Base from './Base';
 
 
 export default class Entity extends Base {
