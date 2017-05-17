@@ -11,13 +11,13 @@ describe('ContentRangeDescription Tests', () => {
 
 		it('attaching and retrieving', () => {
 			let d = createCRD();
-			expect(d.locator()).to.be.undefined;
+			expect(d.locator()).toBeUndefined();
 
 			d.attachLocator('foo');
-			expect(d.locator()).to.equal('foo');
+			expect(d.locator()).toEqual('foo');
 
 			d.attachLocator(null);
-			expect(d.locator()).to.be.undefined;
+			expect(d.locator()).toBeUndefined();
 		});
 
 
@@ -26,14 +26,14 @@ describe('ContentRangeDescription Tests', () => {
 			d.attachLocator('foo');
 
 			let o = d.getData();
-			expect(o).to.be.ok;
-			expect(o[Symbol.for('locator')]).to.be.undefined;
+			expect(o).toBeTruthy();
+			expect(o[Symbol.for('locator')]).toBeUndefined();
 		});
 
 
 		it('is empty', () => {
 			let d = createCRD();
-			expect(d.isEmpty).to.be.ok;
+			expect(d.isEmpty).toBeTruthy();
 		});
 
 	});

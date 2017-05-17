@@ -2,7 +2,7 @@
 	"compact": false,
 	"sourceMaps": "both",
 	"env": {
-		"development": {
+		"test": {
 			"presets": [
 				["env", {
 					"targets": {
@@ -12,7 +12,7 @@
 				"stage-1"
 			]
 		},
-		"rollup": {
+		"development": {
 			"presets": [
 				["env", {
 					"targets": {

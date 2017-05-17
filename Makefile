@@ -12,11 +12,11 @@ check:
 	@eslint --ext .js,.jsx ./src
 
 test: node_modules clean check
-	@mocha
+	@jest
 
 clean:
 	@rm -rf $(LIB)
 	@rm -rf $(REPORTS)
 
 lib: clean
-	@NODE_ENV=rollup rollup -c
+	@rollup -c

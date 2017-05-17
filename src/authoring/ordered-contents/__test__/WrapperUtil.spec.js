@@ -85,8 +85,8 @@ describe('OrderedContents Tests', () => {
 					expect(fakeService.postParseResponse).to.be.calledWith('orderedcontents/index/4', sinon.match({label: makeLabel(5)}));
 					expect(fakeService.putParseResponse).not.have.been.called;
 
-					expect(orderedContents.length).to.equal(5);
-					expect(orderedContents.orderedContents[4].label).to.equal(makeLabel(5));
+					expect(orderedContents.length).toEqual(5);
+					expect(orderedContents.orderedContents[4].label).toEqual(makeLabel(5));
 
 					done();
 				})
@@ -101,8 +101,8 @@ describe('OrderedContents Tests', () => {
 					expect(fakeService.postParseResponse).to.be.calledWith('orderedcontents/index/1', sinon.match({label: makeLabel(5)}));
 					expect(fakeService.putParseResponse).not.have.been.called;
 
-					expect(orderedContents.length).to.equal(5);
-					expect(orderedContents.orderedContents[1].label).to.equal(makeLabel(5));
+					expect(orderedContents.length).toEqual(5);
+					expect(orderedContents.orderedContents[1].label).toEqual(makeLabel(5));
 
 					done();
 				})
@@ -122,8 +122,8 @@ describe('OrderedContents Tests', () => {
 						label: makeLabel(5)
 					}));
 
-					expect(orderedContents.length).to.equal(4);
-					expect(orderedContents.orderedContents[0].label).to.equal(makeLabel(5));
+					expect(orderedContents.length).toEqual(4);
+					expect(orderedContents.orderedContents[0].label).toEqual(makeLabel(5));
 
 					done();
 				})
@@ -140,8 +140,8 @@ describe('OrderedContents Tests', () => {
 						label: makeLabel(5)
 					}));
 
-					expect(orderedContents.length).to.equal(4);
-					expect(orderedContents.orderedContents[1].label).to.equal(makeLabel(5));
+					expect(orderedContents.length).toEqual(4);
+					expect(orderedContents.orderedContents[1].label).toEqual(makeLabel(5));
 
 					done();
 				})
