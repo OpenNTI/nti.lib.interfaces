@@ -218,94 +218,7 @@ export default class Base extends EventEmitter {
 				service.getObjectAtURL(this.href, this.getID()) :
 				service.getObjectRaw(this.getID());
 
-		const inflight = fetch.then(o => {
-			if (!this[RepresentsSameObject](o)) {
-				throw new Error('Mismatch!');
-			}
-
-			const MightBeModel = x=> !x || !!x[Service];
-			const HasMimeType = x=>  x && (!!x.MimeType || !!x.Class);
-			const Objects = x=> typeof x === 'object';
-			const dateFields = this[DateFields]();
-
-			for(let prop of Object.keys(o)) {
-				let value = o[prop];
-
-				//The property may have been remapped...
-				let desc = Object.getOwnPropertyDescriptor(this, prop);
-				let {renamedTo} = (desc || {}).get || {};
-				if (renamedTo) {
-					logger.debug('Refreshing renamed property: %s (%s)', prop, renamedTo);
-					prop = renamedTo;
-				}
-
-				let current = this[prop];
-
-				if (current === value) {
-					continue;
-				}
-
-				//Reset the parsedDate cache.
-				if (dateFields.includes(prop)) {
-					delete this[getParsedDateKey(prop)];
-				}
-
-				//If the current value is truthy, and Model-like, then declare it to be a Model.
-				let currentIsModel = current && MightBeModel(current);
-
-				let currentMightBeListOfModels =
-					current == null || //If the current value is empty, we cannot presume... the new value should shed some light.
-					(Array.isArray(current) && current.every(MightBeModel)); //If the current value is an array, and each element of the array is Model-like...
-					//then the current value Might be a list of models...
-
-				let newValueHasMimeType = HasMimeType(value);
-
-				//If the new value is an array and any item has a MimeType or Class, and its not Links (which don't have models yet...)
-				let newValueMightBeListOfModels = Array.isArray(value) && prop !== 'Links' && value.some(HasMimeType);
-
-				//Lets inspect the new value...
-				let newValueIsArrayOfObjects =
-					Array.isArray(value) && //If its an array,
-					value.length > 0 && // and its length is greater than zero (there are things in it)
-					value.every(Objects); // and every element is an Object
-					//then the new value sould be parsed... as long as the current value is also parsed.
-
-				//So, should we parse?
-				if (
-					//if the current value was a model,
-					currentIsModel ||
-					//or if the new value looks parsable
-					newValueHasMimeType ||
-					newValueMightBeListOfModels ||
-					(
-						//or the current value was unset, or a list of Models,
-						currentMightBeListOfModels &&
-						newValueIsArrayOfObjects//and our new value is a list of objects...
-					)
-				) {// then, yes... parse
-					try {
-						value = this[Parser](value);
-					} catch(e) {
-						logger.warn('Attempted to parse new value, and something went wrong... %o', e.stack || e.message || e);
-					}
-				}
-
-				if (typeof current === 'function') {
-					throw new Error('a value was named as one of the methods on this model.');
-				}
-
-				desc = Object.getOwnPropertyDescriptor(this, prop);
-				if (desc && !desc.writable) {
-					delete this[prop];
-					setProtectedProperty(prop, value, this, desc.enumerable, (desc.get || {}).renamedFrom);
-				} else {
-					this[prop] = value;
-				}
-
-			}
-
-			return this;
-		});
+		const inflight = fetch.then(o => this.applyRefreshedData(o));
 
 		this[INFLIGHT] = inflight
 			.catch((r) => (delete this[INFLIGHT], Promise.reject(r))) //swallow all errors so we can cleanup
@@ -314,6 +227,96 @@ export default class Base extends EventEmitter {
 		this.addToPending(inflight);
 
 		return inflight;
+	}
+
+
+	applyRefreshedData (o) {
+		if (!this[RepresentsSameObject](o)) {
+			throw new Error('Mismatch!');
+		}
+
+		const MightBeModel = x=> !x || !!x[Service];
+		const HasMimeType = x=>  x && (!!x.MimeType || !!x.Class);
+		const Objects = x=> typeof x === 'object';
+		const dateFields = this[DateFields]();
+
+		for(let prop of Object.keys(o)) {
+			let value = o[prop];
+
+			//The property may have been remapped...
+			let desc = Object.getOwnPropertyDescriptor(this, prop);
+			let {renamedTo} = (desc || {}).get || {};
+			if (renamedTo) {
+				logger.debug('Refreshing renamed property: %s (%s)', prop, renamedTo);
+				prop = renamedTo;
+			}
+
+			let current = this[prop];
+
+			if (current === value) {
+				continue;
+			}
+
+			//Reset the parsedDate cache.
+			if (dateFields.includes(prop)) {
+				delete this[getParsedDateKey(prop)];
+			}
+
+			//If the current value is truthy, and Model-like, then declare it to be a Model.
+			let currentIsModel = current && MightBeModel(current);
+
+			let currentMightBeListOfModels =
+				current == null || //If the current value is empty, we cannot presume... the new value should shed some light.
+				(Array.isArray(current) && current.every(MightBeModel)); //If the current value is an array, and each element of the array is Model-like...
+				//then the current value Might be a list of models...
+
+			let newValueHasMimeType = HasMimeType(value);
+
+			//If the new value is an array and any item has a MimeType or Class, and its not Links (which don't have models yet...)
+			let newValueMightBeListOfModels = Array.isArray(value) && prop !== 'Links' && value.some(HasMimeType);
+
+			//Lets inspect the new value...
+			let newValueIsArrayOfObjects =
+				Array.isArray(value) && //If its an array,
+				value.length > 0 && // and its length is greater than zero (there are things in it)
+				value.every(Objects); // and every element is an Object
+				//then the new value sould be parsed... as long as the current value is also parsed.
+
+			//So, should we parse?
+			if (
+				//if the current value was a model,
+				currentIsModel ||
+				//or if the new value looks parsable
+				newValueHasMimeType ||
+				newValueMightBeListOfModels ||
+				(
+					//or the current value was unset, or a list of Models,
+					currentMightBeListOfModels &&
+					newValueIsArrayOfObjects//and our new value is a list of objects...
+				)
+			) {// then, yes... parse
+				try {
+					value = this[Parser](value);
+				} catch(e) {
+					logger.warn('Attempted to parse new value, and something went wrong... %o', e.stack || e.message || e);
+				}
+			}
+
+			if (typeof current === 'function') {
+				throw new Error('a value was named as one of the methods on this model.');
+			}
+
+			desc = Object.getOwnPropertyDescriptor(this, prop);
+			if (desc && !desc.writable) {
+				delete this[prop];
+				setProtectedProperty(prop, value, this, desc.enumerable, (desc.get || {}).renamedFrom);
+			} else {
+				this[prop] = value;
+			}
+
+		}
+
+		return this;
 	}
 
 
