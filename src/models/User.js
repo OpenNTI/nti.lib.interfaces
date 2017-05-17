@@ -54,6 +54,12 @@ export default class User extends Entity {
 	}
 
 
+	applyRefreshedData (o) {
+		cleanData(o);
+		return super.applyRefreshedData(o);
+	}
+
+
 	get displayType () {
 		return 'Person';
 	}
