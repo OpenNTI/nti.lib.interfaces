@@ -522,9 +522,9 @@ export default class ServiceDocument extends EventEmitter {
 	 * @return {Promise} Promise for an Entity.
 	 */
 	resolveEntity (entityId) {
-		let key = 'entity-respository';
-		let cache = this.getDataCache();
-		let repo = cache.get(key) || {};
+		const key = 'entity-respository';
+		const cache = this.getDataCache();
+		const repo = cache.get(key) || {};
 		cache.setVolatile(key, repo);
 
 		if (repo[entityId]) {
@@ -538,6 +538,14 @@ export default class ServiceDocument extends EventEmitter {
 			()=> delete repo[entityId]);
 
 		return req;
+	}
+
+
+	entityInCache (entityId) {
+		const key = 'entity-respository';
+		const cache = this.getDataCache();
+		const repo = cache.get(key) || {};
+		return entityId in repo;
 	}
 
 
