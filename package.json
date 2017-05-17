@@ -13,11 +13,10 @@
     "npm": ">=3.3.0"
   },
   "scripts": {
-    "test": "istanbul cover ./node_modules/.bin/_mocha -- ./test/ --recursive --reporter mocha-junit-reporter --reporter-options mochaFile=./reports/test-results/index.xml",
+    "test": "make test",
     "start": "make check",
     "prepublish": "not-in-install && make || in-install",
-    "bump": "npm version",
-    "preversion": "mocha",
+    "preversion": "make test",
     "postversion": "git push && git push --tags && npm publish"
   },
   "repository": {
