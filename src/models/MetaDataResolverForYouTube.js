@@ -14,7 +14,7 @@ function getThumbnail (data, key) {
 	return url;
 }
 
-export default class MetaDataResolverForVimeo {
+export default class MetaDataResolverForYouTube {
 
 	static resolve (service, source) {
 
@@ -32,7 +32,8 @@ export default class MetaDataResolverForVimeo {
 			.then(o=> ({
 				poster: getThumbnail(o, 'high') || FAIL_POSTER.replace('{id}', id),
 				thumbnail: getThumbnail(o, 'default') || FAIL_THUMB.replace('{id}', id),
-				title: (o.snippet || {}).title
+				title: (o.snippet || {}).title,
+				description: (o.snippet || {}).description
 			}))
 			.catch(failure => console.error(failure) || ({ //eslint-disable-line no-console
 				failure,
