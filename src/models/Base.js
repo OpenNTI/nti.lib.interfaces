@@ -180,7 +180,7 @@ export default class Base extends EventEmitter {
 
 		if (key) {//If the paramater was a key, assign the parsed object back to the key...
 			this[key] = o;
-			if (o == null || o.length === 0) {
+			if (o == null || (Array.isArray(o) && o.length === 0)) {
 				if (arguments.length > 1) {//a value was passed to the 2nd argument. (use its value no matter what it is.)
 					this[key] = defaultValueForKey;
 				} else {
