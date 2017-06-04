@@ -9,7 +9,7 @@ describe('ContentRangeDescription Tests', () => {
 			return new ContentRangeDescription(null, null, {});
 		}
 
-		it('attaching and retrieving', () => {
+		test('attaching and retrieving', () => {
 			let d = createCRD();
 			expect(d.locator()).toBeUndefined();
 
@@ -21,7 +21,7 @@ describe('ContentRangeDescription Tests', () => {
 		});
 
 
-		it('Doesn\'t externalize', () => {
+		test('Doesn\'t externalize', () => {
 			let d = createCRD();
 			d.attachLocator('foo');
 
@@ -31,7 +31,7 @@ describe('ContentRangeDescription Tests', () => {
 		});
 
 
-		it('is empty', () => {
+		test('is empty', () => {
 			let d = createCRD();
 			expect(d.isEmpty).toBeTruthy();
 		});

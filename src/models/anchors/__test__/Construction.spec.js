@@ -11,7 +11,7 @@ const make = (C, o) => new C(null, null, o);
 
 describe('Model Tests', () => {
 
-	it('Good TextContent Creation', () => {
+	test('Good TextContent Creation', () => {
 		let text = 'This is some text',
 			offset = 5,
 			ct = make(TextContext, {contextText: text, contextOffset: offset});
@@ -22,7 +22,7 @@ describe('Model Tests', () => {
 	});
 
 
-	it('Bad TextContent Creation', () => {
+	test('Bad TextContent Creation', () => {
 		try {
 			make(TextContext, {contextText: '', contextOffset: 5});
 			expect(false).toBeTruthy();
@@ -54,7 +54,7 @@ describe('Model Tests', () => {
 	});
 
 
-	it('Good DomContentPointer Creation', () => {
+	test('Good DomContentPointer Creation', () => {
 		let role = 'end',
 			ca = make(DomContentPointer, {role: role});
 
@@ -62,7 +62,7 @@ describe('Model Tests', () => {
 	});
 
 
-	it('Bad DomContentPointer Creation', () => {
+	test('Bad DomContentPointer Creation', () => {
 		try {
 			make(DomContentPointer, {role: 'invalid'});
 			expect(false).toBeTruthy();
@@ -81,7 +81,7 @@ describe('Model Tests', () => {
 	});
 
 
-	it('Good ElementDomContentPointer Creation via config', () => {
+	test('Good ElementDomContentPointer Creation via config', () => {
 		let id = 'a1234567',
 			tagName = 'SOMETAGNAME',
 			role = 'end',
@@ -93,7 +93,7 @@ describe('Model Tests', () => {
 	});
 
 
-	it('Good ElementDomContentPointer Creation via node', () => {
+	test('Good ElementDomContentPointer Creation via node', () => {
 		let id = 'a1234567',
 			tagName = 'SOMETAGNAME',
 			role = 'start',
@@ -108,7 +108,7 @@ describe('Model Tests', () => {
 	});
 
 
-	it('Bad ElementDomContentPointer Creation', () => {
+	test('Bad ElementDomContentPointer Creation', () => {
 		try {
 			make(ElementDomContentPointer, {elementTagName: 'name', role: 'end'});
 			expect(false).toBeTruthy();
@@ -143,7 +143,7 @@ describe('Model Tests', () => {
 	});
 
 
-	it('Good TextDomContentPointer Creation', () => {
+	test('Good TextDomContentPointer Creation', () => {
 		const cfg = {
 			ancestor: {
 				MimeType: ElementDomContentPointer.MimeType,
@@ -172,7 +172,7 @@ describe('Model Tests', () => {
 	});
 
 
-	it('Bad TextDomContentPointer Creation', () => {
+	test('Bad TextDomContentPointer Creation', () => {
 		try {
 
 			make(TextDomContentPointer, {
@@ -254,7 +254,7 @@ describe('Model Tests', () => {
 	});
 
 
-	it('Good DomContentRangeDescription Creation', () => {
+	test('Good DomContentRangeDescription Creation', () => {
 		let tca1 = make(TextDomContentPointer, {
 				role: 'start',
 				ancestor: make(ElementDomContentPointer, {
@@ -309,7 +309,7 @@ describe('Model Tests', () => {
 	});
 
 
-	it('Bad DomContentRangeDescription Creation', () => {
+	test('Bad DomContentRangeDescription Creation', () => {
 		let tca1 = make(TextDomContentPointer, {
 				role: 'start',
 				ancestor: make(ElementDomContentPointer, {
