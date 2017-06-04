@@ -8,6 +8,7 @@ export const COMMON_PREFIX = 'application/vnd.nextthought.';
 
 export const trimCommonPrefix = x => x.replace(/^application\/vnd.nextthought./, '').toLowerCase();
 
+const IGNORED = {parse: x => x};
 
 export default class Registry {
 
@@ -40,7 +41,7 @@ export default class Registry {
 
 	constructor () {
 		const m = this[MAP] = new Map();
-		m.set('ignored', {parse: x => x});
+		m.set('ignored', IGNORED);
 	}
 
 	register (o) {
