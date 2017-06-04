@@ -1,6 +1,7 @@
-import {Service} from '../constants';
 import {URL} from 'nti-commons';
 import isEmpty from 'isempty';
+
+import {Service} from '../constants';
 
 const ASSET_MAP = {
 	thumb: 'contentpackage-thumb-60x60.png',

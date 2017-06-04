@@ -1,10 +1,10 @@
-import Base from '../models/Base';
-import Paged from '../mixins/Paged';
-import Stream from './Stream';
-
 import {mixin} from 'nti-commons';
 
 import {Service, Parser as parse} from '../constants';
+import Base from '../models/Base';
+import Paged from '../mixins/Paged';
+
+import Stream from './Stream';
 
 const RENAME = Symbol.for('TakeOver');
 

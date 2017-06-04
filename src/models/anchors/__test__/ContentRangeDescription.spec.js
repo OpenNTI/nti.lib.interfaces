@@ -1,6 +1,6 @@
-import {getModelByType} from '../../../models';
+import Registry from '../../Registry';
 
-const ContentRangeDescription = getModelByType('contentrange.contentrangedescription');
+const ContentRangeDescription = Registry.lookup('contentrange.contentrangedescription');
 
 describe('ContentRangeDescription Tests', () => {
 	describe('locator tests', () => {

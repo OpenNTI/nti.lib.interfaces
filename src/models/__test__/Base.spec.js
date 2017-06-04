@@ -1,0 +1,4 @@
+
+describe ('Model: Base Class', () => {
+
+});

@@ -1,12 +1,11 @@
 import Logger from 'nti-util-logger';
 
-import EntityStore from './EntityStore';
-
-import {parse} from '../models';
-
 import {Service, DELETED} from '../constants';
+import {parse} from '../models/Parser';
 
 import {getNewListData} from './Contacts';
+import EntityStore from './EntityStore';
+
 
 export const MIME_TYPE = 'application/vnd.nextthought.dynamicfriendslist';
 

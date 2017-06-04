@@ -1,10 +1,10 @@
-import {getModelByType} from '../../../models';
+import Registry from '../../Registry';
 
-const DomContentPointer = getModelByType('contentrange.domcontentpointer');
-const ElementDomContentPointer = getModelByType('contentrange.elementdomcontentpointer');
-const TextDomContentPointer = getModelByType('contentrange.textdomcontentpointer');
-const DomContentRangeDescription = getModelByType('contentrange.domcontentrangedescription');
-const TextContext = getModelByType('contentrange.textcontext');
+const DomContentPointer = Registry.lookup('contentrange.domcontentpointer');
+const ElementDomContentPointer = Registry.lookup('contentrange.elementdomcontentpointer');
+const TextDomContentPointer = Registry.lookup('contentrange.textdomcontentpointer');
+const DomContentRangeDescription = Registry.lookup('contentrange.domcontentrangedescription');
+const TextContext = Registry.lookup('contentrange.textcontext');
 
 
 const make = (C, o) => new C(null, null, o);

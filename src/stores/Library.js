@@ -1,12 +1,11 @@
-import Logger from 'nti-util-logger';
 import EventEmitter from 'events';
 
+import Logger from 'nti-util-logger';
 import {mixin, Array as ArrayUtils} from 'nti-commons';
 
-import {parseListFn} from '../models';
-import {Mixin as Pendability} from '../mixins/Pendability';
-
 import {Service} from '../constants';
+import {parseListFn} from '../models/Parser';
+import {Mixin as Pendability} from '../mixins/Pendability';
 
 const {unique} = ArrayUtils;
 

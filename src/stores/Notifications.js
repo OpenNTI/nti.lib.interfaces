@@ -1,14 +1,12 @@
-import QueryString from 'query-string';
-
-import Logger from 'nti-util-logger';
-import {forward, wait} from 'nti-commons';
-
-
 import Url from 'url';
 import EventEmitter from 'events';
 
-import { Service, ROOT_NTIID, REL_MESSAGE_INBOX} from '../constants';
-import {parse} from '../models';
+import QueryString from 'query-string';
+import Logger from 'nti-util-logger';
+import {forward, wait} from 'nti-commons';
+
+import {Service, ROOT_NTIID, REL_MESSAGE_INBOX} from '../constants';
+import {parse} from '../models/Parser';
 import getLink from '../utils/getlink';
 
 

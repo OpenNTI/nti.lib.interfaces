@@ -1,4 +1,5 @@
 import {Service} from '../../constants';
+
 import OrderedContents from './WrapperUtil';
 
 const ONMOVE = Symbol('on-move');

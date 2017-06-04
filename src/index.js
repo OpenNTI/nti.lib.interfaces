@@ -1,6 +1,6 @@
 import Interface from './interface/DataServerInterface';
 import cache from './utils/datacache';
-import {getModelByType as lookup, register} from './models';
+import {Registry} from './models';
 
 
 export Catalog from './stores/Catalog';
@@ -25,8 +25,8 @@ export default function setup (config) {
 }
 
 
-export function getModel (...args) { return lookup(...args); }
-export function registerModel (o) { return register(o); }
+export function getModel (...args) { return Registry.lookup(...args); }
+export function registerModel (o) { return Registry.register(o); }
 export getLink from './utils/getlink';
 
 

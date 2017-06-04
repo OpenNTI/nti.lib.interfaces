@@ -1,8 +1,8 @@
+import {Service} from '../constants';
 import getLink from '../utils/getlink';
 
 import Library from './Library';
 
-import {Service} from '../constants';
 
 const GetLibrary = Symbol('Library Getter');
 

@@ -6,10 +6,10 @@ import {mixin} from 'nti-commons';
 import uuid from 'uuid';
 // import QueryString from 'query-string';
 
-import {Mixin as Pendability} from '../mixins/Pendability';
-// import getLink from '../utils/getlink';
-import {parse, parseListFn} from '../models';
 import {Service, DELETED} from '../constants';
+import {Mixin as Pendability} from '../mixins/Pendability';
+import {parse, parseListFn} from '../models/Parser';
+// import getLink from '../utils/getlink';
 
 export const MIME_TYPE = 'application/vnd.nextthought.friendslist';
 

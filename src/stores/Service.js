@@ -6,7 +6,7 @@ import Logger from 'nti-util-logger';
 import {isNTIID} from 'nti-lib-ntiids';
 import {URL as UrlUtils, mixin, wait} from 'nti-commons';
 
-import {parse} from '../models';
+import {parse} from '../models/Parser';
 import Capabilities from '../models/Capabilities';
 import AbstractPlaceholder from '../models/AbstractPlaceholder';
 import {Mixin as Pendability, attach as attachPendingQueue} from '../mixins/Pendability';
