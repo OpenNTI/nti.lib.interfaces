@@ -1,10 +1,16 @@
+import {model, COMMON_PREFIX} from './Registry';
 import Base from './Base';
-
 import MetaDataResolver from './MetaDataResolver';
 
 const resolver = Symbol('Resolver');
 
+@model
 export default class MediaSource extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'mediasource',
+		COMMON_PREFIX + 'videosource',
+	]
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 	}

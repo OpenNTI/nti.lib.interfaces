@@ -1,8 +1,15 @@
+import {model, COMMON_PREFIX} from './Registry';
 import Base from './Base';
 
 const HIDDEN = Symbol('Protected Data');
 
+@model
 export default class Progress extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'progress',
+		COMMON_PREFIX + 'videoprogress',
+	]
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

@@ -1,4 +1,5 @@
 import {Service} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 const POLL_INTERVAL = 3000;
@@ -10,7 +11,10 @@ const SUCCESS = 'Success';
 const PENDING = 'Pending';
 const FAILED = 'Failed';
 
+@model
 export default class ContentPackageRenderJob extends Base {
+	static MimeType = COMMON_PREFIX + 'content.packagerenderjob'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 	}

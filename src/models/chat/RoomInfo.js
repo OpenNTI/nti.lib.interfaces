@@ -1,7 +1,12 @@
+import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 const TakeOver = Symbol.for('TakeOver');
+
+@model
 export default class RoomInfo extends Base {
+	static MimeType = COMMON_PREFIX + '_meeting'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

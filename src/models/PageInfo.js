@@ -1,22 +1,28 @@
-import Base from './Base';
 import Url from 'url';
 import path from 'path';
 
+import {Markup} from 'nti-commons';
 import QueryString from 'query-string';
 
-import {REL_USER_GENERATED_DATA, REL_RELEVANT_CONTAINED_USER_GENERATED_DATA} from '../constants';
-
-import {Markup} from 'nti-commons';
-
-import {Service, Parser as parse} from '../constants';
-
 import UserDataStore from '../stores/UserData';
+import {
+	REL_USER_GENERATED_DATA,
+	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
+	Service,
+	Parser as parse
+} from '../constants';
+
+import {model, COMMON_PREFIX} from './Registry';
+import Base from './Base';
 
 const NOT_FOUND = {statusCode: 404, message: 'Not Found'};
 
 const UserData = Symbol('UserData');
 
+@model
 export default class PageInfo extends Base {
+	static MimeType = COMMON_PREFIX + 'pageinfo'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

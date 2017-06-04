@@ -1,25 +1,25 @@
-import Logger from 'nti-util-logger';
 import Url from 'url';
 import path from 'path';
 
+import Logger from 'nti-util-logger';
 import {wait} from 'nti-commons';
 
-import Base from '../Base';
 import {
+	MEDIA_BY_OUTLINE_NODE,
 	Service,
 	Parser as parse
 } from '../../constants';
-
-import {MEDIA_BY_OUTLINE_NODE} from '../../constants';
-
-import binDiscussions from '../../utils/forums-bin-discussions';
-
 import AssessmentCollectionStudentView from '../assessment/assignment/CollectionStudentView';
 import AssessmentCollectionInstructorView from '../assessment/assignment/CollectionInstructorView';
+import Roster from '../../stores/CourseRoster';
+import binDiscussions from '../../utils/forums-bin-discussions';
+//
 import MediaIndex from '../MediaIndex';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
 import ActivityStream from './BucketedActivityStream';
-import Roster from '../../stores/CourseRoster';
+
 
 const logger = Logger.get('models:courses:Instance');
 
@@ -33,7 +33,13 @@ const OutlineCache = Symbol('OutlineCache');
 const OutlineCacheUnpublished = Symbol('OutlineCacheUnpublished');
 const RENAME = Symbol.for('TakeOver');
 
+@model
 export default class Instance extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'courses.courseinstance',
+		COMMON_PREFIX + 'courses.legacycommunitybasedcourseinstance',
+	]
+
 	constructor (service, parent, data) {
 		super(service, parent, data, {isCourse: true});
 

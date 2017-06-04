@@ -1,12 +1,13 @@
+import {DateFields, Parser as parse} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
-import {
-	DateFields,
-	Parser as parse } from '../../constants';
 
 const TakeOver = Symbol.for('TakeOver');
 
-
+@model
 export default class PurchaseAttempt extends Base {
+	static MimeType = COMMON_PREFIX + 'store.purchaseattempt'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

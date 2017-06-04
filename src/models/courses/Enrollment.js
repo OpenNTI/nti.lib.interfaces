@@ -1,13 +1,16 @@
-import Base from '../Base';
-import {
-	Parser as parse,
-	Service
-} from '../../constants';
-
 import {forward} from 'nti-commons';
 
+import { Parser as parse, Service } from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
+@model
 export default class Enrollment extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'courses.courseenrollment',
+		COMMON_PREFIX + 'courseware.courseinstanceenrollment',
+	]
+
 	constructor (service, data) {
 		super(service, null, data,
 			{

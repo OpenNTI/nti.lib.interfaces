@@ -1,12 +1,16 @@
 import {ntiidEquals} from 'nti-lib-ntiids';
 
 import {Parser as parse, RepresentsSameObject} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
 
 import Package from './Package';
 
 const RST_TYPE = 'text/x-rst';
 
+@model
 export default class RenderablePackage extends Package {
+	static MimeType = COMMON_PREFIX + 'renderablecontentpackage'
+
 	isRenderable = true
 
 	constructor (service, parent, data) {

@@ -1,12 +1,14 @@
 import {URL} from 'nti-commons';
 
+import {model, COMMON_PREFIX} from './Registry';
+
 const getRoot = x => (x ? x.root : x) || '/missing-root/';
 
-//MimeType: "application/vnd.nextthought.slide"
+@model
 export default class Slide {
+	static MimeType = COMMON_PREFIX + 'slide'
 
 	constructor (service, parent, data) {
-		// super(service, parent);
 
 		const define = (name, value) => Object.defineProperty(this, name, {value, writable: false});
 		const root = getRoot((parent && parent.parent) ? parent.parent('root') : null);

@@ -1,8 +1,7 @@
+import {Service} from '../../constants';
+import Likable from '../../mixins/Likable';
 import Base from '../Base';
 
-import Likable from '../../mixins/Likable';
-
-import {Service} from '../../constants';
 
 export default class Annotation extends Base {
 

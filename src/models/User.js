@@ -2,6 +2,7 @@ import Achievements from '../stores/Achievements';
 import Stream from '../stores/Stream';
 import { Service, DateFields, Parser as parse, TOS_NOT_ACCEPTED} from '../constants';
 
+import {model, COMMON_PREFIX} from './Registry';
 import Entity from './Entity';
 
 const ONLY_COMMUNITIES = x => x.isCommunity;
@@ -24,8 +25,9 @@ function cleanData (data) {
 	};
 }
 
-
+@model
 export default class User extends Entity {
+	static MimeType = COMMON_PREFIX + 'user'
 
 	constructor (service, data) {
 		cleanData(data);

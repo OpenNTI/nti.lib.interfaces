@@ -1,10 +1,9 @@
+import {Proxy as ProxyObject} from 'nti-commons';
 import Logger from 'nti-util-logger';
+import moment from 'moment';
 
 import Base from '../Base';
 
-import moment from 'moment';
-
-import {Proxy as ProxyObject} from 'nti-commons';
 
 const SOURCE = 'source';
 const ACTIVE_REQUEST = Symbol('active');

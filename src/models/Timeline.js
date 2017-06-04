@@ -8,9 +8,13 @@
 	"suggested-inline": false
 }
  */
+import {model, COMMON_PREFIX} from './Registry';
 import Base from './Base';
 
+@model
 export default class Timeline extends Base {
+	static MimeType = COMMON_PREFIX + 'ntitimeline'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 	}

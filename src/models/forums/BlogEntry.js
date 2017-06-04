@@ -1,9 +1,14 @@
-import Topic from './Topic';
-
 import {isNTIID} from 'nti-lib-ntiids';
 
+import {model, COMMON_PREFIX} from '../Registry';
 
+import Topic from './Topic';
+
+
+@model
 export default class BlogEntry extends Topic {
+	static MimeType = COMMON_PREFIX + 'forums.personalblogentry'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 		this.handleSharingMappings();

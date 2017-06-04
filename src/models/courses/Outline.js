@@ -1,8 +1,9 @@
+import {updateValue, defineProtected} from 'nti-commons';
+
+import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 import PageSource from './OutlineNodeBackedPageSource';
-
-import {updateValue, defineProtected} from 'nti-commons';
 
 const INFLIGHT = Symbol('OutlineContents:RequestInflight');
 const MAX_DEPTH = Symbol('OutlineContents:maximum depth');
@@ -13,7 +14,9 @@ function getMaxDepthFrom (n) {
 		.reduce((max, depth) => Math.max(max, depth), 0);
 }
 
+@model
 export default class Outline extends Base {
+	static MimeType = COMMON_PREFIX + 'courses.courseoutline'
 
 	constructor (service, parent, data, ...mixins) {
 		super(service, parent, data, ...mixins);

@@ -1,6 +1,11 @@
+import {model, COMMON_PREFIX} from '../Registry';
+
 import Enrollment from './Enrollment';
 
+@model
 export default class InstanceAdministrativeRole extends Enrollment {
+	static MimeType = COMMON_PREFIX + 'courseware.courseinstanceadministrativerole'
+
 	constructor (service, data) {
 		super(service, data);
 

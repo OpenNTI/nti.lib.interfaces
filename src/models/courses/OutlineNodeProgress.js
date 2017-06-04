@@ -1,7 +1,13 @@
 import {Parser as parse} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+@model
 export default class OutlineNodeProgress extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'courseoutlinenodeprogress',
+		COMMON_PREFIX + 'progresscontainer',
+	]
 
 	constructor (service, parent, data) {
 		super(service, parent, data);

@@ -1,17 +1,20 @@
-import Base from '../Base';
-import {
-	Service,
-	Parser as parse
-} from '../../constants';
-
+import {Service, Parser as parse} from '../../constants';
 import GetContents from '../../mixins/GetContents';
-//import SharedWithList from '../../mixins/SharedWithList';
-
 import getLink from '../../utils/getlink';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
+@model
 export default class Forum extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'forums.forum',
+		COMMON_PREFIX + 'forums.communityforum',
+		COMMON_PREFIX + 'forums.contentforum',
+		COMMON_PREFIX + 'forums.dflforum',
+	]
+
 	constructor (service, parent, data) {
-		super(service, parent, data, GetContents/*, SharedWithList*/);
+		super(service, parent, data, GetContents);
 
 		// Creator: "username"
 		// ID: "Forum" -- Local id (within the container)

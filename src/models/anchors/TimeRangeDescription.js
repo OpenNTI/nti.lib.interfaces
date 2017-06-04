@@ -1,9 +1,12 @@
+import { Parser as parse } from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
+
 import ContentRangeDescription from './ContentRangeDescription';
 import TimeContentPointer from './TimeContentPointer';
 
-import { Parser as parse } from '../../constants';
-
+@model
 export default class TimeRangeDescription extends ContentRangeDescription {
+	static MimeType = COMMON_PREFIX + 'contentrange.timerangedescription'
 
 	constructor (service, parent, data, ...mixins) {
 		super(service, parent, data, {Class: 'TimeRangeDescription'}, ...mixins);

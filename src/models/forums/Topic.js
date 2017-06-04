@@ -1,13 +1,21 @@
-import Base from '../Base';
-import {
-	Service,
-	Parser as parse
-} from '../../constants';
-
+import {Service, Parser as parse} from '../../constants';
 import GetContents from '../../mixins/GetContents';
 import Likable from '../../mixins/Likable';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
+@model
 export default class Topic extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'forums.topic',
+		COMMON_PREFIX + 'forums.communityheadlinetopic',
+		COMMON_PREFIX + 'forums.communitytopic',
+		COMMON_PREFIX + 'forums.contentheadlinetopic',
+		COMMON_PREFIX + 'forums.dflheadlinetopic',
+		COMMON_PREFIX + 'forums.dfltopic',
+		COMMON_PREFIX + 'forums.headlinetopic',
+	]
+
 	constructor (service, parent, data) {
 		super(service, parent, data, GetContents, Likable);
 

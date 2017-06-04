@@ -1,18 +1,22 @@
-import Base from '../Base';
-import {
-	Parser as parse,
-	DateFields
-} from '../../constants';
-
-import setAndEmit from '../../utils/getsethandler';
-
+import { Parser as parse, DateFields } from '../../constants';
 import assets from '../../mixins/PresentationResources';
+import setAndEmit from '../../utils/getsethandler';
+//
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
 const EnrollmentOptions = Symbol('EnrollmentOptions');
 
 const rename = Symbol.for('TakeOver');
 
+@model
 export default class CourseCatalogEntry extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'courses.catalogentry',
+		COMMON_PREFIX + 'courses.coursecataloglegacyentry', //Really?! Two packages?! :P
+		COMMON_PREFIX + 'courseware.coursecataloglegacyentry',
+	]
+
 	constructor (service, data) {
 		super(service, null, data, {isCourse: true}, assets);
 

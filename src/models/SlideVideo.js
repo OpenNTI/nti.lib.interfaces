@@ -1,10 +1,10 @@
-// import Base from './Base';
+import {model, COMMON_PREFIX} from './Registry';
 
-//MimeType: "application/vnd.nextthought.ntislidevideo"
+@model
 export default class SlideVideo {
+	static MimeType = COMMON_PREFIX + 'ntislidevideo'
 
 	constructor (service, parent, data) {
-		// super(service, parent);
 
 		const define = (name, value) => Object.defineProperty(this, name, {value, writable: false});
 

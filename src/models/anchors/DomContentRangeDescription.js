@@ -1,9 +1,12 @@
+import { Parser as parse } from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
+
 import ContentRangeDescription from './ContentRangeDescription';
 import DomContentPointer from './DomContentPointer';
 
-import { Parser as parse } from '../../constants';
-
+@model
 export default class DomContentRangeDescription extends ContentRangeDescription {
+	static MimeType = COMMON_PREFIX + 'contentrange.domcontentrangedescription'
 
 	constructor (service, parent, data, ...mixins) {
 		super(service, parent, data, {Class: 'DomContentRangeDescription'}, ...mixins);
