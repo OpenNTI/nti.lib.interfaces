@@ -12,7 +12,7 @@ check:
 	@eslint --ext .js,.jsx ./src
 
 test: node_modules clean check
-	@jest
+	@jest --coverage
 
 clean:
 	@rm -rf $(LIB)

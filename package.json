@@ -63,7 +63,6 @@
     "sinon": "^1.17.6"
   },
   "jest": {
-    "collectCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}",
       "!**/*.spec.js"
