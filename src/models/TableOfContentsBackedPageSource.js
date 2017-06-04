@@ -1,6 +1,6 @@
-import Base from './Base';
-
 import {encodeForURI as encodeNTIIDForURI} from 'nti-lib-ntiids';
+
+import Base from './Base';
 
 const Service = Symbol.for('Service');
 
