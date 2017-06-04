@@ -4,12 +4,12 @@ import * as UserDataThreader from '../UserDataThreader';
 
 describe('UserDataThreader utils', ()=> {
 
-	it('Makes public api available', ()=> {
+	test('Makes public api available', ()=> {
 		expect(UserDataThreader.thread).toBeTruthy();
 	});
 
 	describe('Parenting works as expected', ()=> {
-		it('abandons links successfully', ()=> {
+		test('abandons links successfully', ()=> {
 			let a = {
 				[UserDataThreader.PARENT]: {},
 				[UserDataThreader.CHILDREN]: []
@@ -39,7 +39,7 @@ describe('UserDataThreader utils', ()=> {
 			return n;
 		}
 
-		it('abandons preexisting relationships', ()=> {
+		test('abandons preexisting relationships', ()=> {
 			let n = createThreadable('Note'), tree = {}, results;
 
 			UserDataThreader.buildItemTree([n], tree);

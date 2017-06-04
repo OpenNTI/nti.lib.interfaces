@@ -76,7 +76,7 @@ describe('OrderedContents Tests', () => {
 
 
 	describe('Insert Tests', () => {
-		it('Append adds the item to the end', (done) => {
+		test('Append adds the item to the end', (done) => {
 			const item = createNewItem(5);
 
 
@@ -93,7 +93,7 @@ describe('OrderedContents Tests', () => {
 				.catch(done);
 		});
 
-		it('Insert adds item at the index', (done) => {
+		test('Insert adds item at the index', (done) => {
 			const item = createNewItem(5);
 
 			orderedContents.insertAt(item, 1)
@@ -111,7 +111,7 @@ describe('OrderedContents Tests', () => {
 	});
 
 	describe('Replace Tests', () => {
-		it('Replace Item', (done) => {
+		test('Replace Item', (done) => {
 			const newItem = createNewItem(5);
 			const oldItem = createItem(1);
 
@@ -130,7 +130,7 @@ describe('OrderedContents Tests', () => {
 				.catch(done);
 		});
 
-		it('Replace at Index', (done) => {
+		test('Replace at Index', (done) => {
 			const newItem = createNewItem(5);
 
 			orderedContents.replaceAt(newItem, 1)

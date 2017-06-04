@@ -291,7 +291,7 @@ const KNOWN = [
 
 describe('Builtin Models', () => {
 
-	it('Validate Builtin models are resolvable', () => {
+	test('Validate Builtin models are resolvable', () => {
 
 		for (let type of KNOWN) {
 			const a = Registry.lookup(type); //short-hand

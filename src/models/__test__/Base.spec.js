@@ -1,3 +1,3 @@
 describe ('Model: Base Class', () => {
-	it('Test');
+	test('Test Some feature');
 });
