@@ -1,8 +1,11 @@
-import Base from '../Base';
 import {Service} from '../../constants';
 import Submission from '../../mixins/Submission';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
+@model
 export default class QuestionSubmission extends Base {
+	static MimeType = COMMON_PREFIX + 'assessment.questionsubmission'
 
 	static build (question) {
 		const {parts} = question;

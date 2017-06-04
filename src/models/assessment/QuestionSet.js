@@ -1,17 +1,24 @@
 import {pluck} from 'nti-commons';
 
-import Base from '../Base';
-import {
-	Parser as parse,
-	MAY_EFFECT_PROPERTIES
-} from '../../constants';
-
 import PlacementProvider from '../../authoring/placement/providers/QuestionSet';
+import {MAY_EFFECT_PROPERTIES, Parser as parse} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
+
 import QuestionSetSubmission from './QuestionSetSubmission';
 
 const SUBMITTED_TYPE = 'application/vnd.nextthought.assessment.assessedquestionset';
 
+@model
 export default class QuestionSet extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'questionset',
+		COMMON_PREFIX + 'naquestionbank',
+		COMMON_PREFIX + 'naquestionset',
+		COMMON_PREFIX + 'narandomizedquestionset',
+		COMMON_PREFIX + 'assessment.randomizedquestionset',
+	]
+
 	constructor (service, parent, data) {
 		super(service, parent, data, {isSubmittable: true});
 

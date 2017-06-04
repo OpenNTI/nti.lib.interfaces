@@ -27,6 +27,11 @@ export default class Registry {
 	}
 
 
+	static ignore (type) {
+		this.getInstance().alias('ignore', type);
+	}
+
+
 	static getInstance () {
 		const x = Symbol.for('Instance');
 		return this[x] || (this[x] = new Registry());
@@ -59,16 +64,16 @@ export default class Registry {
 	}
 
 
-	alias (key, alias) {
-		if (typeof key !== 'string' || typeof alias !== 'string') {
-			throw new TypeError('Only keys (strings) are allowed to be aliased');
+	alias (existingKey, alias) {
+		if (typeof existingKey !== 'string' || typeof alias !== 'string') {
+			throw new TypeError('Only existingKeys (strings) are allowed to be aliased');
 		}
 
 		if (this[MAP].has(alias)) {
-			logger.warn('Overriding Type!! %s with %o was %o', alias, key, this[MAP].get(alias));
+			logger.warn('Overriding Type!! %s with %o was %o', alias, existingKey, this[MAP].get(alias));
 		}
 
-		this[MAP].set(trimCommonPrefix(alias), trimCommonPrefix(key));
+		this[MAP].set(trimCommonPrefix(alias), trimCommonPrefix(existingKey));
 	}
 
 

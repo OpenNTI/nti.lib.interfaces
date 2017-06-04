@@ -1,18 +1,24 @@
-import Base from '../Base';
-import {
-	Parser as parse
-} from '../../constants';
-
+import PlacementProvider from '../../authoring/placement/providers/Question';
+import {Parser as parse} from '../../constants';
 import {Mixin as HasContent} from '../../mixins/HasContent';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
 import Part from './Part';
-import PlacementProvider from '../../authoring/placement/providers/Question';
 import QuestionSet from './QuestionSet';
 import QuestionSubmission from './QuestionSubmission';
 
 const Individual = Symbol('Individual');
 
+@model
 export default class Question extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'question',
+		COMMON_PREFIX + 'naquestion',
+		COMMON_PREFIX + 'naquestionfillintheblankwordbank',
+		COMMON_PREFIX + 'assessment.fillintheblankwithwordbankquestion',
+	]
+
 	constructor (service, parent, data, ...mixins) {
 		super(service, parent, data, HasContent, {
 			isSubmittable: true,

@@ -1,14 +1,17 @@
-import Question from '../Question';
-
 import {
 	ASSESSMENT_HISTORY_LINK,
 	SURVEY_AGGREGATED_LINK,
 	SURVEY_REPORT_LINK
 } from '../../../constants';
+import {model, COMMON_PREFIX} from '../../Registry';
+import Question from '../Question';
 
 import PollSubmission from './PollSubmission';
 
+@model
 export default class Poll extends Question {
+	static MimeType = COMMON_PREFIX + 'napoll'
+
 	constructor (service, parent, data) {
 		super(service, parent, data, {isPoll: true});
 	}

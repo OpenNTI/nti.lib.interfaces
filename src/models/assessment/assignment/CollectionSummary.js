@@ -1,8 +1,10 @@
 import EventEmitter from 'events';
+
 import invariant from 'invariant';
 import {Paging} from 'nti-commons';
 
 import {SortOrder} from '../../../constants';
+
 
 const PageSource = Paging.ListBackedPageSource;
 

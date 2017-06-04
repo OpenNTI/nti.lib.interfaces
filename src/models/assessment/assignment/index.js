@@ -1,0 +1,13 @@
+import './Assignment';
+import './AssignmentFeedback';
+import './AssignmentFeedbackContainer';
+import './AssignmentHistoryCollection';
+import './AssignmentHistoryItem';
+import './AssignmentHistoryItemSummary';
+import './AssignmentMetadataItem';
+import './AssignmentPart';
+import './AssignmentReference';
+import './AssignmentSubmission';
+import './DiscussionAssignment';
+import './SavePointItem';
+import './TimedAssignment';

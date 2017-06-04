@@ -1,11 +1,14 @@
-import Base from '../../Base';
-import {
-	Parser as parse
-} from '../../../constants';
-
+import {Parser as parse} from '../../../constants';
 import Submission from '../../../mixins/Submission';
+import {model, COMMON_PREFIX} from '../../Registry';
+import Base from '../../Base';
 
+@model
 export default class AssignmentSubmission extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'assessment.assignmentsubmission',
+		COMMON_PREFIX + 'assessment.assignmentsubmissionpendingassessment',
+	]
 
 	constructor (service, parent, data, submitTo) {
 		super(service, parent, data, Submission, {

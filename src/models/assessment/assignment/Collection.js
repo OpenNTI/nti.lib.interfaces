@@ -5,16 +5,10 @@
  * non-assignment assessment object.  We also have a reference to all the
  * assignments that we can currently see.
  */
-
-import Base from '../../Base';
-
-import {
-	Parser as parse,
-	ASSESSMENT_HISTORY_LINK
-} from '../../../constants';
-
 import Logger from 'nti-util-logger';
 
+import {ASSESSMENT_HISTORY_LINK, Parser as parse} from '../../../constants';
+import Base from '../../Base';
 
 import AssignmentsByX from './AssignmentsByX';
 import ActivityMixin from './AssignmentActivityMixin';

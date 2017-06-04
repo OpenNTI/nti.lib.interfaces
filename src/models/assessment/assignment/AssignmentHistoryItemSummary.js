@@ -1,12 +1,16 @@
+import {DateFields, Parser as parse} from '../../../constants';
+import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
-import {
-	DateFields,
-	Parser as parse
-} from '../../../constants';
 
 const rename = Symbol.for('TakeOver');
 
+@model
 export default class AssignmentHistoryItemSummary extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'assessment.assignmenthistoryitemsummary',
+		COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitemsummary',
+	]
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 		for(let prop of ['Grade']) {

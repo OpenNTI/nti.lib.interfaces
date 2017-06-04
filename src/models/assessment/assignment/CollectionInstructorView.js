@@ -1,20 +1,16 @@
 import Url from 'url';
 import path from 'path';
 
-import {
-	Service,
-	ASSESSMENT_HISTORY_LINK
-} from '../../../constants';
 // import Logger from 'nti-util-logger';
-
-
-import Base from './Collection';
-
-import CollectionSummary from './CollectionSummary';
-import ActivityStore from './AssignmentActivityStore';
 
 import AssignmentSummary from '../../../stores/AssignmentSummary';
 import GradeBookSummary from '../../../stores/GradeBookSummary';
+import {Service, ASSESSMENT_HISTORY_LINK} from '../../../constants';
+
+import Base from './Collection';
+import CollectionSummary from './CollectionSummary';
+import ActivityStore from './AssignmentActivityStore';
+
 
 // const logger = Logger.get('assignment:Collection:Instructor');
 

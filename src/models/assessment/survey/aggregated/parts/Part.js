@@ -1,5 +1,6 @@
-import Base from '../../../../Base';
 // import {Parser as parse} from '../../../../../constants';
+
+import Base from '../../../../Base';
 
 export default class Part extends Base {
 

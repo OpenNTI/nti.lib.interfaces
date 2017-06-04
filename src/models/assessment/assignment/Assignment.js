@@ -1,6 +1,4 @@
-import Base from '../../Base';
-import {resolveSubmitTo} from '../utils';
-import Publishable from '../../../mixins/Publishable';
+import PlacementProvider from '../../../authoring/placement/providers/Assignment';
 import {
 	Service,
 	ReParent,
@@ -9,8 +7,11 @@ import {
 	ASSESSMENT_HISTORY_LINK,
 	MAY_EFFECT_PROPERTIES
 } from '../../../constants';
+import Publishable from '../../../mixins/Publishable';
+import {model, COMMON_PREFIX} from '../../Registry';
+import Base from '../../Base';
+import {resolveSubmitTo} from '../utils';
 
-import PlacementProvider from '../../../authoring/placement/providers/Assignment';
 import AssignmentSubmission from './AssignmentSubmission';
 
 const RENAME = Symbol.for('TakeOver');
@@ -20,8 +21,9 @@ const ActiveSavePointPost = Symbol('ActiveSavePointPost');
 const isSummary = ({parts}) => parts && parts.some(x => x.IsSummary);
 const getAssociationCount = (x) => x.LessonContainerCount;
 
-
+@model
 export default class Assignment extends Base {
+	static MimeType = COMMON_PREFIX + 'assessment.assignment'
 
 	constructor (service, parent, data) {
 		super(service, parent, data, Publishable, {isSubmittable: true});
