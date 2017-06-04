@@ -28,7 +28,7 @@ export default class Registry {
 
 
 	static ignore (type) {
-		return this.getInstance().alias('ignore', type);
+		return this.getInstance().alias('ignored', type);
 	}
 
 
@@ -81,16 +81,20 @@ export default class Registry {
 
 	lookup (type) {
 		let m = this[MAP].get(trimCommonPrefix(type));
+		logger.debug('Lookup: %s, %o', type, m);
 
 		const seen = new Set([type]);
 
 		//follow aliases:
 		while (typeof m === 'string') {
 			if (seen.has(m)) { //break cycles.
+				logger.debug('Alias Loop Detected... already seen: %s', m);
 				m = void m; //set m to undefined (void)
 			} else {
-				seen.add(m);
-				m = this[MAP].get(m);
+				const alias = m;
+				seen.add(alias);
+				m = this[MAP].get(alias);
+				logger.debug('Following alias: %s, got: %o', alias, m);
 			}
 		}
 
