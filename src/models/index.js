@@ -1,4 +1,4 @@
-import Registry from './Registry';
+import Registry, {COMMON_PREFIX} from './Registry';
 //
 import './annotations';
 import './anchors';
@@ -37,5 +37,6 @@ import './Progress';
 Registry.ignore('link');
 
 export {
-	Registry
+	Registry,
+	COMMON_PREFIX
 };

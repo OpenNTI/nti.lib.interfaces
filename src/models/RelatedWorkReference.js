@@ -41,7 +41,7 @@ const EXTERNAL_TYPE = 'application/vnd.nextthought.externallink';
 
 @model
 export default class RelatedWorkReference extends Base {
-	static MimeType = COMMON_PREFIX + 'relatedworkrefpointer'
+	static MimeType = COMMON_PREFIX + 'relatedworkref'
 
 	static fromID (service, id) {
 		return new RelatedWorkReference(service, {NTIID: id});
