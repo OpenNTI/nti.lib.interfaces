@@ -1,9 +1,14 @@
 import {Service} from '../../../constants';
+import {model, COMMON_PREFIX} from '../../Registry';
+
 import Assignment from './Assignment';
 
 const secondsToMilliseconds = s => s * 1000;
 
+@model
 export default class TimedAssignment extends Assignment {
+	static MimeType = COMMON_PREFIX + 'assessment.timedassignment'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 		this.isTimed = true;

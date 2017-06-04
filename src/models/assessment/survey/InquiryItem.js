@@ -1,10 +1,14 @@
+import {Parser as parse} from '../../../constants';
+import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-import {
-	Parser as parse
-} from '../../../constants';
-
+@model
 export default class InqueryItem extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'assessment.inquiryitem',
+		COMMON_PREFIX + 'assessment.userscourseinquiryitem',
+	]
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

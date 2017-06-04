@@ -1,11 +1,11 @@
+import {Service, Parser as parse} from '../../../constants';
+import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
-import {
-	Service,
-	Parser as parse
-} from '../../../constants';
 
-
+@model
 export default class AssignmentFeedbackContainer extends Base {
+	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitemfeedbackcontainer'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

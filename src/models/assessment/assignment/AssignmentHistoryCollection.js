@@ -1,12 +1,13 @@
 import {pluck} from 'nti-commons';
 
+import {DateFields, Parser as parse} from '../../../constants';
+import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
-import {
-	DateFields,
-	Parser as parse
-} from '../../../constants';
 
+@model
 export default class AssignmentHistoryCollection extends Base {
+	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistory'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

@@ -1,5 +1,6 @@
-import Part from '../Part';
 import {ContentKeys} from '../../../mixins/HasContent';
+import {model, COMMON_PREFIX} from '../../Registry';
+import Part from '../Part';
 
 const isShortAnswer = RegExp.prototype.test.bind(/ShortAnswer/i);
 const hasInputs = RegExp.prototype.test.bind(/<input/i);
@@ -9,8 +10,14 @@ const keyName = /name=['"]([^'"]+)['"]/i;
 
 const ValueKeys = Symbol('value-keys');
 
-
+@model
 export default class FillInTheBlank extends Part {
+	static MimeType = [
+		COMMON_PREFIX + 'assessment.fillintheblank',
+		COMMON_PREFIX + 'assessment.fillintheblankshortanswerpart',
+		COMMON_PREFIX + 'assessment.fillintheblankwithwordbankpart',
+	]
+
 	constructor (service, parent, data) {
 		if (isShortAnswer(data.MimeType)) {
 			// FillInTheBlankShortAnswer is F'd up... the content has input boxes in many

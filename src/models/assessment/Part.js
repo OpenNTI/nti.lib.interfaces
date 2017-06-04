@@ -1,16 +1,12 @@
+import {Parser as parse} from '../../constants';
+import {Mixin as HasContent, ContentKeys, SetupContentProperties} from '../../mixins/HasContent';
+import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
-import {
-	Parser as parse
-} from '../../constants';
 
-import {
-	Mixin as HasContent,
-	ContentKeys,
-	SetupContentProperties
-} from '../../mixins/HasContent';
-
-
+@model
 export default class Part extends Base {
+	static MimeType = COMMON_PREFIX + 'assessment.part'
+
 	constructor (service, parent, data) {
 		super(service, parent, data, HasContent);
 

@@ -1,12 +1,8 @@
-import {
-	Service,
-	ASSESSMENT_HISTORY_LINK
-} from '../../../constants';
 import Logger from 'nti-util-logger';
 
+import {Service, ASSESSMENT_HISTORY_LINK} from '../../../constants';
 
 import Base from './Collection';
-
 import CollectionSummary from './CollectionSummary';
 import HistoryCollection from './AssignmentHistoryCollection';
 

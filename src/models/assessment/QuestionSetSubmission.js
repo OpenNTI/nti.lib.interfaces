@@ -1,12 +1,11 @@
-import Base from '../Base';
-import {
-	Service,
-	ReParent,
-	Parser as parse
-} from '../../constants';
+import {Service, ReParent, Parser as parse} from '../../constants';
 import submission from '../../mixins/Submission';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
+@model
 export default class QuestionSetSubmission extends Base {
+	static MimeType = COMMON_PREFIX + 'assessment.questionsetsubmission'
 
 	static build (questionSet) {
 		const data = {

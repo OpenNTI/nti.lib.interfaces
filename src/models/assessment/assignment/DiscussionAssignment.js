@@ -1,7 +1,12 @@
-import Assignment from './Assignment';
 import {Service} from '../../../constants';
+import {model, COMMON_PREFIX} from '../../Registry';
 
+import Assignment from './Assignment';
+
+@model
 export default class DiscussionAssignment extends Assignment {
+	static MimeType = COMMON_PREFIX + 'assessment.discussionassignment'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 		this.isDiscussion = true;

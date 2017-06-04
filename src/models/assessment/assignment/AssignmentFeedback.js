@@ -1,9 +1,12 @@
-import Base from '../../Base';
 import {Service} from '../../../constants';
-
 import names from '../../../mixins/CourseAndAssignmentNameResolving';
+import {model, COMMON_PREFIX} from '../../Registry';
+import Base from '../../Base';
 
+@model
 export default class AssignmentFeedback extends Base {
+	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitemfeedback'
+
 	constructor (service, parent, data) {
 		super(service, parent, data, names);
 	}

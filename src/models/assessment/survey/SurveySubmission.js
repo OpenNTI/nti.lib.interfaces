@@ -1,12 +1,11 @@
+import {Parser as parse} from '../../../constants';
+import {model, COMMON_PREFIX} from '../../Registry';
 import QuestionSetSubmission from '../QuestionSetSubmission';
 import {resolveSubmitTo} from '../utils';
 
-import {
-	Parser as parse
-} from '../../../constants';
-
+@model
 export default class SurveySubmission extends QuestionSetSubmission {
-
+	static MimeType = COMMON_PREFIX + 'assessment.surveysubmission'
 	static COURSE_SUBMISSION_REL = 'CourseInquiries'
 
 	static build (survey) {

@@ -1,9 +1,11 @@
+import {Parser as parse} from '../../../constants';
+import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
-import {
-	Parser as parse
-} from '../../../constants';
 
+@model
 export default class AssignmentPart extends Base {
+	static MimeType = COMMON_PREFIX + 'assessment.assignmentpart'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 		this[parse]('question_set');

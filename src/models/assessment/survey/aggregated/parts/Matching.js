@@ -1,7 +1,11 @@
-import Base from './Ordering';
 // import {Parser as parse} from '../../../../../constants';
+import {model, COMMON_PREFIX} from '../../../../Registry';
 
+import Base from './Ordering';
+
+@model
 export default class AggregatedMatchingPart extends Base {
+	static MimeType = COMMON_PREFIX + 'assessment.aggregatedmatchingpart'
 
 	constructor (service, parent, data) {
 		super(service, parent, data);

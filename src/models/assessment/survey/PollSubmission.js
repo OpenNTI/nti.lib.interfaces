@@ -1,8 +1,10 @@
+import {model, COMMON_PREFIX} from '../../Registry';
 import QuestionSubmission from '../QuestionSubmission';
 import {resolveSubmitTo} from '../utils';
 
-
+@model
 export default class PollSubmission extends QuestionSubmission {
+	static MimeType = COMMON_PREFIX + 'assessment.pollsubmission'
 	static COURSE_SUBMISSION_REL = 'CourseInquiries'
 
 	static build (poll) {

@@ -1,11 +1,12 @@
-import Base from '../Base';
-import {
-	Parser as parse
-} from '../../constants';
-
+import {Parser as parse} from '../../constants';
 import assessed from '../../mixins/AssessedAssessmentPart';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
+@model
 export default class AssessedPart extends Base {
+	static MimeType = COMMON_PREFIX + 'assessment.assessedpart'
+
 	constructor (service, parent, data) {
 		super(service, parent, data, assessed);
 		this[parse]('solutions');

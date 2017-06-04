@@ -1,18 +1,21 @@
-import QuestionSet from '../QuestionSet';
+import {wait} from 'nti-commons';
 
 import {
 	ASSESSMENT_HISTORY_LINK,
 	SURVEY_AGGREGATED_LINK,
 	SURVEY_REPORT_LINK
 } from '../../../constants';
-
-import {wait} from 'nti-commons';
+import {model, COMMON_PREFIX} from '../../Registry';
+import QuestionSet from '../QuestionSet';
 
 import SurveySubmission from './SurveySubmission';
 
 const AGGREGATED = Symbol(SURVEY_AGGREGATED_LINK);
 
+@model
 export default class Survey extends QuestionSet {
+	static MimeType = COMMON_PREFIX + 'nasurvey'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 	}
