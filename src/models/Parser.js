@@ -4,7 +4,7 @@ import {MODEL_INSTANCE_CACHE_KEY} from '../constants';
 
 import Registry from './Registry';
 
-const logger = Logger.get('lib:models:Parser');
+const logger = Logger.get('models:Parser');
 
 
 export function parse (service, parent, obj) {

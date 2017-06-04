@@ -1,4 +1,4 @@
-import Registry from '../../Registry';
+import {Registry} from '../../index';
 
 const DomContentPointer = Registry.lookup('contentrange.domcontentpointer');
 const ElementDomContentPointer = Registry.lookup('contentrange.elementdomcontentpointer');
@@ -10,7 +10,7 @@ const TextContext = Registry.lookup('contentrange.textcontext');
 const make = (C, o) => new C(null, null, o);
 
 describe('Model Tests', () => {
-	/*eslint-disable no-new*/
+
 	it('Good TextContent Creation', () => {
 		let text = 'This is some text',
 			offset = 5,
@@ -20,6 +20,7 @@ describe('Model Tests', () => {
 		expect(ct.getContextText()).toEqual(text);
 		expect(ct.getContextOffset()).toEqual(offset);
 	});
+
 
 	it('Bad TextContent Creation', () => {
 		try {
@@ -79,6 +80,7 @@ describe('Model Tests', () => {
 		}
 	});
 
+
 	it('Good ElementDomContentPointer Creation via config', () => {
 		let id = 'a1234567',
 			tagName = 'SOMETAGNAME',
@@ -89,6 +91,7 @@ describe('Model Tests', () => {
 		expect(ca.getElementId()).toEqual(id);
 		expect(ca.getRole()).toEqual(role);
 	});
+
 
 	it('Good ElementDomContentPointer Creation via node', () => {
 		let id = 'a1234567',
@@ -103,6 +106,7 @@ describe('Model Tests', () => {
 		expect(ca.getElementId()).toEqual(id);
 		expect(ca.getRole()).toEqual(role);
 	});
+
 
 	it('Bad ElementDomContentPointer Creation', () => {
 		try {
@@ -138,22 +142,25 @@ describe('Model Tests', () => {
 		}
 	});
 
+
 	it('Good TextDomContentPointer Creation', () => {
-		let	cfg = {
-				ancestor: make(ElementDomContentPointer, {
-					elementId: 'id',
-					elementTagName: 'tagName',
-					role: 'ancestor'
-				}),
-				role: 'start',
-				edgeOffset: 5,
-				contexts: [
-					make(TextContext, {contextText: 'text1', contextOffset: 0}),
-					make(TextContext, {contextText: 'text2', contextOffset: 1}),
-					make(TextContext, {contextText: 'text3', contextOffset: 2})
-				]
+		const cfg = {
+			ancestor: {
+				MimeType: ElementDomContentPointer.MimeType,
+				elementId: 'id',
+				elementTagName: 'tagName',
+				role: 'ancestor'
 			},
-			x = make(TextDomContentPointer, cfg);
+			role: 'start',
+			edgeOffset: 5,
+			contexts: [
+				{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
+				{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
+				{MimeType: TextContext.MimeType, contextText: 'text3', contextOffset: 2},
+			]
+		};
+
+		const x = make(TextDomContentPointer, cfg);
 
 		expect(x.getEdgeOffset()).toEqual(cfg.edgeOffset);
 		expect(x.getContexts()).toBeTruthy();
@@ -163,6 +170,7 @@ describe('Model Tests', () => {
 		expect(x.getAncestor().getElementId()).toEqual('id');
 		expect(x.getRole()).toEqual(cfg.role);
 	});
+
 
 	it('Bad TextDomContentPointer Creation', () => {
 		try {
@@ -196,9 +204,9 @@ describe('Model Tests', () => {
 			make(TextDomContentPointer, {
 				role: 'ancestor',
 				contexts: [
-					make(TextContext, {contextText: 'text1', contextOffset: 0}),
-					make(TextContext, {contextText: 'text2', contextOffset: 1}),
-					make(TextContext, {contextText: 'text3', contextOffset: 2})
+					{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
+					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
+					{MimeType: TextContext.MimeType, contextText: 'text3', contextOffset: 2},
 				]
 			});
 			expect(false).toBeTruthy();
@@ -212,9 +220,9 @@ describe('Model Tests', () => {
 				role: 'ancestor',
 				edgeOffset: 3,
 				contexts: [
-					make(TextContext, {contextText: 'text1', contextOffset: 0}),
-					make(TextContext, {contextText: 'text2', contextOffset: 1}),
-					make(TextContext, {contextText: 'text3', contextOffset: 2})
+					{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
+					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
+					{MimeType: TextContext.MimeType, contextText: 'text3', contextOffset: 2},
 				]
 			});
 			expect(false).toBeTruthy();
@@ -233,9 +241,9 @@ describe('Model Tests', () => {
 					role: 'end' //must be ancestor
 				}),
 				contexts: [
-					make(TextContext, {contextText: 'text1', contextOffset: 0}),
-					make(TextContext, {contextText: 'text2', contextOffset: 1}),
-					make(TextContext, {contextText: 'text3', contextOffset: 2})
+					{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
+					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
+					{MimeType: TextContext.MimeType, contextText: 'text3', contextOffset: 2},
 				]
 			});
 			expect(false).toBeTruthy();
@@ -244,6 +252,7 @@ describe('Model Tests', () => {
 			expect(e.message).toEqual('If ancestor is an ElementDomContentPointer, role must be of value ancestor');
 		}
 	});
+
 
 	it('Good DomContentRangeDescription Creation', () => {
 		let tca1 = make(TextDomContentPointer, {
@@ -255,9 +264,9 @@ describe('Model Tests', () => {
 				}),
 				edgeOffset: 5,
 				contexts: [
-					make(TextContext, {contextText: 'text1', contextOffset: 0}),
-					make(TextContext, {contextText: 'text2', contextOffset: 1}),
-					make(TextContext, {contextText: 'text3', contextOffset: 2})
+					{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
+					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
+					{MimeType: TextContext.MimeType, contextText: 'text3', contextOffset: 2},
 				]
 			}),
 			tca2 = make(TextDomContentPointer, {
@@ -269,9 +278,9 @@ describe('Model Tests', () => {
 				}),
 				edgeOffset: 5,
 				contexts: [
-					make(TextContext, {contextText: 'text1', contextOffset: 0}),
-					make(TextContext, {contextText: 'text2', contextOffset: 1}),
-					make(TextContext, {contextText: 'text3', contextOffset: 2})
+					{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
+					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
+					{MimeType: TextContext.MimeType, contextText: 'text3', contextOffset: 2},
 				]
 			}),
 			ca1 = make(TextDomContentPointer, {
@@ -283,9 +292,9 @@ describe('Model Tests', () => {
 				}),
 				edgeOffset: 5,
 				contexts: [
-					make(TextContext, {contextText: 'text1', contextOffset: 0}),
-					make(TextContext, {contextText: 'text2', contextOffset: 1}),
-					make(TextContext, {contextText: 'text3', contextOffset: 2})
+					{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
+					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
+					{MimeType: TextContext.MimeType, contextText: 'text3', contextOffset: 2},
 				]
 			}),
 			dcrd = make(DomContentRangeDescription, {
@@ -299,6 +308,7 @@ describe('Model Tests', () => {
 		expect(dcrd.getAncestor()).toBeTruthy();
 	});
 
+
 	it('Bad DomContentRangeDescription Creation', () => {
 		let tca1 = make(TextDomContentPointer, {
 				role: 'start',
@@ -309,9 +319,9 @@ describe('Model Tests', () => {
 				}),
 				edgeOffset: 5,
 				contexts: [
-					make(TextContext, {contextText: 'text1', contextOffset: 0}),
-					make(TextContext, {contextText: 'text2', contextOffset: 1}),
-					make(TextContext, {contextText: 'text3', contextOffset: 2})
+					{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
+					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
+					{MimeType: TextContext.MimeType, contextText: 'text3', contextOffset: 2},
 				]
 			}),
 			tca2 = make(TextDomContentPointer, {
@@ -323,9 +333,9 @@ describe('Model Tests', () => {
 					role: 'ancestor'
 				}),
 				contexts: [
-					make(TextContext, {contextText: 'text1', contextOffset: 0}),
-					make(TextContext, {contextText: 'text2', contextOffset: 1}),
-					make(TextContext, {contextText: 'text3', contextOffset: 2})
+					{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
+					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
+					{MimeType: TextContext.MimeType, contextText: 'text3', contextOffset: 2},
 				]
 			});
 
