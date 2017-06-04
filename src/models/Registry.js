@@ -1,6 +1,6 @@
 import Logger from 'nti-util-logger';
 
-const logger = Logger.get('lib:models:Registry');
+const logger = Logger.get('models:Registry');
 
 const MAP = Symbol('Model Map');
 
@@ -13,22 +13,22 @@ export default class Registry {
 
 
 	static alias (...args) {
-		this.getInstance().alias(...args);
+		return this.getInstance().alias(...args);
 	}
 
 
 	static lookup (...args) {
-		this.getInstance().lookup(...args);
+		return this.getInstance().lookup(...args);
 	}
 
 
 	static register (...args) {
-		this.getInstance().register(...args);
+		return this.getInstance().register(...args);
 	}
 
 
 	static ignore (type) {
-		this.getInstance().alias('ignore', type);
+		return this.getInstance().alias('ignore', type);
 	}
 
 
@@ -57,6 +57,7 @@ export default class Registry {
 				logger.warn('Overriding Type!! %s with %o was %o', type, o, this[MAP].get(type));
 			}
 
+			logger.debug('Registering %s to %o', type, o);
 			this[MAP].set(type, o);
 		}
 
@@ -73,12 +74,13 @@ export default class Registry {
 			logger.warn('Overriding Type!! %s with %o was %o', alias, existingKey, this[MAP].get(alias));
 		}
 
+		logger.debug('Registering alias %s to %s', alias, existingKey);
 		this[MAP].set(trimCommonPrefix(alias), trimCommonPrefix(existingKey));
 	}
 
 
 	lookup (type) {
-		let m = this[MAP].get(type);
+		let m = this[MAP].get(trimCommonPrefix(type));
 
 		const seen = new Set([type]);
 

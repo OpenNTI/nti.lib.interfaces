@@ -1,4 +1,4 @@
-import Registry from '../../Registry';
+import {Registry} from '../../index';
 
 const ContentRangeDescription = Registry.lookup('contentrange.contentrangedescription');
 
