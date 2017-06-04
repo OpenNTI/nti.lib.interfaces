@@ -1,15 +1,13 @@
-import Logger from 'nti-util-logger';
-
 import EventEmitter from 'events';
 
+import Logger from 'nti-util-logger';
 import {mixin} from 'nti-commons';
-import {threadThreadables, topLevelOnly} from '../utils/UserDataThreader';
-
-import {Mixin as Pendability} from '../mixins/Pendability';
 
 import {Service, DELETED} from '../constants';
+import {Mixin as Pendability} from '../mixins/Pendability';
+import {parseListFn} from '../models/Parser';
+import {threadThreadables, topLevelOnly} from '../utils/UserDataThreader';
 
-import {parseListFn} from '../models';
 
 
 const logger = Logger.get('store:UserData');

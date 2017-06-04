@@ -1,8 +1,9 @@
-import Stream from './Stream';
-import Paged from '../mixins/Paged';
-
 import {mixin} from 'nti-commons';
 import Logger from 'nti-util-logger';
+
+import Paged from '../mixins/Paged';
+
+import Stream from './Stream';
 
 const logger = Logger.get('store:GradeBookSummary');
 

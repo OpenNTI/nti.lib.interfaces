@@ -1,20 +1,15 @@
 import EventEmitter from 'events';
-import invariant from 'invariant';
-
-import QueryString from 'query-string';
 import Url from 'url';
 
+import invariant from 'invariant';
+import QueryString from 'query-string';
 import {mixin} from 'nti-commons';
-
-import {Mixin as Pendability} from '../mixins/Pendability';
-
-import getLink from '../utils/getlink';
-
-import {Service, Parent, DELETED} from '../constants';
-import {SortOrder} from '../constants';
 import Logger from 'nti-util-logger';
 
-import {parseListFn} from '../models';
+import {Service, Parent, DELETED, SortOrder} from '../constants';
+import {Mixin as Pendability} from '../mixins/Pendability';
+import getLink from '../utils/getlink';
+import {parseListFn} from '../models/Parser';
 
 const PRIVATE = new WeakMap();
 const initPrivate = (x, o = {}) => PRIVATE.set(x, o);

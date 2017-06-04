@@ -1,13 +1,12 @@
-import Logger from 'nti-util-logger';
 import EventEmitter from 'events';
 
 import {mixin} from 'nti-commons';
-
-import {Mixin as Pendability} from '../mixins/Pendability';
+import Logger from 'nti-util-logger';
 
 import {Service} from '../constants';
+import {Mixin as Pendability} from '../mixins/Pendability';
+import {parseListFn} from '../models/Parser';
 
-import {parseListFn} from '../models';
 
 const logger = Logger.get('store:Achievements');
 

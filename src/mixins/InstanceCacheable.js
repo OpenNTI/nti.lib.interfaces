@@ -1,6 +1,7 @@
-import {Service} from '../constants';
 import {Parsing} from 'nti-commons';
 import Logger from 'nti-util-logger';
+
+import {Service} from '../constants';
 
 import {getCacheFor} from './InstanceCacheContainer';
 

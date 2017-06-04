@@ -1,16 +1,14 @@
 import EventEmitter from 'events';
-import Logger from 'nti-util-logger';
-
-// import QueryString from 'query-string';
-
-import {Mixin as Pendability} from '../mixins/Pendability';
 
 import {mixin} from 'nti-commons';
-// import getLink from '../utils/getlink';
-
-import {parseListFn} from '../models';
+import Logger from 'nti-util-logger';
+// import QueryString from 'query-string';
 
 import {Service} from '../constants';
+import {Mixin as Pendability} from '../mixins/Pendability';
+// import getLink from '../utils/getlink';
+import {parseListFn} from '../models/Parser';
+
 
 const logger = Logger.get('store:EntityStore');
 const DATA = Symbol();

@@ -20,8 +20,8 @@ import {
 	NO_LINK
 } from '../constants';
 
-import {parse, getModelByType} from './index';
-
+import {parse} from './Parser';
+import Registry, {model} from './Registry';
 
 const logger = Logger.get('models:Base');
 
@@ -32,7 +32,9 @@ const PHANTOM = Symbol.for('Phantom');
 const TakeOver = Symbol.for('TakeOver');
 const is = Symbol('isTest');
 
+@model
 export default class Base extends EventEmitter {
+	static MimeType = '__base__'
 
 	constructor (service, parent, data, ...mixins) {
 		super();
@@ -145,7 +147,7 @@ export default class Base extends EventEmitter {
 
 
 	getModel (...args) {
-		return getModelByType(...args);
+		return Registry.lookup(...args);
 	}
 
 

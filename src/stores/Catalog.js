@@ -2,11 +2,10 @@ import EventEmitter from 'events';
 
 import {forward, mixin} from 'nti-commons';
 
-import {parseListFn} from '../models';
-
-import {Mixin as Pendability} from '../mixins/Pendability';
-
 import {Service} from '../constants';
+import {Mixin as Pendability} from '../mixins/Pendability';
+import {parseListFn} from '../models/Parser';
+
 
 export default class Catalog extends EventEmitter {
 	static load (service, reload) {
