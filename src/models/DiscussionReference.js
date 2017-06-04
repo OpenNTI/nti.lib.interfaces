@@ -6,9 +6,13 @@
 	"title": "1.1 Warmer: Elias Hill"
 }
  */
+import {model, COMMON_PREFIX} from './Registry';
 import Base from './Base';
 
+@model
 export default class DiscussionReference extends Base {
+	static MimeType = COMMON_PREFIX + 'discussionref'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 	}

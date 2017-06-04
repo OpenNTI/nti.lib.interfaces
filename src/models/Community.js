@@ -1,10 +1,13 @@
-import Entity from './Entity';
-
 import Stream from '../stores/Stream';
-
 import { Service } from '../constants';
 
+import {model, COMMON_PREFIX} from './Registry';
+import Entity from './Entity';
+
+@model
 export default class Community extends Entity {
+	static MimeType = COMMON_PREFIX + 'community'
+
 	constructor (service, data) {
 		super(service, null, data);
 		this.isCommunity = true;

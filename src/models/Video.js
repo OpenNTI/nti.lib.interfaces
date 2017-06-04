@@ -1,16 +1,27 @@
 import isEmpty from 'isempty';
 
-import MediaSource from './MediaSource';
 import UserDataStore from '../stores/UserData';
-import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA} from '../constants';
-import {Service, Parent} from '../constants';
+import {
+	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
+	Service,
+	Parent
+} from '../constants';
+
+import {model, COMMON_PREFIX} from './Registry';
+import MediaSource from './MediaSource';
 
 const UserData = Symbol('UserData');
 
 const NO_TRANSCRIPT = 'No Transcript';
 const NO_TRANSCRIPT_LANG = 'No Transcript for the requested language.';
 
+@model
 export default class Video {
+	static MimeType = [
+		COMMON_PREFIX + 'video',
+		COMMON_PREFIX + 'ntivideo',
+	]
+
 	constructor (service, parent, data) {
 		Object.assign(this,{
 			[Service]: service,

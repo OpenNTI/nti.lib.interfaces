@@ -1,9 +1,10 @@
-import Base from '../Base';
-import names from '../../mixins/CourseAndAssignmentNameResolving';
-
 import {pluck} from 'nti-commons';
 
+import names from '../../mixins/CourseAndAssignmentNameResolving';
 import {cacheClassInstances} from '../../mixins/InstanceCacheable';
+import {model, COMMON_PREFIX} from '../Registry';
+//
+import Base from '../Base';
 
 const ENDS_IN_LETTER_REGEX = /\s[a-fiw\-]$/i;
 
@@ -39,7 +40,13 @@ function processValue (value) {
 	}
 }
 
+@model
 export default class Grade extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'grade',
+		COMMON_PREFIX + 'gradebook.grade',
+	]
+
 	static isEmpty (value, letter) {
 		let v = `${value || ''} ${letter || ''}`;
 		return v.replace('-', '').trim().length === 0;

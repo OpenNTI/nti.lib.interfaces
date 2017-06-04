@@ -1,13 +1,15 @@
+import {DateFields} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
+
 import EnrollmentOption from './EnrollmentOption';
-import {
-	DateFields
-	// Parser as parse
-} from '../../constants';
 
 const TakeOver = Symbol.for('TakeOver');
 const SetProtectedProperty = Symbol.for('SetProtectedProperty');
 
+@model
 export default class EnrollmentOption5Minute extends EnrollmentOption {
+	static MimeType = COMMON_PREFIX + 'courseware.fiveminuteenrollmentoption'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

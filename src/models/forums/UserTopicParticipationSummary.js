@@ -1,7 +1,11 @@
-import Base from '../Base';
 import {Parser as parse} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
+@model
 export default class UserTopicParticipationSummary extends Base {
+	static MimeType = COMMON_PREFIX + 'forums.usertopicparticipationsummary'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

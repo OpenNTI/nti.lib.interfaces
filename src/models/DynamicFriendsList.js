@@ -1,8 +1,13 @@
-import FriendsList from './FriendsList';
-import Stream from '../stores/Stream';
 import { Service, DELETED } from '../constants';
+import Stream from '../stores/Stream';
 
+import {model, COMMON_PREFIX} from './Registry';
+import FriendsList from './FriendsList';
+
+@model
 export default class DynamicFriendsList extends FriendsList {
+	static MimeType = COMMON_PREFIX + 'dynamicfriendslist'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 		this.isGroup = true;

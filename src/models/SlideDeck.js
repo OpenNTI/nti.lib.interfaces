@@ -1,8 +1,11 @@
-import Base from './Base';
 import {Parser as parse} from '../constants';
 
-//MimeType: "application/vnd.nextthought.ntislidedeck"
+import {model, COMMON_PREFIX} from './Registry';
+import Base from './Base';
+
+@model
 export default class SlideDeck extends Base {
+	static MimeType = COMMON_PREFIX + 'ntislidedeck'
 
 	constructor (service, parent, data) {
 		delete data.creator;

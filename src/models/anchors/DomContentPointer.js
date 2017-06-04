@@ -1,3 +1,5 @@
+import {model, COMMON_PREFIX} from '../Registry';
+
 import ContentPointer from './ContentPointer';
 
 const VALID_ROLES = [
@@ -6,7 +8,9 @@ const VALID_ROLES = [
 	'ancestor'
 ];
 
+@model
 export default class DomContentPointer extends ContentPointer {
+	static MimeType = COMMON_PREFIX + 'contentrange.domcontentpointer'
 
 	constructor (service, parent, data, ...mixins) {
 		super(service, parent, data, {Class: 'DomContentPointer'}, ...mixins);

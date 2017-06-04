@@ -1,6 +1,7 @@
 import Logger from 'nti-util-logger';
 import {URL} from 'nti-commons';
 
+import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 import {
 	Service
@@ -15,7 +16,10 @@ const logger = Logger.get('models:content:Package');
 
 const VideoIndexReqest = Symbol('VideoIndexReqest');
 
+@model
 export default class Package extends Base {
+	static MimeType = COMMON_PREFIX + 'contentpackage'
+
 	constructor (service, parent, data) {
 		super(service, parent, data, assets);
 

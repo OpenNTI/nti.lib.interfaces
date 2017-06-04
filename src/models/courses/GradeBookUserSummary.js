@@ -1,3 +1,4 @@
+import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 import {
 	Parser as parse
@@ -5,7 +6,13 @@ import {
 
 const RENAME = Symbol.for('TakeOver');
 
+@model
 export default class GradeBookUserSummary extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'gradebook.userassignmentsummary',
+		COMMON_PREFIX + 'gradebook.usergradebooksummary'
+	]
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

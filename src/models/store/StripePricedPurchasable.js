@@ -1,5 +1,6 @@
-import Base from '../Base';
 // import { Parser as parse } from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
 const TakeOver = Symbol.for('TakeOver');
 
@@ -24,7 +25,10 @@ class Coupon extends Base {
 }
 
 
+@model
 export default class StripePricedPurchasable extends Base {
+	static MimeType = COMMON_PREFIX + 'store.stripepricedpurchasable'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 		/*
@@ -40,6 +44,7 @@ export default class StripePricedPurchasable extends Base {
 
 		const rename = (x, y) => this[TakeOver](x, y);
 
+		//Why isn't this parsed like normal? no mimeType?
 		this.Coupon = this.Coupon && new Coupon(service, this, this.Coupon);
 
 		rename('Amount', 'amount');

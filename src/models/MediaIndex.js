@@ -1,11 +1,12 @@
-import {parse} from './index';
-import PageSourceModel from './MediaIndexBackedPageSource';
-import {Service, Parent} from '../constants';
-
+import {URL} from 'nti-commons';
 import Logger from 'nti-util-logger';
 import isEmpty from 'isempty';
 
-import {URL} from 'nti-commons';
+import {Service, Parent} from '../constants';
+
+import PageSourceModel from './MediaIndexBackedPageSource';
+import {parse} from './Parser';
+
 
 const logger = Logger.get('lib:models:MediaIndex');
 

@@ -1,14 +1,16 @@
 import Logger from 'nti-util-logger';
 
 import { Service, Parser as parse } from '../../constants';
+import Threadable from '../../mixins/Threadable';
+import {model, COMMON_PREFIX} from '../Registry';
 
 import Highlight from './Highlight';
 
-import Threadable from '../../mixins/Threadable';
-
 const logger = Logger.get('models:annotations:Note');
 
+@model
 export default class Note extends Highlight {
+	static MimeType = COMMON_PREFIX + 'note'
 
 	constructor (service, parent, data, ...mixins) {
 		super(service, parent, data, Threadable, ...mixins);

@@ -1,6 +1,12 @@
+import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+@model
 export default class EducationalExperience extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'profile.educationalexperience',
+		COMMON_PREFIX + 'profile.educationalexperiance', //is this misspelling still used?
+	]
 
 	constructor (service, parent, data) {
 		super(service, parent, data);

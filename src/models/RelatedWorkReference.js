@@ -7,6 +7,7 @@ import {isNTIID} from 'nti-lib-ntiids';
 import UserDataStore from '../stores/UserData';
 import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA, Service} from '../constants';
 
+import {model, COMMON_PREFIX} from './Registry';
 import Base from './Base';
 
 
@@ -38,7 +39,10 @@ External Links:
 const CONTENT_TYPE = 'application/vnd.nextthought.content';
 const EXTERNAL_TYPE = 'application/vnd.nextthought.externallink';
 
+@model
 export default class RelatedWorkReference extends Base {
+	static MimeType = COMMON_PREFIX + 'relatedworkrefpointer'
+
 	static fromID (service, id) {
 		return new RelatedWorkReference(service, {NTIID: id});
 	}

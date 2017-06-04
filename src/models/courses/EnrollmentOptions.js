@@ -1,10 +1,11 @@
+import {Parser as parse} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
-import {
-	Parser as parse
-} from '../../constants';
 
-
+@model
 export default class EnrollmentOptions extends Base {
+	static MimeType = COMMON_PREFIX + 'courseware.enrollmentoptions'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

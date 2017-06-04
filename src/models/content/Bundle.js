@@ -1,23 +1,23 @@
+import {URL, forward} from 'nti-commons';
 import Logger from 'nti-util-logger';
 
-import Base from '../Base';
-import {
-	Service,
-	Parser as parse
-} from '../../constants';
-
-import setAndEmit from '../../utils/getsethandler';
-
-import {URL, forward} from 'nti-commons';
-
+import { Service, Parser as parse } from '../../constants';
 import assets from '../../mixins/PresentationResources';
-
+import setAndEmit from '../../utils/getsethandler';
 import TablesOfContents from '../TablesOfContents';
 import MediaIndex from '../MediaIndex';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
 const logger = Logger.get('models:content:Bundle');
 
+@model
 export default class Bundle extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'contentpackagebundle',
+		COMMON_PREFIX + 'coursecontentpackagebundle'
+	]
+
 	constructor (service, parent, data) {
 		super(service, parent, data,
 			{isBundle: true},

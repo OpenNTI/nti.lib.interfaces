@@ -1,8 +1,14 @@
+import {model, COMMON_PREFIX} from '../Registry';
+
 import FileSystemEntity from './FileSystemEntity';
 
-
+@model
 export default class File extends FileSystemEntity {
-	static MimeType = 'application/vnd.nextthought.courseware.contentfile'
+	static MimeType = [
+		COMMON_PREFIX + 'contentfile',
+		COMMON_PREFIX + 'contentblobfile',
+		COMMON_PREFIX + 'courseware.contentfile',
+	]
 
 	constructor (service, parent, data) {
 		super(service, parent, data);

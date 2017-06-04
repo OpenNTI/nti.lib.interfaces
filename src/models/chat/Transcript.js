@@ -1,12 +1,15 @@
-import Base from '../Base';
-
-import { Parser as parse } from '../../constants';
-
 import {thread} from '../../utils/UserDataThreader';
+import { Parser as parse } from '../../constants';
+//
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
 const TakeOver = Symbol.for('TakeOver');
 
+@model
 export default class Transcript extends Base {
+	static MimeType = COMMON_PREFIX + 'transcript'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

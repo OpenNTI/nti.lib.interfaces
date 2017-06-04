@@ -1,11 +1,15 @@
-import EnrollmentOption from './EnrollmentOption';
 import {Parser as parse} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
+
+import EnrollmentOption from './EnrollmentOption';
 
 const TakeOver = Symbol.for('TakeOver');
 const getPurchasables = Symbol('getPurchasables');
 const Purchasables = Symbol('Purchasables');
 
+@model
 export default class EnrollmentOptionStore extends EnrollmentOption {
+	static MimeType = COMMON_PREFIX + 'courseware.storeenrollmentoption'
 
 	constructor (service, parent, data) {
 		super(service, parent, data);

@@ -1,8 +1,11 @@
+import { Parser as parse } from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
+
 import TimeContentPointer from './TimeContentPointer';
 
-import { Parser as parse } from '../../constants';
-
+@model
 export default class TranscriptContentPointer extends TimeContentPointer {
+	static MimeType = COMMON_PREFIX + 'contentrange.transcriptcontentpointer'
 
 	constructor (service, parent, data, ...mixins) {
 		super(service, parent, data, {Class: 'TranscriptContentPointer'}, ...mixins);

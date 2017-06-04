@@ -1,16 +1,24 @@
-import Outline from './Outline';
-import {Progress, Summary, DateFields, Parser as parse} from '../../constants';
-import Publishable from '../../mixins/Publishable';
-
-import fallbackOverview from './_fallbacks.OverviewFromToC';
-
 import {applyIf, updateValue} from 'nti-commons';
 import {encodeForURI} from 'nti-lib-ntiids';
 import Logger from 'nti-util-logger';
 
+import {Progress, Summary, DateFields, Parser as parse} from '../../constants';
+import Publishable from '../../mixins/Publishable';
+import {model, COMMON_PREFIX} from '../Registry';
+
+import Outline from './Outline';
+import fallbackOverview from './_fallbacks.OverviewFromToC';
+
 const logger = Logger.get('models:courses:OutlineNode');
 
+@model
 export default class OutlineNode extends Outline {
+	static MimeType = [
+		COMMON_PREFIX + 'courses.courseoutlinenode',
+		COMMON_PREFIX + 'courses.courseoutlinecontentnode',
+		COMMON_PREFIX + 'courses.courseoutlinecalendarnode',
+	]
+
 	constructor (service, parent, data) {
 		super(service, parent, data, Publishable);
 		const p = c => c.map(o => this[parse](o));

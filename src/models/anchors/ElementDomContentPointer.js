@@ -1,6 +1,10 @@
+import {model, COMMON_PREFIX} from '../Registry';
+
 import DomContentPointer from './DomContentPointer';
 
+@model
 export default class ElementDomContentPointer extends DomContentPointer {
+	static MimeType = COMMON_PREFIX + 'contentrange.elementdomcontentpointer'
 
 	constructor (service, parent, data, ...mixins) {
 		//If we are given a dom element as input, pull the necessary parts and

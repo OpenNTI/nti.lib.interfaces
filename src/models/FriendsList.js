@@ -1,11 +1,17 @@
-import Entity from './Entity';
+import {pluck} from 'nti-commons';
+
 import {Parser as parse} from '../constants';
 
-import {pluck} from 'nti-commons';
+import {model, COMMON_PREFIX} from './Registry';
+import Entity from './Entity';
+
 
 const getID = e => typeof e === 'object' ? e.getID() : e;
 
+@model
 export default class FriendsList extends Entity {
+	static MimeType = COMMON_PREFIX + 'friendslist'
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 		this[parse]('friends');

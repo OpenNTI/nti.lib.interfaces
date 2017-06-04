@@ -1,8 +1,15 @@
-import FileSystemEntity, {validateSortObject} from './FileSystemEntity';
 import {Service, ReParent} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
 
+import FileSystemEntity, {validateSortObject} from './FileSystemEntity';
+
+@model
 export default class Folder extends FileSystemEntity {
-	static MimeType = 'application/vnd.nextthought.courseware.contentfolder'
+	static MimeType = [
+		COMMON_PREFIX + 'contentfolder',
+		COMMON_PREFIX + 'courseware.contentfolder',
+	]
+
 	get isFolder () { return true; }
 
 	constructor (service, parent, data) {
