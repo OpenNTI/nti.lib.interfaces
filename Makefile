@@ -7,6 +7,7 @@ all: node_modules lib
 node_modules: package.json
 	@rm -rf node_modules
 	@npm install
+	@touch node_modules
 
 check:
 	@eslint --ext .js,.jsx ./src

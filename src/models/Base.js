@@ -3,6 +3,7 @@ import Url from 'url';
 
 import QueryString from 'query-string';
 import {mixin as mixinToThis, Parsing} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 import {ntiidEquals} from 'nti-lib-ntiids';
 import Logger from 'nti-util-logger';
 
@@ -33,6 +34,7 @@ const TakeOver = Symbol.for('TakeOver');
 const is = Symbol('isTest');
 
 @model
+@mixin(Editable, JSONValue, Pendability)
 export default class Base extends EventEmitter {
 	static MimeType = '__base__'
 
@@ -59,10 +61,6 @@ export default class Base extends EventEmitter {
 			Object.assign(this, data);
 		}
 
-		mixinToThis(this, Editable);
-		mixinToThis(this, JSONValue);
-		mixinToThis(this, Pendability);
-
 		if (mixins.length && (!Base.deprecated || !Base.deprecated.has(this.constructor))) {
 			(Base.deprecated || (Base.deprecated = new Set())).add(this.constructor);
 			logger.warn('Move Mixins to @mixin() decorator', this.constructor.name);
@@ -71,6 +69,10 @@ export default class Base extends EventEmitter {
 		// mixin
 		for (let partial of mixins) {
 			mixinToThis(this, partial, data);
+		}
+
+		if (this.initMixins) {
+			this.initMixins(data);
 		}
 
 		let getMethod = x => 'get' + x.replace(
