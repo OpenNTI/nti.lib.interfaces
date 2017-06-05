@@ -7,8 +7,8 @@ import Annotation from './Annotation';
 export default class Highlight extends Annotation {
 	static MimeType = COMMON_PREFIX + 'highlight'
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 
 		this[parse]('applicableRange');
 	}

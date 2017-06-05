@@ -1,15 +1,17 @@
 import {pluck} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 
 import Threadable from '../../mixins/Threadable';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 @model
+@mixin(Threadable)
 export default class MessageInfo extends Base {
 	static MimeType = COMMON_PREFIX + 'messageinfo'
 
 	constructor (service, parent, data) {
-		super(service, parent, data, Threadable);
+		super(service, parent, data);
 	}
 
 	flag () {

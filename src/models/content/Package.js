@@ -1,5 +1,6 @@
 import Logger from 'nti-util-logger';
 import {URL} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -17,11 +18,12 @@ const logger = Logger.get('models:content:Package');
 const VideoIndexReqest = Symbol('VideoIndexReqest');
 
 @model
+@mixin(assets)
 export default class Package extends Base {
 	static MimeType = COMMON_PREFIX + 'contentpackage'
 
 	constructor (service, parent, data) {
-		super(service, parent, data, assets);
+		super(service, parent, data);
 
 		this.author = (data.DCCreator || []).join(', ');
 

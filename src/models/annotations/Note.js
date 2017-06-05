@@ -1,4 +1,5 @@
 import Logger from 'nti-util-logger';
+import {mixin} from 'nti-lib-decorators';
 
 import { Service, Parser as parse } from '../../constants';
 import Threadable from '../../mixins/Threadable';
@@ -9,11 +10,12 @@ import Highlight from './Highlight';
 const logger = Logger.get('models:annotations:Note');
 
 @model
+@mixin(Threadable)
 export default class Note extends Highlight {
 	static MimeType = COMMON_PREFIX + 'note'
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, Threadable, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 	}
 
 	get replyCount () {
