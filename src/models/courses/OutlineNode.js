@@ -1,4 +1,5 @@
 import {applyIf, updateValue} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 import {encodeForURI} from 'nti-lib-ntiids';
 import Logger from 'nti-util-logger';
 
@@ -12,6 +13,7 @@ import fallbackOverview from './_fallbacks.OverviewFromToC';
 const logger = Logger.get('models:courses:OutlineNode');
 
 @model
+@mixin(Publishable)
 export default class OutlineNode extends Outline {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseoutlinenode',
@@ -20,7 +22,7 @@ export default class OutlineNode extends Outline {
 	]
 
 	constructor (service, parent, data) {
-		super(service, parent, data, Publishable);
+		super(service, parent, data);
 		const p = c => c.map(o => this[parse](o));
 		updateValue(this, 'contents', p(data.contents || []));
 	}

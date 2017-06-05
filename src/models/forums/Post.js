@@ -1,9 +1,12 @@
-import Editable from '../../mixins/Editable';
+import {mixin} from 'nti-lib-decorators';
+
+// import Editable from '../../mixins/Editable'; //Base already mixes in Editable
 import Likable from '../../mixins/Likable';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 @model
+@mixin(Likable)
 export default class Post extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.post',
@@ -15,7 +18,7 @@ export default class Post extends Base {
 	]
 
 	constructor (service, parent, data) {
-		super(service, parent, data, Editable, Likable);
+		super(service, parent, data);
 
 		//body
 		//title

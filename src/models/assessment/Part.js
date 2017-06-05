@@ -1,14 +1,17 @@
+import {mixin} from 'nti-lib-decorators';
+
 import {Parser as parse} from '../../constants';
 import {Mixin as HasContent, ContentKeys, SetupContentProperties} from '../../mixins/HasContent';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 @model
+@mixin(HasContent)
 export default class Part extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.part'
 
 	constructor (service, parent, data) {
-		super(service, parent, data, HasContent);
+		super(service, parent, data);
 
 		//Rules:
 		// Show Hints from start if they are present. If more than one, increment which one you see every time your show.

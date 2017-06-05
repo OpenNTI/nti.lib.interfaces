@@ -1,3 +1,5 @@
+import {mixin} from 'nti-lib-decorators';
+
 import PlacementProvider from '../../../authoring/placement/providers/Assignment';
 import {
 	Service,
@@ -10,6 +12,7 @@ import {
 import Publishable from '../../../mixins/Publishable';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
+import SubmittableIdentity from '../mixins/SubmittableIdentity';
 import {resolveSubmitTo} from '../utils';
 
 import AssignmentSubmission from './AssignmentSubmission';
@@ -22,11 +25,12 @@ const isSummary = ({parts}) => parts && parts.some(x => x.IsSummary);
 const getAssociationCount = (x) => x.LessonContainerCount;
 
 @model
+@mixin(Publishable, SubmittableIdentity)
 export default class Assignment extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.assignment'
 
 	constructor (service, parent, data) {
-		super(service, parent, data, Publishable, {isSubmittable: true});
+		super(service, parent, data);
 
 		this[parse]('parts', []);
 

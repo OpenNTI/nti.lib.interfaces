@@ -1,9 +1,12 @@
+import {mixin} from 'nti-lib-decorators';
+
 import {Service} from '../../constants';
 import Submission from '../../mixins/Submission';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 @model
+@mixin(Submission)
 export default class QuestionSubmission extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.questionsubmission'
 
@@ -21,9 +24,8 @@ export default class QuestionSubmission extends Base {
 
 
 	constructor (service, parent, data) {
-		super(service, parent, data, Submission, {
-			MimeType: 'application/vnd.nextthought.assessment.questionsubmission'
-		});
+		super(service, parent, data);
+		this.MimeType = this.MimeType || QuestionSubmission.MimeType;
 
 		// questionId
 		// parts -> parse

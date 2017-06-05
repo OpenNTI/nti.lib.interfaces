@@ -1,3 +1,5 @@
+import {mixin, readonly} from 'nti-lib-decorators';
+
 import {
 	ASSESSMENT_HISTORY_LINK,
 	SURVEY_AGGREGATED_LINK,
@@ -9,11 +11,12 @@ import Question from '../Question';
 import PollSubmission from './PollSubmission';
 
 @model
+@mixin({@readonly isPole: true})
 export default class Poll extends Question {
 	static MimeType = COMMON_PREFIX + 'napoll'
 
 	constructor (service, parent, data) {
-		super(service, parent, data, {isPoll: true});
+		super(service, parent, data);
 	}
 
 

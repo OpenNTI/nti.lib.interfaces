@@ -1,10 +1,32 @@
 import {forward} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 
 import { Parser as parse, Service } from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+import CourseIdentity from './mixins/CourseIdentity';
+import EnrollmentIdentity from './mixins/EnrollmentIdentity';
+
 @model
+@mixin(
+	CourseIdentity,
+	EnrollmentIdentity,
+	forward([
+		'containsPackage',
+		'getOutline',
+		'getPresentationProperties',
+		'getDefaultShareWithValue',
+		'getDiscussions',
+		'hasDiscussions'
+	//From:
+	], 'CourseInstance'),
+	forward([
+		'getEndDate',
+		'getStartDate'
+	//From:
+	], 'CourseInstance.CatalogEntry')
+)
 export default class Enrollment extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseenrollment',
@@ -12,27 +34,7 @@ export default class Enrollment extends Base {
 	]
 
 	constructor (service, data) {
-		super(service, null, data,
-			{
-				isCourse: true,
-				isEnrollment: true
-			},
-
-			forward([
-				'containsPackage',
-				'getOutline',
-				'getPresentationProperties',
-				'getDefaultShareWithValue',
-				'getDiscussions',
-				'hasDiscussions'
-			//From:
-			], 'CourseInstance'),
-
-			forward([
-				'getEndDate',
-				'getStartDate'
-			//From:
-			], 'CourseInstance.CatalogEntry'));
+		super(service, null, data);
 
 
 		let i = this[parse]('CourseInstance');
