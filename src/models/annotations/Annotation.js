@@ -1,12 +1,14 @@
+import {mixin} from 'nti-lib-decorators';
+
 import {Service} from '../../constants';
 import Likable from '../../mixins/Likable';
 import Base from '../Base';
 
-
+@mixin(Likable)
 export default class Annotation extends Base {
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, Likable, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 	}
 
 

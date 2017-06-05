@@ -1,4 +1,5 @@
 import {URL, forward} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 import Logger from 'nti-util-logger';
 
 import { Service, Parser as parse } from '../../constants';
@@ -12,25 +13,17 @@ import Base from '../Base';
 const logger = Logger.get('models:content:Bundle');
 
 @model
+@mixin(assets, forward(['every','filter','forEach','map', 'reduce'], 'ContentPackages'))
 export default class Bundle extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'contentpackagebundle',
 		COMMON_PREFIX + 'coursecontentpackagebundle'
 	]
 
+	isBundle = true
+
 	constructor (service, parent, data) {
-		super(service, parent, data,
-			{isBundle: true},
-			assets,
-			forward(
-				[
-					'every',
-					'filter',
-					'forEach',
-					'map',
-					'reduce'
-				],
-				'ContentPackages'));
+		super(service, parent, data);
 
 		this.author = (data.DCCreator || []).join(', ');
 

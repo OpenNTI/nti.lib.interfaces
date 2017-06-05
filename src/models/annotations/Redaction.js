@@ -6,8 +6,8 @@ import Highlight from './Highlight';
 export default class Redaction extends Highlight {
 	static MimeType = COMMON_PREFIX + 'redaction'
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 	}
 
 }
