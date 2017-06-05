@@ -1,15 +1,18 @@
 import {pluck} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 
 import PlacementProvider from '../../authoring/placement/providers/QuestionSet';
 import {MAY_EFFECT_PROPERTIES, Parser as parse} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+import SubmittableIdentity from './mixins/SubmittableIdentity';
 import QuestionSetSubmission from './QuestionSetSubmission';
 
 const SUBMITTED_TYPE = 'application/vnd.nextthought.assessment.assessedquestionset';
 
 @model
+@mixin(SubmittableIdentity)
 export default class QuestionSet extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'questionset',
@@ -20,7 +23,7 @@ export default class QuestionSet extends Base {
 	]
 
 	constructor (service, parent, data) {
-		super(service, parent, data, {isSubmittable: true});
+		super(service, parent, data);
 
 		this[parse]('questions', []);
 	}

@@ -6,6 +6,7 @@
  * assignments that we can currently see.
  */
 import Logger from 'nti-util-logger';
+import {mixin} from 'nti-lib-decorators';
 
 import {ASSESSMENT_HISTORY_LINK, Parser as parse} from '../../../constants';
 import Base from '../../Base';
@@ -68,6 +69,7 @@ const PRIVATE = new WeakMap();
 const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
 const getPrivate = x => PRIVATE.get(x);
 
+@mixin(ActivityMixin)
 export default class Collection extends Base {
 
 	/**
@@ -85,7 +87,7 @@ export default class Collection extends Base {
 	 * @returns {void}
 	 */
 	constructor (service, parent, assignments, assessments, historyLink) {
-		super(service, parent, void 0, ActivityMixin, {
+		super(service, parent, {
 			Links: [
 				{rel: ASSESSMENT_HISTORY_LINK, href: historyLink}
 			]

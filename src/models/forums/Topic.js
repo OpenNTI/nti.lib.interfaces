@@ -1,3 +1,5 @@
+import {mixin} from 'nti-lib-decorators';
+
 import {Service, Parser as parse} from '../../constants';
 import GetContents from '../../mixins/GetContents';
 import Likable from '../../mixins/Likable';
@@ -5,6 +7,7 @@ import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 @model
+@mixin(GetContents, Likable)
 export default class Topic extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.topic',
@@ -17,7 +20,7 @@ export default class Topic extends Base {
 	]
 
 	constructor (service, parent, data) {
-		super(service, parent, data, GetContents, Likable);
+		super(service, parent, data);
 
 		// PostCount
 		// title

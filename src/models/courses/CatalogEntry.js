@@ -1,3 +1,5 @@
+import {mixin} from 'nti-lib-decorators'
+
 import { Parser as parse, DateFields } from '../../constants';
 import assets from '../../mixins/PresentationResources';
 import setAndEmit from '../../utils/getsethandler';
@@ -10,6 +12,7 @@ const EnrollmentOptions = Symbol('EnrollmentOptions');
 const rename = Symbol.for('TakeOver');
 
 @model
+@mixin(assets)
 export default class CourseCatalogEntry extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.catalogentry',
@@ -17,8 +20,10 @@ export default class CourseCatalogEntry extends Base {
 		COMMON_PREFIX + 'courseware.coursecataloglegacyentry',
 	]
 
+	isCourse = true
+
 	constructor (service, data) {
-		super(service, null, data, {isCourse: true}, assets);
+		super(service, null, data);
 
 		if (!this.ContentPackages) {
 			this.ContentPackages = [this.ContentPackageNTIID];

@@ -18,8 +18,8 @@ function getMaxDepthFrom (n) {
 export default class Outline extends Base {
 	static MimeType = COMMON_PREFIX + 'courses.courseoutline'
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 		Object.defineProperties(this, {
 
 			...defineProtected({

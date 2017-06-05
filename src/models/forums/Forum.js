@@ -1,3 +1,5 @@
+import {mixin} from 'nti-lib-decorators';
+
 import {Service, Parser as parse} from '../../constants';
 import GetContents from '../../mixins/GetContents';
 import getLink from '../../utils/getlink';
@@ -5,6 +7,7 @@ import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 @model
+@mixin(GetContents)
 export default class Forum extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.forum',
@@ -14,7 +17,7 @@ export default class Forum extends Base {
 	]
 
 	constructor (service, parent, data) {
-		super(service, parent, data, GetContents);
+		super(service, parent, data);
 
 		// Creator: "username"
 		// ID: "Forum" -- Local id (within the container)

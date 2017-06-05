@@ -1,6 +1,7 @@
 import Url from 'url';
 import path from 'path';
 
+import {mixin} from 'nti-lib-decorators';
 import Logger from 'nti-util-logger';
 import {wait} from 'nti-commons';
 
@@ -18,7 +19,7 @@ import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 import ActivityStream from './BucketedActivityStream';
-
+import CourseIdentity from './mixins/CourseIdentity';
 
 const logger = Logger.get('models:courses:Instance');
 
@@ -33,6 +34,7 @@ const OutlineCacheUnpublished = Symbol('OutlineCacheUnpublished');
 const RENAME = Symbol.for('TakeOver');
 
 @model
+@mixin(CourseIdentity)
 export default class Instance extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseinstance',
@@ -40,7 +42,7 @@ export default class Instance extends Base {
 	]
 
 	constructor (service, parent, data) {
-		super(service, parent, data, {isCourse: true});
+		super(service, parent, data);
 
 		let bundle = this[parse]('ContentPackageBundle');
 		if (/legacy/i.test(this.MimeType)) {

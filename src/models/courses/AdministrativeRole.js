@@ -1,15 +1,17 @@
+import {mixin} from 'nti-lib-decorators';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
+import AdministrativeIdentity from './mixins/AdministrativeIdentity';
 import Enrollment from './Enrollment';
 
 @model
+@mixin(AdministrativeIdentity)
 export default class InstanceAdministrativeRole extends Enrollment {
 	static MimeType = COMMON_PREFIX + 'courseware.courseinstanceadministrativerole'
 
 	constructor (service, data) {
 		super(service, data);
-
-		this.isAdministrative = true;
 		//RoleName
 	}
 

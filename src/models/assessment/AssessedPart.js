@@ -1,14 +1,17 @@
+import {mixin} from 'nti-lib-decorators';
+
 import {Parser as parse} from '../../constants';
 import assessed from '../../mixins/AssessedAssessmentPart';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 @model
+@mixin(assessed)
 export default class AssessedPart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.assessedpart'
 
 	constructor (service, parent, data) {
-		super(service, parent, data, assessed);
+		super(service, parent, data);
 		this[parse]('solutions');
 	}
 
