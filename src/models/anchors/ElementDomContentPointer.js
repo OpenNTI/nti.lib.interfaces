@@ -6,7 +6,7 @@ import DomContentPointer from './DomContentPointer';
 export default class ElementDomContentPointer extends DomContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.elementdomcontentpointer'
 
-	constructor (service, parent, data, ...mixins) {
+	constructor (service, parent, data) {
 		//If we are given a dom element as input, pull the necessary parts and
 		//create a config we can use to create this.
 		if (data.node) {
@@ -22,7 +22,7 @@ export default class ElementDomContentPointer extends DomContentPointer {
 			data.elementTagName = data.elementTagName.toUpperCase();
 		}
 
-		super(service, parent, data, {Class: 'ElementDomContentPointer'}, ...mixins);
+		super(service, parent, data);
 
 		this.validateTagName(this.elementTagName);
 		this.validateId(this.elementId);

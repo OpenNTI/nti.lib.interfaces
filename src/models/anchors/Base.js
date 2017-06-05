@@ -1,12 +1,12 @@
 import Model from '../Base';
 
 export default class Base extends Model {
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 		Object.defineProperty(this, 'isEmpty', {value: true, writable: true});
 		Object.defineProperty(this, 'BLACK_LIST_OVERRIDE', {value: {Class: true}});
-		Object.assign(this, {
-			MimeType: `application/vnd.nextthought.contentrange.${this.Class.toLowerCase()}`
-		});
+		if (!this.MimeType) {
+			this.MimeType = this.constructor.MimeType || (() => {throw new TypeError('No MimeType');})();
+		}
 	}
 }

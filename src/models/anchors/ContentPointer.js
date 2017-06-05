@@ -6,7 +6,7 @@ import Base from './Base';
 export default class ContentPointer extends Base {
 	static MimeType = COMMON_PREFIX + 'contentrange.contentpointer'
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, {Class: 'ContentPointer'}, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 	}
 }

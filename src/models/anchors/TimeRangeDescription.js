@@ -8,8 +8,8 @@ import TimeContentPointer from './TimeContentPointer';
 export default class TimeRangeDescription extends ContentRangeDescription {
 	static MimeType = COMMON_PREFIX + 'contentrange.timerangedescription'
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, {Class: 'TimeRangeDescription'}, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 
 		this[parse]('start');
 		this[parse]('end');

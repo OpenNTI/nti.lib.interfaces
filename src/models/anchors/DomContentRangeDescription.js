@@ -8,8 +8,8 @@ import DomContentPointer from './DomContentPointer';
 export default class DomContentRangeDescription extends ContentRangeDescription {
 	static MimeType = COMMON_PREFIX + 'contentrange.domcontentrangedescription'
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, {Class: 'DomContentRangeDescription'}, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 		this.isEmpty = false;
 		Object.defineProperty(this, 'isDomContentRangeDescription', {value: true});
 

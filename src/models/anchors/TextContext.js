@@ -6,8 +6,8 @@ import Base from './Base';
 export default class TextContext extends Base {
 	static MimeType = COMMON_PREFIX + 'contentrange.textcontext'
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, {Class: 'TextContext'}, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 
 		this.isEmpty = false;
 
