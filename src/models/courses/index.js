@@ -3,6 +3,7 @@ import './overview';
 
 import './Grade';
 import './CourseDiscussion';
+import './DiscussionReference';
 import './GradeBookShell';
 import './GradeBookByAssignment';
 import './GradeBookUserSummary';

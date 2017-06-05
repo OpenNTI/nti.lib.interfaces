@@ -1,7 +1,6 @@
-import {Parser as parse} from '../constants';
-
-import {model, COMMON_PREFIX} from './Registry';
-import Base from './Base';
+import {Parser as parse} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
 @model
 export default class SlideDeck extends Base {

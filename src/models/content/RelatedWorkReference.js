@@ -4,11 +4,10 @@ import {extname} from 'path';
 import mime from 'mime-types';
 import {isNTIID} from 'nti-lib-ntiids';
 
-import UserDataStore from '../stores/UserData';
-import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA, Service} from '../constants';
-
-import {model, COMMON_PREFIX} from './Registry';
-import Base from './Base';
+import UserDataStore from '../../stores/UserData';
+import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA, Service} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
 
 const UserData = Symbol('UserData');

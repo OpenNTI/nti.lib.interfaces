@@ -8,8 +8,8 @@
 	"suggested-inline": false
 }
  */
-import {model, COMMON_PREFIX} from './Registry';
-import Base from './Base';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
 @model
 export default class Timeline extends Base {

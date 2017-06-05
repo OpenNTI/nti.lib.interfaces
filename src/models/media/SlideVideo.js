@@ -1,4 +1,4 @@
-import {model, COMMON_PREFIX} from './Registry';
+import {model, COMMON_PREFIX} from '../Registry';
 
 @model
 export default class SlideVideo {

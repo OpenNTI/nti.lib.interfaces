@@ -4,8 +4,8 @@ import Logger from 'nti-util-logger';
 import { Service, Parser as parse } from '../../constants';
 import assets from '../../mixins/PresentationResources';
 import setAndEmit from '../../utils/getsethandler';
-import TablesOfContents from '../TablesOfContents';
-import MediaIndex from '../MediaIndex';
+import TablesOfContents from '../content/TablesOfContents';
+import MediaIndex from '../media/MediaIndex';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
