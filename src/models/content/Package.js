@@ -8,9 +8,9 @@ import {
 } from '../../constants';
 import setAndEmit from '../../utils/getsethandler';
 import assets from '../../mixins/PresentationResources';
-import MediaIndex from '../MediaIndex';
-import TablesOfContents from '../TablesOfContents';
-import ToC from '../XMLBasedTableOfContents';
+import MediaIndex from '../media/MediaIndex';
+import TablesOfContents from '../content/TablesOfContents';
+import ToC from '../content/XMLBasedTableOfContents';
 
 const logger = Logger.get('models:content:Package');
 

@@ -1,65 +1,35 @@
-import { Service, DELETED } from '../constants';
-import Stream from '../stores/Stream';
+import Stream from '../../stores/Stream';
+import { Service } from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
 
-import {model, COMMON_PREFIX} from './Registry';
-import FriendsList from './FriendsList';
+import Entity from './Entity';
 
 @model
-export default class DynamicFriendsList extends FriendsList {
-	static MimeType = COMMON_PREFIX + 'dynamicfriendslist'
+export default class Community extends Entity {
+	static MimeType = COMMON_PREFIX + 'community'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		this.isGroup = true;
-
-		this.ensureProperty('IsDynamicSharing', true, 'boolean', true);
+	constructor (service, data) {
+		super(service, null, data);
+		this.isCommunity = true;
 	}
-
 
 	get displayType () {
-		return 'Group';
+		return 'Community';
 	}
 
 
-	get isMember () {
-		return this.hasLink('my_membership');
-	}
-
-
-	leave () {
-		let {Links} = this;
-		return this[Service].delete(this.getLink('my_membership'))
-			.then(() => {
-				//remove the link so we do not look like we are a member.
-				let ix = Links.findIndex(x => x && x.rel === 'my_membership');
-				if (ix >= 0) {
-					Links.splice(ix, 1);
-				}
-
-				delete this.isMember;
-				Object.defineProperty(this, 'isMember', {value: false});
-			})
-			.then(() => this.onChange(DELETED, this.getID()))
-			.then(() => this.onChange('membership'));
-	}
-
-
-	add () {
-		return Promise.reject('Cannot add members to DFL');
-	}
-
-
-	remove () {
-		return Promise.reject('Cannot remove members from DFL');
-	}
-
-
-	getActivity () {
+	getActivity (filterParams) {
+		let {source} = filterParams || {};
 		let service = this[Service], store, href;
 
 		let linkPromise = this.getDiscussionBoardContents().then(x => {
-			//the default forum:
+
+			//What is the default forum?? Should there be a flag/id somewhere?
 			let forum = x.Items.find(item => (item.title === 'Forum')) || x.Items[0];
+
+			if (source) {
+				forum = (x.Items || []).find(i=> i.ID === source);
+			}
 
 			return forum || Promise.reject('Source Not Found.');
 		})
@@ -69,7 +39,9 @@ export default class DynamicFriendsList extends FriendsList {
 			href = x.getLink('add');//this sets the href for our "postToActivity" augmented method.
 
 			//return the value to be the Stream Store's data source.
-			return this.getLink('Activity');
+			return source //if there is a source set,
+				? x.getLink('contents') // use its contents link,
+				: this.getLink('Activity'); // otherwise, use the Community's Activity link.
 		});
 
 
@@ -124,5 +96,23 @@ export default class DynamicFriendsList extends FriendsList {
 
 	getDiscussionBoardContents () {
 		return this.getDiscussionBoard().then(x => x.getContents());
+	}
+
+
+	getMembers () {
+		if (!this.hasLink('members')) {
+			return null;
+		}
+
+		return new Stream(
+			this[Service],
+			this,
+			this.getLink('members')
+		);
+	}
+
+
+	leave () {
+		return this.postToLink('leave', {});
 	}
 }

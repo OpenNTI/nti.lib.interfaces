@@ -1,4 +1,4 @@
-import {Service} from '../constants';
+import {Service} from '../../constants';
 
 import Vimeo from './MetaDataResolverForVimeo';
 import YouTube from './MetaDataResolverForYouTube';

@@ -1,8 +1,8 @@
 import {pluck} from 'nti-commons';
 
-import {Parser as parse} from '../constants';
+import {Parser as parse} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
 
-import {model, COMMON_PREFIX} from './Registry';
 import Entity from './Entity';
 
 

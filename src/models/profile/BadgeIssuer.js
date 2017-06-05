@@ -1,5 +1,5 @@
-import {model, COMMON_PREFIX} from './Registry';
-import Base from './Base';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
 @model
 export default class BadgeIssuer extends Base {

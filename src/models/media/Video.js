@@ -1,13 +1,13 @@
 import isEmpty from 'isempty';
 
-import UserDataStore from '../stores/UserData';
+import UserDataStore from '../../stores/UserData';
 import {
 	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
 	Service,
 	Parent
-} from '../constants';
+} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
 
-import {model, COMMON_PREFIX} from './Registry';
 import MediaSource from './MediaSource';
 
 const UserData = Symbol('UserData');

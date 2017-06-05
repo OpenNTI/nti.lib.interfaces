@@ -1,6 +1,7 @@
 import XML from 'elementtree';
 
-import Base from './Base';
+import Base from '../Base';
+
 import PageSource from './TableOfContentsBackedPageSource';
 import Node from './TableOfContentsNode';
 

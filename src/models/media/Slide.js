@@ -1,6 +1,6 @@
 import {URL} from 'nti-commons';
 
-import {model, COMMON_PREFIX} from './Registry';
+import {model, COMMON_PREFIX} from '../Registry';
 
 const getRoot = x => (x ? x.root : x) || '/missing-root/';
 

@@ -1,7 +1,6 @@
-import {Service} from '../constants';
-
-import {model, COMMON_PREFIX} from './Registry';
-import Base from './Base';
+import {Service} from '../../constants';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
 const TakeOver = Symbol.for('TakeOver');
 

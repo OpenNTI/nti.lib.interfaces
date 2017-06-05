@@ -1,7 +1,12 @@
-import './Package';
-import './RenderablePackage';
-import './ContentPackageRenderJob';
 import './Bundle';
+import './ContentPackageRenderJob';
 import './File';
 import './Folder';
+import './Package';
+import './PageInfo';
+import './Progress';
+import './RelatedWorkReference';
+import './RelatedWorkReferencePointer';
+import './RenderablePackage';
 import './Root';
+import './SharingPagePreference';

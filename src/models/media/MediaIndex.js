@@ -2,10 +2,10 @@ import {URL} from 'nti-commons';
 import Logger from 'nti-util-logger';
 import isEmpty from 'isempty';
 
-import {Service, Parent} from '../constants';
+import {Service, Parent} from '../../constants';
+import {parse} from '../Parser';
 
 import PageSourceModel from './MediaIndexBackedPageSource';
-import {parse} from './Parser';
 
 
 const logger = Logger.get('lib:models:MediaIndex');

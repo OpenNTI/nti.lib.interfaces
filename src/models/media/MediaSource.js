@@ -1,5 +1,6 @@
-import {model, COMMON_PREFIX} from './Registry';
-import Base from './Base';
+import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
+
 import MetaDataResolver from './MetaDataResolver';
 
 const resolver = Symbol('Resolver');

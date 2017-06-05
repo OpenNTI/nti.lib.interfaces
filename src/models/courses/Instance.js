@@ -13,8 +13,7 @@ import AssessmentCollectionStudentView from '../assessment/assignment/Collection
 import AssessmentCollectionInstructorView from '../assessment/assignment/CollectionInstructorView';
 import Roster from '../../stores/CourseRoster';
 import binDiscussions from '../../utils/forums-bin-discussions';
-//
-import MediaIndex from '../MediaIndex';
+import MediaIndex from '../media/MediaIndex';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
