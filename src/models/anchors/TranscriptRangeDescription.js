@@ -6,7 +6,7 @@ import TimeRangeDescription from './TimeRangeDescription';
 export default class TranscriptRangeDescription extends TimeRangeDescription {
 	static MimeType = COMMON_PREFIX + 'contentrange.transcriptrangedescription'
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, {Class: 'TranscriptRangeDescription'}, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 	}
 }

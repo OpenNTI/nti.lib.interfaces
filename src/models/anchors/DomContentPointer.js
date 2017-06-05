@@ -12,8 +12,8 @@ const VALID_ROLES = [
 export default class DomContentPointer extends ContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.domcontentpointer'
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, {Class: 'DomContentPointer'}, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 		this.validateRole(this.role);
 	}
 

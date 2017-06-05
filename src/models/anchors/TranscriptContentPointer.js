@@ -7,8 +7,8 @@ import TimeContentPointer from './TimeContentPointer';
 export default class TranscriptContentPointer extends TimeContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.transcriptcontentpointer'
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, {Class: 'TranscriptContentPointer'}, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 		this[parse]('pointer');
 	}
 

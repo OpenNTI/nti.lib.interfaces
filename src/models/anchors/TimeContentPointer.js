@@ -8,8 +8,8 @@ const VALID_ROLES = ['start', 'end'];
 export default class TimeContentPointer extends ContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.timecontentpointer'
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, {Class: 'TimeContentPointer'}, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 
 		//Ugh. The first implementation, prior to exposing to end-users, used seconds.
 		//Apparently, when the server started modeling this on their end, they didn't

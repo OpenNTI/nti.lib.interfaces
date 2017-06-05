@@ -6,8 +6,8 @@ import Base from './Base';
 export default class ContentRangeDescription extends Base {
 	static MimeType = COMMON_PREFIX + 'contentrange.contentrangedescription'
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, {Class: 'ContentRangeDescription'}, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 	}
 
 

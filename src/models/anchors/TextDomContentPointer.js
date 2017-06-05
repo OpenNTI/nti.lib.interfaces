@@ -8,8 +8,8 @@ import ElementDomContentPointer from './ElementDomContentPointer';
 export default class TextDomContentPointer extends DomContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.textdomcontentpointer'
 
-	constructor (service, parent, data, ...mixins) {
-		super(service, parent, data, {Class: 'TextDomContentPointer'}, ...mixins);
+	constructor (service, parent, data) {
+		super(service, parent, data);
 
 		this[parse]('ancestor');
 		this[parse]('contexts');
