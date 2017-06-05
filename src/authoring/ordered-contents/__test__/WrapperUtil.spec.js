@@ -1,5 +1,3 @@
-import sinon from 'sinon';
-
 import WrapperUtil from '../WrapperUtil';
 
 function makeLabel (id) {
@@ -67,9 +65,9 @@ describe('OrderedContents Tests', () => {
 
 
 
-		sinon.spy(fakeService, 'getObjectPlaceholder');
-		sinon.spy(fakeService, 'postParseResponse');
-		sinon.spy(fakeService, 'putParseResponse');
+		jest.spyOn(fakeService, 'getObjectPlaceholder');
+		jest.spyOn(fakeService, 'postParseResponse');
+		jest.spyOn(fakeService, 'putParseResponse');
 
 		orderedContents = new WrapperUtil(fakeObject, fakeService);
 	});
@@ -82,7 +80,7 @@ describe('OrderedContents Tests', () => {
 
 			orderedContents.append(item)
 				.then(() => {
-					expect(fakeService.postParseResponse).to.be.calledWith('orderedcontents/index/4', sinon.match({label: makeLabel(5)}));
+					expect(fakeService.postParseResponse).to.be.calledWith('orderedcontents/index/4', expect.objectContaining({label: makeLabel(5)}));
 					expect(fakeService.putParseResponse).not.have.been.called;
 
 					expect(orderedContents.length).toEqual(5);
@@ -98,7 +96,7 @@ describe('OrderedContents Tests', () => {
 
 			orderedContents.insertAt(item, 1)
 				.then(() => {
-					expect(fakeService.postParseResponse).to.be.calledWith('orderedcontents/index/1', sinon.match({label: makeLabel(5)}));
+					expect(fakeService.postParseResponse).to.be.calledWith('orderedcontents/index/1', expect.objectContaining({label: makeLabel(5)}));
 					expect(fakeService.putParseResponse).not.have.been.called;
 
 					expect(orderedContents.length).toEqual(5);
@@ -118,7 +116,7 @@ describe('OrderedContents Tests', () => {
 			orderedContents.replaceItem(oldItem, newItem)
 				.then(() => {
 					expect(fakeService.postParseResponse).not.been.called;
-					expect(fakeService.putParseResponse).to.be.calledWith('orderedcontents/index/0', sinon.match({
+					expect(fakeService.putParseResponse).to.be.calledWith('orderedcontents/index/0', expect.objectContaining({
 						label: makeLabel(5)
 					}));
 
@@ -136,7 +134,7 @@ describe('OrderedContents Tests', () => {
 			orderedContents.replaceAt(newItem, 1)
 				.then(() => {
 					expect(fakeService.postParseResponse).not.have.been.called;
-					expect(fakeService.putParseResponse).to.be.calledWith('orderedcontents/index/1', sinon.match({
+					expect(fakeService.putParseResponse).to.be.calledWith('orderedcontents/index/1', expect.objectContaining({
 						label: makeLabel(5)
 					}));
 
