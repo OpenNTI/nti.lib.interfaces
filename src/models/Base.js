@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 import Url from 'url';
 
 import QueryString from 'query-string';
-import {mixin, Parsing} from 'nti-commons';
+import {mixin as mixinToThis, Parsing} from 'nti-commons';
 import {ntiidEquals} from 'nti-lib-ntiids';
 import Logger from 'nti-util-logger';
 
@@ -59,13 +59,18 @@ export default class Base extends EventEmitter {
 			Object.assign(this, data);
 		}
 
-		mixin(this, Editable);
-		mixin(this, JSONValue);
-		mixin(this, Pendability);
+		mixinToThis(this, Editable);
+		mixinToThis(this, JSONValue);
+		mixinToThis(this, Pendability);
+
+		if (mixins.length && (!Base.deprecated || !Base.deprecated.has(this.constructor))) {
+			(Base.deprecated || (Base.deprecated = new Set())).add(this.constructor);
+			logger.warn('Move Mixins to @mixin() decorator', this.constructor.name);
+		}
 
 		// mixin
 		for (let partial of mixins) {
-			mixin(this, partial, data);
+			mixinToThis(this, partial, data);
 		}
 
 		let getMethod = x => 'get' + x.replace(
