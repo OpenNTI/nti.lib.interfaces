@@ -365,6 +365,12 @@ export default class DataServerInterface extends EventEmitter {
 
 
 	logInOAuth (url, successUrl, failureUrl) {
+		const href = this.computeOAuthUrl(url, successUrl, failureUrl);
+		global.location.replace(href);
+	}
+
+
+	computeOAuthUrl (url, successUrl, failureUrl) {
 		//OAuth logins only work client side, so this method will only work in a browser, and will fail on node.
 		let href = Url.parse(url);
 
@@ -374,9 +380,8 @@ export default class DataServerInterface extends EventEmitter {
 			failure: failureUrl
 		});
 
-		global.location.replace(href.format());
+		return href.format();
 	}
-
 
 	ping (context, username) {
 		username = username || (context && context.cookies && context.cookies.username);
