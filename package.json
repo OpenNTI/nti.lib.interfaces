@@ -17,7 +17,7 @@
     "start": "make check",
     "prepublish": "not-in-install && make || in-install",
     "preversion": "make test",
-    "postversion": "git push && git push --tags && npm publish"
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
