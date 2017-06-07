@@ -9,10 +9,10 @@ node_modules: package.json
 	@npm install
 	@touch node_modules
 
-check:
+check: node_modules
 	@eslint --ext .js,.jsx ./src
 
-test: node_modules clean check
+test: clean check
 	@jest --coverage
 
 clean:
