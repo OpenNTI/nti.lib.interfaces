@@ -1,4 +1,4 @@
-import {mixin} from 'nti-lib-decorators'
+import {mixin} from 'nti-lib-decorators';
 
 import { Parser as parse, DateFields } from '../../constants';
 import assets from '../../mixins/PresentationResources';
