@@ -75,6 +75,9 @@
     "roots": [
       "<rootDir>/src/"
     ],
+    "setupFiles": [
+      "babel-polyfill"
+    ],
     "testResultsProcessor": "./node_modules/jest-junit"
   },
   "jest-junit": {
