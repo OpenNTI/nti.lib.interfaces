@@ -20,6 +20,7 @@ export default {
 		'mime-types',
 		'moment',
 		'nti-commons',
+		'nti-lib-decorators',
 		'nti-lib-ntiids',
 		'nti-util-logger',
 		'path',
