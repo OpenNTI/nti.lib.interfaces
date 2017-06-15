@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import mixin from '../AdministrativeIdentity';
 
 describe('AdministrativeIdentity Mixin', () => {

@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import {Registry} from '../../index';
 
 const DomContentPointer = Registry.lookup('contentrange.domcontentpointer');

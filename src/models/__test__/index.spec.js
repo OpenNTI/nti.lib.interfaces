@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import {Registry, COMMON_PREFIX} from '../index';
 
 const KNOWN = [

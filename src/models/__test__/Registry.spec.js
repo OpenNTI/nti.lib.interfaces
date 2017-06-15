@@ -1,3 +1,4 @@
+/* eslint-env jest */
 // import Registry from '../Registry';
 
 describe('Model Registry', () => {

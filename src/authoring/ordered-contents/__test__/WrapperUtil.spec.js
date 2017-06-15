@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import WrapperUtil from '../WrapperUtil';
 
 function makeLabel (id) {

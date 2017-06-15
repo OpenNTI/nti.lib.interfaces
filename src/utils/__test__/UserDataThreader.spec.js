@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import isEmpty from 'isempty';
 
 import * as UserDataThreader from '../UserDataThreader';

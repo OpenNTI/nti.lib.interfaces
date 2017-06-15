@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import mixin from '../CourseIdentity';
 
 describe('CourseIdentity Mixin', () => {

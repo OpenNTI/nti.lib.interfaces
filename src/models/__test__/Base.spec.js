@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import Base from '../Base';
 
 describe ('Model: Base Class', () => {
