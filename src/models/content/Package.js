@@ -54,6 +54,17 @@ export default class Package extends Base {
 		};
 	}
 
+	get associationCount () {
+		return getAssociationCount(this);
+	}
+
+	getPlacementProvider (scope, accepts) {
+		return new PlacementProvider(scope, this, accepts);
+	}
+
+	getAssociations () {
+		return this.fetchLinkParsed('Lessons');
+	}
 
 	getDefaultAssetRoot () {
 		let {root} = this;
