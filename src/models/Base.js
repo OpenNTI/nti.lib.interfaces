@@ -205,6 +205,9 @@ export default class Base extends EventEmitter {
 		return ntiidEquals(this.NTIID, o.NTIID, true/*ignore "specific provider" differences*/);
 	}
 
+	getObjectHref () {
+		return this.href || this[Service].getObjectURL(this.getID());
+	}
 
 	refresh (newRaw) {
 		const service = this[Service];
@@ -223,9 +226,7 @@ export default class Base extends EventEmitter {
 
 		const fetch = newRaw ?
 			Promise.resolve(newRaw) :
-			this.href ?
-				service.getObjectAtURL(this.href, this.getID()) :
-				service.getObjectRaw(this.getID());
+			service.getObjectAtURL(this.getObjectHref(), this.getID());
 
 		const inflight = fetch.then(o => this.applyRefreshedData(o));
 
