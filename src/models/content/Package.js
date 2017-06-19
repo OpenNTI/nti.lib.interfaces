@@ -12,10 +12,13 @@ import assets from '../../mixins/PresentationResources';
 import MediaIndex from '../media/MediaIndex';
 import TablesOfContents from '../content/TablesOfContents';
 import ToC from '../content/XMLBasedTableOfContents';
+import PlacementProvider from '../../authoring/placement/providers/ContentPackage';
 
 const logger = Logger.get('models:content:Package');
 
 const VideoIndexReqest = Symbol('VideoIndexReqest');
+
+const getAssociationCount = (x) => x.LessonContainerCount;
 
 @model
 @mixin(assets)
@@ -64,6 +67,10 @@ export default class Package extends Base {
 
 	getAssociations () {
 		return this.fetchLinkParsed('Lessons');
+	}
+
+	getObjectHref () {
+		return this[Service].getObjectURL(this.getID());
 	}
 
 	getDefaultAssetRoot () {
