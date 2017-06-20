@@ -70,7 +70,12 @@ export default class Package extends Base {
 	}
 
 	getObjectHref () {
-		return this[Service].getObjectURL(this.getID());
+		return {
+			url: this[Service].getObjectURL(this.getID()),
+			headers: {
+				accept : this.MimeType
+			}
+		};
 	}
 
 	getDefaultAssetRoot () {
