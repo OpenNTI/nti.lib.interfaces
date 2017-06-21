@@ -2,10 +2,12 @@ import {Service} from '../../constants';
 
 import Vimeo from './MetaDataResolverForVimeo';
 import YouTube from './MetaDataResolverForYouTube';
+import Kaltura from './MetaDataResolverForKaltura';
 
 const services = {
 	vimeo: Vimeo,
-	youtube: YouTube
+	youtube: YouTube,
+	kaltura: Kaltura
 };
 
 const resolve = Promise.reject.bind(Promise, 'No resolver for service');
