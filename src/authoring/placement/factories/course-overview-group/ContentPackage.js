@@ -8,10 +8,14 @@ const TargetMimeType = 'application/vnd.nextthought.content';
 function getDataForItem (item) {
 	return {
 		MimeType: RefMimeType,
-		targetMimeType: TargetMimeType,
 		label: item.title,
 		title: item.title,
-		'Target-NTIID': item.NTIID
+		href: item.NTIID,
+		type: TargetMimeType,
+		icon: null,
+		description: '',
+		byline: '',
+		target: item.NTIID
 	};
 }
 
