@@ -31,7 +31,7 @@ function generateID (name, context) {
 	//look for these things and yank them out.  This was happening
 	//when manipulating the list by the object url (say for deletion).
 	name = (name + '').replace(/@@|@\(/ig, '');
-	name = name.replace(/[^0-9A-Z\-@\+\._]/ig, '');
+	name = name.replace(/[^0-9A-Z\-@+._]/ig, '');
 	return name + '-' + context.getID() + '_' + uuid();
 }
 
@@ -118,9 +118,9 @@ export default class Contacts extends EventEmitter {
 
 			return this[CREATE](ContactsGroup)
 				.catch(e => e.statusCode === 409
-						//409? ok... it was created by another process (or a previous request)...fetch it
-						? this.get(RESERVED_GROUP_ID).then(x => this[DATA].unshift(x))
-						: Promise.reject(Object.assign(e, {ContactsGroup}))
+					//409? ok... it was created by another process (or a previous request)...fetch it
+					? this.get(RESERVED_GROUP_ID).then(x => this[DATA].unshift(x))
+					: Promise.reject(Object.assign(e, {ContactsGroup}))
 				);
 		}
 	}
@@ -132,8 +132,8 @@ export default class Contacts extends EventEmitter {
 			.then(x => parse(this[Service], null, x))
 
 			.then(x => this[DATA].find(i => i.getID() === x.getID())
-					? Promise.reject({statusCode: 409, message: 'Already contains item??'})
-					: (this[DATA].push(x) && x)
+				? Promise.reject({statusCode: 409, message: 'Already contains item??'})
+				: (this[DATA].push(x) && x)
 			)
 
 			.then(x => x.on('change', this.onChange))

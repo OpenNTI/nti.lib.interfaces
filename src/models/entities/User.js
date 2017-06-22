@@ -159,18 +159,18 @@ export default class User extends Entity {
 						body
 					})
 
-					.then(blogEntry => {
-						let next = Promise.resolve();
-						if (shareWith) {
-							let others = shareWith.filter(x => !x.publish);
-							let publish = others.length !== shareWith.length;
-							next = blogEntry.share(publish, others);
-						}
+						.then(blogEntry => {
+							let next = Promise.resolve();
+							if (shareWith) {
+								let others = shareWith.filter(x => !x.publish);
+								let publish = others.length !== shareWith.length;
+								next = blogEntry.share(publish, others);
+							}
 
-						return next.then(()=> blogEntry);
-					})
+							return next.then(()=> blogEntry);
+						})
 
-					.then(x => this.insert(x));
+						.then(x => this.insert(x));
 				}
 
 			});

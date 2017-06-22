@@ -68,10 +68,10 @@ export default class CollectionStudentView extends Base {
 						)), [])
 					.filter(x => x.date)
 					.sort((a, b) => b.date - a.date),
-					{
-						markSeen: () => history.markSeen()
-					})
-				);
+				{
+					markSeen: () => history.markSeen()
+				})
+			);
 
 	}
 }

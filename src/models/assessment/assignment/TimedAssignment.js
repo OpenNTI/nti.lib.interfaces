@@ -75,7 +75,7 @@ export default class TimedAssignment extends Assignment {
 		let start = this.getStartTime();
 
 		return !start ?
-					max :
-					(max - (now - start));
+			max :
+			(max - (now - start));
 	}
 }

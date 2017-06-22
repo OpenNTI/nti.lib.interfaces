@@ -219,7 +219,7 @@ export default class Assignment extends Base {
 				//Drop savepoints that have missmatched versions
 					? Promise.reject(`Version Missmatch: SavePoint(${getVersion(save)}) != Assignment(${this.version})`)
 					: save
-				);
+			);
 	}
 
 

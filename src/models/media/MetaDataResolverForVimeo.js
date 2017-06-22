@@ -13,20 +13,20 @@ export default class MetaDataResolverForVimeo {
 		let url = URL.replace('{0}', id);
 		// console.log(url);
 		return service.get(url)
-				.then(o=> o[0] || o)
-				.then(o=>
-					({
-						poster: o.thumbnail_url,
-						thumbnail: o.thumbnail_url,
-						title: o.title,
-						description: o.description
-					})
-				)
-				.catch(failure => ({
-					failure,
-					poster: FAIL,
-					thumbnail: FAIL
-				}));
+			.then(o=> o[0] || o)
+			.then(o=>
+				({
+					poster: o.thumbnail_url,
+					thumbnail: o.thumbnail_url,
+					title: o.title,
+					description: o.description
+				})
+			)
+			.catch(failure => ({
+				failure,
+				poster: FAIL,
+				thumbnail: FAIL
+			}));
 
 		/*
 		author_name: "Oklahoma State University"

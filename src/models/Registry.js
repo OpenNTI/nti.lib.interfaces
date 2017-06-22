@@ -50,8 +50,8 @@ export default class Registry {
 		}
 
 		const types = (Array.isArray(o.MimeType) ? o.MimeType : [o.MimeType])
-						.filter(Boolean)
-						.map(trimCommonPrefix);
+			.filter(Boolean)
+			.map(trimCommonPrefix);
 
 		for (let type of types) {
 			if (this[MAP].has(type)) {

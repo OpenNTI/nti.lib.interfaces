@@ -35,8 +35,8 @@ export default class Groups extends EntityStore {
 			.then(x => parse(this[Service], null, x))
 
 			.then(x => this['get:Data']().find(i => i.getID() === x.getID())
-					? Promise.reject('Already contains item??')
-					: (this['get:Data']().push(x) && x)
+				? Promise.reject('Already contains item??')
+				: (this['get:Data']().push(x) && x)
 			)
 
 			.then(x => x.on('change', this.onChange))

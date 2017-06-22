@@ -6,7 +6,7 @@ import {model, COMMON_PREFIX} from '../Registry';
 //
 import Base from '../Base';
 
-const ENDS_IN_LETTER_REGEX = /\s[a-fiw\-]$/i;
+const ENDS_IN_LETTER_REGEX = /\s[a-fiw-]$/i;
 
 const PRIVATE = new WeakMap();
 

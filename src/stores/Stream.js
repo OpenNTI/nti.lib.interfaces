@@ -179,11 +179,11 @@ export default class Stream extends EventEmitter {
 			const getHref = (ref, params = {}) => ref && (
 				ref = Url.parse(ref),
 				ref.search = QueryString.stringify(
-								Object.assign(
-									QueryString.parse(ref.search),
-									params
-								)
-							),
+					Object.assign(
+						QueryString.parse(ref.search),
+						params
+					)
+				),
 				ref.format()
 			);
 

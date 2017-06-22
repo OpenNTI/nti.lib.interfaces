@@ -11,7 +11,7 @@ export default {
 		let service = this[Service];
 
 		let courseInstanceUrl = (this.getLink('AssignmentHistoryItem') || this.href || '')
-									.replace(/\/AssignmentHistories.*/, '');
+			.replace(/\/AssignmentHistories.*/, '');
 
 		let assignmentId = this.AssignmentId;
 
@@ -21,7 +21,7 @@ export default {
 		a = (a ?
 		//... the assignment title is already known... use it.
 			Promise.resolve(a) :
-		//Otherwise, load the assignment object
+			//Otherwise, load the assignment object
 			service.getObjectRaw(assignmentId)
 		)
 		//then... Pluck the assignment object title...

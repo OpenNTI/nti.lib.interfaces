@@ -26,8 +26,8 @@ export default {
 				const {question_set: questionSet} = part || {};
 
 				return questionSet ?
-						placeItemIn(item, questionSet, scope) :
-						assignment.save({parts: [getDataForItem(item)]});
+					placeItemIn(item, questionSet, scope) :
+					assignment.save({parts: [getDataForItem(item)]});
 			});
 	},
 

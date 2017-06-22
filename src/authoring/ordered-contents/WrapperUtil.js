@@ -49,11 +49,11 @@ function getQueueFor (obj) {
 
 function getLinkFromObj (obj) {
 	return obj && (obj.getOrderedContentsLink ?
-						obj.getOrderedContentsLink() :
-						obj.getLink ?
-							obj.getLink(LINK_NAME) :
-							''
-					);
+		obj.getOrderedContentsLink() :
+		obj.getLink ?
+			obj.getLink(LINK_NAME) :
+			''
+	);
 }
 
 
@@ -266,13 +266,13 @@ export default class OrderedContents {
 				return this[Service][replace ? 'putParseResponse' : 'postParseResponse'](insertLink, getPostData(placeholder));
 			})
 			//Make sure we wait at least a little bit
-			.then(wait.min(wait.SHORT))
-			.then(savedItem => placeholder[REPLACE_WITH](savedItem))
-			.catch(reason => {
-				placeholder[SET_ERROR](reason);
+				.then(wait.min(wait.SHORT))
+				.then(savedItem => placeholder[REPLACE_WITH](savedItem))
+				.catch(reason => {
+					placeholder[SET_ERROR](reason);
 
-				return Promise.reject(reason);
-			});
+					return Promise.reject(reason);
+				});
 		};
 
 		return this[OPTIMISTICALLY_ADD_AT](item, index, delaySave, replace)
@@ -408,30 +408,30 @@ export default class OrderedContents {
 		}
 
 		return deleteRequest
-				.then(wait.min(wait.SHORT))
-				.then(() => {
-					//After its removed from the server, remove it from the ordered contents
-					orderedContents = orderedContents.filter(a => a.NTIID !== item.NTIID);
-					obj[orderedContentsField] = orderedContents;
-					obj.onChange();
+			.then(wait.min(wait.SHORT))
+			.then(() => {
+				//After its removed from the server, remove it from the ordered contents
+				orderedContents = orderedContents.filter(a => a.NTIID !== item.NTIID);
+				obj[orderedContentsField] = orderedContents;
+				obj.onChange();
 
-					return () => {
-						this.insertAt(item, index);
-					};
-				})
-				.catch((reason) => {
-					delete item.isDeleting;
+				return () => {
+					this.insertAt(item, index);
+				};
+			})
+			.catch((reason) => {
+				delete item.isDeleting;
 
-					//If the server fails, leave it in the ordered contents and mark it with an error
-					defineNonEnumerableProperty(item, 'isNotDeleted', true);
+				//If the server fails, leave it in the ordered contents and mark it with an error
+				defineNonEnumerableProperty(item, 'isNotDeleted', true);
 
 
-					defineNonEnumerableProperty(item, 'error', reason);
+				defineNonEnumerableProperty(item, 'error', reason);
 
-					obj.onChange();
+				obj.onChange();
 
-					return Promise.reject(reason);
-				});
+				return Promise.reject(reason);
+			});
 
 	}
 

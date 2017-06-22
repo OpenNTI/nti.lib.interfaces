@@ -32,12 +32,12 @@ export default class Forum extends Base {
 
 	getBin () {
 		const openBin = RegExp.prototype.test.bind(/open/i);
-		const forCreditBin = RegExp.prototype.test.bind(/in\-class/i);
+		const forCreditBin = RegExp.prototype.test.bind(/in-class/i);
 		const title = this.title || '';
 
 		return	openBin(title) ?		'Open' :
-				forCreditBin(title) ?	'ForCredit' :
-										'Other';
+			forCreditBin(title) ?	'ForCredit' :
+				'Other';
 	}
 
 	getRecentActivity (size) {

@@ -35,14 +35,14 @@ export default class Community extends Entity {
 		})
 
 		//Once a forum is picked, assign the href...
-		.then(x => {
-			href = x.getLink('add');//this sets the href for our "postToActivity" augmented method.
+			.then(x => {
+				href = x.getLink('add');//this sets the href for our "postToActivity" augmented method.
 
-			//return the value to be the Stream Store's data source.
-			return source //if there is a source set,
-				? x.getLink('contents') // use its contents link,
-				: this.getLink('Activity'); // otherwise, use the Community's Activity link.
-		});
+				//return the value to be the Stream Store's data source.
+				return source //if there is a source set,
+					? x.getLink('contents') // use its contents link,
+					: this.getLink('Activity'); // otherwise, use the Community's Activity link.
+			});
 
 
 		store = new Stream(
@@ -75,9 +75,9 @@ export default class Community extends Entity {
 						title,
 						body
 					})
-					.then(topic => topic.postToLink('publish')
-										.then(()=> topic))
-					.then(x => this.insert(x));
+						.then(topic => topic.postToLink('publish')
+							.then(()=> topic))
+						.then(x => this.insert(x));
 				}
 
 			});

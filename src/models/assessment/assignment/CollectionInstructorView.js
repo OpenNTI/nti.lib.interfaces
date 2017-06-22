@@ -18,9 +18,9 @@ const keyForUser = userId => userId != null ? `${ASSESSMENT_HISTORY_LINK}:${user
 const ASSESSMENT_HISTORY_LINK_PREFIX = new RegExp('^' + keyForUser(''));
 
 const forUser = (ref, userId) => (
-					ref = Url.parse(ref),
-					ref.pathname = path.join(path.dirname(ref.pathname), encodeURIComponent(userId)),
-					ref.format());
+	ref = Url.parse(ref),
+	ref.pathname = path.join(path.dirname(ref.pathname), encodeURIComponent(userId)),
+	ref.format());
 
 const PRIVATE = new WeakMap();
 const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
@@ -140,8 +140,8 @@ export default class CollectionInstructorView extends Base {
 		if (!p.activityStore) {
 
 			const baseActivity = (lastViewed) => this.getAssignments()
-						.reduce((events, a) => events.concat(this.deriveEvents(a, null, lastViewed)), [])
-						.filter(x => x.date);
+				.reduce((events, a) => events.concat(this.deriveEvents(a, null, lastViewed)), [])
+				.filter(x => x.date);
 
 			//parent(CourseInstance) -> CourseActivity
 			const href = this.parent().getLink('CourseActivity');

@@ -76,8 +76,8 @@ export default class Base extends EventEmitter {
 		}
 
 		let getMethod = x => 'get' + x.replace(
-								PASCAL_CASE_REGEX,
-								(_, c)=>(c || '').toUpperCase());
+			PASCAL_CASE_REGEX,
+			(_, c)=>(c || '').toUpperCase());
 
 		for (let fieldName of dateFields) {
 			let methodName = getMethod(fieldName);
@@ -365,9 +365,9 @@ export default class Base extends EventEmitter {
 
 			let url = Url.parse(link);
 			url.search = QueryString.stringify(
-							Object.assign(
-								QueryString.parse(url.search),
-								params));
+				Object.assign(
+					QueryString.parse(url.search),
+					params));
 
 			link = url.format();
 		}

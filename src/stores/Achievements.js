@@ -24,8 +24,8 @@ export default class Achievements extends EventEmitter {
 		//this.onChange = this.onChange.bind(this);
 		let parseList = parseListFn(this, service);
 		let loadBin = (name, href) => service.get(href)
-											.then(o => parseList(o.Items || []))
-											.then(value=> Object.defineProperty(this, name, {value}));
+			.then(o => parseList(o.Items || []))
+			.then(value=> Object.defineProperty(this, name, {value}));
 
 		let start = Date.now();
 		let loads = [];

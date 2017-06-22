@@ -8,7 +8,7 @@ export default class SuggestedContacts extends Base {
 	constructor (service, data) {
 		super(service, null, data);
 
-	/*
+		/*
 		{
 			"Class": "SuggestedContacts",
 			"ItemCount": 0,

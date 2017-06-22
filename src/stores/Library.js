@@ -130,9 +130,9 @@ export default class Library extends EventEmitter {
 		let referencedPackages = bundles.reduce((set, bundle) => set.concat(bundle.ContentPackages), []);
 
 		let packs = unique([].concat(
-				referencedPackages,
-				bundles //Also search over Bundles as they have the same "interface" as Packages.
-			));
+			referencedPackages,
+			bundles //Also search over Bundles as they have the same "interface" as Packages.
+		));
 
 		return packs.reduce((found, pkg)=>
 			found || pkg.getID() === packageId && pkg, null);

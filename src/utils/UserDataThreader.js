@@ -26,7 +26,7 @@ export function topLevelOnly (item, ids) {
 	return item && (!item.references || item.references
 		.filter(x => ids.includes(x))
 		.length === 0
-		);
+	);
 }
 
 
@@ -94,10 +94,10 @@ function getData (data) {
 	let isBins = bins && bins.every(x => Array.isArray(data[x]));
 
 	return isArray ?
-				data :
-				isBins ?
-					bins.reduce((o, x) => o.concat(x), []) :
-					[data];
+		data :
+		isBins ?
+			bins.reduce((o, x) => o.concat(x), []) :
+			[data];
 }
 
 
@@ -109,8 +109,8 @@ export function cleanupTree (tree) {
 
 		//turn children object into array
 		o[CHILDREN] = Array.isArray(o[CHILDREN]) ?
-						o[CHILDREN] :
-						typeof o[CHILDREN] === 'object' ? Object.values(o[CHILDREN]) : void 0;
+			o[CHILDREN] :
+			typeof o[CHILDREN] === 'object' ? Object.values(o[CHILDREN]) : void 0;
 
 		if (o[PARENT]) { delete tree[k]; }
 		if (o[CHILDREN].length === 0) {

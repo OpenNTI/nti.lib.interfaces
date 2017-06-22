@@ -122,8 +122,8 @@ function get (service, url, ignoreCache) {
 	let cached = cache.get(url), result;
 	if (!cached || ignoreCache) {
 		result = service.get(url)
-		.then(data => cache.set(url, data) && data)
-		.catch(()=>({titles: [], Items: []}));
+			.then(data => cache.set(url, data) && data)
+			.catch(()=>({titles: [], Items: []}));
 	} else {
 		result = Promise.resolve(cached);
 	}

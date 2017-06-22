@@ -63,7 +63,7 @@ export default class DataServerInterface extends EventEmitter {
 
 		const start = Date.now();
 		const url = Url.parse(this.config.server)
-						.resolve(options.url || '');
+			.resolve(options.url || '');
 
 
 		const {data} = options;
@@ -223,10 +223,10 @@ export default class DataServerInterface extends EventEmitter {
 
 				//Parsing response
 				.then(response => abortFlag
-									? Promise.reject('Aborted')
-									: response.text()//we don't use .json() because we need to fallback if it doesn't parse.
-										.then(parseBody)
-										.then(body => ({response, body})))
+					? Promise.reject('Aborted')
+					: response.text()//we don't use .json() because we need to fallback if it doesn't parse.
+						.then(parseBody)
+						.then(body => ({response, body})))
 
 				//Handle cookies and validate mimes. (server side stuff mostly)
 				.then(({body, response}) => {
@@ -331,7 +331,7 @@ export default class DataServerInterface extends EventEmitter {
 		}
 
 		promise = promise.then(doc => doc.waitForPending()
-				.then(() => Promise.resolve(doc)));
+			.then(() => Promise.resolve(doc)));
 
 		//once we have an instance, stuff it in the cache so we don't keep building it.
 		promise.then(set, () => {});//This forked promise needs to handle the rejection (the noop).

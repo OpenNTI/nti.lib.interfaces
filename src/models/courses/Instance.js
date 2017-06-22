@@ -86,9 +86,9 @@ export default class Instance extends Base {
 				+ 'Enrollment: %s\n'
 				+ 'There was a problem resolving the CatalogEntry!\n' + t,
 
-				this.NTIID || this.OID,
-				parent ? (parent.NTIID || parent.OID) : 'Unknown',
-				x);
+			this.NTIID || this.OID,
+			parent ? (parent.NTIID || parent.OID) : 'Unknown',
+			x);
 		}
 	}
 
@@ -343,11 +343,11 @@ export default class Instance extends Base {
 		if (!this[key] || force) {
 			//We have to wait for the CCE to load to know if its in preview mode or not.
 			this[key] = this.waitForPending().then(()=>
-					//If preview, block outline
-					this.CatalogEntry.Preview ?
-						Promise.reject('Preview') :
-						//not preview, Load contents...
-						this.Outline.getContent(options));
+				//If preview, block outline
+				this.CatalogEntry.Preview ?
+					Promise.reject('Preview') :
+				//not preview, Load contents...
+					this.Outline.getContent(options));
 		}
 
 		//Simple Promise wrapper... if the wrapped promise rejects, this will also reject.

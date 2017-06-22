@@ -166,9 +166,9 @@ export default {
 
 				return Promise.all(pendingChildren) //These will resolve to lists... so
 				//flatten the list-of-lists to a single list.
-				.then(x => x.reduce((l, a) => l.concat(a), []))
+					.then(x => x.reduce((l, a) => l.concat(a), []))
 				//then start the search over with the new children
-				.then(get);
+					.then(get);
 			}
 
 			return item;
@@ -213,7 +213,7 @@ export default {
 				children = [children];
 			}
 			return Promise.all(children || [])
-					.then(c => Promise.all(  c.map(  x => x.getReplies().then(() => x)  )  ));
+				.then(c => Promise.all(  c.map(  x => x.getReplies().then(() => x)  )  ));
 		}
 
 		if (children) {
@@ -265,7 +265,7 @@ export default {
 
 
 	appendNewChild (newChild) {
-		this.ReferencedByCount ++;
+		this.ReferencedByCount++;
 		newChild[PARENT] = this;
 
 		let children = this[CHILDREN] || [];

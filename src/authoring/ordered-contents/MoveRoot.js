@@ -57,9 +57,9 @@ export default class MoveRoot {
 			move = Promise.resolve(record);
 		} else {
 			move = this[Service].post(link, data)
-						.then((resp) => {
-							return this[ONMOVE](record, newParent, originalParent, resp);
-						});
+				.then((resp) => {
+					return this[ONMOVE](record, newParent, originalParent, resp);
+				});
 		}
 
 		return move;
@@ -80,12 +80,12 @@ export default class MoveRoot {
 		}
 
 		return update
-				.then((parent) => {
-					if (!parent) { return record; }
+			.then((parent) => {
+				if (!parent) { return record; }
 
-					let orderedContents = new OrderedContents(parent);
+				let orderedContents = new OrderedContents(parent);
 
-					return orderedContents.findItem(record);
-				});
+				return orderedContents.findItem(record);
+			});
 	}
 }

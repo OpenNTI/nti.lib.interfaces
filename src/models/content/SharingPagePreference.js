@@ -32,9 +32,9 @@ export default class SharingPagePreference extends Base {
 		this.resolveValueToEntities = () => this.waitForPending();
 
 		let resolving = this.value.map(v =>
-				typeof v !== 'string'
-					? v
-					: this[Service].resolveEntity(v).catch(()=> v));
+			typeof v !== 'string'
+				? v
+				: this[Service].resolveEntity(v).catch(()=> v));
 
 		Promise.all(resolving)
 			.then(v => Object.assign(this.value, v));

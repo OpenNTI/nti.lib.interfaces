@@ -68,8 +68,8 @@ export default class CourseCatalogEntry extends Base {
 			instructors = this.Instructors;
 
 		return (instructors && instructors
-								.filter(n=>!taRe.test(n.JobTitle))
-								.map(n=>n.Name).join(', ')
-				) || '';
+			.filter(n=>!taRe.test(n.JobTitle))
+			.map(n=>n.Name).join(', ')
+		) || '';
 	}
 }

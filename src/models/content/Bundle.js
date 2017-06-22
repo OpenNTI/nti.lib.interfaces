@@ -37,7 +37,7 @@ export default class Bundle extends Base {
 			this.getAsset('landing').then(setAndEmit(this, 'icon')),
 			this.getAsset('thumb').then(setAndEmit(this, 'thumb')),
 			this.getAsset('background').then(setAndEmit(this, 'background'))
-			);
+		);
 	}
 
 
@@ -100,14 +100,14 @@ export default class Bundle extends Base {
 
 	getDefaultAssetRoot () {
 		let root = ([this].concat(this.ContentPackages))
-				.reduce((agg, o) => agg || o.root, null);
+			.reduce((agg, o) => agg || o.root, null);
 
 		if (!root) {
 			if (this.ContentPackages.length > 0) {
 				logger.warn('No root for bundle: %s %o',
 					this.getID(),
 					this.ContentPackages.map(o => o.getID())
-					);
+				);
 			}
 			return '';
 		}
@@ -149,6 +149,6 @@ export default class Bundle extends Base {
 
 	getVideoIndex () {
 		return Promise.all(this.map(pkg=>pkg.getVideoIndex()))
-				.then(indices => MediaIndex.combine(indices));
+			.then(indices => MediaIndex.combine(indices));
 	}
 }

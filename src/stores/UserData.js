@@ -38,8 +38,8 @@ export default class UserData extends EventEmitter {
 		let getBin = name => (this.Items[name] = (this.Items[name] || []));
 
 		let pushUnique = (array, item) => array.map(x=>x.getID()).includes(item.getID()) ?
-							logger.warn('Item is not unique in dataset:', item) :
-							array.push(item);
+			logger.warn('Item is not unique in dataset:', item) :
+			array.push(item);
 
 		let bin = (name, item) => pushUnique(getBin(name), item);
 

@@ -40,7 +40,7 @@ export default class MediaSource extends Base {
 
 	getThumbnail () {
 		return this.getProperty('thumbnail')
-				.then(()=>this.thumbnail || this.poster);
+			.then(()=>this.thumbnail || this.poster);
 	}
 
 

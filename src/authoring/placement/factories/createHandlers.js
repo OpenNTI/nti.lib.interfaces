@@ -14,8 +14,8 @@ function create (handles, subHandlers, useContainer) {
 			const handler = getHandlerFor(item, container);
 
 			return handler && handler.placeItemIn ?
-					handler.placeItemIn(item, container, scope) :
-					Promise.reject('No handler to place item in');
+				handler.placeItemIn(item, container, scope) :
+				Promise.reject('No handler to place item in');
 		},
 
 
@@ -23,8 +23,8 @@ function create (handles, subHandlers, useContainer) {
 			const handler = getHandlerFor(item, container);
 
 			return handler && handler.removeItemFrom ?
-					handler.removeItemFrom(item, container, scope) :
-					Promise.reject('No handler to remove item from');
+				handler.removeItemFrom(item, container, scope) :
+				Promise.reject('No handler to remove item from');
 		}
 	};
 }

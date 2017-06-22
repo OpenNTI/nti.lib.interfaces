@@ -119,11 +119,11 @@ export default class FileSystemEntity extends Base {
 
 	mkdir () {
 		return this.postToLink('mkdir', {}, true)
-		.catch(er => Promise.reject(er !== NO_LINK ? er
-			: Object.assign(new Error(`New folders are not permitted under ${this.getFileName()}.`), {
-				code: 'PermissionDeniedNoLink',
-				statusCode: 401
-			})));
+			.catch(er => Promise.reject(er !== NO_LINK ? er
+				: Object.assign(new Error(`New folders are not permitted under ${this.getFileName()}.`), {
+					code: 'PermissionDeniedNoLink',
+					statusCode: 401
+				})));
 	}
 
 

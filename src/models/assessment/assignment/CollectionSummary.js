@@ -229,13 +229,13 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 
 		if (!data.cache) {
 			data.cache = parent.getAssignments()
-							.filter(a => history.isRelevantFor(a.getID()))
-							.map(assignment => new AssignmentSummary(
-													assignment,
-													history.getItem(assignment.getID()),
-													history.creator
-												)
-											);
+				.filter(a => history.isRelevantFor(a.getID()))
+				.map(assignment => new AssignmentSummary(
+					assignment,
+					history.getItem(assignment.getID()),
+					history.creator
+				)
+				);
 
 			if (sortOn) {
 				data.cache.sort(comparatorFor(sortOn, sortOrder));

@@ -113,8 +113,8 @@ export default class Collection extends Base {
 		const getItems = o => o.Items || o;
 		const isIgnoredKey = RegExp.prototype.test.bind(/^href$/i);
 		const consume = (obj, dict) => Object.keys(getItems(dict))
-											.filter(x => !isIgnoredKey(x))
-											.forEach(key => process(key, getItems(dict)[key], obj));
+			.filter(x => !isIgnoredKey(x))
+			.forEach(key => process(key, getItems(dict)[key], obj));
 
 		const data = {};
 		initPrivate(this, data);

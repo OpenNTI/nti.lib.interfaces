@@ -368,9 +368,9 @@ export default class ServiceDocument extends EventEmitter {
 		}
 
 		return Promise.all(ntiids.map(n => this.getObjectRaw(n)))
-				.then(results =>
-					(!Array.isArray(results) ? [results] : results)
-						.map(o => o && o.MimeType ? o : null));
+			.then(results =>
+				(!Array.isArray(results) ? [results] : results)
+					.map(o => o && o.MimeType ? o : null));
 	}
 
 
@@ -415,9 +415,9 @@ export default class ServiceDocument extends EventEmitter {
 		return resolve
 			.then(o => parse(this, parent || this, o))
 			.then(model => model && model.waitForPending
-					? model.waitForPending()
-					: model
-				);
+				? model.waitForPending()
+				: model
+			);
 	}
 
 
@@ -569,8 +569,8 @@ export default class ServiceDocument extends EventEmitter {
 
 	getCollection (title, workspaceName) {
 		let workspace = workspaceName ?
-					this.getWorkspace(workspaceName) :
-					this.getUserWorkspace(),
+				this.getWorkspace(workspaceName) :
+				this.getUserWorkspace(),
 			items = (workspace && workspace.Items) || [];
 
 		for (let o of items) {
@@ -635,9 +635,9 @@ export default class ServiceDocument extends EventEmitter {
 
 		url = Url.parse(url);
 		url.search = QueryString.stringify(
-						Object.assign(
-							QueryString.parse(url.search),
-							{success: succssURL}));
+			Object.assign(
+				QueryString.parse(url.search),
+				{success: succssURL}));
 
 		return url.format();
 	}
