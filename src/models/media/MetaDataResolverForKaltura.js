@@ -1,4 +1,4 @@
-export default class MetaDataResolverForVimeo {
+export default class MetaDataResolverForKaltura {
 
 	static resolve (service, source) {
 		let id = source.source;
