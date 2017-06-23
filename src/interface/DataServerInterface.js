@@ -351,8 +351,8 @@ export default class DataServerInterface extends EventEmitter {
 			username = username.username || void 0;
 		}
 
-		let auth = password ? ('Basic ' + btoa(username + ':' + password)) : undefined;
-		let options = {
+		const auth = password ? ('Basic ' + btoa(username + ':' + password)) : undefined;
+		const options = {
 			url: url,
 			method: 'GET',
 			xhrFields: { withCredentials: true },
@@ -383,6 +383,7 @@ export default class DataServerInterface extends EventEmitter {
 		return href.format();
 	}
 
+
 	ping (context, username) {
 		username = username || (context && context.cookies && context.cookies.username);
 
@@ -403,7 +404,6 @@ export default class DataServerInterface extends EventEmitter {
 						//Not logged in... we need the urls
 						? {
 							pong,
-							//FIXME: This version of "links" is deprecated... use getLink() or hasLink() on the result object.
 							links: toMap(getLinks(pong)),
 							getLink: (rel) => getLink(pong, rel),
 							hasLink: (rel) => !!getLink(pong, rel)
@@ -426,7 +426,6 @@ export default class DataServerInterface extends EventEmitter {
 				const result = {
 					pong,
 					handshake,
-					//FIXME: This version of "links" is deprecated... use getLink() or hasLink() on the result object.
 					links: {
 						...toMap(getLinks(pong)),
 						...toMap(getLinks(handshake))
@@ -435,7 +434,7 @@ export default class DataServerInterface extends EventEmitter {
 					hasLink: (rel) => !!(getLink(handshake, rel) || getLink(pong, rel))
 				};
 
-				if (!getLink(handshake, 'logon.continue')) {
+				if (!result.getLink('logon.continue')) {
 					result.reason = 'Not authenticated, no continue after handshake.';
 					return Promise.reject(result);
 				}
@@ -447,7 +446,7 @@ export default class DataServerInterface extends EventEmitter {
 	deleteTOS (context) {
 		return this.ping(context)
 			.then(result => {
-				let link = result.links[TOS_NOT_ACCEPTED];
+				let link = result.getLink(TOS_NOT_ACCEPTED);
 				if (link) {
 					return this.delete(link, context);
 				}
@@ -461,7 +460,7 @@ export default class DataServerInterface extends EventEmitter {
 		return this.ping(context)
 			.then(result =>
 
-				this.post(result.links['logon.forgot.username'], {
+				this.post(result.getLink('logon.forgot.username'), {
 					[AsFormSubmission]: true,
 					email
 				}, context)
@@ -474,7 +473,7 @@ export default class DataServerInterface extends EventEmitter {
 		return this.ping(context)
 			.then(result =>
 
-				this.post(result.links['logon.forgot.passcode'], {
+				this.post(result.getLink('logon.forgot.passcode'), {
 					[AsFormSubmission]: true,
 					email, username,
 					success: returnURL
@@ -487,7 +486,7 @@ export default class DataServerInterface extends EventEmitter {
 	resetPassword (username, password, id, context) {
 		return this.ping(context)
 			.then(result =>
-				this.post(result.links['logon.reset.passcode'], {
+				this.post(result.getLink('logon.reset.passcode'), {
 					[AsFormSubmission]: true,
 					id, username, password
 				}, context)
@@ -498,7 +497,7 @@ export default class DataServerInterface extends EventEmitter {
 	preflightAccountCreate (fields, context) {
 		return this.ping(context)
 			.then(result =>
-				this.post(result.links['account.preflight.create'], fields, context)
+				this.post(result.getLink('account.preflight.create'), fields, context)
 			);
 	}
 
@@ -506,7 +505,7 @@ export default class DataServerInterface extends EventEmitter {
 	createAccount (fields, context) {
 		return this.ping(context)
 			.then(result =>
-				this.post(result.links['account.create'], fields, context)
+				this.post(result.getLink('account.create'), fields, context)
 			);
 	}
 
