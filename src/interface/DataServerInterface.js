@@ -21,6 +21,13 @@ import {
 	TOS_NOT_ACCEPTED
 } from '../constants';
 
+const CONTINUE = 'logon.continue';
+const CONTINUE_ANONYMOUSLY = ' logon.continue-anonymously';
+const HANDSHAKE = 'logon.handshake';
+
+const SERVICE_DATA_CACHE_KEY = 'service-doc';
+const SERVICE_INST_CACHE_KEY = 'service-doc-instance';
+
 const logger = Logger.get('DataServerInterface');
 
 const btoa = global.bota || base64decode;
@@ -303,35 +310,54 @@ export default class DataServerInterface extends EventEmitter {
 	}
 
 
-	getServiceDocument (context) {
-		let cache = DataCache.getForContext(context),
-			cached = cache.get('service-doc-instance'),
-			promise;
+	getServiceDocument (context, options) {
+		const {refreshing} = options || {};
+		const cache = DataCache.getForContext(context);
+		const cached = cache.get(SERVICE_INST_CACHE_KEY);
 
-		let set = x => cache.setVolatile('service-doc-instance', x);
+		const set = x => cache.setVolatile(SERVICE_INST_CACHE_KEY, x);
 
-		//Do we have an instance?
-		if (cached) {
+		//Do we have an instance? (and we're not refreshing...)
+		if (cached && !refreshing) {
 			return Promise.resolve(cached);
 		}
 
-		//Do we have the data to build an instance?
-		cached = cache.get('service-doc');
-		if (cached) {
-			promise = Promise.resolve(new Service(cached, this, context));
-		//No? okay... get the data and build and instance
-		}
-		else {
-			promise = this.ping(context)
-				.then(result => result.getLink('logon.continue') || Promise.reject('No Service URL'))
-				.then(serviceUrl => this.get(serviceUrl, context))
-				.then(json =>
-					cache.set('service-doc', json) &&
-					new Service(json, this, context));
-		}
+		const data = cache.get(SERVICE_DATA_CACHE_KEY);
+		const promise = (
+			//Do we have the data to build an instance? (are we're not freshing...)
+			(data && !refreshing)
 
-		promise = promise.then(doc => doc.waitForPending()
-			.then(() => Promise.resolve(doc)));
+				// Yes...
+				? Promise.resolve(new Service(data, this, context))
+
+				//No... okay... get the data, but first we have to perform a ping/handshake...
+				: this.ping(context)
+
+					// now we can get the url of the service doc...
+					.then(result =>
+						result.getLink(CONTINUE)
+						|| result.getLink(CONTINUE_ANONYMOUSLY)
+						|| Promise.reject('No Service URL')
+					)
+
+					// With the url, we can finally load...
+					.then(serviceUrl => this.get(serviceUrl, context))
+
+					// Now that we have the data, save it into cache...
+					.then(json => cache.set(SERVICE_DATA_CACHE_KEY, json) && json)
+
+					//Setup our Service instance...
+					.then(json => !cached
+						//If we're not freshing, build a new Service...
+						? new Service(json, this, context)
+						// Otherwise, update the existing one...
+						: Promise.resolve(cached) // "cached" may be a promise, so resolve/unwrap it first.
+							// Now we can apply the new data.
+							.then(doc => doc.assignData(json))
+					)
+		)
+			// Wait for all the tasks that got spun up when we parsed the data...
+			.then(doc => doc.waitForPending()); // waitForPending resolves with itself ("doc" in this case)
 
 		//once we have an instance, stuff it in the cache so we don't keep building it.
 		promise.then(set, () => {});//This forked promise needs to handle the rejection (the noop).
@@ -342,6 +368,12 @@ export default class DataServerInterface extends EventEmitter {
 
 		//Return a promise that will fulfill with the instance...
 		return promise;
+	}
+
+
+	async refreshServiceDocument (context) {
+		// load the service fresh, and apply data onto the existing service doc.
+		return await this.getServiceDocument(context, {refreshing: true});
 	}
 
 
@@ -391,7 +423,7 @@ export default class DataServerInterface extends EventEmitter {
 			//pong
 			.then(pong => {
 
-				if (!getLink(pong, 'logon.handshake')) {
+				if (!getLink(pong, HANDSHAKE)) {
 					return Promise.reject('No handshake present');
 				}
 
@@ -400,7 +432,7 @@ export default class DataServerInterface extends EventEmitter {
 				}
 
 				if (!username) {
-					return (!getLink(pong, 'logon.continue'))
+					return !getLink(pong, CONTINUE)
 						//Not logged in... we need the urls
 						? {
 							pong,
@@ -420,7 +452,7 @@ export default class DataServerInterface extends EventEmitter {
 
 	handshake (pong, username, context) {
 		const data = !username ? {} : {username};
-		return this.post(getLink(pong, 'logon.handshake'), {[AsFormSubmission]: true, ...data}, context)
+		return this.post(getLink(pong, HANDSHAKE), {[AsFormSubmission]: true, ...data}, context)
 			.then(handshake => {
 
 				const result = {
@@ -434,7 +466,7 @@ export default class DataServerInterface extends EventEmitter {
 					hasLink: (rel) => !!(getLink(handshake, rel) || getLink(pong, rel))
 				};
 
-				if (!result.getLink('logon.continue')) {
+				if (!result.getLink(CONTINUE)) {
 					result.reason = 'Not authenticated, no continue after handshake.';
 					return Promise.reject(result);
 				}

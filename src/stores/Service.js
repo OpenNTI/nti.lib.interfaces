@@ -64,11 +64,22 @@ export default class ServiceDocument extends EventEmitter {
 		mixin(this, Pendability);
 		mixin(this, InstanceCacheContainer);
 
-		let caps = json.CapabilityList || [];
+		this.assignData(json);
+	}
 
-		Object.assign(this, json);
+
+	assignData (json) {
+		const {[Context]: context, [Server]: server} = this;
+		const {CapabilityList: caps = [], ...data} = json;
+		Object.assign(this, data);
 
 		this.capabilities = new Capabilities(this, caps);
+
+		if (!this.getAppUsername()) {
+			delete this[AppUser];
+			delete this[Contacts];
+			return;
+		}
 
 		this.addToPending(
 			this.getAppUser().then(u => {
