@@ -290,7 +290,7 @@ export default class Base extends EventEmitter {
 				Array.isArray(value) && //If its an array,
 				value.length > 0 && // and its length is greater than zero (there are things in it)
 				value.every(Objects); // and every element is an Object
-				//then the new value sould be parsed... as long as the current value is also parsed.
+				//then the new value should be parsed... as long as the current value is also parsed.
 
 			//So, should we parse?
 			if (
