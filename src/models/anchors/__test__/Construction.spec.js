@@ -1,11 +1,9 @@
 /* eslint-env jest */
-import {Registry} from '../../index';
-
-const DomContentPointer = Registry.lookup('contentrange.domcontentpointer');
-const ElementDomContentPointer = Registry.lookup('contentrange.elementdomcontentpointer');
-const TextDomContentPointer = Registry.lookup('contentrange.textdomcontentpointer');
-const DomContentRangeDescription = Registry.lookup('contentrange.domcontentrangedescription');
-const TextContext = Registry.lookup('contentrange.textcontext');
+import DomContentPointer from '../DomContentPointer';
+import ElementDomContentPointer from '../ElementDomContentPointer';
+import TextDomContentPointer from '../TextDomContentPointer';
+import DomContentRangeDescription from '../DomContentRangeDescription';
+import TextContext from '../TextContext';
 
 
 const make = (C, o) => new C(null, null, o);

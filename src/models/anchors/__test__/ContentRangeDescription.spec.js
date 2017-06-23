@@ -1,7 +1,5 @@
 /* eslint-env jest */
-import {Registry} from '../../index';
-
-const ContentRangeDescription = Registry.lookup('contentrange.contentrangedescription');
+import ContentRangeDescription from '../ContentRangeDescription';
 
 describe('ContentRangeDescription Tests', () => {
 	describe('locator tests', () => {

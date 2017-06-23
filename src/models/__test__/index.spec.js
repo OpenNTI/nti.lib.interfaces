@@ -1,5 +1,6 @@
 /* eslint-env jest */
-import {Registry, COMMON_PREFIX} from '../index';
+import '../index';
+import Registry, {COMMON_PREFIX} from '../Registry';
 
 const KNOWN = [
 	'__base__',
