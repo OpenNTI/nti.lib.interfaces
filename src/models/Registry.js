@@ -2,7 +2,8 @@ import Logger from 'nti-util-logger';
 
 const logger = Logger.get('models:Registry');
 
-const MAP = Symbol('Model Map');
+//exported for testing
+export const MAP = Symbol('Model Map');
 
 export const COMMON_PREFIX = 'application/vnd.nextthought.';
 
@@ -44,6 +45,7 @@ export default class Registry {
 		m.set('ignored', IGNORED);
 	}
 
+
 	register (o) {
 		if (!o || !o.MimeType || typeof o !== 'function') {
 			throw new TypeError('Illegial Argument: Model class expected');
@@ -66,17 +68,30 @@ export default class Registry {
 	}
 
 
-	alias (existingKey, alias) {
-		if (typeof existingKey !== 'string' || typeof alias !== 'string') {
-			throw new TypeError('Only existingKeys (strings) are allowed to be aliased');
+	alias (existingType, alias) {
+		const map = this[MAP];
+		if (typeof existingType !== 'string' || typeof alias !== 'string') {
+			throw new TypeError('aliases and types must be strings');
 		}
 
-		if (this[MAP].has(alias)) {
-			logger.warn('Overriding Type!! %s with %o was %o', alias, existingKey, this[MAP].get(alias));
+		if (existingType === alias) {
+			throw new TypeError('Cannot create an alias that is self-referencing.');
 		}
 
-		logger.debug('Registering alias %s to %s', alias, existingKey);
-		this[MAP].set(trimCommonPrefix(alias), trimCommonPrefix(existingKey));
+		if (!map.has(existingType)) {
+			throw new TypeError('Cannot alias a non-existing type');
+		}
+
+		if (map.has(alias)) {
+			if (typeof map.get(alias) !== 'string') {
+				throw new TypeError('Cannot alias over an existing type.');
+			}
+
+			logger.warn('Overriding Type!! %s with %o was %o', alias, existingType, map.get(alias));
+		}
+
+		logger.debug('Registering alias %s to %s', alias, existingType);
+		map.set(trimCommonPrefix(alias), trimCommonPrefix(existingType));
 	}
 
 
@@ -84,16 +99,16 @@ export default class Registry {
 		let m = this[MAP].get(trimCommonPrefix(type));
 		logger.debug('Lookup: %s, %o', type, m);
 
-		const seen = new Set([type]);
+		const seen = [type];
 
 		//follow aliases:
 		while (typeof m === 'string') {
-			if (seen.has(m)) { //break cycles.
-				logger.debug('Alias Loop Detected... already seen: %s', m);
+			if (seen.includes(m)) { //break cycles.
+				logger.debug('Alias Loop Detected... already seen: %s\n\t=?> %s', seen.join('\n\t=> '), m);
 				m = void m; //set m to undefined (void)
 			} else {
 				const alias = m;
-				seen.add(alias);
+				seen.push(alias);
 				m = this[MAP].get(alias);
 				logger.debug('Following alias: %s, got: %o', alias, m);
 			}
