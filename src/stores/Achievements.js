@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 
-import {mixin} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 import Logger from 'nti-util-logger';
 
 import {Service} from '../constants';
@@ -10,6 +10,7 @@ import {parseListFn} from '../models/Parser';
 
 const logger = Logger.get('store:Achievements');
 
+@mixin(Pendability)
 export default class Achievements extends EventEmitter {
 
 	constructor (service, owner, data) {
@@ -20,7 +21,7 @@ export default class Achievements extends EventEmitter {
 			loading: true
 		});
 
-		mixin(this, Pendability);
+		this.initMixins();
 		//this.onChange = this.onChange.bind(this);
 		let parseList = parseListFn(this, service);
 		let loadBin = (name, href) => service.get(href)

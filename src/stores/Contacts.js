@@ -2,7 +2,7 @@ import url from 'url';
 import EventEmitter from 'events';
 
 import Logger from 'nti-util-logger';
-import {mixin} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 import uuid from 'uuid';
 // import QueryString from 'query-string';
 
@@ -55,6 +55,7 @@ export function getNewListData (name, isDynamic, MimeType, context, friends = []
 }
 
 
+@mixin(Pendability)
 export default class Contacts extends EventEmitter {
 
 	/**
@@ -76,7 +77,7 @@ export default class Contacts extends EventEmitter {
 			context
 		});
 
-		mixin(this, Pendability);
+		this.initMixins();
 
 		this.onChange = this.onChange.bind(this);
 

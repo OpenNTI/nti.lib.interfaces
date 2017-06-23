@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 
-import {mixin} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 import Logger from 'nti-util-logger';
 // import QueryString from 'query-string';
 
@@ -13,6 +13,7 @@ import {parseListFn} from '../models/Parser';
 const logger = Logger.get('store:EntityStore');
 const DATA = Symbol();
 
+@mixin(Pendability)
 export default class EntityStore extends EventEmitter {
 
 	/**
@@ -33,7 +34,7 @@ export default class EntityStore extends EventEmitter {
 			context
 		});
 
-		mixin(this, Pendability);
+		this.initMixins();
 		this.onChange = this.onChange && this.onChange.bind(this);
 
 		let parseList = parseListFn(this, service);

@@ -1,4 +1,4 @@
-import {mixin} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 
 import {Service, Parser as parse} from '../constants';
 import Base from '../models/Base';
@@ -32,11 +32,12 @@ class RosterRecord extends Base {
 	}
 }
 
+@mixin(Paged)
 export default class CourseRosterStream extends Stream {
 
 	constructor (...args) {
 		super(...args);
-		mixin(this, Paged);
+		this.initMixins();
 	}
 
 

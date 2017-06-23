@@ -1,4 +1,4 @@
-import {mixin} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 
 import Paged from '../mixins/Paged';
 
@@ -14,12 +14,13 @@ const PRIVATE = new WeakMap();
 const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
 const getPrivate = x => PRIVATE.get(x);
 
+@mixin(Paged)
 export default class AssignmentSummary extends Stream {
 
 	constructor (...args) {
 		super(...args);
-		mixin(this, Paged);
 		initPrivate(this);
+		this.initMixins();
 	}
 
 	get parseList () {

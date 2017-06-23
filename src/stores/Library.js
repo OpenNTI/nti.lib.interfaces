@@ -1,7 +1,8 @@
 import EventEmitter from 'events';
 
 import Logger from 'nti-util-logger';
-import {mixin, Array as ArrayUtils} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
+import {Array as ArrayUtils} from 'nti-commons';
 
 import {Service} from '../constants';
 import {parseListFn} from '../models/Parser';
@@ -12,6 +13,7 @@ const {unique} = ArrayUtils;
 const logger = Logger.get('store:Library');
 const getInstances = service => service.getDataCache().get('LibraryInstances', {}, true);
 
+@mixin(Pendability)
 export default class Library extends EventEmitter {
 
 	static load (service, name, reload) {
@@ -62,7 +64,7 @@ export default class Library extends EventEmitter {
 
 	constructor (service, name, contentBundles, enrolledCourses, administeredCourses) {
 		super();
-		mixin(this, Pendability);
+		this.initMixins();
 		this[Service] = service;
 		this.name = name;
 

@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 
 import Logger from 'nti-util-logger';
-import {mixin} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 
 import {Service, DELETED} from '../constants';
 import {Mixin as Pendability} from '../mixins/Pendability';
@@ -21,6 +21,7 @@ export function binId (i, rootId) {
 }
 
 
+@mixin(Pendability)
 export default class UserData extends EventEmitter {
 
 	constructor (service, rootContainerId, source) {
@@ -31,7 +32,10 @@ export default class UserData extends EventEmitter {
 			rootId: rootContainerId
 		});
 
-		mixin(this, Pendability);
+		if (this.initMixins) {
+			this.initMixins();
+		}
+
 		this.onChange = this.onChange.bind(this);
 
 		let parseList = parseListFn(this, service);

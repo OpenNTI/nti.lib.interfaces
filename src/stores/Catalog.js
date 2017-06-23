@@ -1,12 +1,14 @@
 import EventEmitter from 'events';
 
-import {forward, mixin} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
+import {forward} from 'nti-commons';
 
 import {Service} from '../constants';
 import {Mixin as Pendability} from '../mixins/Pendability';
 import {parseListFn} from '../models/Parser';
 
 
+@mixin(Pendability)
 export default class Catalog extends EventEmitter {
 	static load (service, reload) {
 		return get(service, service.getCoursesCatalogURL(), reload)
@@ -18,7 +20,7 @@ export default class Catalog extends EventEmitter {
 
 	constructor (service, data) {
 		super();
-		mixin(this, Pendability);
+		this.initMixins();
 		this[Service] = service;
 
 		Object.assign(this, data,

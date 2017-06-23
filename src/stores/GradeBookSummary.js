@@ -1,4 +1,4 @@
-import {mixin} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 import Logger from 'nti-util-logger';
 
 import Paged from '../mixins/Paged';
@@ -35,12 +35,13 @@ function setFilter (instance, scope = instance.scopeFilter, category = instance.
 	instance.loadPage(1);
 }
 
+@mixin(Paged)
 export default class GradeBookSummary extends Stream {
 
 	constructor (service, owner, href, options, ...args) {
 		super(service, owner, href, options, ...args);
-		mixin(this, Paged);
 		initPrivate(this);
+		this.initMixins();
 	}
 
 

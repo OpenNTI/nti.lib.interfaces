@@ -3,8 +3,9 @@ import Url from 'url';
 
 import QueryString from 'query-string';
 import Logger from 'nti-util-logger';
+import {mixin} from 'nti-lib-decorators';
 import {isNTIID} from 'nti-lib-ntiids';
-import {URL as UrlUtils, mixin, wait} from 'nti-commons';
+import {URL as UrlUtils, wait} from 'nti-commons';
 
 import {parse} from '../models/Parser';
 import Capabilities from '../models/Capabilities';
@@ -44,25 +45,33 @@ const RequestEntityResolve = Symbol('RequestEntityResolve');
 
 const logger = Logger.get('Service');
 
+function hideCurrentProperties (o) {
+	for (let key of Object.keys(o)) {
+		const desc = Object.getOwnPropertyDescriptor(o, key);
+		if (desc) {
+			desc.enumerable = false;
+			delete o[key];
+			Object.defineProperty(o, key, desc);
+		}
+	}
+}
+
+@mixin(Pendability, InstanceCacheContainer)
 export default class ServiceDocument extends EventEmitter {
 	constructor (json, server, context) {
 		super();
 
-		//Make EventEmitter properties non-enumerable
 		this.setMaxListeners(100);
-		for (let key of Object.keys(this)) {
-			const desc = Object.getOwnPropertyDescriptor(this, key);
-			desc.enumerable = false;
-			delete this[key];
-			Object.defineProperty(this, key, desc);
-		}
+		//Make EventEmitter properties non-enumerable
+		hideCurrentProperties(this);
 
 		this[Service] = this; //So the parser can access it
 		this[Server] = server;
 		this[Context] = context;
 
-		mixin(this, Pendability);
-		mixin(this, InstanceCacheContainer);
+		if (this.initMixins) {
+			this.initMixins(json);
+		}
 
 		this.assignData(json);
 	}
