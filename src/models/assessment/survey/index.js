@@ -1,10 +1,10 @@
-import './InquiryItem';
-import './InquiryItemResponse';
-import './Poll';
-import './PollReference';
-import './PollSubmission';
-import './Survey';
-import './SurveyReference';
-import './SurveySubmission';
+export InquiryItem from './InquiryItem';
+export InquiryItemResponse from './InquiryItemResponse';
+export Poll from './Poll';
+export PollReference from './PollReference';
+export PollSubmission from './PollSubmission';
+export Survey from './Survey';
+export SurveyReference from './SurveyReference';
+export SurveySubmission from './SurveySubmission';
 
-import './aggregated';
+export * as aggregated from './aggregated';

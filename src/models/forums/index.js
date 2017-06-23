@@ -1,9 +1,9 @@
-import './Board';
-import './Topic';
-import './Forum';
-import './Post';
-import './Comment';
-import './BlogEntry';
-import './Blog';
-import './UserTopicParticipationSummary';
-import './UserTopicParticipationContext';
+export Board from './Board';
+export Topic from './Topic';
+export Forum from './Forum';
+export Post from './Post';
+export Comment from './Comment';
+export BlogEntry from './BlogEntry';
+export Blog from './Blog';
+export UserTopicParticipationSummary from './UserTopicParticipationSummary';
+export UserTopicParticipationContext from './UserTopicParticipationContext';

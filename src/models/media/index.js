@@ -1,7 +1,7 @@
-import './MediaSource';
-import './Slide';
-import './SlideDeck';
-import './SlideVideo';
-import './Timeline';
-import './Video';
-import './VideoRef';
+export MediaSource from './MediaSource';
+export Slide from './Slide';
+export SlideDeck from './SlideDeck';
+export SlideVideo from './SlideVideo';
+export Timeline from './Timeline';
+export Video from './Video';
+export VideoRef from './VideoRef';
