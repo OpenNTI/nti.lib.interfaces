@@ -371,9 +371,9 @@ export default class DataServerInterface extends EventEmitter {
 	}
 
 
-	async refreshServiceDocument (context) {
+	refreshServiceDocument (context) {
 		// load the service fresh, and apply data onto the existing service doc.
-		return await this.getServiceDocument(context, {refreshing: true});
+		return this.getServiceDocument(context, {refreshing: true});
 	}
 
 
