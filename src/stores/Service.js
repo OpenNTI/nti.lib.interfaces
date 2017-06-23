@@ -222,8 +222,7 @@ export default class ServiceDocument extends EventEmitter {
 		return this.getServer().delete(url, data, this[Context]);
 	}
 
-	//TODO: consolidate into #post()... don't want to take the time to see if
-	//parsing the response all the time will interupt existing code.
+
 	postParseResponse (url, data, parent = this) {
 		return this.post(url, data)
 			.then(x => {
@@ -465,10 +464,12 @@ export default class ServiceDocument extends EventEmitter {
 			return Promise.resolve(this[AppUser]);
 		}
 
-		let url = this.getResolveAppUserURL();
+		const inflate = data => parse(this, this, data);
+		const url = this.getResolveAppUserURL();
+
 		return url
-			? this.get({url}).then(user=>parse(this[Service], this, user))
-			: Promise.resolve(null);
+			? this.get({url}).then(inflate)
+			: Promise.reject('Not logged in');
 	}
 
 
