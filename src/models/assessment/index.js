@@ -1,23 +1,23 @@
 import Registry from '../Registry';
 
-import './AssessedPart';
-import './AssessedQuestion';
-import './AssessedQuestionSet';
-import './Hint';
-import './Part';
-import './Question';
-import './QuestionSet';
-import './QuestionSetReference';
-import './QuestionSetSubmission';
-import './QuestionSubmission';
-import './Response';
-import './Solution';
-import './WordBank';
-import './WordEntry';
+export AssessedPart from './AssessedPart';
+export AssessedQuestion from './AssessedQuestion';
+export AssessedQuestionSet from './AssessedQuestionSet';
+export Hint from './Hint';
+export Part from './Part';
+export Question from './Question';
+export QuestionSet from './QuestionSet';
+export QuestionSetReference from './QuestionSetReference';
+export QuestionSetSubmission from './QuestionSetSubmission';
+export QuestionSubmission from './QuestionSubmission';
+export Response from './Response';
+export Solution from './Solution';
+export WordBank from './WordBank';
+export WordEntry from './WordEntry';
 
-import './parts';
-import './assignment';
-import './survey';
+export * as parts from './parts';
+export * as assignment from './assignment';
+export * as survey from './survey';
 
 
 Registry.ignore('assessment.questionbank');

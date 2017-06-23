@@ -1,4 +1,4 @@
-import './Survey';
-import './Poll';
+export Survey from './Survey';
+export Poll from './Poll';
 
-import './parts';
+export * as parts from './parts';

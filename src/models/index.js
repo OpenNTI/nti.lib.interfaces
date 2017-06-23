@@ -1,22 +1,22 @@
 import Registry, {COMMON_PREFIX} from './Registry';
 
-import './annotations';
-import './anchors';
-import './assessment';
-import './chat';
-import './content';
-import './courses';
-import './entities';
-import './forums';
-import './media';
-import './profile';
-import './store';
+export * as annotations from './annotations';
+export * as anchors from './anchors';
+export * as assessment from './assessment';
+export * as chat from './chat';
+export * as content from './content';
+export * as courses from './courses';
+export * as entities from './entities';
+export * as forums from './forums';
+export * as media from './media';
+export * as profile from './profile';
+export * as store from './store';
 
-import './Change';
+export Base from './Base';
+export Change from './Change';
 
 Registry.ignore('link');
 
 export {
-	Registry,
 	COMMON_PREFIX
 };
