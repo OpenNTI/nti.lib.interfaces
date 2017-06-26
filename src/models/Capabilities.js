@@ -46,8 +46,8 @@ export default class Capabilities {
 		this[Service] = service;
 		this[list] = caps || [];
 
-		for (let cap in CAPABILITIES) {
-			if (!CAPABILITIES.hasOwnProperty(cap)) { continue; }
+		for (let cap of Object.keys(CAPABILITIES)) {
+
 			let test = CAPABILITIES[cap];
 
 			if (typeof test === 'string') {
