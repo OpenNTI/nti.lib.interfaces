@@ -62,6 +62,11 @@ export default class Capabilities {
 	}
 
 
+	toJSON () {
+		return this[list];
+	}
+
+
 	has (c) {
 		return this[list].indexOf(c) >= 0;
 	}

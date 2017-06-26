@@ -77,6 +77,15 @@ export default class ServiceDocument extends EventEmitter {
 	}
 
 
+	toJSON () {
+		const {capabilities, ...data} = this;
+		return {
+			...data,
+			CapabilityList: capabilities,
+		};
+	}
+
+
 	assignData (json) {
 		const {[Context]: context, [Server]: server} = this;
 		const {CapabilityList: caps = [], ...data} = json;
