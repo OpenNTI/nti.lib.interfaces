@@ -282,7 +282,9 @@ export default class OrderedContents {
 				if (delaySave) {
 					save = new Promise((fulfill, reject) => {
 						placeholder.save = data => {
-							return doSave({...placeholder, ...data})
+							placeholder.mergeData(data);
+
+							return doSave(placeholder)
 								.then(response => (fulfill(response), response))
 								.catch(reject);
 						};

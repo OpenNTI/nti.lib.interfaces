@@ -55,4 +55,9 @@ export default class Placeholder extends Base {
 		makeMarker('isSaving');
 		makeMarker('error', 'isSaving');
 	}
+
+
+	mergeData (data) {
+		Object.assign(this, data);
+	}
 }
