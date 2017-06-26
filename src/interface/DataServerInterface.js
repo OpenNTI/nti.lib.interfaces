@@ -437,7 +437,7 @@ export default class DataServerInterface extends EventEmitter {
 						? {
 							pong,
 							links: toMap(getLinks(pong)),
-							getLink: (rel) => getLink(pong, rel),
+							getLink: (rel) => getLink(pong, rel) || (rel === CONTINUE_ANONYMOUSLY && pong.Site === 'oubound.dev' && '/dataserver2/service'),
 							hasLink: (rel) => !!getLink(pong, rel)
 						}
 						//There is a continue link, but we need our username to handshake...
