@@ -25,6 +25,11 @@ export default class MediaSource extends Base {
 	}
 
 
+	doesExist () {
+		return this.getResolver();
+	}
+
+
 	getProperty (prop) {
 		return this[prop] ?
 			Promise.resolve(this[prop]) :
