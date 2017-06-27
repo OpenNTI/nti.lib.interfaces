@@ -591,6 +591,24 @@ export default class ServiceDocument extends EventEmitter {
 	getWorkspace (name) {
 		for(let workspace of this.Items) {
 			if (workspace.Title === name) {
+				if (!workspace.getLink) {
+					Object.defineProperty(workspace, 'getLink', {
+						value: (rel) => getLink(workspace, rel),
+						enumerable: false
+					});
+				}
+				if (!workspace.fetchLink) {
+					Object.defineProperty(workspace, 'fetchLink', {
+						value: (rel) => {
+							const link = getLink(workspace, rel);
+							if (!link) {
+								return Promise.reject('no link');
+							}
+							return this.get(link);
+						},
+						enumerable: false
+					});
+				}
 				return workspace;
 			}
 		}
