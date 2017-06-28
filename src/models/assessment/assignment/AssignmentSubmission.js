@@ -15,7 +15,7 @@ export default class AssignmentSubmission extends Base {
 
 	constructor (service, parent, data, submitTo) {
 		super(service, parent, data);
-		this.MimeType = this.MimeType || AssignmentSubmission.MimeType;
+		this.MimeType = this.MimeType || AssignmentSubmission.MimeType[0];
 
 		Object.defineProperties(this, {
 			SubmissionHref: {value: submitTo},
