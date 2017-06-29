@@ -22,7 +22,7 @@ import {
 } from '../constants';
 
 const CONTINUE = 'logon.continue';
-const CONTINUE_ANONYMOUSLY = ' logon.continue-anonymously';
+const CONTINUE_ANONYMOUSLY = 'logon.continue-anonymously';
 const HANDSHAKE = 'logon.handshake';
 
 const SERVICE_DATA_CACHE_KEY = 'service-doc';
