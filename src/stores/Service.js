@@ -124,6 +124,8 @@ export default class ServiceDocument extends EventEmitter {
 		if (context) {
 			attachPendingQueue(context).addToPending(this.waitForPending());
 		}
+
+		return this;
 	}
 
 
