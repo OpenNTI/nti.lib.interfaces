@@ -10,6 +10,7 @@ import {URL as UrlUtils, wait} from 'nti-commons';
 import {parse} from '../models/Parser';
 import Capabilities from '../models/Capabilities';
 import AbstractPlaceholder from '../models/AbstractPlaceholder';
+import Batch from '../models/Batch';
 import {Mixin as Pendability, attach as attachPendingQueue} from '../mixins/Pendability';
 import {Mixin as InstanceCacheContainer} from '../mixins/InstanceCacheContainer';
 import DataCache from '../utils/datacache';
@@ -231,6 +232,12 @@ export default class ServiceDocument extends EventEmitter {
 			.then(clean, clean); //we remove the request's promise from the in-flight cache.
 
 		return p;
+	}
+
+
+	getBatch (url, parent) {
+		return this.get(url)
+			.then(raw => new Batch(this, parent, raw));
 	}
 
 
