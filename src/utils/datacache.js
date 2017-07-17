@@ -39,8 +39,12 @@ export default class DataCache {
 			}
 		} else {
 			delete data[key];//make sure to reset its configuration
-			//throw if it can't be serialized, and ensure we have our own clone.
-			data[key] = JSON.parse(JSON.stringify(value));
+
+			const str = JSON.stringify(value);
+			if (str && value != null) {
+				//throw if it can't be serialized, and ensure we have our own clone.
+				data[key] = JSON.parse(str);
+			}
 		}
 
 		return this;
