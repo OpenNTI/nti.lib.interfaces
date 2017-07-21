@@ -6,6 +6,6 @@ export default class Batch extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
-		this[parse]('Items');
+		this[parse]('Items', []);
 	}
 }
