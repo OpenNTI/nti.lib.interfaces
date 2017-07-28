@@ -35,11 +35,9 @@ export default {
 		let b = !courseInstanceUrl
 
 			? Promise.resolve('No Course URL')
-			: (
-				service.get(courseInstanceUrl).then(courseInstanceData =>
-					//OMG, ICK! Yet another request...
-					service.get(getLink(courseInstanceData, 'CourseCatalogEntry'))
-				)
+			: (service.get(courseInstanceUrl).then(courseInstanceData =>
+				//OMG, ICK! Yet another request...
+				service.get(getLink(courseInstanceData, 'CourseCatalogEntry')))
 				//Okay, the scary part is over! just grab what we need and run.
 				.then(catalogEntryData => this.CourseName = catalogEntryData.Title)
 			);
