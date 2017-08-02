@@ -4,9 +4,9 @@ import UserDataStore from '../../stores/UserData';
 import {
 	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
 	Service,
-	Parent
 } from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
 import MediaSource from './MediaSource';
 
@@ -16,16 +16,16 @@ const NO_TRANSCRIPT = 'No Transcript';
 const NO_TRANSCRIPT_LANG = 'No Transcript for the requested language.';
 
 @model
-export default class Video {
+export default class Video extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'video',
 		COMMON_PREFIX + 'ntivideo',
 	]
 
 	constructor (service, parent, data) {
+		super(service, parent, data);
+
 		Object.assign(this,{
-			[Service]: service,
-			[Parent]: parent,
 			isVideo: true
 		});
 
@@ -35,8 +35,6 @@ export default class Video {
 		});
 
 		const {sources = []} = data;
-
-		Object.assign(this, data);
 
 		this.sources = sources.map(item =>
 			new MediaSource(service, this, item));
@@ -96,5 +94,48 @@ export default class Video {
 		}
 
 		return Promise.resolve(store);//in the future, this may need to be async...
+	}
+
+
+	delete () {
+		return super.delete('self');
+	}
+
+
+	applyCaptions (captionsFile, purpose) {
+		const formdata = new FormData();
+		formdata.append(captionsFile.name, captionsFile);
+		if(purpose) {
+			formdata.append('purpose', purpose);
+		}
+		return this[Service].post(this.getLink('transcript'), formdata);
+	}
+
+
+	replaceTranscript (transcript, newFile) {
+		const formdata = new FormData();
+		formdata.append(newFile.name, newFile);
+		return this[Service].put(transcript.href, formdata);
+	}
+
+
+	removeTranscript (transcript) {
+		return this[Service].delete(transcript.href)
+			.then(() => this.refresh());
+	}
+
+
+	updateTranscript (transcript, purpose, lang) {
+		let jsonData = {};
+
+		if(purpose) {
+			jsonData.purpose = purpose;
+		}
+
+		if(lang) {
+			jsonData.lang = lang;
+		}
+
+		return this[Service].put(transcript.href, jsonData);
 	}
 }
