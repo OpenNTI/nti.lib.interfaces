@@ -39,7 +39,7 @@ const CAPABILITIES = {
 };
 
 
-const list = Symbol('lsit');
+const list = Symbol('list');
 
 export default class Capabilities {
 	constructor (service, caps) {
