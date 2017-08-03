@@ -20,6 +20,14 @@ const ORDER_BY_COMPLETION = Symbol('ORDER_BY_COMPLETION');
 const ORDER_BY_DUE_DATE = Symbol('ORDER_BY_DUE_DATE');
 const ORDER_BY_LESSON = Symbol('ORDER_BY_LESSON');
 
+function exposeOrderBySymbols (Collection) {
+	Object.assign(Collection.prototype, {
+		ORDER_BY_COMPLETION,
+		ORDER_BY_DUE_DATE,
+		ORDER_BY_LESSON
+	});
+}
+
 function find (list, id) {
 	return list.reduce((found, item) =>
 		found || (
@@ -71,6 +79,7 @@ const getPrivate = x => PRIVATE.get(x);
 
 export default
 @mixin(ActivityMixin)
+@exposeOrderBySymbols
 class Collection extends Base {
 
 	/**
@@ -409,9 +418,3 @@ class Collection extends Base {
 		return finalGrade ? finalGrade.getID() : void 0;
 	}
 }
-
-Object.assign(Collection.prototype, {
-	ORDER_BY_COMPLETION,
-	ORDER_BY_DUE_DATE,
-	ORDER_BY_LESSON
-});

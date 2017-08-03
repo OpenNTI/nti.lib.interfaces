@@ -41,8 +41,10 @@ function processValue (value) {
 }
 
 export default
+@cacheClassInstances
 @model
 class Grade extends Base {
+	static AllowWildDisconntectedInstances = true
 	static MimeType = [
 		COMMON_PREFIX + 'grade',
 		COMMON_PREFIX + 'gradebook.grade',
@@ -160,7 +162,3 @@ class Grade extends Base {
 		return ltr === normalizeLetter(letter) && val === value;
 	}
 }
-
-Grade.AllowWildDisconntectedInstances = true;
-
-cacheClassInstances(Grade);
