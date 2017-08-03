@@ -3,8 +3,9 @@ import Base from '../Base';
 
 const TakeOver = Symbol.for('TakeOver');
 
+export default
 @model
-export default class EnrollmentOption extends Base {
+class EnrollmentOption extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courseware.enrollmentoption',
 		COMMON_PREFIX + 'courseware.openenrollmentoption',

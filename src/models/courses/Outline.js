@@ -14,8 +14,9 @@ function getMaxDepthFrom (n) {
 		.reduce((max, depth) => Math.max(max, depth), 0);
 }
 
+export default
 @model
-export default class Outline extends Base {
+class Outline extends Base {
 	static MimeType = COMMON_PREFIX + 'courses.courseoutline'
 
 	constructor (service, parent, data) {

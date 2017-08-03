@@ -38,8 +38,9 @@ External Links:
 const CONTENT_TYPE = 'application/vnd.nextthought.content';
 const EXTERNAL_TYPE = 'application/vnd.nextthought.externallink';
 
+export default
 @model
-export default class RelatedWorkReference extends Base {
+class RelatedWorkReference extends Base {
 	static MimeType = COMMON_PREFIX + 'relatedworkref'
 
 	static fromID (service, id) {

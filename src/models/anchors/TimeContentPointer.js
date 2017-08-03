@@ -4,8 +4,9 @@ import ContentPointer from './ContentPointer';
 
 const VALID_ROLES = ['start', 'end'];
 
+export default
 @model
-export default class TimeContentPointer extends ContentPointer {
+class TimeContentPointer extends ContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.timecontentpointer'
 
 	constructor (service, parent, data) {

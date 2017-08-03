@@ -4,8 +4,9 @@ import Base from '../Base';
 
 const TakeOver = Symbol.for('TakeOver');
 
+export default
 @model
-export default class SharingPagePreference extends Base {
+class SharingPagePreference extends Base {
 	static MimeType = COMMON_PREFIX + 'sharingpagepreference'
 
 	constructor (service, parent, data) {

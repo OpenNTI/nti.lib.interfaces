@@ -5,8 +5,9 @@ import Base from '../Base';
 const TakeOver = Symbol.for('TakeOver');
 const Items = Symbol('Items');
 
+export default
 @model
-export default class StripePurchaseItem extends Base {
+class StripePurchaseItem extends Base {
 	static MimeType = COMMON_PREFIX + 'store.stripepurchaseitem'
 
 	constructor (service, parent, data) {

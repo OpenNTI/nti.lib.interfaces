@@ -9,8 +9,9 @@
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
-export default class DiscussionReference extends Base {
+class DiscussionReference extends Base {
 	static MimeType = COMMON_PREFIX + 'discussionref'
 
 	constructor (service, parent, data) {

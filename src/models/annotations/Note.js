@@ -9,9 +9,10 @@ import Highlight from './Highlight';
 
 const logger = Logger.get('models:annotations:Note');
 
+export default
 @model
 @mixin(Threadable)
-export default class Note extends Highlight {
+class Note extends Highlight {
 	static MimeType = COMMON_PREFIX + 'note'
 
 	constructor (service, parent, data) {

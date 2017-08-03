@@ -7,8 +7,9 @@ import Package from './Package';
 
 const RST_TYPE = 'text/x-rst';
 
+export default
 @model
-export default class RenderablePackage extends Package {
+class RenderablePackage extends Package {
 	static MimeType = COMMON_PREFIX + 'renderablecontentpackage'
 
 	isRenderable = true

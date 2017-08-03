@@ -1,8 +1,9 @@
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
-export default class Solution extends Base {
+class Solution extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.solution'
 
 	constructor (service, parent, data) {

@@ -6,8 +6,9 @@ import Base from '../Base';
 
 const TakeOver = Symbol.for('TakeOver');
 
+export default
 @model
-export default class Transcript extends Base {
+class Transcript extends Base {
 	static MimeType = COMMON_PREFIX + 'transcript'
 
 	constructor (service, parent, data) {

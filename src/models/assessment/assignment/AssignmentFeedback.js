@@ -5,9 +5,10 @@ import names from '../../../mixins/CourseAndAssignmentNameResolving';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
+export default
 @model
 @mixin(names)
-export default class AssignmentFeedback extends Base {
+class AssignmentFeedback extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitemfeedback'
 
 	constructor (service, parent, data) {

@@ -8,8 +8,9 @@ import {Mixin as Pendability} from '../mixins/Pendability';
 import {parseListFn} from '../models/Parser';
 
 
+export default
 @mixin(Pendability)
-export default class Catalog extends EventEmitter {
+class Catalog extends EventEmitter {
 	static load (service, reload) {
 		return get(service, service.getCoursesCatalogURL(), reload)
 			.then(data => {

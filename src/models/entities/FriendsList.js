@@ -8,8 +8,9 @@ import Entity from './Entity';
 
 const getID = e => typeof e === 'object' ? e.getID() : e;
 
+export default
 @model
-export default class FriendsList extends Entity {
+class FriendsList extends Entity {
 	static MimeType = COMMON_PREFIX + 'friendslist'
 
 	constructor (service, parent, data) {

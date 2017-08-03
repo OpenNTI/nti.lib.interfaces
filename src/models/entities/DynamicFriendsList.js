@@ -4,8 +4,9 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 import FriendsList from './FriendsList';
 
+export default
 @model
-export default class DynamicFriendsList extends FriendsList {
+class DynamicFriendsList extends FriendsList {
 	static MimeType = COMMON_PREFIX + 'dynamicfriendslist'
 
 	constructor (service, parent, data) {

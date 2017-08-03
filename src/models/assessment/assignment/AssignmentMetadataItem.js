@@ -2,8 +2,9 @@ import {DateFields,} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
+export default
 @model
-export default class AssignmentMetadataItem extends Base {
+class AssignmentMetadataItem extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmentmetadataitem'
 
 	constructor (service, parent, data) {

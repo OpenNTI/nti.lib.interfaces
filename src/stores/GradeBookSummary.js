@@ -35,8 +35,9 @@ function setFilter (instance, scope = instance.scopeFilter, category = instance.
 	instance.loadPage(1);
 }
 
+export default
 @mixin(Paged)
-export default class GradeBookSummary extends Stream {
+class GradeBookSummary extends Stream {
 
 	constructor (service, owner, href, options, ...args) {
 		super(service, owner, href, options, ...args);

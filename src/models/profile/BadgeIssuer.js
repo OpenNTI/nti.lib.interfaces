@@ -1,8 +1,9 @@
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
-export default class BadgeIssuer extends Base {
+class BadgeIssuer extends Base {
 	static MimeType = COMMON_PREFIX + 'openbadges.issuer'
 
 	constructor (service, parent, data) {

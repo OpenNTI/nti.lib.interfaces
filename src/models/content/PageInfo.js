@@ -18,8 +18,9 @@ const NOT_FOUND = {statusCode: 404, message: 'Not Found'};
 
 const UserData = Symbol('UserData');
 
+export default
 @model
-export default class PageInfo extends Base {
+class PageInfo extends Base {
 	static MimeType = COMMON_PREFIX + 'pageinfo'
 
 	constructor (service, parent, data) {

@@ -11,9 +11,10 @@ import QuestionSetSubmission from './QuestionSetSubmission';
 
 const SUBMITTED_TYPE = 'application/vnd.nextthought.assessment.assessedquestionset';
 
+export default
 @model
 @mixin(SubmittableIdentity)
-export default class QuestionSet extends Base {
+class QuestionSet extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'questionset',
 		COMMON_PREFIX + 'naquestionbank',

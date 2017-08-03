@@ -6,9 +6,10 @@ import getLink from '../../utils/getlink';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
 @mixin(GetContents)
-export default class Forum extends Base {
+class Forum extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.forum',
 		COMMON_PREFIX + 'forums.communityforum',

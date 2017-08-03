@@ -57,8 +57,9 @@ function hideCurrentProperties (o) {
 	}
 }
 
+export default
 @mixin(Pendability, InstanceCacheContainer)
-export default class ServiceDocument extends EventEmitter {
+class ServiceDocument extends EventEmitter {
 	constructor (json, server, context) {
 		super();
 

@@ -21,8 +21,9 @@ export function binId (i, rootId) {
 }
 
 
+export default
 @mixin(Pendability)
-export default class UserData extends EventEmitter {
+class UserData extends EventEmitter {
 
 	constructor (service, rootContainerId, source) {
 		super();

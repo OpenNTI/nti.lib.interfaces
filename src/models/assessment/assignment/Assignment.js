@@ -24,9 +24,10 @@ const ActiveSavePointPost = Symbol('ActiveSavePointPost');
 const isSummary = ({parts}) => parts && parts.some(x => x.IsSummary);
 const getAssociationCount = (x) => x.LessonContainerCount;
 
+export default
 @model
 @mixin(Publishable, SubmittableIdentity)
-export default class Assignment extends Base {
+class Assignment extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.assignment'
 
 	constructor (service, parent, data) {

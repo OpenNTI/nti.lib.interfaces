@@ -5,9 +5,10 @@ import Threadable from '../../mixins/Threadable';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
 @mixin(Threadable)
-export default class MessageInfo extends Base {
+class MessageInfo extends Base {
 	static MimeType = COMMON_PREFIX + 'messageinfo'
 
 	constructor (service, parent, data) {

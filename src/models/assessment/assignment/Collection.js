@@ -69,8 +69,9 @@ const PRIVATE = new WeakMap();
 const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
 const getPrivate = x => PRIVATE.get(x);
 
+export default
 @mixin(ActivityMixin)
-export default class Collection extends Base {
+class Collection extends Base {
 
 	/**
 	 * Build the Assessment Collection.

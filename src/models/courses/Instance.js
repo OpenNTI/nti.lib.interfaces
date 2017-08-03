@@ -33,9 +33,10 @@ const OutlineCache = Symbol('OutlineCache');
 const OutlineCacheUnpublished = Symbol('OutlineCacheUnpublished');
 const RENAME = Symbol.for('TakeOver');
 
+export default
 @model
 @mixin(CourseIdentity)
-export default class Instance extends Base {
+class Instance extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseinstance',
 		COMMON_PREFIX + 'courses.legacycommunitybasedcourseinstance',

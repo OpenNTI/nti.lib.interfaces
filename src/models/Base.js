@@ -33,9 +33,10 @@ const PHANTOM = Symbol.for('Phantom');
 const TakeOver = Symbol.for('TakeOver');
 const is = Symbol('isTest');
 
+export default
 @model
 @mixin(Editable, JSONValue, Pendability)
-export default class Base extends EventEmitter {
+class Base extends EventEmitter {
 	static MimeType = '__base__'
 
 	constructor (service, parent, data, ...mixins) {

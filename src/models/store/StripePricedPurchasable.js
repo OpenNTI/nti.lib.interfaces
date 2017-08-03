@@ -25,8 +25,9 @@ class Coupon extends Base {
 }
 
 
+export default
 @model
-export default class StripePricedPurchasable extends Base {
+class StripePricedPurchasable extends Base {
 	static MimeType = COMMON_PREFIX + 'store.stripepricedpurchasable'
 
 	constructor (service, parent, data) {

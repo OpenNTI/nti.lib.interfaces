@@ -3,8 +3,9 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 import TimeContentPointer from './TimeContentPointer';
 
+export default
 @model
-export default class TranscriptContentPointer extends TimeContentPointer {
+class TranscriptContentPointer extends TimeContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.transcriptcontentpointer'
 
 	constructor (service, parent, data) {

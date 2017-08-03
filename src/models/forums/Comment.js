@@ -5,8 +5,9 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 import Post from './Post';
 
+export default
 @model
-export default class Comment extends Post {
+class Comment extends Post {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.comment',
 		COMMON_PREFIX + 'forums.generalforumcomment',

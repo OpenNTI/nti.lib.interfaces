@@ -4,8 +4,9 @@ import {
 	Parser as parse
 } from '../../constants';
 
+export default
 @model
-export default class GradeBookByAssignmentSummary extends Base {
+class GradeBookByAssignmentSummary extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'gradebook.gradebookbyassignmentsummary',
 		'GradeBookByAssignmentSummary' //ClassName fallback??

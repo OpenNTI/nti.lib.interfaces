@@ -14,8 +14,9 @@ const PRIVATE = new WeakMap();
 const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
 const getPrivate = x => PRIVATE.get(x);
 
+export default
 @mixin(Paged)
-export default class AssignmentSummary extends Stream {
+class AssignmentSummary extends Stream {
 
 	constructor (...args) {
 		super(...args);

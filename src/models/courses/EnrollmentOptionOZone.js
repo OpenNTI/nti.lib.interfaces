@@ -2,8 +2,9 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 import EnrollmentOption from './EnrollmentOption';
 
+export default
 @model
-export default class EnrollmentOptionOZone extends EnrollmentOption {
+class EnrollmentOptionOZone extends EnrollmentOption {
 	static MimeType = COMMON_PREFIX + 'courseware.ozoneenrollmentoption'
 
 	constructor (service, parent, data) {

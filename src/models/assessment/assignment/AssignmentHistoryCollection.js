@@ -4,8 +4,9 @@ import {DateFields, Parser as parse} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
+export default
 @model
-export default class AssignmentHistoryCollection extends Base {
+class AssignmentHistoryCollection extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistory'
 
 	constructor (service, parent, data) {

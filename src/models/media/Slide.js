@@ -4,8 +4,9 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 const getRoot = x => (x ? x.root : x) || '/missing-root/';
 
+export default
 @model
-export default class Slide {
+class Slide {
 	static MimeType = COMMON_PREFIX + 'slide'
 
 	constructor (service, parent, data) {

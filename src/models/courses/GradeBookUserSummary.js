@@ -6,8 +6,9 @@ import {
 
 const RENAME = Symbol.for('TakeOver');
 
+export default
 @model
-export default class GradeBookUserSummary extends Base {
+class GradeBookUserSummary extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'gradebook.userassignmentsummary',
 		COMMON_PREFIX + 'gradebook.usergradebooksummary'

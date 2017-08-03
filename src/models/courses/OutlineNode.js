@@ -12,9 +12,10 @@ import fallbackOverview from './_fallbacks.OverviewFromToC';
 
 const logger = Logger.get('models:courses:OutlineNode');
 
+export default
 @model
 @mixin(Publishable)
-export default class OutlineNode extends Outline {
+class OutlineNode extends Outline {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseoutlinenode',
 		COMMON_PREFIX + 'courses.courseoutlinecontentnode',

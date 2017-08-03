@@ -3,8 +3,9 @@ import {model, COMMON_PREFIX} from '../../../../Registry';
 
 import Base from './Part';
 
+export default
 @model
-export default class AggregatedFreeResponsePart extends Base {
+class AggregatedFreeResponsePart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedfreeresponsepart'
 
 	constructor (service, parent, data) {

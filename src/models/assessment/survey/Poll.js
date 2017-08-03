@@ -10,9 +10,10 @@ import Question from '../Question';
 
 import PollSubmission from './PollSubmission';
 
+export default
 @model
 @mixin({@readonly isPole: true})
-export default class Poll extends Question {
+class Poll extends Question {
 	static MimeType = COMMON_PREFIX + 'napoll'
 
 	constructor (service, parent, data) {

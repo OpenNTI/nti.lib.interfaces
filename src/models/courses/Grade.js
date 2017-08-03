@@ -40,8 +40,9 @@ function processValue (value) {
 	}
 }
 
+export default
 @model
-export default class Grade extends Base {
+class Grade extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'grade',
 		COMMON_PREFIX + 'gradebook.grade',

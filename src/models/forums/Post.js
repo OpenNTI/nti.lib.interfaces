@@ -5,9 +5,10 @@ import Likable from '../../mixins/Likable';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
 @mixin(Likable)
-export default class Post extends Base {
+class Post extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.post',
 		COMMON_PREFIX + 'forums.communityheadlinepost',

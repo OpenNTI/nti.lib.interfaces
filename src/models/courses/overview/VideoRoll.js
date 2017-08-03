@@ -2,8 +2,9 @@ import {Parser as parse} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
+export default
 @model
-export default class VideoRoll extends Base {
+class VideoRoll extends Base {
 	static MimeType = COMMON_PREFIX + 'videoroll'
 
 	constructor (service, parent, data) {

@@ -2,8 +2,9 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 import Board from './Board';
 
+export default
 @model
-export default class Blog extends Board {
+class Blog extends Board {
 	static MimeType = COMMON_PREFIX + 'forums.personalblog'
 
 	constructor (service, parent, data) {

@@ -6,8 +6,9 @@ const TakeOver = Symbol.for('TakeOver');
 
 const StripeConnectKey = Symbol('StripeConnectKey');
 
+export default
 @model
-export default class Purchasable extends Base {
+class Purchasable extends Base {
 	static MimeType = COMMON_PREFIX + 'store.purchasable'
 
 	constructor (service, parent, data) {

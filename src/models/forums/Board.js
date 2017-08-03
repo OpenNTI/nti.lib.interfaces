@@ -4,9 +4,10 @@ import GetContents from '../../mixins/GetContents';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
 @mixin(GetContents)
-export default class Board extends Base {
+class Board extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.board',
 		COMMON_PREFIX + 'forums.communityboard',

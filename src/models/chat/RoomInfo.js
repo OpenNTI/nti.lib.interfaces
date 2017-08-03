@@ -3,8 +3,9 @@ import Base from '../Base';
 
 const TakeOver = Symbol.for('TakeOver');
 
+export default
 @model
-export default class RoomInfo extends Base {
+class RoomInfo extends Base {
 	static MimeType = COMMON_PREFIX + '_meeting'
 
 	constructor (service, parent, data) {

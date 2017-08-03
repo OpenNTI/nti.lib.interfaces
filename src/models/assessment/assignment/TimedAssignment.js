@@ -5,8 +5,9 @@ import Assignment from './Assignment';
 
 const secondsToMilliseconds = s => s * 1000;
 
+export default
 @model
-export default class TimedAssignment extends Assignment {
+class TimedAssignment extends Assignment {
 	static MimeType = COMMON_PREFIX + 'assessment.timedassignment'
 
 	constructor (service, parent, data) {

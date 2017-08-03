@@ -5,8 +5,9 @@ import PurchaseAttempt from './PurchaseAttempt';
 
 const TakeOver = Symbol.for('TakeOver');
 
+export default
 @model
-export default class GiftPurchaseAttempt extends PurchaseAttempt {
+class GiftPurchaseAttempt extends PurchaseAttempt {
 	static MimeType = COMMON_PREFIX + 'store.giftpurchaseattempt'
 
 	constructor (service, parent, data) {

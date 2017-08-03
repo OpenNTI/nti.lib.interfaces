@@ -4,8 +4,9 @@ import Base from '../../Base';
 
 const rename = Symbol.for('TakeOver');
 
+export default
 @model
-export default class AssignmentHistoryItemSummary extends Base {
+class AssignmentHistoryItemSummary extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.assignmenthistoryitemsummary',
 		COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitemsummary',

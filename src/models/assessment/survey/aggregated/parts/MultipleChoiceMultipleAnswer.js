@@ -3,8 +3,9 @@ import {model, COMMON_PREFIX} from '../../../../Registry';
 
 import Base from './MultipleChoice';
 
+export default
 @model
-export default class AggregatedMultipleChoiceMultipleAnswerPart extends Base {
+class AggregatedMultipleChoiceMultipleAnswerPart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedmultiplechoicemultipleanswerpart'
 
 	constructor (service, parent, data) {

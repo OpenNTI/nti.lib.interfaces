@@ -7,8 +7,9 @@ const TakeOver = Symbol.for('TakeOver');
 const getPurchasables = Symbol('getPurchasables');
 const Purchasables = Symbol('Purchasables');
 
+export default
 @model
-export default class EnrollmentOptionStore extends EnrollmentOption {
+class EnrollmentOptionStore extends EnrollmentOption {
 	static MimeType = COMMON_PREFIX + 'courseware.storeenrollmentoption'
 
 	constructor (service, parent, data) {

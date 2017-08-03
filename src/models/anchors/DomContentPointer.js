@@ -8,8 +8,9 @@ const VALID_ROLES = [
 	'ancestor'
 ];
 
+export default
 @model
-export default class DomContentPointer extends ContentPointer {
+class DomContentPointer extends ContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.domcontentpointer'
 
 	constructor (service, parent, data) {

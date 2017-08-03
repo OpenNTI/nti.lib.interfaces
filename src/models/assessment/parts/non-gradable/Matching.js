@@ -1,8 +1,9 @@
 import {model, COMMON_PREFIX} from '../../../Registry';
 import Matching from '../Matching';
 
+export default
 @model
-export default class NonGradableMatching extends Matching {
+class NonGradableMatching extends Matching {
 	static MimeType = COMMON_PREFIX + 'assessment.nongradablematchingpart'
 
 	constructor (service, parent, data) {

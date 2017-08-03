@@ -3,8 +3,9 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 import FileSystemEntity, {validateSortObject} from './FileSystemEntity';
 
+export default
 @model
-export default class Folder extends FileSystemEntity {
+class Folder extends FileSystemEntity {
 	static MimeType = [
 		COMMON_PREFIX + 'contentfolder',
 		COMMON_PREFIX + 'courseware.contentfolder',

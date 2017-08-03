@@ -2,8 +2,9 @@ import {ContentKeys} from '../../../mixins/HasContent';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Part from '../Part';
 
+export default
 @model
-export default class MultipleChoice extends Part {
+class MultipleChoice extends Part {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.multiplechoicepart',
 		COMMON_PREFIX + 'assessment.multiplechoicemultipleanswerpart',

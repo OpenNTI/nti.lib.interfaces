@@ -2,8 +2,9 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 import Transcript from './Transcript';
 
+export default
 @model
-export default class TranscriptSummary extends Transcript {
+class TranscriptSummary extends Transcript {
 	static MimeType = COMMON_PREFIX + 'transcriptsummary'
 
 	constructor (service, parent, data) {

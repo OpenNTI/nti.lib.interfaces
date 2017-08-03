@@ -2,8 +2,9 @@ import {Parser as parse} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
-export default class UserTopicParticipationSummary extends Base {
+class UserTopicParticipationSummary extends Base {
 	static MimeType = COMMON_PREFIX + 'forums.usertopicparticipationsummary'
 
 	constructor (service, parent, data) {

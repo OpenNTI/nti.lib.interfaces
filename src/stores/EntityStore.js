@@ -13,8 +13,9 @@ import {parseListFn} from '../models/Parser';
 const logger = Logger.get('store:EntityStore');
 const DATA = Symbol();
 
+export default
 @mixin(Pendability)
-export default class EntityStore extends EventEmitter {
+class EntityStore extends EventEmitter {
 
 	/**
 	 * constructor

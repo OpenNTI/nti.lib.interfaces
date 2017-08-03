@@ -4,8 +4,9 @@ import {model, COMMON_PREFIX} from '../Registry';
 import ContentRangeDescription from './ContentRangeDescription';
 import DomContentPointer from './DomContentPointer';
 
+export default
 @model
-export default class DomContentRangeDescription extends ContentRangeDescription {
+class DomContentRangeDescription extends ContentRangeDescription {
 	static MimeType = COMMON_PREFIX + 'contentrange.domcontentrangedescription'
 
 	constructor (service, parent, data) {

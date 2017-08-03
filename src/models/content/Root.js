@@ -2,8 +2,9 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 import Folder from './Folder';
 
+export default
 @model
-export default class Root extends Folder {
+class Root extends Folder {
 	static MimeType = [
 		COMMON_PREFIX + 'contentrootfolder',
 		COMMON_PREFIX + 'courserootfolder',

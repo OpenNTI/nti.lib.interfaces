@@ -16,8 +16,9 @@ ntiid: "tag:nextthought.com,2011-10:NTI-NTIRelatedWorkRefPointer-UUID_3675B537AB
 target :"tag:nextthought.com,2011-10:NTI-NTIRelatedWorkRef-global_admin_alpha1_4743953516163133541_b62c3bd2"
 */
 
+export default
 @model
-export default class RelatedWorkReferencePointer extends Base {
+class RelatedWorkReferencePointer extends Base {
 	static MimeType = COMMON_PREFIX + 'relatedworkrefpointer'
 
 	constructor (service, data) {

@@ -55,8 +55,9 @@ export function getNewListData (name, isDynamic, MimeType, context, friends = []
 }
 
 
+export default
 @mixin(Pendability)
-export default class Contacts extends EventEmitter {
+class Contacts extends EventEmitter {
 
 	/**
 	 * Contacts constructor

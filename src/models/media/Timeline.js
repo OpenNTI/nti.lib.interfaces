@@ -11,8 +11,9 @@
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
-export default class Timeline extends Base {
+class Timeline extends Base {
 	static MimeType = COMMON_PREFIX + 'ntitimeline'
 
 	constructor (service, parent, data) {

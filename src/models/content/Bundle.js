@@ -12,9 +12,10 @@ import Base from '../Base';
 
 const logger = Logger.get('models:content:Bundle');
 
+export default
 @model
 @mixin(assets, forward(['every','filter','forEach','map', 'reduce'], 'ContentPackages'))
-export default class Bundle extends Base {
+class Bundle extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'contentpackagebundle',
 		COMMON_PREFIX + 'coursecontentpackagebundle'

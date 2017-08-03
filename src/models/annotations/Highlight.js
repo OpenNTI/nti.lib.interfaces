@@ -3,8 +3,9 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 import Annotation from './Annotation';
 
+export default
 @model
-export default class Highlight extends Annotation {
+class Highlight extends Annotation {
 	static MimeType = COMMON_PREFIX + 'highlight'
 
 	constructor (service, parent, data) {

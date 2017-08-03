@@ -4,8 +4,9 @@ import {Service} from '../../constants';
 import Likable from '../../mixins/Likable';
 import Base from '../Base';
 
+export default
 @mixin(Likable)
-export default class Annotation extends Base {
+class Annotation extends Base {
 
 	constructor (service, parent, data) {
 		super(service, parent, data);

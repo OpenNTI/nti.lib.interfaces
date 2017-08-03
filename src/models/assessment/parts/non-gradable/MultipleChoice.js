@@ -1,8 +1,9 @@
 import {model, COMMON_PREFIX} from '../../../Registry';
 import MultipleChoice from '../MultipleChoice';
 
+export default
 @model
-export default class NonGradableMultipleChoice extends MultipleChoice {
+class NonGradableMultipleChoice extends MultipleChoice {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.nongradablemultiplechoicepart',
 		COMMON_PREFIX + 'assessment.nongradablemultiplechoicemultipleanswerpart',

@@ -2,8 +2,9 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 import FileSystemEntity from './FileSystemEntity';
 
+export default
 @model
-export default class File extends FileSystemEntity {
+class File extends FileSystemEntity {
 	static MimeType = [
 		COMMON_PREFIX + 'contentfile',
 		COMMON_PREFIX + 'contentblobfile',

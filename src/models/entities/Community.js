@@ -4,8 +4,9 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 import Entity from './Entity';
 
+export default
 @model
-export default class Community extends Entity {
+class Community extends Entity {
 	static MimeType = COMMON_PREFIX + 'community'
 
 	constructor (service, data) {

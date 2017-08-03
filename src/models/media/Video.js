@@ -15,8 +15,9 @@ const UserData = Symbol('UserData');
 const NO_TRANSCRIPT = 'No Transcript';
 const NO_TRANSCRIPT_LANG = 'No Transcript for the requested language.';
 
+export default
 @model
-export default class Video extends Base {
+class Video extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'video',
 		COMMON_PREFIX + 'ntivideo',

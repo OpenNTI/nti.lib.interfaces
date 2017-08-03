@@ -1,8 +1,9 @@
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
-export default class ProfessionalPosition extends Base {
+class ProfessionalPosition extends Base {
 	static MimeType = COMMON_PREFIX + 'profile.professionalposition'
 
 	constructor (service, parent, data) {

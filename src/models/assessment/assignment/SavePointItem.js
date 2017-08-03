@@ -2,8 +2,9 @@ import {Parser as parse} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
+export default
 @model
-export default class SavePointItem extends Base {
+class SavePointItem extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.savepointitem',
 		COMMON_PREFIX + 'assessment.userscourseassignmentsavepointitem',

@@ -1,7 +1,8 @@
 import {model, COMMON_PREFIX} from '../Registry';
 
+export default
 @model
-export default class SlideVideo {
+class SlideVideo {
 	static MimeType = COMMON_PREFIX + 'ntislidevideo'
 
 	constructor (service, parent, data) {

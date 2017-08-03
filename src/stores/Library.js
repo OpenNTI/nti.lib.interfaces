@@ -13,8 +13,9 @@ const {unique} = ArrayUtils;
 const logger = Logger.get('store:Library');
 const getInstances = service => service.getDataCache().get('LibraryInstances', {}, true);
 
+export default
 @mixin(Pendability)
-export default class Library extends EventEmitter {
+class Library extends EventEmitter {
 
 	static load (service, name, reload) {
 		function make (contentBundles, enrolledCourses, administeredCourses) {

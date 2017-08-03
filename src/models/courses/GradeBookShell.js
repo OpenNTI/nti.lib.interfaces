@@ -1,8 +1,9 @@
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
-export default class GradeBookShell extends Base {
+class GradeBookShell extends Base {
 	static MimeType = COMMON_PREFIX + 'gradebookshell'
 
 	constructor (service, parent, data) {

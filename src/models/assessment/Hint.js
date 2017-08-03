@@ -4,9 +4,10 @@ import {Mixin as HasContent, ContentKeys} from '../../mixins/HasContent';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
 @mixin(HasContent)
-export default class Hint extends Base {
+class Hint extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.hint',
 		COMMON_PREFIX + 'assessment.htmlhint',

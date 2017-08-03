@@ -25,8 +25,9 @@ function cleanData (data) {
 	};
 }
 
+export default
 @model
-export default class User extends Entity {
+class User extends Entity {
 	static MimeType = COMMON_PREFIX + 'user'
 
 	constructor (service, data) {

@@ -5,9 +5,10 @@ import {Mixin as HasContent, ContentKeys, SetupContentProperties} from '../../mi
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
 @mixin(HasContent)
-export default class Part extends Base {
+class Part extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.part'
 
 	constructor (service, parent, data) {

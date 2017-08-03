@@ -3,8 +3,9 @@ import {model, COMMON_PREFIX} from '../../Registry';
 
 import Assignment from './Assignment';
 
+export default
 @model
-export default class DiscussionAssignment extends Assignment {
+class DiscussionAssignment extends Assignment {
 	static MimeType = COMMON_PREFIX + 'assessment.discussionassignment'
 
 	constructor (service, parent, data) {

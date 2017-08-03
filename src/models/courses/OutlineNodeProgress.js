@@ -2,8 +2,9 @@ import {Parser as parse} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
-export default class OutlineNodeProgress extends Base {
+class OutlineNodeProgress extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courseoutlinenodeprogress',
 		COMMON_PREFIX + 'progresscontainer',

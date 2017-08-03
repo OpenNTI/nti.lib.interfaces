@@ -5,9 +5,10 @@ import assessed from '../../mixins/AssessedAssessmentPart';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
 @mixin(assessed)
-export default class AssessedPart extends Base {
+class AssessedPart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.assessedpart'
 
 	constructor (service, parent, data) {

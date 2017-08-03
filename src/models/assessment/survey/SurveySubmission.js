@@ -3,8 +3,9 @@ import {model, COMMON_PREFIX} from '../../Registry';
 import QuestionSetSubmission from '../QuestionSetSubmission';
 import {resolveSubmitTo} from '../utils';
 
+export default
 @model
-export default class SurveySubmission extends QuestionSetSubmission {
+class SurveySubmission extends QuestionSetSubmission {
 	static MimeType = COMMON_PREFIX + 'assessment.surveysubmission'
 	static COURSE_SUBMISSION_REL = 'CourseInquiries'
 

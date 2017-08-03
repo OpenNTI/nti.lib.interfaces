@@ -1,8 +1,9 @@
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
+export default
 @model
-export default class PollReference extends Base {
+class PollReference extends Base {
 	static MimeType = COMMON_PREFIX + 'pollref'
 
 	constructor (service, parent, data) {

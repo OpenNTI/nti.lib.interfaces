@@ -3,8 +3,9 @@ import Base from '../Base';
 
 const TakeOver = Symbol.for('TakeOver');
 
+export default
 @model
-export default class PricedItem extends Base {
+class PricedItem extends Base {
 	static MimeType = COMMON_PREFIX + 'store.priceditem'
 
 	constructor (service, parent, data) {

@@ -20,9 +20,10 @@ const VideoIndexReqest = Symbol('VideoIndexReqest');
 
 const getAssociationCount = (x) => x.LessonContainerCount;
 
+export default
 @model
 @mixin(assets)
-export default class Package extends Base {
+class Package extends Base {
 	static MimeType = COMMON_PREFIX + 'contentpackage'
 
 	constructor (service, parent, data) {

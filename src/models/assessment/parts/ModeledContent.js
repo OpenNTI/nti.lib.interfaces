@@ -1,8 +1,9 @@
 import {model, COMMON_PREFIX} from '../../Registry';
 import Part from '../Part';
 
+export default
 @model
-export default class ModeledContent extends Part {
+class ModeledContent extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.modeledcontentpart'
 
 	constructor (service, parent, data) {

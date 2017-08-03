@@ -5,9 +5,10 @@ import {model, COMMON_PREFIX} from '../Registry';
 import AdministrativeIdentity from './mixins/AdministrativeIdentity';
 import Enrollment from './Enrollment';
 
+export default
 @model
 @mixin(AdministrativeIdentity)
-export default class InstanceAdministrativeRole extends Enrollment {
+class InstanceAdministrativeRole extends Enrollment {
 	static MimeType = COMMON_PREFIX + 'courseware.courseinstanceadministrativerole'
 
 	constructor (service, data) {

@@ -5,9 +5,10 @@ import Submission from '../../mixins/Submission';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
 @mixin(Submission)
-export default class QuestionSubmission extends Base {
+class QuestionSubmission extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.questionsubmission'
 
 	static build (question) {

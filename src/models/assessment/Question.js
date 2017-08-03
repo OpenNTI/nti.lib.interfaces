@@ -14,9 +14,10 @@ import QuestionSubmission from './QuestionSubmission';
 
 const Individual = Symbol('Individual');
 
+export default
 @model
 @mixin(HasContent, SubmittableIdentity, QuestionIdentity)
-export default class Question extends Base {
+class Question extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'question',
 		COMMON_PREFIX + 'naquestion',

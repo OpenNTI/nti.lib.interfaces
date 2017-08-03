@@ -10,8 +10,9 @@ const keyName = /name=['"]([^'"]+)['"]/i;
 
 const ValueKeys = Symbol('value-keys');
 
+export default
 @model
-export default class FillInTheBlank extends Part {
+class FillInTheBlank extends Part {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.fillintheblank',
 		COMMON_PREFIX + 'assessment.fillintheblankshortanswerpart',

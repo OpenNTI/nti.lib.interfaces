@@ -4,8 +4,9 @@ import {mixin, readonly} from 'nti-lib-decorators';
 
 import Base from '../../../../Base';
 
+export default
 @mixin({@readonly isAggregated: true})
-export default class Part extends Base {
+class Part extends Base {
 
 	constructor (service, parent, data) {
 		super(service, parent, data);

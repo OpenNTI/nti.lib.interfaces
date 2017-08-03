@@ -2,8 +2,9 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 import Base from './Base';
 
+export default
 @model
-export default class ContentPointer extends Base {
+class ContentPointer extends Base {
 	static MimeType = COMMON_PREFIX + 'contentrange.contentpointer'
 
 	constructor (service, parent, data) {

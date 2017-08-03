@@ -10,8 +10,9 @@ import {parseListFn} from '../models/Parser';
 
 const logger = Logger.get('store:Achievements');
 
+export default
 @mixin(Pendability)
-export default class Achievements extends EventEmitter {
+class Achievements extends EventEmitter {
 
 	constructor (service, owner, data) {
 		super();

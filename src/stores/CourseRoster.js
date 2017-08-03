@@ -32,8 +32,9 @@ class RosterRecord extends Base {
 	}
 }
 
+export default
 @mixin(Paged)
-export default class CourseRosterStream extends Stream {
+class CourseRosterStream extends Stream {
 
 	constructor (...args) {
 		super(...args);

@@ -11,8 +11,9 @@ const SUCCESS = 'Success';
 const PENDING = 'Pending';
 const FAILED = 'Failed';
 
+export default
 @model
-export default class ContentPackageRenderJob extends Base {
+class ContentPackageRenderJob extends Base {
 	static MimeType = COMMON_PREFIX + 'content.packagerenderjob'
 
 	constructor (service, parent, data) {

@@ -1,8 +1,9 @@
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+export default
 @model
-export default class VideoRef extends Base {
+class VideoRef extends Base {
 	static MimeType = COMMON_PREFIX + 'ntivideoref'
 
 	constructor (service, parent, data) {

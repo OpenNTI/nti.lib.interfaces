@@ -6,8 +6,9 @@ import EnrollmentOption from './EnrollmentOption';
 const TakeOver = Symbol.for('TakeOver');
 const SetProtectedProperty = Symbol.for('SetProtectedProperty');
 
+export default
 @model
-export default class EnrollmentOption5Minute extends EnrollmentOption {
+class EnrollmentOption5Minute extends EnrollmentOption {
 	static MimeType = COMMON_PREFIX + 'courseware.fiveminuteenrollmentoption'
 
 	constructor (service, parent, data) {

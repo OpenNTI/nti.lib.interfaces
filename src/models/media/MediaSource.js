@@ -5,8 +5,9 @@ import MetaDataResolver from './MetaDataResolver';
 
 const resolver = Symbol('Resolver');
 
+export default
 @model
-export default class MediaSource extends Base {
+class MediaSource extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'mediasource',
 		COMMON_PREFIX + 'videosource',

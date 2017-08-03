@@ -11,9 +11,10 @@ const EnrollmentOptions = Symbol('EnrollmentOptions');
 
 const rename = Symbol.for('TakeOver');
 
+export default
 @model
 @mixin(assets)
-export default class CourseCatalogEntry extends Base {
+class CourseCatalogEntry extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.catalogentry',
 		COMMON_PREFIX + 'courses.coursecataloglegacyentry', //Really?! Two packages?! :P
