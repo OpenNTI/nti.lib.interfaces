@@ -1,4 +1,4 @@
-import QueryString from 'query-string';
+import {URL} from 'nti-commons';
 
 import {Service, Parser as parse} from '../constants';
 
@@ -11,7 +11,7 @@ export default {
 		}
 
 		if (typeof params === 'object') {
-			link = link.concat('?', QueryString.stringify(params));
+			link = URL.appendQueryParams(link, params);
 		}
 
 		return this[Service].get(link)

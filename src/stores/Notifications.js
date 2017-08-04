@@ -1,9 +1,7 @@
-import Url from 'url';
 import EventEmitter from 'events';
 
-import QueryString from 'query-string';
 import Logger from 'nti-util-logger';
-import {forward, wait} from 'nti-commons';
+import {forward, wait, URL} from 'nti-commons';
 
 import {Service, ROOT_NTIID, REL_MESSAGE_INBOX} from '../constants';
 import {parse} from '../models/Parser';
@@ -30,19 +28,15 @@ export default class Notifications extends EventEmitter {
 		inflight = service.getPageInfo(ROOT_NTIID)
 		//Find our url to fetch notifications from...
 			.then(pageInfo => {
-				let url = pageInfo.getLink(REL_MESSAGE_INBOX);
+				const url = pageInfo.getLink(REL_MESSAGE_INBOX);
 				if (!url) {
 					return Promise.reject('No Notifications url');
 				}
 
-				url = Url.parse(url);
-
-				url.search = QueryString.stringify({
+				return URL.appendQueryParams(url, {
 					batchSize: BATCH_SIZE,
 					batchStart: 0
 				});
-
-				return url.format();
 			})
 
 			//Load the notifications...

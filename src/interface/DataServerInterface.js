@@ -1,10 +1,8 @@
-import Url from 'url';
 import EventEmitter from 'events';
 
 import base64decode from 'btoa'; //If the login method is invoked on the NodeJS side, we will need this function...
-import QueryString from 'query-string';
 import Logger from 'nti-util-logger';
-import {chain, FileType} from 'nti-commons';
+import {chain, FileType, URL} from 'nti-commons';
 
 import DataCache from '../utils/datacache';
 import parseBody from '../utils/attempt-json-parse';
@@ -69,8 +67,7 @@ export default class DataServerInterface extends EventEmitter {
 		options = (options && (typeof options === 'object' ? options : {url: options})) || {};
 
 		const start = Date.now();
-		const url = Url.parse(this.config.server)
-			.resolve(options.url || '');
+		const url = URL.resolve(this.config.server, options.url || '');
 
 
 		const {data} = options;
@@ -404,15 +401,10 @@ export default class DataServerInterface extends EventEmitter {
 
 	computeOAuthUrl (url, successUrl, failureUrl) {
 		//OAuth logins only work client side, so this method will only work in a browser, and will fail on node.
-		let href = Url.parse(url);
-
-		href.search = QueryString.stringify({
-			...QueryString.parse(href.search),
+		return URL.appendQueryParams(url, {
 			success: successUrl,
 			failure: failureUrl
 		});
-
-		return href.format();
 	}
 
 

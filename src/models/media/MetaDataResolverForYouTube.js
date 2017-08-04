@@ -1,4 +1,4 @@
-import QueryString from 'query-string';
+import QueryString from 'querystring';
 
 import {getAPIKey} from '../../utils/GoogleAPI';
 

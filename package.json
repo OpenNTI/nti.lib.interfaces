@@ -32,12 +32,10 @@
     "isempty": "0.0.1",
     "mime-types": "^2.1.0",
     "moment": "^2.8.3",
-    "nti-commons": "^2.0.0",
+    "nti-commons": "^2.7.0",
     "nti-lib-decorators": "^1.0.0",
     "nti-lib-ntiids": "^1.0.0",
     "nti-util-logger": "^1.0.0",
-    "query-string": "^4.0.0",
-    "url": "^0.11.0",
     "uuid": "^3.0.1"
   },
   "devDependencies": {

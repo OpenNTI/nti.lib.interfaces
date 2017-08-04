@@ -1,11 +1,9 @@
 import EventEmitter from 'events';
-import Url from 'url';
 
-import QueryString from 'query-string';
 import Logger from 'nti-util-logger';
 import {mixin} from 'nti-lib-decorators';
 import {isNTIID} from 'nti-lib-ntiids';
-import {URL as UrlUtils, wait} from 'nti-commons';
+import {URL, wait} from 'nti-commons';
 
 import {parse} from '../models/Parser';
 import Capabilities from '../models/Capabilities';
@@ -360,13 +358,7 @@ class ServiceDocument extends EventEmitter {
 				headers.accept = type;
 			}
 
-			url = Url.parse(url);
-			url.search = QueryString.stringify({
-				...QueryString.parse(url.query),
-				...extras
-			});
-			url = url.format();
-
+			url = URL.appendQueryParams(url, extras);
 			url = {url, headers};
 		}
 
@@ -477,7 +469,7 @@ class ServiceDocument extends EventEmitter {
 				ids = ids.join(',');
 			}
 
-			url += '?' + QueryString.stringify({purchasables: ids});
+			url = URL.appendQueryParams(url, {purchasables: ids});
 		}
 
 		return this.get(url)
@@ -691,13 +683,7 @@ class ServiceDocument extends EventEmitter {
 			url = '/dataserver2/logon.logout';
 		}
 
-		url = Url.parse(url);
-		url.search = QueryString.stringify(
-			Object.assign(
-				QueryString.parse(url.search),
-				{success: succssURL}));
-
-		return url.format();
+		return URL.appendQueryParams(url, {success: succssURL});
 	}
 
 
@@ -714,7 +700,7 @@ class ServiceDocument extends EventEmitter {
 		let base = this.getResolveAppUserURL();
 		let pageURI = encodeURIComponent(`Pages(${ntiid})`);
 
-		return UrlUtils.join(base, pageURI, postfix || '');
+		return URL.join(base, pageURI, postfix || '');
 	}
 
 
@@ -775,7 +761,7 @@ class ServiceDocument extends EventEmitter {
 			return null;
 		}
 
-		return UrlUtils.join(l, username && encodeURIComponent(username));
+		return URL.join(l, username && encodeURIComponent(username));
 	}
 
 
@@ -806,7 +792,7 @@ class ServiceDocument extends EventEmitter {
 			return null;
 		}
 
-		return UrlUtils.join(l, username && encodeURIComponent(username));
+		return URL.join(l, username && encodeURIComponent(username));
 	}
 
 
@@ -836,7 +822,7 @@ class ServiceDocument extends EventEmitter {
 			return Promise.reject({statusCode: NOT_IMPLEMENTED, message: 'PathToContainerId is not available here.'});
 		}
 
-		return this.get(href + '?' + QueryString.stringify({objectId: ntiid}))
+		return this.get(URL.appendQueryParams(href, {objectId: ntiid}))
 			.then(data => data.map(path => path.map(item => parse(this, this, item))));
 	}
 }

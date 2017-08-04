@@ -1,4 +1,4 @@
-import QueryString from 'query-string';
+import {URL} from 'nti-commons';
 
 import {Service, Parser as parse} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
@@ -24,19 +24,17 @@ class Comment extends Post {
 	}
 
 	getReplies () {
-		let link = this.getLink('replies');
+		const link = this.getLink('replies');
 		if (!link) {
 			return Promise.resolve([]);
 		}
 
-		let params = {
+		const params = {
 			sortOn: 'CreatedTime',
 			sortOrder: 'ascending'
 		};
 
-		link = link.concat('?', QueryString.stringify(params));
-
-		return this[Service].get(link)
+		return this[Service].get(URL.appendQueryParams(link, params))
 			.then(result => this[parse](result.Items));
 	}
 }

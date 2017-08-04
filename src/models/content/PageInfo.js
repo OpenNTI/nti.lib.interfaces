@@ -1,8 +1,7 @@
-import Url from 'url';
 import path from 'path';
 
-import {Markup} from 'nti-commons';
-import QueryString from 'query-string';
+import {Markup, URL} from 'nti-commons';
+
 
 import UserDataStore from '../../stores/UserData';
 import {
@@ -36,7 +35,7 @@ class PageInfo extends Base {
 
 
 	getContentRoot () {
-		let url = Url.parse(this.getLink('content'));
+		let url = URL.parse(this.getLink('content'));
 
 		url.pathname = path.dirname(url.pathname) + '/';
 
@@ -94,9 +93,9 @@ class PageInfo extends Base {
 
 
 	getUserDataLastOfType (mimeType) {
-		let link = this.getLink(REL_USER_GENERATED_DATA);
-		let url = link && Url.parse(link);
-		let o = {
+		const link = this.getLink(REL_USER_GENERATED_DATA);
+
+		const o = {
 			accept: mimeType,
 			batchStart: 0, batchSize: 1,
 			sortOn: 'lastModified',
@@ -104,13 +103,12 @@ class PageInfo extends Base {
 			filter: 'TopLevel'
 		};
 
-		if (!url) {
+		if (!link) {
 			return Promise.reject('No Link');
 		}
 
-		url.search = QueryString.stringify(o);
 
-		return this.getResource(url.format())
+		return this.getResource(URL.appendQueryParams(link, o))
 			.then(objects=> objects.Items[0] || Promise.reject(NOT_FOUND))
 			.then(this[parse].bind(this));
 	}

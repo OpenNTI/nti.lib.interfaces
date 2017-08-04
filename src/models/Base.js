@@ -1,8 +1,6 @@
 import EventEmitter from 'events';
-import Url from 'url';
 
-import QueryString from 'query-string';
-import {mixin as mixinToThis, Parsing} from 'nti-commons';
+import {mixin as mixinToThis, Parsing, URL} from 'nti-commons';
 import {mixin} from 'nti-lib-decorators';
 import {ntiidEquals} from 'nti-lib-ntiids';
 import Logger from 'nti-util-logger';
@@ -363,14 +361,7 @@ class Base extends EventEmitter {
 		let link = getLinkImpl(this, rel) || (rel === 'self' && this.href);
 
 		if (link && params) {
-
-			let url = Url.parse(link);
-			url.search = QueryString.stringify(
-				Object.assign(
-					QueryString.parse(url.search),
-					params));
-
-			link = url.format();
+			link = URL.appendQueryParams(link, params);
 		}
 
 		return link;

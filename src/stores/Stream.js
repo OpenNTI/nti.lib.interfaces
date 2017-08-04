@@ -1,9 +1,7 @@
 import EventEmitter from 'events';
-import Url from 'url';
 
 import invariant from 'invariant';
-import QueryString from 'query-string';
-import {mixin} from 'nti-commons';
+import {mixin, URL} from 'nti-commons';
 import Logger from 'nti-util-logger';
 
 import {Service, Parent, DELETED, SortOrder} from '../constants';
@@ -176,16 +174,7 @@ export default class Stream extends EventEmitter {
 
 			start = Date.now();
 
-			const getHref = (ref, params = {}) => ref && (
-				ref = Url.parse(ref),
-				ref.search = QueryString.stringify(
-					Object.assign(
-						QueryString.parse(ref.search),
-						params
-					)
-				),
-				ref.format()
-			);
+			const getHref = (ref, params = {}) => ref && URL.appendQueryParams(ref, params);
 
 			let next = (prev ? this.prev : this.next) || getHref(this.href, this.options);
 
