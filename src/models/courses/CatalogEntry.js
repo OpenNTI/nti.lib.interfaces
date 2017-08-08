@@ -7,6 +7,8 @@ import setAndEmit from '../../utils/getsethandler';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+import CatalogEntryFactory from './CatalogEntryFactory';
+
 const EnrollmentOptions = Symbol('EnrollmentOptions');
 
 const rename = Symbol.for('TakeOver');
@@ -20,6 +22,10 @@ class CourseCatalogEntry extends Base {
 		COMMON_PREFIX + 'courses.coursecataloglegacyentry', //Really?! Two packages?! :P
 		COMMON_PREFIX + 'courseware.coursecataloglegacyentry',
 	]
+
+	static getFactory (service) {
+		return CatalogEntryFactory.from(service);
+	}
 
 	isCourse = true
 
