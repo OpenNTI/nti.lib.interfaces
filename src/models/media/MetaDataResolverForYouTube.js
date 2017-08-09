@@ -14,17 +14,22 @@ function getThumbnail (data, key) {
 	return url;
 }
 
+function buildURL (service, source) {
+	let id = source.source;
+	id = Array.isArray(id) ? id[0] : id;
+
+	return getAPIKey(service)
+		.catch(e => console.error(e) || Promise.reject('No API')) //eslint-disable-line no-console
+		.then(key => URL.replace('{0}', id) + QueryString.stringify({ key, part: 'snippet,statistics', id }));
+}
+
 export default class MetaDataResolverForYouTube {
 
 	static resolve (service, source) {
-
 		let id = source.source;
 		id = Array.isArray(id) ? id[0] : id;
 
-		return getAPIKey(service)
-			.catch(e => console.error(e) || Promise.reject('No API'))  //eslint-disable-line no-console
-
-			.then(key => URL.replace('{0}', id) + QueryString.stringify({ key, part: 'snippet,statistics', id }))
+		return buildURL(service, source)
 			.then(url => service.get(url))
 
 			.then(o=> o.items.find(x => x.id === id) || Promise.reject('Not Found'))
@@ -96,5 +101,12 @@ export default class MetaDataResolverForYouTube {
 			]
 		}
 		*/
+	}
+
+
+	static resolveCanAccess (service, source) {
+		return buildURL(service, source)
+			.then(url => service.get(url))
+			.then(() => true, () => false);
 	}
 }

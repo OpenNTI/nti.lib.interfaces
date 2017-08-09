@@ -11,6 +11,7 @@ const services = {
 };
 
 const resolve = Promise.reject.bind(Promise, 'No resolver for service');
+const resolveCanAccess = () => Promise.reject('No resolve access for service');
 
 export default class MetaDataResolver {
 
@@ -21,6 +22,15 @@ export default class MetaDataResolver {
 
 		return resolver.resolve(service, source)
 			.then(meta => new MetaDataResolver(service, meta));
+	}
+
+
+	static resolveCanAccess (source) {
+		const service = source[Service];
+
+		const resolver = services[source.service] || {resolveCanAccess};
+
+		return resolver.resolveCanAccess ? resolver.resolveCanAccess(service, source) : resolveCanAccess();
 	}
 
 

@@ -4,6 +4,7 @@ import Base from '../Base';
 import MetaDataResolver from './MetaDataResolver';
 
 const resolver = Symbol('Resolver');
+const resolveCanAccess = Symbol('Resolve Can Access');
 
 export default
 @model
@@ -22,6 +23,13 @@ class MediaSource extends Base {
 		return this[resolver] || (
 			this[resolver] = MetaDataResolver.from(this)
 				.then(meta=>Object.assign(this, meta))
+		);
+	}
+
+
+	resolveCanAccess () {
+		return this[resolveCanAccess] || (
+			this[resolver] = MetaDataResolver.resolveCanAccess(this)
 		);
 	}
 

@@ -3,14 +3,17 @@ const URL = 'https://vimeo.com/api/oembed.json?url=https%3A//vimeo.com/{0}';
 
 const FAIL = 'data:,';
 
+function buildURL (service, source) {
+	let id = source.source;
+	id = Array.isArray(id) ? id[0] : id;
+
+	return URL.replace('{0}', id);
+}
+
 export default class MetaDataResolverForVimeo {
 
 	static resolve (service, source) {
-
-		let id = source.source;
-		id = Array.isArray(id) ? id[0] : id;
-
-		let url = URL.replace('{0}', id);
+		const url = buildURL(service, source);
 		// console.log(url);
 		return service.get(url)
 			.then(o=> o[0] || o)
@@ -48,5 +51,12 @@ export default class MetaDataResolverForVimeo {
 		video_id: 114672468
 		width: 720
 		 */
+	}
+
+
+	static resolveCanAccess (service, source) {
+		const url = buildURL(service, source);
+
+		return service.get(url).then(() => true, () => false);
 	}
 }

@@ -166,19 +166,30 @@ function parseResult (result) {
 	};
 }
 
+function buildURL (service, source) {
+	let id = source.source;
+	id = Array.isArray(id) ? id[0] : id;
+
+	const [partnerId, entryId] = id.split(':');
+	const params = QueryString.stringify(getParams(partnerId, entryId, service[Context]));
+
+	return `https://cdnapisec.kaltura.com/api_v3/index.php?service=multirequest&${params}`;
+}
+
 export default class MetaDataResolverForKaltura {
 
 	static resolve (service, source) {
-		let id = source.source;
-		id = Array.isArray(id) ? id[0] : id;
+		const url = buildURL(service, source);
 
-		const [partnerId, entryId] = id.split(':');
-		const params = QueryString.stringify(getParams(partnerId, entryId, service[Context]));
-
-		const url = `https://cdnapisec.kaltura.com/api_v3/index.php?service=multirequest&${params}`;
-
-		return fetch(url)
+		return service.get(url)
 			.then(x => x.json())
 			.then(result => parseResult(result, service[Context]));
+	}
+
+
+	static resolveCanAccess (service, source) {
+		const url = buildURL(service, source);
+
+		return service.get(url).then(() => true, () => false);
 	}
 }
