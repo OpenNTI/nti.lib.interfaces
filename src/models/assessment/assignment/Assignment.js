@@ -255,6 +255,9 @@ class Assignment extends Base {
 		return this.save({'total_points': points, [MAY_EFFECT_PROPERTIES]: ['auto_grade']}, void 0, 'total-points');
 	}
 
+	setDiscussionID (discussionID) {
+		return this.save({'discussion_ntiid': discussionID, [MAY_EFFECT_PROPERTIES]: ['is_non_public']});
+	}
 
 	canSetAutoGrade () {
 		return this.hasLink('auto-grade');
