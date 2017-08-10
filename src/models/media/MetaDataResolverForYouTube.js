@@ -30,7 +30,7 @@ export default class MetaDataResolverForYouTube {
 		id = Array.isArray(id) ? id[0] : id;
 
 		return buildURL(service, source)
-			.then(url => service.get(url))
+			.then(url => service.get(url))// TODO: use fetch not service
 
 			.then(o=> o.items.find(x => x.id === id) || Promise.reject('Not Found'))
 
@@ -106,7 +106,7 @@ export default class MetaDataResolverForYouTube {
 
 	static resolveCanAccess (service, source) {
 		return buildURL(service, source)
-			.then(url => service.get(url))
+			.then(url => service.get(url))// TODO: use fetch not service
 			.then(() => true, () => false);
 	}
 }

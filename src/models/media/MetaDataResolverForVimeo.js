@@ -15,6 +15,7 @@ export default class MetaDataResolverForVimeo {
 	static resolve (service, source) {
 		const url = buildURL(service, source);
 		// console.log(url);
+		// TODO: use fetch not service
 		return service.get(url)
 			.then(o=> o[0] || o)
 			.then(o=>
@@ -57,6 +58,7 @@ export default class MetaDataResolverForVimeo {
 	static resolveCanAccess (service, source) {
 		const url = buildURL(service, source);
 
+		// TODO: use fetch not service
 		return service.get(url).then(() => true, () => false);
 	}
 }

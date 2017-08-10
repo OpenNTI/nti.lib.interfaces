@@ -181,7 +181,7 @@ export default class MetaDataResolverForKaltura {
 	static resolve (service, source) {
 		const url = buildURL(service, source);
 
-		return service.get(url)
+		return fetch(url)
 			.then(x => x.json())
 			.then(result => parseResult(result, service[Context]));
 	}
@@ -190,6 +190,6 @@ export default class MetaDataResolverForKaltura {
 	static resolveCanAccess (service, source) {
 		const url = buildURL(service, source);
 
-		return service.get(url).then(() => true, () => false);
+		return fetch(url).then(() => true, () => false);
 	}
 }
