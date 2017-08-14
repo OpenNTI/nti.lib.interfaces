@@ -408,7 +408,12 @@ export default class DataServerInterface extends EventEmitter {
 	}
 
 
-	ping (context, username) {
+	ping (username, context) {
+		if (typeof username === 'object') {
+			//swap values for api back-compat
+			[username, context] = [context, username];
+		}
+
 		username = username || (context && context.cookies && context.cookies.username);
 
 		return this.get('logon.ping', context)//ping
