@@ -109,7 +109,7 @@ export default class DataServerInterface extends EventEmitter {
 			//fetch() api only allows the init.body to be an instance of these things:
 			//ArrayBuffer, ArrayBufferView, Blob/File, URLSearchParams, FormData or a string
 			//typeof will return === 'object' for all but strings... so with the above, we will
-			//have an unset init.body unless we neeeded to encode it...
+			//have an unset init.body unless we need to encode it...
 			const useDataRaw = (typeof FormData !== 'undefined' && data instanceof FormData)
 							|| (typeof Blob !== 'undefined' && data instanceof Blob)
 							|| (typeof File !== 'undefined' && data instanceof File)
