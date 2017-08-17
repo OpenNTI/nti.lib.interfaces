@@ -4,7 +4,8 @@
   "author": "nextthought",
   "license": "UNLICENSED",
   "description": "Provides an interface for interacting with the dataserver via javascript.",
-  "main": "lib/index.js",
+  "main": "lib/index-cjs.js",
+  "module": "lib/index.js",
   "files": [
     "lib"
   ],
@@ -37,8 +38,8 @@
     "nti-lib-decorators": "^1.0.0",
     "nti-lib-ntiids": "^1.0.0",
     "nti-util-logger": "^1.0.0",
-    "uuid": "^3.0.1",
-    "query-string": "^5.0.0"
+    "query-string": "^5.0.0",
+    "uuid": "^3.0.1"
   },
   "devDependencies": {
     "nti-lib-scripts": "^1.0.34"
