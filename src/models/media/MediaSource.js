@@ -2,6 +2,7 @@ import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 import MetaDataResolver from './MetaDataResolver';
+import MediaSourceFactory from './MediaSourceFactory';
 
 const resolver = Symbol('Resolver');
 const resolveCanAccess = Symbol('Resolve Can Access');
@@ -13,6 +14,11 @@ class MediaSource extends Base {
 		COMMON_PREFIX + 'mediasource',
 		COMMON_PREFIX + 'videosource',
 	]
+
+	static from (service, uri) {
+		/* async */
+		return MediaSourceFactory.from(service, uri);
+	}
 
 	constructor (service, parent, data) {
 		super(service, parent, data);

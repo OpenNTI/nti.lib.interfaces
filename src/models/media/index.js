@@ -1,4 +1,5 @@
 export MediaSource from './MediaSource';
+export MediaSourceFactory from './MediaSourceFactory';
 export Slide from './Slide';
 export SlideDeck from './SlideDeck';
 export SlideVideo from './SlideVideo';

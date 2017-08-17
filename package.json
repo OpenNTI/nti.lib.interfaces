@@ -29,6 +29,7 @@
   "dependencies": {
     "btoa": "^1.1.2",
     "elementtree": "^0.1.6",
+    "get-video-id": "^2.1.5",
     "invariant": "^2.2.0",
     "is-function": "^1.0.1",
     "isempty": "0.0.1",
