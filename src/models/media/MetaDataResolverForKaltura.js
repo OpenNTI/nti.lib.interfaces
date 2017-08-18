@@ -1,5 +1,6 @@
 import {KalturaProvider} from './providers';
 
+const INSTANCES = new WeakMap();
 
 export default class MetaDataResolverForKaltura {
 
@@ -18,6 +19,10 @@ export default class MetaDataResolverForKaltura {
 
 
 	static getProvider (service) {
-		return this.provider || (this.provider = new KalturaProvider(service));
+		if (!INSTANCES.get(service)) {
+			INSTANCES.set(service, new KalturaProvider(service));
+		}
+
+		return INSTANCES.get(service);
 	}
 }
