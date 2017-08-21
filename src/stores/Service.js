@@ -73,7 +73,7 @@ class ServiceDocument extends EventEmitter {
 			this.initMixins(json);
 		}
 
-		this.assignData(json);
+		this.assignData(json, {silent: true});
 	}
 
 
@@ -86,7 +86,7 @@ class ServiceDocument extends EventEmitter {
 	}
 
 
-	assignData (json) {
+	assignData (json, {silent = false} = {}) {
 		const {[Context]: context, [Server]: server} = this;
 		const {CapabilityList: caps = [], ...data} = json;
 		Object.assign(this, data);
@@ -123,6 +123,11 @@ class ServiceDocument extends EventEmitter {
 
 		if (context) {
 			attachPendingQueue(context).addToPending(this.waitForPending());
+		}
+
+		if (!silent) {
+			this.waitForPending()
+				.then(() => this.emit('change', this));
 		}
 
 		return this;
