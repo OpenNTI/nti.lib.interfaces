@@ -31,6 +31,22 @@ export default class KalturaProvider {
 	}
 
 
+	/**
+	 * Resolves custom URLs so we can get the ID for our uses.
+	 *
+	 * @param  {Service} service the service instance.
+	 * @param  {string} uri the url of the kaltura video.
+	 * @return {Promise} resolves with the video id, or rejects with an error.
+	 */
+	static async resolveID (service, uri) {
+		const meta = await service.getMetadataFor(uri);
+
+		const id = getURLID(getIDParts(meta.contentLocation));
+
+		return id || Promise.reject('Not Found');
+	}
+
+
 	static getCanonicalURL (href, videoId) {
 		const id = videoId || getURLID(getIDParts(href));
 		return `kaltura://${id}`;
