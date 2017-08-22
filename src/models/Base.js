@@ -223,9 +223,9 @@ class Base extends EventEmitter {
 		}
 		logger.debug('Refresh %o', this);
 
-		const fetch = newRaw ?
-			Promise.resolve(newRaw) :
-			service.getObjectAtURL(this.getObjectHref(), this.getID());
+		const fetch = newRaw
+			? Promise.resolve(newRaw)
+			: service.getObjectAtURL(this.getObjectHref(), this.getID());
 
 		const inflight = fetch.then(o => this.applyRefreshedData(o));
 

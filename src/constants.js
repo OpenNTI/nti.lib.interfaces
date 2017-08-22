@@ -19,8 +19,6 @@ export const RepresentsSameObject = Symbol('Represents-Same-Object');
 export const DELETED = Symbol.for('DELETED');
 export const SAVE = Symbol.for('SAVE');
 
-export const MAY_AFFECT_PROPERTIES = Symbol('Properties Might Be Affected');
-
 export const EVENT_BEGIN = 'begin';
 export const EVENT_FINISH = 'finish';
 

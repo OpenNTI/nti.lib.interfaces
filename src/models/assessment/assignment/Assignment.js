@@ -6,8 +6,7 @@ import {
 	ReParent,
 	DateFields,
 	Parser as parse,
-	ASSESSMENT_HISTORY_LINK,
-	MAY_AFFECT_PROPERTIES
+	ASSESSMENT_HISTORY_LINK
 } from '../../../constants';
 import Publishable from '../../../mixins/Publishable';
 import {model, COMMON_PREFIX} from '../../Registry';
@@ -252,11 +251,11 @@ class Assignment extends Base {
 
 
 	setTotalPoints (points) {
-		return this.save({'total_points': points, [MAY_AFFECT_PROPERTIES]: ['auto_grade']}, void 0, 'total-points');
+		return this.save({'total_points': points}, void 0, 'total-points');
 	}
 
 	setDiscussionID (discussionID) {
-		return this.save({'discussion_ntiid': discussionID, [MAY_AFFECT_PROPERTIES]: ['is_non_public']});
+		return this.save({'discussion_ntiid': discussionID});
 	}
 
 	canSetAutoGrade () {

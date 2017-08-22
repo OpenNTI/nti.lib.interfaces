@@ -2,7 +2,7 @@ import {pluck} from 'nti-commons';
 import {mixin} from 'nti-lib-decorators';
 
 import PlacementProvider from '../../authoring/placement/providers/QuestionSet';
-import {MAY_AFFECT_PROPERTIES, Parser as parse} from '../../constants';
+import {Parser as parse} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
@@ -182,8 +182,7 @@ class QuestionSet extends Base {
 	 */
 	setQuestionLimit (n) {
 		return this.save({
-			'draw': n,
-			[MAY_AFFECT_PROPERTIES]: ['Randomized', 'RandomizedPartsType']
+			'draw': n
 		});
 	}
 }
