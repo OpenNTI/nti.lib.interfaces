@@ -1,6 +1,6 @@
 import {pluck} from 'nti-commons';
 
-import { Service, DELETED, SAVE, MAY_EFFECT_PROPERTIES } from '../constants';
+import { Service, DELETED, SAVE, MAY_AFFECT_PROPERTIES } from '../constants';
 import {begin, finishers} from '../utils/events-begin-finish';
 
 const after = (task, call) => task.catch(()=>{}).then(()=>call());
@@ -30,7 +30,7 @@ export default {
 			return Promise.reject('No Edit Link.');
 		}
 
-		const {[MAY_EFFECT_PROPERTIES]: additionKeys, ...values} = newValues;
+		const {[MAY_AFFECT_PROPERTIES]: additionKeys, ...values} = newValues;
 
 		const keys = ['NTIID', 'OID', 'Links', 'Last Modified'];
 
