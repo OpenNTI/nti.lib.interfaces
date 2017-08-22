@@ -1,5 +1,3 @@
-import {pluck} from 'nti-commons';
-
 import { Service, DELETED, SAVE, MAY_AFFECT_PROPERTIES } from '../constants';
 import {begin, finishers} from '../utils/events-begin-finish';
 
@@ -65,7 +63,7 @@ export default {
 		const previousSave = this.saving || Promise.resolve();
 
 		const worker = this.saving = after(previousSave, () => this.putToLink(rel, values))
-			.then(o => this.refresh(pluck(o, ...keys)))
+			.then(o => this.refresh(o))
 			.then(o => (onAfterRefresh(o), o))
 			.then(...finishers(this, SAVE, data))
 			.then(() => this.onChange(keys));
