@@ -89,37 +89,37 @@ class ServiceDocument extends EventEmitter {
 	assignData (json, {silent = false} = {}) {
 		const {[Context]: context, [Server]: server} = this;
 		const {CapabilityList: caps = [], ...data} = json;
-		Object.assign(this, data);
+		Object.assign(this, data, {appUsername: null});
 
 		this.capabilities = new Capabilities(this, caps);
 
 		if (!this.getAppUsername()) {
 			delete this[AppUser];
 			delete this[Contacts];
-			return;
 		}
+		else {
+			this.addToPending(
+				this.getAppUser().then(u => {
+					this[AppUser] = u;
 
-		this.addToPending(
-			this.getAppUser().then(u => {
-				this[AppUser] = u;
+					//Not all apps that use this library are a Platform App... for those apps that do not need contacts,
+					//skip loading them.
+					if (server.config.SKIP_FRIENDSLISTS) {
+						logger.log('Skipping/Ignoring FriendsLists');
+						return;
+					}
 
-				//Not all apps that use this library are a Platform App... for those apps that do not need contacts,
-				//skip loading them.
-				if (server.config.SKIP_FRIENDSLISTS) {
-					logger.log('Skipping/Ignoring FriendsLists');
-					return;
-				}
-
-				let {href} = this.getCollection('FriendsLists', this.getAppUsername()) || {};
-				if (href) {
-					this[Contacts] = new ContactsStore(this, href, u);
-					return this[Contacts].waitForPending();
-				} else {
-					logger.warn('No FriendsLists Collection');
-				}
-			},
-			e => logger.log(e.stack || e.message || e))
-		);
+					let {href} = this.getCollection('FriendsLists', this.getAppUsername()) || {};
+					if (href) {
+						this[Contacts] = new ContactsStore(this, href, u);
+						return this[Contacts].waitForPending();
+					} else {
+						logger.warn('No FriendsLists Collection');
+					}
+				},
+				e => logger.log(e.stack || e.message || e))
+			);
+		}
 
 		if (context) {
 			attachPendingQueue(context).addToPending(this.waitForPending());
