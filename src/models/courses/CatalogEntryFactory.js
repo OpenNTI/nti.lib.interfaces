@@ -22,7 +22,7 @@ export default class CatalogEntryFactory {
 
 		const adminLevelsURL = service.getWorkspace('Courses').getLink('AdminLevels');
 		const levels = await service.get(adminLevelsURL);
-		const defaultLevel = await getDefaultLevel(adminLevelsURL, levels);
+		const defaultLevel = await getDefaultLevel(service, adminLevelsURL, levels);
 		const {NTIID} = await service.post(defaultLevel.href, data);
 		const course = await service.getObject(NTIID);
 
