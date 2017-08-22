@@ -256,7 +256,7 @@ class Assignment extends Base {
 	}
 
 	setDiscussionID (discussionID) {
-		return this.save({'discussion_ntiid': discussionID, [MAY_EFFECT_PROPERTIES]: ['is_non_public']});
+		return this.save({'discussion_ntiid': discussionID, [MAY_AFFECT_PROPERTIES]: ['is_non_public']});
 	}
 
 	canSetAutoGrade () {
