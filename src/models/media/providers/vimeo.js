@@ -31,10 +31,11 @@ export default class VimeoProvider {
 	/**
 	 * Resolves custom URLs so we can get the ID for our uses.
 	 *
-	 * @param  {string}  uri the url of the vimeo video.
-	 * @return {Promise}     resolves witht the video id, or rejects with an error.
+	 * @param  {Service} service the service instance.
+	 * @param  {string} uri the url of the vimeo video.
+	 * @return {Promise} resolves with the video id, or rejects with an error.
 	 */
-	static resolveID (uri) {
+	static resolveID (service, uri) {
 		const endpoint = getMetaDataEntryPoint(uri);
 
 		return fetch(endpoint)

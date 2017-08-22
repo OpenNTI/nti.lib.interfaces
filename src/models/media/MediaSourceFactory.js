@@ -10,7 +10,7 @@ export default class MediaSourceFactory {
 			return;
 		}
 
-		const videoId = provider.getID(uri) || await provider.resolveID(uri);
+		const videoId = provider.getID(uri) || await provider.resolveID(service, uri);
 		const canonicalUrl = provider.getCanonicalURL(uri, videoId);
 
 		return new MediaSource(service, null, {
