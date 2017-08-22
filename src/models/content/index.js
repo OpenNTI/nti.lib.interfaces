@@ -2,6 +2,8 @@ export Bundle from './Bundle';
 export ContentPackageRenderJob from './ContentPackageRenderJob';
 export File from './File';
 export Folder from './Folder';
+export ImageMetadata from './ImageMetadata';
+export Metadata from './Metadata';
 export Package from './Package';
 export PageInfo from './PageInfo';
 export Progress from './Progress';
