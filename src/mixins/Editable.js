@@ -53,8 +53,12 @@ export default {
 
 		let keys = null;
 		const worker = this.saving = after(previousSave, () => this.putToLink(rel, values))
-			.then(o => (keys = Object.keys(), this.refresh(o)))
-			.then(o => (onAfterRefresh(o), o))
+			.then(o => (
+				keys = Object.keys(o),
+				this.refresh(o)
+					.then(() => o))
+			)
+			.then(o => (onAfterRefresh(this, o), o))
 			.then(...finishers(this, SAVE, { fields: values }))
 			.then(() => this.onChange(keys));
 
