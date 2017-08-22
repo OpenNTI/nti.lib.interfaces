@@ -586,6 +586,13 @@ class ServiceDocument extends EventEmitter {
 	}
 
 
+	getMetadataFor (uri) {
+		const requestURI = this.getMetadataExtractorURL(uri);
+		return this.get(requestURI)
+			.then(x => parse(this, null, x));
+	}
+
+
 	getUserWorkspace () {
 		for (let workspace of this.Items) {
 			if (getLink(workspace, 'ResolveSelf')) {
@@ -807,6 +814,14 @@ class ServiceDocument extends EventEmitter {
 			REL_BULK_USER_RESOLVE);
 
 		return l || null;
+	}
+
+
+	getMetadataExtractorURL (uri) {
+		const base = '/dataserver2/URLMetaDataExtractor';
+		return uri
+			? URL.appendQueryParams(base, {url: uri})
+			: base;
 	}
 
 
