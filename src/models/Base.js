@@ -31,6 +31,18 @@ const PHANTOM = Symbol.for('Phantom');
 const TakeOver = Symbol.for('TakeOver');
 const is = Symbol('isTest');
 
+const getMethod = x => 'get' + x.replace(
+	PASCAL_CASE_REGEX,
+	(_, c) => (c || '').toUpperCase()
+);
+
+
+function updateField (scope, field, desc) {
+	delete scope[field];
+	Object.defineProperty(scope, field, desc);
+}
+
+
 export default
 @model
 @mixin(Editable, JSONValue, Pendability)
@@ -39,17 +51,15 @@ class Base extends EventEmitter {
 
 	constructor (service, parent, data, ...mixins) {
 		super();
+
 		//Make EventEmitter properties non-enumerable
 		this.setMaxListeners(100);
 		for (let key of Object.keys(this)) {
 			const desc = Object.getOwnPropertyDescriptor(this, key);
 			desc.enumerable = false;
-
-			delete this[key];
-			Object.defineProperty(this, key, desc);
+			updateField(this, key, desc);
 		}
 
-		let dateFields = this[DateFields]();
 
 		this[Service] = service;
 		//only allow null, and lib-interface models as "parents"
@@ -74,14 +84,10 @@ class Base extends EventEmitter {
 			this.initMixins(data);
 		}
 
-		let getMethod = x => 'get' + x.replace(
-			PASCAL_CASE_REGEX,
-			(_, c)=>(c || '').toUpperCase());
-
-		for (let fieldName of dateFields) {
-			let methodName = getMethod(fieldName);
-
-			this[methodName] = dateGetter(fieldName);
+		for (let fieldName of this[DateFields]()) {
+			updateField(this, getMethod(fieldName), {
+				value: dateGetter(fieldName)
+			});
 		}
 
 		if (this.hasOwnProperty('Creator')) {
@@ -111,6 +117,10 @@ class Base extends EventEmitter {
 			'Last Modified'
 		];
 	}
+
+
+	getCreatedTime () {} //implemented by DateFields()
+	getLastModified () {} //implemented by DateFields()
 
 
 	[TakeOver] (x, y) {
