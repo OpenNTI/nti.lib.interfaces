@@ -7,7 +7,7 @@ import {NO_LINK} from '../../constants';
 export default class FileSystemEntity extends Base {
 
 	constructor (service, parent, data) {
-		super (service, parent, data);
+		super(service, parent, data);
 
 		//this.name
 		//this.path

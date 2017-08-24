@@ -1,4 +1,5 @@
 import {pluck} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 
 import names from '../../mixins/CourseAndAssignmentNameResolving';
 import {cacheClassInstances} from '../../mixins/InstanceCacheable';
@@ -43,6 +44,7 @@ function processValue (value) {
 export default
 @cacheClassInstances
 @model
+@mixin(names)
 class Grade extends Base {
 	static AllowWildDisconntectedInstances = true
 	static MimeType = [
@@ -64,7 +66,7 @@ class Grade extends Base {
 		let {value} = data;
 		delete data.value;
 
-		super(service, parent, data, names);
+		super(service, parent, data);
 
 		PRIVATE.set(this, {});
 		// Correctness string
