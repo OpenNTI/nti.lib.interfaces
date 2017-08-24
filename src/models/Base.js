@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 
-import {mixin as mixinToThis, Parsing, URL} from 'nti-commons';
+import {Parsing, URL} from 'nti-commons';
 import {mixin} from 'nti-lib-decorators';
 import {ntiidEquals} from 'nti-lib-ntiids';
 import Logger from 'nti-util-logger';
@@ -49,7 +49,7 @@ export default
 class Base extends EventEmitter {
 	static MimeType = '__base__'
 
-	constructor (service, parent, data, ...mixins) {
+	constructor (service, parent, data) {
 		super();
 
 		//Make EventEmitter properties non-enumerable
@@ -68,16 +68,6 @@ class Base extends EventEmitter {
 		if (data) {
 			data = clone(data);
 			Object.assign(this, data);
-		}
-
-		if (mixins.length && (!Base.deprecated || !Base.deprecated.has(this.constructor))) {
-			(Base.deprecated || (Base.deprecated = new Set())).add(this.constructor);
-			logger.warn('Move Mixins to @mixin() decorator', this.constructor.name);
-		}
-
-		// mixin
-		for (let partial of mixins) {
-			mixinToThis(this, partial, data);
 		}
 
 		if (this.initMixins) {
