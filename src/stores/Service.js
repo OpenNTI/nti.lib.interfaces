@@ -545,6 +545,7 @@ class ServiceDocument extends EventEmitter {
 				});
 
 			cache.setVolatile(key, result);//if this is asked for again before we resolve, reuse this promise.
+			result.catch(() => cache.setVolatile(key, null));
 		}
 
 		return result.then(user => parse(this[Service], this, user));
