@@ -541,7 +541,7 @@ class ServiceDocument extends EventEmitter {
 						cache.set(key, entity);
 					}
 
-					return entity || Promise.reject(`Entity "${entityId}" could not resolve.`);
+					return entity || Promise.reject(`Could not resolve entity: "${entityId}".`);
 				});
 
 			cache.setVolatile(key, result);//if this is asked for again before we resolve, reuse this promise.
