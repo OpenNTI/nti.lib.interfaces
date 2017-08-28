@@ -313,7 +313,8 @@ describe('Model Tests', () => {
 
 
 	test('Bad DomContentRangeDescription Creation', () => {
-		let tca1 = make(TextDomContentPointer, {
+		let tca1 = {
+				MimeType: TextDomContentPointer.MimeType,
 				role: 'start',
 				ancestor: {
 					MimeType: ElementDomContentPointer.MimeType,
@@ -327,8 +328,9 @@ describe('Model Tests', () => {
 					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
 					{MimeType: TextContext.MimeType, contextText: 'text3', contextOffset: 2},
 				]
-			}),
-			tca2 = make(TextDomContentPointer, {
+			},
+			tca2 = {
+				MimeType: TextDomContentPointer.MimeType,
 				role: 'start',
 				edgeOffset: 5,
 				ancestor: {
@@ -342,7 +344,7 @@ describe('Model Tests', () => {
 					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
 					{MimeType: TextContext.MimeType, contextText: 'text3', contextOffset: 2},
 				]
-			});
+			};
 
 		try {
 			make(DomContentRangeDescription, {
