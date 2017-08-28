@@ -1,4 +1,3 @@
-import { Parser as parse } from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import ContentRangeDescription from './ContentRangeDescription';
@@ -9,16 +8,20 @@ export default
 class DomContentRangeDescription extends ContentRangeDescription {
 	static MimeType = COMMON_PREFIX + 'contentrange.domcontentrangedescription'
 
+	static Fields = {
+		...ContentRangeDescription.Fields,
+		'ancestor':	{type: 'model'},
+		'end':		{type: 'model'},
+		'start':	{type: 'model'},
+	}
+
+	isDomContentRangeDescription = true
+	isEmpty = false
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
-		this.isEmpty = false;
-		Object.defineProperty(this, 'isDomContentRangeDescription', {value: true});
 
-		this[parse]('ancestor');
-		this[parse]('end');
-		this[parse]('start');
-
-		let {start, end, ancestor} = this;
+		const {start, end, ancestor} = this;
 
 		//make sure contents are acceptable
 		if (!start || !end || !ancestor ||
@@ -29,9 +32,6 @@ class DomContentRangeDescription extends ContentRangeDescription {
 			// console.error('Invalid contents', arguments);
 			throw new Error('Invalid contents');
 		}
-
-
-		Object.assign(this, {start, end, ancestor});
 	}
 
 

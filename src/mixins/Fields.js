@@ -18,8 +18,9 @@ const getMethod = x => 'get' + x.replace(
 );
 
 const TYPE_MAP = {
-	date: applyDateField,
-	model: applyModelField
+	'date': applyDateField,
+	'model': applyModelField,
+	'model[]': applyModelField
 };
 
 
@@ -40,8 +41,8 @@ export default {
 		//TODO: once we've migrated the models to this system, switch this loop to loop over the Fields.
 		for (let key of Object.keys(data)) {
 
-			//get the name, and type of the field...
-			const {name = key, type} = Fields[key] || {};
+			//get the name, type, and defaultValue of the field...
+			const {name = key, type, defaultValue} = Fields[key] || {};
 
 			//allow for hooking... however, strongly prefer setting type to the string: 'model'
 			if (typeof type === 'function') {
@@ -57,7 +58,7 @@ export default {
 			//Preferred code path:
 			} else {
 				const apply = TYPE_MAP[type] || applyField;
-				apply(this, name, data[key], key in Fields);
+				apply(this, name, data[key], key in Fields, defaultValue);
 			}
 
 			//Setup renamed-meta-data
@@ -389,18 +390,24 @@ function applyDateField (scope, fieldName, value) {
 
 
 
-function applyModelField (scope, fieldName, value) {
+function applyModelField (scope, fieldName, value, declared, defaultValue) {
+	const parsed = scope[Parser](value) || null;
+	//Just preserve old behavior (things expect empty values to be null, including empty arrays)
+	const v = Array.isArray(parsed) && parsed.length === 0 ? null : parsed;
+
 	applyField(
 		scope,
 		fieldName,
-		scope[Parser](value) || null
+		v || null,
+		declared,
+		defaultValue
 	);
 }
 
 
 
-function applyField (scope, fieldName, valueIn, declared) {
-	let value = valueIn;
+function applyField (scope, fieldName, valueIn, declared, defaultValue) {
+	let value = valueIn || defaultValue;
 	delete scope[fieldName];
 	Object.defineProperty(scope, fieldName, {
 		configurable: true,

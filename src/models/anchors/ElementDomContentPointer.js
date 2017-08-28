@@ -7,6 +7,12 @@ export default
 class ElementDomContentPointer extends DomContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.elementdomcontentpointer'
 
+	static Fields = {
+		...DomContentPointer.Fields,
+		'elementTagName':	{type: 'string'},
+		'elementId':		{type: 'string'},
+	}
+
 	constructor (service, parent, data) {
 		//If we are given a dom element as input, pull the necessary parts and
 		//create a config we can use to create this.

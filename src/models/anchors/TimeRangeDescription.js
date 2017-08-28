@@ -9,20 +9,22 @@ export default
 class TimeRangeDescription extends ContentRangeDescription {
 	static MimeType = COMMON_PREFIX + 'contentrange.timerangedescription'
 
+	static Fields = {
+		...ContentRangeDescription.Fields,
+		'seriesId':	{type: 'string'},
+		'start':	{type: 'model'},
+		'end':		{type: 'model'},
+	}
+
+	isTimeRange = true
+	isEmpty = false
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
-
-		this[parse]('start');
-		this[parse]('end');
-
-		Object.defineProperty(this, 'isTimeRange', {value: true});
-
-		this.isEmpty = false;
 
 		if (!this.isTimeContentPointer(this.start)) {
 			throw new Error('Invalid contents');
 		}
-
 	}
 
 
