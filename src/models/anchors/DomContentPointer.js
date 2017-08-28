@@ -13,6 +13,11 @@ export default
 class DomContentPointer extends ContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.domcontentpointer'
 
+	static Fields = {
+		...ContentPointer.Fields,
+		role:	{type: 'string'}
+	}
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 		this.validateRole(this.role);

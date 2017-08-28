@@ -9,6 +9,11 @@ export default
 class TimeContentPointer extends ContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.timecontentpointer'
 
+	static Fields = {
+		...ContentPointer.Fields,
+		'seconds': {type: 'number'}
+	}
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 

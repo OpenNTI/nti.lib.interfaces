@@ -16,6 +16,13 @@ class MediaSource extends Base {
 		COMMON_PREFIX + 'mediasource',
 	]
 
+	static Fields = {
+		...Base.Fields,
+		'href':		{type: 'string'},
+		'source':	{type: 'string'},
+		'service':	{type: 'string'},
+	}
+
 	static from (service, uri) {
 		/* async */
 		return MediaSourceFactory.from(service, uri);

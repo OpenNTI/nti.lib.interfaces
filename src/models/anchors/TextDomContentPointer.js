@@ -1,4 +1,3 @@
-import { Parser as parse } from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import DomContentPointer from './DomContentPointer';
@@ -9,11 +8,15 @@ export default
 class TextDomContentPointer extends DomContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.textdomcontentpointer'
 
+	static Fields = {
+		...DomContentPointer.Fields,
+		'ancestor':		{type: 'model'},
+		'contexts':		{type: 'model[]'},
+		'edgeOffset':	{type: 'number'},
+	}
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
-
-		this[parse]('ancestor');
-		this[parse]('contexts');
 
 		this.validateContexts(this.contexts);
 		this.validateEdgeOffset(this.edgeOffset);

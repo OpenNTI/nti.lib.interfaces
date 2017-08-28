@@ -7,10 +7,16 @@ export default
 class TextContext extends Base {
 	static MimeType = COMMON_PREFIX + 'contentrange.textcontext'
 
+	static Fields = {
+		...Base.Fields,
+		'contextOffset':	{type: 'number'},
+		'contextText':		{type: 'string'},
+	}
+
+	isEmpty = false
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
-
-		this.isEmpty = false;
 
 		this.validateOffset(data.contextOffset);
 		this.validateText(data.contextText);
