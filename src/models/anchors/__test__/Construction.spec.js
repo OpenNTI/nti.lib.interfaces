@@ -234,11 +234,12 @@ describe('Model Tests', () => {
 			make(TextDomContentPointer, {
 				role: 'ancestor',
 				edgeOffset: 3,
-				ancestor: make(ElementDomContentPointer, {
+				ancestor: {
+					MimeType: ElementDomContentPointer.MimeType,
 					elementId: 'id',
 					elementTagName: 'tagName',
 					role: 'end' //must be ancestor
-				}),
+				},
 				contexts: [
 					{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
 					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
@@ -254,53 +255,56 @@ describe('Model Tests', () => {
 
 
 	test('Good DomContentRangeDescription Creation', () => {
-		let tca1 = make(TextDomContentPointer, {
+		let dcrd = make(DomContentRangeDescription, {
+			start: {
+				MimeType: TextDomContentPointer.MimeType,
 				role: 'start',
-				ancestor: make(ElementDomContentPointer, {
+				ancestor: {
+					MimeType: ElementDomContentPointer.MimeType,
 					elementId: 'id',
 					elementTagName: 'tagName',
 					role: 'ancestor'
-				}),
+				},
 				edgeOffset: 5,
 				contexts: [
 					{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
 					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
 					{MimeType: TextContext.MimeType, contextText: 'text3', contextOffset: 2},
 				]
-			}),
-			tca2 = make(TextDomContentPointer, {
+			},
+			end: {
+				MimeType: TextDomContentPointer.MimeType,
 				role: 'start',
-				ancestor: make(ElementDomContentPointer, {
+				ancestor: {
+					MimeType: ElementDomContentPointer.MimeType,
 					elementId: 'id',
 					elementTagName: 'tagName',
 					role: 'ancestor'
-				}),
+				},
 				edgeOffset: 5,
 				contexts: [
 					{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
 					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
 					{MimeType: TextContext.MimeType, contextText: 'text3', contextOffset: 2},
 				]
-			}),
-			ca1 = make(TextDomContentPointer, {
+			},
+			ancestor: {
+				MimeType: TextDomContentPointer.MimeType,
 				role: 'start',
-				ancestor: make(ElementDomContentPointer, {
+				ancestor: {
+					MimeType: ElementDomContentPointer.MimeType,
 					elementId: 'id',
 					elementTagName: 'tagName',
 					role: 'ancestor'
-				}),
+				},
 				edgeOffset: 5,
 				contexts: [
 					{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
 					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
 					{MimeType: TextContext.MimeType, contextText: 'text3', contextOffset: 2},
 				]
-			}),
-			dcrd = make(DomContentRangeDescription, {
-				start: tca1,
-				end: tca2,
-				ancestor: ca1
-			});
+			}
+		});
 
 		expect(dcrd.getStart()).toBeTruthy();
 		expect(dcrd.getEnd()).toBeTruthy();
@@ -311,11 +315,12 @@ describe('Model Tests', () => {
 	test('Bad DomContentRangeDescription Creation', () => {
 		let tca1 = make(TextDomContentPointer, {
 				role: 'start',
-				ancestor: make(ElementDomContentPointer, {
+				ancestor: {
+					MimeType: ElementDomContentPointer.MimeType,
 					elementId: 'id',
 					elementTagName: 'tagName',
 					role: 'ancestor'
-				}),
+				},
 				edgeOffset: 5,
 				contexts: [
 					{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
@@ -326,11 +331,12 @@ describe('Model Tests', () => {
 			tca2 = make(TextDomContentPointer, {
 				role: 'start',
 				edgeOffset: 5,
-				ancestor: make(ElementDomContentPointer, {
+				ancestor: {
+					MimeType: ElementDomContentPointer.MimeType,
 					elementId: 'id',
 					elementTagName: 'tagName',
 					role: 'ancestor'
-				}),
+				},
 				contexts: [
 					{MimeType: TextContext.MimeType, contextText: 'text1', contextOffset: 0},
 					{MimeType: TextContext.MimeType, contextText: 'text2', contextOffset: 1},
