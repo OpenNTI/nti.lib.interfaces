@@ -38,7 +38,6 @@ class PurchaseAttempt extends Base {
 	[DateFields] () {
 		return super[DateFields]().concat([
 			'DeliveryDate',
-			'CreatedTime',
 			'EndTime',
 			'StartTime'
 		]);
