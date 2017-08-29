@@ -1,6 +1,7 @@
 import OrderedContents from '../../../ordered-contents';
 
-const ContentPackageMimeType = 'application/vnd.nextthought.renderablecontentpackage';
+const ContentPackageMimeType = 'application/vnd.nextthought.contentpackage';
+const RenderableContentPackageMimeType = 'application/vnd.nextthought.renderablecontentpackage';
 
 const RefMimeType = 'application/vnd.nextthought.relatedworkref';
 const TargetMimeType = 'application/vnd.nextthought.content';
@@ -20,7 +21,7 @@ function getDataForItem (item) {
 }
 
 export default {
-	handles: [ContentPackageMimeType],
+	handles: [ContentPackageMimeType, RenderableContentPackageMimeType],
 
 	placeItemIn (item, container) {
 		const orderedContents = new OrderedContents(container);
