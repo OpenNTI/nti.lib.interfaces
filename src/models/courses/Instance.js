@@ -22,7 +22,6 @@ import ActivityStream from './BucketedActivityStream';
 import CourseIdentity from './mixins/CourseIdentity';
 
 const logger = Logger.get('models:courses:Instance');
-
 const emptyFunction = () => {};
 const NOT_DEFINED = {reason: 'Not defined'};
 const EMPTY_CATALOG_ENTRY = {getAuthorLine: emptyFunction};
@@ -192,6 +191,14 @@ class Instance extends Base {
 	//Should only show assignments if there is an AssignmentsByOutlineNode link
 	shouldShowAssignments () {
 		return !!this.getLink('AssignmentsByOutlineNode');
+	}
+
+
+	getAssets (type) {
+		if (Array.isArray(type)) {
+			[type] = type;
+		}
+		return this.fetchLinkParsed('assets', type ? { accept: type } : {});
 	}
 
 
