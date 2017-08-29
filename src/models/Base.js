@@ -389,7 +389,7 @@ class Base extends EventEmitter {
 
 
 	putToLink (rel, data, parseResponse) {
-		return this.requestLink(rel, 'put',data, void 0, parseResponse);
+		return this.requestLink(rel, 'put', data, void 0, parseResponse);
 	}
 
 
