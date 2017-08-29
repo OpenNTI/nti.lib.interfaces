@@ -6,7 +6,7 @@ import Logger from 'nti-util-logger';
 import JSONValue from '../mixins/JSONValue';
 import {Mixin as Pendability} from '../mixins/Pendability';
 import Editable from '../mixins/Editable';
-import Fields from '../mixins/Fields';
+import Fields, {hideField} from '../mixins/Fields';
 import HasLinks from '../mixins/HasLinks';
 import {
 	Parent,
@@ -23,22 +23,6 @@ const CONTENT_VISIBILITY_MAP = {OU: 'OUID'};
 
 const PHANTOM = Symbol.for('Phantom');
 const is = Symbol('isTest');
-
-
-function updateField (scope, field, desc) {
-	if (!('configurable' in desc)) {
-		desc.configurable = true;
-	}
-
-	try {
-		if (!(delete scope[field])) {
-			throw new Error('Field is not Configurable');
-		}
-		Object.defineProperty(scope, field, desc);
-	} catch(e) {
-		logger.warn('Could not update Field: %o on %o, because %s', field, this, e.stack || e.message || e);
-	}
-}
 
 
 export default
@@ -60,18 +44,14 @@ class Base extends EventEmitter {
 	constructor (service, parent, data) {
 		super();
 
-		//Make EventEmitter properties non-enumerable
 		this.setMaxListeners(100);
-		for (let key of Object.keys(this)) {
-			const desc = Object.getOwnPropertyDescriptor(this, key);
-			desc.enumerable = false;
-			updateField(this, key, desc);
-		}
+		//Make EventEmitter properties non-enumerable
+		Object.keys(this).map(key => hideField(this, key));
 
 
 		this[Service] = service;
 		//only allow null, and lib-interface models as "parents"
-		this[Parent] = (parent != null && parent[Service]) ? parent : null;
+		this[Parent] = (parent != null && parent instanceof Base) ? parent : null;
 
 
 		if (this.initMixins) {
