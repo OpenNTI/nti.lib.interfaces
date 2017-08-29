@@ -65,8 +65,6 @@ export default {
 			if (name !== key) {
 				updateField(this, key, {
 					enumerable: false,
-					value: void 0,
-					set: void 0,
 					get: getterWarning(this, name, key)
 				});
 
@@ -84,7 +82,7 @@ export default {
 		const legacyDateFields = this[DateFields] && (this[DateFields]() || []).filter(x => !Fields[x]);
 		if (legacyDateFields.length > 0) {
 			logger.warn('Declare your date fields instead of using [DateFields](): %o', this);
-			for (let fieldName of this[DateFields]()) {
+			for (let fieldName of new Set(this[DateFields]())) {
 				applyDateField(this, fieldName, data[fieldName]);
 			}
 		}
@@ -343,9 +341,23 @@ function setProtectedProperty (name, value, scope, enumerable = GenEnumerability
 
 
 
-function updateField (scope, field, desc) {
+export function updateField (scope, field, desc) {
 	delete scope[field];
+	if (!('configurable' in desc)) {
+		desc.configurable = true;
+	}
 	Object.defineProperty(scope, field, desc);
+}
+
+
+
+export function hideField (scope, fieldName) {
+	updateField(scope, fieldName, Object.assign(
+		Object.getOwnPropertyDescriptor(scope, fieldName),
+		{
+			enumerable: false
+		}
+	));
 }
 
 
