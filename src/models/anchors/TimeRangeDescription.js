@@ -1,4 +1,3 @@
-import { Parser as parse } from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import ContentRangeDescription from './ContentRangeDescription';
