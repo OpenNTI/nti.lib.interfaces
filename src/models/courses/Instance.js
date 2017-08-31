@@ -135,12 +135,12 @@ class Instance extends Base {
 			bundle = this.ContentPackageBundle;
 
 		return {
-			author: cce.getAuthorLine() || bundle.author,
-			title: cce.Title || bundle.title,
+			author: cce.getAuthorLine() || (bundle && bundle.author),
+			title: cce.Title || (bundle && bundle.title),
 			label: cce.ProviderUniqueID,
-			icon: cce.icon || bundle.icon,
-			background: cce.background || bundle.background,
-			thumb: cce.thumb || bundle.thumb
+			icon: cce.icon || (bundle && bundle.icon),
+			background: cce.background || (bundle && bundle.background),
+			thumb: cce.thumb || (bundle && bundle.thumb)
 		};
 	}
 
@@ -403,6 +403,9 @@ class Instance extends Base {
 
 
 	getVideoIndex () {
+		if(!this.ContentPackageBundle) {
+			return Promise.reject('No content bundle for this course instance');
+		}
 
 		function getForNode (node, index, output) {
 			let id = node.getContentId();

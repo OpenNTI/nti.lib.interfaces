@@ -126,7 +126,8 @@ class Library extends EventEmitter {
 
 	getPackage (packageId) {
 		let courseBundles = [].concat(this.courses, this.administeredCourses)
-			.map(course => course.CourseInstance.ContentPackageBundle);
+			.map(course => course.CourseInstance.ContentPackageBundle)
+			.filter(x => x);	// eliminate nulls (newly created courses may not have bundles yet)
 
 		let bundles = [].concat(this.bundles, courseBundles);
 
