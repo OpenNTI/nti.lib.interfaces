@@ -5,6 +5,24 @@ const BLACK_LISTED = {
 	_events: true
 };
 
+
+function decode (fields, key) {
+	//convert map to list (applying tke key as a property of the field)
+	const fieldList = Object.keys(fields).map(x => ({...fields[x], key: x}));
+	//See if the key we are decoding is renamed...
+	const field = fieldList.find(x => x.name === key) || {};
+	//Return the actual key of the renamed field, or the original
+	return field.key || key;
+}
+
+
+function readValueFor (scope, fieldName) {
+	const descriptor = Object.getOwnPropertyDescriptor(scope, fieldName);
+	const readKey = ((descriptor || {}).get || {}).renamedTo || fieldName;
+	return scope[readKey];
+}
+
+
 export default {
 	toJSON () { return this.getData(); },
 
@@ -33,9 +51,17 @@ export default {
 			return BLACK_LISTED[k];
 		}
 
+		const {Fields = {}} = this.constructor;
+		//Sets dedupe values...
+		const keys = new Set([
+			...Object.keys(Fields),
+			...Object.keys(this).map(k => decode(Fields, k))
+		]);
 
-		for (let k of Object.keys(this)) {
-			let v = this[k];
+
+		for (let k of keys) {
+			const v = readValueFor(this, k);
+
 			if (v !== void undefined && !isBlackListed(this, k) && !isFunction(v)) {
 				let translator = `translate:${k}`;
 
