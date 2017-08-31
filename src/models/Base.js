@@ -38,8 +38,18 @@ const getMethod = x => 'get' + x.replace(
 
 
 function updateField (scope, field, desc) {
-	delete scope[field];
-	Object.defineProperty(scope, field, desc);
+	if (!('configurable' in desc)) {
+		desc.configurable = true;
+	}
+
+	try {
+		if (!(delete scope[field])) {
+			throw new Error('Field is not Configurable');
+		}
+		Object.defineProperty(scope, field, desc);
+	} catch(e) {
+		logger.warn('Could not update Field: %o on %o, because %s', field, this, e.stack || e.message || e);
+	}
 }
 
 
@@ -76,6 +86,7 @@ class Base extends EventEmitter {
 
 		for (let fieldName of this[DateFields]()) {
 			updateField(this, getMethod(fieldName), {
+				writable: true,
 				value: dateGetter(fieldName)
 			});
 		}
