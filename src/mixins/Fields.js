@@ -342,13 +342,19 @@ function setProtectedProperty (name, value, scope, enumerable = GenEnumerability
 
 
 export function updateField (scope, field, desc) {
-	delete scope[field];
 	if (!('configurable' in desc)) {
 		desc.configurable = true;
 	}
-	Object.defineProperty(scope, field, desc);
-}
 
+	try {
+		if (!(delete scope[field])) {
+			throw new Error('Field is not Configurable');
+		}
+		Object.defineProperty(scope, field, desc);
+	} catch(e) {
+		logger.warn('Could not update Field: %o on %o, because %s', field, this, e.stack || e.message || e);
+	}
+}
 
 
 export function hideField (scope, fieldName) {
