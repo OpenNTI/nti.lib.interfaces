@@ -1,3 +1,4 @@
+/*globals BUILD_PACKAGE_NAME, BUILD_PACKAGE_VERSION*/
 import EventEmitter from 'events';
 
 import base64decode from 'btoa'; //If the login method is invoked on the NodeJS side, we will need this function...
@@ -80,9 +81,14 @@ export default class DataServerInterface extends EventEmitter {
 			...options
 		};
 
+		//setting options.headers to explicitly null will prevent our standard headers from being applied
 		if (options.headers !== null) {
 			init.headers = {
 				...options.headers,
+
+				//App Identifier headers
+				...(typeof BUILD_PACKAGE_NAME === 'undefined' ? {} : {'X-NTI-Client-App': BUILD_PACKAGE_NAME}),
+				...(typeof BUILD_PACKAGE_VERSION === 'undefined' ? {} : {'X-NTI-Client-Version': BUILD_PACKAGE_VERSION}),
 
 				//Always override these headers
 				'accept': mime || 'application/json',
