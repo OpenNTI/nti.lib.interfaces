@@ -409,7 +409,8 @@ export default class DataServerInterface extends EventEmitter {
 
 
 	ping (username, context) {
-		if (typeof username === 'object') {
+		if ((arguments.length === 1 && typeof username === 'object')
+		||  (arguments.length === 2 && typeof context === 'string')) {
 			//swap values for api back-compat
 			[username, context] = [context, username];
 		}
