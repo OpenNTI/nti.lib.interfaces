@@ -81,8 +81,8 @@ describe('OrderedContents Tests', () => {
 
 			orderedContents.append(item)
 				.then(() => {
-					expect(fakeService.postParseResponse).to.be.calledWith('orderedcontents/index/4', expect.objectContaining({label: makeLabel(5)}));
-					expect(fakeService.putParseResponse).not.have.been.called;
+					expect(fakeService.postParseResponse).toHaveBeenCalledWith('orderedcontents/index/4', expect.objectContaining({label: makeLabel(5)}));
+					expect(fakeService.putParseResponse).not.toHaveBeenCalled();
 
 					expect(orderedContents.length).toEqual(5);
 					expect(orderedContents.orderedContents[4].label).toEqual(makeLabel(5));
@@ -97,8 +97,8 @@ describe('OrderedContents Tests', () => {
 
 			orderedContents.insertAt(item, 1)
 				.then(() => {
-					expect(fakeService.postParseResponse).to.be.calledWith('orderedcontents/index/1', expect.objectContaining({label: makeLabel(5)}));
-					expect(fakeService.putParseResponse).not.have.been.called;
+					expect(fakeService.postParseResponse).toHaveBeenCalledWith('orderedcontents/index/1', expect.objectContaining({label: makeLabel(5)}));
+					expect(fakeService.putParseResponse).not.toHaveBeenCalled();
 
 					expect(orderedContents.length).toEqual(5);
 					expect(orderedContents.orderedContents[1].label).toEqual(makeLabel(5));
@@ -116,8 +116,8 @@ describe('OrderedContents Tests', () => {
 
 			orderedContents.replaceItem(oldItem, newItem)
 				.then(() => {
-					expect(fakeService.postParseResponse).not.been.called;
-					expect(fakeService.putParseResponse).to.be.calledWith('orderedcontents/index/0', expect.objectContaining({
+					expect(fakeService.postParseResponse).not.toHaveBeenCalled();
+					expect(fakeService.putParseResponse).toHaveBeenCalledWith('orderedcontents/index/0', expect.objectContaining({
 						label: makeLabel(5)
 					}));
 
@@ -134,8 +134,8 @@ describe('OrderedContents Tests', () => {
 
 			orderedContents.replaceAt(newItem, 1)
 				.then(() => {
-					expect(fakeService.postParseResponse).not.have.been.called;
-					expect(fakeService.putParseResponse).to.be.calledWith('orderedcontents/index/1', expect.objectContaining({
+					expect(fakeService.postParseResponse).not.toHaveBeenCalled();
+					expect(fakeService.putParseResponse).toHaveBeenCalledWith('orderedcontents/index/1', expect.objectContaining({
 						label: makeLabel(5)
 					}));
 
