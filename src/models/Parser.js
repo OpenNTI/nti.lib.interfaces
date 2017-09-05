@@ -6,6 +6,10 @@ import Registry from './Registry';
 
 const logger = Logger.get('models:Parser');
 
+function getConstructorArgumentLength (o) {
+	return !o ? 0 : (o.length || getConstructorArgumentLength(Object.getPrototypeOf(o)));
+}
+
 
 export function parse (service, parent, obj) {
 	if (obj == null) {
@@ -90,7 +94,7 @@ function trackInstances (service, data, make) {
 //Default Constructor
 function ConstructorFunc (service, parent, data) {
 	const Ctor = this;
-	const useParent = this.prototype.constructor.length > 2;
+	const useParent = getConstructorArgumentLength(Ctor) > 2;
 	const make = ()=> useParent ? new Ctor(service, parent, data) : new Ctor(service, data);
 
 	return (this.prototype.isPrototypeOf(data))
