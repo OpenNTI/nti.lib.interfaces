@@ -1,5 +1,6 @@
 /* eslint-env jest */
 import PurchaseAttempt from '../PurchaseAttempt';
+import '../../index'; //load all the models
 
 const data = {
 	'ChargeID': null,

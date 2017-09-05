@@ -56,11 +56,15 @@ export default {
 	 * @return {Promise} fulfills with the assets url. If resolve is true, then if the asset exists, otherwise rejects.
 	 */
 	getAsset (name, resolve = false) {
+		const service = this[Service];
+		if (!service) {
+			return Promise.reject();
+		}
+
 		const assetPath = ASSET_MAP[name] || `missing-${name}-asset.png`;
 		const root = this.getAssetRoot();
 		const url = root && URL.resolve(root, assetPath);
 
-		const service = this[Service];
 		const cache = service.getDataCache();
 		const cacheKey = 'asset-' + url;
 
