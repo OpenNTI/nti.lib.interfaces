@@ -9,8 +9,6 @@ import getLink from '../../utils/getlink';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-import MediaSource from './MediaSource';
-
 const UserData = Symbol('UserData');
 
 const NO_TRANSCRIPT = 'No Transcript';
@@ -27,23 +25,23 @@ class Video extends Base {
 		COMMON_PREFIX + 'video',
 	]
 
+	static Fields = {
+		...Base.Fields,
+		'ntiid':		{type: 'string'},
+		'sources':		{type: 'model[]'},
+		'transcripts':	{type: 'object[]'},
+	}
+
+	isVideo = true
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
-
-		Object.assign(this,{
-			isVideo: true
-		});
 
 		Object.assign(this, {
 			NO_TRANSCRIPT,
 			NO_TRANSCRIPT_LANG,
 			EXISTING_TRANSCRIPT
 		});
-
-		const {sources = []} = data;
-
-		this.sources = sources.map(item =>
-			new MediaSource(service, this, item));
 	}
 
 
