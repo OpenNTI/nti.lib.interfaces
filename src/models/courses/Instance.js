@@ -528,26 +528,24 @@ class Instance extends Base {
 
 //Private methods
 
-function resolveCatalogEntry (service, inst) {
-	let cache = service.getDataCache();
-	let url = inst.getLink('CourseCatalogEntry');
+async function resolveCatalogEntry (service, inst) {
+	// The intent and purpose of this cache is to transmit work done by the web-service to the the client...
+	// We do NOT want to cache new entries on the client...and we should clear the cache on first read...
+	const cache = service.getDataCache();
+	const url = inst.getLink('CourseCatalogEntry');
 	if (!url) {
 		throw new Error('No CCE Link!');
 	}
-	let cached = cache.get(url);
 
-	let work;
+	const cached = cache.get(url);
+	cache.set(url, null); //clear the cache on read...we only want to cache it for the initial page load.
 
-	if (cached) {
-		work = Promise.resolve(cached);
-	} else {
-		work = service.get(url)
-			.then(d => {
-				cache.set(url, d);
-				return d;
-			});
-	}
+	const cce = await (cached)
+		? Promise.resolve(cached)
+		: service.get(url)
+			.then(d => (!cache.isClientInstance && cache.set(url, d), d));
 
-	return work.then(cce =>
-		(inst.CatalogEntry = inst[parse](cce)).waitForPending());
+	const entry = inst.CatalogEntry = inst[parse](cce);
+
+	return await entry.waitForPending();
 }
