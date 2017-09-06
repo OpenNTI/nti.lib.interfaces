@@ -18,6 +18,7 @@ import {
 	REL_USER_UNIFIED_SEARCH,
 	REL_USER_RESOLVE,
 	REL_BULK_USER_RESOLVE,
+	NO_LINK,
 	Context,
 	Server,
 	Service,
@@ -617,7 +618,7 @@ class ServiceDocument extends EventEmitter {
 						value: (rel) => {
 							const link = getLink(workspace, rel);
 							if (!link) {
-								return Promise.reject('no link');
+								return Promise.reject(NO_LINK);
 							}
 							return this.get(link);
 						},

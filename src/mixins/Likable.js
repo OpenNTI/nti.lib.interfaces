@@ -1,5 +1,7 @@
 import {pluck} from 'nti-commons';
 
+import {NO_LINK} from '../constants';
+
 export default {
 	like () {
 		let link = this.hasLink('like') ? 'like' : 'unlike';
@@ -25,7 +27,7 @@ export default {
 				null;
 
 		if (!link) {
-			return Promise.reject('No Link');
+			return Promise.reject(NO_LINK);
 		}
 
 		return this.postToLink(link)

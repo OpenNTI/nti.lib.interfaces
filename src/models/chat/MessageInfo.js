@@ -1,6 +1,7 @@
 import {pluck} from 'nti-commons';
 import {mixin} from 'nti-lib-decorators';
 
+import {NO_LINK} from '../../constants';
 import Threadable from '../../mixins/Threadable';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -23,7 +24,7 @@ class MessageInfo extends Base {
 				null;
 
 		if (!link) {
-			return Promise.reject('No Link');
+			return Promise.reject(NO_LINK);
 		}
 
 		return this.postToLink(link)

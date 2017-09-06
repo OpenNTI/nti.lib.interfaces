@@ -5,6 +5,7 @@ import {Markup, URL} from 'nti-commons';
 
 import UserDataStore from '../../stores/UserData';
 import {
+	NO_LINK,
 	REL_USER_GENERATED_DATA,
 	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
 	Service,
@@ -104,7 +105,7 @@ class PageInfo extends Base {
 		};
 
 		if (!link) {
-			return Promise.reject('No Link');
+			return Promise.reject(NO_LINK);
 		}
 
 

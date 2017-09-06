@@ -5,7 +5,7 @@ import path from 'path';
 
 import AssignmentSummary from '../../../stores/AssignmentSummary';
 import GradeBookSummary from '../../../stores/GradeBookSummary';
-import {Service, ASSESSMENT_HISTORY_LINK} from '../../../constants';
+import {Service, ASSESSMENT_HISTORY_LINK, NO_LINK} from '../../../constants';
 
 import Base from './Collection';
 import CollectionSummary from './CollectionSummary';
@@ -146,7 +146,7 @@ export default class CollectionInstructorView extends Base {
 			//parent(CourseInstance) -> CourseActivity
 			const href = this.parent().getLink('CourseActivity');
 			if (!href) {
-				return Promise.reject('No Link');
+				return Promise.reject(NO_LINK);
 			}
 
 			p.activityStore = new ActivityStore(this[Service], this, href, baseActivity);

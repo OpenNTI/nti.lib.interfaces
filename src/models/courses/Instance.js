@@ -7,6 +7,7 @@ import {wait} from 'nti-commons';
 
 import {
 	MEDIA_BY_OUTLINE_NODE,
+	NO_LINK,
 	Service,
 	Parser as parse
 } from '../../constants';
@@ -263,7 +264,7 @@ class Instance extends Base {
 		//		/dataserver2/%2B%2Betc...site/Courses/Alpha/NTI%201000/@@Assessments/<ntiid>
 
 		if (!href) {
-			return Promise.reject('No Link');
+			return Promise.reject(NO_LINK);
 		}
 
 		const assignemntParentRef = this;//the CourseInstance,

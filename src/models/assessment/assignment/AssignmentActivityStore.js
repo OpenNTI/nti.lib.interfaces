@@ -1,6 +1,6 @@
 import Logger from 'nti-util-logger';
 
-import {Parent, Service} from '../../../constants';
+import {Parent, Service, NO_LINK} from '../../../constants';
 import getLink from '../../../utils/getlink';
 import Stream, {getPrivate} from '../../../stores/Stream';
 
@@ -22,7 +22,7 @@ export default class AssignmentActivityStore extends Stream {
 	markSeen () {
 		const link = getPrivate(this).lastViewed;
 		if (!link) {
-			return Promise.reject('No Link');
+			return Promise.reject(NO_LINK);
 		}
 
 		const newViewed = new Date();
