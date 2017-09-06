@@ -100,9 +100,10 @@ export default class DataCache {
 				throw new Error('There must be an active context passed if we are called on the server');
 			}
 
-			cache = this.globalInstance;
+			cache = this.clientInstance;
 			if (!cache) {
-				cache = this.globalInstance = new DataCache();
+				cache = this.clientInstance = new DataCache();
+				cache.isClientInstance = true;
 			}
 		}
 
