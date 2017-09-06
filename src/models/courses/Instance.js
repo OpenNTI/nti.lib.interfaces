@@ -122,13 +122,13 @@ class Instance extends Base {
 
 
 	delete (rel = 'delete') {
+		//cleanup the potential cache
 		const cache = this[Service].getDataCache();
 		const url = this.getLink('CourseCatalogEntry');
-		if (!url) {
-			throw new Error('No CCE Link!');
+		if (url) {
+			cache.set(url, null);
 		}
 
-		cache.set(url, null);
 		return super.delete(rel);
 	}
 
