@@ -1,8 +1,5 @@
-import { Parser as parse } from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
-
-const TakeOver = Symbol.for('TakeOver');
 
 const StripeConnectKey = Symbol('StripeConnectKey');
 
@@ -11,36 +8,23 @@ export default
 class Purchasable extends Base {
 	static MimeType = COMMON_PREFIX + 'store.purchasable'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		const rename = (x, y) => this[TakeOver](x, y);
-
-		this[parse]('StripeConnectKey');
-
-		rename('StripeConnectKey', StripeConnectKey);
-
-		//rename('VendorInfo', 'vendorInfo');
-
-		rename('Activated', 'activated');
-		rename('Amount', 'amount');
-		rename('BulkPurchase', 'bulkPurchase');//unclear
-		rename('Currency', 'currency');
-		rename('Discountable', 'discountable');
-		rename('Fee', 'fee');
-		rename('Giftable', 'giftable');
-		rename('IsPurchasable', 'enabled');
-		rename('Name', 'name');
-		rename('Provider', 'provider');
-		rename('Redeemable', 'redeemable');
-		rename('Title', 'title');
-
-		/*
-		Author: null
-		Name: "A History of the United States"
-		Title: "A History of the United States"
-		Provider: "Janux"
-		*/
+	static Fields = {
+		...Base.Fields,
+		'Author':           { type: 'string',  name: 'author'         },
+		'Activated':        { type: 'boolean', name: 'activated'      },
+		'Amount':           { type: 'number',  name: 'amount'         },
+		'BulkPurchase':     { type: 'boolean', name: 'bulkPurchase'   },
+		'Currency':         { type: 'string',  name: 'currency'       },
+		'Discountable':     { type: 'boolean', name: 'discountable'   },
+		'Fee':              { type: 'number',  name: 'fee'            },
+		'Giftable':         { type: 'boolean', name: 'giftable'       },
+		'IsPurchasable':    { type: 'boolean', name: 'enabled'        },
+		'Name':             { type: 'string',  name: 'name'           },
+		'Provider':         { type: 'string',  name: 'provider'       },
+		'Redeemable':       { type: 'boolean', name: 'redeemable'     },
+		'Title':            { type: 'string',  name: 'title'          },
+		'StripeConnectKey': { type: 'model',   name: StripeConnectKey },
+		'VendorInfo':       { type: 'model',   name: 'vendorInfo'     },
 	}
 
 

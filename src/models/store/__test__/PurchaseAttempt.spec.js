@@ -267,6 +267,7 @@ const data = {
 													'CRN': 20897,
 													'Duration': 'P28D',
 													'EndDate': '2016-07-09T04:59:00Z',
+													'MimeType': 'application/vnd.nextthought.store.purchasablevendorinfo',
 													'Hours': 3,
 													'StartDate': '2016-06-13T05:00:00Z',
 													'Term': 201530,

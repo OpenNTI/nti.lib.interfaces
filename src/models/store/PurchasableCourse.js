@@ -6,8 +6,4 @@ export default
 @model
 class PurchasableCourse extends Purchasable {
 	static MimeType = COMMON_PREFIX + 'store.purchasablecourse'
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
 }

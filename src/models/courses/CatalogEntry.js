@@ -1,6 +1,5 @@
 import {mixin} from 'nti-lib-decorators';
 
-import { Parser as parse, DateFields } from '../../constants';
 import assets from '../../mixins/PresentationResources';
 import setAndEmit from '../../utils/getsethandler';
 //
@@ -9,9 +8,9 @@ import Base from '../Base';
 
 import CatalogEntryFactory from './CatalogEntryFactory';
 
+
 const EnrollmentOptions = Symbol('EnrollmentOptions');
 
-const rename = Symbol.for('TakeOver');
 
 export default
 @model
@@ -22,6 +21,18 @@ class CourseCatalogEntry extends Base {
 		COMMON_PREFIX + 'courses.coursecataloglegacyentry', //Really?! Two packages?! :P
 		COMMON_PREFIX + 'courseware.coursecataloglegacyentry',
 	]
+
+	static Fields = {
+		...Base.Fields,
+		'DCCreator':           { type: 'string[]', name: 'creators'        },
+		'ContentPackages':     { type: 'string[]'                          },
+		'ContentPackageNTIID': { type: 'string'                            },
+		'EndDate':             { type: 'date'                              },
+		'EnrollmentOptions':   { type: 'model',    name: EnrollmentOptions },
+		'StartDate':           { type: 'date'                              },
+		'Instructors':         { type: 'model[]'                           },
+		'Video':               { type: 'string'                            },
+	}
 
 	static getFactory (service) {
 		return CatalogEntryFactory.from(service);
@@ -47,21 +58,10 @@ class CourseCatalogEntry extends Base {
 				this.getAsset('promo', true).then(setAndEmit(this, 'promoImage'))
 			);
 		}
-
-		this[parse]('EnrollmentOptions');
-
-		this[rename]('EnrollmentOptions', EnrollmentOptions);
-	}
-
-	[DateFields] () {
-		return super[DateFields]().concat([
-			'EndDate',
-			'StartDate'
-		]);
 	}
 
 
-	get author () { return (this.DCCreator || []).join(', '); }
+	get author () { return (this.creators || []).join(', '); }
 
 
 	getEnrollmentOptions () {return this[EnrollmentOptions]; }

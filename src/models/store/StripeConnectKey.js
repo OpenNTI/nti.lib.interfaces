@@ -6,13 +6,11 @@ export default
 class StripeConnectKey extends Base {
 	static MimeType = COMMON_PREFIX + 'store.stripeconnectkey'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		/*
-		Alias: "Janux"
-		LiveMode: false
-		PublicKey
-		StripeUserID
-		*/
+	static Fields = {
+		...Base.Fields,
+		'Alias':        { type: 'string'  },
+		'LiveMode':     { type: 'boolean' },
+		'PublicKey':    { type: 'string'  },
+		'StripeUserID': { type: 'string'  },
 	}
 }

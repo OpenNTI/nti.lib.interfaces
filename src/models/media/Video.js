@@ -27,9 +27,9 @@ class Video extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'ntiid':		{type: 'string'},
-		'sources':		{type: 'model[]'},
-		'transcripts':	{type: 'object[]'},
+		'ntiid':       { type: 'string'   },
+		'sources':     { type: 'model[]'  },
+		'transcripts': { type: 'object[]' },
 	}
 
 	isVideo = true
