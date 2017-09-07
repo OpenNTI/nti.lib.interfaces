@@ -1,41 +1,32 @@
-import {DateFields} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import EnrollmentOption from './EnrollmentOption';
-
-const TakeOver = Symbol.for('TakeOver');
-const SetProtectedProperty = Symbol.for('SetProtectedProperty');
 
 export default
 @model
 class EnrollmentOption5Minute extends EnrollmentOption {
 	static MimeType = COMMON_PREFIX + 'courseware.fiveminuteenrollmentoption'
 
+	static Fields = {
+		...EnrollmentOption.Fields,
+		'EnrollCutOffDate':      { type: 'date',                                   },
+		'RequiresAdmission':     { type: 'boolean', name: 'requiresAdmission'      },
+		'AllowVendorUpdates':    { type: 'boolean', name: 'allowVendorUpdates'     },
+		'OU_AllowVendorUpdates': { type: 'boolean', name: 'allowVendorUpdates(ou)' },
+		'OU_DropCutOffDate':     { type: 'date',                                   },
+		'OU_EnrollCutOffDate':   { type: 'date',                                   },
+		'OU_RefundCutOffDate':   { type: 'date',                                   },
+		'RefundCutOffDate':      { type: 'date',                                   },
+	}
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
-		const rename = (x, y) => this[TakeOver](x, y);
-
-		rename('RequiresAdmission', 'requiresAdmission');
-		rename('AllowVendorUpdates', 'allowVendorUpdates');
-		rename('OU_AllowVendorUpdates', 'allowVendorUpdates(ou)');
-
-		// console.log('Enrollment Option (5M):', this);
-
 		if (this.available && this.getEnrollCutOffDate() < Date.now()) {
-			this[SetProtectedProperty]('available', false);
+			this.available = false;
 		}
 	}
 
-
-	[DateFields] () {
-		return super[DateFields]().concat([
-			'EnrollCutOffDate',
-			'OU_DropCutOffDate',
-			'OU_EnrollCutOffDate',
-			'OU_RefundCutOffDate',
-			'RefundCutOffDate'
-		]);
-	}
-
+	getEnrollCutOffDate () {} //implemented by the date Field type
+	getRefundCutOffDate () {} //implemented by the date Field type
 }

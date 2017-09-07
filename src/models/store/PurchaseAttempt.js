@@ -8,24 +8,24 @@ class PurchaseAttempt extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'ChargeID':       { type: 'string', name: 'chargeId' },
-		'Description':    { type: 'string', name: 'description' },
-		'DeliveryDate':   { type: 'date' },
-		'EndTime':        { type: 'date' },
-		// 'Error':          { type: 'string', name: 'error' },
-		// 'Message':        { type: 'string', name: 'message' },
-		'Order':          { type: 'model',  name: 'order' },
-		'Pricing':        { type: 'model',  name: 'pricing' },
-		'Processor':      { type: 'string', name: 'processor' },
+		'ChargeID':       { type: 'string', name: 'chargeId'       },
+		'Description':    { type: 'string', name: 'description'    },
+		'DeliveryDate':   { type: 'date'                           },
+		'EndTime':        { type: 'date'                           },
+		// 'Error':          { type: 'string', name: 'error'          },
+		// 'Message':        { type: 'string', name: 'message'        },
+		'Order':          { type: 'model',  name: 'order'          },
+		'Pricing':        { type: 'model',  name: 'pricing'        },
+		'Processor':      { type: 'string', name: 'processor'      },
 		'RedemptionCode': { type: 'string', name: 'redemptionCode' },
-		'StartTime':      { type: 'date' },
-		'State':          { type: 'string', name: 'state' },
-		'Synced':         { type: 'string', name: 'synced' },
-		'TokenID':        { type: 'string', name: 'tokenId' },
-		'TransactionID':  { type: 'string', name: 'transactionID' },
+		'StartTime':      { type: 'date'                           },
+		'State':          { type: 'string', name: 'state'          },
+		'Synced':         { type: 'string', name: 'synced'         },
+		'TokenID':        { type: 'string', name: 'tokenId'        },
+		'TransactionID':  { type: 'string', name: 'transactionID'  },
 	}
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
+	getDeliveryDate () {} //implemented by the date Field type
+	getEndTime () {} //implemented by the date Field type
+	getStartTime () {} //implemented by the date Field type
 }

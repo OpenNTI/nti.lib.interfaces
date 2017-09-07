@@ -1,8 +1,6 @@
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-const TakeOver = Symbol.for('TakeOver');
-
 export default
 @model
 class EnrollmentOption extends Base {
@@ -11,13 +9,11 @@ class EnrollmentOption extends Base {
 		COMMON_PREFIX + 'courseware.openenrollmentoption',
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		const rename = (x, y) => this[TakeOver](x, y);
-
-		rename('Enabled', 'enabled');
-		rename('IsAvailable', 'available');
-		rename('IsEnrolled', 'enrolled');
+	static Fields = {
+		...Base.Fields,
+		'Enabled':     { type: 'boolean', name: 'enabled'   },
+		'IsAvailable': { type: 'boolean', name: 'available' },
+		'IsEnrolled':  { type: 'boolean', name: 'enrolled'  },
 	}
+
 }

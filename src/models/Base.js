@@ -32,13 +32,13 @@ class Base extends EventEmitter {
 	static MimeType = '__base__'
 
 	static Fields = {
-		'Creator':			{type: 'string', name: 'creator'},
-		'CreatedTime':		{type: 'date'},
-		'Last Modified':	{type: 'date'},
-		'NTIID':			{type: 'string'},
-		'MimeType':			{type: 'string'},
+		'Creator':       { type: 'string', name: 'creator' },
+		'CreatedTime':   { type: 'date'                    },
+		'Last Modified': { type: 'date'                    },
+		'NTIID':         { type: 'string'                  },
+		'MimeType':      { type: 'string'                  },
 		//We don't want to parse Links, set its type to wild.
-		'Links':			{type: '*'},
+		'Links':         { type: '*'                       },
 	}
 
 	constructor (service, parent, data) {
