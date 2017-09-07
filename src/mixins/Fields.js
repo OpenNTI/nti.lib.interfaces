@@ -18,15 +18,21 @@ const getMethod = x => 'get' + x.replace(
 );
 
 const TYPE_MAP = {
+	'*': null, // wildcard "ANY" type
+	'any': null, // wildcard "ANY" type
+	'boolean': null,
 	'date': applyDateField,
 	'model': applyModelField,
-	'model[]': applyModelField
+	'number': null,
+	'string': null,
 };
 
+const isArrayType = RegExp.prototype.test.bind(/\[]$/);
 
 export default {
 
 	constructor (data) {
+		const {constructor: Type} = this;
 
 		if (!data) {
 			return;
@@ -36,7 +42,14 @@ export default {
 
 		this[RAW] = data;
 
-		const {Fields} = this.constructor;
+		const {Fields} = Type;
+		const FieldKeys = Object.keys(Fields);
+		const MissingFields = FieldKeys.filter(x => !(x in data));
+
+		for (let missing of MissingFields) {
+			logger.debug('Model "%s" declares a field "%s" but it is not present in data: %o', Type.name || Type.MimeType, missing, data);
+		}
+
 
 		//TODO: once we've migrated the models to this system, switch this loop to loop over the Fields.
 		for (let key of Object.keys(data)) {
@@ -46,18 +59,26 @@ export default {
 
 			//allow for hooking... however, strongly prefer setting type to the string: 'model'
 			if (typeof type === 'function') {
+				let val = null;
 				//Explicit model:
 				if (type.prototype instanceof Base) {
-					this[name] = new type(this[Service], this, data[key]);
+					val = new type(this[Service], this, data[key]);
 
 				//some one-off converter function: (please don't use this)
 				} else {
-					this[name] = type(this[Service], this, data[key]);
+					val = type(this[Service], this, data[key]);
 				}
+
+				applyField(this, name, val, true);
+
 
 			//Preferred code path:
 			} else {
-				const apply = TYPE_MAP[type] || applyField;
+				const baseType = isArrayType(type) ? type.substr(0, type.length - 2) : type;
+				const apply = TYPE_MAP[baseType] || applyField;
+				if (type && !(baseType in TYPE_MAP)) {
+					logger.warn('Model "%s" declared "%s" to be type "%s", but that type is unknown.', key, type, Type.name || Type.MimeType);
+				}
 				apply(this, name, data[key], key in Fields, defaultValue);
 			}
 
@@ -357,6 +378,7 @@ export function updateField (scope, field, desc) {
 }
 
 
+
 export function hideField (scope, fieldName) {
 	updateField(scope, fieldName, Object.assign(
 		Object.getOwnPropertyDescriptor(scope, fieldName),
@@ -380,7 +402,9 @@ function dateGetter (key) {
 	return function () {
 		if (typeof this[symbol] !== 'object' || this[key] !== last) {
 			last = this[key];
-			this[symbol] = Parsing.parseDate(last);
+			this[symbol] = Array.isArray(last)
+				? last.map(x => Parsing.parseDate(x))
+				: Parsing.parseDate(last);
 		}
 		return this[symbol];
 	};
