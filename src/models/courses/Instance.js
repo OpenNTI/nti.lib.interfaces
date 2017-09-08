@@ -540,14 +540,12 @@ async function resolveCatalogEntry (service, inst) {
 	const cached = cache.get(url);
 	cache.set(url, null); //clear the cache on read...we only want to cache it for the initial page load.
 
-	const cce = await (cached)
+	const cce = await (cached
 		? Promise.resolve(cached)
 		: service.get(url)
-			.then(d => (!cache.isClientInstance && cache.set(url, d), d));
+			.then(d => (!cache.isClientInstance && cache.set(url, d), d)));
 
-	const resolved = await cce;
-
-	const entry = inst.CatalogEntry = inst[parse](resolved);
+	const entry = inst.CatalogEntry = inst[parse](cce);
 
 	return await entry.waitForPending();
 }
