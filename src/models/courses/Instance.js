@@ -545,7 +545,9 @@ async function resolveCatalogEntry (service, inst) {
 		: service.get(url)
 			.then(d => (!cache.isClientInstance && cache.set(url, d), d));
 
-	const entry = inst.CatalogEntry = inst[parse](cce);
+	const resolved = await cce;
+
+	const entry = inst.CatalogEntry = inst[parse](resolved);
 
 	return await entry.waitForPending();
 }
