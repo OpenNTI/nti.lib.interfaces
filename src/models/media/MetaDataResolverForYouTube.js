@@ -30,7 +30,8 @@ export default class MetaDataResolverForYouTube {
 		id = Array.isArray(id) ? id[0] : id;
 
 		return buildURL(service, source)
-			.then(url => service.get(url))// TODO: use fetch not service
+			.then(url => fetch(url))
+			.then(r => r.ok ? r.json() : Promise.reject(r))
 
 			.then(o=> o.items.find(x => x.id === id) || Promise.reject('Not Found'))
 

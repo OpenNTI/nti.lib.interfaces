@@ -65,7 +65,7 @@ export default class KalturaProvider {
 
 	resolveEntity (source) {
 		return fetch(this.getURL(source))
-			.then(x => x.json())
+			.then(r => r.ok ? r.json() : Promise.reject(r))
 			.then(result => parseResult(result));
 	}
 }

@@ -15,8 +15,8 @@ export default class MetaDataResolverForVimeo {
 	static resolve (service, source) {
 		const url = buildURL(service, source);
 		// console.log(url);
-		// TODO: use fetch not service
-		return service.get(url)
+		return fetch(url)
+			.then(r => r.ok ? r.json() : Promise.reject(r))
 			.then(o=> o[0] || o)
 			.then(o=>
 				({
