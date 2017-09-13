@@ -146,7 +146,7 @@ export default {
 		}
 
 		if (key) {//If the paramater was a key, assign the parsed object back to the key...
-			applyField(this, key, o, true);
+			applyField(this, key, o);
 			if (o == null || (Array.isArray(o) && o.length === 0)) {
 				if (arguments.length > 1) {//a value was passed to the 2nd argument. (use its value no matter what it is.)
 					this[key] = defaultValueForKey;
