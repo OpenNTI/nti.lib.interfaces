@@ -12,9 +12,6 @@ export default
 class MessageInfo extends Base {
 	static MimeType = COMMON_PREFIX + 'messageinfo'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
 
 	flag () {
 		let link = this.hasLink('flag') ?

@@ -10,9 +10,9 @@ class TimeRangeDescription extends ContentRangeDescription {
 
 	static Fields = {
 		...ContentRangeDescription.Fields,
-		'seriesId':	{type: 'string'},
-		'start':	{type: 'model'},
-		'end':		{type: 'model'},
+		'seriesId': { type: 'string' },
+		'start':    { type: 'model'  },
+		'end':      { type: 'model'  },
 	}
 
 	isTimeRange = true

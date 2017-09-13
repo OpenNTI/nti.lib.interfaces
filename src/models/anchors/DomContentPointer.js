@@ -15,7 +15,7 @@ class DomContentPointer extends ContentPointer {
 
 	static Fields = {
 		...ContentPointer.Fields,
-		role:	{type: 'string'}
+		role: { type: 'string' }
 	}
 
 	constructor (service, parent, data) {

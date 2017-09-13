@@ -9,8 +9,8 @@ class ElementDomContentPointer extends DomContentPointer {
 
 	static Fields = {
 		...DomContentPointer.Fields,
-		'elementTagName':	{type: 'string'},
-		'elementId':		{type: 'string'},
+		'elementTagName': { type: 'string' },
+		'elementId':      { type: 'string' },
 	}
 
 	constructor (service, parent, data) {

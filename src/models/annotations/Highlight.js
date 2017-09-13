@@ -1,4 +1,3 @@
-import { Parser as parse } from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import Annotation from './Annotation';
@@ -8,10 +7,8 @@ export default
 class Highlight extends Annotation {
 	static MimeType = COMMON_PREFIX + 'highlight'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		this[parse]('applicableRange');
+	static Fields = {
+		...Annotation.Fields,
+		'applicableRange': { type: 'model' }
 	}
-
 }

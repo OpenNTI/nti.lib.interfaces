@@ -10,9 +10,9 @@ class TextDomContentPointer extends DomContentPointer {
 
 	static Fields = {
 		...DomContentPointer.Fields,
-		'ancestor':		{type: 'model'},
-		'contexts':		{type: 'model[]'},
-		'edgeOffset':	{type: 'number'},
+		'ancestor':   { type: 'model'   },
+		'contexts':   { type: 'model[]' },
+		'edgeOffset': { type: 'number'  },
 	}
 
 	constructor (service, parent, data) {
