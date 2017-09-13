@@ -6,9 +6,4 @@ export default
 @model
 class Redaction extends Highlight {
 	static MimeType = COMMON_PREFIX + 'redaction'
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
-
 }

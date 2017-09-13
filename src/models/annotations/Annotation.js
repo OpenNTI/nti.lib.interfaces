@@ -8,6 +8,11 @@ export default
 @mixin(Likable)
 class Annotation extends Base {
 
+	static Fields = {
+		...Base.Fields,
+		'ContainerId': { type: 'string' }
+	}
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 	}

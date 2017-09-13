@@ -9,8 +9,8 @@ class TextContext extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'contextOffset':	{type: 'number'},
-		'contextText':		{type: 'string'},
+		'contextOffset': { type: 'number' },
+		'contextText':   { type: 'string' },
 	}
 
 	isEmpty = false

@@ -10,9 +10,9 @@ class DomContentRangeDescription extends ContentRangeDescription {
 
 	static Fields = {
 		...ContentRangeDescription.Fields,
-		'ancestor':	{type: 'model'},
-		'end':		{type: 'model'},
-		'start':	{type: 'model'},
+		'ancestor': { type: 'model' },
+		'end':      { type: 'model' },
+		'start':    { type: 'model' },
 	}
 
 	isDomContentRangeDescription = true

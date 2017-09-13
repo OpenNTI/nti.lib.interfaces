@@ -1,31 +1,26 @@
 import {thread} from '../../utils/UserDataThreader';
-import { Parser as parse } from '../../constants';
-//
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-const TakeOver = Symbol.for('TakeOver');
 
 export default
 @model
 class Transcript extends Base {
 	static MimeType = COMMON_PREFIX + 'transcript'
 
+	static Fields = {
+		...Base.Fields,
+		'Messages':     { type: 'model[]',  name: 'messages'     },
+		'RoomInfo':     { type: 'model'                          },
+		'Contributors': { type: 'string[]', name: 'contributors' },
+	}
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
-		const rename = (x, y) => this[TakeOver](x, y);
-
-		this[parse]('Messages');
-		this[parse]('RoomInfo');
-
-		rename('Contributors', 'contributors');
-
-		if (this.Messages) {
-			this.Messages = thread(this.Messages);
-			this.Messages.sort((a, b) => a.getCreatedTime() - b.getCreatedTime());
-
-			rename('Messages', 'messages');
+		if (this.messages) {
+			this.messages = thread(this.Messages)
+				.sort((a, b) => a.getCreatedTime() - b.getCreatedTime());
 		}
 	}
 

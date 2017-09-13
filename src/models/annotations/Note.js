@@ -15,9 +15,13 @@ export default
 class Note extends Highlight {
 	static MimeType = COMMON_PREFIX + 'note'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	static Fields = {
+		...Highlight.Fields,
+		'ReferencedByCount': { type: 'number'   },
+		'inReplyTo':         { type: 'string'   },
+		'references':        { type: 'string[]' }
 	}
+
 
 	get replyCount () {
 		// Rely on this value, placeholders will have a getter for the ReferencedByCount property.

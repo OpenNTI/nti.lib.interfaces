@@ -9,8 +9,8 @@ class TranscriptContentPointer extends TimeContentPointer {
 
 	static Fields = {
 		...TimeContentPointer.Fields,
-		'cueid': {type: 'string'},
-		'pointer': {type: 'model'},
+		'cueid':   { type: 'string' },
+		'pointer': { type: 'model'  },
 	}
 
 	constructor (service, parent, data) {

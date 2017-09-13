@@ -11,7 +11,7 @@ class TimeContentPointer extends ContentPointer {
 
 	static Fields = {
 		...ContentPointer.Fields,
-		'seconds': {type: 'number'}
+		'seconds': { type: 'number' }
 	}
 
 	constructor (service, parent, data) {
