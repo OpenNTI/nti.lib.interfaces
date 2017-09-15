@@ -51,9 +51,11 @@ export default class Registry {
 			throw new TypeError('Illegial Argument: Model class expected');
 		}
 
-		const types = (Array.isArray(o.MimeType) ? o.MimeType : [o.MimeType])
-			.filter(Boolean)
-			.map(trimCommonPrefix);
+		o.MimeTypes = (Array.isArray(o.MimeType) ? o.MimeType : [o.MimeType]).filter(Boolean);
+		//force MimeType to be a scalar value instead of a list...
+		o.MimeType = o.MimeTypes[0];
+
+		const types = o.MimeTypes.map(trimCommonPrefix);
 
 		for (let type of types) {
 			if (this[MAP].has(type)) {
