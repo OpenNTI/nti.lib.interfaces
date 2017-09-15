@@ -1,4 +1,5 @@
 import {Markup} from 'nti-commons';
+import isEmpty from 'isempty';
 
 function cleanupContentString (content) {
 	try {
@@ -41,16 +42,17 @@ function setup (data, keys) {
 	}
 }
 
-export const ContentKeys = Symbol('ContentKeys');
 export const SetupContentProperties = Symbol('SetupContentProperties');
 
 export const Mixin = {
 
 	constructor (data) {
-		let keys = this[ContentKeys] &&
-					this[ContentKeys]();
+		const {constructor: Type} = this;
+		const {Fields = {}} = Type;
 
-		if (keys === undefined) {
+		let keys = Object.keys(Fields).filter(x => Fields[x].content);
+
+		if (isEmpty(keys)) {
 			keys = ['content'];
 		}
 

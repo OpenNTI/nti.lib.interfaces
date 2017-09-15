@@ -11,12 +11,7 @@ class Folder extends FileSystemEntity {
 		COMMON_PREFIX + 'courseware.contentfolder',
 	]
 
-	get isFolder () { return true; }
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
-
+	isFolder = true
 
 	/**
 	 * Client Side only. (used for UI optimistically faking out loads)

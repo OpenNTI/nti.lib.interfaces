@@ -5,8 +5,4 @@ export default
 @model
 class GradeBookShell extends Base {
 	static MimeType = COMMON_PREFIX + 'gradebookshell'
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
 }

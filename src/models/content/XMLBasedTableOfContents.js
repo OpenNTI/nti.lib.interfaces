@@ -5,7 +5,8 @@ import Base from '../Base';
 import PageSource from './TableOfContentsBackedPageSource';
 import Node from './TableOfContentsNode';
 
-
+// Probably shouldn't extend Base...
+// TODO: Remove Base as a super...
 export default class XMLBasedTableOfContents extends Base {
 
 	constructor (service, parent, data, title) {

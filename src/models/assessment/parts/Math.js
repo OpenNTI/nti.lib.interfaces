@@ -5,8 +5,4 @@ export default
 @model
 class Math extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.mathpart'
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
 }

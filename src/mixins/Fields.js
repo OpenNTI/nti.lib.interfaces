@@ -20,14 +20,17 @@ const getMethod = x => 'get' + x.replace(
 const TYPE_MAP = {
 	'*': null, // wildcard "ANY" type
 	'any': null, // wildcard "ANY" type
-	'boolean': null,
+	'boolean': applyBooleanField,
 	'date': applyDateField,
 	'model': applyModelField,
-	'number': null,
-	'string': null,
+	'model{}': applyModelDictionaryField,
+	'number': applyNumberField,
+	'string': applyStringField,
 };
 
 const isArrayType = RegExp.prototype.test.bind(/\[]$/);
+// const isDictionaryType = RegExp.prototype.test.bind(/\{}$/);
+// const isCollectionType = x => isArrayType(x) || isDictionaryType(x);
 
 export default {
 
@@ -55,7 +58,7 @@ export default {
 		for (let key of Object.keys(data)) {
 
 			//get the name, type, and defaultValue of the field...
-			const {name = key, type, defaultValue} = Fields[key] || {};
+			const {name = key, type, required, defaultValue} = Fields[key] || {};
 
 			//allow for hooking... however, strongly prefer setting type to the string: 'model'
 			if (typeof type === 'function') {
@@ -96,6 +99,10 @@ export default {
 
 				desc.get.renamedFrom = key;
 				updateField(this, name, desc);
+			}
+
+			if (required && this[name] == null) {
+				throw new TypeError(`Required field is null: ${key}${name === key ? '' : ` (aliased to ${name})`}`);
 			}
 		}
 
@@ -412,6 +419,41 @@ function dateGetter (key) {
 
 
 
+function enforceType (scope, fieldName, expectedType, value) {
+	const type = !Array.isArray(value) ? typeof value : value.map(x => typeof x);
+
+	const isExpected = Array.isArray(type)
+		? type.every(x => x === expectedType)
+		: type === expectedType;
+
+	if (!isExpected && type !== 'undefined') {
+		throw new TypeError(`${scope.constructor.name}: Expected a ${expectedType} type for ${fieldName} but got ${type}`);
+	}
+}
+
+
+
+function applyBooleanField (scope, fieldName, valueIn, declared, defaultValue) {
+	enforceType(scope, fieldName, 'boolean', valueIn || defaultValue);
+	return applyField(scope, fieldName, valueIn, declared, defaultValue);
+}
+
+
+
+function applyNumberField (scope, fieldName, valueIn, declared, defaultValue) {
+	enforceType(scope, fieldName, 'number', valueIn || defaultValue);
+	return applyField(scope, fieldName, valueIn, declared, defaultValue);
+}
+
+
+
+function applyStringField (scope, fieldName, valueIn, declared, defaultValue) {
+	enforceType(scope, fieldName, 'string', valueIn || defaultValue);
+	return applyField(scope, fieldName, valueIn, declared, defaultValue);
+}
+
+
+
 function applyDateField (scope, fieldName, value) {
 	let v = value;
 
@@ -428,6 +470,27 @@ function applyDateField (scope, fieldName, value) {
 		configurable: true,
 		value: dateGetter(fieldName)
 	});
+}
+
+
+
+function applyModelDictionaryField (scope, fieldName, value, declared, defaultValue) {
+	let out = {};
+	for (let dK of Object.keys(value)) {
+		out[dK] = scope[Parser]( value[dK] ) || null;
+		//should we keep the empty value & key?
+		if (!out[dK]) {
+			delete out[dK];
+		}
+	}
+
+	applyField(
+		scope,
+		fieldName,
+		out,
+		declared,
+		defaultValue
+	);
 }
 
 

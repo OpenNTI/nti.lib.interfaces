@@ -2,7 +2,7 @@ import {URL, forward} from 'nti-commons';
 import {mixin} from 'nti-lib-decorators';
 import Logger from 'nti-util-logger';
 
-import { Service, Parser as parse } from '../../constants';
+import { Service } from '../../constants';
 import assets from '../../mixins/PresentationResources';
 import setAndEmit from '../../utils/getsethandler';
 import TablesOfContents from '../content/TablesOfContents';
@@ -11,6 +11,8 @@ import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 const logger = Logger.get('models:content:Bundle');
+
+const names = (x, y, v) => Array.isArray(v) ? v.join(', ') : null;
 
 export default
 @model
@@ -21,18 +23,22 @@ class Bundle extends Base {
 		COMMON_PREFIX + 'coursecontentpackagebundle'
 	]
 
+	static Fields = {
+		...Base.Fields,
+		'ContentPackages':  { type: 'model[]', defaultValue: [] },
+		'DCCreator':        { type: names,     name: 'author'   },
+		'title':            { type: 'string'                    },
+		'label':            { type: 'string'                    },
+	}
+
 	isBundle = true
 
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
-		this.author = (data.DCCreator || []).join(', ');
-
-		this.ContentPackages = (data.ContentPackages || []).map(v => {
-			let obj = this[parse](v);
-			obj.on('change', this.onChange.bind(this));
-			return obj;
-		});
+		for (let p of this.ContentPackages) {
+			p.on('change', this.onChange);
+		}
 
 		this.addToPending(
 			this.getAsset('landing').then(setAndEmit(this, 'icon')),
@@ -100,7 +106,7 @@ class Bundle extends Base {
 
 
 	getDefaultAssetRoot () {
-		let root = ([this].concat(this.ContentPackages))
+		const root = [this, ...this.ContentPackages]
 			.reduce((agg, o) => agg || o.root, null);
 
 		if (!root) {

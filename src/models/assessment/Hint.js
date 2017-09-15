@@ -1,6 +1,6 @@
 import {mixin} from 'nti-lib-decorators';
 
-import {Mixin as HasContent, ContentKeys} from '../../mixins/HasContent';
+import {Mixin as HasContent} from '../../mixins/HasContent';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
@@ -14,11 +14,8 @@ class Hint extends Base {
 		COMMON_PREFIX + 'assessment.texthint',
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
-
-	[ContentKeys] () {
-		return ['value'];
+	static Fields = {
+		...Base.Fields,
+		'value': { type: 'string', content: true },
 	}
 }

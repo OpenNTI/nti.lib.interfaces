@@ -5,8 +5,4 @@ export default
 @model
 class QuestionSetReference extends Base {
 	static MimeType = COMMON_PREFIX + 'questionsetref'
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
 }

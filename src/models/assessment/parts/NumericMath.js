@@ -5,8 +5,4 @@ export default
 @model
 class NumericMath extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.numericmathpart'
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
 }

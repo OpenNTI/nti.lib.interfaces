@@ -31,7 +31,7 @@ const MEDIA_INDEX = Symbol('Media Index');
 
 const OutlineCache = Symbol('OutlineCache');
 const OutlineCacheUnpublished = Symbol('OutlineCacheUnpublished');
-const RENAME = Symbol.for('TakeOver');
+const VOID = () => {};
 
 export default
 @model
@@ -42,55 +42,34 @@ class Instance extends Base {
 		COMMON_PREFIX + 'courses.legacycommunitybasedcourseinstance',
 	]
 
+	static Fields = {
+		...Base.Fields,
+		'ContentPackageBundle': { type: 'model' },
+		'Discussions': { type: 'model' },
+		'GradeBook': { type: 'model' },
+		'LegacyScopes': { type: VOID },
+		'Outline': { type: 'model' },
+		'ParentDiscussions': { type: 'model' },
+		'ParentSharingScopes': { type: 'model' },
+		'SharingScopes': { type: 'model' },
+		'TotalEnrolledCount': { type: 'number', name: 'enrolledTotalCount' },
+		'TotalLegacyForCreditEnrolledCount': { type: 'number', name: 'enrolledForCreditTotalCount' },
+		'TotalLegacyOpenEnrolledCount': { type: 'number', name: 'enrolledOpenlyTotalCount' },
+	}
+
+	get isLegacy () {
+		return /legacy/i.test(this.MimeType);
+	}
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
-		let bundle = this[parse]('ContentPackageBundle');
-		if (/legacy/i.test(this.MimeType)) {
-			Object.defineProperty(this, 'isLegacy', {get:() => true});
-		}
-
+		let bundle = this.ContentPackageBundle;
 		if (bundle) {
 			bundle.on('change', this.onChange.bind(this));
 		}
 
-		this[parse]('GradeBook');
-		this[parse]('ParentDiscussions');
-		this[parse]('Discussions');
-		this[parse]('Outline');
-		this[parse]('SharingScopes');
-		this[parse]('ParentSharingScopes');
-
-		/*try {
-			logger.debug(`
-			Title:  ${this.title}
-			Total:  ${data.TotalEnrolledCount}
-			Open:   ${data.TotalLegacyOpenEnrolledCount}
-			Credit: ${data.TotalLegacyForCreditEnrolledCount}
-			`);
-		} catch (e) {
-			logger.error(e.stack);
-		}*/
-
-		this[RENAME]('TotalEnrolledCount', 'enrolledTotalCount');
-		this[RENAME]('TotalLegacyOpenEnrolledCount', 'enrolledOpenlyTotalCount');
-		this[RENAME]('TotalLegacyForCreditEnrolledCount', 'enrolledForCreditTotalCount');
-
-		delete this.LegacyScopes;
-
-		try {
-			this.addToPending(resolveCatalogEntry(service, this));
-		} catch (e) {
-			let x = e.stack || e.message || e;
-			let t = typeof x === 'string' ? '%s' : '%o';
-			logger.warn('Instance: %s\n'
-				+ 'Enrollment: %s\n'
-				+ 'There was a problem resolving the CatalogEntry!\n' + t,
-
-			this.NTIID || this.OID,
-			parent ? (parent.NTIID || parent.OID) : 'Unknown',
-			x);
-		}
+		this.addToPending(resolveCatalogEntry(service, this));
 	}
 
 
@@ -535,24 +514,39 @@ class Instance extends Base {
 
 //Private methods
 
+
 async function resolveCatalogEntry (service, inst) {
-	// The intent and purpose of this cache is to transmit work done by the web-service to the the client...
-	// We do NOT want to cache new entries on the client...and we should clear the cache on first read...
-	const cache = service.getDataCache();
-	const url = inst.getLink('CourseCatalogEntry');
-	if (!url) {
-		throw new Error('No CCE Link!');
+	try {
+		// The intent and purpose of this cache is to transmit work done by the web-service to the the client...
+		// We do NOT want to cache new entries on the client...and we should clear the cache on first read...
+		const cache = service.getDataCache();
+		const url = inst.getLink('CourseCatalogEntry');
+		if (!url) {
+			throw new Error('No CCE Link!');
+		}
+
+		const cached = cache.get(url);
+		cache.set(url, null); //clear the cache on read...we only want to cache it for the initial page load.
+
+		const cce = await (cached
+			? Promise.resolve(cached)
+			: service.get(url)
+				.then(d => (!cache.isClientInstance && cache.set(url, d), d)));
+
+		const entry = inst.CatalogEntry = inst[parse](cce);
+
+		return await entry.waitForPending();
 	}
+	catch (e) {
+		const parent = inst.parent();
+		let x = e.stack || e.message || e;
+		let t = typeof x === 'string' ? '%s' : '%o';
+		logger.warn('Instance: %s\n'
+			+ 'Enrollment: %s\n'
+			+ 'There was a problem resolving the CatalogEntry!\n' + t,
 
-	const cached = cache.get(url);
-	cache.set(url, null); //clear the cache on read...we only want to cache it for the initial page load.
-
-	const cce = await (cached
-		? Promise.resolve(cached)
-		: service.get(url)
-			.then(d => (!cache.isClientInstance && cache.set(url, d), d)));
-
-	const entry = inst.CatalogEntry = inst[parse](cce);
-
-	return await entry.waitForPending();
+		this.NTIID || this.OID,
+		parent ? (parent.NTIID || parent.OID) : 'Unknown',
+		x);
+	}
 }

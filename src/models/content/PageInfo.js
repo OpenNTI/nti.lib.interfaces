@@ -23,15 +23,21 @@ export default
 class PageInfo extends Base {
 	static MimeType = COMMON_PREFIX + 'pageinfo'
 
+	static Fields = {
+		...Base.Fields,
+		'AssessmentItems':     { type: 'model[]', defaultValue: [] },
+		'ContentPackageNTIID': { type: 'string'                    },
+		'label':               { type: 'string'                    },
+		'sharingPreference':   { type: 'model'                     },
+		'title':               { type: 'string'                    },
+	}
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
 		if (data.AssessmentItems) {
 			this.AssessmentItems = setupAssessmentItems(data.AssessmentItems, this);
-			this.addToPending(...this.AssessmentItems);
 		}
-
-		this[parse]('sharingPreference');
 	}
 
 
@@ -49,11 +55,12 @@ class PageInfo extends Base {
 		return url.format();
 	}
 
+
 	getContent () {
 		let root = this.getContentRoot();
 
 		return this.fetchLink('content')
-			.then(html=>Markup.rebaseReferences(html, root));
+			.then(html => Markup.rebaseReferences(html, root));
 	}
 
 
@@ -69,7 +76,6 @@ class PageInfo extends Base {
 
 		return this.ContentPackageNTIID || bestGuess(this);
 	}
-
 
 
 	getSharingPreferences () {
@@ -162,16 +168,15 @@ function assessmentItemOrder (a, b) {
 
 
 function setupAssessmentItems (items, pageInfo) {
-	items = items.map(o=>pageInfo[parse](o)).filter(x => x);
-	items.sort(assessmentItemOrder);
+	items = items
+		.filter(o=> o && o.containsId)
+		.sort(assessmentItemOrder);
 
-	let sets = items.filter(o=>o && o.containsId);
+	const sets = items.slice();
 
 	//Remove questions & questionsets that are embedded within Assignments and QuestionSets...leave only top-level items.
-	items = items.filter(o=>
+	return items.filter(o =>
 		!sets.reduce((found, set) =>
 			found || set.containsId(o.getID()), null)
 	);
-
-	return items;
 }

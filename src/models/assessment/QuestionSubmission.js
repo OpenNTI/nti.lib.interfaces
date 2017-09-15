@@ -11,6 +11,14 @@ export default
 class QuestionSubmission extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.questionsubmission'
 
+	static Fields = {
+		...Base.Fields,
+		'questionId':                    { type: 'string'  },
+		'parts':                         { type: 'model[]' },
+		'ContainerId':                   { type: 'string'  },
+		'CreatorRecordedEffortDuration': { type: 'number'  },
+	}
+
 	static build (question) {
 		const {parts} = question;
 		const data = {
@@ -21,16 +29,6 @@ class QuestionSubmission extends Base {
 		};
 
 		return new this(question[Service], null, data);
-	}
-
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		this.MimeType = this.MimeType || QuestionSubmission.MimeType;
-
-		// questionId
-		// parts -> parse
-		// CreatorRecordedEffortDuration: 0
 	}
 
 

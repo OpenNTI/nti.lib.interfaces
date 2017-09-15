@@ -1,21 +1,19 @@
 import {mixin, readonly} from 'nti-lib-decorators';
 
-// import {Parser as parse} from '../../../../../constants';
-
 import Base from '../../../../Base';
 
 export default
 @mixin({@readonly isAggregated: true})
 class Part extends Base {
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		// console.log(this);
+	static Fields = {
+		...Base.Fields,
+		'Results': { type: 'object[]' },
+		'Total':   { type: 'number' },
 	}
 
 
 	getResults (/*questionPart*/) {
-		console.error('Not Implemented'); //eslint-disable-line no-console
+		throw new Error('Not Implemented');
 	}
 }

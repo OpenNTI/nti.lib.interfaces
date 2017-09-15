@@ -5,8 +5,4 @@ export default
 @model
 class Solution extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.solution'
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
 }

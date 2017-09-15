@@ -1,6 +1,5 @@
 import {pluck} from 'nti-commons';
 
-import {Parser as parse} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import Entity from './Entity';
@@ -13,10 +12,11 @@ export default
 class FriendsList extends Entity {
 	static MimeType = COMMON_PREFIX + 'friendslist'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		this[parse]('friends');
+	static Fields = {
+		...Entity.Fields,
+		'friends': { type: 'model[]' },
 	}
+
 
 	get displayType () {
 		return 'List';
@@ -116,31 +116,31 @@ class FriendsList extends Entity {
 	 * @return {Promise} To fulfill if successfull, or reject with an error.
 	 */
 	remove (entity) {
-		let entityId = getID(entity);
+		const entityId = getID(entity);
 
 		if (!this.isModifiable) {
 			return Promise.reject('No Edit Link');
 		}
 
-		let {friends = []} = this;
+		const {friends = []} = this;
 
-		let index = friends.findIndex(x => x.getID() === entityId);
+		const index = friends.findIndex(x => x.getID() === entityId);
 
 		if (index < 0) {
 			return Promise.resolve(this);
 		}
 
-		let item = this.friends.splice(index, 1)[0]; //delete the item from the list.
+		const item = friends.splice(index, 1)[0]; //delete the item from the list.
 
 		//Lets just submit the username/id of the entities in our list instead of the full objects.
-		let data = this.getData();
-		data.friends = this.friends.map(x => getID(x));
+		const data = this.getData();
+		data.friends = friends.map(x => getID(x));
 
 		return this.putToLink('edit', data)
 			.then(() => this.onChange('friends'))
 			.then(() => this)//always fulfill with 'this' (don't leak new/raw instances)
 			.catch(e => {
-				this.friends.splice(index, 0, item); // put the item back.
+				friends.splice(index, 0, item); // put the item back.
 
 				//continue the failure.
 				return Promise.reject(e);

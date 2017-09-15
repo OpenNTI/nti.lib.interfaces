@@ -1,4 +1,3 @@
-import {ContentKeys} from '../../../mixins/HasContent';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Part from '../Part';
 
@@ -10,11 +9,10 @@ class MultipleChoice extends Part {
 		COMMON_PREFIX + 'assessment.multiplechoicemultipleanswerpart',
 		COMMON_PREFIX + 'assessment.randomizedmultiplechoicepart',
 		COMMON_PREFIX + 'assessment.randomizedmultiplechoicemultipleanswerpart',
-	]
+	];
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	static Fields = {
+		...Part.Fields,
+		'choices': { type: 'string[]', content: true },
 	}
-
-	[ContentKeys] () { return super[ContentKeys]().concat(['choices']); }
 }

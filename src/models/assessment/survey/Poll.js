@@ -16,10 +16,6 @@ export default
 class Poll extends Question {
 	static MimeType = COMMON_PREFIX + 'napoll'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
-
 
 	get hasAggregationData () {
 		return this.hasLink(SURVEY_AGGREGATED_LINK);

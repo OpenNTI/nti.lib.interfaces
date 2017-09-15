@@ -6,15 +6,13 @@ export default
 class BadgeIssuer extends Base {
 	static MimeType = COMMON_PREFIX + 'openbadges.issuer'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		/*
-		"description": "https://ou-alpha.nextthought.com",
-		"email": "support@nextthought.com",
-		"image": null,
-		"name": "OU Alpha",
-		"revocationList": null,
-		"url": "https://ou-alpha.nextthought.com"
-		*/
+	static Fields = {
+		...Base.Fields,
+		'description':    { type: 'string' },
+		'email':          { type: 'string' },
+		'image':          { type: 'string' },
+		'name':           { type: 'string' },
+		'revocationList': { type: '*'      },
+		'url':            { type: 'string' },
 	}
 }

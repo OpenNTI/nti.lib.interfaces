@@ -1,19 +1,18 @@
 import {model, COMMON_PREFIX} from '../Registry';
+import Base from '../Base';
 
 export default
 @model
-class SlideVideo {
+class SlideVideo extends Base {
 	static MimeType = COMMON_PREFIX + 'ntislidevideo'
 
-	constructor (service, parent, data) {
-
-		const define = (name, value) => Object.defineProperty(this, name, {value, writable: false});
-
-		define('deckId', data.slidedeckid);
-		define('videoId', data['video-ntiid']);
-		define('byline', data.byline);
-		define('title', data.DCTitle);
-		define('description', data.DCDescription);
-		define('thumbnail', data.thumbnail);//poster?
+	static Fields = {
+		...Base.Fields,
+		'byline':        { type: 'string'                      },
+		'DCDescription': { type: 'string', name: 'description' },
+		'DCTitle':       { type: 'string', name: 'title'       },
+		'slidedeckid':   { type: 'string', name: 'deckId'      },
+		'thumbnail':     { type: 'string'                      },
+		'video-ntiid':   { type: 'string', name: 'videoId'     },
 	}
 }

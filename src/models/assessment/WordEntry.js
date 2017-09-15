@@ -5,8 +5,4 @@ export default
 @model
 class WordEntry extends Base {
 	static MimeType = COMMON_PREFIX + 'naqwordentry'
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
 }

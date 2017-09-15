@@ -1,6 +1,5 @@
 import {pluck} from 'nti-commons';
 
-import {DateFields, Parser as parse} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
@@ -9,14 +8,11 @@ export default
 class AssignmentHistoryCollection extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistory'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		const items = this.Items = (this.Items || {});
-
-		for(let key of Object.keys(items)) {
-			items[key] = this[parse](items[key]);
-		}
+	static Fields = {
+		...Base.Fields,
+		'lastViewed':                { type: 'date'     },
+		'AvailableAssignmentNTIIDs': { type: 'string[]' },
+		'Items':                     { type: 'model{}'  },
 	}
 
 
@@ -27,11 +23,6 @@ class AssignmentHistoryCollection extends Base {
 		}
 
 		return ids.indexOf(ntiid) >= 0;
-	}
-
-
-	[DateFields] () {
-		return super[DateFields]().concat(['lastViewed']);
 	}
 
 

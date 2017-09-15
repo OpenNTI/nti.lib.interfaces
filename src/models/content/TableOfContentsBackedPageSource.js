@@ -13,7 +13,8 @@ function buildRef (node/*, root*/) {
 	};
 }
 
-
+// Probably shouldn't extend Base...
+// TODO: Remove Base as a super...
 export default class TableOfContentsBackedPageSource extends Base {
 	constructor (ToC, root) {
 		super(ToC[Service], ToC);

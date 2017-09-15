@@ -8,13 +8,18 @@ export default
 class File extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.filepart'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		this.fileSetDescriptor = new FileType.FileSetDescriptor(
-			this.allowed_extensions || ['*'],
-			this.allowed_mime_types || ['*/*']
-		);
+	static Fields = {
+		...Part.Fields,
+		'allowed_extensions': { type: 'string[]' },
+		'allowed_mime_types': { type: 'string[]' },
+		'max_file_size':      { type: 'number'   },
 	}
+
+	fileSetDescriptor = new FileType.FileSetDescriptor(
+		this.allowed_extensions || ['*'],
+		this.allowed_mime_types || ['*/*']
+	)
+
 
 	isFileAcceptable (file) {
 		const r = this.reasons = [];

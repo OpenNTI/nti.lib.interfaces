@@ -9,12 +9,13 @@ export default
 class DynamicFriendsList extends FriendsList {
 	static MimeType = COMMON_PREFIX + 'dynamicfriendslist'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		this.isGroup = true;
-
-		this.ensureProperty('IsDynamicSharing', true, 'boolean', true);
+	static Fields = {
+		...FriendsList.Fields,
+		'IsDynamicSharing': { type: 'boolean', required: true, requiredValue: true },
 	}
+
+	isGroup = true
+
 
 
 	get displayType () {
@@ -36,9 +37,6 @@ class DynamicFriendsList extends FriendsList {
 				if (ix >= 0) {
 					Links.splice(ix, 1);
 				}
-
-				delete this.isMember;
-				Object.defineProperty(this, 'isMember', {value: false});
 			})
 			.then(() => this.onChange(DELETED, this.getID()))
 			.then(() => this.onChange('membership'));

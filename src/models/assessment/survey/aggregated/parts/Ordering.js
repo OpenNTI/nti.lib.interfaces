@@ -8,10 +8,10 @@ export default
 class AggregatedOrderingPart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedorderingpart'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	static Fields = {
+		...Base.Fields,
+		'Results': { type: 'object[]' },
 	}
-
 
 	getResults (part) {
 		const ix = x => part.values.indexOf(x[0]);

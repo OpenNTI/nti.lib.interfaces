@@ -1,4 +1,3 @@
-import {Parser as parse} from '../../../../constants';
 import {model, COMMON_PREFIX} from '../../../Registry';
 import Base from '../../../Base';
 
@@ -7,13 +6,13 @@ export default
 class AggregatedSurveyResults extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedsurvey'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		this[parse]('questions', []);
-
-		// ContainerContext
-		// surveyId
+	static Fields = {
+		...Base.Fields,
+		'questions':        { type: 'model[]' },
+		'surveyId':         { type: 'string'  },
+		'ContainerContext': { type: '*'       },
 	}
+
 
 	getQuestions () {
 		return this.questions;

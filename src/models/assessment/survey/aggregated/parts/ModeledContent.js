@@ -8,13 +8,7 @@ export default
 class AggregatedModeledContentPart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedmodeledcontentpart'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
-
-
 	getResults () {
-		const {Results: results} = this;
-		return results;
+		return this.Results;
 	}
 }

@@ -3,24 +3,23 @@ import {Parser as parse} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
+const thread = (_, bucket, data) => threadThreadables(bucket[parse](data));
+
 export default
 @model
 class RecursiveStreamBucket extends Base {
 	static MimeType = COMMON_PREFIX + 'courseware.courserecursivestreambucket'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		const thread = x => {
-			this[parse](x);
-			this[x] = threadThreadables(this[x]);
-		};
-
-		thread('Items');
-
-		// "BatchPage": 1,
-		// "BucketItemCount": 1,
-		// "ItemCount": 1,
+	static Fields = {
+		...Base.Fields,
+		'BatchItemCount':      { type: 'number'                  },
+		'BatchPage':           { type: 'number'                  },
+		'ItemCount':           { type: 'number'                  },
+		'Items':               { type: thread,  defaultValue: [] },
+		'MostRecentTimestamp': { type: 'number'                  },
+		'OldestTimestamp':     { type: 'number'                  },
 	}
+
 
 	get mostRecentDate () {
 		return new Date(this.MostRecentTimestamp * 1000);

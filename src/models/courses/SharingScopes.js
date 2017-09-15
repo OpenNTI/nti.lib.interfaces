@@ -1,4 +1,3 @@
-import {Parser as parse} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
@@ -7,12 +6,10 @@ export default
 class SharingScopes extends Base {
 	static MimeType = COMMON_PREFIX + 'courseinstancesharingscopes'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		for (let scope of Object.keys(this.Items)) {
-			this.Items[scope] = this[parse](this.Items[scope]);
-		}
+	static Fields = {
+		...Base.Fields,
+		'DefaultSharingScopeNTIID': { type: 'string'  },
+		'Items':                    { type: 'model{}' },
 	}
 
 

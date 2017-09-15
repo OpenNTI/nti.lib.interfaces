@@ -14,7 +14,11 @@ export default
 class DiscussionReference extends Base {
 	static MimeType = COMMON_PREFIX + 'discussionref'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	static Fields = {
+		...Base.Fields,
+		'icon':         { type: 'string' },
+		'label':        { type: 'string' },
+		'title':        { type: 'string' },
+		'Target-NTIID': { type: 'string' },
 	}
 }

@@ -16,8 +16,12 @@ export default
 class ContentPackageRenderJob extends Base {
 	static MimeType = COMMON_PREFIX + 'content.packagerenderjob'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	static Fields = {
+		...Base.Fields,
+		'isFailed':  { type: 'boolean' },
+		'isSuccess': { type: 'boolean' },
+		'JobId':     { type: 'string'  },
+		'State':     { type: 'string'  },
 	}
 
 

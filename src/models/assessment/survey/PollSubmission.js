@@ -8,6 +8,11 @@ class PollSubmission extends QuestionSubmission {
 	static MimeType = COMMON_PREFIX + 'assessment.pollsubmission'
 	static COURSE_SUBMISSION_REL = 'CourseInquiries'
 
+	static Fields = {
+		...QuestionSubmission.Fields,
+		'pollId': { type: 'string'  },
+	}
+
 	static build (poll) {
 		const s = super.build(poll);
 
@@ -17,20 +22,17 @@ class PollSubmission extends QuestionSubmission {
 
 		const submitTo = resolveSubmitTo(poll, this.COURSE_SUBMISSION_REL);
 		if (submitTo) {
-			Object.defineProperty(s, 'SubmissionHref', {value: submitTo});
+			delete s.MimeType;
+			s.MimeType = PollSubmission.MimeType;
+			Object.defineProperties(s, {
+				SubmissionHref: {value: submitTo},
+				SubmitsToObjectURL: {value: true}
+			});
 		}
 
 		return s;
 	}
 
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		Object.defineProperty(this, 'SubmitsToObjectURL', {value: true});
-		Object.assign(this, {
-			MimeType: 'application/vnd.nextthought.assessment.pollsubmission'
-		});
-	}
 
 	getID () {
 		return this.pollId || this.NTIID;

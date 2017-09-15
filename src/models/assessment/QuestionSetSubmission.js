@@ -1,6 +1,6 @@
 import {mixin} from 'nti-lib-decorators';
 
-import {Service, ReParent, Parser as parse} from '../../constants';
+import {Service, ReParent} from '../../constants';
 import Submission from '../../mixins/Submission';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -11,8 +11,18 @@ export default
 class QuestionSetSubmission extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.questionsetsubmission'
 
+	static Fields = {
+		...Base.Fields,
+		'questions':                     { type: 'model[]' },
+		'questionSetId':                 { type: 'string'  },
+		'ContainerId':                   { type: 'string'  },
+		'CreatorRecordedEffortDuration': { type: 'number'  },
+	}
+
+
 	static build (questionSet) {
 		const data = {
+			MimeType: QuestionSetSubmission.MimeType,
 			questionSetId: questionSet.getID(),
 			ContainerId: questionSet.containerId,
 			CreatorRecordedEffortDuration: null,
@@ -22,15 +32,6 @@ class QuestionSetSubmission extends Base {
 		const s = new this(questionSet[Service], null, data);
 		s.questions.forEach(q => q[ReParent](s));
 		return s;
-	}
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		this.MimeType = this.MimeType || QuestionSetSubmission.MimeType;
-
-		// CreatorRecordedEffortDuration: 0
-		this[parse]('questions', []);
 	}
 
 

@@ -1,4 +1,3 @@
-import {Parser as parse} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
@@ -10,10 +9,9 @@ class SavePointItem extends Base {
 		COMMON_PREFIX + 'assessment.userscourseassignmentsavepointitem',
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		this[parse]('Submission');
+	static Fields = {
+		...Base.Fields,
+		'Submission': { type: 'model' }
 	}
 
 

@@ -19,6 +19,7 @@ const logger = Logger.get('models:content:Package');
 const VideoIndexReqest = Symbol('VideoIndexReqest');
 
 const getAssociationCount = (x) => x.LessonContainerCount;
+const names = (x, y, v) => Array.isArray(v) ? v.join(', ') : null;
 
 export default
 @model
@@ -26,11 +27,18 @@ export default
 class Package extends Base {
 	static MimeType = COMMON_PREFIX + 'contentpackage'
 
+	static Fields = {
+		...Base.Fields,
+		'DCCreator':  { type: names,    name: 'author' },
+		'title':      { type: 'string',                },
+		'index':      { type: 'string',                },
+		'label':      { type: 'string',                },
+		'root':       { type: 'string',                },
+		// 'background': { type: 'string',                },
+	}
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
-
-		this.author = (data.DCCreator || []).join(', ');
-
 		this.setUpAssets();
 	}
 

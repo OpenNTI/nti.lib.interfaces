@@ -1,6 +1,5 @@
 import {mixin} from 'nti-lib-decorators';
 
-import {Parser as parse} from '../../../constants';
 import Submission from '../../../mixins/Submission';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
@@ -14,6 +13,13 @@ class AssignmentSubmission extends Base {
 		COMMON_PREFIX + 'assessment.assignmentsubmissionpendingassessment',
 	]
 
+	static Fields = {
+		...Base.Fields,
+		'assignmentId':                  { type: 'string'  },
+		'parts':                         { type: 'model[]' },
+		'CreatorRecordedEffortDuration': { type: 'number'  },
+	}
+
 	constructor (service, parent, data, submitTo) {
 		super(service, parent, data);
 		this.MimeType = this.MimeType || AssignmentSubmission.MimeType;
@@ -22,9 +28,6 @@ class AssignmentSubmission extends Base {
 			SubmissionHref: {value: submitTo},
 			SubmitsToObjectURL: {value: true}
 		});
-
-		// CreatorRecordedEffortDuration: 0
-		this[parse]('parts', []);
 	}
 
 

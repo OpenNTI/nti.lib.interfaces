@@ -5,8 +5,4 @@ export default
 @model
 class PollReference extends Base {
 	static MimeType = COMMON_PREFIX + 'pollref'
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
 }

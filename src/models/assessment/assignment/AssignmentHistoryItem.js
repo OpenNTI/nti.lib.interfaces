@@ -1,4 +1,3 @@
-import {Parser as parse} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
@@ -10,14 +9,13 @@ class AssignmentHistoryItem extends Base {
 		COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitem',
 	]
 
-	constructor (service, parent, data) {
-		const rename = Symbol.for('TakeOver');
-		super(service, parent, data);
-		for(let prop of ['Feedback', 'Grade', 'Submission', 'pendingAssessment']) {
-			this[parse](prop);
-		}
-
-		this[rename]('Grade', 'grade');
+	static Fields = {
+		...Base.Fields,
+		'Feedback':            { type: 'model[]'               },
+		'Grade':               { type: 'model',  name: 'grade' },
+		'Submission':          { type: 'model'                 },
+		'SyntheticSubmission': { type: 'boolean'               },
+		'pendingAssessment':   { type: 'model'                 },
 	}
 
 

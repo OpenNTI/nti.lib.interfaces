@@ -2,7 +2,6 @@ import {pluck} from 'nti-commons';
 import {mixin} from 'nti-lib-decorators';
 
 import PlacementProvider from '../../authoring/placement/providers/QuestionSet';
-import {Parser as parse} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
@@ -23,11 +22,13 @@ class QuestionSet extends Base {
 		COMMON_PREFIX + 'assessment.randomizedquestionset',
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		this[parse]('questions', []);
-	}
+	static Fields = {
+		...Base.Fields,
+		'draw':                { type: 'number',                               },
+		'questions':           { type: 'model[]'                               },
+		'Randomized':          { type: 'boolean', name: 'isRandomized'         },
+		'RandomizedPartsType': { type: 'boolean', name: 'isPartTypeRandomized' },
+	};
 
 
 	[Symbol.iterator] () {
@@ -85,22 +86,14 @@ class QuestionSet extends Base {
 
 	/**
 	 * Is the question order set to be randomized.
-	 *
-	 * @return {boolean} yes or no.
+	 * @property {boolean} isRandomized
 	 */
-	get isRandomized () {
-		//TODO: this can just be a rename of this.Randomized
-		return this.Randomized;
-	}
+
 
 	/**
 	 * Are the question parts set to use the Randomized Part variant?
-	 *
-	 * @return {boolean} yes or no.
+	 * @property {boolean} isPartTypeRandomized.
 	 */
-	get isPartTypeRandomized () {
-		return this.RandomizedPartsType;
-	}
 
 
 	/**
@@ -136,6 +129,7 @@ class QuestionSet extends Base {
 	getQuestionCount () {
 		return this.questions.length;
 	}
+
 
 	getSubmission () {
 		return QuestionSetSubmission.build(this);

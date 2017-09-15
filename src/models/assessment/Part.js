@@ -1,9 +1,13 @@
 import {mixin} from 'nti-lib-decorators';
 
-import {Parser as parse} from '../../constants';
-import {Mixin as HasContent, ContentKeys, SetupContentProperties} from '../../mixins/HasContent';
+import {Mixin as HasContent, SetupContentProperties} from '../../mixins/HasContent';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
+
+//Rules:
+// Show Hints from start if they are present. If more than one, increment which one you see every time your show.
+// Show Solutions if the part is answered & incorrect (as apposed to correct or 'unknown'), and there are solutions
+
 
 export default
 @model
@@ -11,23 +15,21 @@ export default
 class Part extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.part'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		//Rules:
-		// Show Hints from start if they are present. If more than one, increment which one you see every time your show.
-		// Show Solutions if the part is answered & incorrect (as apposed to correct or 'unknown'), and there are solutions
-
-		this[parse]('hints');
-		this[parse]('solutions');
-		this[parse]('wordbank');
-
-		Object.defineProperty(this, 'isNonGradable', {value: /nongradable/i.test(this.MimeType)});
-		this.MimeType = this.MimeType.replace(/nongradable/i, '');
+	static Fields = {
+		...Base.Fields,
+		'answerLabel': { type: 'string', content: true },
+		'content':     { type: 'string', content: true },
+		'explanation': { type: 'string', content: true },
+		'hints':       { type: 'model[]'               },
+		'solutions':   { type: 'model[]'               },
+		'wordbank':    { type: 'model[]'               },
 	}
 
-	[ContentKeys] () {
-		return ['content', 'explanation', 'answerLabel'];
+
+
+	constructor (service, parent, data) {
+		super(service, parent, data);
+		this.MimeType = (this.MimeType || '').replace(/nongradable/i, '');
 	}
 
 

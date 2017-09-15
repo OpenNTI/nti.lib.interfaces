@@ -1,12 +1,10 @@
 import {mixin} from 'nti-lib-decorators';
 
-import {Service, Parser as parse} from '../constants';
+import {Service} from '../constants';
 import Base from '../models/Base';
 import Paged from '../mixins/Paged';
 
 import Stream from './Stream';
-
-const RENAME = Symbol.for('TakeOver');
 
 //@private
 const FILTERS = {
@@ -17,15 +15,19 @@ const FILTERS = {
 
 //@private
 class RosterRecord extends Base {
+	static Fields = {
+		...Base.Fields,
+		'LegacyEnrollmentStatus': { type: 'string', name: 'enrollmentStatus' },
+		'RealEnrollmentStatus':   { type: '*'                                },
+		'Username':               { type: '*', name: 'username'              },
+		'UserProfile':            { type: 'model', name: 'user'              },
+	}
+
+
 	constructor (service, data) {
 		super(service, null, data);
-
-		this[parse]('UserProfile');
-		this[RENAME]('LegacyEnrollmentStatus', 'enrollmentStatus');
-		// this[RENAME]('RealEnrollmentStatus', '...');
-		this[RENAME]('Username', 'username');
-		this[RENAME]('UserProfile', 'user');
 	}
+
 
 	toString () {
 		return `${this.username}: ${this.user.displayName} (${this.user.displayType}) - enrolled: ${this.enrollmentStatus}`;

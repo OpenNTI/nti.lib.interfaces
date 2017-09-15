@@ -5,8 +5,5 @@ export default
 @model
 class NonGradableOrdering extends Ordering {
 	static MimeType = COMMON_PREFIX + 'assessment.nongradableorderingpart'
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
+	isNonGradable = true
 }

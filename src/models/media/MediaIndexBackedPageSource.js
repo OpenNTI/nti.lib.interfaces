@@ -15,7 +15,7 @@ function buildRef (node) {
 	};
 }
 
-
+//FIXME: Does this need to extend Base??
 export default class MediaIndexBackedPageSource extends Base {
 
 	constructor (index) {
