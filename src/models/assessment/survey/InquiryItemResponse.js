@@ -1,4 +1,3 @@
-import {Parser as parse} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
@@ -7,12 +6,12 @@ export default
 class InqueryItemResponse extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseinquiryitemresponse'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		this[parse]('Aggregated');
-		this[parse]('Submission');
+	static Fields = {
+		...Base.Fields,
+		'Aggregated': { type: 'model' },
+		'Submission': { type: 'model'  },
 	}
+
 
 	getQuestions () {
 		let submission = this.Submission;

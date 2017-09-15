@@ -9,8 +9,4 @@ class Response extends Base {
 		COMMON_PREFIX + 'assessment.dictresponse',
 		COMMON_PREFIX + 'assessment.textresponse',
 	]
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
 }

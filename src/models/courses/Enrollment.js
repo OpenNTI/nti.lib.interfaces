@@ -1,7 +1,7 @@
 import {forward} from 'nti-commons';
 import {mixin} from 'nti-lib-decorators';
 
-import { Parser as parse, Service } from '../../constants';
+import { Service } from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
@@ -33,18 +33,20 @@ export default class Enrollment extends Base {
 		COMMON_PREFIX + 'courseware.courseinstanceenrollment',
 	]
 
+	static Fields = {
+		...Base.Fields,
+		'CourseInstance':         { type: 'model'  },
+		'LegacyEnrollmentStatus': { type: 'string' },
+	}
+
 	constructor (service, data) {
 		super(service, null, data);
 
-
-		let i = this[parse]('CourseInstance');
-
-		if (!i) {
+		if (!this.CourseInstance) {
 			throw new Error('Illegal State: No CourseInstance. (You are probably trying to parse a GradeBookSummary or Roster)');
 		}
 
-		this.addToPending(i.waitForPending());
-		i.on('change', this.onChange.bind(this));
+		this.CourseInstance.on('change', this.onChange.bind(this));
 	}
 
 

@@ -1,6 +1,6 @@
 import Achievements from '../../stores/Achievements';
 import Stream from '../../stores/Stream';
-import { Service, DateFields, Parser as parse, TOS_NOT_ACCEPTED} from '../../constants';
+import { Service, TOS_NOT_ACCEPTED} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import Entity from './Entity';
@@ -30,16 +30,26 @@ export default
 class User extends Entity {
 	static MimeType = COMMON_PREFIX + 'user'
 
+	static Fields = {
+		...Entity.Fields,
+		'accepting': { type: 'model[]' },
+		'following': { type: 'model[]' },
+		'ignoring': { type: 'model[]' },
+		'AvatarURLChoices': { type: 'string[]' },
+		'Connections': { type: '*' },
+		'Communities': { type: 'model[]' },
+		'DynamicMemberships': { type: 'model[]' },
+		'positions': { type: 'model[]' },
+		'education': { type: 'model[]' },
+		'lastLoginTime': { type: 'date' },
+	}
+
+	isUser = true
+
+
 	constructor (service, data) {
 		cleanData(data);
 		super(service, null, data);
-		this.isUser = true;
-
-		this[parse]('Communities');
-		this[parse]('DynamicMemberships');
-
-		this[parse]('positions');
-		this[parse]('education');
 
 		if (this.isAppUser && this.hasLink(TOS_NOT_ACCEPTED)) {
 
@@ -50,12 +60,7 @@ class User extends Entity {
 		}
 	}
 
-	[DateFields] () {
-		return super[DateFields]().concat([
-			'lastLoginTime'
-		]);
-	}
-
+	getLastLoginTime () {} //implemented by lastLoginTime date field.
 
 	applyRefreshedData (o) {
 		cleanData(o);

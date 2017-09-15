@@ -9,7 +9,5 @@ class NonGradableMultipleChoice extends MultipleChoice {
 		COMMON_PREFIX + 'assessment.nongradablemultiplechoicemultipleanswerpart',
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
+	isNonGradable = true
 }

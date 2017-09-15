@@ -9,12 +9,12 @@ class EducationalExperience extends Base {
 		COMMON_PREFIX + 'profile.educationalexperiance', //is this misspelling still used?
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		this.ensureProperty('school', true, 'string');
-		this.ensureProperty('startYear', false, 'number');
-		this.ensureProperty('endYear', false, 'number');
-		this.ensureProperty('degree', false, 'string');
-		this.ensureProperty('description', false, 'string');
+	static Fields = {
+		...Base.Fields,
+		'degree':      { type: 'string'                 },
+		'description': { type: 'string'                 },
+		'endYear':     { type: 'number'                 },
+		'school':      { type: 'string', required: true },
+		'startYear':   { type: 'number'                 },
 	}
 }

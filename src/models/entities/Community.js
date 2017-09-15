@@ -9,10 +9,13 @@ export default
 class Community extends Entity {
 	static MimeType = COMMON_PREFIX + 'community'
 
+	isCommunity = true
+
+
 	constructor (service, data) {
 		super(service, null, data);
-		this.isCommunity = true;
 	}
+
 
 	get displayType () {
 		return 'Community';

@@ -37,8 +37,10 @@ class Base extends EventEmitter {
 		'Last Modified': { type: 'date'                    },
 		'NTIID':         { type: 'string'                  },
 		'MimeType':      { type: 'string'                  },
+		'OID':           { type: 'string'                  },
 		//We don't want to parse Links, set its type to wild.
 		'Links':         { type: '*'                       },
+		'href':          { type: 'string'                  },
 	}
 
 	constructor (service, parent, data) {
@@ -62,17 +64,6 @@ class Base extends EventEmitter {
 
 	get isCreatedByAppUser () {
 		return this[Service].getAppUsername() === this.creator;
-	}
-
-
-	ensureProperty (name, isRequired, type, value) {
-		if(isRequired && !this[name] || (this[name] && typeof this[name] !== type)) {
-			throw new TypeError('Property constraints not met for field:' + name );
-		}
-
-		if (arguments.length > 3 && this[name] !== value) {
-			throw new Error(`Required Property value for field ${name} is not met`);
-		}
 	}
 
 
@@ -113,7 +104,7 @@ class Base extends EventEmitter {
 	}
 
 
-	onChange (who) {
+	onChange = (who) => {
 		this.emit('change', this, who);
 	}
 

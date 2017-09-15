@@ -2,24 +2,21 @@ import {Parser as parse} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
+const BY_MOST_RECENT = (a, b) => b.MostRecentTimestamp - a.MostRecentTimestamp;
+const sorted = (_, stream, data) => (stream[parse](data) || []).sort(BY_MOST_RECENT);
+
+
 export default
 @model
 class RecursiveStreamByBucket extends Base {
 	static MimeType = COMMON_PREFIX + 'courseware.courserecursivestreambybucket'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	static Fields = {
+		...Base.Fields,
+		'Items':            { type: sorted,   defaultValue: [] },
+		'TotalBucketCount': { type: 'number',                  },
+	};
 
-		if (!this.Items || Object.keys(this.Items).length === 0) {
-			this.Items = [];
-		}
-
-		this[parse]('Items', []);
-		//Newest first
-		this.Items.sort((a, b) => b.MostRecentTimestamp - a.MostRecentTimestamp);
-
-		//TotalBucketCount: 2,
-	}
 
 	[Symbol.iterator] () {
 		let snapshot = this.Items.reduce((agg, bin) => agg.concat(Array.from(bin)), []);
@@ -43,6 +40,7 @@ class RecursiveStreamByBucket extends Base {
 		const [item] = this.Items;
 		return item ? item.mostRecentDate : new Date(0);
 	}
+
 
 	getOldestDate () {
 		const {Items: items} = this;

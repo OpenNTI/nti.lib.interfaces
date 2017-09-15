@@ -11,15 +11,15 @@ export default
 class InstanceAdministrativeRole extends Enrollment {
 	static MimeType = COMMON_PREFIX + 'courseware.courseinstanceadministrativerole'
 
-	constructor (service, data) {
-		super(service, data);
-		//RoleName
+	static Fields = {
+		...Enrollment.Fields,
+		'RoleName': { type: 'string' },
 	}
 
 
 	get isInstructor () {
 		const value = Boolean((this.CourseInstance || {}).GradeBook);
-		Object.defineProperty(this, 'isInstructor', {value});
+		// Object.defineProperty(this, 'isInstructor', {value});
 		return value;
 	}
 

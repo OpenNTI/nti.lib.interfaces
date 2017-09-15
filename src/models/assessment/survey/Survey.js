@@ -17,10 +17,6 @@ export default
 class Survey extends QuestionSet {
 	static MimeType = COMMON_PREFIX + 'nasurvey'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
-
 
 	get hasAggregationData () {
 		return this.hasLink(SURVEY_AGGREGATED_LINK);

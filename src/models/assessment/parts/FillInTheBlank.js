@@ -1,4 +1,3 @@
-import {ContentKeys} from '../../../mixins/HasContent';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Part from '../Part';
 
@@ -19,6 +18,12 @@ class FillInTheBlank extends Part {
 		COMMON_PREFIX + 'assessment.fillintheblankwithwordbankpart',
 	]
 
+	static Fields = {
+		...Part.Fields,
+		'input':   { type: 'string', content: true },
+	}
+
+
 	constructor (service, parent, data) {
 		if (isShortAnswer(data.MimeType)) {
 			// FillInTheBlankShortAnswer is F'd up... the content has input boxes in many
@@ -37,9 +42,6 @@ class FillInTheBlank extends Part {
 		this[ValueKeys] = (this.input.match(tags) || [])
 			.map(s=>(s.match(keyName) || {})[1]);
 	}
-
-
-	[ContentKeys] () { return super[ContentKeys]().concat(['input']); }
 
 
 	isAnswered (partValue) {

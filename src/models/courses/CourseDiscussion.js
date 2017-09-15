@@ -9,8 +9,9 @@ export default
 class CourseDiscussion extends Base {
 	static MimeType = COMMON_PREFIX + 'courses.discussion'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	static Fields = {
+		...Base.Fields,
+		'icon': { type: 'string' },
 	}
 
 

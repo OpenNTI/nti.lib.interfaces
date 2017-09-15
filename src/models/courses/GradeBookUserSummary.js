@@ -1,10 +1,6 @@
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
-import {
-	Parser as parse
-} from '../../constants';
 
-const RENAME = Symbol.for('TakeOver');
 
 export default
 @model
@@ -14,18 +10,13 @@ class GradeBookUserSummary extends Base {
 		COMMON_PREFIX + 'gradebook.usergradebooksummary'
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		this[parse]('HistoryItemSummary');
-		this[parse]('User');
-
-		this[RENAME]('User', 'user');
-		this[RENAME]('Alias', 'displayName');
-
-
-		this[RENAME]('OverdueAssignmentCount', 'overdue');
-		this[RENAME]('UngradedAssignmentCount', 'ungraded');
+	static Fields = {
+		...Base.Fields,
+		'Alias':                   { type: 'string', name: 'displayName' },
+		'HistoryItemSummary':      { type: 'model'                       },
+		'OverdueAssignmentCount':  { type: 'string', name: 'overdue'     },
+		'UngradedAssignmentCount': { type: 'string', name: 'ungraded'    },
+		'User':                    { type: 'model',  name: 'user'        },
 	}
 
 

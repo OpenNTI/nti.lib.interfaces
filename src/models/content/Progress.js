@@ -1,7 +1,8 @@
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-const HIDDEN = Symbol('Protected Data');
+const HasProgress = Symbol('Has Progress Field');
+const ResourceID = Symbol('Resource ID Field');
 
 export default
 @model
@@ -11,28 +12,17 @@ class Progress extends Base {
 		COMMON_PREFIX + 'videoprogress',
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		//Relevant keys:
-		//
-		//	HasProgress
-		//	AbsoluteProgress
-		//	MaxPossibleProgress
-		//	ResourceID
-
-		//super class applies the keys of data directly onto `this`,
-		//lets keep that data "private-ish"
-		delete this.HasProgress;
-		delete this.AbsoluteProgress;
-		delete this.MaxPossibleProgress;
-
-		this[HIDDEN] = data;
+	static Fields = {
+		...Base.Fields,
+		'AbsoluteProgress':    { type: 'number'                     },
+		'HasProgress':         { type: 'boolean', name: HasProgress },
+		'MaxPossibleProgress': { type: 'number'                     },
+		'ResourceID':          { type: 'string',  name: ResourceID  },
 	}
 
 
 	getProgress () {
-		let {AbsoluteProgress, MaxPossibleProgress} = this[HIDDEN];
+		let {AbsoluteProgress, MaxPossibleProgress} = this;
 		return AbsoluteProgress / (MaxPossibleProgress || 1);
 	}
 
@@ -44,12 +34,11 @@ class Progress extends Base {
 
 
 	hasProgress () {
-		let data = this[HIDDEN];
-		return data.HasProgress;
+		return this[HasProgress];
 	}
 
 
 	getID () {
-		return this.ResourceID;
+		return this[ResourceID];
 	}
 }

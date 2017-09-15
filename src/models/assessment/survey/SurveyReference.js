@@ -7,9 +7,11 @@ export default
 class SurveyReference extends Base {
 	static MimeType = COMMON_PREFIX + 'surveyref'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	static Fields = {
+		...Base.Fields,
+		'question-count': { type: 'number' },
 	}
+
 
 	get isSubmitted () {
 		return this.hasLink(ASSESSMENT_HISTORY_LINK);

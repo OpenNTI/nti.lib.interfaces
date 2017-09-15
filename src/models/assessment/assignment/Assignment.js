@@ -4,8 +4,6 @@ import PlacementProvider from '../../../authoring/placement/providers/Assignment
 import {
 	Service,
 	ReParent,
-	DateFields,
-	Parser as parse,
 	ASSESSMENT_HISTORY_LINK
 } from '../../../constants';
 import Publishable from '../../../mixins/Publishable';
@@ -16,7 +14,6 @@ import {resolveSubmitTo} from '../utils';
 
 import AssignmentSubmission from './AssignmentSubmission';
 
-const RENAME = Symbol.for('TakeOver');
 
 const ActiveSavePointPost = Symbol('ActiveSavePointPost');
 
@@ -29,15 +26,22 @@ export default
 class Assignment extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.assignment'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		this[parse]('parts', []);
-
-		this[RENAME]('GradeAssignmentSubmittedCount', 'submittedCount'); //number of submissions with grades?
-		this[RENAME]('GradeSubmittedStudentPopulationCount', 'submittedCountTotalPossible'); //number of people who can see it
-		//this[RENAME]('GradeSubmittedCount', 'gradeCount'); // just number of grades?
-		this[RENAME]('total_points', 'totalPoints');
+	static Fields = {
+		...Base.Fields,
+		'auto_grade':                           { type: 'boolean', name: 'isAutoGraded'                },
+		'is_non_public':                        { type: 'boolean', name: 'isNonPublic'                 },
+		'available_for_submission_beginning':   { type: 'date',                                        },//becomes getAvailableForSubmissionBeginning (use getAssignedDate)
+		'available_for_submission_ending':      { type: 'date',                                        },//becomes getAvailableForSubmissionEnding (use getDueDate)
+		'category_name':                        { type: 'string',                                      },
+		'discussion_ntiid':                     { type: 'string',  name: 'discussionId'                },
+		'parts':                                { type: 'model[]',                                     },
+		'total_points':                         { type: 'number',  name: 'totalPoints'                 },
+		'version':                              { type: 'number',                                      },
+		'LessonContainerCount':                 { type: 'number',                                      },
+		'GradeAssignmentSubmittedCount':        { type: 'number',  name: 'submittedCount'              },//number of submissions with grades?
+		'GradeSubmittedStudentPopulationCount': { type: 'number',  name: 'submittedCountTotalPossible' },//number of people who can see it
+		'GradeSubmittedCount':                  { type: 'number',  name: 'gradeCount'                  },// just number of grades?
+		'IsTimedAssignment':                    { type: 'boolean'                                      },
 	}
 
 
@@ -48,19 +52,6 @@ class Assignment extends Base {
 
 	ensureNotSummary () {
 		return this.IsSummary ? this.refresh() : Promise.resolve(this);
-	}
-
-
-	[DateFields] () {
-		return super[DateFields]().concat([
-			'available_for_submission_beginning',//becomes getAvailableForSubmissionBeginning (use getAssignedDate)
-			'available_for_submission_ending'//becomes getAvailableForSubmissionEnding (use getDueDate)
-		]);
-	}
-
-
-	get isAutoGraded () {
-		return this['auto_grade'];
 	}
 
 
@@ -176,7 +167,7 @@ class Assignment extends Base {
 
 
 	getVisibility () {
-		return this['is_non_public'] ? 'ForCredit' : 'Everyone';
+		return this.isNonPublic ? 'ForCredit' : 'Everyone';
 	}
 
 
@@ -187,6 +178,7 @@ class Assignment extends Base {
 		//If the assignment is published and the available is in the past
 		return this.isPublished() && now > available;
 	}
+
 
 	/**
 	 * Interface method. Called to load the last submission (Savepoint or final submission).
@@ -254,9 +246,11 @@ class Assignment extends Base {
 		return this.save({'total_points': points}, void 0, 'total-points');
 	}
 
-	setDiscussionID (discussionID) {
-		return this.save({'discussion_ntiid': discussionID});
+
+	setDiscussionID (discussionId) {
+		return this.save({'discussion_ntiid': discussionId});
 	}
+
 
 	canSetAutoGrade () {
 		return this.hasLink('auto-grade');
@@ -266,6 +260,7 @@ class Assignment extends Base {
 	setAutoGrade (state) {
 		return this.save({'auto_grade': state}, void 0, 'auto-grade');
 	}
+
 
 	canSetDueDate () {
 		return this.hasLink('date-edit');

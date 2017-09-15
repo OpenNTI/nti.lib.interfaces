@@ -1,4 +1,4 @@
-import {Service, Parser as parse} from '../../../constants';
+import {Service} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
@@ -7,11 +7,11 @@ export default
 class AssignmentFeedbackContainer extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitemfeedbackcontainer'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		this[parse]('Items', []);
+	static Fields = {
+		...Base.Fields,
+		'Items': { type: 'model[]' }
 	}
+
 
 	addPost (body) {
 		let link = this.getLink('edit');

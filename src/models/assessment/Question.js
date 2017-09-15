@@ -1,7 +1,6 @@
 import {mixin} from 'nti-lib-decorators';
 
 import PlacementProvider from '../../authoring/placement/providers/Question';
-import {Parser as parse} from '../../constants';
 import {Mixin as HasContent} from '../../mixins/HasContent';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -25,12 +24,12 @@ class Question extends Base {
 		COMMON_PREFIX + 'assessment.fillintheblankwithwordbankquestion',
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		this[parse]('parts', []);
-		this[parse]('wordbank');
-	}
+	static Fields = {
+		...Base.Fields,
+		'parts':                    { type: 'model[]', defaultValue: [] },
+		'wordbank':                 { type: 'model'                     },
+		'AssessmentContainerCount': { type: 'number'                    },
+	};
 
 
 	[Symbol.iterator] () {

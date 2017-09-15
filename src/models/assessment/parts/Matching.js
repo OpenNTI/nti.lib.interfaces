@@ -1,4 +1,3 @@
-import {ContentKeys} from '../../../mixins/HasContent';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Part from '../Part';
 
@@ -7,11 +6,11 @@ export default
 class Matching extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.matchingpart'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	static Fields = {
+		...Part.Fields,
+		'values': { type: 'string[]', content: true },
+		'labels': { type: 'string[]', content: true },
 	}
-
-	[ContentKeys] () { return super[ContentKeys]().concat(['values', 'labels']); }
 
 	isAnswered (partValue) {
 		let maybe = !!partValue;

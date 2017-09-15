@@ -1,7 +1,8 @@
 import Base from '../Base';
 
 const TABLES = Symbol('tables');
-
+// Probably shouldn't extend Base...
+// TODO: Remove Base as a super...
 export default class TablesOfContents extends Base {
 
 	static fromIterable (iterable, service, parent) {

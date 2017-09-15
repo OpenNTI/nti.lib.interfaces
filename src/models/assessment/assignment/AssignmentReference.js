@@ -5,8 +5,4 @@ export default
 @model
 class AssignmentReference extends Base {
 	static MimeType = COMMON_PREFIX + 'assignmentref'
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
 }

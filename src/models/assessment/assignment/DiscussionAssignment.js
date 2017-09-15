@@ -8,10 +8,7 @@ export default
 class DiscussionAssignment extends Assignment {
 	static MimeType = COMMON_PREFIX + 'assessment.discussionassignment'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		this.isDiscussion = true;
-	}
+	isDiscussion = true
 
 
 	get canManuallyEdit () {

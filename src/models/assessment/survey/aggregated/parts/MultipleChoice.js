@@ -8,10 +8,10 @@ export default
 class AggregatedMultipleChoicePart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedmultiplechoicepart'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	static Fields = {
+		...Base.Fields,
+		'Results': { type: 'number[]' },
 	}
-
 
 	getResults (part) {
 		const {Results: results, Total: total} = this;

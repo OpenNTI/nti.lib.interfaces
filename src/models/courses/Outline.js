@@ -1,4 +1,5 @@
-import {updateValue, defineProtected} from 'nti-commons';
+import {updateValue} from 'nti-commons';
+import isEmpty from 'isempty';
 
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -19,16 +20,14 @@ export default
 class Outline extends Base {
 	static MimeType = COMMON_PREFIX + 'courses.courseoutline'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		Object.defineProperties(this, {
-
-			...defineProtected({
-				contents: null,
-				unpublished: false
-			})
-		});
+	static Fields = {
+		...Base.Fields,
+		'ContentNTIID': { type: 'string'                      },
+		'contents':     { type: 'string', defaultValue: null  },
 	}
+
+
+	unpublished = false
 
 
 	/**
@@ -71,13 +70,13 @@ class Outline extends Base {
 
 
 	get isNavigable () {
-		return (this.href || '').length > 0;
+		return !isEmpty(this.href);
 	}
 
 
 	get isEmpty () {
-		return (this.label || '').trim().length === 0 &&
-				this.contents.length === 0;
+		return isEmpty((this.label || '').trim())
+			&& isEmpty(this.contents);
 	}
 
 
@@ -112,7 +111,9 @@ class Outline extends Base {
 			return this;
 		}
 
-		return this.contents.reduce((item, potential) => item || potential.getNode(id), null);
+		const {contents} = this;
+
+		return !contents ? null : contents.reduce((item, potential) => item || potential.getNode(id), null);
 	}
 
 
@@ -131,7 +132,9 @@ class Outline extends Base {
 			const fn = flatten.fnLoop ||
 				(flatten.fnLoop = (a, n)=> a.concat(flatten(n)));
 
-			return [node].concat(node.contents.reduce(fn, []));
+			const {contents} = node;
+
+			return [node].concat(!contents ? [] : contents.reduce(fn, []));
 		}
 
 		return flatten(this);

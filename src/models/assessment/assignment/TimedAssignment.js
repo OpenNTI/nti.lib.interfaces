@@ -10,18 +10,14 @@ export default
 class TimedAssignment extends Assignment {
 	static MimeType = COMMON_PREFIX + 'assessment.timedassignment'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		this.isTimed = true;
-
-		// IsTimedAssignment
-		// MaximumTimeAllowed
-
-		// Metadata {
-		//		Duration: int (seconds),
-		//		StartTime: int (seconds)
-		// }
+	static Fields = {
+		...Assignment.Fields,
+		'IsTimedAssignment':  { type: 'boolean' },
+		'MaximumTimeAllowed': { type: 'number'  },
+		'Metadata':           { type: 'model'  },
 	}
+
+	isTimed = true
 
 
 	isNonSubmit () {
@@ -55,13 +51,13 @@ class TimedAssignment extends Assignment {
 
 	getDuration () {
 		let md = this.Metadata;
-		return md && secondsToMilliseconds(md.Duration);
+		return md && secondsToMilliseconds(md.getDuration()); //convert in the model?
 	}
 
 
 	getStartTime () {
 		let md = this.Metadata;
-		return md && secondsToMilliseconds(md.StartTime);
+		return md && md.getStartTime();
 	}
 
 

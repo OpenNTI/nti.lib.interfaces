@@ -8,10 +8,6 @@ export default
 class AggregatedMatchingPart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedmatchingpart'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
-
 
 	getResults (part) {
 		let results = super.getResults(part);

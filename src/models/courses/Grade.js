@@ -10,36 +10,7 @@ import Base from '../Base';
 const ENDS_IN_LETTER_REGEX = /\s[a-fiw-]$/i;
 
 const PRIVATE = new WeakMap();
-
-function processValue (value) {
-	if (typeof value === 'number') {
-		let n = value.toFixed(1);
-		if (n.split('.')[1] === '0') {
-			n = value.toFixed(0);
-		}
-		value = n;
-	} else if (value == null) {
-		value = '';
-	}
-
-	//When the grade is a predicted value, the "value" contains just the predicted letter grade,
-	//and "Correctness" contains the percentage.
-	//
-	//getto... we should really REALLY consider splitting value into two fields so this
-	//crap doesn't confuse people... have a dedicated "letter" field and a dedicated "value"
-	//field for profs to fill what ever they want...
-
-	if (this.isPredicted()) {
-		PRIVATE.get(this).value = this.Correctness;
-		PRIVATE.get(this).letter = value;
-	}
-	else {
-		let v = value.split(' ');
-
-		PRIVATE.get(this).letter = v.length > 1 && ENDS_IN_LETTER_REGEX.test(value) ? v.pop() : null;
-		PRIVATE.get(this).value = v.join(' ');
-	}
-}
+const getPrivate = (scope) => PRIVATE.get(scope) || PRIVATE.set(scope, {}).get(scope);
 
 export default
 @cacheClassInstances
@@ -52,6 +23,19 @@ class Grade extends Base {
 		COMMON_PREFIX + 'gradebook.grade',
 	]
 
+	static Fields = {
+		...Base.Fields,
+		'assignmentContainer': { type: 'string'  },
+		'assignmentName':      { type: 'string'  },
+		'AssignmentId':        { type: 'string'  },
+		'Correctness':         { type: 'string'  },
+		'IsExcused':           { type: 'boolean' },
+		'IsPredicted':         { type: 'boolean' },
+		'Username':            { type: 'string'  },
+		'value':               { type: 'string'  },
+	}
+
+
 	static isEmpty (value, letter) {
 		let v = `${value || ''} ${letter || ''}`;
 		return v.replace('-', '').trim().length === 0;
@@ -59,27 +43,6 @@ class Grade extends Base {
 
 
 	static getPossibleGradeLetters () { return [ '-', 'A', 'B', 'C', 'D', 'F', 'I', 'W' ]; }
-
-
-	constructor (service, parent, data) {
-		data = Object.assign({}, data);
-		let {value} = data;
-		delete data.value;
-
-		super(service, parent, data);
-
-		PRIVATE.set(this, {});
-		// Correctness string
-		// IsPredicted bool
-		// IsExcused bool
-		//
-		// Username string
-		// AssignmentId string
-		// assignmentName string
-		// assignmentContainer string
-
-		processValue.call(this, value);
-	}
 
 
 	toJSON () {
@@ -99,15 +62,15 @@ class Grade extends Base {
 	}
 
 
-	get value () { return PRIVATE.get(this).value; }
+	get value () { return getPrivate(this).value; }
 
-	//Models are supposed to Immutable, so this is mostly going to be called by super.refresh().
+	//Models are supposed to be immutable, so this is mostly going to be called by super.refresh().
 	set value (v) {
 		processValue.call(this, v);
 		this.onChange();
 	}
 
-	get letter () { return PRIVATE.get(this).letter; }
+	get letter () { return getPrivate(this).letter; }
 	set letter (l) {
 		if (!l || l == null) {
 			l = null;
@@ -118,7 +81,7 @@ class Grade extends Base {
 			throw new Error('Illegal Value');
 		}
 
-		PRIVATE.get(this).letter = l;
+		getPrivate(this).letter = l;
 		this.onChange();
 	}
 
@@ -162,5 +125,41 @@ class Grade extends Base {
 		const val = this.value;
 
 		return ltr === normalizeLetter(letter) && val === value;
+	}
+}
+
+
+
+function processValue (value) {
+	if (typeof value === 'number') {
+		let n = value.toFixed(1);
+		if (n.split('.')[1] === '0') {
+			n = value.toFixed(0);
+		}
+		value = n;
+	} else if (value == null) {
+		value = '';
+	}
+
+	//When the grade is a predicted value, the "value" contains just the predicted letter grade,
+	//and "Correctness" contains the percentage.
+	//
+	//getto... we should really REALLY consider splitting value into two fields so this
+	//crap doesn't confuse people... have a dedicated "letter" field and a dedicated "value"
+	//field for profs to fill what ever they want...
+
+	if (this.isPredicted()) {
+		Object.assign(getPrivate(this), {
+			value: this.Correctness,
+			letter: value
+		});
+	}
+	else {
+		let v = value.split(' ');
+
+		Object.assign(getPrivate(this), {
+			letter: v.length > 1 && ENDS_IN_LETTER_REGEX.test(value) ? v.pop() : null,
+			value: v.join(' ')
+		});
 	}
 }

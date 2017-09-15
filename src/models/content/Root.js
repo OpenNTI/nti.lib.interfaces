@@ -12,9 +12,4 @@ class Root extends Folder {
 	]
 
 	isRoot = true
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
-
 }

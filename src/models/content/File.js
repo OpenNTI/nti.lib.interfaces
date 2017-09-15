@@ -2,6 +2,11 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 import FileSystemEntity from './FileSystemEntity';
 
+//Known Links:
+//	associations - ?
+//	associate    - ?
+//	external     - ?
+
 export default
 @model
 class File extends FileSystemEntity {
@@ -11,13 +16,12 @@ class File extends FileSystemEntity {
 		COMMON_PREFIX + 'courseware.contentfile',
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		//Known Links:
-		//	associations - ?
-		//	associate    - ?
-		//	external     - ?
+	static Fields = {
+		...FileSystemEntity.Fields,
+		'download_url': { type: 'string' },
+		'size':         { type: 'number' },
+		'url':          { type: 'string' },
+		'FileMimeType': { type: 'string' },
 	}
 
 

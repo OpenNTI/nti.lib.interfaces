@@ -3,7 +3,7 @@ export PricingResults from './PricingResults';
 export Purchasable from './Purchasable';
 export PurchasableCourse from './PurchasableCourse';
 export PurchasableCourseChoiceBundle from './PurchasableCourseChoiceBundle';
-export PurchasableVendorInfo from './PurchasableVendorInfo'
+export PurchasableVendorInfo from './PurchasableVendorInfo';
 export PurchaseAttempt from './PurchaseAttempt';
 export GiftPurchaseAttempt from './GiftPurchaseAttempt';
 export StripeConnectKey from './StripeConnectKey';

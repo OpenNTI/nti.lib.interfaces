@@ -1,6 +1,6 @@
 import {ntiidEquals} from 'nti-lib-ntiids';
 
-import {Parser as parse, RepresentsSameObject} from '../../constants';
+import {RepresentsSameObject} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import Package from './Package';
@@ -12,13 +12,13 @@ export default
 class RenderablePackage extends Package {
 	static MimeType = COMMON_PREFIX + 'renderablecontentpackage'
 
+	static Fields = {
+		...Package.Fields,
+		'LatestRenderJob': { type: 'model' },
+	}
+
 	isRenderable = true
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		this[parse]('LatestRenderJob');
-	}
 
 	//no-op this for renderable packages, all the icons should
 	//be set as properties for now

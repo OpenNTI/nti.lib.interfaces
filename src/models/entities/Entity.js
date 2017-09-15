@@ -6,6 +6,17 @@ import Base from '../Base';
 
 export default class Entity extends Base {
 
+	static Fields = {
+		...Base.Fields,
+		'alias':            { type: 'string' },
+		'avatarURL':        { type: 'string' },
+		'ID':               { type: 'string' },
+		'NonI18NFirstName': { type: 'string' },
+		'NonI18NLastName':  { type: 'string' },
+		'realname':         { type: 'string' },
+		'Username':         { type: 'string' },
+	}
+
 	static FANCY_COMPARATOR (a, b) {
 		//wrapper around localeCompare, but, you cannot call localeCompare on falsy values, so check those first.
 		const cmp = (A, B) => !A
@@ -31,10 +42,6 @@ export default class Entity extends Base {
 
 		//If we get here, all is equal.
 		return 0;
-	}
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
 	}
 
 

@@ -8,10 +8,6 @@ export default
 class AggregatedFreeResponsePart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedfreeresponsepart'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
-
 
 	getResults () {
 		return this.Results;

@@ -1,4 +1,3 @@
-import {Parser as parse} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
@@ -10,12 +9,12 @@ class InqueryItem extends Base {
 		COMMON_PREFIX + 'assessment.userscourseinquiryitem',
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		//CatalogEntryNTIID
-		this[parse]('Submission');
+	static Fields = {
+		...Base.Fields,
+		'Submission':        { type: 'model' },
+		'CatalogEntryNTIID': { type: 'string'  },
 	}
+
 
 	getQuestions () {
 		let submission = this.Submission;

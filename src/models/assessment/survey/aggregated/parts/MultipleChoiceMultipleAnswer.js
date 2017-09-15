@@ -7,9 +7,4 @@ export default
 @model
 class AggregatedMultipleChoiceMultipleAnswerPart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedmultiplechoicemultipleanswerpart'
-
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
-
 }

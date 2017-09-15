@@ -1,8 +1,5 @@
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
-import {
-	Parser as parse
-} from '../../constants';
 
 export default
 @model
@@ -12,9 +9,9 @@ class GradeBookByAssignmentSummary extends Base {
 		'GradeBookByAssignmentSummary' //ClassName fallback??
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		this[parse]('Items');
+	static Fields = {
+		...Base.Fields,
+		'Items': { type: 'model[]' },
 	}
+
 }

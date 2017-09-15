@@ -1,4 +1,3 @@
-import {Parser as parse} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
@@ -7,18 +6,11 @@ export default
 class EnrollmentOptions extends Base {
 	static MimeType = COMMON_PREFIX + 'courseware.enrollmentoptions'
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
+	static Fields = {
+		...Base.Fields,
+		'Items': { type: 'model{}' },
+	};
 
-		// console.log('Enrollment Options:', data);
-
-		let {Items} = data;
-		let options = this.Items = {};
-
-		for (let key of Object.keys(Items)) {
-			options[key] = this[parse](Items[key]);
-		}
-	}
 
 	[Symbol.iterator] () {
 		let {Items} = this,
