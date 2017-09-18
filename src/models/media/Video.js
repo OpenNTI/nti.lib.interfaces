@@ -19,8 +19,8 @@ export default
 @model
 class Video extends Base {
 	static MimeType = [
-		COMMON_PREFIX + 'video',
 		COMMON_PREFIX + 'ntivideo',
+		COMMON_PREFIX + 'video',
 	]
 
 	constructor (service, parent, data) {
