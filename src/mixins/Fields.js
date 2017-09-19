@@ -37,26 +37,23 @@ export default {
 	constructor (data) {
 		const {constructor: Type} = this;
 
-		if (!data) {
-			return;
-		}
+		const noData = !data;
 
-		data = clone(data);
+		data = data ? clone(data) : {};
 
 		this[RAW] = data;
 
 		const {Fields} = Type;
 		const FieldKeys = Object.keys(Fields);
-		const MissingFields = FieldKeys.filter(x => !(x in data));
+		const DataFields = Object.keys(data);
+		const AllFields = Array.from(new Set([...DataFields, ...FieldKeys]));
+		const MissingFields = FieldKeys.filter(x => !noData && !(x in data));
 
 		for (let missing of MissingFields) {
 			logger.debug('Model "%s" declares a field "%s" but it is not present in data: %o', Type.name || Type.MimeType, missing, data);
 		}
 
-
-		//TODO: once we've migrated the models to this system, switch this loop to loop over the Fields.
-		for (let key of Object.keys(data)) {
-
+		for (let key of AllFields) {
 			//get the name, type, and defaultValue of the field...
 			const {name = key, type, required, defaultValue} = Fields[key] || {};
 
