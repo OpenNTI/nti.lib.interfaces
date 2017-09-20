@@ -11,8 +11,9 @@ export default
 @model
 class MediaSource extends Base {
 	static MimeType = [
-		COMMON_PREFIX + 'mediasource',
+		COMMON_PREFIX + 'ntivideosource',
 		COMMON_PREFIX + 'videosource',
+		COMMON_PREFIX + 'mediasource',
 	]
 
 	static from (service, uri) {
