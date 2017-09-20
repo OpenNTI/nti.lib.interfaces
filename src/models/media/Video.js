@@ -111,7 +111,7 @@ class Video extends Base {
 	getTranscriptFor (purpose, lang) {
 		const {transcripts} = this;
 
-		for (let transcript of transcripts) {
+		for (let transcript of (transcripts || [])) {
 			if (transcript.purpose === purpose && transcript.lang === lang) {
 				return transcript;
 			}
