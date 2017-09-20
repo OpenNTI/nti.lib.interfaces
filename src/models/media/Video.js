@@ -5,6 +5,7 @@ import {
 	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
 	Service,
 } from '../../constants';
+import getLink from '../../utils/getlink';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
@@ -14,6 +15,9 @@ const UserData = Symbol('UserData');
 
 const NO_TRANSCRIPT = 'No Transcript';
 const NO_TRANSCRIPT_LANG = 'No Transcript for the requested language.';
+const EXISTING_TRANSCRIPT = 'A Transcript already exists';
+
+//TODO: look into turning transcripts into full fledged models
 
 export default
 @model
@@ -32,7 +36,8 @@ class Video extends Base {
 
 		Object.assign(this, {
 			NO_TRANSCRIPT,
-			NO_TRANSCRIPT_LANG
+			NO_TRANSCRIPT_LANG,
+			EXISTING_TRANSCRIPT
 		});
 
 		const {sources = []} = data;
@@ -103,6 +108,95 @@ class Video extends Base {
 	}
 
 
+	getTranscriptFor (purpose, lang) {
+		const {transcripts} = this;
+
+		for (let transcript of transcripts) {
+			if (transcript.purpose === purpose && transcript.lang === lang) {
+				return transcript;
+			}
+		}
+
+		return null;
+	}
+
+
+	async addTranscript (file, purpose, lang) {
+		if (this.getTranscriptFor(purpose, lang)) { return Promise.reject(EXISTING_TRANSCRIPT); }
+
+		const link = this.getLink('transcript');
+
+		if (!link) { return Promise.reject('No Link'); }
+
+		const formData = new FormData();
+
+		formData.append(file.name, file);
+
+		if (purpose) { formData.append('purpose', purpose); }
+		if (lang) { formData.append('lang', lang); }
+
+		const transcript = await this[Service].post(link, formData);
+
+		await this.refresh();
+
+		this.emit('change');
+
+		return transcript;
+	}
+
+
+	async updateTranscript (transcript, purpose, lang, file) {
+		const existing = this.getTranscriptFor(purpose, lang);
+
+		if (existing && existing.NTIID !== transcript.NTIID) { return Promise.reject(EXISTING_TRANSCRIPT); }
+
+		const link = getLink(transcript, 'edit');
+
+		if (!link) { return Promise.reject('Unable to edit transcript'); }
+
+		let data;
+
+		if (file) {
+			data = new FormData();
+
+			data.append(file.name, file);
+
+			if (purpose) { data.append('purpose', purpose); }
+			if (lang) { data.append('lang', lang); }
+		} else {
+			data = {};
+
+			if (purpose) { data['purpose'] = purpose; }
+			if (lang) { data['lang'] = lang; }
+		}
+
+		const newTranscript = await this[Service].put(link, data);
+
+		this.transcripts = this.transcripts.map((t) => {
+			if (t.NTIID === newTranscript.NTIID) {
+				return {...t, ...newTranscript};
+			}
+
+			return t;
+		});
+
+		this.emit('change');
+
+		return newTranscript;
+	}
+
+	async removeTranscript (transcript) {
+		const link = getLink(transcript, 'edit');
+
+		if (!link) { return Promise.reject('Unable to delete transcript'); }
+
+		await this[Service].delete(link);
+		await this.refresh();
+
+		this.emit('change');
+	}
+
+
 	applyCaptions (captionsFile, purpose) {
 		const formdata = new FormData();
 		formdata.append(captionsFile.name, captionsFile);
@@ -117,26 +211,5 @@ class Video extends Base {
 		const formdata = new FormData();
 		formdata.append(newFile.name, newFile);
 		return this[Service].put(transcript.href, formdata);
-	}
-
-
-	removeTranscript (transcript) {
-		return this[Service].delete(transcript.href)
-			.then(() => this.refresh());
-	}
-
-
-	updateTranscript (transcript, purpose, lang) {
-		let jsonData = {};
-
-		if(purpose) {
-			jsonData.purpose = purpose;
-		}
-
-		if(lang) {
-			jsonData.lang = lang;
-		}
-
-		return this[Service].put(transcript.href, jsonData);
 	}
 }
