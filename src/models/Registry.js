@@ -7,7 +7,7 @@ export const MAP = Symbol('Model Map');
 
 export const COMMON_PREFIX = 'application/vnd.nextthought.';
 
-export const trimCommonPrefix = x => x.replace(/^application\/vnd.nextthought./, '').toLowerCase();
+export const trimCommonPrefix = x => x && x.replace(/^application\/vnd.nextthought./, '').toLowerCase();
 
 const IGNORED = {parse: x => x};
 
