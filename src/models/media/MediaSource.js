@@ -18,9 +18,13 @@ class MediaSource extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'href':    { type: 'string' },
-		'source':  { type: 'string' },
-		'service': { type: 'string' },
+		'dataset':   { type: 'object' }, //From a parsed DomObject
+		'href':      { type: 'string' },
+		'poster':    { type: 'string' }, //From a parsed DomObject
+		'service':   { type: 'string' },
+		'source':    { type: 'string' },
+		'thumbnail': { type: 'string' }, //From a parsed DomObject
+		'title':     { type: 'string' }, //From a parsed DomObject
 	}
 
 	static from (service, uri) {

@@ -24,6 +24,7 @@ const TYPE_MAP = {
 	'date': applyDateField,
 	'model': applyModelField,
 	'model{}': applyModelDictionaryField,
+	'object': applyObjectField,
 	'number': applyNumberField,
 	'string': applyStringField,
 };
@@ -439,6 +440,13 @@ function applyBooleanField (scope, fieldName, valueIn, declared, defaultValue) {
 
 function applyNumberField (scope, fieldName, valueIn, declared, defaultValue) {
 	enforceType(scope, fieldName, 'number', valueIn || defaultValue);
+	return applyField(scope, fieldName, valueIn, declared, defaultValue);
+}
+
+
+
+function applyObjectField (scope, fieldName, valueIn, declared, defaultValue) {
+	enforceType(scope, fieldName, 'object', valueIn || defaultValue);
 	return applyField(scope, fieldName, valueIn, declared, defaultValue);
 }
 

@@ -27,8 +27,9 @@ class Video extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'ntiid':       { type: 'string'   },
+		'itemprop':    { type: 'string'   }, //From a parsed DomObject
 		'sources':     { type: 'model[]'  },
+		'title':       { type: 'string'   }, //From a parsed DomObject
 		'transcripts': { type: 'object[]' },
 	}
 
@@ -54,11 +55,6 @@ class Video extends Base {
 	getPoster () {
 		let first = this.sources[0];
 		return first ? first.getPoster() : Promise.reject('No Source');
-	}
-
-
-	getID () {
-		return this.ntiid;
 	}
 
 
