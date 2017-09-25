@@ -506,7 +506,7 @@ function applyDateField (scope, fieldName, value) {
 
 function applyModelDictionaryField (scope, fieldName, value, declared, defaultValue) {
 	let out = {};
-	for (let dK of Object.keys(value)) {
+	for (let dK of Object.keys(value || {})) {
 		out[dK] = scope[Parser]( value[dK] ) || null;
 		//should we keep the empty value & key?
 		if (!out[dK]) {
