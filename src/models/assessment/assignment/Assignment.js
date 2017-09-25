@@ -36,7 +36,7 @@ class Assignment extends Base {
 		'discussion_ntiid':                     { type: 'string',  name: 'discussionId'                },
 		'parts':                                { type: 'model[]',                                     },
 		'total_points':                         { type: 'number',  name: 'totalPoints'                 },
-		'version':                              { type: 'number',                                      },
+		'version':                              { type: 'string',                                      },//a date string, ie "2017-08-20T01:23:45"
 		'LessonContainerCount':                 { type: 'number',                                      },
 		'GradeAssignmentSubmittedCount':        { type: 'number',  name: 'submittedCount'              },//number of submissions with grades?
 		'GradeSubmittedStudentPopulationCount': { type: 'number',  name: 'submittedCountTotalPossible' },//number of people who can see it
