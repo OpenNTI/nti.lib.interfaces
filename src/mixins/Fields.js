@@ -9,7 +9,6 @@ import Base from '../models/Base';
 
 const logger = Logger.get('mixins:Fields');
 const RAW = Symbol('Raw Data');
-const TakeOver = Symbol.for('TakeOver');
 const PASCAL_CASE_REGEX = /(?:^|[^a-z0-9])([a-z0-9])?/igm;
 
 const getMethod = x => 'get' + x.replace(
@@ -33,259 +32,263 @@ const isArrayType = RegExp.prototype.test.bind(/\[]$/);
 // const isDictionaryType = RegExp.prototype.test.bind(/\{}$/);
 // const isCollectionType = x => isArrayType(x) || isDictionaryType(x);
 
-export default {
+export default function FieldsApplyer (target) {
 
-	constructor (data) {
-		const {constructor: Type} = this;
+	initFields(target);
 
-		const noData = !data;
+	return {
 
-		data = data ? clone(data) : {};
+		constructor (data) {
+			const {constructor: Type} = this;
 
-		this[RAW] = data;
+			const noData = !data;
 
-		const {Fields} = Type;
-		const FieldKeys = Object.keys(Fields);
-		const DataFields = Object.keys(data);
-		const AllFields = Array.from(new Set([...DataFields, ...FieldKeys]));
-		const MissingFields = FieldKeys.filter(x => !noData && !(x in data));
+			data = data ? clone(data) : {};
 
-		for (let missing of MissingFields) {
-			logger.debug('Model "%s" declares a field "%s" but it is not present in data: %o', Type.name || Type.MimeType, missing, data);
-		}
+			this[RAW] = data;
 
-		for (let key of AllFields) {
+			const {Fields} = Type;
+			const FieldKeys = Object.keys(Fields);
+			const DataFields = Object.keys(data);
+			const AllFields = Array.from(new Set([...DataFields, ...FieldKeys]));
+			const MissingFields = FieldKeys.filter(x => !noData && !(x in data));
+
+			for (let missing of MissingFields) {
+				logger.debug('Model "%s" declares a field "%s" but it is not present in data: %o', Type.name || Type.MimeType, missing, data);
+			}
+
+			for (let key of AllFields) {
 			//get the name, type, and defaultValue of the field...
-			const {name = key, type, required, defaultValue} = Fields[key] || {};
+				const {name = key, type, required, defaultValue} = Fields[key] || {};
 
-			//allow for hooking... however, strongly prefer setting type to the string: 'model'
-			if (typeof type === 'function') {
-				let val = null;
-				//Explicit model:
-				if (type.prototype instanceof Base) {
-					val = new type(this[Service], this, data[key]);
+				//allow for hooking... however, strongly prefer setting type to the string: 'model'
+				if (typeof type === 'function') {
+					let val = null;
+					//Explicit model:
+					if (type.prototype instanceof Base) {
+						val = new type(this[Service], this, data[key]);
 
-				//some one-off converter function: (please don't use this)
+						//some one-off converter function: (please don't use this)
+					} else {
+						val = type(this[Service], this, data[key]);
+					}
+
+					applyField(this, name, val, true);
+
+
+					//Preferred code path:
 				} else {
-					val = type(this[Service], this, data[key]);
+					const baseType = isArrayType(type) ? type.substr(0, type.length - 2) : type;
+					const apply = TYPE_MAP[baseType] || applyField;
+					if (type && !(baseType in TYPE_MAP)) {
+						logger.warn('Model "%s" declared "%s" to be type "%s", but that type is unknown.', key, type, Type.name || Type.MimeType);
+					}
+					apply(this, name, data[key], key in Fields, defaultValue);
 				}
 
-				applyField(this, name, val, true);
+				//Setup renamed-meta-data
+				if (name !== key) {
+					updateField(this, key, {
+						enumerable: false,
+						get: getterWarning(this, name, key)
+					});
 
+					const desc = Object.getOwnPropertyDescriptor(this, name);
+					if (!desc || !desc.get) {
+						logger.warn('Invalid Field Description for field %s on %o', name, this);
+					}
 
-			//Preferred code path:
-			} else {
-				const baseType = isArrayType(type) ? type.substr(0, type.length - 2) : type;
-				const apply = TYPE_MAP[baseType] || applyField;
-				if (type && !(baseType in TYPE_MAP)) {
-					logger.warn('Model "%s" declared "%s" to be type "%s", but that type is unknown.', key, type, Type.name || Type.MimeType);
+					desc.get.renamedFrom = key;
+					updateField(this, name, desc);
 				}
-				apply(this, name, data[key], key in Fields, defaultValue);
+
+				if (required && this[name] == null) {
+					throw new TypeError(`Required field is null: ${key}${name === key ? '' : ` (aliased to ${name})`}`);
+				}
 			}
 
-			//Setup renamed-meta-data
-			if (name !== key) {
-				updateField(this, key, {
+
+			const legacyDateFields = this[DateFields] && (this[DateFields]() || []).filter(x => !Fields[x]);
+			if (legacyDateFields.length > 0) {
+				logger.warn('Declare your date fields instead of using [DateFields](): %o', this);
+				for (let fieldName of new Set(this[DateFields]())) {
+					applyDateField(this, fieldName, data[fieldName]);
+				}
+			}
+
+		},
+
+
+		//deprecated
+		[DateFields] () { return []; },
+
+
+
+		[Parser] (raw, defaultValueForKey) {
+
+			if (raw === this) {
+				throw new Error('Migration failure: something is calling parse with `this` as the first argument.');
+			}
+
+
+			let key;
+			//If the param is:
+			//	1) a string, and
+			//	2) the value at that key on 'this' is an object, and
+			//	3) that value is not a parsed object (model, instance of Base)
+			if (typeof raw === 'string' && (typeof this[raw] === 'object' || this[raw] == null)) {
+				key = raw;
+				raw = this[key];
+			}
+
+
+			if (raw && raw[Parser]) {
+				logger.error(new Error('Attempting to re-parse a model, aborting').stack);
+				return raw;
+			}
+
+
+			const o = raw && doParse(this, raw);
+			if (o && o.addToPending) {
+				this.addToPending(o);
+			}
+
+			if (key) {//If the paramater was a key, assign the parsed object back to the key...
+				applyField(this, key, o);
+				if (o == null || (Array.isArray(o) && o.length === 0)) {
+					if (arguments.length > 1) {//a value was passed to the 2nd argument. (use its value no matter what it is.)
+						this[key] = defaultValueForKey;
+					} else {
+						delete this[key];
+					}
+				}
+			}
+			return o;
+		},
+
+
+
+		[RepresentsSameObject] (o) {
+			return ntiidEquals(this.NTIID, o.NTIID, true/*ignore "specific provider" differences*/);
+		},
+
+
+
+		getObjectHref () {
+			return this.href || this[Service].getObjectURL(this.getID());
+		},
+
+
+
+		refresh (newRaw) {
+			const service = this[Service];
+			const INFLIGHT = 'model:inflight-refresh';
+
+			if (this[INFLIGHT]) {
+				if (newRaw) {
+					logger.debug('Waiting to refresh until previous refresh %o', this);
+					return this[INFLIGHT].then(()=> this.refresh(newRaw));
+				}
+
+				logger.debug('Ignoring duplicate request to refresh. %o', this);
+				return this[INFLIGHT];
+			}
+			logger.debug('Refresh %o', this);
+
+			const fetch = newRaw
+				? Promise.resolve(newRaw)
+				: service.getObjectAtURL(this.getObjectHref(), this.getID());
+
+			const inflight = fetch.then(o => this.applyRefreshedData(o));
+
+			this[INFLIGHT] = inflight
+				.catch((r) => (delete this[INFLIGHT], Promise.reject(r))) //swallow all errors so we can cleanup
+				.then((r)  => (delete this[INFLIGHT], r));
+
+			this.addToPending(inflight);
+
+			return inflight;
+		},
+
+
+		//deprecated - use Fields declaration
+		[Symbol.for('TakeOver')] (x, y) {
+			const scope = this;
+			const enumerable = !!y;
+			const name = y || x;
+			const value = scope[x];
+			const renamedFrom = x !== name ? x : void 0;
+
+			if (scope[name] && x !== name) {
+				logger.warn('%s is already defined.', name);
+				return;
+			}
+
+			delete scope[x];
+			setProtectedProperty(name, value, scope, enumerable, renamedFrom);
+
+			if (x !== name) {
+				Object.defineProperty(scope, x, {
 					enumerable: false,
-					get: getterWarning(this, name, key)
+					get: getterWarning(scope, name, x)
 				});
+			}
+		},
 
-				const desc = Object.getOwnPropertyDescriptor(this, name);
-				if (!desc || !desc.get) {
-					logger.warn('Invalid Field Description for field %s on %o', name, this);
+
+
+		applyRefreshedData (o) {
+			if (!this[RepresentsSameObject](o)) {
+				throw new Error('Mismatch!');
+			}
+
+			//TODO: throw away all the guess work... use Fields and re-apply.
+
+			const MightBeModel = x=> !x || !!x[Service];
+			const HasMimeType = x=>  x && (!!x.MimeType || !!x.Class);
+			const Objects = x=> typeof x === 'object';
+
+			for(let prop of Object.keys(o)) {
+				let value = o[prop];
+
+				//The property may have been remapped...
+				let desc = Object.getOwnPropertyDescriptor(this, prop);
+				let {renamedTo} = (desc || {}).get || {};
+				if (renamedTo) {
+					logger.debug('Refreshing renamed property: %s (%s)', prop, renamedTo);
+					prop = renamedTo;
 				}
 
-				desc.get.renamedFrom = key;
-				updateField(this, name, desc);
-			}
+				let current = this[prop];
 
-			if (required && this[name] == null) {
-				throw new TypeError(`Required field is null: ${key}${name === key ? '' : ` (aliased to ${name})`}`);
-			}
-		}
-
-
-		const legacyDateFields = this[DateFields] && (this[DateFields]() || []).filter(x => !Fields[x]);
-		if (legacyDateFields.length > 0) {
-			logger.warn('Declare your date fields instead of using [DateFields](): %o', this);
-			for (let fieldName of new Set(this[DateFields]())) {
-				applyDateField(this, fieldName, data[fieldName]);
-			}
-		}
-
-	},
-
-
-	//deprecated
-	[DateFields] () { return []; },
-
-
-
-	[Parser] (raw, defaultValueForKey) {
-
-		if (raw === this) {
-			throw new Error('Migration failure: something is calling parse with `this` as the first argument.');
-		}
-
-
-		let key;
-		//If the param is:
-		//	1) a string, and
-		//	2) the value at that key on 'this' is an object, and
-		//	3) that value is not a parsed object (model, instance of Base)
-		if (typeof raw === 'string' && (typeof this[raw] === 'object' || this[raw] == null)) {
-			key = raw;
-			raw = this[key];
-		}
-
-
-		if (raw && raw[Parser]) {
-			logger.error(new Error('Attempting to re-parse a model, aborting').stack);
-			return raw;
-		}
-
-
-		const o = raw && doParse(this, raw);
-		if (o && o.addToPending) {
-			this.addToPending(o);
-		}
-
-		if (key) {//If the paramater was a key, assign the parsed object back to the key...
-			applyField(this, key, o);
-			if (o == null || (Array.isArray(o) && o.length === 0)) {
-				if (arguments.length > 1) {//a value was passed to the 2nd argument. (use its value no matter what it is.)
-					this[key] = defaultValueForKey;
-				} else {
-					delete this[key];
+				if (current === value) {
+					continue;
 				}
-			}
-		}
-		return o;
-	},
 
+				//If the current value is truthy, and Model-like, then declare it to be a Model.
+				let currentIsModel = current && MightBeModel(current);
 
-
-	[RepresentsSameObject] (o) {
-		return ntiidEquals(this.NTIID, o.NTIID, true/*ignore "specific provider" differences*/);
-	},
-
-
-
-	getObjectHref () {
-		return this.href || this[Service].getObjectURL(this.getID());
-	},
-
-
-
-	refresh (newRaw) {
-		const service = this[Service];
-		const INFLIGHT = 'model:inflight-refresh';
-
-		if (this[INFLIGHT]) {
-			if (newRaw) {
-				logger.debug('Waiting to refresh until previous refresh %o', this);
-				return this[INFLIGHT].then(()=> this.refresh(newRaw));
-			}
-
-			logger.debug('Ignoring duplicate request to refresh. %o', this);
-			return this[INFLIGHT];
-		}
-		logger.debug('Refresh %o', this);
-
-		const fetch = newRaw
-			? Promise.resolve(newRaw)
-			: service.getObjectAtURL(this.getObjectHref(), this.getID());
-
-		const inflight = fetch.then(o => this.applyRefreshedData(o));
-
-		this[INFLIGHT] = inflight
-			.catch((r) => (delete this[INFLIGHT], Promise.reject(r))) //swallow all errors so we can cleanup
-			.then((r)  => (delete this[INFLIGHT], r));
-
-		this.addToPending(inflight);
-
-		return inflight;
-	},
-
-
-	//deprecated - use Fields declaration
-	[TakeOver] (x, y) {
-		const scope = this;
-		const enumerable = !!y;
-		const name = y || x;
-		const value = scope[x];
-		const renamedFrom = x !== name ? x : void 0;
-
-		if (scope[name] && x !== name) {
-			logger.warn('%s is already defined.', name);
-			return;
-		}
-
-		delete scope[x];
-		setProtectedProperty(name, value, scope, enumerable, renamedFrom);
-
-		if (x !== name) {
-			Object.defineProperty(scope, x, {
-				enumerable: false,
-				get: getterWarning(scope, name, x)
-			});
-		}
-	},
-
-
-
-	applyRefreshedData (o) {
-		if (!this[RepresentsSameObject](o)) {
-			throw new Error('Mismatch!');
-		}
-
-		//TODO: throw away all the guess work... use Fields and re-apply.
-
-		const MightBeModel = x=> !x || !!x[Service];
-		const HasMimeType = x=>  x && (!!x.MimeType || !!x.Class);
-		const Objects = x=> typeof x === 'object';
-
-		for(let prop of Object.keys(o)) {
-			let value = o[prop];
-
-			//The property may have been remapped...
-			let desc = Object.getOwnPropertyDescriptor(this, prop);
-			let {renamedTo} = (desc || {}).get || {};
-			if (renamedTo) {
-				logger.debug('Refreshing renamed property: %s (%s)', prop, renamedTo);
-				prop = renamedTo;
-			}
-
-			let current = this[prop];
-
-			if (current === value) {
-				continue;
-			}
-
-			//If the current value is truthy, and Model-like, then declare it to be a Model.
-			let currentIsModel = current && MightBeModel(current);
-
-			let currentMightBeListOfModels =
+				let currentMightBeListOfModels =
 				current == null || //If the current value is empty, we cannot presume... the new value should shed some light.
 				(Array.isArray(current) && current.every(MightBeModel)); //If the current value is an array, and each element of the array is Model-like...
 				//then the current value Might be a list of models...
 
-			let newValueHasMimeType = HasMimeType(value);
+				let newValueHasMimeType = HasMimeType(value);
 
-			//If the new value is an array and any item has a MimeType or Class, and its not Links (which don't have models yet...)
-			let newValueMightBeListOfModels = Array.isArray(value) && prop !== 'Links' && value.some(HasMimeType);
+				//If the new value is an array and any item has a MimeType or Class, and its not Links (which don't have models yet...)
+				let newValueMightBeListOfModels = Array.isArray(value) && prop !== 'Links' && value.some(HasMimeType);
 
-			//Lets inspect the new value...
-			let newValueIsArrayOfObjects =
+				//Lets inspect the new value...
+				let newValueIsArrayOfObjects =
 				Array.isArray(value) && //If its an array,
 				value.length > 0 && // and its length is greater than zero (there are things in it)
 				value.every(Objects); // and every element is an Object
 				//then the new value should be parsed... as long as the current value is also parsed.
 
-			//So, should we parse?
-			if (
+				//So, should we parse?
+				if (
 				//if the current value was a model,
-				currentIsModel ||
+					currentIsModel ||
 				//or if the new value looks parsable
 				newValueHasMimeType ||
 				newValueMightBeListOfModels ||
@@ -294,31 +297,53 @@ export default {
 					currentMightBeListOfModels &&
 					newValueIsArrayOfObjects//and our new value is a list of objects...
 				)
-			) {// then, yes... parse
-				try {
-					value = this[Parser](value);
-				} catch(e) {
-					logger.warn('Attempted to parse new value, and something went wrong... %o', e.stack || e.message || e);
+				) {// then, yes... parse
+					try {
+						value = this[Parser](value);
+					} catch(e) {
+						logger.warn('Attempted to parse new value, and something went wrong... %o', e.stack || e.message || e);
+					}
 				}
+
+				if (typeof current === 'function') {
+					throw new Error('a value was named as one of the methods on this model.');
+				}
+
+				desc = Object.getOwnPropertyDescriptor(this, prop);
+				if (desc && !desc.writable) {
+					delete this[prop];
+					setProtectedProperty(prop, value, this, desc.enumerable, (desc.get || {}).renamedFrom);
+				} else {
+					this[prop] = value;
+				}
+
 			}
 
-			if (typeof current === 'function') {
-				throw new Error('a value was named as one of the methods on this model.');
-			}
-
-			desc = Object.getOwnPropertyDescriptor(this, prop);
-			if (desc && !desc.writable) {
-				delete this[prop];
-				setProtectedProperty(prop, value, this, desc.enumerable, (desc.get || {}).renamedFrom);
-			} else {
-				this[prop] = value;
-			}
-
+			return this;
 		}
+	};
+}
 
-		return this;
-	}
-};
+
+function initFields (target) {
+
+	const slot = initFields.slot || (initFields.slot = Symbol.for('[[Fields]]'));
+
+	target[slot] = target.Fields;
+
+	updateField(target, 'Fields', {
+		enumerable: true,
+		configurable: true,
+		get () { return this[slot]; },
+		set (newFields) {
+			const current = this[slot];
+			this[slot] = {
+				...current,
+				...newFields
+			};
+		}
+	});
+}
 
 
 
