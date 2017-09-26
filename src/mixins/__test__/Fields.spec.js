@@ -113,6 +113,21 @@ describe('Fields Mixin', () => {
 		expect(new Foo().foo).toBe('bar');
 	});
 
+	test('Feilds: empty model[] use defaultValue', () => {
+
+		@mixin(Fields)
+		class Foo {
+			static Fields = {
+				'foo': {type: 'model[]', defaultValue: []}
+			}
+			constructor (data) {
+				this.initMixins(data);
+			}
+		}
+
+		expect(new Foo().foo).toEqual([]);
+	});
+
 	describe('Feilds validate types', () => {
 
 		test ('string', () => {
