@@ -17,18 +17,14 @@ class Forum extends Base {
 		COMMON_PREFIX + 'forums.dflforum',
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		// Creator: "username"
-		// ID: "Forum" -- Local id (within the container)
-		// NewestDescendant
-		// NewestDescendantCreatedTime
-		// TopicCount: 2
-		// description: ""
-		// title: "Forum"
-
-		this[parse]('NewestDescendant');
+	static Fields = {
+		...Base.Fields,
+		'ID':                          { type: 'string' }, // Local id (within the container)
+		'NewestDescendant':            { type: 'model'  },
+		'NewestDescendantCreatedTime': { type: 'date'   },
+		'TopicCount':                  { type: 'number' },
+		'description':                 { type: 'string' },
+		'title':                       { type: 'string' },
 	}
 
 	getBin () {
@@ -36,14 +32,16 @@ class Forum extends Base {
 		const forCreditBin = RegExp.prototype.test.bind(/in-class/i);
 		const title = this.title || '';
 
-		return	openBin(title) ?		'Open' :
-			forCreditBin(title) ?	'ForCredit' :
-				'Other';
+		return openBin(title)
+			? 'Open'
+			: forCreditBin(title)
+				? 'ForCredit'
+				: 'Other';
 	}
 
 	getRecentActivity (size) {
 
-		let params = {
+		const params = {
 			batchStart: 0,
 			batchSize: size || 5,
 			sortOrder: 'descending',
@@ -56,14 +54,14 @@ class Forum extends Base {
 	createTopic (data) {
 		const service = this[Service];
 
-		let link = this.getLink('add');
+		const link = this.getLink('add');
 		if (!link) {
 			return Promise.reject('Cannot post comment. Item has no \'add\' link.');
 		}
 
-		let {title, body} = data;
+		const {title, body} = data;
 
-		let payload = {
+		const payload = {
 			MimeType: 'application/vnd.nextthought.forums.post',
 			tags: [],
 			title: title,
@@ -71,9 +69,9 @@ class Forum extends Base {
 		};
 
 		return service.post(link, payload)
-			.then(result =>
-				service.post(getLink(result, 'publish'))
-					.then(obj => this[parse](obj)));
+			.then(o => getLink(o, 'publish'))
+			.then(uri => service.post(uri))
+			.then(obj => this[parse](obj));
 
 	}
 

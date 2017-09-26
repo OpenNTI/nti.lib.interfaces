@@ -15,10 +15,10 @@ class Board extends Base {
 		COMMON_PREFIX + 'forums.dflboard',
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		// ForumCount: 1
-		// description: ""
-		// title: "Discussions"
+	static Fields = {
+		...Base.Fields,
+		'ForumCount':  { type: 'number' },
+		'description': { type: 'string' },
+		'title':       { type: 'string' },
 	}
 }

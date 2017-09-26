@@ -7,9 +7,11 @@ class UserTopicParticipationSummary extends Base {
 	static MimeType = COMMON_PREFIX + 'forums.usertopicparticipationsummary'
 
 	static Fields = {
-		'TopLevelCount':         {type: 'number', name: 'comments' },
-		'ReplyToCount':          {type: 'number', name: 'replies'  },
-		'NestedChildReplyCount': {type: 'number', name: 'repliesTo'},
-		'Contexts':              {type: 'model[]'                  },
+		...Base.Fields,
+		'Contexts':              { type: 'model[]'                    },
+		'NestedChildReplyCount': { type: 'number', name: 'repliesTo'  },
+		'ReplyToCount':          { type: 'number', name: 'replies'    },
+		'TopLevelCount':         { type: 'number', name: 'comments'   },
 	}
+
 }

@@ -1,6 +1,5 @@
 import {mixin} from 'nti-lib-decorators';
 
-import {Service, Parser as parse} from '../../constants';
 import GetContents from '../../mixins/GetContents';
 import Likable from '../../mixins/Likable';
 import {model, COMMON_PREFIX} from '../Registry';
@@ -20,44 +19,42 @@ class Topic extends Base {
 		COMMON_PREFIX + 'forums.headlinetopic',
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		// PostCount
-		// title
-		// PublicationState
-		// NewestDescendant
-		// NewestDescendantCreatedTime
-
-		this[parse]('NewestDescendant');
-		this[parse]('headline');
+	static Fields = {
+		...Base.Fields,
+		'NewestDescendant':            { type: 'model'  },
+		'NewestDescendantCreatedTime': { type: 'date'   },
+		'PostCount':                   { type: 'number' },
+		'PublicationState':            { type: '*'      },
+		'title':                       { type: 'string' },
 	}
+
 
 	isTopLevel () {
 		return true;
 	}
 
+
 	addComment (comment, inReplyTo) {
-		const service = this[Service];
-		let link = this.getLink('add');
+		const link = this.getLink('add');
 		if (!link) {
 			return Promise.reject('Cannot post comment. Item has no \'add\' link.');
 		}
 
-		let payload = {
+		const payload = {
 			MimeType: 'application/vnd.nextthought.forums.post',
 			tags: [],
 			body: Array.isArray(comment) ? comment : [comment]
 		};
 
 		if (inReplyTo) {
-			// inReplyTo = typeof inReplyTo === 'object' ? inReplyTo.NTIID : inReplyTo;
-			payload.inReplyTo = inReplyTo.NTIID;
-			payload.references = (inReplyTo.references || []).slice(0);
-			payload.references.push(inReplyTo.NTIID);
+			Object.assign(payload, {
+				// inReplyTo: typeof inReplyTo === 'object' ? inReplyTo.NTIID : inReplyTo,
+				inReplyTo: inReplyTo.NTIID,
+				references: [...(inReplyTo.references || []), inReplyTo.NTIID]
+			});
 		}
 
-		return service.post(link, payload);
+		return this.postToLink('add', payload);// Parse response?
 	}
 
 

@@ -1,6 +1,3 @@
-import {URL} from 'nti-commons';
-
-import {Service, Parser as parse} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import Post from './Post';
@@ -15,9 +12,6 @@ class Comment extends Post {
 		COMMON_PREFIX + 'forums.personalblogcomment',
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-	}
 
 	isTopLevel () {
 		return false;
@@ -34,7 +28,6 @@ class Comment extends Post {
 			sortOrder: 'ascending'
 		};
 
-		return this[Service].get(URL.appendQueryParams(link, params))
-			.then(result => this[parse](result.Items));
+		return this.fetchLinkParsed('replies', params);
 	}
 }

@@ -17,9 +17,10 @@ class Note extends Highlight {
 
 	static Fields = {
 		...Highlight.Fields,
-		'ReferencedByCount': { type: 'number'   },
+		'body':              { type: '*[]'      },
 		'inReplyTo':         { type: 'string'   },
-		'references':        { type: 'string[]' }
+		'references':        { type: 'string[]' },
+		'ReferencedByCount': { type: 'number'   },
 	}
 
 

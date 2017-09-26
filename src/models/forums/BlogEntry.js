@@ -10,6 +10,12 @@ export default
 class BlogEntry extends Topic {
 	static MimeType = COMMON_PREFIX + 'forums.personalblogentry'
 
+	static Fields = {
+		...Topic.Fields,
+		'sharedWith': { type: 'string[]' },
+		'tags':       { type: 'string[]' },
+	}
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 		this.handleSharingMappings();

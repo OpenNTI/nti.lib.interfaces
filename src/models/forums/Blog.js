@@ -7,10 +7,11 @@ export default
 class Blog extends Board {
 	static MimeType = COMMON_PREFIX + 'forums.personalblog'
 
+	title = 'Thoughts'
+
 	constructor (service, parent, data) {
 		delete data.title;
 		super(service, parent, data);
 	}
 
-	get title () { return 'Thoughts'; }
 }

@@ -18,10 +18,9 @@ class Post extends Base {
 		COMMON_PREFIX + 'forums.personalblogentrypost',
 	]
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-
-		//body
-		//title
+	static Fields = {
+		...Base.Fields,
+		'body':  { type: '*[]'    },
+		'title': { type: 'string' },
 	}
 }
