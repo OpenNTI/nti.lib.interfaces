@@ -542,7 +542,7 @@ function applyModelField (scope, fieldName, value, declared, defaultValue) {
 
 
 function applyField (scope, fieldName, valueIn, declared, defaultValue) {
-	let value = valueIn || defaultValue;
+	let value = valueIn !== void 0 ? valueIn : defaultValue;
 	delete scope[fieldName];
 	Object.defineProperty(scope, fieldName, {
 		configurable: true,
