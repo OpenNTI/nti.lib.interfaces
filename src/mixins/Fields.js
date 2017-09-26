@@ -50,9 +50,14 @@ export default function FieldsApplyer (target) {
 
 			const {Fields} = Type;
 			const FieldKeys = Object.keys(Fields);
-			const DataFields = Object.keys(data);
+			const FieldRenames = FieldKeys.map(x => Fields[x].name).filter(Boolean);
+			const DataFields = Object.keys(data).filter(x => !FieldRenames.includes(x));
 			const AllFields = Array.from(new Set([...DataFields, ...FieldKeys]));
 			const MissingFields = FieldKeys.filter(x => !noData && !(x in data));
+
+			for(let overlaping of Object.keys(data).filter(x => FieldRenames.includes(x))) {
+				logger.debug('Model "%s" declares a field "%s" but it shadows another. data: %o', Type.name || Type.MimeType, overlaping, data);
+			}
 
 			for (let missing of MissingFields) {
 				logger.debug('Model "%s" declares a field "%s" but it is not present in data: %o', Type.name || Type.MimeType, missing, data);

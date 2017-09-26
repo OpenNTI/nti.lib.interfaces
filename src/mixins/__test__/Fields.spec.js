@@ -220,6 +220,31 @@ describe('Fields Mixin', () => {
 		expect(logger.error).toHaveBeenCalledWith(expect.stringMatching(/Access to foo is deprecated./));
 	});
 
+	test('Feilds can set alternate name and shadow', () => {
+
+		@mixin(Fields)
+		class Foo {
+			static Fields = {
+				'foo': {type: 'string', name: 'bax'}
+			}
+			constructor (data) {
+				this.initMixins(data);
+			}
+		}
+
+
+		jest.spyOn(logger, 'debug').mockImplementation(() => {});
+		const f = new Foo({foo: 'bar', bax: 'ignored'});
+		expect(f.bax).toBe('bar');
+		expect(() => f.foo).not.toThrow();
+		expect(logger.debug).toHaveBeenCalledWith(
+			expect.stringMatching(/declares a field "%s" but it shadows another./),
+			'Foo',
+			'bax',
+			expect.any(Object)
+		);
+	});
+
 	test('Feilds parse models');
 	test('Feilds parse model arrays');
 	test('Feilds parse model maps');
