@@ -42,6 +42,8 @@ class Assignment extends Base {
 		'GradeSubmittedStudentPopulationCount': { type: 'number',  name: 'submittedCountTotalPossible' },//number of people who can see it
 		'GradeSubmittedCount':                  { type: 'number',  name: 'gradeCount'                  },// just number of grades?
 		'IsTimedAssignment':                    { type: 'boolean'                                      },
+		'title':                                { type: 'string',                                      },
+		'content':                              { type: 'string',                                      },
 	}
 
 
