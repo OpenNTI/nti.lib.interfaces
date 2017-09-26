@@ -7,7 +7,7 @@ const setPending = (p, list) => (PRIVATE_PENDING.set(p, list), list);
 
 export const Mixin = {
 
-	constructor () {
+	initMixin () {
 		setPending(this, []);
 	},
 

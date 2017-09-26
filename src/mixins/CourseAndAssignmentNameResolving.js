@@ -7,7 +7,7 @@ import getLink from '../utils/getlink';
 
 export default {
 
-	constructor () {
+	initMixin () {
 		let service = this[Service];
 
 		let courseInstanceUrl = (this.getLink('AssignmentHistoryItem') || this.href || '')

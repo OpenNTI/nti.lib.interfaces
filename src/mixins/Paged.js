@@ -2,7 +2,7 @@ const isPositiveFiniteNumber = n => typeof n === 'number' && isFinite(n) && n > 
 
 export default {
 
-	constructor () {
+	initMixin () {
 		this.continuous = false;
 	},
 

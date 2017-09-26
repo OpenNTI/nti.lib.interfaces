@@ -39,7 +39,7 @@ export default function FieldsApplyer (target) {
 
 	return {
 
-		constructor (data) {
+		initMixin (data) {
 			const {constructor: Type} = this;
 
 			const noData = !data;

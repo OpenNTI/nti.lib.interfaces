@@ -46,7 +46,7 @@ export const SetupContentProperties = Symbol('SetupContentProperties');
 
 export const Mixin = {
 
-	constructor (data) {
+	initMixin (data) {
 		const {constructor: Type} = this;
 		const {Fields = {}} = Type;
 

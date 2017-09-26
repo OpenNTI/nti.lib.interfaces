@@ -9,7 +9,7 @@ const logger = Logger.get('models:mixins:Threadable');
 export default {
 	isThreadable: true,
 
-	constructor () {
+	initMixin () {
 		this.on('change', (_, what)=> {
 			if (what === DELETED) {
 				this.refresh({

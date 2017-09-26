@@ -4,7 +4,7 @@ export function getCacheFor (o) { return CACHE.get(o); }
 
 export const Mixin = {
 
-	constructor () {
+	initMixin () {
 		CACHE.set(this, {});
 	}
 
