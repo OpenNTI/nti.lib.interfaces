@@ -139,46 +139,6 @@ class Video extends Base {
 	}
 
 
-	async updateTranscript (transcript, purpose, lang, file) {
-		const existing = this.getTranscriptFor(purpose, lang);
-
-		if (existing && existing.NTIID !== transcript.NTIID) { return Promise.reject(EXISTING_TRANSCRIPT); }
-
-		const link = getLink(transcript, 'edit');
-
-		if (!link) { return Promise.reject('Unable to edit transcript'); }
-
-		let data;
-
-		if (file) {
-			data = new FormData();
-
-			data.append(file.name, file);
-
-			if (purpose) { data.append('purpose', purpose); }
-			if (lang) { data.append('lang', lang); }
-		} else {
-			data = {};
-
-			if (purpose) { data['purpose'] = purpose; }
-			if (lang) { data['lang'] = lang; }
-		}
-
-		const newTranscript = await this[Service].put(link, data);
-
-		this.transcripts = this.transcripts.map((t) => {
-			if (t.NTIID === newTranscript.NTIID) {
-				return {...t, ...newTranscript};
-			}
-
-			return t;
-		});
-
-		this.emit('change');
-
-		return newTranscript;
-	}
-
 	async removeTranscript (transcript) {
 		const link = getLink(transcript, 'edit');
 
