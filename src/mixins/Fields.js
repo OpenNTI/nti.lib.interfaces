@@ -125,6 +125,7 @@ export default function FieldsApplyer (target) {
 		},
 
 
+
 		//deprecated
 		[DateFields] () { return []; },
 
@@ -217,6 +218,7 @@ export default function FieldsApplyer (target) {
 		},
 
 
+
 		//deprecated - use Fields declaration
 		[Symbol.for('TakeOver')] (x, y) {
 			const scope = this;
@@ -259,13 +261,13 @@ export default function FieldsApplyer (target) {
 
 				//The property may have been remapped...
 				let desc = Object.getOwnPropertyDescriptor(this, prop);
-				let {renamedTo} = (desc || {}).get || {};
+				let {renamedTo, getter} = (desc || {}).get || {};
 				if (renamedTo) {
 					logger.debug('Refreshing renamed property: %s (%s)', prop, renamedTo);
 					prop = renamedTo;
 				}
 
-				let current = this[prop];
+				let current = getter ? getter() : this[prop];
 
 				if (current === value) {
 					continue;
@@ -549,16 +551,23 @@ function applyModelField (scope, fieldName, value, declared, defaultValue) {
 
 function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 	let value = valueIn !== None ? valueIn : defaultValue;
+
 	delete scope[fieldName];
+
+	const getter = () => value;
+	const warningGettter = () => (
+		logger.warn('Undeclared Access of %s on %o', fieldName, scope.MimeType || scope),
+		value
+	);
+
+	warningGettter.getter = getter;
+
 	Object.defineProperty(scope, fieldName, {
 		configurable: true,
 		enumerable: declared,
 		get: declared
-			? () => value
-			: () => (
-				logger.warn('Undeclared Access of %s on %o', fieldName, scope.MimeType || scope),
-				value
-			),
+			? getter
+			: warningGettter,
 		set: x => value = x
 	});
 }
@@ -577,6 +586,7 @@ function clone (obj) {
 
 	return out;
 }
+
 
 
 function doParse (parent, data) {
