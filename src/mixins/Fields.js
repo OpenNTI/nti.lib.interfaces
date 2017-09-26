@@ -82,7 +82,7 @@ export default function FieldsApplyer (target) {
 					const baseType = isArrayType(type) ? type.substr(0, type.length - 2) : type;
 					const apply = TYPE_MAP[baseType] || applyField;
 					if (type && !(baseType in TYPE_MAP)) {
-						logger.warn('Model "%s" declared "%s" to be type "%s", but that type is unknown.', key, type, Type.name || Type.MimeType);
+						logger.warn('Model "%s" declared "%s" to be type "%s", but that type is unknown.', Type.name || Type.MimeType, key, type);
 					}
 					apply(this, name, data[key], key in Fields, defaultValue);
 				}
