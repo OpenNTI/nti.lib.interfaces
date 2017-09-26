@@ -8,6 +8,7 @@ import Base from '../models/Base';
 
 
 const logger = Logger.get('mixins:Fields');
+const None = void 0;
 const RAW = Symbol('Raw Data');
 const PASCAL_CASE_REGEX = /(?:^|[^a-z0-9])([a-z0-9])?/igm;
 
@@ -217,7 +218,7 @@ export default function FieldsApplyer (target) {
 			const enumerable = !!y;
 			const name = y || x;
 			const value = scope[x];
-			const renamedFrom = x !== name ? x : void 0;
+			const renamedFrom = x !== name ? x : None;
 
 			if (scope[name] && x !== name) {
 				logger.warn('%s is already defined.', name);
@@ -527,13 +528,13 @@ function applyModelDictionaryField (scope, fieldName, value, declared, defaultVa
 
 function applyModelField (scope, fieldName, value, declared, defaultValue) {
 	const parsed = scope[Parser](value) || null;
-	//Just preserve old behavior (things expect empty values to be null, including empty arrays)
+	//Just preserve old behavior (things expect empty values to be falsy, including empty arrays)
 	const v = Array.isArray(parsed) && parsed.length === 0 ? null : parsed;
 
 	applyField(
 		scope,
 		fieldName,
-		v || null,
+		v || None, //allow defaultValue to kick in
 		declared,
 		defaultValue
 	);
@@ -542,7 +543,7 @@ function applyModelField (scope, fieldName, value, declared, defaultValue) {
 
 
 function applyField (scope, fieldName, valueIn, declared, defaultValue) {
-	let value = valueIn !== void 0 ? valueIn : defaultValue;
+	let value = valueIn !== None ? valueIn : defaultValue;
 	delete scope[fieldName];
 	Object.defineProperty(scope, fieldName, {
 		configurable: true,
