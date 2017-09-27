@@ -24,6 +24,7 @@ const TYPE_MAP = {
 	'date': applyDateField,
 	'model': applyModelField,
 	'model{}': applyModelDictionaryField,
+	'model{}{}': applyModelMappedDictionaryField,
 	'object': applyObjectField,
 	'number': applyNumberField,
 	'string': applyStringField,
@@ -508,6 +509,36 @@ function applyDateField (scope, fieldName, value) {
 		configurable: true,
 		value: dateGetter(fieldName)
 	});
+}
+
+
+
+function applyModelMappedDictionaryField (scope, fieldName, value, declared, defaultValue) {
+	let out = {};
+	for (let dK of Object.keys(value || {})) {
+		const map = value[dK];
+		out[dK] = map;
+
+		for (let mK of Object.keys(map)) {
+			map[mK] = scope[Parser]( map[mK] ) || null;
+
+			if (!map[mK]) {
+				delete map[mK];
+			}
+		}
+
+		if (Object.keys(map).length === 0) {
+			delete out[dK];
+		}
+	}
+
+	applyField(
+		scope,
+		fieldName,
+		out,
+		declared,
+		defaultValue
+	);
 }
 
 
