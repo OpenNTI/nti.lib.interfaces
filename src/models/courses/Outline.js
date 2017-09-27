@@ -22,8 +22,7 @@ class Outline extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'ContentNTIID': { type: 'string'                      },
-		'contents':     { type: 'string', defaultValue: null  },
+		'ContentNTIID': { type: 'string'                      }
 	}
 
 
