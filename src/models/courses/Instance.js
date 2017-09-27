@@ -205,31 +205,32 @@ class Instance extends Base {
 		}
 
 
-		let i = this[Service];
-		let p = this[KEY];
+		const service = this[Service];
+
+		let pending = this[KEY];
 
 		if (!this.shouldShowAssignments()) {
 			return Promise.reject('No Assignments');
 		}
 
-		if (!p) {
+		if (!pending) {
 			// A/B sets... Assignments are the Universe-Set minus the B set.
 			// The A set is the assignments you can see.
-			let A = this.fetchLink('AssignmentSummaryByOutlineNode');
-			let B = this.fetchLink('NonAssignmentAssessmentSummaryItemsByOutlineNode');
+			const A = this.fetchLink('AssignmentSummaryByOutlineNode');
+			const B = this.fetchLink('NonAssignmentAssessmentSummaryItemsByOutlineNode');
 
-			let historyLink = getLink('AssignmentHistory');
+			const historyLink = getLink('AssignmentHistory');
 
-			p = this[KEY] = Promise.all([
+			pending = this[KEY] = Promise.all([
 				A, //AssignmentsByOutlineNode
 				B //NonAssignmentAssessmentItemsByOutlineNode
 			])
 				.then(a => isAdministrative
-					? new AssessmentCollectionInstructorView(i, this, ...a, historyLink, this.GradeBook)
-					: new AssessmentCollectionStudentView(i, this, ...a, historyLink));
+					? new AssessmentCollectionInstructorView(service, this, ...a, historyLink, this.GradeBook)
+					: new AssessmentCollectionStudentView(service, this, ...a, historyLink));
 		}
 
-		return p;
+		return pending;
 	}
 
 
@@ -280,11 +281,7 @@ class Instance extends Base {
 		}
 
 		return service.get(url)
-			.then((json) => {
-				const {Items:items} = json;
-
-				return Promise.all(items.map(parseItem));
-			});
+			.then(({Items:items}) => Promise.all(items.map(parseItem)));
 	}
 
 
@@ -295,18 +292,17 @@ class Instance extends Base {
 			}
 		}
 
-		let contents = o => o ? o.getContents() : Promise.reject(NOT_DEFINED);
-		let getID = o => o ? o.getID() : null;
+		const contents = o => o ? o.getContents() : Promise.reject(NOT_DEFINED);
+		const getID = o => o ? o.getID() : null;
 
-		let sectionId = getID(this.Discussions);
-		let parentId = getID(this.ParentDiscussions);
+		const sectionId = getID(this.Discussions);
+		const parentId = getID(this.ParentDiscussions);
 
 		return Promise.all([
 			contents(this.Discussions).catch(logAndResume),
 			contents(this.ParentDiscussions).catch(logAndResume)
 		])
-			.then(data => {
-				let [section, parent] = data;
+			.then(([section, parent]) => {
 
 				if (section) {
 					section.NTIID = sectionId;
@@ -382,11 +378,12 @@ class Instance extends Base {
 
 
 	getMediaIndex () {
+		const MAX_AGE = 3600000; //One Hour
+
 		let promise = this[MEDIA_INDEX];
-		let MAX_AGE = 3600000; //One Hour
 
 		if (!promise || promise.stale) {
-			let start = Date.now();
+			const start = Date.now();
 
 			promise = this[MEDIA_INDEX] = this.fetchLink(MEDIA_BY_OUTLINE_NODE)
 				.then(x => MediaIndex.build(this[Service], this, x.ContainerOrder || [], x));
@@ -407,15 +404,15 @@ class Instance extends Base {
 		}
 
 		function getForNode (node, index, output) {
-			let id = node.getContentId();
+			const id = node.getContentId();
 
-			let scoped = id && index.scoped(id);
+			const scoped = id && index.scoped(id);
 
 			if (scoped && scoped.length) {
 				output.push(scoped);
 			}
 
-			let {contents} = node;
+			const {contents} = node;
 			if (contents && contents.length) {
 				contents.forEach(n=>getForNode(n, index, output));
 			}
@@ -430,9 +427,8 @@ class Instance extends Base {
 			this.getOutline(),
 			this.ContentPackageBundle.getVideoIndex()
 		])
-			.then(outlineAndRawIndex => {
-				let [outline, index] = outlineAndRawIndex;
-				let slices = [];
+			.then(([outline, index]) => {
+				const slices = [];
 
 				getForNode(outline, index, slices);
 
