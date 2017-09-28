@@ -319,7 +319,7 @@ export default function FieldsApplyer (target) {
 				}
 
 				desc = Object.getOwnPropertyDescriptor(this, prop);
-				if (desc && !desc.writable) {
+				if (desc && desc.writable === false) {
 					delete this[prop];
 					setProtectedProperty(prop, value, this, desc.enumerable, (desc.get || {}).renamedFrom);
 				} else {
