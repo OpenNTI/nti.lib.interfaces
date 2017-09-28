@@ -505,21 +505,24 @@ function applyDateField (scope, fieldName, value) {
 
 
 function applyModelMappedDictionaryField (scope, fieldName, value, declared, defaultValue) {
-	let out = {};
-	for (let dK of Object.keys(value || {})) {
-		const map = value[dK];
-		out[dK] = map;
+	let out = value == null ? value : {};
 
-		for (let mK of Object.keys(map)) {
-			map[mK] = scope[Parser]( map[mK] ) || null;
+	if (out) {
+		for (let dK of Object.keys(value || {})) {
+			const map = value[dK];
+			out[dK] = map;
 
-			if (!map[mK]) {
-				delete map[mK];
+			for (let mK of Object.keys(map)) {
+				map[mK] = scope[Parser]( map[mK] ) || null;
+
+				if (!map[mK]) {
+					delete map[mK];
+				}
 			}
-		}
 
-		if (Object.keys(map).length === 0) {
-			delete out[dK];
+			if (Object.keys(map).length === 0) {
+				delete out[dK];
+			}
 		}
 	}
 
@@ -535,12 +538,15 @@ function applyModelMappedDictionaryField (scope, fieldName, value, declared, def
 
 
 function applyModelDictionaryField (scope, fieldName, value, declared, defaultValue) {
-	let out = {};
-	for (let dK of Object.keys(value || {})) {
-		out[dK] = scope[Parser]( value[dK] ) || null;
-		//should we keep the empty value & key?
-		if (!out[dK]) {
-			delete out[dK];
+	let out = value == null ? value : {};
+
+	if (out) {
+		for (let dK of Object.keys(value || {})) {
+			out[dK] = scope[Parser]( value[dK] ) || null;
+			//should we keep the empty value & key?
+			if (!out[dK]) {
+				delete out[dK];
+			}
 		}
 	}
 
