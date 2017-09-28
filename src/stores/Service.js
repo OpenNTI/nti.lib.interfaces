@@ -450,9 +450,11 @@ class ServiceDocument extends EventEmitter {
 
 		return resolve
 			.then(o => parse(this, parent || this, o))
-			.then(model => model && model.waitForPending
-				? model.waitForPending()
-				: model
+			.then(model => Array.isArray(model)
+				? model.map(m => (m && m.waitForPending) ? m.waitForPending() : m)
+				: (model && model.waitForPending)
+					? model.waitForPending()
+					: model
 			);
 	}
 
