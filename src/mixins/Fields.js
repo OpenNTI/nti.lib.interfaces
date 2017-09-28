@@ -12,6 +12,8 @@ const None = void 0;
 const RAW = Symbol('Raw Data');
 const PASCAL_CASE_REGEX = /(?:^|[^a-z0-9])([a-z0-9])?/igm;
 
+const getType = x => x.constructor;
+const getTypeName = x => (x = getType(x), x.name || x.MimeType);
 const getMethod = x => 'get' + x.replace(
 	PASCAL_CASE_REGEX,
 	(_, c) => (c || '').toUpperCase()
@@ -41,57 +43,37 @@ export default function FieldsApplyer (target) {
 	return {
 
 		initMixin (data) {
-			const {constructor: Type} = this;
-
 			const noData = !data;
 
 			data = data ? clone(data) : {};
 
 			this[RAW] = data;
 
-			const {Fields} = Type;
-			const FieldKeys = Object.keys(Fields);
-			const FieldRenames = FieldKeys.map(x => Fields[x].name).filter(Boolean);
-			const DataFields = Object.keys(data).filter(x => !FieldRenames.includes(x));
-			const AllFields = Array.from(new Set([...DataFields, ...FieldKeys]));
+			const {
+				Fields,
+				FieldKeys,
+				FieldRenames,
+				AllFields
+			} = getFields(this, data);
+
 			const MissingFields = FieldKeys.filter(x => !noData && !(x in data));
 
 			for(let overlaping of Object.keys(data).filter(x => FieldRenames.includes(x))) {
-				logger.debug('Model "%s" declares a field "%s" but it shadows another. data: %o', Type.name || Type.MimeType, overlaping, data);
+				logger.debug('Model "%s" declares a field "%s" but it shadows another. data: %o', getTypeName(this), overlaping, data);
 			}
 
 			for (let missing of MissingFields) {
-				logger.debug('Model "%s" declares a field "%s" but it is not present in data: %o', Type.name || Type.MimeType, missing, data);
+				logger.debug('Model "%s" declares a field "%s" but it is not present in data: %o', getTypeName(this), missing, data);
 			}
 
 			for (let key of AllFields) {
-			//get the name, type, and defaultValue of the field...
+				//get the name, type, and defaultValue of the field...
 				const {name = key, type, required, defaultValue} = Fields[key] || {};
 
-				//allow for hooking... however, strongly prefer setting type to the string: 'model'
-				if (typeof type === 'function') {
-					let val = null;
-					//Explicit model:
-					if (type.prototype instanceof Base) {
-						val = new type(this[Service], this, data[key]);
+				const value = data[key];
+				const declared = key in Fields;
 
-						//some one-off converter function: (please don't use this)
-					} else {
-						val = type(this[Service], this, data[key]);
-					}
-
-					applyField(this, name, val, true);
-
-
-					//Preferred code path:
-				} else {
-					const baseType = isArrayType(type) ? type.substr(0, type.length - 2) : type;
-					const apply = TYPE_MAP[baseType] || applyField;
-					if (type && !(baseType in TYPE_MAP)) {
-						logger.warn('Model "%s" declared "%s" to be type "%s", but that type is unknown.', Type.name || Type.MimeType, key, type);
-					}
-					apply(this, name, data[key], key in Fields, defaultValue);
-				}
+				applyFieldStrategy(this, name, type, value, declared, defaultValue, key);
 
 				//Setup renamed-meta-data
 				if (name !== key) {
@@ -246,86 +228,45 @@ export default function FieldsApplyer (target) {
 
 
 
-		applyRefreshedData (o) {
-			if (!this[RepresentsSameObject](o)) {
+		applyRefreshedData (data) {
+			if (!this[RepresentsSameObject](data)) {
 				throw new Error('Mismatch!');
 			}
 
-			//TODO: throw away all the guess work... use Fields and re-apply.
+			// Update raw
+			this[RAW] = {...this[RAW], ...data};
 
-			const MightBeModel = x=> !x || !!x[Service];
-			const HasMimeType = x=>  x && (!!x.MimeType || !!x.Class);
-			const Objects = x=> typeof x === 'object';
+			const {Fields, DataFields} = getFields(this, data);
 
-			for(let prop of Object.keys(o)) {
-				let value = o[prop];
+			//Just iterate over changing fields
+			for(let key of DataFields) {
+				//get the name, type, and defaultValue of the field...
+				const {name = key, type, defaultValue} = Fields[key] || {};
 
-				//The property may have been remapped...
-				let desc = Object.getOwnPropertyDescriptor(this, prop);
-				let {renamedTo, getter} = (desc || {}).get || {};
-				if (renamedTo) {
-					logger.debug('Refreshing renamed property: %s (%s)', prop, renamedTo);
-					prop = renamedTo;
-				}
+				//new value (raw)
+				const value = data[key];
 
-				let current = getter ? getter() : this[prop];
+				// get the current property descriptor.
+				const desc = Object.getOwnPropertyDescriptor(this, name);
 
-				if (current === value) {
-					continue;
-				}
+				// pull the current getter/declared state from the get() method...
+				const {getter, declared} = (desc || {}).get || {};
 
-				//If the current value is truthy, and Model-like, then declare it to be a Model.
-				let currentIsModel = current && MightBeModel(current);
+				// get the current value...
+				const current = getter ? getter() : this[key];
 
-				let currentMightBeListOfModels =
-				current == null || //If the current value is empty, we cannot presume... the new value should shed some light.
-				(Array.isArray(current) && current.every(MightBeModel)); //If the current value is an array, and each element of the array is Model-like...
-				//then the current value Might be a list of models...
-
-				let newValueHasMimeType = HasMimeType(value);
-
-				//If the new value is an array and any item has a MimeType or Class, and its not Links (which don't have models yet...)
-				let newValueMightBeListOfModels = Array.isArray(value) && prop !== 'Links' && value.some(HasMimeType);
-
-				//Lets inspect the new value...
-				let newValueIsArrayOfObjects =
-				Array.isArray(value) && //If its an array,
-				value.length > 0 && // and its length is greater than zero (there are things in it)
-				value.every(Objects); // and every element is an Object
-				//then the new value should be parsed... as long as the current value is also parsed.
-
-				//So, should we parse?
-				if (
-				//if the current value was a model,
-					currentIsModel ||
-				//or if the new value looks parsable
-				newValueHasMimeType ||
-				newValueMightBeListOfModels ||
-				(
-					//or the current value was unset, or a list of Models,
-					currentMightBeListOfModels &&
-					newValueIsArrayOfObjects//and our new value is a list of objects...
-				)
-				) {// then, yes... parse
-					try {
-						value = this[Parser](value);
-					} catch(e) {
-						logger.warn('Attempted to parse new value, and something went wrong... %o', e.stack || e.message || e);
-					}
-				}
-
+				// throw if we're about to replace a function
 				if (typeof current === 'function') {
 					throw new Error('a value was named as one of the methods on this model.');
 				}
 
-				desc = Object.getOwnPropertyDescriptor(this, prop);
-				if (desc && desc.writable === false) {
-					delete this[prop];
-					setProtectedProperty(prop, value, this, desc.enumerable, (desc.get || {}).renamedFrom);
-				} else {
-					this[prop] = value;
+				// skip if the value does not change.
+				if (current === value) {
+					continue;
 				}
 
+				//Apply new value
+				applyFieldStrategy(this, name, type, value, declared, defaultValue, key);
 			}
 
 			return this;
@@ -356,6 +297,56 @@ function initFields (target) {
 
 
 
+function applyFieldStrategy (scope, name, type, value, declared, defaultValue, key) {
+	const {constructor: Type} = scope;
+
+	//allow for hooking... however, strongly prefer setting type to the string: 'model'
+	if (typeof type === 'function') {
+		let val = null;
+		//Explicit model:
+		if (type.prototype instanceof Base) {
+			val = new type(scope[Service], scope, value);
+
+			//some one-off converter function: (please don't use this)
+		} else {
+			val = type(scope[Service], scope, value);
+		}
+
+		applyField(scope, name, val, true);
+
+
+		//Preferred code path:
+	} else {
+		const baseType = isArrayType(type) ? type.substr(0, type.length - 2) : type;
+		const apply = TYPE_MAP[baseType] || applyField;
+		if (type && !(baseType in TYPE_MAP)) {
+			logger.warn('Model "%s" declared "%s" to be type "%s", but that type is unknown.', Type.name || Type.MimeType, key, type);
+		}
+		apply(scope, name, value, declared, defaultValue);
+	}
+}
+
+
+
+function getFields (obj, data) {
+	const Type = getType(obj);
+	const {Fields} = Type;
+	const FieldKeys = Object.keys(Fields);
+	const FieldRenames = FieldKeys.map(x => Fields[x].name).filter(Boolean);
+	const DataFields = Object.keys(data).filter(x => !FieldRenames.includes(x));
+	const AllFields = Array.from(new Set([...DataFields, ...FieldKeys]));
+
+	return {
+		Fields,
+		FieldKeys,
+		FieldRenames,
+		DataFields,
+		AllFields
+	};
+}
+
+
+
 function getterWarning (scope, name, originalName) {
 	function warn () {
 		let m = 'There is a new accessor to use instead.';
@@ -382,7 +373,7 @@ function GenEnumerabilityOf (obj, propName) {
 }
 
 
-
+//deprecated
 function setProtectedProperty (name, value, scope, enumerable = GenEnumerabilityOf(scope, name), renamedFrom = null) {
 	const get = () => value;
 
@@ -585,21 +576,26 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 
 	delete scope[fieldName];
 
+	const setter =  x => value = x;
 	const getter = () => value;
 	const warningGettter = () => (
 		logger.warn('Undeclared Access of %s on %o', fieldName, scope.MimeType || scope),
 		value
 	);
 
-	warningGettter.getter = getter;
+	const get = declared
+		? getter
+		: warningGettter;
+
+	Object.assign(get, { declared, getter });
+
+	const set = setter;
 
 	Object.defineProperty(scope, fieldName, {
 		configurable: true,
 		enumerable: declared,
-		get: declared
-			? getter
-			: warningGettter,
-		set: x => value = x
+		get,
+		set
 	});
 }
 
