@@ -38,6 +38,8 @@ export default class Placeholder extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
+		this.keys = new Set(Object.keys(data));
+
 		const makeMarker = MarkerFactory(this);
 
 		Object.defineProperties(this, {
@@ -56,8 +58,25 @@ export default class Placeholder extends Base {
 		makeMarker('error', 'isSaving');
 	}
 
+	getData () {
+		const data = {};
+
+		for (let key of this.keys) {
+			if(this[key] !== undefined) {
+				data[key] = this[key];
+			}
+		}
+
+		return data;
+	}
 
 	mergeData (data) {
+		const newKeys = Object.keys(data);
+
+		for (let key of newKeys) {
+			this.keys.add(key);
+		}
+
 		Object.assign(this, data);
 	}
 }
