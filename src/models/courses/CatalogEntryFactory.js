@@ -1,6 +1,7 @@
 import {defineProtected} from 'nti-commons';
 
 const DEFAULT_ADMIN_LEVEL_KEY = 'DefaultAPICreated';
+const IMPORTED_LEVEL_KEY = 'DefaultAPIImported';
 
 export default class CatalogEntryFactory {
 	static from (service) {
@@ -15,14 +16,19 @@ export default class CatalogEntryFactory {
 				parse: o => service.getObject(o)
 			})
 		});
+
+		Object.assign(this, {
+			DEFAULT_ADMIN_LEVEL_KEY,
+			IMPORTED_LEVEL_KEY
+		});
 	}
 
-	async create (data) {
+	async create (data, level) {
 		const {service} = this;
 
 		const adminLevelsURL = service.getWorkspace('Courses').getLink('AdminLevels');
 		const levels = await service.get(adminLevelsURL);
-		const defaultLevel = await getDefaultLevel(service, adminLevelsURL, levels);
+		const defaultLevel = await getLevel(service, adminLevelsURL, level, levels);
 		const {NTIID} = await service.post(defaultLevel.href, data);
 		const course = await service.getObject(NTIID);
 
@@ -32,16 +38,18 @@ export default class CatalogEntryFactory {
 
 // Private Utilities
 
-function getDefaultLevel (service, adminLevelsURL, levels) {
+function getLevel (service, adminLevelsURL, level, levels) {
 	if(!levels || !levels.Items) {
 		return Promise.reject('No AdminLevels found');
 	}
 
-	const defaultLevel = levels.Items[DEFAULT_ADMIN_LEVEL_KEY];
+	const levelName = level || DEFAULT_ADMIN_LEVEL_KEY;
+
+	const defaultLevel = levels.Items[levelName];
 
 	if(defaultLevel) {
 		return Promise.resolve(defaultLevel);
 	}
 
-	return service.post(adminLevelsURL, { key : DEFAULT_ADMIN_LEVEL_KEY });
+	return service.post(adminLevelsURL, { key : levelName });
 }
