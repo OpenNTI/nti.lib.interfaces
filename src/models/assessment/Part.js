@@ -20,6 +20,8 @@ class Part extends Base {
 		'answerLabel': { type: 'string', content: true },
 		'content':     { type: 'string', content: true },
 		'explanation': { type: 'string', content: true },
+		'AutoGradable':{ type: 'boolean',              },
+		'randomized':  { type: 'boolean',              },
 		'hints':       { type: 'model[]'               },
 		'solutions':   { type: 'model[]'               },
 		'wordbank':    { type: 'model[]'               },
