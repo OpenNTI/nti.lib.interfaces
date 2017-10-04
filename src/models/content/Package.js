@@ -119,13 +119,20 @@ class Package extends Base {
 		let cached = cache.get(this.index);
 
 		if (!toc) {
-			toc = cached ?
+			const loadToc = cached ?
 				Promise.resolve(cached) :
 				service.get(this.index)
 					.then(data => cache.set(this.index, data) && data)
 					.catch(() => '<toc></toc>');
 
-			toc = toc.then(o => new ToC(service, this, o, this.title));
+			const loadRealPage = this.getRealPageIndex();
+
+			toc = Promise.all([
+				loadToc,
+				loadRealPage
+			]).then(([o, realPage]) => {
+				return new ToC(service, this, o, this.title, realPage);
+			});
 
 			this.tableOfContents = toc;
 		}
@@ -165,5 +172,20 @@ class Package extends Base {
 		}
 
 		return promise;
+	}
+
+
+	async getRealPageIndex () {
+		const service = this[Service];
+		const {root} = this;
+		const link = URL.join(root, 'real_pages.json');
+
+		try {
+			const index = await service.get(link);
+
+			return index;
+		} catch (e) {
+			return null;
+		}
 	}
 }

@@ -9,7 +9,7 @@ import Node from './TableOfContentsNode';
 // TODO: Remove Base as a super...
 export default class XMLBasedTableOfContents extends Base {
 
-	constructor (service, parent, data, title) {
+	constructor (service, parent, data, title, realPageIndex) {
 		super(service, parent, null);
 
 		let {numbering, toc = {}} = (parent || {}).PresentationProperties || {};
@@ -21,6 +21,7 @@ export default class XMLBasedTableOfContents extends Base {
 			numbering,
 			title,
 			xml,
+			realPageIndex,
 			root: new Node(this, xml.getroot(), this)
 		});
 	}
@@ -109,4 +110,29 @@ export default class XMLBasedTableOfContents extends Base {
 	// }
 
 	flatten () { return this.root.flatten(); }
+
+	getRealPage (page) {
+		if (!page || !this.realPageIndex) { return null; }
+
+		const NTIID = (this.realPageIndex['real-pages'] || {})[page];
+
+		return NTIID ? {page: page, NTIID} : null;
+	}
+
+	/**
+	 * Get the NTIIDs for the reading that lines up with a "real page"
+	 *
+	 * NOTE: for now we are doing an exact match so having getRealPage and getRealPages
+	 * doesn't make sense, but its just trying to future proof
+	 *
+	 * @param  {String} page page number to look for
+	 * @return {[Object]}      the page number and NTIID
+	 */
+	getRealPages (page) {
+		const realPages = [
+			this.getRealPage(page)
+		];
+
+		return realPages.filter(x => !!x);
+	}
 }
