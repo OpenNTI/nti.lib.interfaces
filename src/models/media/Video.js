@@ -30,7 +30,7 @@ class Video extends Base {
 		'itemprop':    { type: 'string'   }, //From a parsed DomObject
 		'sources':     { type: 'model[]'  },
 		'title':       { type: 'string'   }, //From a parsed DomObject
-		'transcripts': { type: 'object[]' },
+		'transcripts': { type: 'model[]' },
 	}
 
 	isVideo = true
