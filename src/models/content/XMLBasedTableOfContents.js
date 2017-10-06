@@ -59,6 +59,19 @@ export default class XMLBasedTableOfContents extends Base {
 	}
 
 
+	getXMLNode (id) {
+		const nodes = this.flatten();
+
+		for (let node of nodes) {
+			if (node.id === id) {
+				return node;
+			}
+		}
+
+		return null;
+	}
+
+
 	indexOf (id) {
 		let node = this.getNode(id);
 		return (node && node.idx) || -1;
@@ -115,7 +128,7 @@ export default class XMLBasedTableOfContents extends Base {
 		if (!page || !this.realPageIndex) { return null; }
 
 		const NTIID = (this.realPageIndex['real-pages'] || {})[page];
-		const node = NTIID && this.getNode(NTIID);
+		const node = NTIID && this.getXMLNode(NTIID);
 
 		return node ? {page: page, node} : null;
 	}
