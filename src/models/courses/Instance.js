@@ -269,6 +269,18 @@ class Instance extends Base {
 	}
 
 
+	getAccessTokens () {
+		if(!this.hasLink('CourseAccessTokens')) {
+			return Promise.resolve();
+		}
+
+		const service = this[Service];
+		const url = this.getLink('CourseAccessTokens');
+
+		return service.getBatch(url).then((batch) => batch && batch.Items);
+	}
+
+
 	getCourseDiscussions () {
 		const service = this[Service];
 		const url = this.getLink('CourseDiscussions');
