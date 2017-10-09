@@ -27,6 +27,7 @@ class CourseCatalogEntry extends Base {
 		'DCCreator':           { type: 'string[]', name: 'creators'        },
 		'ContentPackages':     { type: 'string[]'                          },
 		'ContentPackageNTIID': { type: 'string'                            },
+		'CourseNTIID':         { type: 'string'                            },
 		'EndDate':             { type: 'date'                              },
 		'EnrollmentOptions':   { type: 'model',    name: EnrollmentOptions },
 		'StartDate':           { type: 'date'                              },
