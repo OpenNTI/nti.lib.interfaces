@@ -41,7 +41,17 @@ export default class KalturaProvider {
 	static async resolveID (service, uri) {
 		const meta = await service.getMetadataFor(uri);
 
-		const id = getURLID(getIDParts(meta.contentLocation));
+		// in some instances, the contentLocation won't have the partnerId.  However,
+		// there are images that we can pull from that can have hte partnerId, so look at
+		// each of them and take the first valid one
+		const [metaURL] = [
+			meta.contentLocation,
+			...meta.images.map(x => x.url)
+		]
+			.map(getIDParts)
+			.filter(Boolean);
+
+		const id = metaURL && getURLID(metaURL);
 
 		return id || Promise.reject('Not Found');
 	}
@@ -81,40 +91,40 @@ function normalizeUrl (href) {
 		return forceTrailingSlash(href);
 	}
 
-	const parseEmbedSrc = src => {
+	const parts = url.parse(href, true);
+
+	const pattern1 = () => {
+		const regex = /\/(?:partner_id|p)\/(\d*)\/.*\/entry_id\/(\w*)/gi;
+
+		const [, partnerId, entryId] = parts.path.split(regex);
+		if (partnerId && entryId) {
+			return `kaltura://${partnerId}/${entryId}/`;
+		}
+	};
+
+	const pattern2 = src => {
 		const srcRegex = /^.*\/partner_id\/(\w*).*entry_id=(\w*).*$/gi;
 		const [, partnerId, entryId] = src.split(srcRegex);
 
 		if (partnerId && entryId) {
 			return `kaltura://${partnerId}/${entryId}/`;
 		}
-
-		return src;
 	};
 
-	if (href.includes('/p/') && href.includes('/sp/')) {
-		return parseEmbedSrc(href);
-	}
-
-	const parts = url.parse(href, true);
-
-	if (href.includes('/id/')) {
+	const pattern3 = () => {
 		const partnerId = parts.query.playerId;
 		const pathname = parts.pathname.split('/id/');
 		const entryId = pathname[pathname.length - 1];
-		return `kaltura://${partnerId}/${entryId}/`;
-	}
 
-	if (href.includes('index.php')) {
-		const regex = /\/partner_id\/(\d*)\/.*\/entry_id\/(\w*)/gi;
-
-		const [, partnerId, entryId] = parts.path.split(regex);
-		if (partnerId && entryId) {
+		if(partnerId && entryId) {
 			return `kaltura://${partnerId}/${entryId}/`;
 		}
-	}
+	};
 
-	return href;
+	return pattern1()
+		|| pattern2(href)
+		|| pattern3()
+		|| null;
 }
 
 
@@ -126,11 +136,17 @@ function normalizeUrl (href) {
  * @return {string} id of the form `${partnerId}/${entryId}`
  */
 function getIDParts (href) {
-	if (Array.isArray(href)) {
+	if (Array.isArray(href) || href == null) {
 		return href;
 	}
 
-	const [service, rest] = normalizeUrl(href).split('://');
+	const normalized = normalizeUrl(href);
+
+	if(!normalized) {
+		return null;
+	}
+
+	const [service, rest] = normalized.split('://');
 	if (!(/^kaltura/i.test(service) && rest)) {
 		return;
 	}
