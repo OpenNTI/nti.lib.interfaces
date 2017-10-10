@@ -46,7 +46,7 @@ export default class KalturaProvider {
 		// each of them and take the first valid one
 		const [metaURL] = [
 			meta.contentLocation,
-			...meta.images.map(x => x.url)
+			...(meta.images || []).map(x => x.url)
 		]
 			.map(getIDParts)
 			.filter(Boolean);
