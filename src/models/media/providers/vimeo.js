@@ -46,7 +46,7 @@ export default class VimeoProvider {
 
 				return response.json();
 			})
-			.then(data => data.video_id);
+			.then(data => (data.video_id || '').toString());
 	}
 
 
