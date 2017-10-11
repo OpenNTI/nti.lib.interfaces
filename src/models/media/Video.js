@@ -161,9 +161,13 @@ class Video extends Base {
 	}
 
 
-	replaceTranscript (transcript, newFile) {
-		const formdata = new FormData();
-		formdata.append(newFile.name, newFile);
-		return this[Service].put(transcript.href, formdata);
+	async replaceTranscript (newTranscript, existing) {
+		const { purpose } = existing;
+
+		await this.removeTranscript(existing);
+		const updatedTranscript = await newTranscript.setPurpose(purpose);
+		await this.refresh();
+
+		return updatedTranscript;
 	}
 }
