@@ -343,7 +343,7 @@ class Instance extends Base {
 	 */
 	getOutline (options) {
 		const legacy = (typeof options === 'boolean' && options); //backwards compatability
-		const {force, unpublished = legacy} = options || {};
+		const {allowPreview, force, unpublished = legacy} = options || {};
 
 		const FIVE_MINUTES = 300000;//5min in milliseconds.
 		const key = unpublished ? OutlineCacheUnpublished : OutlineCache;
@@ -352,7 +352,7 @@ class Instance extends Base {
 			//We have to wait for the CCE to load to know if its in preview mode or not.
 			this[key] = this.waitForPending().then(()=>
 				//If preview, block outline
-				this.CatalogEntry.Preview
+				this.CatalogEntry.Preview && !allowPreview
 					? Promise.reject('Preview')
 					//not preview, Load contents...
 					: this.Outline.getContent(options));

@@ -40,7 +40,7 @@ export default class AssignmentPlacementProvider {
 	 *                    "item" (Assignment) can be placed. Rejects on errors.
 	 */
 	getItems () {
-		return this.scope.getOutline({unpublished: true})
+		return this.scope.getOutline({unpublished: true, allowPreview: true})
 			.then((outline) => {
 				return getContentNodes([], outline);
 			});
