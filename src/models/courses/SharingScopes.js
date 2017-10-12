@@ -4,7 +4,10 @@ import Base from '../Base';
 export default
 @model
 class SharingScopes extends Base {
-	static MimeType = COMMON_PREFIX + 'courseinstancesharingscopes'
+	static MimeType = [
+		COMMON_PREFIX + 'courseinstancesharingscopes',
+		COMMON_PREFIX + 'courses.courseinstancesharingscopes'
+	]
 
 	static Fields = {
 		...Base.Fields,
