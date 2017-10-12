@@ -47,6 +47,8 @@ export default class Enrollment extends Base {
 		}
 
 		this.CourseInstance.on('change', this.onChange.bind(this));
+
+		this.addToPending(this.CourseInstance);
 	}
 
 
