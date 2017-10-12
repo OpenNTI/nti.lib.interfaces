@@ -70,10 +70,12 @@ class QuestionSet extends Base {
 
 	getAutoGradableConflicts () {
 		const conflicts = [];
-		for (let question of this.questions) {
+		const questions = this.questions || [];
+
+		for (let question of questions) {
 			if (!question.isAutoGradable) {
 				conflicts.push({
-					index: this.questions.indexOf(question),
+					index: questions.indexOf(question),
 					reason: question.getAutoGradableConflicts(),
 					question
 				});
@@ -117,17 +119,17 @@ class QuestionSet extends Base {
 
 
 	getQuestion (id) {
-		return this.questions.reduce((found, q) => found || (q.getID() === id && q), null);
+		return (this.questions || []).reduce((found, q) => found || (q.getID() === id && q), null);
 	}
 
 
 	getQuestions () {
-		return this.questions.slice();
+		return (this.questions || []).slice();
 	}
 
 
 	getQuestionCount () {
-		return this.questions.length;
+		return (this.questions || []).length;
 	}
 
 
