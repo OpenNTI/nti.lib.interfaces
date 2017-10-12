@@ -25,6 +25,7 @@ class MediaSource extends Base {
 		'source':    { type: 'string' },
 		'thumbnail': { type: 'string' }, //From a parsed DomObject
 		'title':     { type: 'string' }, //From a parsed DomObject
+		'type':      { type: 'string' },
 	}
 
 	static from (service, uri) {
