@@ -22,6 +22,7 @@ class QuestionSubmission extends Base {
 	static build (question) {
 		const {parts} = question;
 		const data = {
+			MimeType: QuestionSubmission.MimeType,
 			ContainerId: question.containerId,
 			NTIID: question.getID(),
 			questionId: question.getID(),
