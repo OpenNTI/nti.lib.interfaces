@@ -26,6 +26,7 @@ class Topic extends Base {
 		'PostCount':                   { type: 'number' },
 		'PublicationState':            { type: '*'      },
 		'title':                       { type: 'string' },
+		'headline':                    { type: 'model'  },
 	}
 
 
