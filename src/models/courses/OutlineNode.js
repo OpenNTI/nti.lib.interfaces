@@ -223,7 +223,8 @@ function applyProgressAndSummary (content, progress, summary) {
 
 
 function collateVideo (json) {
-	let re = /ntivideo$/;
+	const re = /ntivideo$/;
+	const vroll = /videoroll$/;
 	function collate (list, current) {
 		let last = list[list.length - 1];
 		if (re.test(current.MimeType)) {
@@ -236,12 +237,12 @@ function collateVideo (json) {
 			}
 
 			//The previous item is a video set...(or we just created it)
-			if (last && /videoroll$/.test(last.MimeType)) {
+			if (last && vroll.test(last.MimeType)) {
 				last.Items.push(current);
 				return list;
 			}
 
-		} else if (current.Items) {
+		} else if (current.Items && !vroll.test(current.MimeType)) {
 			current = collateVideo(current);
 		}
 
@@ -249,9 +250,10 @@ function collateVideo (json) {
 		return list;
 	}
 
-	json.Items = (json.Items || []).reduce(collate, []);
-
-	return json;
+	return {
+		...json,
+		Items: (json.Items || []).reduce(collate, [])
+	};
 }
 
 
