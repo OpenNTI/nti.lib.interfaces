@@ -104,7 +104,7 @@ class Base extends EventEmitter {
 	}
 
 
-	onChange = (who) => {
+	onChange (who) {
 		this.emit('change', this, who);
 	}
 
