@@ -32,16 +32,26 @@ class User extends Entity {
 
 	static Fields = {
 		...Entity.Fields,
-		'accepting': { type: 'model[]' },
-		'following': { type: 'model[]' },
-		'ignoring': { type: 'model[]' },
-		'AvatarURLChoices': { type: 'string[]' },
-		'Connections': { type: '*' },
-		'Communities': { type: 'model[]' },
-		'DynamicMemberships': { type: 'model[]' },
-		'positions': { type: 'model[]' },
-		'education': { type: 'model[]' },
-		'lastLoginTime': { type: 'date' },
+		'accepting':          { type: 'model[]'   },
+		'following':          { type: 'model[]'   },
+		'ignoring':           { type: 'model[]'   },
+		'AvatarURLChoices':   { type: 'string[]'  },
+		'Connections':        { type: '*'         },
+		'Communities':        { type: 'model[]'   },
+		'DynamicMemberships': { type: 'model[]'   },
+		'positions':          { type: 'model[]'   },
+		'education':          { type: 'model[]'   },
+		'lastLoginTime':      { type: 'date'      },
+		'backgroundURL':      { type: 'string'    },
+		'location':           { type: 'string'    },
+		'home_page':          { type: 'string'    },
+		'twitter':            { type: 'string'    },
+		'googlePlus':         { type: 'string'    },
+		'linkedIn':           { type: 'string'    },
+		'facebook':           { type: 'string'    },
+		'email':              { type: 'string'    },
+		'about':              { type: 'string[]'  },
+		'interests':          { type: 'string[]'  }
 	}
 
 	isUser = true

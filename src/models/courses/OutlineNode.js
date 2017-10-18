@@ -24,10 +24,12 @@ class OutlineNode extends Outline {
 
 	static Fields = {
 		...Outline.Fields,
-		'contents': { type: 'model[]', defaultValue: [] },
-		'DCTitle': { type: 'string' },
-		'AvailableBeginning': { type: 'date' },
-		'AvailableEnding': { type: 'date' },
+		'contents':             { type: 'model[]', defaultValue: [] },
+		'DCTitle':              { type: 'string'                    },
+		'AvailableBeginning':   { type: 'date'                      },
+		'AvailableEnding':      { type: 'date'                      },
+		'ntiid':                { type: 'string'                    },
+		'title':                { type: 'string'                    }
 	}
 
 

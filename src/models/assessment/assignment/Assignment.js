@@ -44,6 +44,8 @@ class Assignment extends Base {
 		'IsTimedAssignment':                    { type: 'boolean'                                      },
 		'title':                                { type: 'string',                                      },
 		'content':                              { type: 'string',                                      },
+		'PublicationState':                     { type: 'string',                                      },
+		'NoSubmit':                             { type: 'boolean',                                     }
 	}
 
 
