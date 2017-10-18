@@ -29,11 +29,13 @@ class Package extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'DCCreator':  { type: names,    name: 'author' },
-		'title':      { type: 'string',                },
-		'index':      { type: 'string',                },
-		'label':      { type: 'string',                },
-		'root':       { type: 'string',                },
+		'DCCreator':                            { type: names,    name: 'author' },
+		'title':                                { type: 'string',                },
+		'index':                                { type: 'string',                },
+		'label':                                { type: 'string',                },
+		'root':                                 { type: 'string',                },
+		'icon':                                 { type: 'string',                },
+		'PlatformPresentationResources':        { type: 'object'                 }
 		// 'background': { type: 'string',                },
 	}
 

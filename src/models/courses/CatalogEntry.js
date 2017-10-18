@@ -24,18 +24,26 @@ class CourseCatalogEntry extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'DCCreator':           { type: 'string[]', name: 'creators'        },
-		'ContentPackages':     { type: 'string[]'                          },
-		'ContentPackageNTIID': { type: 'string'                            },
-		'CourseNTIID':         { type: 'string'                            },
-		'EndDate':             { type: 'date'                              },
-		'EnrollmentOptions':   { type: 'model',    name: EnrollmentOptions },
-		'ProviderUniqueID':    { type: 'string'                            },
-		'Title':               { type: 'string'                            },
-		'Preview':             { type: 'boolean'                           },
-		'StartDate':           { type: 'date'                              },
-		'Instructors':         { type: 'model[]'                           },
-		'Video':               { type: 'string'                            },
+		'DCCreator':                            { type: 'string[]', name: 'creators'        },
+		'ContentPackages':                      { type: 'string[]'                          },
+		'ContentPackageNTIID':                  { type: 'string'                            },
+		'CourseNTIID':                          { type: 'string'                            },
+		'EndDate':                              { type: 'date'                              },
+		'EnrollmentOptions':                    { type: 'model',    name: EnrollmentOptions },
+		'ProviderUniqueID':                     { type: 'string'                            },
+		'Title':                                { type: 'string'                            },
+		'Preview':                              { type: 'boolean'                           },
+		'StartDate':                            { type: 'date'                              },
+		'Instructors':                          { type: 'model[]'                           },
+		'Video':                                { type: 'string'                            },
+		'PlatformPresentationResources':        { type: 'object'                            },
+		'Duration':                             { type: 'string'                            },
+		'RichDescription':                      { type: 'string'                            },
+		'Description':                          { type: 'string'                            },
+		'ProviderDepartmentTitle':              { type: 'string'                            },
+		'Schedule':                             { type: 'object'                            },
+		'Credit':                               { type: 'object[]'                          },
+		'Prerequisites':                        { type: 'object[]'                          }
 	}
 
 	static getFactory (service) {

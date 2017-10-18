@@ -30,6 +30,7 @@ class PageInfo extends Base {
 		'label':               { type: 'string'                    },
 		'sharingPreference':   { type: 'model'                     },
 		'title':               { type: 'string'                    },
+		'Title':               { type: 'string'                    }
 	}
 
 	constructor (service, parent, data) {

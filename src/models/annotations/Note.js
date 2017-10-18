@@ -17,10 +17,15 @@ class Note extends Highlight {
 
 	static Fields = {
 		...Highlight.Fields,
-		'body':              { type: '*[]'      },
-		'inReplyTo':         { type: 'string'   },
-		'references':        { type: 'string[]' },
-		'ReferencedByCount': { type: 'number'   },
+		'body':                   { type: '*[]'      },
+		'inReplyTo':              { type: 'string'   },
+		'references':             { type: 'string[]' },
+		'ReferencedByCount':      { type: 'number'   },
+		'LikeCount':              { type: 'number'   },
+		'title':                  { type: 'string'   },
+		'sharedWith':             { type: 'string[]' },
+		'presentationProperties': { type: 'object'   },
+		'style':                  { type: 'string'   }
 	}
 
 
