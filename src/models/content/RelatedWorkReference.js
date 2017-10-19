@@ -52,6 +52,8 @@ class RelatedWorkReference extends Base {
 		'target-NTIID':   { type: 'string' },
 		'targetMimeType': { type: 'string' },
 		'type':           { type: 'string' },
+		'description':    { type: 'string' },
+		'byline':         { type: 'string' }
 	}
 
 	static fromID (service, id) {

@@ -8,6 +8,6 @@ class Solution extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'value':                    { type: 'string' }
+		'value':                    { type: 'string?' }
 	};
 }

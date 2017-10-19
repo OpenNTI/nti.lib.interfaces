@@ -36,8 +36,8 @@ class PageInfo extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
-		if (data.AssessmentItems) {
-			this.AssessmentItems = setupAssessmentItems(data.AssessmentItems, this);
+		if (this.AssessmentItems) {
+			this.AssessmentItems = setupAssessmentItems(this.AssessmentItems, this);
 		}
 	}
 

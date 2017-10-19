@@ -35,7 +35,8 @@ class Package extends Base {
 		'label':                                { type: 'string',                },
 		'root':                                 { type: 'string',                },
 		'icon':                                 { type: 'string',                },
-		'PlatformPresentationResources':        { type: 'object'                 }
+		'PlatformPresentationResources':        { type: 'object'                 },
+		'PresentationProperties':               { type: 'object'                 }
 		// 'background': { type: 'string',                },
 	}
 

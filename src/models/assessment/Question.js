@@ -29,6 +29,7 @@ class Question extends Base {
 		'parts':                    { type: 'model[]', defaultValue: [] },
 		'wordbank':                 { type: 'model'                     },
 		'AssessmentContainerCount': { type: 'number'                    },
+		'ContentRoot':              { type: 'string'                    }
 	};
 
 
