@@ -5,7 +5,10 @@ import Base from '../Base';
 export default
 @model
 class RoomInfo extends Base {
-	static MimeType = COMMON_PREFIX + '_meeting'
+	static MimeType = [
+		COMMON_PREFIX + '_meeting',
+		COMMON_PREFIX + 'roominfo'
+	]
 
 	static Fields = {
 		...Base.Fields,

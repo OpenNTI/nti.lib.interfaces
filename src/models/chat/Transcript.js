@@ -11,7 +11,7 @@ class Transcript extends Base {
 	static Fields = {
 		...Base.Fields,
 		'Messages':     { type: 'model[]',  name: 'messages'     },
-		'RoomInfo':     { type: 'object'                          },
+		'RoomInfo':     { type: 'model'                          },
 		'Contributors': { type: 'string[]', name: 'contributors' },
 	}
 
