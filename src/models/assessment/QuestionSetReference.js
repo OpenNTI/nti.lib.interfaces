@@ -9,7 +9,7 @@ class QuestionSetReference extends Base {
 	static Fields = {
 		...Base.Fields,
 		'Target-NTIID':   { type: 'string' },
-		'question-count': { type: 'number' },
+		'question-count': { type: 'number?' },
 		'label':          { type: 'string' }
 	}
 }
