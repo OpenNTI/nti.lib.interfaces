@@ -32,7 +32,7 @@ class Grade extends Base {
 		'IsExcused':           { type: 'boolean' },
 		'IsPredicted':         { type: 'boolean' },
 		'Username':            { type: 'string'  },
-		'value':               { type: 'string'  },
+		'value':               { type: 'string?'  },
 	}
 
 

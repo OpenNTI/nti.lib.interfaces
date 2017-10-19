@@ -9,7 +9,7 @@ class SurveyReference extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'question-count': { type: 'number' },
+		'question-count': { type: 'number?' },
 	}
 
 
@@ -18,6 +18,6 @@ class SurveyReference extends Base {
 	}
 
 	getQuestionCount () {
-		return parseInt(this['question-count'], 10) || 0;
+		return this['question-count'] || 0;
 	}
 }

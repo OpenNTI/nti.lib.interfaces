@@ -245,6 +245,70 @@ describe('Fields Mixin', () => {
 		);
 	});
 
+	describe('Feilds validate types', () => {
+		@mixin(Fields)
+		class Foo {
+			static Fields = {
+				'field1': {type: 'number?'}
+			}
+			constructor (data) {
+				this.initMixins(data);
+			}
+		}
+
+		test('Coerce number from string', () => {
+			const asString = new Foo({field1: '25'});
+			expect(asString.field1).toBe(25);
+		});
+
+		test('Coerce number from number', () => {
+			const asNumber = new Foo({field1: 35});
+			expect(asNumber.field1).toBe(35);
+		});
+
+		test('Coerce number from null', () => {
+			const asNull = new Foo({field1: null});
+			expect(asNull.field1).toBe(null);
+		});
+
+		test('Coerce number from undefined', () => {
+			const asUndefined = new Foo({});
+			expect(asUndefined.field1).toBe(undefined);
+		});
+	});
+
+	describe('Feilds validate types', () => {
+		@mixin(Fields)
+		class Foo {
+			static Fields = {
+				'field1': {type: 'string?'}
+			}
+			constructor (data) {
+				this.initMixins(data);
+			}
+		}
+
+		test('Coerce string from string', () => {
+			const asString = new Foo({field1: 'a string'});
+			expect(asString.field1).toBe('a string');
+		});
+
+		test('Coerce string from number', () => {
+			const asNumber = new Foo({field1: 25});
+			expect(asNumber.field1).toBe('25');
+		});
+
+		test('Coerce string from null', () => {
+			const asNull = new Foo({field1: null});
+			expect(asNull.field1).toBe(null);
+		});
+
+		test('Coerce string from undefined', () => {
+			const asUndefined = new Foo({});
+			expect(asUndefined.field1).toBe(undefined);
+		});
+	});
+
 	test('Feilds parse models');
 	test('Feilds parse model arrays');
 	test('Feilds parse model maps');
