@@ -9,6 +9,7 @@ class LeasonOverview extends Base {
 	static Fields = {
 		...Base.Fields,
 		'Items': { type: 'model[]' },
+		'title': { type: 'string'  }
 	}
 
 

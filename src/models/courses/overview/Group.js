@@ -8,7 +8,9 @@ class OverviewGroup extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'Items': { type: 'model[]' },
+		'Items':       { type: 'model[]' },
+		'accentColor': { type: 'string' },
+		'title':       { type: 'string' }
 	}
 
 
