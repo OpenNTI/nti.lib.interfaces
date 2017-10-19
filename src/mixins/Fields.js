@@ -30,6 +30,8 @@ const TYPE_MAP = {
 	'object': applyObjectField,
 	'number': applyNumberField,
 	'string': applyStringField,
+	'number?': coerceNumberField,
+	'string?': coerceStringField
 };
 
 const isArrayType = RegExp.prototype.test.bind(/\[]$/);
@@ -480,6 +482,20 @@ function applyObjectField (scope, fieldName, valueIn, declared, defaultValue) {
 function applyStringField (scope, fieldName, valueIn, declared, defaultValue) {
 	enforceType(scope, fieldName, 'string', valueIn || defaultValue);
 	return applyField(scope, fieldName, valueIn, declared, defaultValue);
+}
+
+
+
+function coerceNumberField (scope, fieldName, valueIn, declared, defaultValue) {
+	const coerced = valueIn != null ? parseFloat(valueIn, 10) : valueIn;
+	return applyNumberField(scope, fieldName, coerced, declared, defaultValue);
+}
+
+
+
+function coerceStringField (scope, fieldName, valueIn, declared, defaultValue) {
+	const coerced = valueIn != null ? valueIn.toString() : valueIn;
+	return applyStringField(scope, fieldName, coerced, declared, defaultValue);
 }
 
 

@@ -14,8 +14,8 @@ class GradeBookUserSummary extends Base {
 		...Base.Fields,
 		'Alias':                   { type: 'string', name: 'displayName' },
 		'HistoryItemSummary':      { type: 'model'                       },
-		'OverdueAssignmentCount':  { type: 'string', name: 'overdue'     },
-		'UngradedAssignmentCount': { type: 'string', name: 'ungraded'    },
+		'OverdueAssignmentCount':  { type: 'number?', name: 'overdue'    },
+		'UngradedAssignmentCount': { type: 'number?', name: 'ungraded'   },
 		'User':                    { type: 'model',  name: 'user'        },
 	}
 
