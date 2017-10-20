@@ -8,8 +8,9 @@ class AssignmentPart extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'question_set':  { type: 'model'  },
-		'QuestionSetId': { type: 'string' },
+		'question_set':  { type: 'model'   },
+		'QuestionSetId': { type: 'string'  },
+		'IsSummary':     { type: 'boolean' }
 	}
 
 
