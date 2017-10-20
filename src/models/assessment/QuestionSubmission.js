@@ -14,7 +14,7 @@ class QuestionSubmission extends Base {
 	static Fields = {
 		...Base.Fields,
 		'questionId':                    { type: 'string'  },
-		'parts':                         { type: 'model[]' },
+		'parts':                         { type: '*' },
 		'ContainerId':                   { type: 'string'  },
 		'CreatorRecordedEffortDuration': { type: 'number'  },
 	}
