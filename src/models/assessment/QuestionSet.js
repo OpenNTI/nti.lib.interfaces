@@ -28,6 +28,7 @@ class QuestionSet extends Base {
 		'questions':           { type: 'model[]'                               },
 		'Randomized':          { type: 'boolean', name: 'isRandomized'         },
 		'RandomizedPartsType': { type: 'boolean', name: 'isPartTypeRandomized' },
+		'containerId':         { type: 'string'                                }
 	};
 
 

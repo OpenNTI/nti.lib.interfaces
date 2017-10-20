@@ -12,8 +12,10 @@ class AssessedPart extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'assessedValue': { type: 'number'  },
-		'solutions':     { type: 'model[]' },
+		'assessedValue':     { type: 'number'  },
+		'solutions':         { type: 'model[]' },
+		'submittedResponse': { type: 'number'  },
+		'explanation':       { type: 'string'  }
 	}
 
 
