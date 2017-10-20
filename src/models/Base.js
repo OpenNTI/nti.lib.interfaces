@@ -53,7 +53,7 @@ class Base extends EventEmitter {
 
 		this[Service] = service;
 		//only allow null, and lib-interface models as "parents"
-		this[Parent] = (parent != null && parent instanceof Base) ? parent : null;
+		this[Parent] = (parent != null && parent[Service]) ? parent : null;
 
 
 		if (this.initMixins) {
