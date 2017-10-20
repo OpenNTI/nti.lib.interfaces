@@ -14,7 +14,7 @@ class TimedAssignment extends Assignment {
 		...Assignment.Fields,
 		'IsTimedAssignment':  { type: 'boolean' },
 		'MaximumTimeAllowed': { type: 'number'  },
-		'Metadata':           { type: 'model'  },
+		'Metadata':           { type: 'object'  },
 	}
 
 	isTimed = true
@@ -51,13 +51,13 @@ class TimedAssignment extends Assignment {
 
 	getDuration () {
 		let md = this.Metadata;
-		return md && secondsToMilliseconds(md.getDuration()); //convert in the model?
+		return md && secondsToMilliseconds(md.Duration);
 	}
 
 
 	getStartTime () {
 		let md = this.Metadata;
-		return md && md.getStartTime();
+		return md && md.StartTime;
 	}
 
 
