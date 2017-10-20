@@ -15,9 +15,9 @@ class AssignmentSubmission extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'assignmentId':                  { type: 'string'  },
-		'parts':                         { type: 'model[]' },
-		'CreatorRecordedEffortDuration': { type: 'number'  },
+		'assignmentId':                  { type: 'string'                    },
+		'parts':                         { type: 'model[]', defaultValue: [] },
+		'CreatorRecordedEffortDuration': { type: 'number'                    },
 	}
 
 	constructor (service, parent, data, submitTo) {

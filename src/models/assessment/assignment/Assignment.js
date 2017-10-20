@@ -34,7 +34,7 @@ class Assignment extends Base {
 		'available_for_submission_ending':      { type: 'date',                                        },//becomes getAvailableForSubmissionEnding (use getDueDate)
 		'category_name':                        { type: 'string',                                      },
 		'discussion_ntiid':                     { type: 'string',  name: 'discussionId'                },
-		'parts':                                { type: 'model[]',                                     },
+		'parts':                                { type: 'model[]', defaultValue: []                    },
 		'total_points':                         { type: 'number',  name: 'totalPoints'                 },
 		'version':                              { type: 'string',                                      },//a date string, ie "2017-08-20T01:23:45"
 		'LessonContainerCount':                 { type: 'number',                                      },
