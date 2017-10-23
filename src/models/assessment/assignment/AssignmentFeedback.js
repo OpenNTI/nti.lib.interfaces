@@ -11,6 +11,11 @@ export default
 class AssignmentFeedback extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitemfeedback'
 
+	static Fields = {
+		...Base.Fields,
+		'AssignmentId': { type: 'string' }
+	}
+
 	constructor (service, parent, data) {
 		super(service, parent, data);
 	}

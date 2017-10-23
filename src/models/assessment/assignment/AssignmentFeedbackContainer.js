@@ -30,7 +30,7 @@ class AssignmentFeedbackContainer extends Base {
 
 
 	[Symbol.iterator] () {
-		let snapshot = this.Items.slice();
+		let snapshot = (this.Items || []).slice();
 		let {length} = snapshot;
 		let index = 0;
 
@@ -47,10 +47,10 @@ class AssignmentFeedbackContainer extends Base {
 	}
 
 	get length () {
-		return this.Items.length;
+		return (this.Items || []).length;
 	}
 
 	map (fn) {
-		return this.Items.map(fn);
+		return (this.Items || []).map(fn);
 	}
 }
