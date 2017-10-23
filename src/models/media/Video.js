@@ -31,7 +31,8 @@ class Video extends Base {
 		'sources':     { type: 'model[]'  },
 		'title':       { type: 'string'   }, //From a parsed DomObject
 		'transcripts': { type: 'model[]'  },
-		'ntiid':       { type: 'string'   }
+		'ntiid':       { type: 'string'   },
+		'label':       { type: 'string'   }
 	}
 
 	isVideo = true
