@@ -10,6 +10,9 @@ class SurveyReference extends Base {
 	static Fields = {
 		...Base.Fields,
 		'question-count': { type: 'number?' },
+		'label':          { type: 'string'  },
+		'submissions':    { type: 'number'  },
+		'Target-NTIID':   { type: 'string'  }
 	}
 
 

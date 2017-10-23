@@ -17,6 +17,10 @@ export default
 class Survey extends QuestionSet {
 	static MimeType = COMMON_PREFIX + 'nasurvey'
 
+	static Fields = {
+		...QuestionSet.Fields,
+		'title': { type: 'string' }
+	}
 
 	get hasAggregationData () {
 		return this.hasLink(SURVEY_AGGREGATED_LINK);
