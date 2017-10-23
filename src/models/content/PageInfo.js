@@ -169,11 +169,9 @@ function assessmentItemOrder (a, b) {
 
 
 function setupAssessmentItems (items, pageInfo) {
-	items = items
-		.filter(o=> o && o.containsId)
-		.sort(assessmentItemOrder);
+	items = items.filter(Boolean).sort(assessmentItemOrder);
 
-	const sets = items.slice();
+	const sets = items.filter(o=> o && o.containsId);
 
 	//Remove questions & questionsets that are embedded within Assignments and QuestionSets...leave only top-level items.
 	return items.filter(o =>
