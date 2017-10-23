@@ -25,7 +25,8 @@ class Note extends Highlight {
 		'title':                  { type: 'string'   },
 		'sharedWith':             { type: 'string[]' },
 		'presentationProperties': { type: 'object'   },
-		'style':                  { type: 'string'   }
+		'style':                  { type: 'string'   },
+		'Class':                  { type: 'string'   }
 	}
 
 
