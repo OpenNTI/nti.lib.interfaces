@@ -17,6 +17,7 @@ class GradeBookUserSummary extends Base {
 		'OverdueAssignmentCount':  { type: 'number?', name: 'overdue'    },
 		'UngradedAssignmentCount': { type: 'number?', name: 'ungraded'   },
 		'User':                    { type: 'model',  name: 'user'        },
+		'AvailableFinalGrade':     { type: 'boolean'                     }
 	}
 
 

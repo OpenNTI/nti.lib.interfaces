@@ -14,7 +14,7 @@ class AssessedPart extends Base {
 		...Base.Fields,
 		'assessedValue':     { type: 'number'  },
 		'solutions':         { type: 'model[]' },
-		'submittedResponse': { type: 'number'  },
+		'submittedResponse': { type: '*'       }, // this can be various types, numbers, objects, etc
 		'explanation':       { type: 'string'  }
 	}
 
