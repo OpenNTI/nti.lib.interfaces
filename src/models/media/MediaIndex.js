@@ -6,7 +6,8 @@ import {Service, Parent} from '../../constants';
 import {parse} from '../Parser';
 
 import PageSourceModel from './MediaIndexBackedPageSource';
-
+import MediaSource from './MediaSource';
+import Transcript from './Transcript';
 
 const logger = Logger.get('lib:models:MediaIndex');
 
@@ -33,6 +34,22 @@ export default class MediaIndex {
 			o.src = URL.resolve(root, o.src);
 			o.srcjsonp = o.srcjsonp ? URL.resolve(root, o.srcjsonp) : o.srcjsonp;
 			return o;
+		}
+
+		function applyTranscriptMimeType (transcript) {
+			if(transcript && !transcript.MimeType) {
+				transcript.MimeType = Transcript.MimeType;
+			}
+
+			return transcript;
+		}
+
+		function applySourceMimeType (source) {
+			if(source && !source.MimeType) {
+				source.MimeType = MediaSource.MimeType;
+			}
+
+			return source;
 		}
 
 		function order (a, b) {
@@ -62,7 +79,11 @@ export default class MediaIndex {
 			if (vi.hasOwnProperty(n)) {
 				n = vi[n];
 				if (n && !isEmpty(n.transcripts)) {
-					n.transcripts = n.transcripts.map(prefix);
+					n.transcripts = n.transcripts.map(prefix).map(applyTranscriptMimeType);
+				}
+
+				if (n && !isEmpty(n.sources)) {
+					n.sources = n.sources.map(applySourceMimeType);
 				}
 			}
 		}
