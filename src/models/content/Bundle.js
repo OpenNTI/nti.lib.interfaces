@@ -38,8 +38,10 @@ class Bundle extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
+		const onChange = (...args) => this.onChange(...args);
+
 		for (let p of this.ContentPackages) {
-			p.on('change', this.onChange);
+			p.on('change', onChange);
 		}
 
 		this.addToPending(
