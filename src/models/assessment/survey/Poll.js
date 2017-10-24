@@ -12,7 +12,7 @@ import PollSubmission from './PollSubmission';
 
 export default
 @model
-@mixin({@readonly isPole: true})
+@mixin({@readonly isPoll: true})
 class Poll extends Question {
 	static MimeType = COMMON_PREFIX + 'napoll'
 
