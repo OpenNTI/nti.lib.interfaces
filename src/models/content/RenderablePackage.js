@@ -15,6 +15,9 @@ class RenderablePackage extends Package {
 	static Fields = {
 		...Package.Fields,
 		'LatestRenderJob': { type: 'model' },
+		'isPublished':     { type: 'boolean'},
+		'isRendered':      { type: 'boolean'},
+		'isLocked':        { type: 'boolean'}
 	}
 
 	isRenderable = true
