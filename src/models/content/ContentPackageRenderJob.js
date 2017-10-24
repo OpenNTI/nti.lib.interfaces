@@ -18,8 +18,6 @@ class ContentPackageRenderJob extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'isFailed':  { type: 'boolean' },
-		'isSuccess': { type: 'boolean' },
 		'JobId':     { type: 'string'  },
 		'State':     { type: 'string'  },
 	}
