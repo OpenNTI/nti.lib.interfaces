@@ -10,7 +10,7 @@ class AggregatedMultipleChoicePart extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'Results': { type: 'number[]' },
+		'Results': { type: '*' },   // can be a map of values
 	}
 
 	getResults (part) {
