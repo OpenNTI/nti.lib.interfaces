@@ -1,7 +1,6 @@
 import {mixin} from 'nti-lib-decorators';
 
 import assets from '../../mixins/PresentationResources';
-import setAndEmit from '../../utils/getsethandler';
 //
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -59,18 +58,6 @@ class CourseCatalogEntry extends Base {
 
 		if (!this.ContentPackages) {
 			this.ContentPackages = [this.ContentPackageNTIID];
-		}
-
-		this.addToPending(
-			this.getAsset('landing').then(setAndEmit(this, 'icon')),
-			this.getAsset('thumb').then(setAndEmit(this, 'thumb')),
-			this.getAsset('background').then(setAndEmit(this, 'background'))
-		);
-
-		if (!this.Video) {
-			this.addToPending(
-				this.getAsset('promo', true).then(setAndEmit(this, 'promoImage'))
-			);
 		}
 	}
 
