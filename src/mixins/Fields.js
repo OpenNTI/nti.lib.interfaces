@@ -594,7 +594,7 @@ function applyModelField (scope, fieldName, value, declared, defaultValue) {
 
 
 function applyField (scope, fieldName, valueIn, declared, defaultValue) {
-	let value = valueIn !== None ? valueIn : defaultValue;
+	let value = valueIn !== None ? valueIn : clone(defaultValue);
 
 	delete scope[fieldName];
 
