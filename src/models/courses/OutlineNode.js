@@ -76,7 +76,7 @@ class OutlineNode extends Outline {
 
 
 	getContent () {
-		const isLegacy = Boolean(this.parent('isLegacy'));
+		const isLegacy = Boolean(this.parent('isLegacy', true));
 		const link = 'overview-content';
 
 		let doFetch = (
