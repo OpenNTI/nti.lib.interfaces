@@ -19,7 +19,7 @@ class Slide extends Base {
 		'slidedeckid':     { type: 'string', name: 'deckId'    },
 		'slidevideoid':    { type: 'string', name: 'videoId'   },
 		'slidenumber':     { type: 'string', name: 'number'    },
-		'slidevideostart': { type: 'number', name: 'startTime' },
-		'slidevideoend':   { type: 'number', name: 'endTime'   },
+		'slidevideostart': { type: 'number?', name: 'startTime' },
+		'slidevideoend':   { type: 'number?', name: 'endTime'   },
 	}
 }
