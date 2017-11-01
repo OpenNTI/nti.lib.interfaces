@@ -44,7 +44,9 @@ class CourseCatalogEntry extends Base {
 		'Credit':                               { type: 'object[]'                          },
 		'Prerequisites':                        { type: 'object[]'                          },
 		'title':                                { type: 'string'                            },
-		'RealEnrolmentStatus':                  { type: 'string'                            }
+		'RealEnrolmentStatus':                  { type: 'string'                            },
+		'description':                          { type: 'string'                            },
+		'tags':                                 { type: 'string[]'                          }
 	}
 
 	static getFactory (service) {
