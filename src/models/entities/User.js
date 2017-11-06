@@ -39,6 +39,7 @@ class User extends Entity {
 		'Connections':        { type: '*'         },
 		'Communities':        { type: 'model[]'   },
 		'DynamicMemberships': { type: 'model[]'   },
+		'MostRecentSession':  { type: 'data'      },
 		'positions':          { type: 'model[]'   },
 		'education':          { type: 'model[]'   },
 		'lastLoginTime':      { type: 'date'      },
