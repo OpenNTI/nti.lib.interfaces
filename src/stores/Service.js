@@ -242,7 +242,8 @@ class ServiceDocument extends EventEmitter {
 
 	getBatch (url, parent) {
 		return this.get(url)
-			.then(raw => new Batch(this, parent, raw));
+			.then(raw => new Batch(this, parent, raw))
+			.then(batch => batch.waitForPending());
 	}
 
 
