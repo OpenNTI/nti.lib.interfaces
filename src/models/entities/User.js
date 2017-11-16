@@ -39,7 +39,7 @@ class User extends Entity {
 		'Connections':        { type: '*'         },
 		'Communities':        { type: 'model[]'   },
 		'DynamicMemberships': { type: 'model[]'   },
-		'MostRecentSession':  { type: 'data'      },
+		'MostRecentSession':  { type: 'date'      },
 		'positions':          { type: 'model[]'   },
 		'education':          { type: 'model[]'   },
 		'lastLoginTime':      { type: 'date'      },
@@ -72,6 +72,7 @@ class User extends Entity {
 	}
 
 	getLastLoginTime () {} //implemented by lastLoginTime date field.
+	getMostRecentSession () {} //implemented by MostRecentSession date field.
 
 	applyRefreshedData (o) {
 		cleanData(o);
