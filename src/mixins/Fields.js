@@ -19,6 +19,8 @@ const getMethod = x => 'get' + x.replace(
 	(_, c) => (c || '').toUpperCase()
 );
 
+const SKIP_WARN = Symbol('Warning Skip');//only used to prevent internal references from triggering a warning.
+
 const TYPE_MAP = {
 	'*': null, // wildcard "ANY" type
 	'any': null, // wildcard "ANY" type
@@ -433,7 +435,9 @@ function dateGetter (key) {
 	let last;
 	return function () {
 		if (typeof this[symbol] !== 'object' || this[key] !== last) {
+			this[SKIP_WARN] = true;
 			last = this[key];
+			delete this[SKIP_WARN];
 			this[symbol] = Array.isArray(last)
 				? last.map(x => Parsing.parseDate(x))
 				: Parsing.parseDate(last);
@@ -502,17 +506,26 @@ function coerceStringField (scope, fieldName, valueIn, declared, defaultValue) {
 
 function applyDateField (scope, fieldName, value) {
 	let v = value;
+	const methodName = getMethod(fieldName);
+
+	const getter = ( ) => {
+		if (!scope[SKIP_WARN] && !getter.warned) {
+			getter.warned = true;
+			logger.warn(`The value of the ${fieldName} field is a Date instance. Use the ${methodName}() method instead.`);
+		}
+		return v;
+	};
 
 	updateField(scope, fieldName, {
 		configurable: true,
-		get: ( ) => v,
+		get: getter,
 		set: (x) => {
 			v = x;
 			delete scope[getParsedDateKey(fieldName)];
 		}
 	});
 
-	updateField(scope, getMethod(fieldName), {
+	updateField(scope, methodName, {
 		configurable: true,
 		value: dateGetter(fieldName)
 	});
