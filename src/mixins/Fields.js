@@ -509,9 +509,8 @@ function applyDateField (scope, fieldName, value) {
 	const methodName = getMethod(fieldName);
 
 	const getter = ( ) => {
-		if (!scope[SKIP_WARN] && !getter.warned) {
-			getter.warned = true;
-			logger.warn(`The value of the ${fieldName} field is a Date instance. Use the ${methodName}() method instead.`);
+		if (!scope[SKIP_WARN]) {
+			logger.warn(`The value of the ${fieldName} field is not a Date instance. Use the ${methodName}() method instead.`);
 		}
 		return v;
 	};
