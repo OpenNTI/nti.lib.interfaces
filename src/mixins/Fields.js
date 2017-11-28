@@ -434,15 +434,18 @@ function dateGetter (key) {
 	const symbol = getParsedDateKey(key);
 	let last;
 	return function () {
-		if (typeof this[symbol] !== 'object' || this[key] !== last) {
-			this[SKIP_WARN] = true;
-			last = this[key];
+		this[SKIP_WARN] = true;
+		try {
+			if (typeof this[symbol] !== 'object' || this[key] !== last) {
+				last = this[key];
+				this[symbol] = Array.isArray(last)
+					? last.map(x => Parsing.parseDate(x))
+					: Parsing.parseDate(last);
+			}
+			return this[symbol];
+		} finally {
 			delete this[SKIP_WARN];
-			this[symbol] = Array.isArray(last)
-				? last.map(x => Parsing.parseDate(x))
-				: Parsing.parseDate(last);
 		}
-		return this[symbol];
 	};
 }
 
