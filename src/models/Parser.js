@@ -82,7 +82,7 @@ function trackInstances (service, data, make) {
 		inst = map[id] = make();
 	}
 	else {
-		if (data[MOD_TIME] > inst[MOD_TIME]) {
+		if (data[MOD_TIME] > inst.getLastModified()) {
 			inst.refresh(data);
 		}
 	}
