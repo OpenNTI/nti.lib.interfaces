@@ -240,8 +240,9 @@ class ServiceDocument extends EventEmitter {
 	}
 
 
-	getBatch (url, params = {}, parent = this) {
+	getBatch (url, params = {}, transform, parent = this) {
 		return this.get(URL.appendQueryParams(url, params))
+			.then(raw => transform ? transform(raw) : raw)
 			.then(raw => new Batch(this, parent, raw))
 			.then(batch => batch.waitForPending());
 	}
