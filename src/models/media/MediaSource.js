@@ -23,6 +23,8 @@ class MediaSource extends Base {
 		'poster':    { type: 'string' }, //From a parsed DomObject
 		'service':   { type: 'string' },
 		'source':    { type: 'string' },
+		'width':     { type: 'number' },
+		'height':    { type: 'number' },
 		'thumbnail': { type: 'string' }, //From a parsed DomObject
 		'title':     { type: 'string' }, //From a parsed DomObject
 		'type':      { type: 'string' },
