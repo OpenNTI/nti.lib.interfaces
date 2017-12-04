@@ -95,7 +95,7 @@ class Instance extends Base {
 
 
 	get isAdministrative () {
-		return (this.parent() || {}).isAdministrative || false;
+		return ((this.CatalogEntry || EMPTY_CATALOG_ENTRY)).IsAdmin || false;
 	}
 
 

@@ -32,6 +32,7 @@ class CourseCatalogEntry extends Base {
 		'ProviderUniqueID':                     { type: 'string'                            },
 		'Title':                                { type: 'string'                            },
 		'Preview':                              { type: 'boolean'                           },
+		'IsAdmin':                              { type: 'boolean'                           },
 		'StartDate':                            { type: 'date'                              },
 		'Instructors':                          { type: 'model[]'                           },
 		'Video':                                { type: 'string'                            },
