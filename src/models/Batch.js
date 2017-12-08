@@ -4,7 +4,8 @@ export default class Batch extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'Items': { type: 'model[]', defaultValue: [] }
+		'Items': { type: 'model[]', defaultValue: [] },
+		'Total': { type: 'number'                    }
 	}
 
 

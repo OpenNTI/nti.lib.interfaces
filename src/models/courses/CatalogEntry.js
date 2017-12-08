@@ -47,7 +47,8 @@ class CourseCatalogEntry extends Base {
 		'title':                                { type: 'string'                            },
 		'RealEnrolmentStatus':                  { type: 'string'                            },
 		'description':                          { type: 'string'                            },
-		'tags':                                 { type: 'string[]'                          }
+		'tags':                                 { type: 'string[]'                          },
+		'IsEnrolled':                           { type: 'boolean'                           }
 	}
 
 	static getFactory (service) {
