@@ -13,6 +13,7 @@ export * as profile from './profile';
 export * as store from './store';
 
 export Base from './Base';
+export AnalyticsSession from './AnalyticsSession';
 export Change from './Change';
 
 Registry.ignore('link');
