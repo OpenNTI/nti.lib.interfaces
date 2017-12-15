@@ -199,7 +199,7 @@ export default class DataServerInterface extends EventEmitter {
 
 								const waitOn = new Promise((continueRequest, rejectConflict) => {
 									confirm = (...args) => error.confirm(...args).then(continueRequest, rejectConflict);
-									reject = () => rejectConflict(Object.assign(error, {confirm: null, reject: null, resolved: true}));
+									reject = () => rejectConflict(Object.assign(error, {resolved: true}));
 								});
 
 
