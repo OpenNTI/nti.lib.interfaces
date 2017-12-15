@@ -1,5 +1,7 @@
 import isFunction from 'is-function';
 
+import {readValueFor} from './Fields';
+
 const BLACK_LISTED = {
 	Class: true,
 	_events: true
@@ -13,13 +15,6 @@ function decode (fields, key) {
 	const field = fieldList.find(x => x.name === key) || {};
 	//Return the actual key of the renamed field, or the original
 	return field.key || key;
-}
-
-
-function readValueFor (scope, fieldName) {
-	const descriptor = Object.getOwnPropertyDescriptor(scope, fieldName);
-	const readKey = ((descriptor || {}).get || {}).renamedTo || fieldName;
-	return scope[readKey];
 }
 
 

@@ -257,7 +257,9 @@ export default function FieldsApplyer (target) {
 				const {getter, declared} = (desc || {}).get || {};
 
 				// get the current value...
+				this[SKIP_WARN] = true;
 				const current = getter ? getter() : this[key];
+				delete this[SKIP_WARN];
 
 				// throw if we're about to replace a function
 				if (typeof current === 'function') {
@@ -408,6 +410,20 @@ export function updateField (scope, field, desc) {
 		Object.defineProperty(scope, field, desc);
 	} catch(e) {
 		logger.warn('Could not update Field: %o on %o, because %s', field, this, e.stack || e.message || e);
+	}
+}
+
+
+// @private - used to read a value without warning.
+// INTERNAL only! -- intended for serializing scope to JSON in JSONValue.js
+export function readValueFor (scope, fieldName) {
+	const descriptor = Object.getOwnPropertyDescriptor(scope, fieldName);
+	const readKey = ((descriptor || {}).get || {}).renamedTo || fieldName;
+	try {
+		scope[SKIP_WARN] = true;
+		return scope[readKey];
+	} finally {
+		delete scope[SKIP_WARN];
 	}
 }
 
