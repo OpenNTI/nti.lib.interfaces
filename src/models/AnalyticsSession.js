@@ -10,7 +10,7 @@ class AnalyticsSession extends Base {
 		...Base.Fields,
 		'SessionStartTime':     { type: 'date' },
 		'SessionEndTime':       { type: 'date' },
-		'GeographicalLocation': { type: 'string' },
+		'GeographicalLocation': { type: 'object' },
 		'UserAgent':            { type: 'string' },
 		'Username':             { type: 'string' },
 		'SessionID':            { type: 'number' }
