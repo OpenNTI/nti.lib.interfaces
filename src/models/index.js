@@ -10,6 +10,7 @@ export * as entities from './entities';
 export * as forums from './forums';
 export * as media from './media';
 export * as profile from './profile';
+export * as reports from './reports';
 export * as store from './store';
 
 export Base from './Base';

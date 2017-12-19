@@ -37,6 +37,7 @@ export default class Enrollment extends Base {
 		...Base.Fields,
 		'CourseInstance':         { type: 'model'  },
 		'LegacyEnrollmentStatus': { type: 'string' },
+		'Reports':                { type: 'model[]'}
 	}
 
 	constructor (service, data) {
