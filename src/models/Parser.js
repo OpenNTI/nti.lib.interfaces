@@ -26,6 +26,7 @@ export function parse (service, parent, obj) {
 					throw e;
 				}
 				logger.warn(e.message);
+				return null;
 			}
 			return o;
 		});

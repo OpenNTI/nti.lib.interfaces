@@ -682,6 +682,6 @@ function doParse (parent, data) {
 
 		logger.warn(m.stack || m.message || m);
 
-		return data;
+		return null;
 	}
 }
