@@ -35,9 +35,12 @@ export default class Enrollment extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'CourseInstance':         { type: 'model'  },
-		'LegacyEnrollmentStatus': { type: 'string' },
-		'Reports':                { type: 'model[]'}
+		'CourseInstance':         { type: 'model'   },
+		'LegacyEnrollmentStatus': { type: 'string'  },
+		'RealEnrollmentStatus':   { type: 'string'  },
+		'Username':               { type: 'string'  },
+		'UserProfile':            { type: 'model'   },
+		'Reports':                { type: 'model[]' }
 	}
 
 	constructor (service, data) {
