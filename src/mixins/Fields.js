@@ -80,7 +80,13 @@ export default function FieldsApplyer (target) {
 				const value = data[key];
 				const declared = key in Fields;
 
-				applyFieldStrategy(this, name, type, value, declared, defaultValue, key);
+				try {
+					applyFieldStrategy(this, name, type, value, declared, defaultValue, key);
+				} catch (e) {
+					if (!required) {
+						throw e;
+					}
+				}
 
 				//Setup renamed-meta-data
 				if (name !== key) {
@@ -89,9 +95,12 @@ export default function FieldsApplyer (target) {
 						get: getterWarning(this, name, key)
 					});
 
-					const desc = Object.getOwnPropertyDescriptor(this, name);
+					let desc = Object.getOwnPropertyDescriptor(this, name);
 					if (!desc || !desc.get) {
 						logger.warn('Invalid Field Description for field %s on %o', name, this);
+						desc = {
+							get () { return null; }
+						};
 					}
 
 					desc.get.renamedFrom = key;
@@ -308,30 +317,39 @@ function initFields (target) {
 
 function applyFieldStrategy (scope, name, type, value, declared, defaultValue, key) {
 	const {constructor: Type} = scope;
+	const ModelName = Type.name || Type.MimeType;
 
-	//allow for hooking... however, strongly prefer setting type to the string: 'model'
-	if (typeof type === 'function') {
-		let val = null;
-		//Explicit model:
-		if (type.prototype[IsModel]) {
-			val = new type(scope[Service], scope, value);
+	try {
+		//allow for hooking... however, strongly prefer setting type to the string: 'model'
+		if (typeof type === 'function') {
+			let val = null;
+			//Explicit model:
+			if (type.prototype[IsModel]) {
+				val = new type(scope[Service], scope, value);
 
 			//some one-off converter function: (please don't use this)
+			} else {
+				val = type(scope[Service], scope, value);
+			}
+
+			applyField(scope, name, val, true);
+
 		} else {
-			val = type(scope[Service], scope, value);
+
+			//Preferred code path:
+			const baseType = isArrayType(type) ? type.substr(0, type.length - 2) : type;
+			const apply = TYPE_MAP[baseType] || applyField;
+			if (type && !(baseType in TYPE_MAP)) {
+				logger.warn('Model "%s" declared "%s" to be type "%s", but that type is unknown.', ModelName, key, type);
+			}
+			apply(scope, name, value, declared, defaultValue);
 		}
-
-		applyField(scope, name, val, true);
-
-
-		//Preferred code path:
-	} else {
-		const baseType = isArrayType(type) ? type.substr(0, type.length - 2) : type;
-		const apply = TYPE_MAP[baseType] || applyField;
-		if (type && !(baseType in TYPE_MAP)) {
-			logger.warn('Model "%s" declared "%s" to be type "%s", but that type is unknown.', Type.name || Type.MimeType, key, type);
-		}
-		apply(scope, name, value, declared, defaultValue);
+	} catch (e) {
+		const reason = e.stack || e.message || e;
+		logger.error('An error occurred parsing %s on %s because: %o', key, ModelName, reason);
+		delete scope[key];
+		delete scope[name];
+		throw e;
 	}
 }
 
