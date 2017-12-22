@@ -50,6 +50,9 @@ class Base extends EventEmitter {
 		//Make EventEmitter properties non-enumerable
 		Object.keys(this).map(key => hideField(this, key));
 
+		if (!service || service.isService !== Service) {
+			throw new Error('Invalid Service Document');
+		}
 
 		this[Service] = service;
 		//only allow null, and lib-interface models as "parents"

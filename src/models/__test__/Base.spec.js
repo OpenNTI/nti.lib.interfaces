@@ -1,6 +1,8 @@
 /* eslint-env jest */
 import Base from '../Base';
 
+import MockService from './mock-service';
+
 describe ('Model: Base Class', () => {
 
 	test('Mixins are mixed in', () => {
@@ -21,7 +23,7 @@ describe ('Model: Base Class', () => {
 	});
 
 	test('Mixed in properties are non-enumerable', () => {
-		const o = new Base({}, null);
+		const o = new Base(MockService, null);
 		expect(o.initMixins).toBeTruthy();
 		expect(o.hasOwnProperty('initMixins')).toBe(false);
 

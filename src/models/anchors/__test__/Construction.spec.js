@@ -4,9 +4,9 @@ import ElementDomContentPointer from '../ElementDomContentPointer';
 import TextDomContentPointer from '../TextDomContentPointer';
 import DomContentRangeDescription from '../DomContentRangeDescription';
 import TextContext from '../TextContext';
+import MockService from '../../__test__/mock-service';
 
-
-const make = (C, o) => new C(null, null, o);
+const make = (C, o) => new C(MockService, null, o);
 
 describe('Model Tests', () => {
 

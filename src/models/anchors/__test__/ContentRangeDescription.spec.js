@@ -1,11 +1,12 @@
 /* eslint-env jest */
 import ContentRangeDescription from '../ContentRangeDescription';
+import MockService from '../../__test__/mock-service';
 
 describe('ContentRangeDescription Tests', () => {
 	describe('locator tests', () => {
 
 		function createCRD () {
-			return new ContentRangeDescription(null, null, {});
+			return new ContentRangeDescription(MockService, null, {});
 		}
 
 		test('attaching and retrieving', () => {

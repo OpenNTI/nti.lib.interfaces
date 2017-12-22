@@ -2,9 +2,10 @@
 import MediaSource from '../MediaSource';
 import MediaSourceFactory from '../MediaSourceFactory';
 import {getMetaDataEntryPoint} from '../providers/vimeo';
+import MockService from '../../__test__/mock-service';
 
 describe('MediaSourceFactory tests', () => {
-	const FAKE_SERVICE = {};
+	const FAKE_SERVICE = MockService;
 
 	describe('YouTube', () => {
 

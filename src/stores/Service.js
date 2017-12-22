@@ -59,6 +59,7 @@ function hideCurrentProperties (o) {
 export default
 @mixin(Pendability, InstanceCacheContainer)
 class ServiceDocument extends EventEmitter {
+
 	constructor (json, server, context) {
 		super();
 
@@ -66,6 +67,7 @@ class ServiceDocument extends EventEmitter {
 		//Make EventEmitter properties non-enumerable
 		hideCurrentProperties(this);
 
+		this.isService = Service;
 		this[Service] = this; //So the parser can access it
 		this[Server] = server;
 		this[Context] = context;

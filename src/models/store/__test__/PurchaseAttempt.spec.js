@@ -1,5 +1,6 @@
 /* eslint-env jest */
 import PurchaseAttempt from '../PurchaseAttempt';
+import MockService from '../../__test__/mock-service';
 import '../../index'; //load all the models
 
 const data = {
@@ -478,7 +479,7 @@ const data = {
 describe('PurchaseAttempt tests', () => {
 
 	test ('model parses correctly', () => {
-		expect(() => new PurchaseAttempt(null, null, data)).not.toThrow();
+		expect(() => new PurchaseAttempt(MockService, null, data)).not.toThrow();
 	});
 
 });
