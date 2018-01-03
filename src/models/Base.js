@@ -50,7 +50,9 @@ class Base extends EventEmitter {
 		//Make EventEmitter properties non-enumerable
 		Object.keys(this).map(key => hideField(this, key));
 
-		if (!service || service.isService !== Service) {
+		// Allow null, and objects that declare they are a service.
+		// Undefined and other falsy values are invalid.
+		if (service !== null && (!service || service.isService !== Service)) {
 			throw new Error('Invalid Service Document');
 		}
 
