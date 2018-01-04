@@ -30,8 +30,9 @@ export default {
 		}
 
 		const {...values} = newValues;
+		const savingKeys = Object.keys(values);
 
-		for(let x of Object.keys(values)) {
+		for(let x of savingKeys) {
 			//Add Unique keys to the refresh queue...
 			//If the key is a renamed key, map it back.
 			const {get} = Object.getOwnPropertyDescriptor(this, x) || {};
@@ -54,6 +55,7 @@ export default {
 		let keys = null;
 		const worker = this.saving = after(previousSave, () => this.putToLink(rel, values))
 			.then(o => (
+				o = ensureSavingKeysOn(o, savingKeys),
 				keys = Object.keys(o),
 				this.refresh(o)
 					.then(() => o))
@@ -79,12 +81,28 @@ export default {
 
 
 	/**
-	 * isModifiable
-	 * @deprecated
-	 * @return {bool} isModifiable
-	 */
+	* isModifiable
+	* @deprecated
+	* @return {bool} isModifiable
+	*/
 	canEdit () {
 		console.warn('Use isModifiable instead of canEdit()');//eslint-disable-line no-console
 		return this.isModifiable;
 	}
 };
+
+/**
+ * Make sure the fields we are saving are keys on the object we refresh with
+ * @param  {Object} o          the object we are going to update with
+ * @param  {[String]} savingKeys the keys we tried to save
+ * @return {Object}            the object to update with including all the saved keys
+ */
+function ensureSavingKeysOn (o, savingKeys) {
+	for (let key of savingKeys) {
+		if (!o.hasOwnProperty(key)) {
+			o[key] = undefined;
+		}
+	}
+
+	return o;
+}
