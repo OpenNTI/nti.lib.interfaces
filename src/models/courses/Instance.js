@@ -51,6 +51,7 @@ class Instance extends Base {
 		'Outline': { type: 'model' },
 		'ParentDiscussions': { type: 'model' },
 		'ParentSharingScopes': { type: 'model' },
+		'Reports': {type: 'model[]'},
 		'SharingScopes': { type: 'model' },
 		'TotalEnrolledCount': { type: 'number', name: 'enrolledTotalCount' },
 		'TotalLegacyForCreditEnrolledCount': { type: 'number', name: 'enrolledForCreditTotalCount' },
