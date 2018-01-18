@@ -45,7 +45,8 @@ class Assignment extends Base {
 		'title':                                { type: 'string',                                      },
 		'content':                              { type: 'string',                                      },
 		'PublicationState':                     { type: 'string',                                      },
-		'NoSubmit':                             { type: 'boolean',                                     }
+		'NoSubmit':                             { type: 'boolean',                                     },
+		'Reports':                              { type: 'model[]'}
 	}
 
 
