@@ -40,6 +40,7 @@ class User extends Entity {
 		'Communities':        { type: 'model[]'   },
 		'DynamicMemberships': { type: 'model[]'   },
 		'MostRecentSession':  { type: 'model'     },
+		'Reports':            { type: 'model[]'   },
 		'positions':          { type: 'model[]'   },
 		'education':          { type: 'model[]'   },
 		'lastLoginTime':      { type: 'date'      },
