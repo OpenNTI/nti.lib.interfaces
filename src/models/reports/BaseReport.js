@@ -3,7 +3,7 @@ import Base from '../Base';
 
 @model
 export default class InstructorReport extends Base {
-	static MimeType = COMMON_PREFIX + 'courseware_reports.basereport'
+	static MimeType = COMMON_PREFIX + 'reports.basereport'
 
 	static Fields = {
 		'description':     {type: 'string'},
