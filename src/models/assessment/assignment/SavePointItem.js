@@ -19,6 +19,12 @@ class SavePointItem extends Base {
 		return this.Submission ? this.Submission.getQuestions() : [];
 	}
 
+
+	isSyntheticSubmission () {
+		return false;
+	}
+	
+
 	isSubmitted () { return false; }
 
 }
