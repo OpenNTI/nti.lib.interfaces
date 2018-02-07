@@ -8,8 +8,10 @@ export default class Entity extends Base {
 
 	static Fields = {
 		...Base.Fields,
+		'about':            { type: 'string' },
 		'alias':            { type: 'string' },
 		'avatarURL':        { type: 'string' },
+		'backgroundURL':    { type: 'string' },
 		'ID':               { type: 'string' },
 		'NonI18NFirstName': { type: 'string' },
 		'NonI18NLastName':  { type: 'string' },
