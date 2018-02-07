@@ -7,6 +7,10 @@ export default
 class ContentRangeDescription extends Base {
 	static MimeType = COMMON_PREFIX + 'contentrange.contentrangedescription'
 
+	static Fields = {
+		...Base.Fields,
+		'Class': { type: 'string' }
+	}
 
 	locatorKey () {
 		return Symbol.for('locator');
