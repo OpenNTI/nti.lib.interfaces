@@ -48,7 +48,8 @@ class CourseCatalogEntry extends Base {
 		'RealEnrolmentStatus':                  { type: 'string'                            },
 		'description':                          { type: 'string'                            },
 		'tags':                                 { type: 'string[]'                          },
-		'IsEnrolled':                           { type: 'boolean'                           }
+		'IsEnrolled':                           { type: 'boolean'                           },
+		'is_non_public':                        { type: 'boolean',  name: 'isHidden'        },
 	}
 
 	static getFactory (service) {
@@ -64,6 +65,9 @@ class CourseCatalogEntry extends Base {
 			this.ContentPackages = [this.ContentPackageNTIID];
 		}
 	}
+
+
+	get isPublic () { return !this.IsHidden; }
 
 
 	get author () { return (this.creators || []).join(', '); }
