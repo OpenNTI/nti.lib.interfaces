@@ -1,7 +1,20 @@
 /** @module BaseDataSource */
 const BASE = Symbol('Base');
 
+import {Service, Parent} from '../constants';
+
+
 export default class BaseDataSource {
+	constructor (service, parent) {
+		this[Service] = service;
+		this[Parent] = parent;
+	}
+
+
+	get service () { return this[Service]; }
+	get parent () { return this[Parent]; }
+
+
 	/**
 	 * A indicator that it is a DataSource
 	 * @readOnly
@@ -42,7 +55,7 @@ export default class BaseDataSource {
 
 		const isDataSource = handler => handler.isDataSource && handler.dataSourceType === this.dataSourceType;
 
-		for (let key of Object.keys(params)) {
+		for (let key of Object.keys(params || {})) {
 			const handler = handlers[key];
 			const value = params[key];
 
@@ -50,12 +63,40 @@ export default class BaseDataSource {
 				return handler;
 			}
 
-			if (handler && handler[value] && isDataSource(handler)) {
-				return handler;
+			if (handler && handler[value] && isDataSource(handler[value])) {
+				return handler[value];
 			}
 		}
 
 		return null;
+	}
+
+
+	/**
+	 * Load the datasource for the given params
+	 *
+	 * @async
+	 * @param  {Object} params the params to load the data source with
+	 * @return {Promise}       fulfills/rejects with the load of the datasource
+	 */
+	async load (params) {
+		const handler = this.getHandlerFor(params);
+
+		const resp = await (handler ? handler.load(params) : this.request(params));
+
+		return resp.waitForPending ? resp.waitForPending() : resp;
+	}
+
+
+	/**
+	 * Request the data from the server. Must be overriden in the subclass.
+	 *
+	 * @abstract
+	 * @param  {Object} params the params to request with
+	 * @return {Batch}         a batch (or batch like) object
+	 */
+	request (params) {
+		throw new Error('request must be implemented by the subclass');
 	}
 }
 

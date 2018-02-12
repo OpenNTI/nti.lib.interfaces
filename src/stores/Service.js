@@ -8,7 +8,7 @@ import {URL, wait} from 'nti-commons';
 import {parse} from '../models/Parser';
 import Capabilities from '../models/Capabilities';
 import AbstractPlaceholder from '../models/AbstractPlaceholder';
-import Batch from '../models/Batch';
+import Batch from '../data-sources/data-types/Batch';
 import {Mixin as Pendability, attach as attachPendingQueue} from '../mixins/Pendability';
 import {Mixin as InstanceCacheContainer} from '../mixins/InstanceCacheContainer';
 import DataCache from '../utils/datacache';

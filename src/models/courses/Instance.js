@@ -21,6 +21,7 @@ import Base from '../Base';
 
 import ActivityStream from './BucketedActivityStream';
 import CourseIdentity from './mixins/CourseIdentity';
+import ContentDataSource from './content-data-source';
 
 const logger = Logger.get('models:courses:Instance');
 const emptyFunction = () => {};
@@ -517,6 +518,11 @@ class Instance extends Base {
 
 
 		return Promise.resolve(suggestions);
+	}
+
+
+	getContentDataSource () {
+		return new ContentDataSource(this[Service], this);
 	}
 }
 
