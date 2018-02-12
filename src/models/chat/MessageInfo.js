@@ -12,6 +12,17 @@ export default
 class MessageInfo extends Base {
 	static MimeType = COMMON_PREFIX + 'messageinfo'
 
+	static Fields = {
+		...Base.Fields,
+		'ContainerId': { type: 'string' },
+		'ID':          { type: 'string' },
+		'Status':      { type: 'string' },
+		'body':        { type: '*[]'    },
+		'channel':     { type: 'string' },
+		'inReplyTo':   { type: 'string' },
+		'recipients':  { type: 'string[]' },
+		'sharedWith':  { type: 'string[]' },
+	}
 
 	flag () {
 		let link = this.hasLink('flag') ?
