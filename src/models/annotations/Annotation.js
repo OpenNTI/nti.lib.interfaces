@@ -10,7 +10,8 @@ class Annotation extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'ContainerId': { type: 'string' }
+		'ContainerId': { type: 'string' },
+		'ID':          { type: 'string' },
 	}
 
 	constructor (service, parent, data) {
