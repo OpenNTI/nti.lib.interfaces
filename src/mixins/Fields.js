@@ -46,6 +46,10 @@ export default function FieldsApplyer (target) {
 
 	return {
 
+		__toRaw () {
+			return this[RAW];
+		},
+
 		initMixin (data) {
 			const noData = !data;
 
