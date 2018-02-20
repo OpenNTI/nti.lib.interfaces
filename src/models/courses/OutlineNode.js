@@ -76,34 +76,7 @@ class OutlineNode extends Outline {
 
 
 	getContent () {
-		const isLegacy = Boolean(this.parent('isLegacy', true));
-		const link = 'overview-content';
-
-		let doFetch = (
-			this.hasLink(link)
-				//Has the link:
-				? this.fetchLink(link)
-					.then(content => //link fetched...stored in "content" argument.
-
-						isLegacy //Next question: is this course legacy?
-
-							? collateVideo(content)	//Has Link, but is legacy
-
-							: content				//Has Link, is NOT legacy
-					)
-
-				//Does NOT have the link:
-				: isLegacy	//Next question: is this course legacy?
-
-					? getContentFallback(this)	//no link, and isLegacy
-
-					: Promise.reject('empty')	//no link, and NOT isLegacy
-		)
-
-			//contents fetched or derived, now parse.
-			.then(raw => this[parse](raw));
-
-		return Promise.all([this.getProgress(), this.getSummary(), doFetch])
+		return Promise.all([this.getProgress(), this.getSummary(), this.getContentRaw()])
 			.then(progressAndContent=> {
 				let [progress, summary, content] = progressAndContent;
 
@@ -119,6 +92,30 @@ class OutlineNode extends Outline {
 
 				return Promise.reject(e);
 			});
+	}
+
+
+	getContentRaw () {
+		const isLegacy = Boolean(this.parent('isLegacy', true));
+		const link = 'overview-content';
+
+		const fetchLink = async () => {
+			const content = await this.fetchLink(link);
+
+			return isLegacy ?
+				collateVideo(content) : //Has a Link, but is legacy
+				content;                //Has a Link, is NOT legacy
+		};
+
+		const fetchLegacy = () => {
+			return isLegacy ?
+				getContentFallback(this) : //no link, and is legacy
+				Promise.reject('empty');   //no link, and NOT legacy
+		};
+
+		const fetch = this.hasLink(link) ? fetchLink() : fetchLegacy();
+
+		return fetch.then(raw => this[parse](raw));
 	}
 
 
