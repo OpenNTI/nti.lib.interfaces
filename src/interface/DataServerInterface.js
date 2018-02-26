@@ -92,7 +92,7 @@ export default class DataServerInterface extends EventEmitter {
 
 				//Always override these headers
 				'accept': mime || 'application/json',
-				'X-Requested-With': 'XMLHttpRequest'
+				'x-requested-with': 'XMLHttpRequest'
 			};
 		}
 
