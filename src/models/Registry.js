@@ -54,6 +54,7 @@ export default class Registry {
 		o.MimeTypes = (Array.isArray(o.MimeType) ? o.MimeType : [o.MimeType]).filter(Boolean);
 		//force MimeType to be a scalar value instead of a list...
 		o.MimeType = o.MimeTypes[0];
+		o.prototype.isModel = true;
 
 		const types = o.MimeTypes.map(trimCommonPrefix);
 

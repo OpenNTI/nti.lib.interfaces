@@ -4,7 +4,6 @@ import {ntiidEquals} from 'nti-lib-ntiids';
 
 import {DateFields, Parser, RepresentsSameObject, Service} from '../constants';
 import {parse} from '../models/Parser';
-import Base from '../models/Base';
 
 
 const logger = Logger.get('mixins:Fields');
@@ -314,7 +313,7 @@ function applyFieldStrategy (scope, name, type, value, declared, defaultValue, k
 	if (typeof type === 'function') {
 		let val = null;
 		//Explicit model:
-		if (type.prototype instanceof Base) {
+		if (type.prototype.isModel) {
 			val = new type(scope[Service], scope, value);
 
 			//some one-off converter function: (please don't use this)
