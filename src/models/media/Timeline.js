@@ -8,6 +8,7 @@ class Timeline extends Base {
 
 	static Fields = {
 		...Base.Fields,
+		'desc':             { type: 'string'  },
 		'description':      { type: 'string'  },
 		'icon':             { type: 'string'  },
 		'label':            { type: 'string'  },
