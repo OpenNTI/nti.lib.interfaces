@@ -193,7 +193,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 	}
 
 
-	getHistoryForPromise (assignmentId) {
+	fetchHistoryFor (assignmentId) {
 		const store = this;
 		return new Promise((fulfill, reject) => {
 			const finish = () => {

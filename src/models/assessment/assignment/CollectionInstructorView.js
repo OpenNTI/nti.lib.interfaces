@@ -131,7 +131,7 @@ export default class CollectionInstructorView extends Base {
 		if (!this.getAssignment(assignmentId)) {
 			return Promise.reject('Assignment Not Found.');
 		}
-		return this.getStudentSummary(studentUserId).getHistoryForPromise(assignmentId);
+		return this.getStudentSummary(studentUserId).fetchHistoryFor(assignmentId);
 	}
 
 

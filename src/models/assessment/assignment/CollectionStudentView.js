@@ -42,7 +42,7 @@ export default class CollectionStudentView extends Base {
 
 
 	getHistoryItem (assignmentId) {
-		return this.getStudentSummary().getHistoryForPromise(assignmentId);
+		return this.getStudentSummary().fetchHistoryFor(assignmentId);
 	}
 
 
