@@ -75,47 +75,59 @@ class OutlineNode extends Outline {
 	get isSection () {}
 
 
-	getContent () {
-		return Promise.all([this.getProgress(), this.getSummary(), this.getContentRaw()])
-			.then(progressAndContent=> {
-				let [progress, summary, content] = progressAndContent;
+	/**
+	 * Get the overview contents of this node.
+	 * If no progress is required, pass an object with decorateProgress set to false to prevent decorating it.
+	 *
+	 * @method getContent
+	 * @param  {Object} [params] optional paramaters
+	 * @param  {Boolean}  [params.decorateProgress=true] Decorate the outline contents with progress data.
+	 * @return {Promise} fulfills with the outlineNode's content or rejects with an error.
+	 */
+	async getContent ({decorateProgress = true} = {}) {
+		const getContent = async () => {
+			const isLegacy = Boolean(this.parent('isLegacy', true));
+			const link = 'overview-content';
 
-				applyProgressAndSummary(content, progress, summary);
+			const fetchLink = async () => {
+				const content = await this.fetchLink(link);
+				return isLegacy
+					? collateVideo(content) //Has a Link, but is legacy
+					: content;              //Has a Link, is NOT legacy
+			};
 
-				return content;
-			})
-			.catch(e => {
-
-				if (e === 'empty') {
-					return {};
-				}
-
-				return Promise.reject(e);
-			});
-	}
+			const fetchLegacy = () => {
+				return isLegacy
+					? getContentFallback(this) //no link, and is legacy
+					: Promise.reject('empty'); //no link, and NOT legacy
+			};
 
 
-	getContentRaw () {
-		const isLegacy = Boolean(this.parent('isLegacy', true));
-		const link = 'overview-content';
-
-		const fetchLink = async () => {
-			const content = await this.fetchLink(link);
-
-			return isLegacy ?
-				collateVideo(content) : //Has a Link, but is legacy
-				content;                //Has a Link, is NOT legacy
+			return this[parse](
+				await (this.hasLink(link)
+					? fetchLink()
+					: fetchLegacy()
+				)
+			);
 		};
 
-		const fetchLegacy = () => {
-			return isLegacy ?
-				getContentFallback(this) : //no link, and is legacy
-				Promise.reject('empty');   //no link, and NOT legacy
-		};
+		if (!decorateProgress) {
+			return getContent();
+		}
 
-		const fetch = this.hasLink(link) ? fetchLink() : fetchLegacy();
+		try {
+			return applyProgressAndSummary(...(await Promise.all([
+				getContent(),
+				this.getProgress(),
+				this.getSummary(),
+			])));
+		} catch (e) {
+			if (e === 'empty') {
+				return {};
+			}
 
-		return fetch.then(raw => this[parse](raw));
+			throw e;
+		}
 	}
 
 
@@ -214,6 +226,8 @@ function applyProgressAndSummary (content, progress, summary) {
 	if (Array.isArray(content.Items)) {
 		content.Items.forEach(item=>applyProgressAndSummary(item, progress, summary));
 	}
+
+	return content;
 }
 
 /* *****************************************************************************
