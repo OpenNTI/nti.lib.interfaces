@@ -28,6 +28,7 @@ class MediaSource extends Base {
 		'thumbnail': { type: 'string' }, //From a parsed DomObject
 		'title':     { type: 'string' }, //From a parsed DomObject
 		'type':      { type: 'string' },
+		'duration':  { type: 'number' }
 	}
 
 	static from (service, uri) {
@@ -81,5 +82,10 @@ class MediaSource extends Base {
 
 	getTitle () {
 		return this.getProperty('title');
+	}
+
+
+	getDuration () {
+		return this.getProperty('duration');
 	}
 }

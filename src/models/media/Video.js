@@ -60,6 +60,12 @@ class Video extends Base {
 	}
 
 
+	getDuration () {
+		let first = this.sources[0];
+		return first ? first.getDuration() : Promise.reject('No Source');
+	}
+
+
 	/**
 	 * @param {string} [lang] Request a language specific transcript. If
 	 *                        nothing is provided, it will default to english.
