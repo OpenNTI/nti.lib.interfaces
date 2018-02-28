@@ -1,0 +1,2 @@
+
+export SCORMCourseMetadata from './SCORMCourseMetadata';

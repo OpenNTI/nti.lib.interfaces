@@ -1,5 +1,6 @@
 export * as activity from './activity';
 export * as overview from './overview';
+export * as scorm from './scorm';
 
 export Grade from './Grade';
 export CourseDiscussion from './CourseDiscussion';
@@ -22,3 +23,4 @@ export Outline from './Outline';
 export OutlineNode from './OutlineNode';
 export OutlineNodeProgress from './OutlineNodeProgress';
 export RosterEnrollmentSummary from './RosterEnrollmentSummary';
+export ScormInstance from './ScormInstance';
