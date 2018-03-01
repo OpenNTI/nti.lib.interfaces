@@ -8,7 +8,7 @@
 import Logger from 'nti-util-logger';
 import {mixin} from 'nti-lib-decorators';
 
-import {ASSESSMENT_HISTORY_LINK, Parser as parse} from '../../../constants';
+import {ASSESSMENT_HISTORY_LINK, Parser as parse, Service, Parent} from '../../../constants';
 import Base from '../../Base';
 
 import AssignmentsByX from './AssignmentsByX';
@@ -397,6 +397,22 @@ class Collection extends Base {
 		const findIt = x => find(Object.values(map), x);
 
 		return map[assessmentId] || findIt(assessmentId);
+	}
+
+
+	async fetchAssignment (id) {
+		const assignment = this.getAssignment(id);
+		const assignmentId = assignment && assignment.getID();
+
+		if (!assignmentId) {
+			throw new Error('No assignment found');
+		}
+
+		const raw = await this[Service].getObjectRaw(assignmentId, null, null, {course: this[Parent].getID()});
+
+		await assignment.refresh(raw);
+
+		return assignment;
 	}
 
 
