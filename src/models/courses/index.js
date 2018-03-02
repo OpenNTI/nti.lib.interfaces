@@ -23,4 +23,3 @@ export Outline from './Outline';
 export OutlineNode from './OutlineNode';
 export OutlineNodeProgress from './OutlineNodeProgress';
 export RosterEnrollmentSummary from './RosterEnrollmentSummary';
-export ScormInstance from './ScormInstance';
