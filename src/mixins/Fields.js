@@ -2,7 +2,7 @@ import Logger from 'nti-util-logger';
 import {Parsing} from 'nti-commons';
 import {ntiidEquals} from 'nti-lib-ntiids';
 
-import {DateFields, Parser, RepresentsSameObject, Service} from '../constants';
+import {DateFields, Parser, RepresentsSameObject, Service, IsModel} from '../constants';
 import {parse} from '../models/Parser';
 
 
@@ -313,7 +313,7 @@ function applyFieldStrategy (scope, name, type, value, declared, defaultValue, k
 	if (typeof type === 'function') {
 		let val = null;
 		//Explicit model:
-		if (type.prototype.isModel) {
+		if (type.prototype[IsModel]) {
 			val = new type(scope[Service], scope, value);
 
 			//some one-off converter function: (please don't use this)

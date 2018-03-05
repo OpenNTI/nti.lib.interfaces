@@ -1,5 +1,7 @@
 import Logger from 'nti-util-logger';
 
+import {IsModel} from '../constants';
+
 const logger = Logger.get('models:Registry');
 
 //exported for testing
@@ -10,6 +12,7 @@ export const COMMON_PREFIX = 'application/vnd.nextthought.';
 export const trimCommonPrefix = x => x && x.replace(/^application\/vnd.nextthought./, '').toLowerCase();
 
 const IGNORED = {parse: x => x};
+
 
 export default class Registry {
 
@@ -54,7 +57,7 @@ export default class Registry {
 		o.MimeTypes = (Array.isArray(o.MimeType) ? o.MimeType : [o.MimeType]).filter(Boolean);
 		//force MimeType to be a scalar value instead of a list...
 		o.MimeType = o.MimeTypes[0];
-		o.prototype.isModel = true;
+		o.prototype[IsModel] = true;
 
 		const types = o.MimeTypes.map(trimCommonPrefix);
 
