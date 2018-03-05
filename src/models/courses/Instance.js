@@ -454,7 +454,7 @@ class Instance extends Base {
 	resolveContentURL (url) {
 		let bundle = this.ContentPackageBundle;
 		let pkgs = ((bundle && bundle.ContentPackages) || []);//probably should search all packages...
-		let pkg = pkgs.find(x => x.root);
+		let pkg = pkgs.find(x => !x.isRenderable && x.root);
 
 		let root = pkg && Url.parse(pkg.root);
 
