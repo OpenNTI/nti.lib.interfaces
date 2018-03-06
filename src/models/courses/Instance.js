@@ -46,18 +46,18 @@ class Instance extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'ContentPackageBundle': { type: 'model' },
-		'Discussions': { type: 'model' },
-		'GradeBook': { type: 'model' },
-		'LegacyScopes': { type: VOID },
-		'Outline': { type: 'model' },
-		'ParentDiscussions': { type: 'model' },
-		'ParentSharingScopes': { type: 'model' },
-		'Reports': {type: 'model[]'},
-		'SharingScopes': { type: 'model' },
-		'TotalEnrolledCount': { type: 'number', name: 'enrolledTotalCount' },
+		'ContentPackageBundle':              { type: 'model'                                       },
+		'Discussions':                       { type: 'model'                                       },
+		'GradeBook':                         { type: 'model'                                       },
+		'LegacyScopes':                      { type: VOID                                          },
+		'Outline':                           { type: 'model'                                       },
+		'ParentDiscussions':                 { type: 'model'                                       },
+		'ParentSharingScopes':               { type: 'model'                                       },
+		'Reports':                           { type: 'model[]'                                     },
+		'SharingScopes':                     { type: 'model'                                       },
+		'TotalEnrolledCount':                { type: 'number', name: 'enrolledTotalCount'          },
 		'TotalLegacyForCreditEnrolledCount': { type: 'number', name: 'enrolledForCreditTotalCount' },
-		'TotalLegacyOpenEnrolledCount': { type: 'number', name: 'enrolledOpenlyTotalCount' },
+		'TotalLegacyOpenEnrolledCount':      { type: 'number', name: 'enrolledOpenlyTotalCount'    },
 	}
 
 	get isLegacy () {
