@@ -15,8 +15,7 @@ class ScormInstance extends Instance {
 
 	isScormInstance = true;
 
-	async getScormCourse () {
-		const scormLink = await this.Metadata.getLink('LaunchSCORM');
-		return scormLink;
+	getScormCourse () {
+		return this.Metadata.getLink('LaunchSCORM');
 	}
 }
