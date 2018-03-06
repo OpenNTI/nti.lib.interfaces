@@ -351,7 +351,7 @@ class Instance extends Base {
 		const FIVE_MINUTES = 300000;//5min in milliseconds.
 		const key = unpublished ? OutlineCacheUnpublished : OutlineCache;
 
-		if (!this.outline) {
+		if (!this.Outline) {
 			return Promise.resolve(new Outline(this[Service], this, {}));
 		}
 
