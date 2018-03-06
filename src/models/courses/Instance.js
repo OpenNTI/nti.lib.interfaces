@@ -92,7 +92,7 @@ class Instance extends Base {
 		//We're using this to prefix the RELATIVE hrefs in the Video Transcript data.
 		//We're doing something similar for Content in Questions (assets are relative coming back)
 		//All content given to the client in JSON form should have full hrefs. No Relative hrefs.
-		return this.ContentPackageBundle.packageRoot;
+		return this.ContentPackageBundle && this.ContentPackageBundle.packageRoot;
 		//Furthermore this breaks as soon as we have bundles with more than one package.
 	}
 
@@ -116,11 +116,13 @@ class Instance extends Base {
 
 	containsPackage (id) {
 		//Are course NTIIDs being passed around like packageIds? If so, this will catch it.
-		return this.ContentPackageBundle.containsPackage(id) || this.getID() === id;
+		const bundle = this.ContentPackageBundle;
+		return (bundle && bundle.containsPackage(id)) || this.getID() === id;
 	}
 
 	getPackage (id) {
-		return this.ContentPackageBundle.getPackage(id);
+		const bundle = this.ContentPackageBundle;
+		return bundle && bundle.getPackage(id);
 	}
 
 
