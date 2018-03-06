@@ -22,6 +22,7 @@ import Base from '../Base';
 import ActivityStream from './BucketedActivityStream';
 import CourseIdentity from './mixins/CourseIdentity';
 import ContentDataSource from './content-data-source';
+import Outline from './Outline';
 
 const logger = Logger.get('models:courses:Instance');
 const emptyFunction = () => {};
@@ -349,6 +350,10 @@ class Instance extends Base {
 
 		const FIVE_MINUTES = 300000;//5min in milliseconds.
 		const key = unpublished ? OutlineCacheUnpublished : OutlineCache;
+
+		if (!this.outline) {
+			return Promise.resolve(new Outline(this[Service], this, {}));
+		}
 
 		if (!this[key] || force) {
 			//We have to wait for the CCE to load to know if its in preview mode or not.
