@@ -1,6 +1,6 @@
-import {readonly} from 'nti-lib-decorators';
-
-export default {
-	@readonly
-	isSubmittable: true
-};
+export default Object.defineProperties({}, {
+	isSubmittable: {
+		writable: false,
+		value: true
+	}
+});

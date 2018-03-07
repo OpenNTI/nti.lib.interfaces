@@ -140,7 +140,7 @@ export default class XMLBasedTableOfContents extends Base {
 	 * doesn't make sense, but its just trying to future proof
 	 *
 	 * @param  {String} page page number to look for
-	 * @return {[Object]}      the page number and NTIID
+	 * @return {Object}      the page number and NTIID
 	 */
 	getRealPages (page) {
 		const realPages = [

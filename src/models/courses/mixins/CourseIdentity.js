@@ -1,6 +1,6 @@
-import {readonly} from 'nti-lib-decorators';
-
-export default {
-	@readonly
-	isCourse: true
-};
+export default Object.defineProperties({}, {
+	isCourse: {
+		writable: false,
+		value: true
+	}
+});

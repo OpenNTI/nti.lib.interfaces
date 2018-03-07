@@ -1,6 +1,6 @@
-import {readonly} from 'nti-lib-decorators';
-
-export default {
-	@readonly
-	isAdministrative: true
-};
+export default Object.defineProperties({}, {
+	isAdministrative: {
+		writable: false,
+		value: true
+	}
+});

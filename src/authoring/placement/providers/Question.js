@@ -45,7 +45,7 @@ export default class QuestionPlacementProvider {
 
 
 	/**
-	 * @param {[String]} accepts list of mime types to accept, accept all if empty
+	 * @param {String} accepts list of mime types to accept, accept all if empty
 	 * @returns {Promise} Fulfills with an array of items that the given
 	 *                    "item" (Question) can be placed. Rejects on errors.
 	 */

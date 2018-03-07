@@ -8,6 +8,7 @@ import Base from '../Base';
 import CourseIdentity from './mixins/CourseIdentity';
 import EnrollmentIdentity from './mixins/EnrollmentIdentity';
 
+export default
 @model
 @mixin(
 	CourseIdentity,
@@ -27,7 +28,7 @@ import EnrollmentIdentity from './mixins/EnrollmentIdentity';
 	//From:
 	], 'CourseInstance.CatalogEntry')
 )
-export default class Enrollment extends Base {
+class Enrollment extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseenrollment',
 		COMMON_PREFIX + 'courseware.courseinstanceenrollment',

@@ -1,11 +1,11 @@
-import {mixin, readonly} from 'nti-lib-decorators';
+import {mixin/*, readonly*/} from 'nti-lib-decorators';
 
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 export default
 @model
-@mixin({@readonly isSlideDeck: true})
+@mixin({/*@readonly*/ isSlideDeck: true})
 class SlideDeck extends Base {
 	static MimeType = COMMON_PREFIX + 'ntislidedeck'
 

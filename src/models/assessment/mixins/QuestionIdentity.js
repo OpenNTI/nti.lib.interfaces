@@ -1,6 +1,6 @@
-import {readonly} from 'nti-lib-decorators';
-
-export default {
-	@readonly
-	isQuestion: true
-};
+export default Object.defineProperties({}, {
+	isQuestion: {
+		writable: false,
+		value: true
+	}
+});

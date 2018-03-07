@@ -1,4 +1,4 @@
-import {mixin, readonly} from 'nti-lib-decorators';
+import {mixin/*, readonly*/} from 'nti-lib-decorators';
 
 import {
 	ASSESSMENT_HISTORY_LINK,
@@ -12,7 +12,7 @@ import PollSubmission from './PollSubmission';
 
 export default
 @model
-@mixin({@readonly isPoll: true})
+@mixin({/*@readonly*/ isPoll: true})
 class Poll extends Question {
 	static MimeType = COMMON_PREFIX + 'napoll'
 

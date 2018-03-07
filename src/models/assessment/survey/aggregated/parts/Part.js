@@ -1,9 +1,9 @@
-import {mixin, readonly} from 'nti-lib-decorators';
+import {mixin/*, readonly*/} from 'nti-lib-decorators';
 
 import Base from '../../../../Base';
 
 export default
-@mixin({@readonly isAggregated: true})
+@mixin({/*@readonly*/ isAggregated: true})
 class Part extends Base {
 
 	static Fields = {

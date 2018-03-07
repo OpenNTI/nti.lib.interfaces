@@ -116,7 +116,7 @@ class User extends Entity {
 	/**
 	 * Toggles the state of following.
 	 *
-	 * @return {[type]} [description]
+	 * @return {Promise} You can wait on the promise to refresh the UI
 	 */
 	follow () {
 		let contacts = this[Service].getContacts();
