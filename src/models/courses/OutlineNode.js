@@ -87,6 +87,7 @@ class OutlineNode extends Outline {
 	async getContent ({decorateProgress = true} = {}) {
 		const getContent = async () => {
 			const isLegacy = Boolean(this.parent('isLegacy', true));
+			const course = this.parent('isCourse', true);
 			const link = 'overview-content';
 
 			const fetchLink = async () => {
@@ -102,13 +103,15 @@ class OutlineNode extends Outline {
 					: Promise.reject('empty'); //no link, and NOT legacy
 			};
 
-
-			return this[parse](
-				await (this.hasLink(link)
+			const [assignments, data] = await Promise.all([
+				course.getAssignments(),
+				(this.hasLink(link)
 					? fetchLink()
 					: fetchLegacy()
 				)
-			);
+			]);
+
+			return this[parse](filterMissingAssignments(assignments, data));
 		};
 
 		if (!decorateProgress) {
@@ -160,6 +163,24 @@ class OutlineNode extends Outline {
 			filter: 'TopLevel'
 		});
 	}
+}
+
+
+
+/**
+ * Finds the NTIID field on the given object.
+ *
+ * @method getFuzzyID
+ * @param  {object}         object                               The object to find an ID for.
+ * @param  {Array<string>}  [keys=['Target-NTIID', 'NTIID']]     The possible ID fields.
+ * @return {string}         The key name, or undefined.
+ */
+function getFuzzyID (object, keys = ['Target-NTIID', 'NTIID']) {
+	//We sadly have used inconsistent cassings of Target-NTIID, and NTIID.
+	//Some are lowercase, some are capped, some are mixed.
+	return Object.keys(object).find(key => (
+		key = key.toLowerCase(),
+		keys.find(v => v.toLowerCase() === key)));
 }
 
 
@@ -228,6 +249,40 @@ function applyProgressAndSummary (content, progress, summary) {
 	}
 
 	return content;
+}
+
+
+/**
+ * Recursively remove assignments & references that are not included in the assignments collection
+ *
+ * @method filterMissingAssignments
+ * @param  {Collection}             assignments The Assignments Collection instance.
+ * @param  {object}                 item        The raw data for the overview contents of this outline node.
+ * @return {object} The item but without assignments that cannot be resolved.
+ */
+function filterMissingAssignments (assignments, item) {
+	function test (o) {
+		const assignmentType = /assignment/i;
+		const assessmentType = /(questionset|questionbank|assignment)/i;
+		const id = o[getFuzzyID(o)];
+		const isLegacyAssignment = () => assessmentType.test(o.MimeType) && assignments && assignments.isAssignment(id);
+		const isAssignment = assignmentType.test(o.MimeType) || isLegacyAssignment();
+
+		return isAssignment
+			? Boolean(assignments && assignments.getAssignment(id))
+			: true;
+	}
+
+	const {Items: children} = item;
+
+	if (children) {
+		return {
+			...item,
+			Items: children.map(x => filterMissingAssignments(assignments, x)).filter(test)
+		};
+	}
+
+	return item;
 }
 
 /* *****************************************************************************
