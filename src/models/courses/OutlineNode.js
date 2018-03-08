@@ -104,7 +104,7 @@ class OutlineNode extends Outline {
 			};
 
 			const [assignments, data] = await Promise.all([
-				course.getAssignments(),
+				course.getAssignments().catch(() => null),
 				(this.hasLink(link)
 					? fetchLink()
 					: fetchLegacy()
@@ -176,11 +176,13 @@ class OutlineNode extends Outline {
  * @return {string}         The key name, or undefined.
  */
 function getFuzzyID (object, keys = ['Target-NTIID', 'NTIID']) {
+	const objectKeys = Object.keys(object);
+
 	//We sadly have used inconsistent cassings of Target-NTIID, and NTIID.
 	//Some are lowercase, some are capped, some are mixed.
-	return Object.keys(object).find(key => (
+	return keys.find(key => (
 		key = key.toLowerCase(),
-		keys.find(v => v.toLowerCase() === key)));
+		objectKeys.find(v => v.toLowerCase() === key)));
 }
 
 
