@@ -104,7 +104,7 @@ class OutlineNode extends Outline {
 			};
 
 			const [assignments, data] = await Promise.all([
-				course.getAssignments(),
+				course.getAssignments().catch(() => null),
 				(this.hasLink(link)
 					? fetchLink()
 					: fetchLegacy()
