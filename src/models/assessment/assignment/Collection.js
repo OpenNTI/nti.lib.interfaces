@@ -392,6 +392,13 @@ class Collection extends Base {
 	}
 
 
+	getAssessment (assessmentId) {
+		const maybe = this.getAssessments();
+
+		return maybe && find(maybe, assessmentId);
+	}
+
+
 	getAssignment (assessmentId) {
 		const {visibleAssignments: {items: map = {}}} = getPrivate(this);
 		const findIt = x => find(Object.values(map), x);
