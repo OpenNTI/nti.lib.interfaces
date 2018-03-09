@@ -346,7 +346,7 @@ function applyFieldStrategy (scope, name, type, value, declared, defaultValue, k
 		}
 	} catch (e) {
 		const reason = e.stack || e.message || e;
-		logger.error('An error occurred parsing %s on %s because: %o', key, ModelName, reason);
+		logger.error('An error occurred parsing %s on %s because: %s', key, ModelName, reason);
 		delete scope[key];
 		delete scope[name];
 		throw e;
