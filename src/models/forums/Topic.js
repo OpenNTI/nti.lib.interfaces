@@ -21,6 +21,7 @@ class Topic extends Base {
 
 	static Fields = {
 		...Base.Fields,
+		'ContainerId':                 { type: 'string' },
 		'NewestDescendant':            { type: 'model'  },
 		'NewestDescendantCreatedTime': { type: 'date'   },
 		'PostCount':                   { type: 'number' },
