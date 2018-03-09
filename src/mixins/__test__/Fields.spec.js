@@ -142,7 +142,7 @@ describe('Fields Mixin', () => {
 				}
 			}
 
-
+			jest.spyOn(logger, 'error').mockImplementation(() => {});
 			expect(() => new Foo({foo: 'baz'})).not.toThrow();
 			expect(() => new Foo({foo: true})).toThrow('Expected a string type for foo but got boolean');
 		});
@@ -159,7 +159,7 @@ describe('Fields Mixin', () => {
 				}
 			}
 
-
+			jest.spyOn(logger, 'error').mockImplementation(() => {});
 			expect(() => new Foo({foo: true})).not.toThrow();
 			expect(() => new Foo({foo: false})).not.toThrow();
 			expect(() => new Foo({foo: 'baz'})).toThrow('Expected a boolean type for foo but got string');
@@ -177,7 +177,7 @@ describe('Fields Mixin', () => {
 				}
 			}
 
-
+			jest.spyOn(logger, 'error').mockImplementation(() => {});
 			expect(() => new Foo({foo: 1})).not.toThrow();
 			expect(() => new Foo({foo: 'baz'})).toThrow('Expected a number type for foo but got string');
 		});
@@ -194,7 +194,7 @@ describe('Fields Mixin', () => {
 				}
 			}
 
-
+			jest.spyOn(logger, 'error').mockImplementation(() => {});
 			expect(() => new Foo({foo: {}})).not.toThrow();
 			expect(() => new Foo({foo: 'baz'})).toThrow('Expected a object type for foo but got string');
 		});
