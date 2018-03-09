@@ -3,8 +3,6 @@ import {mixin} from 'nti-lib-decorators';
 import Logger from 'nti-util-logger';
 
 import { Service } from '../../constants';
-import assets from '../../mixins/PresentationResources';
-import setAndEmit from '../../utils/getsethandler';
 import TablesOfContents from '../content/TablesOfContents';
 import MediaIndex from '../media/MediaIndex';
 import {model, COMMON_PREFIX} from '../Registry';
@@ -16,7 +14,7 @@ const names = (x, y, v) => Array.isArray(v) ? v.join(', ') : null;
 
 export default
 @model
-@mixin(assets, forward(['every','filter','forEach','map', 'reduce'], 'ContentPackages'))
+@mixin(forward(['every','filter','forEach','map', 'reduce'], 'ContentPackages'))
 class Bundle extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'contentpackagebundle',
@@ -43,12 +41,6 @@ class Bundle extends Base {
 		for (let p of this.ContentPackages) {
 			p.on('change', onChange);
 		}
-
-		this.addToPending(
-			this.getAsset('landing').then(setAndEmit(this, 'icon')),
-			this.getAsset('thumb').then(setAndEmit(this, 'thumb')),
-			this.getAsset('background').then(setAndEmit(this, 'background'))
-		);
 	}
 
 
@@ -102,9 +94,6 @@ class Bundle extends Base {
 			author: this.author,
 			title: this.title,
 			label: this.label,
-			icon: this.icon,
-			background: this.icon,
-			thumb: this.thumb
 		};
 	}
 

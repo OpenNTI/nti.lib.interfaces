@@ -1,14 +1,11 @@
 import Logger from 'nti-util-logger';
 import {URL} from 'nti-commons';
-import {mixin} from 'nti-lib-decorators';
 
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 import {
 	Service
 } from '../../constants';
-import setAndEmit from '../../utils/getsethandler';
-import assets from '../../mixins/PresentationResources';
 import MediaIndex from '../media/MediaIndex';
 import TablesOfContents from '../content/TablesOfContents';
 import ToC from '../content/XMLBasedTableOfContents';
@@ -23,7 +20,6 @@ const names = (x, y, v) => Array.isArray(v) ? v.join(', ') : null;
 
 export default
 @model
-@mixin(assets)
 class Package extends Base {
 	static MimeType = COMMON_PREFIX + 'contentpackage'
 
@@ -40,18 +36,6 @@ class Package extends Base {
 		// 'background': { type: 'string',                },
 	}
 
-	constructor (service, parent, data) {
-		super(service, parent, data);
-		this.setUpAssets();
-	}
-
-	setUpAssets () {
-		this.addToPending(
-			this.getAsset('landing').then(setAndEmit(this, 'icon')),
-			this.getAsset('thumb').then(setAndEmit(this, 'thumb'))
-		);
-	}
-
 
 	getDefaultShareWithValue (preferences) {
 		return preferences ? preferences.value : [];
@@ -63,9 +47,6 @@ class Package extends Base {
 			author: this.author,
 			title: this.title,
 			label: this.label,
-			icon: this.icon,
-			background: this.background,
-			thumb: this.thumb
 		};
 	}
 

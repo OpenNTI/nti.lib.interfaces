@@ -1,7 +1,3 @@
-import {mixin} from 'nti-lib-decorators';
-
-import assets from '../../mixins/PresentationResources';
-//
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
@@ -13,7 +9,6 @@ const EnrollmentOptions = Symbol('EnrollmentOptions');
 
 export default
 @model
-@mixin(assets)
 class CourseCatalogEntry extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.catalogentry',
@@ -74,9 +69,6 @@ class CourseCatalogEntry extends Base {
 
 
 	getEnrollmentOptions () {return this[EnrollmentOptions]; }
-
-
-	getDefaultAssetRoot () { return ''; }
 
 
 	getAuthorLine () {
