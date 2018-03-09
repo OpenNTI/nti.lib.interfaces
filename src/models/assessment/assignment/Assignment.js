@@ -3,7 +3,6 @@ import {mixin} from 'nti-lib-decorators';
 import PlacementProvider from '../../../authoring/placement/providers/Assignment';
 import {
 	Service,
-	ReParent,
 	ASSESSMENT_HISTORY_LINK
 } from '../../../constants';
 import Publishable from '../../../mixins/Publishable';
@@ -165,7 +164,7 @@ class Assignment extends Base {
 		const submitTo = resolveSubmitTo(this);
 		const submission = new AssignmentSubmission(this[Service], this, data, submitTo);
 
-		submission.parts.forEach(s => s[ReParent](submission));
+		submission.parts.forEach(s => s.reparent(submission));
 
 		return submission;
 	}

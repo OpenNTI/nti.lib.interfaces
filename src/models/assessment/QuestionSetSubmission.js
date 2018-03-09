@@ -1,6 +1,6 @@
 import {mixin} from 'nti-lib-decorators';
 
-import {Service, ReParent} from '../../constants';
+import {Service} from '../../constants';
 import Submission from '../../mixins/Submission';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -30,7 +30,7 @@ class QuestionSetSubmission extends Base {
 		};
 
 		const s = new this(questionSet[Service], null, data);
-		s.questions.forEach(q => q[ReParent](s));
+		s.questions.forEach(q => q.reparent(s));
 		return s;
 	}
 

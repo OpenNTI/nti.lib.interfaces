@@ -11,7 +11,6 @@ import HasLinks from '../mixins/HasLinks';
 import {
 	Parent,
 	Service,
-	ReParent,
 	NO_LINK
 } from '../constants';
 
@@ -171,7 +170,7 @@ class Base extends EventEmitter {
 	}
 
 
-	[ReParent] (newParent) {
+	reparent (newParent) {
 		this[Parent] = newParent;
 	}
 

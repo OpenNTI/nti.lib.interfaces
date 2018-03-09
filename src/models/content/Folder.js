@@ -1,4 +1,4 @@
-import {Service, ReParent} from '../../constants';
+import {Service} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import FileSystemEntity, {validateSortObject} from './FileSystemEntity';
@@ -28,8 +28,8 @@ class Folder extends FileSystemEntity {
 			file = this[Service].getObject(file, {parent: this});
 		}
 
-		if (file && file[ReParent]) {
-			file[ReParent](this);
+		if (file && file.reparent) {
+			file.reparent(this);
 		}
 
 
