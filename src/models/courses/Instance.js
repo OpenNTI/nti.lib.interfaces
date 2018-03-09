@@ -8,8 +8,7 @@ import {wait} from 'nti-commons';
 import {
 	MEDIA_BY_OUTLINE_NODE,
 	NO_LINK,
-	Service,
-	Parser as parse
+	Service
 } from '../../constants';
 import AssessmentCollectionStudentView from '../assessment/assignment/CollectionStudentView';
 import AssessmentCollectionInstructorView from '../assessment/assignment/CollectionInstructorView';
@@ -25,9 +24,7 @@ import ContentDataSource from './content-data-source';
 import Outline from './Outline';
 
 const logger = Logger.get('models:courses:Instance');
-const emptyFunction = () => {};
 const NOT_DEFINED = {reason: 'Not defined'};
-const EMPTY_CATALOG_ENTRY = {getAuthorLine: emptyFunction};
 
 const MEDIA_INDEX = Symbol('Media Index');
 
@@ -72,7 +69,7 @@ class Instance extends Base {
 			bundle.on('change', this.onChange.bind(this));
 		}
 
-		this.addToPending(resolveCatalogEntry(service, this));
+		this.addToPending(resolvePreferredAccess(service, this, parent));
 	}
 
 
@@ -83,7 +80,7 @@ class Instance extends Base {
 
 
 	get ProviderUniqueID () {
-		return (this.CatalogEntry || EMPTY_CATALOG_ENTRY).ProviderUniqueID;
+		return (this.CatalogEntry || {}).ProviderUniqueID;
 	}
 
 
@@ -98,7 +95,7 @@ class Instance extends Base {
 
 
 	get isAdministrative () {
-		return ((this.CatalogEntry || EMPTY_CATALOG_ENTRY)).IsAdmin || false;
+		return ((this.CatalogEntry || {})).IsAdmin || false;
 	}
 
 
@@ -127,16 +124,13 @@ class Instance extends Base {
 
 
 	getPresentationProperties () {
-		let cce = this.CatalogEntry || EMPTY_CATALOG_ENTRY,
+		let cce = this.PreferredAccess.getPresentationProperties(),
 			bundle = this.ContentPackageBundle;
 
 		return {
-			author: cce.getAuthorLine() || (bundle && bundle.author),
-			title: cce.Title || (bundle && bundle.title),
-			label: cce.ProviderUniqueID,
-			icon: cce.icon || (bundle && bundle.icon),
-			background: cce.background || (bundle && bundle.background),
-			thumb: cce.thumb || (bundle && bundle.thumb)
+			author: cce.author || (bundle && bundle.author),
+			title: cce.title || (bundle && bundle.title),
+			label: cce.label,
 		};
 	}
 
@@ -204,10 +198,6 @@ class Instance extends Base {
 		const parent = this.parent();
 		const getLink = rel => (parent && parent.getLink && parent.getLink(rel)) || this.getLink(rel);
 		const {isAdministrative} = this;
-
-		if (!parent || !parent.isEnrollment) {
-			logger.warn('Potentially Wrong CourseInstance reference');
-		}
 
 
 		const service = this[Service];
@@ -485,9 +475,6 @@ class Instance extends Base {
 
 	getSharingSuggestions () {
 		const parent = this.parent();
-		if (!parent || !parent.isEnrollment) {
-			logger.warn('Potentially Wrong CourseInstance reference');
-		}
 
 		if (parent && parent.getSharingSuggestions) {
 			return parent.getSharingSuggestions();
@@ -537,38 +524,18 @@ class Instance extends Base {
 //Private methods
 
 
-async function resolveCatalogEntry (service, inst) {
-	try {
-		// The intent and purpose of this cache is to transmit work done by the web-service to the the client...
-		// We do NOT want to cache new entries on the client...and we should clear the cache on first read...
-		const cache = service.getDataCache();
-		const url = inst.getLink('CourseCatalogEntry');
-		if (!url) {
-			throw new Error('No CCE Link!');
-		}
+async function resolvePreferredAccess (service, instance, parent) {
+	const enrollment = await instance.fetchLinkParsed('UserCoursePreferredAccess');
 
-		const cached = cache.get(url);
-		cache.set(url, null); //clear the cache on read...we only want to cache it for the initial page load.
+	// For legacy compatability
+	instance.reparent(enrollment);
+	// now the enrollment willhave the instance as a parent since its who parsed it...
+	// set the instance's parent as its parent to fix the chain.
+	enrollment.reparent(parent);
 
-		const cce = await (cached
-			? Promise.resolve(cached)
-			: service.get(url)
-				.then(d => (!cache.isClientInstance && cache.set(url, d), d)));
+	//legacy lookup path:
+	instance.CatalogEntry = enrollment.CatalogEntry;
 
-		const entry = inst.CatalogEntry = inst[parse](cce);
-
-		return await entry.waitForPending();
-	}
-	catch (e) {
-		const parent = inst.parent();
-		let x = e.stack || e.message || e;
-		let t = typeof x === 'string' ? '%s' : '%o';
-		logger.warn('Instance: %s\n'
-			+ 'Enrollment: %s\n'
-			+ 'There was a problem resolving the CatalogEntry!\n' + t,
-
-		this.NTIID || this.OID,
-		parent ? (parent.NTIID || parent.OID) : 'Unknown',
-		x);
-	}
+	//new preferred property
+	instance.PreferredAccess = enrollment;
 }
