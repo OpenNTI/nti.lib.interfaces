@@ -82,6 +82,11 @@ class Enrollment extends Base {
 	}
 
 
+	getTotalEnrollmentCount () {
+		return this.CourseInstance.TotalEnrolledCount;
+	}
+
+
 	getStatus () {
 		return this.LegacyEnrollmentStatus;
 	}
