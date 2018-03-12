@@ -9,7 +9,7 @@ class PricingResults extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'Currency':                   { type: 'number',  name: 'currency' },
+		'Currency':                   { type: 'string',  name: 'currency' },
 		'Items':                      { type: 'model[]'                   },
 		'TotalPurchasePrice':         { type: 'number'                    },
 		'TotalNonDiscountedPrice':    { type: 'number'                    },
