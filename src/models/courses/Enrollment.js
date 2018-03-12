@@ -51,12 +51,12 @@ class Enrollment extends Base {
 
 
 	get title () {
-		return this.CourseInstance.title;
+		return this.CatalogEntry.Title;
 	}
 
 
 	get ProviderUniqueID () {
-		return this.CourseInstance.ProviderUniqueID;
+		return this.CatalogEntry.ProviderUniqueID;
 	}
 
 
