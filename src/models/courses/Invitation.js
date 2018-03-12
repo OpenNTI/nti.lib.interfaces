@@ -3,9 +3,9 @@ import Base from '../Base';
 
 export default
 @model
-class CourseInvitations extends Base {
+class CourseInvitation extends Base {
 	static MimeType = [
-		COMMON_PREFIX + 'invitations.courseinvitation'
+		COMMON_PREFIX + 'courseware.courseinvitation'
 	]
 
 	static Fields = {
