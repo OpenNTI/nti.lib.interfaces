@@ -11,6 +11,8 @@ export GradeBookUserSummary from './GradeBookUserSummary';
 export CatalogEntry from './CatalogEntry';
 export CatalogInstructorLegacyInfo from './CatalogInstructorLegacyInfo';
 export Instance from './Instance';
+export Invitation from './Invitation';
+export Invigations from './Invitations';
 export AdministrativeRole from './AdministrativeRole';
 export Enrollment from './Enrollment';
 export EnrollmentOptions from './EnrollmentOptions';
