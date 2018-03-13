@@ -5,7 +5,8 @@ export default
 @model
 class CourseInvitation extends Base {
 	static MimeType = [
-		COMMON_PREFIX + 'courseware.courseinvitation'
+		COMMON_PREFIX + 'courseware.courseinvitation',
+		COMMON_PREFIX + 'invitations.courseinvitation'
 	]
 
 	static Fields = {
