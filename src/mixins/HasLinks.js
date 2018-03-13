@@ -2,6 +2,7 @@ import {URL} from 'nti-commons';
 import Logger from 'nti-util-logger';
 
 import getLinkImpl from '../utils/getlink';
+import maybeWait from '../utils/maybe-wait';
 import {Parser, Service, NO_LINK} from '../constants';
 
 const logger = Logger.get('mixins:HasLinks');
@@ -69,8 +70,6 @@ export default {
 
 
 function parseResult (scope, requestPromise) {
-	const maybeWait = x => (x && x.waitForPending) ? x.waitForPending() : x;
-
 	function selectItems (x) {
 		const extract = x && x.Items && !x.MimeType;
 

@@ -13,6 +13,7 @@ import {Mixin as Pendability, attach as attachPendingQueue} from '../mixins/Pend
 import {Mixin as InstanceCacheContainer} from '../mixins/InstanceCacheContainer';
 import DataCache from '../utils/datacache';
 import getLink from '../utils/getlink';
+import maybeWait from '../utils/maybe-wait';
 import {
 	REL_USER_SEARCH,
 	REL_USER_UNIFIED_SEARCH,
@@ -843,14 +844,15 @@ class ServiceDocument extends EventEmitter {
 	}
 
 
-	getContextPathFor (ntiid) {
+	async getContextPathFor (ntiid) {
 		let {href} = this.getCollection('LibraryPath', 'Global') || {};
 
 		if (!href) {
 			return Promise.reject({statusCode: NOT_IMPLEMENTED, message: 'PathToContainerId is not available here.'});
 		}
 
-		return this.get(URL.appendQueryParams(href, {objectId: ntiid}))
-			.then(data => data.map(path => path.map(item => parse(this, this, item))));
+		const data = await this.get(URL.appendQueryParams(href, {objectId: ntiid}));
+
+		return Promise.all(data.map(p => p.map(item => maybeWait(parse(this, this, item)))));
 	}
 }

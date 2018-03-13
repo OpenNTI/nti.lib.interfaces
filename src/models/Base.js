@@ -3,6 +3,7 @@ import EventEmitter from 'events';
 import {mixin} from 'nti-lib-decorators';
 import Logger from 'nti-util-logger';
 
+import maybeWait from '../utils/maybe-wait';
 import JSONValue from '../mixins/JSONValue';
 import {Mixin as Pendability} from '../mixins/Pendability';
 import Editable from '../mixins/Editable';
@@ -99,12 +100,20 @@ class Base extends EventEmitter {
 	}
 
 
-	getContextPath () {
-		return this.fetchLinkParsed('LibraryPath')
-			.catch(reason =>
-				(reason === NO_LINK)
-					? this[Service].getContextPathFor(this.getID())
-					: Promise.reject(reason));
+	async getContextPath () {
+		let path = null;
+
+		try {
+			path = await this.fetchLinkParsed('LibraryPath');
+		} catch (reason) {
+			if(reason !== NO_LINK) {
+				throw reason;
+			}
+
+			path = await this[Service].getContextPathFor(this.getID());
+		}
+
+		return maybeWait(path);
 	}
 
 
