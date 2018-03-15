@@ -41,8 +41,8 @@ class Base extends EventEmitter {
 		//We don't want to parse Links, set its type to wild.
 		'Links':                  { type: '*'                       },
 		'href':                   { type: 'string'                  },
-		'CompletionRequired':     { type: 'bool'                    },
-		'CompletionDefaultState': { type: 'bool'                    }
+		'CompletionRequired':     { type: 'boolean'                 },
+		'CompletionDefaultState': { type: 'boolean'                 }
 	}
 
 	constructor (service, parent, data) {
