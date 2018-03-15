@@ -35,6 +35,7 @@ class Enrollment extends Base {
 
 	static Fields = {
 		...Base.Fields,
+		'CatalogEntry':           { type: 'model'   },
 		'CourseInstance':         { type: 'object'  },
 		'LegacyEnrollmentStatus': { type: 'string'  },
 		'RealEnrollmentStatus':   { type: 'string'  },
@@ -96,6 +97,10 @@ class Enrollment extends Base {
 
 async function resolveCatalogEntry (service, scope) {
 	try {
+		if (scope.CatalogEntry) {
+			return;
+		}
+
 		// The intent and purpose of this cache is to transmit work done by the web-service to the the client...
 		// We do NOT want to cache new entries on the client...and we should clear the cache on first read...
 		const cache = service.getDataCache();
@@ -113,6 +118,7 @@ async function resolveCatalogEntry (service, scope) {
 			: service.get(url)
 				.then(d => (!cache.isClientInstance && cache.set(url, d), d)));
 
+		delete scope.CatalogEntry;
 		const entry = scope.CatalogEntry = scope[parse](cce);
 
 		return await entry.waitForPending();
