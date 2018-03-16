@@ -40,9 +40,7 @@ class Base extends EventEmitter {
 		'OID':                    { type: 'string'                  },
 		//We don't want to parse Links, set its type to wild.
 		'Links':                  { type: '*'                       },
-		'href':                   { type: 'string'                  },
-		'CompletionRequired':     { type: 'boolean'                 },
-		'CompletionDefaultState': { type: 'boolean'                 }
+		'href':                   { type: 'string'                  }
 	}
 
 	constructor (service, parent, data) {

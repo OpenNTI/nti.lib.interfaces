@@ -1,5 +1,7 @@
 import isEmpty from 'isempty';
+import {mixin} from 'nti-lib-decorators';
 
+import Completable from '../../mixins/Completable';
 import UserDataStore from '../../stores/UserData';
 import {
 	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
@@ -19,6 +21,7 @@ const EXISTING_TRANSCRIPT = 'A Transcript already exists';
 
 export default
 @model
+@mixin(Completable)
 class Video extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'ntivideo',

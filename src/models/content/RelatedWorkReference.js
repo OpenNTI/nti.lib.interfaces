@@ -1,9 +1,11 @@
 import {parse as parseUrl} from 'url';
 import {extname} from 'path';
 
+import {mixin} from 'nti-lib-decorators';
 import mime from 'mime-types';
 import {isNTIID} from 'nti-lib-ntiids';
 
+import Completable from '../../mixins/Completable';
 import UserDataStore from '../../stores/UserData';
 import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA, Service} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
@@ -40,6 +42,7 @@ const EXTERNAL_TYPE = 'application/vnd.nextthought.externallink';
 
 export default
 @model
+@mixin(Completable)
 class RelatedWorkReference extends Base {
 	static MimeType = COMMON_PREFIX + 'relatedworkref'
 
