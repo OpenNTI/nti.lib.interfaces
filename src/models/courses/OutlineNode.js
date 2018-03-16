@@ -6,6 +6,7 @@ import Logger from 'nti-util-logger';
 import {Progress, Summary, Parser as parse} from '../../constants';
 import Publishable from '../../mixins/Publishable';
 import {model, COMMON_PREFIX} from '../Registry';
+import filterNonRequiredItems from '../../utils/filter-non-required-items';
 
 import Outline from './Outline';
 import fallbackOverview from './_fallbacks.OverviewFromToC';
@@ -82,9 +83,10 @@ class OutlineNode extends Outline {
 	 * @method getContent
 	 * @param  {Object} [params] optional paramaters
 	 * @param  {Boolean}  [params.decorateProgress=true] Decorate the outline contents with progress data.
+	 * @param  {Boolean} [params.requiredOnly] limit the items to only the required ones
 	 * @return {Promise} fulfills with the outlineNode's content or rejects with an error.
 	 */
-	async getContent ({decorateProgress = true} = {}) {
+	async getContent ({decorateProgress = true, requiredOnly = false} = {}) {
 		const getContent = async () => {
 			const isLegacy = Boolean(this.parent('isLegacy', true));
 			const course = this.parent('isCourse', true);
@@ -111,7 +113,13 @@ class OutlineNode extends Outline {
 				)
 			]);
 
-			return this[parse](filterMissingAssignments(assignments, data));
+			let content = filterMissingAssignments(assignments, data);
+
+			if (requiredOnly) {
+				content = filterNonRequiredItems(data);
+			}
+
+			return this[parse](content);
 		};
 
 		if (!decorateProgress) {
