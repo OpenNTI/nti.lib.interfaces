@@ -328,6 +328,12 @@ class Instance extends Base {
 		return !!(this.Discussions || this.ParentDiscussions);
 	}
 
+
+
+	hasOutline () {
+		return this.Outline && this.Outline.hasLink('contents');
+	}
+
 	/**
 	 * Get the Outline for this course instance.
 	 *
@@ -351,7 +357,7 @@ class Instance extends Base {
 			//We have to wait for the CCE to load to know if its in preview mode or not.
 			this[key] = this.waitForPending().then(()=>
 				//If we don't have an outline or the outline doesn't have a contents link
-				!this.Outline || !this.Outline.hasLink('contents')
+				!this.hasOutline()
 					? Promise.reject('Preview')
 					//not preview, Load contents...
 					: this.Outline.getContent(options));
