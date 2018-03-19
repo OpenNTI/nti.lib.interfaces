@@ -1,6 +1,7 @@
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+const HasCompleted = Symbol('Has Completed Field');
 const HasProgress = Symbol('Has Progress Field');
 const ResourceID = Symbol('Resource ID Field');
 
@@ -14,12 +15,12 @@ class Progress extends Base {
 	]
 
 	static Fields = {
-		'AbsoluteProgress':    { type: 'number'                     },
-		'Completed':           { type: 'boolean'                    },
-		'CompletedDate':       { type: 'date'                       },
-		'HasProgress':         { type: 'boolean', name: HasProgress },
-		'MaxPossibleProgress': { type: 'number'                     },
-		'ResourceID':          { type: 'string',  name: ResourceID  },
+		'AbsoluteProgress':    { type: 'number'                      },
+		'Completed':           { type: 'boolean', name: HasCompleted },
+		'CompletedDate':       { type: 'date'                        },
+		'HasProgress':         { type: 'boolean', name: HasProgress  },
+		'MaxPossibleProgress': { type: 'number'                      },
+		'ResourceID':          { type: 'string',  name: ResourceID   },
 	}
 
 
@@ -27,14 +28,14 @@ class Progress extends Base {
 
 
 	getProgress () {
-		let {AbsoluteProgress, MaxPossibleProgress} = this;
-		return AbsoluteProgress / (MaxPossibleProgress || 1);
+		const {AbsoluteProgress, MaxPossibleProgress} = this;
+		return (AbsoluteProgress || 0) / (MaxPossibleProgress || 1);
 	}
 
 
 	hasCompleted () {
-		let progress = (this.getProgress() || 0).toFixed(2);
-		return progress === '1.00';
+		const progress = (this.getProgress() || 0).toFixed(2);
+		return this[HasCompleted] || progress === '1.00';
 	}
 
 
