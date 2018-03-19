@@ -4,6 +4,7 @@ export * as annotations from './annotations';
 export * as anchors from './anchors';
 export * as assessment from './assessment';
 export * as chat from './chat';
+export * as completion from './completion';
 export * as content from './content';
 export * as courses from './courses';
 export * as entities from './entities';

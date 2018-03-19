@@ -55,6 +55,7 @@ class Instance extends Base {
 		'TotalEnrolledCount':                { type: 'number', name: 'enrolledTotalCount'          },
 		'TotalLegacyForCreditEnrolledCount': { type: 'number', name: 'enrolledForCreditTotalCount' },
 		'TotalLegacyOpenEnrolledCount':      { type: 'number', name: 'enrolledOpenlyTotalCount'    },
+		'CompletionPolicy':                  { type: 'model'                                       }
 	}
 
 	get isLegacy () {
