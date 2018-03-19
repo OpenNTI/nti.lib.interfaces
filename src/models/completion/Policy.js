@@ -3,7 +3,7 @@ import Base from '../Base';
 
 export default
 @model
-class CourseInvitation extends Base {
+class CompletionPolicy extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'completion.aggregatecompletionpolicy'
 	]
