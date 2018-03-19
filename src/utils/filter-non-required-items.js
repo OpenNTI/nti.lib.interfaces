@@ -1,3 +1,19 @@
+function filterItems (items) {
+	return items.reduce((acc, item) => {
+		const {CompletionRequired, Items: subItems} = item;
+		const filteredItems = subItems && filterItems(subItems);
+
+		if (CompletionRequired || (filteredItems && filteredItems.length)) {
+			acc.push({
+				...item,
+				Items: filteredItems
+			});
+		}
+
+		return acc;
+	}, []);
+}
+
 /**
  * Recursively remove all items that aren't required
  *
@@ -6,15 +22,8 @@
  * @return {object}       the item but without non-required items
  */
 export default function filterNonRequiredItems (item) {
-	const {CompletionRequired, Items:items} = item;
-	const filteredItems = items && items.map(x => filterNonRequiredItems(x)).filter (x => !!x);
-
-	if (CompletionRequired || (filteredItems && filteredItems.length)) {
-		return {
-			...item,
-			Items: filteredItems
-		};
-	}
-
-	return null;
+	return {
+		...item,
+		Items: item.Items ? filterItems(item.Items) : item.Items
+	};
 }

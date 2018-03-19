@@ -14,16 +14,17 @@ describe('filterNonRequriedItems', () => {
 		const item =  buildItem(false, null, 'label');
 		const filtered = filter(item);
 
-		expect(filtered).toBeFalsy();
+		expect(filtered.label).toEqual('label');
+		expect(filtered.Items).toBeFalsy();
 	});
 
 	test('Not required, no required items', () => {
-		const item = buildItem(false, [buildItem(true), buildItem(true)], 'label');
+		const item = buildItem(false, [buildItem(false), buildItem(false)], 'label');
 		const filtered = filter(item);
 
 		expect(filtered).toBeTruthy();
 		expect(filtered.label).toEqual('label');
-		expect(filtered.Items).toEqual(filtered.Items);
+		expect(filtered.Items).toEqual([]);
 	});
 
 	test('Not required, some required items', () => {
