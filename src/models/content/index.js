@@ -6,7 +6,6 @@ export ImageMetadata from './ImageMetadata';
 export Metadata from './Metadata';
 export Package from './Package';
 export PageInfo from './PageInfo';
-export Progress from './Progress';
 export RelatedWorkReference from './RelatedWorkReference';
 export RelatedWorkReferencePointer from './RelatedWorkReferencePointer';
 export RenderablePackage from './RenderablePackage';
