@@ -34,8 +34,7 @@ class Progress extends Base {
 
 
 	hasCompleted () {
-		const progress = (this.getProgress() || 0).toFixed(2);
-		return this[HasCompleted] || progress === '1.00';
+		return this[HasCompleted] || '1.00' === (this.getProgress() || 0).toFixed(2);
 	}
 
 
