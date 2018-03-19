@@ -3,7 +3,9 @@ import Base from '../../models/Base';
 export default class Batch extends Base {
 	static Fields = {
 		'Items':          {type: 'model[]', defaultValue: []},
-		'TotalItemCount': {type: 'number'                   }
+		'Name':           {type: 'string'                   },
+		'Total':          {type: 'number'                   },
+		'TotalItemCount': {type: 'number'                   },
 	}
 
 
