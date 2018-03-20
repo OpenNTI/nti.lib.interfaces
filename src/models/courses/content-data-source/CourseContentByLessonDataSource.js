@@ -28,6 +28,10 @@ export default class CourseContentByLessonDataSource extends PagedDataSource {
 
 		const contents = await node.getContent({decorateProgress: false});
 
-		return new PagedBatch(this.service, this.parent, {Items: [contents], TotalItemCount: total, PageSize: 1});
+		const page = new PagedBatch(this.service, this.parent, {TotalItemCount: total, PageSize: 1});
+
+		page.Items = [contents];
+
+		return page;
 	}
 }
