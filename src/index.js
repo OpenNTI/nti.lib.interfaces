@@ -28,10 +28,3 @@ export { Models };
 export function getModel (...args) { return Registry.lookup(...args); }
 export function registerModel (o) { return Registry.register(o); }
 export getLink from './utils/getlink';
-
-
-//TODO: Move these two exports to:
-//TODO:  Authoring.OrderedContents
-//TODO:  Authoring.OrderedContents.MoveRoot
-export OrderedContents from './authoring/ordered-contents';
-export MoveRoot from './authoring/ordered-contents/MoveRoot';
