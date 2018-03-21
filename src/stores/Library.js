@@ -1,98 +1,52 @@
 import EventEmitter from 'events';
 
 import Logger from 'nti-util-logger';
-import {mixin} from 'nti-lib-decorators';
-import {Array as ArrayUtils} from 'nti-commons';
+import {URL, defineProtected} from 'nti-commons';
 
-import {Service} from '../constants';
-import {parseListFn} from '../models/Parser';
-import {Mixin as Pendability} from '../mixins/Pendability';
+import getLink from '../utils/getlink';
 
-const {unique} = ArrayUtils;
 
 const logger = Logger.get('store:Library');
 const getInstances = service => service.getDataCache().get('LibraryInstances', {}, true);
 
-export default
-@mixin(Pendability)
-class Library extends EventEmitter {
-
-	static load (service, name, reload) {
-		function make (contentBundles, enrolledCourses, administeredCourses) {
-			return new Library(service, name, contentBundles, enrolledCourses, administeredCourses);
-		}
-
-		const instances = getInstances(service);
-
-		return (instances[name] = Promise.all([
-			resolveCollection(service, service.getContentBundlesURL(), reload),
-			resolveCollection(service, service.getCoursesEnrolledURL(), reload),
-			resolveCollection(service, service.getCoursesAdministeringURL(), reload)
-		])
-			.then(data=> make(...data).waitForPending())
-			.then(instance => instances[name] = instance)
-			.catch(e=> {
-				logger.error(e.stack || e.message || e);
-				return Promise.reject(e);
-			}));
-	}
-
+export default class Library extends EventEmitter {
 
 	static get (service, name, reload) {
-		function reloading (i) { i.emit('reloading'); }
-
-		const instance = getInstances(service)[name];
+		const instances = getInstances(service);
+		const instance = instances[name];
 
 		if (instance) {
 			if (!reload) {
-				return instance.then ? instance : Promise.resolve(instance);
+				return instance;
 			}
-			else if(instance.then) {
-				instance.then(reloading);
-			} else {
-				reloading(instance);
-			}
+
+			instance.emit('reloading');
 		}
 
-		return this.load(service, name, reload);
+		return (
+			instances[name] = new Library(service, name)
+		);
 	}
 
 
-	static free (/*name*/) {
-		//TODO: Implement cleanup.
+	static free (service, name) {
+		const instances = getInstances(service);
+		delete instances[name];
 	}
 
 
-	constructor (service, name, contentBundles, enrolledCourses, administeredCourses) {
+	constructor (service, name) {
 		super();
-		this.initMixins();
-		this[Service] = service;
-		this.name = name;
 
-		this.onChange = this.onChange.bind(this);
-
-		let parseList = parseListFn(this, service);
-
-
-		contentBundles = contentBundles.filter(o => {
-			let invalid = !o.ContentPackages || !o.ContentPackages.length;
-			if (invalid) {
-				logger.warn('Bundle is empty. Missing packages. %o', o);
-			}
-			return !invalid;
+		Object.defineProperties(this, {
+			...defineProtected({
+				name,
+				service,
+				parse: o => service.getObject(o, {parent: this}),
+			})
 		});
 
-
-		this.bundles = parseList(contentBundles);
-		this.courses = parseList(enrolledCourses);
-		this.administeredCourses = parseList(administeredCourses);
-
-		Object.defineProperty(this, 'packages', {
-			get () {
-				logger.error('Dead Property.');
-				return [];
-			}
-		});
+		this.load();
 	}
 
 
@@ -107,55 +61,12 @@ class Library extends EventEmitter {
 			}
 		}
 
-		return !!this[Service].getCoursesCatalogURL();
+		return !!this.service.getCoursesCatalogURL();
 	}
 
 
-	onChange () {
+	onChange = () => {
 		this.emit('change', this);
-	}
-
-
-	getCourse (courseInstanceId, ignoreAdministeredCourses = false) {
-		return this.findCourse(
-			course=> course.getCourseID() === courseInstanceId,
-			ignoreAdministeredCourses
-		);
-	}
-
-
-	getPackage (packageId) {
-		let courseBundles = [].concat(this.courses, this.administeredCourses)
-			.map(course => course.CourseInstance.ContentPackageBundle)
-			.filter(x => x);	// eliminate nulls (newly created courses may not have bundles yet)
-
-		let bundles = [].concat(this.bundles, courseBundles);
-
-		let referencedPackages = bundles.reduce((set, bundle) => set.concat(bundle.ContentPackages), []);
-
-		let packs = unique([].concat(
-			referencedPackages,
-			bundles //Also search over Bundles as they have the same "interface" as Packages.
-		));
-
-		return packs.reduce((found, pkg)=>
-			found || pkg.getID() === packageId && pkg, null);
-	}
-
-
-	findCourse (findFn, ignoreAdministeredCourses = false) {
-		let admin = this.administeredCourses || [];
-		let courses = this.courses || [];
-
-		if (ignoreAdministeredCourses !== true) {
-			courses = [].concat(admin).concat(courses);
-		}
-
-		let found;
-		courses.every(course =>
-			!(found = findFn(course) ? course : null));
-
-		return found;
 	}
 
 
@@ -165,28 +76,66 @@ class Library extends EventEmitter {
 		const sortedCopy = courses.slice().sort((a, b)=> getDate(b) - getDate(a));
 		return sortedCopy[0];
 	}
+
+
+	async load () {
+		this.loading = true;
+		try {
+			await Promise.all([
+				loadCollection(this, this.service.getContentBundlesURL(), 'bundles', filterBadBundles),
+				loadCollection(this, this.service.getCoursesEnrolledURL(), 'courses'),
+				loadCollection(this, this.service.getCoursesAdministeringURL(), 'administeredCourses')
+			]);
+		} finally {
+			this.loading = false;
+		}
+	}
 }
 
 
-function resolveCollection (s, url, ignoreCache) {
-	let cache = s.getDataCache();
+async function loadCollection (scope, url, key, filter) {
+	const {service} = scope;
+	scope[key] = [];
 
+	url = URL.appendQueryParams(url, {batchSize: 10, batchStart: 0});
+
+	do {
+
+		const data = await loadPage(service, url, filter);
+		const items = await scope.parse(data.Items);
+
+		url = getLink(data, 'batch-next');
+
+		scope[key] = [...scope[key], ...items];
+
+		scope.onChange();
+
+	} while (url);
+}
+
+
+async function loadPage (service, url, filter) {
 	if (!url) {
-		return Promise.resolve([]);
+		return [];
 	}
 
-	let cached = cache.get(url), result;
-	if (!cached || ignoreCache) {
-		result = s.get(url)
-			.catch(()=>({titles: [], Items: []}))
-			.then(data => {
-				cache.set(url, data);
-				return data;
-			});
-	}
-	else {
-		result = Promise.resolve(cached);
+	let data = {Items: []};
+	try {
+		data = await service.get(url);
+		data.Items = (data.titles || data.Items).filter(filter || Boolean);
+		delete data.titles;
+	} catch (e) {
+		logger.error(e);
 	}
 
-	return result.then(data => data.titles || data.Items);
+	return data;
+}
+
+
+function filterBadBundles (o) {
+	let invalid = !o.ContentPackages || !o.ContentPackages.length;
+	if (invalid) {
+		logger.warn('Bundle is empty. Missing packages. %o', o);
+	}
+	return !invalid;
 }
