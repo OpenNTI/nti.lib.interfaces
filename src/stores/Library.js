@@ -88,6 +88,7 @@ export default class Library extends EventEmitter {
 			]);
 		} finally {
 			this.loading = false;
+			this.onChange();
 		}
 	}
 }
