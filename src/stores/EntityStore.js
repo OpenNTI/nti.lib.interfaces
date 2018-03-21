@@ -41,7 +41,7 @@ class EntityStore extends EventEmitter {
 		this.load = url => service.get(url).then(o => parseList(Object.values(o.Items || [])));
 
 		if (process.browser) {
-			this.on('load', (_, time) => logger.info('Load: %s %o', time, this));
+			this.on('load', (_, time) => logger.debug('Load: %s %o', time, this));
 		}
 
 		this.loading = true;

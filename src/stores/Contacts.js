@@ -86,7 +86,7 @@ class Contacts extends EventEmitter {
 		this.get = id => service.get(url.resolve(ensureSlash(entryPoint),id)).then(o => service.getObject(o));
 
 		if (process.browser) {
-			this.on('load', (_, time) => logger.info('Load: %s %o', time, this));
+			this.on('load', (_, time) => logger.debug('Load: %s %o', time, this));
 		}
 
 		this.loading = true;

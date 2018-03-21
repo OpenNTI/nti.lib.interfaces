@@ -45,7 +45,7 @@ export default class Stream extends EventEmitter {
 		mixin(this, Pendability);
 
 		if (process.browser) {
-			this.on('load', (_, time) => logger.info('Load: %s %o', time, this));
+			this.on('load', (_, time) => logger.debug('Load: %s %o', time, this));
 		}
 
 		if (href.then) {
