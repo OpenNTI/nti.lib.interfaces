@@ -532,17 +532,21 @@ class Instance extends Base {
 
 
 async function resolvePreferredAccess (service, instance, parent) {
-	const enrollment = await instance.fetchLinkParsed('UserCoursePreferredAccess');
+	try {
+		const enrollment = await instance.fetchLinkParsed('UserCoursePreferredAccess');
 
-	// For legacy compatability
-	instance.reparent(enrollment);
-	// now the enrollment willhave the instance as a parent since its who parsed it...
-	// set the instance's parent as its parent to fix the chain.
-	enrollment.reparent(parent);
+		// For legacy compatability
+		instance.reparent(enrollment);
+		// now the enrollment willhave the instance as a parent since its who parsed it...
+		// set the instance's parent as its parent to fix the chain.
+		enrollment.reparent(parent);
 
-	//legacy lookup path:
-	instance.CatalogEntry = enrollment.CatalogEntry;
+		//legacy lookup path:
+		instance.CatalogEntry = enrollment.CatalogEntry;
 
-	//new preferred property
-	instance.PreferredAccess = enrollment;
+		//new preferred property
+		instance.PreferredAccess = enrollment;
+	} catch (e) {
+		instance.reparent(null);
+	}
 }

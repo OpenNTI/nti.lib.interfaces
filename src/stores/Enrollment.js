@@ -1,44 +1,42 @@
 import {Service} from '../constants';
 import getLink from '../utils/getlink';
 
-import Library from './Library';
-
-
-const GetLibrary = Symbol('Library Getter');
-
 
 //TODO: There isn't enough here to warrent a whole heavy class. This should move to the catalog API on the app side.
 
 export default class Enrollment {
 	constructor (service) {
-		this[Service] = service;
+		this.service = service;
 	}
 
-	[GetLibrary] () {
-		return Library.get(this[Service], 'Main');
+	async isEnrolled (courseId) {
+		try {
+			const course = await this.getCourse(courseId);
+			return Boolean(course.PreferredAccess);
+		}
+		catch (e) {
+			return false;
+		}
 	}
 
-	isEnrolled (courseId) {
-		return this[GetLibrary]().then(library => !!library.getCourse(courseId));
+	getCourse (courseId) {
+		return this.service.getObject(courseId);
 	}
 
 
 	enrollOpen (catalogEntryId) {
-		let service = this[Service];
+		const {service} = this;
 		return service.post(service.getCoursesEnrolledURL(), {
 			NTIID: catalogEntryId
 		});
 	}
 
 
-	dropCourse (courseId) {
-
-		return this[GetLibrary]()
-			.then(library =>
-				library.getCourse(courseId, true)
-				|| Promise.reject(new Error('Course Not Found in Library. Not Enrolled?')))
-
-			.then(course => course.drop());
+	async dropCourse (courseId) {
+		const course = await this.getCourse(courseId);
+		return (course.PreferredAccess)
+			? course.PreferredAccess.drop()
+			: Promise.reject(new Error('Not Enrolled?'));
 	}
 
 
