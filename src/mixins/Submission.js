@@ -35,7 +35,7 @@ export default {
 		// (unless the model has flagged that it prevers Object URL... then short circuit)
 		let target = this.SubmissionHref
 					|| ((!this.SubmitsToObjectURL && this[Service].getCollectionFor(this)) || {}).href
-		//If value yet, get/build the Objects URL...
+			//If value yet, get/build the Objects URL...
 					|| this[Service].getObjectURL(this.getID());
 
 		const fn = 'onSuccessfulSubmission';
