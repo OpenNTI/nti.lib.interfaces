@@ -14,7 +14,6 @@ export default function setup (config) {
 }
 
 
-export Catalog from './stores/Catalog';
 export Library from './stores/Library';
 export Notifications from './stores/Notifications';
 export FiveMinuteEnrollmentInterface from './interface/FiveMinuteInterface';
