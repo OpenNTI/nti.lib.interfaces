@@ -5,7 +5,7 @@ import {mixin} from 'nti-lib-decorators';
 import {encodeForURI} from 'nti-lib-ntiids';
 import Logger from 'nti-util-logger';
 
-import {Progress, Summary, Parser as parse} from '../../constants';
+import {Summary, Parser as parse} from '../../constants';
 import Publishable from '../../mixins/Publishable';
 import {model, COMMON_PREFIX} from '../Registry';
 import filterNonRequiredItems from '../../utils/filter-non-required-items';
@@ -251,7 +251,8 @@ function applyProgressAndSummary (content, progress, summary) {
 		.reduce((r, x) => applyIf(r || [], x || []));
 
 	if (nodeProgress != null) {
-		content[Progress] = nodeProgress;
+		content.CompletedDate = nodeProgress.getCompletedDate();
+		//TODO: Add other fiedls as we need them
 	}
 
 	if (summary != null) {
