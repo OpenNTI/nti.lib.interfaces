@@ -2,7 +2,7 @@ import url from 'url';
 
 import {applyIf} from 'nti-commons';
 import {mixin} from 'nti-lib-decorators';
-import {encodeForURI} from 'nti-lib-ntiids';
+import {encodeForURI, isNTIID} from 'nti-lib-ntiids';
 import Logger from 'nti-util-logger';
 
 import {Summary, Parser as parse} from '../../constants';
@@ -310,7 +310,7 @@ function filterMissingAssignments (assignments, item) {
  * @return {object} Returns the item given. (potentially modified)
  */
 function fixRelativePaths (item, root) {
-	if (item && item.href) {
+	if (item && item.href && !isNTIID(item.href)) {
 		item.href = url.resolve(root, item.href);
 	}
 
