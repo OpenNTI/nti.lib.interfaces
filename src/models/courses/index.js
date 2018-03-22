@@ -9,6 +9,7 @@ export GradeBookShell from './GradeBookShell';
 export GradeBookByAssignment from './GradeBookByAssignment';
 export GradeBookUserSummary from './GradeBookUserSummary';
 export CatalogEntry from './CatalogEntry';
+export CatalogLegacyEntry from './CatalogLegacyEntry';
 export CatalogInstructorLegacyInfo from './CatalogInstructorLegacyInfo';
 export CourseProgress from './CourseProgress';
 export Instance from './Instance';

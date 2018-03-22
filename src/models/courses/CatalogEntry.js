@@ -10,11 +10,7 @@ const EnrollmentOptions = Symbol('EnrollmentOptions');
 export default
 @model
 class CourseCatalogEntry extends Base {
-	static MimeType = [
-		COMMON_PREFIX + 'courses.catalogentry',
-		COMMON_PREFIX + 'courses.coursecataloglegacyentry', //Really?! Two packages?! :P
-		COMMON_PREFIX + 'courseware.coursecataloglegacyentry',
-	]
+	static MimeType = COMMON_PREFIX + 'courses.catalogentry'
 
 	static Fields = {
 		...Base.Fields,
