@@ -79,7 +79,7 @@ class OutlineNode extends Outline {
 
 
 	get isStaticOverContents () {
-		return (/.+\.json/i).test(this.getLink('overview-contents'));
+		return (/.+\.json/i).test(this.getLink('overview-content'));
 	}
 
 	/**
