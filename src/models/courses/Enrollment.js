@@ -37,6 +37,7 @@ class Enrollment extends Base {
 		...Base.Fields,
 		'CatalogEntry':           { type: 'model'   },
 		'CourseInstance':         { type: 'object'  },
+		'CourseProgress':         { type: 'model'   },
 		'LegacyEnrollmentStatus': { type: 'string'  },
 		'RealEnrollmentStatus':   { type: 'string'  },
 		'Username':               { type: 'string'  },
