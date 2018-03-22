@@ -15,10 +15,11 @@ class CourseProgress extends Base {
 		'IsEnrolled':          { type: 'boolean', name: 'enrolled'  },
 		'AbsoluteProgress':    { type: 'int'                        },
 		'Completed':           { type: 'bool'                       },
-		'CompletedDate':       { type: 'string'                     },
+		'CompletedDate':       { type: 'date'                       },
 		'HasProgress':         { type: 'bool'                       },
 		'MaxPossibleProgress': { type: 'int'                        },
 		'PercentageProgress':  { type: 'number'                     }
 	}
 
+	getCompletedDate () {} //implemented by CompletedDate date field.
 }
