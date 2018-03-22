@@ -45,7 +45,9 @@ class Assignment extends Base {
 		'content':                              { type: 'string',                                      },
 		'PublicationState':                     { type: 'string',                                      },
 		'NoSubmit':                             { type: 'boolean',                                     },
-		'Reports':                              { type: 'model[]'}
+		'Reports':                              { type: 'model[]'                                      }
+		// Do not add a Target-NTIID field to this model. Legacy overview models shared this mimetype but have a
+		// different shape... leave those warnings in the console.
 	}
 
 
