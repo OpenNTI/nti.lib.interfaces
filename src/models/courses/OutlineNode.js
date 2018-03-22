@@ -1,4 +1,4 @@
-import {url} from 'url';
+import url from 'url';
 
 import {applyIf} from 'nti-commons';
 import {mixin} from 'nti-lib-decorators';
