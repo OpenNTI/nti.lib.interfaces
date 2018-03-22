@@ -1,3 +1,5 @@
+import {url} from 'url';
+
 import {applyIf} from 'nti-commons';
 import {mixin} from 'nti-lib-decorators';
 import {encodeForURI} from 'nti-lib-ntiids';
@@ -76,24 +78,30 @@ class OutlineNode extends Outline {
 	get isSection () {}
 
 
+	get isStaticOverContents () {
+		return (/.+\.json/i).test(this.getLink('overview-contents'));
+	}
+
 	/**
 	 * Get the overview contents of this node.
 	 * If no progress is required, pass an object with decorateProgress set to false to prevent decorating it.
 	 *
 	 * @method getContent
 	 * @param  {Object} [params] optional paramaters
-	 * @param  {Boolean}  [params.decorateProgress=true] Decorate the outline contents with progress data.
 	 * @param  {Boolean} [params.requiredOnly] limit the items to only the required ones
 	 * @return {Promise} fulfills with the outlineNode's content or rejects with an error.
 	 */
-	async getContent ({decorateProgress = true, requiredOnly = false} = {}) {
+	async getContent ({requiredOnly = false} = {}) {
 		const getContent = async () => {
 			const isLegacy = Boolean(this.parent('isLegacy', true));
 			const course = this.parent('isCourse', true);
 			const link = 'overview-content';
 
 			const fetchLink = async () => {
-				const content = await this.fetchLink(link);
+				let content = await this.fetchLink(link);
+				if(this.isStaticOverContents) {
+					content = fixRelativePaths(content, this.getLink(link));
+				}
 				return isLegacy
 					? collateVideo(content) //Has a Link, but is legacy
 					: content;              //Has a Link, is NOT legacy
@@ -122,10 +130,6 @@ class OutlineNode extends Outline {
 			return this[parse](content);
 		};
 
-		if (!decorateProgress) {
-			return getContent();
-		}
-
 		try {
 			return applyProgressAndSummary(...(await Promise.all([
 				getContent(),
@@ -145,7 +149,7 @@ class OutlineNode extends Outline {
 	getProgress () {
 		let link = 'Progress';
 
-		if (!this.hasLink(link)) {
+		if (!this.hasLink(link) || !this.isStaticOverContents) {
 			return Promise.resolve(null);
 		}
 
@@ -294,6 +298,20 @@ function filterMissingAssignments (assignments, item) {
 
 	return item;
 }
+
+
+function fixRelativePaths (item, root) {
+	if (item && item.href) {
+		item.href = url.resolve(root, item.href);
+	}
+
+	for (let x of (item.Items || [])) {
+		fixRelativePaths(x, root);
+	}
+
+	return item;
+}
+
 
 /* *****************************************************************************
  * FALLBACK TEMPORARY STUFF BELOW THIS POINT
