@@ -17,7 +17,8 @@ class CourseProgress extends Base {
 		'Completed':           { type: 'bool'                       },
 		'CompletedDate':       { type: 'string'                     },
 		'HasProgress':         { type: 'bool'                       },
-		'MaxPossibleProgress': { type: 'int'                        }
+		'MaxPossibleProgress': { type: 'int'                        },
+		'PercentageProgress':  { type: 'number'                     }
 	}
 
 }
