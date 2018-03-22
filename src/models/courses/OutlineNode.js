@@ -308,7 +308,6 @@ function filterMissingAssignments (assignments, item) {
  * @param  {string}         root The content root url to resolve against.
  * @return {object} Returns the item given. (potentially modified)
  */
-
 function fixRelativePaths (item, root) {
 	if (item && item.href) {
 		item.href = url.resolve(root, item.href);
