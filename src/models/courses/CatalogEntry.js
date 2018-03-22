@@ -52,6 +52,7 @@ class CourseCatalogEntry extends Base {
 	}
 
 	isCourse = true
+	isCourseCatalogEntry = true
 
 	constructor (service, data) {
 		super(service, null, data);
