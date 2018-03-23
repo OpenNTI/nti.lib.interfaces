@@ -23,7 +23,8 @@ export default class MetaDataResolverForVimeo {
 					poster: o.thumbnail_url,
 					thumbnail: o.thumbnail_url,
 					title: o.title,
-					description: o.description
+					description: o.description,
+					duration: o.duration
 				})
 			)
 			.catch(failure => ({
