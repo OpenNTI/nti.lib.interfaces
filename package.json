@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "btoa": "^1.1.2",
+    "date-fns": "^1.29.0",
     "elementtree": "^0.1.6",
     "get-video-id": "^2.1.5",
     "invariant": "^2.2.0",
@@ -36,7 +37,6 @@
     "isempty": "0.0.1",
     "iso8601-duration": "^1.1.1",
     "mime-types": "^2.1.0",
-    "moment": "^2.8.3",
     "nti-commons": "^2.6.0",
     "nti-lib-decorators": "^1.2.2",
     "nti-lib-ntiids": "^1.0.0",

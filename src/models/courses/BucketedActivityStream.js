@@ -1,6 +1,7 @@
 import {Proxy as ProxyObject} from 'nti-commons';
 import Logger from 'nti-util-logger';
-import moment from 'moment';
+import startOfISOWeek from 'date-fns/start_of_iso_week';
+import endOfISOWeek from 'date-fns/end_of_iso_week';
 
 import Base from '../Base';
 
@@ -12,7 +13,13 @@ const APPLY_ACTIVITY = Symbol('protected method: applyActivity');
 const BUILD_BINS = Symbol('protected method: buildBins');
 const BINS = Symbol();
 
-const getWeek = (date, side = 'end') => moment(date)[`${side}Of`]('isoWeek').toDate();
+
+const dateFns = {
+	end: endOfISOWeek,
+	start: startOfISOWeek,
+};
+
+const getWeek = (date, side = 'end') => dateFns[side](date);
 const dateToTimestamp = date => Math.round(date.getTime() / 1000);
 const getWeekAsTimestamp = (date, side = 'end') => dateToTimestamp(getWeek(date, side));
 
