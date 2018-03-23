@@ -5,7 +5,7 @@ export default
 @model
 class CourseProgress extends Base {
 	static MimeType = [
-		COMMON_PREFIX + 'completion.progres',
+		COMMON_PREFIX + 'completion.completioncontextprogress',
 	]
 
 	static Fields = {
