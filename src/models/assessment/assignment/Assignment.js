@@ -6,6 +6,7 @@ import {
 	ASSESSMENT_HISTORY_LINK
 } from '../../../constants';
 import Publishable from '../../../mixins/Publishable';
+import Completable from '../../../mixins/Completable';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 import SubmittableIdentity from '../mixins/SubmittableIdentity';
@@ -21,7 +22,7 @@ const getAssociationCount = (x) => x.LessonContainerCount;
 
 export default
 @model
-@mixin(Publishable, SubmittableIdentity)
+@mixin(Completable, Publishable, SubmittableIdentity)
 class Assignment extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.assignment'
 
