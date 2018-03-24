@@ -91,7 +91,15 @@ class RelatedWorkReference extends Base {
 
 
 	get isEmbeddableDocument () {
-		return !this.isDocument && [this.type, this.targetMimeType].some(x => mime.extension(x) === 'pdf');
+		const types = [this.type, this.targetMimeType];
+		if (this.isExternal && types.every(x => x === EXTERNAL_TYPE)) {
+			// We don't have a MimeType to lookup...
+			// Just compare the extention
+			return this.getFileExtentionFromHref() === 'pdf';
+		}
+
+		return !this.isDocument
+			&& types.some(x => mime.extension(x) === 'pdf');
 	}
 
 
@@ -118,10 +126,15 @@ class RelatedWorkReference extends Base {
 		}
 
 		if (!ext || ext === 'bin') {
-			return extname(parseUrl(this.href).pathname).replace(/\./, '');
+			return this.getFileExtentionFromHref();
 		}
 
 		return ext;
+	}
+
+
+	getFileExtentionFromHref () {
+		return extname(parseUrl(this.href).pathname).replace(/\./, '').toLowerCase();
 	}
 
 
