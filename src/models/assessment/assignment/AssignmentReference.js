@@ -13,6 +13,7 @@ class AssignmentReference extends Base {
 	static Fields = {
 		...Base.Fields,
 		'Target-NTIID':  { type: 'string' },
-		'label':         { type: 'string' }
+		'label':         { type: 'string' },
+		'title':         { type: 'string' },
 	}
 }
