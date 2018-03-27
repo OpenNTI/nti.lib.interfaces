@@ -14,6 +14,7 @@ import {Mixin as InstanceCacheContainer} from '../mixins/InstanceCacheContainer'
 import DataCache from '../utils/datacache';
 import getLink from '../utils/getlink';
 import maybeWait from '../utils/maybe-wait';
+import {isHrefId, decodeHrefFrom} from '../utils/href-ntiids';
 import {
 	REL_USER_SEARCH,
 	REL_USER_UNIFIED_SEARCH,
@@ -755,11 +756,15 @@ class ServiceDocument extends EventEmitter {
 			throw new Error('No NTIID specified');
 		}
 
-		let collection = this.getCollection('Objects', 'Global') || {};
-		let parts = [
-			collection.href || '',
+		const href = isHrefId(ntiid)
+			? decodeHrefFrom(ntiid)
+			: (this.getCollection('Objects', 'Global') || {}).href;
+
+		const parts = [
+			href || '',
 			encodeURIComponent(ntiid || '')
 		];
+
 		if (field) {
 			parts.push('++fields++' + field);
 		}

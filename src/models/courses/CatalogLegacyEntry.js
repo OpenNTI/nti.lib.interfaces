@@ -1,7 +1,7 @@
+import {encodeIdFrom} from '../../utils/href-ntiids';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import CatalogEntry from './CatalogEntry';
-
 
 
 export default
@@ -11,4 +11,9 @@ class CourseCatalogLegacyEntry extends CatalogEntry {
 		COMMON_PREFIX + 'courses.coursecataloglegacyentry', //Really?! Two packages?! :P
 		COMMON_PREFIX + 'courseware.coursecataloglegacyentry',
 	]
+
+
+	getID () {
+		return encodeIdFrom(this.href);
+	}
 }
