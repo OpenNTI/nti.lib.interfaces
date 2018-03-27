@@ -3,7 +3,7 @@ import {parseNTIID} from 'nti-lib-ntiids';
 const COMMON_PREFIX = 'tag:nextthought.com,2011-10:';
 const {atob, btoa} = global;
 
-export const SPECIFIC_TYPE = 'ClientHrefId';
+export const SPECIFIC_TYPE = '__nti_object_href';
 
 export function encodeIdFrom (href) {
 	try {
