@@ -756,12 +756,10 @@ class ServiceDocument extends EventEmitter {
 			throw new Error('No NTIID specified');
 		}
 
-		const href = isHrefId(ntiid)
-			? decodeHrefFrom(ntiid)
-			: (this.getCollection('Objects', 'Global') || {}).href;
-
-		const parts = [
-			href || '',
+		const parts = isHrefId(ntiid) ? [
+			decodeHrefFrom(ntiid)
+		] : [
+			(this.getCollection('Objects', 'Global') || {}).href,
 			encodeURIComponent(ntiid || '')
 		];
 
