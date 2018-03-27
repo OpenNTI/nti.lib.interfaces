@@ -1,7 +1,6 @@
 /*globals BUILD_PACKAGE_NAME, BUILD_PACKAGE_VERSION*/
 import EventEmitter from 'events';
 
-import base64decode from 'btoa'; //If the login method is invoked on the NodeJS side, we will need this function...
 import Logger from 'nti-util-logger';
 import {chain, FileType, URL} from 'nti-commons';
 
@@ -29,7 +28,7 @@ const SERVICE_INST_CACHE_KEY = 'service-doc-instance';
 
 const logger = Logger.get('DataServerInterface');
 
-const btoa = global.bota || base64decode;
+const {btoa} = global;
 
 const Request = Symbol('Request Adaptor');
 const AsFormSubmission = Symbol('');
