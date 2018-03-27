@@ -25,8 +25,4 @@ class RelatedWorkReferencePointer extends Base {
 		'Containers': { type: 'string[]' },
 		'target':     { type: 'string'   },
 	}
-
-	constructor (service, data) {
-		super(service, null, data);
-	}
 }

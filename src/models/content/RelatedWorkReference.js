@@ -60,16 +60,16 @@ class RelatedWorkReference extends Base {
 	}
 
 	static fromID (service, id) {
-		return new RelatedWorkReference(service, {NTIID: id});
+		return new RelatedWorkReference(service, null, {NTIID: id});
 	}
 
 
-	constructor (service, data) {
+	constructor (service, parent, data) {
 		if (!data.Creator || (data.Creator === data.creator)) {
 			data.Creator = data.creator;
 		}
 		delete data.creator;
-		super(service, null, data);
+		super(service, parent, data);
 	}
 
 
