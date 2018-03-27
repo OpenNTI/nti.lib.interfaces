@@ -1,3 +1,7 @@
+function getCompletedDate (item, items) {
+	return items && (items[item.NTIID] || items[item.href] || items[item['Target-NTIID']] || items[item['target-NTIID']]);
+}
+
 export default function Applyer (targetModelClass) {
 	Object.assign(targetModelClass.Fields, {
 		'CompletionRequired':       { type: 'boolean' },
@@ -11,6 +15,24 @@ export default function Applyer (targetModelClass) {
 
 		hasCompleted () {
 			return this.getCompletedDate() != null;
+		},
+
+
+		async updateCompletedState (enrollment) {
+			enrollment = enrollment || this.parent('getCompletedItems');
+
+			if (!enrollment) { return; }
+
+			try {
+				const items = await enrollment.getCompletedItems();
+				const completedDate = getCompletedDate(this, items);
+
+				this.CompletedDate = completedDate;
+				this.onChange('CompletedDate');
+				return this;
+			} catch (e) {
+				//Its fine if this fails
+			}
 		}
 	};
 }

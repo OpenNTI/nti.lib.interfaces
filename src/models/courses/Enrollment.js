@@ -92,6 +92,17 @@ class Enrollment extends Base {
 	getStatus () {
 		return this.LegacyEnrollmentStatus;
 	}
+
+
+	async getCompletedItems () {
+		try {
+			const completedItems = await this.fetchLink('CompletedItems');
+
+			return completedItems.Items;
+		} catch (e) {
+			return {};
+		}
+	}
 }
 
 
