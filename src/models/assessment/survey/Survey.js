@@ -1,4 +1,5 @@
 import {wait} from 'nti-commons';
+import {mixin} from 'nti-lib-decorators';
 
 import {
 	ASSESSMENT_HISTORY_LINK,
@@ -6,6 +7,7 @@ import {
 	SURVEY_REPORT_LINK
 } from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
+import Completable from '../../../mixins/Completable';
 import QuestionSet from '../QuestionSet';
 
 import SurveySubmission from './SurveySubmission';
@@ -14,6 +16,7 @@ const AGGREGATED = Symbol(SURVEY_AGGREGATED_LINK);
 
 export default
 @model
+@mixin(Completable)
 class Survey extends QuestionSet {
 	static MimeType = COMMON_PREFIX + 'nasurvey'
 
