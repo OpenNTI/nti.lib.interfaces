@@ -103,6 +103,18 @@ class Enrollment extends Base {
 			return {};
 		}
 	}
+
+
+	async updateCourseProgress () {
+		try {
+			const courseProgress = await this.fetchLinkParsed('Progress');
+
+			this.CourseProgress = courseProgress;
+			this.onChange('CourseProgress');
+		} catch (e) {
+			//Its alright if this fails
+		}
+	}
 }
 
 

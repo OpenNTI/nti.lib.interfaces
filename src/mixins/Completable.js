@@ -25,10 +25,18 @@ export default function Applyer (targetModelClass) {
 
 			try {
 				const items = await enrollment.getCompletedItems();
+				const oldCompletedDate = this.getCompletedDate();
 				const completedDate = getCompletedDate(this, items);
+
+
 
 				this.CompletedDate = completedDate;
 				this.onChange('CompletedDate');
+
+				if (oldCompletedDate !== this.getCompletedDate() && enrollment.updateCourseProgress) {
+					enrollment.updateCourseProgress();
+				}
+
 				return this;
 			} catch (e) {
 				//Its fine if this fails
