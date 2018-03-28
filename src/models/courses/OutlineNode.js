@@ -89,9 +89,11 @@ class OutlineNode extends Outline {
 	 * @method getContent
 	 * @param  {Object} [params] optional paramaters
 	 * @param  {Boolean} [params.requiredOnly] limit the items to only the required ones
+	 * @param {Boolean} [params.decorateProgress] if false do not decorate the progress on the items
+	 * @param {Boolean} [params.decorateSummary] if false do not decorate the summary call on the items
 	 * @return {Promise} fulfills with the outlineNode's content or rejects with an error.
 	 */
-	async getContent ({requiredOnly = false} = {}) {
+	async getContent ({requiredOnly = false, decorateProgress = true, decorateSummary = true} = {}) {
 		const getContent = async () => {
 			const isLegacy = Boolean(this.parent('isLegacy', true));
 			const course = this.parent('isCourse', true);
@@ -133,8 +135,8 @@ class OutlineNode extends Outline {
 		try {
 			return applyProgressAndSummary(...(await Promise.all([
 				getContent(),
-				this.getProgress(),
-				this.getSummary(),
+				decorateProgress && this.getProgress(),
+				decorateSummary && this.getSummary(),
 			])));
 		} catch (e) {
 			if (e === 'empty') {
@@ -200,6 +202,8 @@ function getFuzzyID (object, keys = ['Target-NTIID', 'NTIID']) {
 
 function applyProgressAndSummary (content, progress, summary) {
 	if (!content) { return; }
+
+	if (!progress && !summary) { return content; }
 
 	function findWithFuzzyKey (c, key) {
 		key = key.toLowerCase();

@@ -26,7 +26,11 @@ export default class CourseContentByLessonDataSource extends PagedDataSource {
 			throw new Error('Page Not Found');
 		}
 
-		const contents = await node.getContent({decorateProgress: false});
+		const contents = await node.getContent({
+			decorateProgress: false,
+			decorateSummary: params.decorateSummary != null ? params.decorateSummary : true,
+			requiredOnly: params.requiredOnly
+		});
 
 		const page = new PagedBatch(this.service, this.parent, {TotalItemCount: total, PageSize: 1});
 
