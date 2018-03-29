@@ -29,7 +29,7 @@ class QuestionSubmission extends Base {
 			parts: parts && parts.map(p => p.getInitialValue ? p.getInitialValue() : null)
 		};
 
-		return new this(question[Service], null, data);
+		return new this(question[Service], question, data);
 	}
 
 

@@ -31,10 +31,17 @@ export default {
 
 
 	submit () {
+		const resolve = () => {
+			const course = this.parent('isCourse');
+			const link = course && course.getLink('Pages');
+			const {href} = (!link && this[Service].getCollectionFor(this)) || {};
+			return link || href;
+		};
+
 		// Try looking up the href to POST to in the service doc's collections...
 		// (unless the model has flagged that it prevers Object URL... then short circuit)
 		let target = this.SubmissionHref
-					|| ((!this.SubmitsToObjectURL && this[Service].getCollectionFor(this)) || {}).href
+					|| (!this.SubmitsToObjectURL && resolve())
 		//If value yet, get/build the Objects URL...
 					|| this[Service].getObjectURL(this.getID());
 

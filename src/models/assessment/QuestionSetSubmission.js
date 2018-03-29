@@ -29,7 +29,7 @@ class QuestionSetSubmission extends Base {
 			questions: questionSet.questions.map(q => q.getSubmission())
 		};
 
-		const s = new this(questionSet[Service], null, data);
+		const s = new this(questionSet[Service], questionSet, data);
 		s.questions.forEach(q => q.reparent(s));
 		return s;
 	}
