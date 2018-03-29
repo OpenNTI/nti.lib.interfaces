@@ -295,9 +295,21 @@ export default function FieldsApplyer (target) {
 
 function initFields (target) {
 
+	function validateFields (Fields, Class) {
+		const fields = Object.keys(Fields);
+		for (let field of fields) {
+			const {name = field, type/*, required, defaultValue*/} = Fields[field] || {};
+			let tKey = isArrayType(type) ? type.substr(0, type.length - 2) : type;
+			if (typeof tKey === 'string' && !TYPE_MAP.hasOwnProperty(tKey)) {
+				throw new TypeError(`${Class.name}: Invalid Field "${name}". The type "${type}" is not defined.`);
+			}
+		}
+	}
+
 	const slot = initFields.slot || (initFields.slot = Symbol.for('[[Fields]]'));
 
 	target[slot] = target.Fields;
+	validateFields(target.Fields, target);
 
 	updateField(target, 'Fields', {
 		enumerable: true,
@@ -305,10 +317,10 @@ function initFields (target) {
 		get () { return this[slot]; },
 		set (newFields) {
 			const current = this[slot];
-			this[slot] = {
+			validateFields(this[slot] = {
 				...current,
 				...newFields
-			};
+			}, this);
 		}
 	});
 }
