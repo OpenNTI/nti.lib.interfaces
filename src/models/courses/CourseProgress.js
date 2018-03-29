@@ -13,11 +13,11 @@ class CourseProgress extends Base {
 		'Enabled':             { type: 'boolean', name: 'enabled'   },
 		'IsAvailable':         { type: 'boolean', name: 'available' },
 		'IsEnrolled':          { type: 'boolean', name: 'enrolled'  },
-		'AbsoluteProgress':    { type: 'int'                        },
-		'Completed':           { type: 'bool'                       },
+		'AbsoluteProgress':    { type: 'number'                     },
+		'Completed':           { type: 'boolean'                    },
 		'CompletedDate':       { type: 'date'                       },
-		'HasProgress':         { type: 'bool'                       },
-		'MaxPossibleProgress': { type: 'int'                        },
+		'HasProgress':         { type: 'boolean'                    },
+		'MaxPossibleProgress': { type: 'number'                     },
 		'PercentageProgress':  { type: 'number'                     }
 	}
 
