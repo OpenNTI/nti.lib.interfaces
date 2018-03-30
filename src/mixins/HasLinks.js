@@ -21,6 +21,12 @@ export default {
 	},
 
 
+	getLinkProperty (rel, prop) {
+		const link = getLinkImpl(this, rel, true);
+		return link && link[prop];
+	},
+
+
 	hasLink (rel) {
 		return !!this.getLink(rel);
 	},

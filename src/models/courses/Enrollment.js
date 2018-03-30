@@ -4,7 +4,6 @@ import {mixin} from 'nti-lib-decorators';
 import {
 	Service,
 } from '../../constants';
-import getLink from '../../utils/getlink';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
@@ -72,7 +71,7 @@ class Enrollment extends Base {
 
 
 	getCourseID () {
-		return (getLink(this, 'CourseInstance', true) || {}).ntiid;
+		return this.getLinkProperty('CourseInstance', 'ntiid');
 	}
 
 
