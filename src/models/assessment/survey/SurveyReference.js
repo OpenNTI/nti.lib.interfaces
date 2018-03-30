@@ -1,9 +1,13 @@
+import {mixin} from 'nti-lib-decorators';
+
 import {ASSESSMENT_HISTORY_LINK} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
+import Completable from '../../../mixins/Completable';
 
 export default
 @model
+@mixin(Completable)
 class SurveyReference extends Base {
 	static MimeType = COMMON_PREFIX + 'surveyref'
 
