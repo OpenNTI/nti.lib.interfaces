@@ -1,6 +1,7 @@
 import {pluck} from 'nti-commons';
 import {mixin} from 'nti-lib-decorators';
 
+import Completable from '../../mixins/Completable';
 import PlacementProvider from '../../authoring/placement/providers/QuestionSet';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -12,7 +13,7 @@ const SUBMITTED_TYPE = 'application/vnd.nextthought.assessment.assessedquestions
 
 export default
 @model
-@mixin(SubmittableIdentity)
+@mixin(SubmittableIdentity, Completable)
 class QuestionSet extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'questionset',
