@@ -11,6 +11,7 @@ export GradeBookUserSummary from './GradeBookUserSummary';
 export CatalogEntry from './CatalogEntry';
 export CatalogLegacyEntry from './CatalogLegacyEntry';
 export CatalogInstructorLegacyInfo from './CatalogInstructorLegacyInfo';
+export CompletedItem from './CompletedItem';
 export CourseProgress from './CourseProgress';
 export Instance from './Instance';
 export Invitation from './Invitation';

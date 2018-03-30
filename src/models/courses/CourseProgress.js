@@ -18,7 +18,8 @@ class CourseProgress extends Base {
 		'CompletedDate':       { type: 'date'                       },
 		'HasProgress':         { type: 'boolean'                    },
 		'MaxPossibleProgress': { type: 'number'                     },
-		'PercentageProgress':  { type: 'number'                     }
+		'PercentageProgress':  { type: 'number'                     },
+		'CompletedItem': 	   { type: 'model' 						}
 	}
 
 	getCompletedDate () {} //implemented by CompletedDate date field.
