@@ -1,18 +1,16 @@
 import {forward} from 'nti-commons';
 import {mixin} from 'nti-lib-decorators';
-import Logger from 'nti-util-logger';
 
 import {
 	Service,
-	Parser as parse
 } from '../../constants';
+import getLink from '../../utils/getlink';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 import CourseIdentity from './mixins/CourseIdentity';
 import EnrollmentIdentity from './mixins/EnrollmentIdentity';
 
-const logger = Logger.get('models:courses:Enrollment');
 const emptyFunction = () => {};
 const EMPTY_CATALOG_ENTRY = {getAuthorLine: emptyFunction};
 
@@ -36,7 +34,6 @@ class Enrollment extends Base {
 	static Fields = {
 		...Base.Fields,
 		'CatalogEntry':           { type: 'model'   },
-		'CourseInstance':         { type: 'object'  },
 		'CourseProgress':         { type: 'model'   },
 		'LegacyEnrollmentStatus': { type: 'string'  },
 		'RealEnrollmentStatus':   { type: 'string'  },
@@ -45,11 +42,6 @@ class Enrollment extends Base {
 		'Reports':                { type: 'model[]' }
 	}
 
-	constructor (service, data) {
-		super(service, null, data);
-
-		this.addToPending(resolveCatalogEntry(service, this));
-	}
 
 
 	get title () {
@@ -80,12 +72,7 @@ class Enrollment extends Base {
 
 
 	getCourseID () {
-		return this.CourseInstance.NTIID;
-	}
-
-
-	getTotalEnrollmentCount () {
-		return this.CourseInstance.TotalEnrolledCount;
+		return (getLink(this, 'CourseInstance', true) || {}).ntiid;
 	}
 
 
@@ -114,44 +101,5 @@ class Enrollment extends Base {
 		} catch (e) {
 			//Its alright if this fails
 		}
-	}
-}
-
-
-
-async function resolveCatalogEntry (service, scope) {
-	try {
-		if (scope.CatalogEntry) {
-			return;
-		}
-
-		// The intent and purpose of this cache is to transmit work done by the web-service to the the client...
-		// We do NOT want to cache new entries on the client...and we should clear the cache on first read...
-		const cache = service.getDataCache();
-		const url = (((scope.CourseInstance || {}).Links || []).find(x => x.rel === 'CourseCatalogEntry') || {}).href;
-		// const url = scope.getLink('CourseCatalogEntry');
-		if (!url) {
-			throw new Error('No CCE Link!');
-		}
-
-		const cached = cache.get(url);
-		cache.set(url, null); //clear the cache on read...we only want to cache it for the initial page load.
-
-		const cce = await (cached
-			? Promise.resolve(cached)
-			: service.get(url)
-				.then(d => (!cache.isClientInstance && cache.set(url, d), d)));
-
-		delete scope.CatalogEntry;
-		const entry = scope.CatalogEntry = scope[parse](cce);
-
-		return await entry.waitForPending();
-	}
-	catch (e) {
-		let x = e.stack || e.message || e;
-		let t = typeof x === 'string' ? '%s' : '%o';
-		logger.warn('Enrollment: %s\nThere was a problem resolving the CatalogEntry!\n' + t,
-			this.NTIID || this.OID,
-			x);
 	}
 }
