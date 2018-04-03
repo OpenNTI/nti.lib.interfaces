@@ -22,6 +22,7 @@ import ActivityStream from './BucketedActivityStream';
 import CourseIdentity from './mixins/CourseIdentity';
 import ContentDataSource from './content-data-source';
 import Outline from './Outline';
+import Enrollment from './Enrollment';
 
 const logger = Logger.get('models:courses:Instance');
 const NOT_DEFINED = {reason: 'Not defined'};
@@ -533,13 +534,17 @@ class Instance extends Base {
 
 async function resolvePreferredAccess (service, instance, parent) {
 	try {
-		const enrollment = await instance.fetchLinkParsed('UserCoursePreferredAccess');
+		const enrollment = (parent instanceof Enrollment)
+			? parent
+			: await instance.fetchLinkParsed('UserCoursePreferredAccess');
 
-		// For legacy compatability
-		instance.reparent(enrollment);
-		// now the enrollment willhave the instance as a parent since its who parsed it...
-		// set the instance's parent as its parent to fix the chain.
-		enrollment.reparent(parent);
+		if (parent !== enrollment) {
+			// For legacy compatability
+			instance.reparent(enrollment);
+			// now the enrollment willhave the instance as a parent since its who parsed it...
+			// set the instance's parent as its parent to fix the chain.
+			enrollment.reparent(parent);
+		}
 
 		//legacy lookup path:
 		instance.CatalogEntry = enrollment.CatalogEntry;
