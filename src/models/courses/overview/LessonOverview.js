@@ -3,7 +3,7 @@ import Base from '../../Base';
 
 export default
 @model
-class LeasonOverview extends Base {
+class LessonOverview extends Base {
 	static MimeType = COMMON_PREFIX + 'ntilessonoverview'
 
 	static Fields = {

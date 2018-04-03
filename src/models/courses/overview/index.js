@@ -1,3 +1,3 @@
 export Group from './Group';
-export LeasonOverview from './LeasonOverview';
+export LessonOverview from './LessonOverview';
 export VideoRoll from './VideoRoll';
