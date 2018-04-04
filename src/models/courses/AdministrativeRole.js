@@ -25,23 +25,23 @@ class InstanceAdministrativeRole extends Enrollment {
 
 
 	getSharingSuggestions () {
-		let {CourseInstance} = this;
+		const {CourseInstance} = this;
 
-		let sectionScopes = CourseInstance.SharingScopes;
-		let parentScopes = CourseInstance.ParentSharingScopes;
+		const sectionScopes = CourseInstance.SharingScopes;
+		const parentScopes = CourseInstance.ParentSharingScopes;
 
-		let {containsDefault} = sectionScopes || {};
+		const {containsDefault} = sectionScopes || {};
 
 		let suggestions = [];
 
 		if (containsDefault) {
-			let sectionName = parentScopes ? 'My Section' : void 0;
+			const sectionName = parentScopes ? 'My Section' : void 0;
 
 			suggestions = [...suggestions, ...buildSuggestionsFrom(sectionScopes, sectionName)];
 		}
 
 		if (parentScopes) {
-			let sectionName = containsDefault ? 'All Sections' : void 0;
+			const sectionName = containsDefault ? 'All Sections' : void 0;
 
 			suggestions = [...suggestions, ...buildSuggestionsFrom(parentScopes, sectionName)];
 		}
