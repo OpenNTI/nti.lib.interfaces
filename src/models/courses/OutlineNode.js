@@ -1,6 +1,5 @@
 import url from 'url';
 
-import {applyIf} from 'nti-commons';
 import {mixin} from 'nti-lib-decorators';
 import {encodeForURI, isNTIID} from 'nti-lib-ntiids';
 import Logger from 'nti-util-logger';
@@ -133,11 +132,17 @@ class OutlineNode extends Outline {
 		};
 
 		try {
-			return applyProgressAndSummary(...(await Promise.all([
-				getContent(),
-				decorateProgress && this.getProgress(),
-				decorateSummary && this.getSummary(),
-			])));
+			const contentsPromise = getContent();
+
+			if (decorateProgress) {
+				Promise.all([ contentsPromise, this.getProgress() ]).then(applyProgress);
+			}
+
+			if (decorateSummary) {
+				Promise.all([ contentsPromise, this.getSummary() ]).then(applySummary);
+			}
+
+			return await contentsPromise;
 		} catch (e) {
 			if (e === 'empty') {
 				return {};
@@ -200,71 +205,40 @@ function getFuzzyID (object, keys = ['Target-NTIID', 'NTIID']) {
 }
 
 
-function applyProgressAndSummary (content, progress, summary) {
+function applyProgress (content, progress) {
+	if (!content || !progress) { return; }
+	return applyStuff(content, (item, id) => {
+		const node = (progress && progress.getProgress(id));
+		if (node != null) {
+			content.CompletedDate = node.getCompletedDate();
+			//TODO: Add other fiedls as we need them
+			content.onChange();
+		}
+	});
+}
+
+
+function applySummary (content, summary) {
+	if (!content || !summary) { return content; }
+	return applyStuff(content, (item, id) => {
+		const node = summary = (summary || {})[id];
+		if (node != null) {
+			content[Summary] = node || {ItemCount: 0};
+			content.onChange();
+		}
+	});
+}
+
+
+function applyStuff (content, applier) {
 	if (!content) { return; }
 
-	if (!progress && !summary) { return content; }
+	const id = content[getFuzzyID(content)];
 
-	function findWithFuzzyKey (c, key) {
-		key = key.toLowerCase();
-		key = Object.keys(c).reduce(
-			(found, v)=> found || (v.toLowerCase() === key ? v : found),
-			null);
-
-		return key && c[key];
-	}
-
-	let [nodeProgress, summaryData] = ['Target-NTIID', 'NTIID']
-		//We sadly have used inconsistent cassings of Target-NTIID, and NTIID.
-		//Some are lowercase, some are capped, some are mixed.
-		//Step 1: Find the VALUE of each "fuzzy" key. (eg: Lower case the keys and find a first-match.)
-		.map(key=> findWithFuzzyKey(content, key))
-
-		//Now that we (may) have the IDs for each key to test, we need to look up the progress and
-		//summary data for each id... returning a tuple of the potential data.
-		//Step 2: Build a tuple of the shape: [progress, summary]
-		.map(id=> id && [(progress && progress.getProgress(id)), (summary || {})[id]])
-
-		//Now the array of potentials is a list of tuples. We need to reduce this down to one tuple.
-		//Step 3: Reduce the posible keys results down to one tuple, by applying each result on top
-		//of each other. 99% of the time we expect the list of tuples to be all in one element, or
-		//spread out over the elements such that each part of the tuple never overlaps. ... for the
-		// case that two or more elements in the array have a tuple that has a populated part that
-		// overlaps, we will accept the first one and drop all supsequent ones.
-		// Ex:  [
-		// 		[Progress, ],
-		// 		[, Summary]
-		// ]
-		//
-		// or [
-		// 		[, Summary],
-		// 		[Progress, ]
-		// ]
-		//
-		// or [
-		// 		[Progress, Summary],
-		// 		[,]
-		// ]
-		//
-		// or [
-		// 		[,]
-		// 		[Progress, Summary]
-		// ]
-		//
-		// The result should be a single tuple [Progress, Summary]
-		.reduce((r, x) => applyIf(r || [], x || []));
-
-	if (nodeProgress != null) {
-		content.CompletedDate = nodeProgress.getCompletedDate();
-		//TODO: Add other fiedls as we need them
-	}
-
-	if (summary != null) {
-		content[Summary] = summaryData || {ItemCount: 0};
-	}
+	applier(content, id);
 
 	if (Array.isArray(content.Items)) {
-		content.Items.forEach(item=>applyProgressAndSummary(item, progress, summary));
+		content.Items.forEach(item => applyStuff(item, applier));
 	}
 
 	return content;
