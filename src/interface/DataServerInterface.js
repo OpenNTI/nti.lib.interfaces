@@ -439,8 +439,8 @@ export default class DataServerInterface extends EventEmitter {
 						//Not logged in... we need the urls
 						? {
 							pong,
-							links: toMap(getLinks(pong)),
-							getLink: (rel) => getLink(pong, rel),
+							links: getLinks(pong).map(x => x.rel),
+							getLink: (...rel) => getLink(pong, ...rel),
 							hasLink: (rel) => !!getLink(pong, rel)
 						}
 						//There is a continue link, but we need our username to handshake...
@@ -461,11 +461,11 @@ export default class DataServerInterface extends EventEmitter {
 				const result = {
 					pong,
 					handshake,
-					links: {
-						...toMap(getLinks(pong)),
-						...toMap(getLinks(handshake))
-					},
-					getLink: (rel) => getLink(handshake, rel) || getLink(pong, rel),
+					links: [...(new Set([
+						...getLinks(pong).map(x => x.rel),
+						...getLinks(handshake).map(x => x.rel)
+					]))],
+					getLink: (...rel) => getLink(handshake, ...rel) || getLink(pong, ...rel),
 					hasLink: (rel) => !!(getLink(handshake, rel) || getLink(pong, rel))
 				};
 
@@ -544,12 +544,4 @@ export default class DataServerInterface extends EventEmitter {
 			);
 	}
 
-}
-
-
-//Used to flatten links into a dictionary of rel: link.
-//ONLY used for login where all the metadata is not needed. (yet)
-function toMap (o, m = {}) {
-	for (let v of o) { m[v.rel] = v.href; }
-	return m;
 }
