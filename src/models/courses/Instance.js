@@ -541,8 +541,8 @@ async function resolvePreferredAccess (service, instance, parent) {
 		if (parent !== enrollment) {
 			// For legacy compatability
 			instance.reparent(enrollment);
-			// now the enrollment willhave the instance as a parent since its who parsed it...
-			// set the instance's parent as its parent to fix the chain.
+			// now the enrollment will have the instance as a parent since its who parsed it...
+			// so set the instance's parent to our "parent" to fix the chain.
 			enrollment.reparent(parent);
 		}
 
@@ -551,6 +551,8 @@ async function resolvePreferredAccess (service, instance, parent) {
 
 		//new preferred property
 		instance.PreferredAccess = enrollment;
+
+		enrollment.setCourseInstance(instance);
 	} catch (e) {
 		instance.reparent(null);
 	}

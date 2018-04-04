@@ -41,7 +41,8 @@ class Enrollment extends Base {
 		'Reports':                { type: 'model[]' }
 	}
 
-
+	//@private
+	CourseInstance = null;
 
 	get title () {
 		return this.CatalogEntry.Title;
@@ -100,5 +101,10 @@ class Enrollment extends Base {
 		} catch (e) {
 			//Its alright if this fails
 		}
+	}
+
+	//@private
+	setCourseInstance (instance) {
+		this.CourseInstance = instance;
 	}
 }
