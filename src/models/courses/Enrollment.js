@@ -44,6 +44,7 @@ class Enrollment extends Base {
 	//@private
 	CourseInstance = null;
 
+
 	get title () {
 		return this.CatalogEntry.Title;
 	}
