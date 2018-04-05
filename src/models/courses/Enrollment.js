@@ -54,6 +54,12 @@ class Enrollment extends Base {
 		return this.CatalogEntry.ProviderUniqueID;
 	}
 
+	get isScorm () {
+		const courseInstanceLink = this.Links && this.Links.filter(x => x.rel === 'CourseInstance')[0];
+
+		return courseInstanceLink && courseInstanceLink.type && courseInstanceLink.type.match(/scormcourseinstance/);
+	}
+
 
 	getPresentationProperties () {
 		//Called by library view... The version in Course Instance is called on by everything else.
