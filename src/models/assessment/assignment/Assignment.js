@@ -114,6 +114,11 @@ class Assignment extends Base {
 	}
 
 
+	getDateEditingLink () {
+		return this.getLink('date-edit') || this.getLink('edit');
+	}
+
+
 	getAssociations () {
 		return this.fetchLinkParsed('Lessons');
 	}
