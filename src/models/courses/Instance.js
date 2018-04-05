@@ -113,6 +113,14 @@ class Instance extends Base {
 	}
 
 
+	refreshPreferredAccess () {
+		return this.fetchLinkParsed('UserCoursePreferredAccess').then(enrollment => {
+			this.PreferredAccess = enrollment;
+			return this;
+		});
+	}
+
+
 	containsPackage (id) {
 		//Are course NTIIDs being passed around like packageIds? If so, this will catch it.
 		const bundle = this.ContentPackageBundle;
