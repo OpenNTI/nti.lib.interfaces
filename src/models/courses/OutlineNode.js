@@ -205,7 +205,7 @@ function getFuzzyID (object, keys = ['Target-NTIID', 'NTIID']) {
 }
 
 
-function applyProgress (content, progress) {
+function applyProgress ([content, progress]) {
 	if (!content || !progress) { return; }
 	return applyStuff(content, (item, id) => {
 		const node = (progress && progress.getProgress(id));
@@ -218,7 +218,7 @@ function applyProgress (content, progress) {
 }
 
 
-function applySummary (content, summary) {
+function applySummary ([content, summary]) {
 	if (!content || !summary) { return content; }
 	return applyStuff(content, (item, id) => {
 		const node = summary = (summary || {})[id];
