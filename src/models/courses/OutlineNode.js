@@ -202,7 +202,7 @@ function applyProgress ([content, progress]) {
 function applySummary ([content, summary]) {
 	if (!content || !summary) { return content; }
 	return applyStuff(content, (item, id) => {
-		const node = summary = (summary || {})[id];
+		const node = (summary || {})[id];
 		if (node != null) {
 			content[Summary] = node || {ItemCount: 0};
 			content.onChange();
