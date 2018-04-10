@@ -8,6 +8,7 @@ import {Summary, Parser as parse} from '../../constants';
 import Publishable from '../../mixins/Publishable';
 import {model, COMMON_PREFIX} from '../Registry';
 import filterNonRequiredItems from '../../utils/filter-non-required-items';
+import getFuzzyTargetProperty from '../../utils/get-fuzzy-target-property';
 
 import Outline from './Outline';
 import fallbackOverview from './_fallbacks.OverviewFromToC';
@@ -185,26 +186,6 @@ class OutlineNode extends Outline {
 }
 
 
-
-/**
- * Finds the NTIID field on the given object.
- *
- * @method getFuzzyID
- * @param  {object}         object                               The object to find an ID for.
- * @param  {Array<string>}  [keys=['Target-NTIID', 'NTIID']]     The possible ID fields.
- * @return {string}         The key name, or undefined.
- */
-function getFuzzyID (object, keys = ['Target-NTIID', 'NTIID']) {
-	const objectKeys = Object.keys(object);
-
-	//We sadly have used inconsistent cassings of Target-NTIID, and NTIID.
-	//Some are lowercase, some are capped, some are mixed.
-	return keys.find(key => (
-		key = key.toLowerCase(),
-		objectKeys.find(v => v.toLowerCase() === key)));
-}
-
-
 function applyProgress ([content, progress]) {
 	if (!content || !progress) { return; }
 	return applyStuff(content, (item, id) => {
@@ -233,7 +214,7 @@ function applySummary ([content, summary]) {
 function applyStuff (content, applier) {
 	if (!content) { return; }
 
-	const id = content[getFuzzyID(content)];
+	const id = content[getFuzzyTargetProperty(content)];
 
 	applier(content, id);
 
@@ -257,7 +238,7 @@ function filterMissingAssignments (assignments, item) {
 	function test (o) {
 		const assignmentType = /assignment/i;
 		const assessmentType = /(questionset|questionbank|assignment)/i;
-		const id = o[getFuzzyID(o)];
+		const id = o[getFuzzyTargetProperty(o)];
 		const isLegacyAssignment = () => assessmentType.test(o.MimeType) && assignments && assignments.isAssignment(id);
 		const isAssignment = assignmentType.test(o.MimeType) || isLegacyAssignment();
 
