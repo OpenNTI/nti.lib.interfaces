@@ -13,6 +13,13 @@ export default function Applyer (targetModelClass) {
 	return {
 		getCompletedDate () {}, //implemented by CompletedDate date field.
 
+
+		isCompletable () {
+			// if this key exists, the object was decorated with completion fields
+			// this should only happen within courses that are maked as completable
+			return Object.keys(this).includes('CompletionRequired');
+		},
+
 		hasCompleted () {
 			return this.getCompletedDate() != null;
 		},
