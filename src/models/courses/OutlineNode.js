@@ -201,11 +201,13 @@ function applyProgress ([content, progress]) {
 
 function applySummary ([content, summary]) {
 	if (!content || !summary) { return content; }
-	return applyStuff(content, (item, id) => {
-		const node = (summary || {})[id];
+	return applyStuff(content, (item) => {
+		const commentCounts = summary || {};
+		const node = commentCounts[item.getID()] || commentCounts[item['target-NTIID']] || commentCounts[item['Target-NTIID']];
+
 		if (node != null) {
-			content[Summary] = node || {ItemCount: 0};
-			content.onChange();
+			item[Summary] = node || {ItemCount: 0};
+			item.onChange();
 		}
 	});
 }
