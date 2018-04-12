@@ -17,7 +17,7 @@ export default function Applyer (targetModelClass) {
 		isCompletable () {
 			// if this key exists, the object was decorated with completion fields
 			// this should only happen within courses that are maked as completable
-			return Object.keys(this).includes('CompletionRequired');
+			return Object.keys(this.__toRaw()).includes('CompletionRequired');
 		},
 
 		hasCompleted () {
