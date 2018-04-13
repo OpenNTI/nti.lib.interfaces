@@ -1,6 +1,7 @@
 export * as activity from './activity';
 export * as overview from './overview';
 export * as scorm from './scorm';
+export * as lti from './lti';
 
 export Grade from './Grade';
 export CourseDiscussion from './CourseDiscussion';
