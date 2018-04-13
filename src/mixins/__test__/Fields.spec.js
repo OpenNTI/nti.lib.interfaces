@@ -96,7 +96,7 @@ describe('Fields Mixin', () => {
 		});
 	});
 
-	test('Feilds use defaultValue', () => {
+	test('Fields use defaultValue', () => {
 
 		@mixin(Fields)
 		class Foo {
@@ -113,7 +113,7 @@ describe('Fields Mixin', () => {
 		expect(new Foo().foo).toBe('bar');
 	});
 
-	test('Feilds: empty model[] use defaultValue', () => {
+	test('Fields: empty model[] use defaultValue', () => {
 
 		@mixin(Fields)
 		class Foo {
@@ -128,7 +128,7 @@ describe('Fields Mixin', () => {
 		expect(new Foo().foo).toEqual([]);
 	});
 
-	describe('Feilds validate types', () => {
+	describe('Fields validate types', () => {
 
 		test ('string', () => {
 
@@ -200,7 +200,7 @@ describe('Fields Mixin', () => {
 		});
 	});
 
-	test('Feilds can set alternate name', () => {
+	test('Fields can set alternate name', () => {
 
 		@mixin(Fields)
 		class Foo {
@@ -220,7 +220,7 @@ describe('Fields Mixin', () => {
 		expect(logger.error).toHaveBeenCalledWith(expect.stringMatching(/Access to foo is deprecated./));
 	});
 
-	test('Feilds can set alternate name and shadow', () => {
+	test('Fields can set alternate name and shadow', () => {
 
 		@mixin(Fields)
 		class Foo {
@@ -233,6 +233,7 @@ describe('Fields Mixin', () => {
 		}
 
 
+		jest.spyOn(logger, 'error').mockImplementation(() => {});
 		jest.spyOn(logger, 'debug').mockImplementation(() => {});
 		const f = new Foo({foo: 'bar', bax: 'ignored'});
 		expect(f.bax).toBe('bar');
@@ -245,7 +246,7 @@ describe('Fields Mixin', () => {
 		);
 	});
 
-	describe('Feilds validate types', () => {
+	describe('Fields validate types', () => {
 		@mixin(Fields)
 		class Foo {
 			static Fields = {
@@ -277,7 +278,7 @@ describe('Fields Mixin', () => {
 		});
 	});
 
-	describe('Feilds validate types', () => {
+	describe('Fields validate types', () => {
 		@mixin(Fields)
 		class Foo {
 			static Fields = {
@@ -309,10 +310,10 @@ describe('Fields Mixin', () => {
 		});
 	});
 
-	test('Feilds parse models');
-	test('Feilds parse model arrays');
-	test('Feilds parse model maps');
+	test('Fields parse models');
+	test('Fields parse model arrays');
+	test('Fields parse model maps');
 
-	test('Feilds allow direct Model types');
-	test('Feilds allow functions as types');
+	test('Fields allow direct Model types');
+	test('Fields allow functions as types');
 });
