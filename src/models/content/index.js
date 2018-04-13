@@ -3,6 +3,7 @@ export ContentPackageRenderJob from './ContentPackageRenderJob';
 export File from './File';
 export Folder from './Folder';
 export ImageMetadata from './ImageMetadata';
+export LTIExternalToolAsset from './LTIExternalToolAsset';
 export Metadata from './Metadata';
 export Package from './Package';
 export PageInfo from './PageInfo';

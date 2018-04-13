@@ -559,6 +559,12 @@ class Instance extends Base {
 	getContentDataSource () {
 		return new ContentDataSource(this[Service], this);
 	}
+
+
+	async getLTIConfiguredTools () {
+		const configuredTools = await this.fetchLinkParsed('lti-configured-tools');
+		return configuredTools;
+	}
 }
 
 
