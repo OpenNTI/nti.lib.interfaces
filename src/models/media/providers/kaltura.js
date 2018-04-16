@@ -212,7 +212,15 @@ function getParams (partnerId, entryId, context = {}) {
 		'3:service': 'baseentry',
 		'3:action': 'get',
 		'3:version': '-1',
-		'3:entryId': entryId
+		'3:entryId': entryId,
+
+		'4:ks': '{1:result:ks}',
+		'4:service': 'caption_captionasset',
+		'4:filter:entryIdEqual': entryId,
+		'4:filter:objectType': 'KalturaAssetFilter',
+		'4:filter:statusEqual': 2,
+		'4:pager:pageSize': 50,
+		'4:action': 'list'
 	};
 
 	//Do not alter these three lines
@@ -233,7 +241,7 @@ function parseResult (result) {
 		'://www.kaltura.com' :
 		'://cdnbakmi.kaltura.com';
 
-	const [, data, entryInfo] = result;
+	const [, data, entryInfo, captionInfo] = result;
 
 	if (data.code === NOT_FOUND) {
 		return Promise.reject();
@@ -307,6 +315,15 @@ function parseResult (result) {
 					'/thumbnail/entry_id/' + entryInfo.id +
 					'/width/' + w + '/';
 
+	const duration = Math.ceil(entryInfo.duration) + 30;
+	const captions = captionInfo.totalCount > 0 ?
+		captionInfo['objects'].map(caption => ({
+			lang: caption.languageCode,
+			purpose: 'captions',
+			src: `${protocol}${serviceUrl}/api_v3/index.php/service/caption_captionasset/action/serveWebVTT/segmentDuration/${duration}/segmentIndex/1/captionAssetId/${caption.id}/ks/${result[0].ks}`,
+		}))
+		: [];
+
 	return {
 		objectType: data.objectType,
 		code: data.code,
@@ -316,7 +333,8 @@ function parseResult (result) {
 		title: entryInfo.title,
 		entryId: entryInfo.id,
 		description: entryInfo.description,
-		sources: deviceSources
+		sources: deviceSources,
+		tracks: captions
 	};
 }
 
