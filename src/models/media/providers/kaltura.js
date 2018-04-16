@@ -233,13 +233,8 @@ function getParams (partnerId, entryId, context = {}) {
 
 
 function parseResult (result) {
-	const {location} = global;
-	const protocol = location ? location.protocol.replace(':', '') : 'https';
-
-
-	const serviceUrl = (protocol === 'https') ?
-		'://www.kaltura.com' :
-		'://cdnbakmi.kaltura.com';
+	const protocol = 'https';
+	const serviceUrl = '://cdnapisec.kaltura.com';
 
 	const [, data, entryInfo, captionInfo] = result;
 
