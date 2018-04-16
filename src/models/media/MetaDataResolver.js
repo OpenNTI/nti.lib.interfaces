@@ -10,7 +10,7 @@ const services = {
 	kaltura: Kaltura
 };
 
-const resolve = Promise.reject.bind(Promise, 'No resolver for service');
+const resolve = () => Promise.reject('No resolver for service');
 const resolveCanAccess = () => Promise.reject('No resolve access for service');
 
 export default class MetaDataResolver {
