@@ -326,7 +326,7 @@ function buildURL (service, source) {
 	id = Array.isArray(id) ? id[0] : id;
 
 	const [partnerId, entryId] = id.split(':');
-	const params = QueryString.stringify(getParams(partnerId, entryId, service[Context]));
+	const params = QueryString.stringify(getParams(partnerId, entryId, service && service[Context]));
 
 	return `https://cdnapisec.kaltura.com/api_v3/index.php?service=multirequest&${params}`;
 }

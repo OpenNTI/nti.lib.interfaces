@@ -19,10 +19,10 @@ export default class MetaDataResolverForKaltura {
 
 
 	static getProvider (service) {
-		if (!INSTANCES.get(service)) {
-			INSTANCES.set(service, new KalturaProvider(service));
+		const provider = INSTANCES.get(service) || new KalturaProvider(service);
+		if (!INSTANCES.has(service) && service != null) {
+			INSTANCES.set(service, provider);
 		}
-
-		return INSTANCES.get(service);
+		return provider;
 	}
 }
