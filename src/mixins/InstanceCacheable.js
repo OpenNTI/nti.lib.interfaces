@@ -1,5 +1,5 @@
-import {Parsing} from 'nti-commons';
-import Logger from 'nti-util-logger';
+import {Parsing} from '@nti/lib-commons';
+import Logger from '@nti/util-logger';
 
 import {Service} from '../constants';
 

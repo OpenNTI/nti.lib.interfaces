@@ -1,5 +1,5 @@
 {
-  "name": "nti-lib-interfaces",
+  "name": "@nti/lib-interfaces",
   "version": "1.77.0-alpha",
   "author": "nextthought",
   "license": "UNLICENSED",
@@ -28,6 +28,10 @@
     "registry": "https://npm.nextthought.com"
   },
   "dependencies": {
+    "@nti/lib-commons": "^2.6.0",
+    "@nti/lib-decorators": "^1.2.2",
+    "@nti/lib-ntiids": "^1.0.0",
+    "@nti/util-logger": "^1.0.0",
     "date-fns": "^1.29.0",
     "elementtree": "^0.1.6",
     "get-video-id": "^2.1.5",
@@ -36,10 +40,6 @@
     "isempty": "0.0.1",
     "iso8601-duration": "^1.1.1",
     "mime-types": "^2.1.0",
-    "nti-commons": "^2.6.0",
-    "nti-lib-decorators": "^1.2.2",
-    "nti-lib-ntiids": "^1.0.0",
-    "nti-util-logger": "^1.0.0",
     "query-string": "^5.0.0",
     "uuid": "^3.0.1"
   },

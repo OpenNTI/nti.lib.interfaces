@@ -1,8 +1,8 @@
 import url from 'url';
 import EventEmitter from 'events';
 
-import Logger from 'nti-util-logger';
-import {mixin} from 'nti-lib-decorators';
+import Logger from '@nti/util-logger';
+import {mixin} from '@nti/lib-decorators';
 import uuid from 'uuid';
 
 import {Service, DELETED} from '../constants';

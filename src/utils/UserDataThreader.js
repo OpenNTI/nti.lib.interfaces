@@ -1,4 +1,4 @@
-import Logger from 'nti-util-logger';
+import Logger from '@nti/util-logger';
 import isEmpty from 'isempty';
 
 export const PARENT = Symbol('Thread Links:Parent');

@@ -1,4 +1,4 @@
-import {URL} from 'nti-commons';
+import {URL} from '@nti/lib-commons';
 
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';

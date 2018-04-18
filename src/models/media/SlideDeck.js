@@ -1,4 +1,4 @@
-import {mixin/*, readonly*/} from 'nti-lib-decorators';
+import {mixin/*, readonly*/} from '@nti/lib-decorators';
 
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';

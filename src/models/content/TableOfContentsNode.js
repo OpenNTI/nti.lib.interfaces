@@ -1,6 +1,6 @@
 const DATA = Symbol('data');
 
-import {String as StringUtils} from 'nti-commons';
+import {String as StringUtils} from '@nti/lib-commons';
 
 const flat = (a, n)=> a.concat(n.flatten());
 

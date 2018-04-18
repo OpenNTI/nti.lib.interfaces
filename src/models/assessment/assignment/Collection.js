@@ -5,8 +5,8 @@
  * non-assignment assessment object.  We also have a reference to all the
  * assignments that we can currently see.
  */
-import Logger from 'nti-util-logger';
-import {mixin} from 'nti-lib-decorators';
+import Logger from '@nti/util-logger';
+import {mixin} from '@nti/lib-decorators';
 
 import {ASSESSMENT_HISTORY_LINK, Parser as parse, Service, Parent} from '../../../constants';
 import Base from '../../Base';

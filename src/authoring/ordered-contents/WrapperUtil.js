@@ -1,8 +1,8 @@
 import path from 'path';
 
-import Logger from 'nti-util-logger';
-import {isNTIID} from 'nti-lib-ntiids';
-import {wait, Tasks} from 'nti-commons';
+import Logger from '@nti/util-logger';
+import {isNTIID} from '@nti/lib-ntiids';
+import {wait, Tasks} from '@nti/lib-commons';
 
 import {Service} from '../../constants';
 

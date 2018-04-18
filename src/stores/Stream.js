@@ -1,8 +1,8 @@
 import EventEmitter from 'events';
 
 import invariant from 'invariant';
-import {mixin, URL} from 'nti-commons';
-import Logger from 'nti-util-logger';
+import {mixin, URL} from '@nti/lib-commons';
+import Logger from '@nti/util-logger';
 
 import {Service, Parent, DELETED, SortOrder} from '../constants';
 import {Mixin as Pendability} from '../mixins/Pendability';

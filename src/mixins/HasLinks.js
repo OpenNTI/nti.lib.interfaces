@@ -1,5 +1,5 @@
-import {URL} from 'nti-commons';
-import Logger from 'nti-util-logger';
+import {URL} from '@nti/lib-commons';
+import Logger from '@nti/util-logger';
 
 import getLinkImpl from '../utils/getlink';
 import maybeWait from '../utils/maybe-wait';

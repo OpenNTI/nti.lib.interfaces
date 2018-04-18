@@ -1,4 +1,4 @@
-import {Handlers} from 'nti-commons';
+import {Handlers} from '@nti/lib-commons';
 
 function create (handles, subHandlers, useContainer) {
 	const handlers = new Handlers(subHandlers);

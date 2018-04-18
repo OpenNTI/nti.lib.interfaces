@@ -1,9 +1,9 @@
 import {parse as parseUrl} from 'url';
 import {extname} from 'path';
 
-import {mixin} from 'nti-lib-decorators';
+import {mixin} from '@nti/lib-decorators';
 import mime from 'mime-types';
-import {isNTIID} from 'nti-lib-ntiids';
+import {isNTIID} from '@nti/lib-ntiids';
 
 import Completable from '../../mixins/Completable';
 import UserDataStore from '../../stores/UserData';

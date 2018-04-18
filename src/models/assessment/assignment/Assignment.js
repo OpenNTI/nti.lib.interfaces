@@ -1,4 +1,4 @@
-import {mixin} from 'nti-lib-decorators';
+import {mixin} from '@nti/lib-decorators';
 
 import PlacementProvider from '../../../authoring/placement/providers/Assignment';
 import {

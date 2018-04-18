@@ -1,4 +1,4 @@
-import Logger from 'nti-util-logger';
+import Logger from '@nti/util-logger';
 
 import {Service, DELETED} from '../constants';
 import {parse} from '../models/Parser';

@@ -1,4 +1,4 @@
-import {mixin} from 'nti-lib-decorators';
+import {mixin} from '@nti/lib-decorators';
 
 import Paged from '../mixins/Paged';
 

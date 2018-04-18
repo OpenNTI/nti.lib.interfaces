@@ -1,4 +1,4 @@
-import {FileType} from 'nti-commons';
+import {FileType} from '@nti/lib-commons';
 
 import {model, COMMON_PREFIX} from '../../Registry';
 import Part from '../Part';

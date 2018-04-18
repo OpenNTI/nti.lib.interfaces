@@ -1,5 +1,5 @@
-import {forward} from 'nti-commons';
-import {mixin} from 'nti-lib-decorators';
+import {forward} from '@nti/lib-commons';
+import {mixin} from '@nti/lib-decorators';
 
 import {
 	Service,

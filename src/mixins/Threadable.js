@@ -1,5 +1,5 @@
-import {ntiidEquals} from 'nti-lib-ntiids';
-import Logger from 'nti-util-logger';
+import {ntiidEquals} from '@nti/lib-ntiids';
+import Logger from '@nti/util-logger';
 
 import {DELETED, Parser} from '../constants';
 import {thread, CHILDREN, PARENT} from '../utils/UserDataThreader';

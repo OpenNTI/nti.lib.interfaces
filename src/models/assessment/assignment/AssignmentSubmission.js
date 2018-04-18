@@ -1,4 +1,4 @@
-import {mixin} from 'nti-lib-decorators';
+import {mixin} from '@nti/lib-decorators';
 
 import Submission from '../../../mixins/Submission';
 import {model, COMMON_PREFIX} from '../../Registry';

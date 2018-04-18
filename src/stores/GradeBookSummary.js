@@ -1,5 +1,5 @@
-import {mixin} from 'nti-lib-decorators';
-import Logger from 'nti-util-logger';
+import {mixin} from '@nti/lib-decorators';
+import Logger from '@nti/util-logger';
 
 import Paged from '../mixins/Paged';
 

@@ -1,4 +1,4 @@
-import {parseNTIID} from 'nti-lib-ntiids';
+import {parseNTIID} from '@nti/lib-ntiids';
 
 const COMMON_PREFIX = 'tag:nextthought.com,2011-10:';
 const {atob, btoa} = global;

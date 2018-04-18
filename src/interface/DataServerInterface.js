@@ -1,8 +1,8 @@
 /*globals BUILD_PACKAGE_NAME, BUILD_PACKAGE_VERSION*/
 import EventEmitter from 'events';
 
-import Logger from 'nti-util-logger';
-import {chain, FileType, URL} from 'nti-commons';
+import Logger from '@nti/util-logger';
+import {chain, FileType, URL} from '@nti/lib-commons';
 
 import DataCache from '../utils/datacache';
 import parseBody from '../utils/attempt-json-parse';

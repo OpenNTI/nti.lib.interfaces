@@ -1,4 +1,4 @@
-import {URL} from 'nti-commons';
+import {URL} from '@nti/lib-commons';
 
 export function resolveSubmitTo (item, rel = 'Assessments') {
 	const FindCourse = (o) => o && o.isCourse && o.hasLink(rel);

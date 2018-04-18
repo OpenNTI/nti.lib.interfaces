@@ -1,6 +1,6 @@
-import {URL, forward} from 'nti-commons';
-import {mixin} from 'nti-lib-decorators';
-import Logger from 'nti-util-logger';
+import {URL, forward} from '@nti/lib-commons';
+import {mixin} from '@nti/lib-decorators';
+import Logger from '@nti/util-logger';
 
 import { Service } from '../../constants';
 import TablesOfContents from '../content/TablesOfContents';

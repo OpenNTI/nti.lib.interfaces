@@ -1,4 +1,4 @@
-import {defineProtected} from 'nti-commons';
+import {defineProtected} from '@nti/lib-commons';
 
 const DEFAULT_ADMIN_LEVEL_KEY = 'DefaultAPICreated';
 const IMPORTED_LEVEL_KEY = 'DefaultAPIImported';

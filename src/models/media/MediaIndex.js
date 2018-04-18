@@ -1,5 +1,5 @@
-import {URL} from 'nti-commons';
-import Logger from 'nti-util-logger';
+import {URL} from '@nti/lib-commons';
+import Logger from '@nti/util-logger';
 import isEmpty from 'isempty';
 
 import {Service, Parent} from '../../constants';

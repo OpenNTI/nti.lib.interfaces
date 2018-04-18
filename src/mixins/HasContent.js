@@ -1,4 +1,4 @@
-import {Markup} from 'nti-commons';
+import {Markup} from '@nti/lib-commons';
 import isEmpty from 'isempty';
 
 function cleanupContentString (content) {

@@ -1,4 +1,4 @@
-import {wait} from 'nti-commons';
+import {wait} from '@nti/lib-commons';
 
 const noop = () => {};
 const PRIVATE_PENDING = new WeakMap();

@@ -1,4 +1,4 @@
-import Logger from 'nti-util-logger';
+import Logger from '@nti/util-logger';
 
 import {Service, ASSESSMENT_HISTORY_LINK} from '../../../constants';
 

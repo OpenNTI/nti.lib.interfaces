@@ -1,4 +1,4 @@
-import Logger from 'nti-util-logger';
+import Logger from '@nti/util-logger';
 
 import {Parent, Service, NO_LINK} from '../../../constants';
 import getLink from '../../../utils/getlink';

@@ -1,5 +1,5 @@
-import Logger from 'nti-util-logger';
-import {mixin} from 'nti-lib-decorators';
+import Logger from '@nti/util-logger';
+import {mixin} from '@nti/lib-decorators';
 
 import { Service, Parser as parse } from '../../constants';
 import Threadable from '../../mixins/Threadable';

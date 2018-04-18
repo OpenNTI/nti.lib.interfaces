@@ -1,4 +1,4 @@
-import {mixin} from 'nti-lib-decorators';
+import {mixin} from '@nti/lib-decorators';
 
 // import Editable from '../../mixins/Editable'; //Base already mixes in Editable
 import Likable from '../../mixins/Likable';

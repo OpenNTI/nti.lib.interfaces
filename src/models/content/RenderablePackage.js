@@ -1,4 +1,4 @@
-import {ntiidEquals} from 'nti-lib-ntiids';
+import {ntiidEquals} from '@nti/lib-ntiids';
 
 import {RepresentsSameObject} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';

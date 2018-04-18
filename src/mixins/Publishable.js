@@ -1,4 +1,4 @@
-import {pluck, Parsing} from 'nti-commons';
+import {pluck, Parsing} from '@nti/lib-commons';
 
 export default {
 	isPublished () {

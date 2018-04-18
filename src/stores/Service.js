@@ -1,9 +1,9 @@
 import EventEmitter from 'events';
 
-import Logger from 'nti-util-logger';
-import {mixin} from 'nti-lib-decorators';
-import {isNTIID} from 'nti-lib-ntiids';
-import {URL, wait} from 'nti-commons';
+import Logger from '@nti/util-logger';
+import {mixin} from '@nti/lib-decorators';
+import {isNTIID} from '@nti/lib-ntiids';
+import {URL, wait} from '@nti/lib-commons';
 
 import {parse} from '../models/Parser';
 import Capabilities from '../models/Capabilities';

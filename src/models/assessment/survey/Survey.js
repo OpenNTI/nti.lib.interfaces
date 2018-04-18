@@ -1,5 +1,5 @@
-import {wait} from 'nti-commons';
-import {mixin} from 'nti-lib-decorators';
+import {wait} from '@nti/lib-commons';
+import {mixin} from '@nti/lib-decorators';
 
 import {
 	ASSESSMENT_HISTORY_LINK,

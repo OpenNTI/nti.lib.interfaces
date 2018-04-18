@@ -1,7 +1,7 @@
 import Url from 'url';
 import path from 'path';
 
-// import Logger from 'nti-util-logger';
+// import Logger from '@nti/util-logger';
 
 import AssignmentSummary from '../../../stores/AssignmentSummary';
 import GradeBookSummary from '../../../stores/GradeBookSummary';

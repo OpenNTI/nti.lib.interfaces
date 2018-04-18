@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 
-import {mixin} from 'nti-lib-decorators';
-import Logger from 'nti-util-logger';
+import {mixin} from '@nti/lib-decorators';
+import Logger from '@nti/util-logger';
 
 import maybeWait from '../utils/maybe-wait';
 import JSONValue from '../mixins/JSONValue';

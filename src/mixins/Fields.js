@@ -1,6 +1,6 @@
-import Logger from 'nti-util-logger';
-import {Parsing} from 'nti-commons';
-import {ntiidEquals} from 'nti-lib-ntiids';
+import Logger from '@nti/util-logger';
+import {Parsing} from '@nti/lib-commons';
+import {ntiidEquals} from '@nti/lib-ntiids';
 
 import {DateFields, Parser, RepresentsSameObject, Service, IsModel} from '../constants';
 import {parse} from '../models/Parser';

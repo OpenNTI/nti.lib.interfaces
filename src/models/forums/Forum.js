@@ -1,4 +1,4 @@
-import {mixin} from 'nti-lib-decorators';
+import {mixin} from '@nti/lib-decorators';
 
 import {Service, Parser as parse} from '../../constants';
 import GetContents from '../../mixins/GetContents';

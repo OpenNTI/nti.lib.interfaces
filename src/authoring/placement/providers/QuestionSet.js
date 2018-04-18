@@ -1,4 +1,4 @@
-import {defineProtected} from 'nti-commons';
+import {defineProtected} from '@nti/lib-commons';
 
 export default class QuestionSetPlacementProvider {
 	/**

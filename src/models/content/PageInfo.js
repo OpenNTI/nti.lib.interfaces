@@ -1,6 +1,6 @@
 import path from 'path';
 
-import {Markup, URL} from 'nti-commons';
+import {Markup, URL} from '@nti/lib-commons';
 
 
 import UserDataStore from '../../stores/UserData';

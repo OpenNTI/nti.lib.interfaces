@@ -1,4 +1,4 @@
-import {pluck} from 'nti-commons';
+import {pluck} from '@nti/lib-commons';
 
 import {NO_LINK} from '../constants';
 

@@ -1,5 +1,5 @@
 import isEmpty from 'isempty';
-import {mixin} from 'nti-lib-decorators';
+import {mixin} from '@nti/lib-decorators';
 
 import Completable from '../../mixins/Completable';
 import UserDataStore from '../../stores/UserData';

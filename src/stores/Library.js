@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 
-import Logger from 'nti-util-logger';
-import {URL, defineProtected} from 'nti-commons';
+import Logger from '@nti/util-logger';
+import {URL, defineProtected} from '@nti/lib-commons';
 
 import getLink from '../utils/getlink';
 

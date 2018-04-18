@@ -1,4 +1,4 @@
-import {mixin} from 'nti-lib-decorators';
+import {mixin} from '@nti/lib-decorators';
 
 import GetContents from '../../mixins/GetContents';
 import {model, COMMON_PREFIX} from '../Registry';

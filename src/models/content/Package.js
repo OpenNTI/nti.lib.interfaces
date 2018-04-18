@@ -1,5 +1,5 @@
-import Logger from 'nti-util-logger';
-import {URL} from 'nti-commons';
+import Logger from '@nti/util-logger';
+import {URL} from '@nti/lib-commons';
 
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';

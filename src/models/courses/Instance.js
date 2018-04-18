@@ -1,9 +1,9 @@
 import Url from 'url';
 import path from 'path';
 
-import {mixin} from 'nti-lib-decorators';
-import Logger from 'nti-util-logger';
-import {wait} from 'nti-commons';
+import {mixin} from '@nti/lib-decorators';
+import Logger from '@nti/util-logger';
+import {wait} from '@nti/lib-commons';
 
 import {
 	MEDIA_BY_OUTLINE_NODE,

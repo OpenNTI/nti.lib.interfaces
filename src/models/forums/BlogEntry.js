@@ -1,4 +1,4 @@
-import {isNTIID} from 'nti-lib-ntiids';
+import {isNTIID} from '@nti/lib-ntiids';
 
 import {model, COMMON_PREFIX} from '../Registry';
 

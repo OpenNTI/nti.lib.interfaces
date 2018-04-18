@@ -1,8 +1,8 @@
 import url from 'url';
 
-import {mixin} from 'nti-lib-decorators';
-import {encodeForURI, isNTIID} from 'nti-lib-ntiids';
-import Logger from 'nti-util-logger';
+import {mixin} from '@nti/lib-decorators';
+import {encodeForURI, isNTIID} from '@nti/lib-ntiids';
+import Logger from '@nti/util-logger';
 
 import {Summary, Parser as parse} from '../../constants';
 import Publishable from '../../mixins/Publishable';

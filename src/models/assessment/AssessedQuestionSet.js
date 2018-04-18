@@ -1,4 +1,4 @@
-import {mixin} from 'nti-lib-decorators';
+import {mixin} from '@nti/lib-decorators';
 
 import assessed from '../../mixins/AssessedAssessmentPart';
 import {model, COMMON_PREFIX} from '../Registry';

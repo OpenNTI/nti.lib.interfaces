@@ -1,5 +1,5 @@
-import {pluck} from 'nti-commons';
-import {mixin} from 'nti-lib-decorators';
+import {pluck} from '@nti/lib-commons';
+import {mixin} from '@nti/lib-decorators';
 
 import names from '../../mixins/CourseAndAssignmentNameResolving';
 import {cacheClassInstances} from '../../mixins/InstanceCacheable';

@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 
-import {Paging} from 'nti-commons';
+import {Paging} from '@nti/lib-commons';
 
 const PageSource = Paging.ListBackedPageSource;
 

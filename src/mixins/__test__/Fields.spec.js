@@ -1,6 +1,6 @@
 /* eslint-env jest */
-import {mixin} from 'nti-lib-decorators';
-import Logger from 'nti-util-logger';
+import {mixin} from '@nti/lib-decorators';
+import Logger from '@nti/util-logger';
 
 import Fields from '../Fields';
 

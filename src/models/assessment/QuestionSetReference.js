@@ -1,4 +1,4 @@
-import {mixin} from 'nti-lib-decorators';
+import {mixin} from '@nti/lib-decorators';
 
 import Completable from '../../mixins/Completable';
 import {model, COMMON_PREFIX} from '../Registry';

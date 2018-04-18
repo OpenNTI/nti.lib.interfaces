@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 
-import {mixin} from 'nti-lib-decorators';
-import Logger from 'nti-util-logger';
+import {mixin} from '@nti/lib-decorators';
+import Logger from '@nti/util-logger';
 
 import {Service} from '../constants';
 import {Mixin as Pendability} from '../mixins/Pendability';

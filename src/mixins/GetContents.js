@@ -1,4 +1,4 @@
-import {URL} from 'nti-commons';
+import {URL} from '@nti/lib-commons';
 
 import {Service, Parser as parse} from '../constants';
 

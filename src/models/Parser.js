@@ -1,4 +1,4 @@
-import Logger from 'nti-util-logger';
+import Logger from '@nti/util-logger';
 
 import {MODEL_INSTANCE_CACHE_KEY} from '../constants';
 
