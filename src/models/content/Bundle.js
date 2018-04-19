@@ -28,7 +28,8 @@ class Bundle extends Base {
 		'title':                                { type: 'string'                    },
 		'label':                                { type: 'string'                    },
 		'PlatformPresentationResources':        { type: 'object'                    },
-		'root':                                 { type: 'string'                    }
+		'root':                                 { type: 'string'                    },
+		'Reports':								{ type: 'model[]'					},
 	}
 
 	isBundle = true
