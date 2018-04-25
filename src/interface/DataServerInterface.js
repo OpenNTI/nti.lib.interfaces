@@ -175,9 +175,9 @@ export default class DataServerInterface extends EventEmitter {
 
 					return response.json()
 						.then(json => {
-							Object.assign(error, json);
+							json.Message = json.Message || json.message;
 
-							error.rawResponse = json;
+							Object.assign(error, json);
 
 							const isConflict = response.status === 409;
 
