@@ -147,6 +147,27 @@ class FriendsList extends Entity {
 			});
 	}
 
+	/**
+	 * Update the friends list with with a new list of entities by
+	 * overwriting any existing friends list.
+	 *
+	 * @param {...string|Entity} entities The new list of entities.
+	 * @return {Promise} To fulfill if successful, or reject with an error.
+	 */
+	update (...entities) {
+		if (!this.isModifiable) {
+			return Promise.reject('No Edit Link');
+		}
+
+		let data = this.getData();
+		data.friends = [...entities.map(x => getID(x))];
+
+		return this.putToLink('edit', data)
+			.then(o => this.refresh(pluck(o, 'NTIID', 'friends')))
+			.then(() => this.onChange('friends'))
+			.then(() => this);//always fulfill with 'this' (don't leak new/raw instances)
+	}
+
 
 	getID () { return this.ID; }
 }
