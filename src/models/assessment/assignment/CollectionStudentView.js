@@ -1,16 +1,13 @@
 import Logger from '@nti/util-logger';
 
 import {Service, ASSESSMENT_HISTORY_LINK} from '../../../constants';
+import {initPrivate, getPrivate} from '../../../utils/private';
 
 import Base from './Collection';
 import CollectionSummary from './CollectionSummary';
 import HistoryCollection from './AssignmentHistoryCollection';
 
 const logger = Logger.get('assignment:Collection:Student');
-
-const PRIVATE = new WeakMap();
-const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
-const getPrivate = x => PRIVATE.get(x);
 
 export default class CollectionStudentView extends Base {
 

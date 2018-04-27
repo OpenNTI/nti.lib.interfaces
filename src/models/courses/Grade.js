@@ -3,14 +3,13 @@ import {mixin} from '@nti/lib-decorators';
 
 import names from '../../mixins/CourseAndAssignmentNameResolving';
 import {cacheClassInstances} from '../../mixins/InstanceCacheable';
+import {initPrivate, getPrivate} from '../../utils/private';
 import {model, COMMON_PREFIX} from '../Registry';
 //
 import Base from '../Base';
 
 const ENDS_IN_LETTER_REGEX = /\s[a-fiw-]$/i;
 
-const PRIVATE = new WeakMap();
-const getPrivate = (scope) => PRIVATE.get(scope) || PRIVATE.set(scope, {}).get(scope);
 
 export default
 @cacheClassInstances
@@ -43,6 +42,12 @@ class Grade extends Base {
 
 
 	static getPossibleGradeLetters () { return [ '-', 'A', 'B', 'C', 'D', 'F', 'I', 'W' ]; }
+
+
+	constructor (service, parent, data) {
+		super(service, parent, data);
+		initPrivate(this);
+	}
 
 
 	toJSON () {

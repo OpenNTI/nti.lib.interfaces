@@ -8,10 +8,9 @@ import {Service, Parent, DELETED, SortOrder} from '../constants';
 import {Mixin as Pendability} from '../mixins/Pendability';
 import getLink from '../utils/getlink';
 import {parseListFn} from '../models/Parser';
+import {initPrivate, getPrivate} from '../utils/private';
 
-const PRIVATE = new WeakMap();
-const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
-export const getPrivate = x => PRIVATE.get(x);
+
 
 const logger = Logger.get('store:Stream');
 

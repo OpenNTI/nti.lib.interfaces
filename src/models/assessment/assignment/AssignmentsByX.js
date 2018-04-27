@@ -2,11 +2,10 @@ import EventEmitter from 'events';
 
 import {Paging} from '@nti/lib-commons';
 
+import {initPrivate, getPrivate} from '../../../utils/private';
+
 const PageSource = Paging.ListBackedPageSource;
 
-const PRIVATE = new WeakMap();
-const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
-const getPrivate = x => PRIVATE.get(x);
 
 const flatten = groups => groups && groups.reduce((a, g) => a.concat(g.items), []);
 

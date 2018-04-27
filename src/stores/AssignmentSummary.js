@@ -1,5 +1,6 @@
 import {mixin} from '@nti/lib-decorators';
 
+import {initPrivate, getPrivate} from '../utils/private';
 import Paged from '../mixins/Paged';
 
 import Stream from './Stream';
@@ -9,10 +10,6 @@ const FILTERS = {
 	forcredit: 'ForCredit',
 	open: 'Open'
 };
-
-const PRIVATE = new WeakMap();
-const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
-const getPrivate = x => PRIVATE.get(x);
 
 export default
 @mixin(Paged)
@@ -56,7 +53,7 @@ class AssignmentSummary extends Stream {
 	}
 
 
-	get total () { return PRIVATE.get(this).total || this.length; }
+	get total () { return getPrivate(this).total || this.length; }
 	getTotal () { return this.total; } //expected by Paged mixin
 
 	/**

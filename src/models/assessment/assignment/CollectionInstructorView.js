@@ -6,6 +6,7 @@ import path from 'path';
 import AssignmentSummary from '../../../stores/AssignmentSummary';
 import GradeBookSummary from '../../../stores/GradeBookSummary';
 import {Service, ASSESSMENT_HISTORY_LINK, NO_LINK} from '../../../constants';
+import {initPrivate, getPrivate} from '../../../utils/private';
 
 import Base from './Collection';
 import CollectionSummary from './CollectionSummary';
@@ -21,10 +22,6 @@ const forUser = (ref, userId) => (
 	ref = Url.parse(ref),
 	ref.pathname = path.join(path.dirname(ref.pathname), encodeURIComponent(userId)),
 	ref.format());
-
-const PRIVATE = new WeakMap();
-const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
-const getPrivate = x => PRIVATE.get(x);
 
 export default class CollectionInstructorView extends Base {
 

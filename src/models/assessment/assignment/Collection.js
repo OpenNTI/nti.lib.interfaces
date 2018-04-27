@@ -10,9 +10,11 @@ import {mixin} from '@nti/lib-decorators';
 
 import {ASSESSMENT_HISTORY_LINK, Parser as parse, Service, Parent} from '../../../constants';
 import Base from '../../Base';
+import {initPrivate, getPrivate} from '../../../utils/private';
 
 import AssignmentsByX from './AssignmentsByX';
 import ActivityMixin from './AssignmentActivityMixin';
+
 
 const logger = Logger.get('assignment:Collection:Base');
 
@@ -72,10 +74,6 @@ const sortComparatorTitle = (a, b) => (a.title || '').localeCompare(b.title);
 
 
 const GetListFrom = Symbol();
-
-const PRIVATE = new WeakMap();
-const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
-const getPrivate = x => PRIVATE.get(x);
 
 export default
 @mixin(ActivityMixin)

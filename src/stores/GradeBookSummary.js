@@ -1,6 +1,7 @@
 import {mixin} from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
+import {initPrivate, getPrivate} from '../utils/private';
 import Paged from '../mixins/Paged';
 
 import Stream from './Stream';
@@ -19,9 +20,6 @@ const CATEGORIES = {
 	ungraded: 'ungraded'
 };
 
-const PRIVATE = new WeakMap();
-const initPrivate = (x, o = {}) => PRIVATE.set(x, o);
-const getPrivate = x => PRIVATE.get(x);
 
 function setFilter (instance, scope = instance.scopeFilter, category = instance.categoryFilter) {
 	const {options} = instance;
@@ -85,11 +83,11 @@ class GradeBookSummary extends Stream {
 	}
 
 
-	get total () { return PRIVATE.get(this).total || this.length; }
+	get total () { return getPrivate(this).total || this.length; }
 	getTotal () { return this.total; } //expected by Paged mixin
 
 
-	get hasFinalGrade () { return PRIVATE.get(this).hasFinalGrade; }
+	get hasFinalGrade () { return getPrivate(this).hasFinalGrade; }
 
 
 	/**
