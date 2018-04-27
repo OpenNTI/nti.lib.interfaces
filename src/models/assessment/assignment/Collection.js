@@ -102,7 +102,11 @@ class Collection extends Base {
 		});
 
 		this.onChange = this.onChange.bind(this);
+		this.applyData (assignments, assessments);
+	}
 
+
+	applyData (assignments, assessments) {
 		const parseItem = (o) => {
 			const i = Array.isArray(o) ? o : [o];
 
