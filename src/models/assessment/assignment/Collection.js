@@ -418,7 +418,7 @@ class Collection extends Base {
 			assignment = await this[Service].getObject(raw, {parent: this});
 		}
 
-		if (assignment.MimeType !== 'application/vnd.nextthought.assessment.assignment') {
+		if (!assignment.isAssignment) {
 			throw new Error('No Assignment Found');
 		}
 
