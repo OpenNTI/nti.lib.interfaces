@@ -103,6 +103,7 @@ class OutlineNode extends Outline {
 				let content = await this.fetchLink(link);
 				if(this.isStaticOverContents) {
 					content = fixRelativePaths(content, this.getLink(link));
+					content.isStatic = true;
 				}
 				return isLegacy
 					? collateVideo(content) //Has a Link, but is legacy
@@ -116,6 +117,10 @@ class OutlineNode extends Outline {
 			};
 
 			const [assignments, data] = await Promise.all([
+				// You may be tempted to "optimize" this call out if 'isStatic' is false... don't.
+				// This call is already being made in other places and is not (currently) adding
+				// any additional overhead... until this becomes a true waste, leave this
+				// unconditional load of the assignments
 				course.getAssignments().catch(() => null),
 				(this.hasLink(link)
 					? fetchLink()
@@ -123,7 +128,7 @@ class OutlineNode extends Outline {
 				)
 			]);
 
-			let content = filterMissingAssignments(assignments, data);
+			let content = !data.isStatic ? data : filterMissingAssignments(assignments, data);
 
 			if (requiredOnly) {
 				content = filterNonRequiredItems(data);
@@ -324,7 +329,7 @@ function collateVideo (json) {
 
 
 
-function getContentFallback (outlineNode) {
+async function getContentFallback (outlineNode) {
 	logger.debug('[FALLBACK] Deriving OutlineNode(%s) content', outlineNode.getContentId());
 	const getCourse = node => node.root.parent();
 	const course = getCourse(outlineNode);
@@ -332,14 +337,21 @@ function getContentFallback (outlineNode) {
 	const pkg = ((bundle && bundle.ContentPackages) || [])[0];
 	const contentId = outlineNode.getContentId();
 
-	const p = pkg ? pkg.getTableOfContents() : Promise.reject('No Content Package');
+	if (!pkg) {
+		throw new Error('No Content Package');
+	}
 
-	return p.then(function (toc) {
-		const tocNode = toc.getNode(contentId);
-		const content = tocNode && fallbackOverview(tocNode, outlineNode);
-		if (!content) {
-			logger.error('Fallback Content failed');
-		}
-		return content;
-	});
+	const toc = await pkg.getTableOfContents();
+
+	const tocNode = toc.getNode(contentId);
+	const content = tocNode && fallbackOverview(tocNode, outlineNode);
+
+	if (content) {
+		content.isStatic = true;
+	}
+	else {
+		logger.error('Fallback Content failed');
+	}
+
+	return content;
 }
