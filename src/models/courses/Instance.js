@@ -127,6 +127,7 @@ class Instance extends Base {
 		return (bundle && bundle.containsPackage(id)) || this.getID() === id;
 	}
 
+
 	getPackage (id) {
 		const bundle = this.ContentPackageBundle;
 		return bundle && bundle.getPackage(id);
@@ -203,39 +204,63 @@ class Instance extends Base {
 	}
 
 
-	getAssignments () {
-		const KEY = Symbol.for('GetAssignmentsRequest');
+	async getAssignments () {
+		const LOADING = Symbol.for('GetAssignmentsRequest');
+		const REFRESH = Symbol.for('RefreshAssignments');
+		const service = this[Service];
 		const parent = this.parent();
 		const getLink = rel => (parent && parent.getLink && parent.getLink(rel)) || this.getLink(rel);
 		const {isAdministrative} = this;
 
-
-		const service = this[Service];
-
-		let pending = this[KEY];
-
 		if (!this.shouldShowAssignments()) {
-			return Promise.reject('No Assignments');
+			throw new Error('No Assignments');
 		}
 
-		if (!pending) {
-			// A/B sets... Assignments are the Universe-Set minus the B set.
-			// The A set is the assignments you can see.
-			const A = this.fetchLink('AssignmentSummaryByOutlineNode');
-			const B = this.fetchLink('NonAssignmentAssessmentSummaryItemsByOutlineNode');
+		const load = async () => {
+			return Promise.all([
+				this.fetchLink('AssignmentSummaryByOutlineNode'),
+				this.fetchLink('NonAssignmentAssessmentSummaryItemsByOutlineNode')
+			]);
+		};
 
-			const historyLink = getLink('AssignmentHistory');
+		const getCollection = async () => {
+			const [assignments, assessments] = await load();
 
-			pending = this[KEY] = Promise.all([
-				A, //AssignmentsByOutlineNode
-				B //NonAssignmentAssessmentItemsByOutlineNode
-			])
-				.then(a => isAdministrative
-					? new AssessmentCollectionInstructorView(service, this, ...a, historyLink, this.GradeBook)
-					: new AssessmentCollectionStudentView(service, this, ...a, historyLink));
+			const CollectionImpl = isAdministrative
+				? AssessmentCollectionInstructorView
+				: AssessmentCollectionStudentView;
+
+			this[LOADING].isResolved = true;
+			return new CollectionImpl(
+				service,
+				this,
+				assignments,
+				assessments,
+				getLink('AssignmentHistory'),
+				this.GradeBook
+			);
+		};
+
+		const refresh = async (collection) => {
+			const data = await load();
+			collection.applyData(...data);
+			delete this[REFRESH];
+		};
+
+		const freshLoad = !this[LOADING];
+		const maybeStale = !freshLoad && this[LOADING].isResolved;
+
+		// cache the load promise so we don't re-enter the load...
+		const collection = await (this[LOADING] || (this[LOADING] = getCollection()));
+
+		if (maybeStale && !this[REFRESH]) {
+			this[REFRESH] = refresh(collection);
 		}
 
-		return pending;
+		// wait on refreses in progress
+		await this[REFRESH];
+
+		return collection;
 	}
 
 
