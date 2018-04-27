@@ -180,7 +180,7 @@ class Collection extends Base {
 
 		Object.assign(data, {outlineMap, assessmentToOutlineMap});
 
-		data.viewStore = new AssignmentsByX (this, ORDER_BY_LESSON);
+		data.viewStore = new AssignmentsByX(this, ORDER_BY_LESSON);
 	}
 
 
@@ -192,7 +192,7 @@ class Collection extends Base {
 	}
 
 
-	[ORDER_BY_COMPLETION] (filter) {
+	async [ORDER_BY_COMPLETION] (filter) {
 		//The return value of getAssignments is volatile, and can be manipulated without worry.
 		const all = this.getAssignments()
 			//pre-sort by title so when we group, they'll already be in order with in the groups.
@@ -216,7 +216,7 @@ class Collection extends Base {
 	}
 
 
-	[ORDER_BY_DUE_DATE] (filter) {
+	async [ORDER_BY_DUE_DATE] (filter) {
 		//The return value of getAssignments is volatile, and can be manipulated without worry.
 		const all = this.getAssignments()
 			//pre-sort by title so when we group, they'll already be in order with in the groups.
@@ -249,7 +249,7 @@ class Collection extends Base {
 	}
 
 
-	[ORDER_BY_LESSON] (filter) {
+	async [ORDER_BY_LESSON] (filter) {
 		const {
 			outlineMap,
 			visibleAssignments: {items: assignments}
@@ -288,34 +288,32 @@ class Collection extends Base {
 			sortComparatorTitle(ungrouped[a], ungrouped[b]);
 
 
-		return this.parent().getOutline()
-			.then(outline => outline.getFlattenedList())
-			.then(list => list.filter(x => x.getContentId()))
-			.then(list => {
+		const outline = await this.parent().getOutline();
+		const list = (await outline.getFlattenedList()).filter(x => x.getContentId());
 
-				list.forEach((n, index) => {
+		list.forEach((n, index) => {
 
-					let assessments = outlineMap[n.getContentId()];
-					if (!assessments) { return; }
+			let assessments = outlineMap[n.getContentId()];
+			if (!assessments) { return; }
 
-					for (let assessmentId of assessments) {
-						bin(assessmentId, index, n);
-					}
+			for (let assessmentId of assessments) {
+				bin(assessmentId, index, n);
+			}
 
-					const binId = getBinId(n);
-					if (groups[binId]) {
-						groups[binId].items
-							.sort(sortComparatorDueDate);
-					}
-				});
+			const binId = getBinId(n);
+			if (groups[binId]) {
+				groups[binId].items
+					.sort(sortComparatorDueDate);
+			}
+		});
 
-				//show the ungrouped (the inner-bin order is lost here...resort by name)
-				for (let assignmentId of Object.keys(ungrouped).sort(ungroupedByName)) {
-					bin(assignmentId, Number.MAX_VALUE);
-				}
+		//show the ungrouped (the inner-bin order is lost here...resort by name)
+		for (let assignmentId of Object.keys(ungrouped).sort(ungroupedByName)) {
+			bin(assignmentId, Number.MAX_VALUE);
+		}
 
-				return Object.values(groups).sort((a, b) => a.sortBy - b.sortBy);
-			});
+		return Object.values(groups).sort((a, b) => a.sortBy - b.sortBy);
+
 	}
 
 
@@ -327,17 +325,22 @@ class Collection extends Base {
 	 *
 	 * @returns {Promise} fulfills with an object with key: groups, order, and search
 	 */
-	getAssignmentsBy (order, search) {
+	async getAssignmentsBy (order, search) {
 		const searchFn = a => (a.title || '').toLowerCase().indexOf(search.toLowerCase()) >= 0;
 
 		try {
-			const work = Promise.resolve(this[order](search && searchFn))
-				.then(groups => ({ order, search, groups }));
+			const resolveGroups = async () => ({
+				order,
+				search,
+				groups: await this[order](search && searchFn)
+			});
+
+			const work = resolveGroups(); //we need the promise, don't "await".
 
 			// the AssignmentsByX store listens for our new-filter event.
 			this.emit('new-filter', work, order, search);
 
-			return work;
+			return await work;
 
 		} catch (e) {
 			throw new Error('Bad Arguments');
