@@ -28,8 +28,8 @@
     "registry": "https://npm.nextthought.com"
   },
   "dependencies": {
-    "@nti/lib-commons": "^2.6.0",
-    "@nti/lib-decorators": "^1.2.2",
+    "@nti/lib-commons": "^2.16.0",
+    "@nti/lib-decorators": "^1.4.0",
     "@nti/lib-ntiids": "^1.0.0",
     "@nti/util-logger": "^1.0.0",
     "date-fns": "^1.29.0",
