@@ -408,16 +408,19 @@ class Collection extends Base {
 
 
 	async fetchAssignment (id) {
-		const assignment = this.getAssignment(id);
-		const assignmentId = assignment && assignment.getID();
+		let assignment = this.getAssignment(id);
 
-		if (!assignmentId) {
-			throw new Error('No assignment found');
+		const raw = await this[Service].getObjectRaw(id, null, null, {course: this[Parent].getID()});
+
+		if (assignment) {
+			await assignment.refresh(raw);
+		} else {
+			assignment = await this[Service].getObject(raw, {parent: this});
 		}
 
-		const raw = await this[Service].getObjectRaw(assignmentId, null, null, {course: this[Parent].getID()});
-
-		await assignment.refresh(raw);
+		if (assignment.MimeType !== 'application/vnd.nextthought.assessment.assignment') {
+			throw new Error('No Assignment Found');
+		}
 
 		return assignment;
 	}
