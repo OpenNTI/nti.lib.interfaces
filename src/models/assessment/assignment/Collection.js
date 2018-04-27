@@ -414,8 +414,9 @@ class Collection extends Base {
 
 	async fetchAssignment (id) {
 		let assignment = this.getAssignment(id);
+		const assignmentID = assignment ? assignment.getID() : id;
 
-		const raw = await this[Service].getObjectRaw(id, null, null, {course: this[Parent].getID()});
+		const raw = await this[Service].getObjectRaw(assignmentID, null, null, {course: this[Parent].getID()});
 
 		if (assignment) {
 			await assignment.refresh(raw);
