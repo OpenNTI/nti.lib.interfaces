@@ -10,6 +10,7 @@ import Completable from '../../../mixins/Completable';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 import SubmittableIdentity from '../mixins/SubmittableIdentity';
+import AssignmentIdentity from '../mixins/AssignmentIdentity';
 import {resolveSubmitTo} from '../utils';
 
 import AssignmentSubmission from './AssignmentSubmission';
@@ -22,7 +23,7 @@ const getAssociationCount = (x) => x.LessonContainerCount;
 
 export default
 @model
-@mixin(Completable, Publishable, SubmittableIdentity)
+@mixin(Completable, Publishable, SubmittableIdentity, AssignmentIdentity)
 class Assignment extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.assignment'
 
