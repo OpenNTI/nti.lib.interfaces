@@ -100,7 +100,7 @@ class Collection extends Base {
 				{rel: ASSESSMENT_HISTORY_LINK, href: historyLink}
 			]
 		});
-
+		initPrivate(this, {});
 		this.onChange = this.onChange.bind(this);
 		this.applyData (assignments, assessments);
 	}
@@ -128,8 +128,7 @@ class Collection extends Base {
 			.filter(x => !isIgnoredKey(x))
 			.forEach(key => process(key, getItems(dict)[key], obj));
 
-		const data = {};
-		initPrivate(this, data);
+		const data = getPrivate(this);
 
 		let a =	data.visibleAssignments = {};
 		consume(a, assignments);

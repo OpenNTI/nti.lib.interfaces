@@ -1,7 +1,7 @@
 import Logger from '@nti/util-logger';
 
 import {Service, ASSESSMENT_HISTORY_LINK} from '../../../constants';
-import {initPrivate, getPrivate} from '../../../utils/private';
+import {getPrivate} from '../../../utils/private';
 
 import Base from './Collection';
 import CollectionSummary from './CollectionSummary';
@@ -27,7 +27,6 @@ export default class CollectionStudentView extends Base {
 	 */
 	constructor (service, parent, assignments, assessments, historyLink) {
 		super(service, parent, assignments, assessments, historyLink);
-		initPrivate(this);
 	}
 
 

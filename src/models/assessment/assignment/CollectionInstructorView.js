@@ -6,7 +6,7 @@ import path from 'path';
 import AssignmentSummary from '../../../stores/AssignmentSummary';
 import GradeBookSummary from '../../../stores/GradeBookSummary';
 import {Service, ASSESSMENT_HISTORY_LINK, NO_LINK} from '../../../constants';
-import {initPrivate, getPrivate} from '../../../utils/private';
+import {getPrivate} from '../../../utils/private';
 
 import Base from './Collection';
 import CollectionSummary from './CollectionSummary';
@@ -44,7 +44,6 @@ export default class CollectionInstructorView extends Base {
 	constructor (service, parent, assignments, assessments, historyLink, gradebook) {
 		super(service, parent, assignments, assessments, historyLink);
 		Object.assign(this, {gradebook});
-		initPrivate(this);
 	}
 
 
