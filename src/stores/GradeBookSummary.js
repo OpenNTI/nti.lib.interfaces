@@ -1,7 +1,7 @@
 import {mixin} from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
-import {initPrivate, getPrivate} from '../utils/private';
+import {getPrivate} from '../utils/private';
 import Paged from '../mixins/Paged';
 
 import Stream from './Stream';
@@ -39,7 +39,6 @@ class GradeBookSummary extends Stream {
 
 	constructor (service, owner, href, options, ...args) {
 		super(service, owner, href, options, ...args);
-		initPrivate(this);
 		this.initMixins();
 	}
 

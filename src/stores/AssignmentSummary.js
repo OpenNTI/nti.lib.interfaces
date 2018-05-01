@@ -1,6 +1,6 @@
 import {mixin} from '@nti/lib-decorators';
 
-import {initPrivate, getPrivate} from '../utils/private';
+import {getPrivate} from '../utils/private';
 import Paged from '../mixins/Paged';
 
 import Stream from './Stream';
@@ -17,7 +17,6 @@ class AssignmentSummary extends Stream {
 
 	constructor (...args) {
 		super(...args);
-		initPrivate(this);
 		this.initMixins();
 	}
 
