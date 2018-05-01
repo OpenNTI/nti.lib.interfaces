@@ -36,7 +36,7 @@ export default class AssignmentsByX extends EventEmitter {
 			Object.assign(data, o);
 		};
 
-		collection.on('new-filter', work => {
+		const newFilter = work => {
 			let token = latest = {};
 			data.busy = true;
 			this.emit('change');
@@ -52,7 +52,10 @@ export default class AssignmentsByX extends EventEmitter {
 				//these will be skiped if the previous "then" returns the rejected promise.
 				.then(() => data.pageSource = new PageSource(flatten(data.groups)))
 				.then(() => this.emit('change'));
-		});
+		};
+
+		collection.on('new-filter', newFilter);
+		this.free = () => collection.removeListener('new-filter', newFilter);
 	}
 
 

@@ -177,9 +177,20 @@ class Collection extends Base {
 			}
 		}
 
-		Object.assign(data, {outlineMap, assessmentToOutlineMap});
 
-		data.viewStore = new AssignmentsByX(this, ORDER_BY_LESSON);
+		Object.assign(data, {
+			outlineMap,
+			assessmentToOutlineMap
+		});
+
+
+		const {free, order = ORDER_BY_LESSON} = data.viewStore || {};
+
+		if (free) {
+			free();
+		}
+
+		data.viewStore = new AssignmentsByX(this, order);
 	}
 
 
