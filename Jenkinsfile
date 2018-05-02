@@ -1,3 +1,3 @@
-    @Library(“nti.javascript-modules”) _
-    defaultPipeline {
-    }
+@Library("nti.javascript-modules") _
+defaultPipeline {
+}
