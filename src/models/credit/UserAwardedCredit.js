@@ -10,10 +10,14 @@ class UserAwardedCredit extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'amount':            { type: 'number'                         },
-		'title':             { type: 'string'                         },
-		'description':       { type: 'string'                         },
-		'credit_definition': { type: 'model', name: 'creditDefinition'}
+		'amount':            { type: 'number'                          },
+		'title':             { type: 'string'                          },
+		'description':       { type: 'string'                          },
+		'credit_definition': { type: 'model', name: 'creditDefinition' },
+		'issuer':            { type: 'string'                          },
+		'awarded_date':      { type: 'date',                           } //becomes getAwardedDate
 	}
+
+	getAwardedDate () {} //implemented by awarded_date date field.
 
 }
