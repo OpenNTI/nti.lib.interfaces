@@ -7,6 +7,7 @@ export * as chat from './chat';
 export * as completion from './completion';
 export * as content from './content';
 export * as courses from './courses';
+export * as credit from './credit';
 export * as entities from './entities';
 export * as forums from './forums';
 export * as media from './media';
