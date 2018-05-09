@@ -38,29 +38,31 @@ class EntityStore extends EventEmitter {
 		this.onChange = this.onChange && this.onChange.bind(this);
 
 		let parseList = parseListFn(this, service);
-		this.load = url => service.get(url).then(o => parseList(Object.values(o.Items || [])));
+		this.fetch = (url = entryPoint) => service.get(url).then(o => parseList(Object.values(o.Items || [])));
 
 		if (process.browser) {
 			this.on('load', (_, time) => logger.debug('Load: %s %o', time, this));
 		}
 
+		this.addToPending(this.load());
+	}
+
+	async load () {
 		this.loading = true;
 		let start = Date.now();
 
-		let load = this.load(entryPoint)
-			.then(x => this[DATA].push(...x))
-			.catch(er => {
-				logger.error(er.message || er);
-				this.error = true;
-			})
-			.then(() => {
-				this.loading = false;
-				this.loaded = Date.now();
-				this.emit('load', this, `${(this.loaded - start)}ms`);
-				this.emit('change', this);
-			});
+		try {
+			this[DATA] = await this.fetch(this.entryPoint);
+		}
+		catch(er) {
+			logger.error(er.message || er);
+			this.error = true;
+		}
 
-		this.addToPending(load);
+		this.loading = false;
+		this.loaded = Date.now();
+		this.emit('load', this, `${(this.loaded - start)}ms`);
+		this.emit('change', this);
 	}
 
 
