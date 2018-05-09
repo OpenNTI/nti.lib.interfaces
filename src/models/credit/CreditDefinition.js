@@ -1,5 +1,3 @@
-//application/vnd.nextthought.credit.creditdefinition
-
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
