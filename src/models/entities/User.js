@@ -134,6 +134,13 @@ class User extends Entity {
 	}
 
 
+	async joinGroupWithCode (code) {
+		const data = {'invitation_codes': [code]};
+		await this.postToLink('accept-invitations', data);
+		this[Service].getGroups().load();
+	}
+
+
 	getID () {
 		return this.Username;
 	}
