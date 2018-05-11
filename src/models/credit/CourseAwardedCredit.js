@@ -6,7 +6,7 @@ export default
 @model
 class UserAwardedCredit extends BaseCredit {
 	static MimeType = [
-		COMMON_PREFIX + 'credit.courseawardablecredit'
+		COMMON_PREFIX + 'credit.userawardedcredit'
 	]
 
 }
