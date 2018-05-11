@@ -4,9 +4,9 @@ import BaseCredit from './BaseCredit';
 
 export default
 @model
-class UserAwardedCredit extends BaseCredit {
+class CourseAwardedCredit extends BaseCredit {
 	static MimeType = [
-		COMMON_PREFIX + 'credit.userawardedcredit'
+		COMMON_PREFIX + 'credit.courseawardedcredit'
 	]
 
 }
