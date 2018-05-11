@@ -1,9 +1,13 @@
-import {model} from '../Registry';
+import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 export default
 @model
 class BaseCredit extends Base {
+	static MimeType = [
+		COMMON_PREFIX + 'credit.basecredit'
+	]
+
 	static Fields = {
 		...Base.Fields,
 		'amount':            { type: 'number'                          },
