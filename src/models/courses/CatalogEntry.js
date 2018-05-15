@@ -42,7 +42,8 @@ class CourseCatalogEntry extends Base {
 		'IsEnrolled':                           { type: 'boolean'                           },
 		'is_non_public':                        { type: 'boolean',  name: 'isHidden'        },
 		'TotalEnrolledCount':                   { type: 'number'                            },
-		'awardable_credits':                    { type: 'model[]', name: 'credits'          }
+		'awardable_credits':                    { type: 'model[]', name: 'credits'          },
+		'AwardsCertificate':                    { type: 'boolean'                           }
 	}
 
 	static getFactory (service) {
