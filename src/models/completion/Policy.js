@@ -10,6 +10,7 @@ class CompletionPolicy extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'percentage':        { type: 'number' }
+		'percentage':                    { type: 'number'                                       },
+		'offers_completion_certificate': { type: 'boolean', name: 'offersCompletionCertificate' }
 	}
 }
