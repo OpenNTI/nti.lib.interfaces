@@ -10,6 +10,7 @@ class InstructorReport extends Base {
 		'description':     {type: 'string'},
 		'title':           {type: 'string'},
 		'supported_types': {type: 'string[]', name: 'supportedTypes'},
-		'rel':             {type: 'string'}
+		'rel':             {type: 'string'},
+		'contexts':        {type: 'object'}
 	}
 }
