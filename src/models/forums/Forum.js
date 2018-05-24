@@ -22,6 +22,7 @@ class Forum extends Base {
 		'ID':                          { type: 'string' }, // Local id (within the container)
 		'NewestDescendant':            { type: 'model'  },
 		'NewestDescendantCreatedTime': { type: 'date'   },
+		'Reports':                     { type: 'model[]'},
 		'TopicCount':                  { type: 'number' },
 		'description':                 { type: 'string' },
 		'title':                       { type: 'string' },
