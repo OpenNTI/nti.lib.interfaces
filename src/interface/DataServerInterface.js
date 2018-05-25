@@ -38,11 +38,33 @@ export default class DataServerInterface extends EventEmitter {
 
 	constructor (config) {
 		super();
+		this.config = config;
+
 		if (!config || !config.server) {
 			throw new Error('No configuration');
 		}
-		this.headers = {};
-		this.config = config;
+
+		if (!process.browser) {
+			return;
+		}
+
+		try {
+			const headers = this.headers = {};
+
+			//App Identifier headers
+			if (typeof BUILD_PACKAGE_NAME !== 'undefined') {
+				headers['X-NTI-Client-App'] = BUILD_PACKAGE_NAME;
+			}
+
+			if (typeof BUILD_PACKAGE_VERSION !== 'undefined') {
+				headers['X-NTI-Client-Version'] = BUILD_PACKAGE_VERSION;
+			}
+
+			headers['X-NTI-Client-TZOffset'] = (new Date()).getTimezoneOffset();
+			headers['X-NTI-Client-Timezone'] = Intl.DateTimeFormat().resolvedOptions().timeZone;
+		} catch (e) {
+			logger.warn('Could not set all custom headers: %s', e.stack || e.message || e);
+		}
 	}
 
 
@@ -51,11 +73,11 @@ export default class DataServerInterface extends EventEmitter {
 	 *
 	 * @method setDefaultHeaders
 	 * @param  {Object}          headers A simple object with Keys/Value pairs for header/value pairs.
-	 * @return void
+	 * @return {void}
 	 */
 	setDefaultHeaders (headers) {
 		this.headers = {
-			...this.headers,
+			...this.headers || {},
 			...headers
 		};
 	}
@@ -100,11 +122,7 @@ export default class DataServerInterface extends EventEmitter {
 		if (options.headers !== null) {
 			init.headers = {
 				...options.headers,
-				...this.headers,
-
-				//App Identifier headers
-				...(typeof BUILD_PACKAGE_NAME === 'undefined' ? {} : {'X-NTI-Client-App': BUILD_PACKAGE_NAME}),
-				...(typeof BUILD_PACKAGE_VERSION === 'undefined' ? {} : {'X-NTI-Client-Version': BUILD_PACKAGE_VERSION}),
+				...(this.headers || {}),
 
 				//Always override these headers
 				'accept': mime || 'application/json',
