@@ -41,7 +41,23 @@ export default class DataServerInterface extends EventEmitter {
 		if (!config || !config.server) {
 			throw new Error('No configuration');
 		}
+		this.headers = {};
 		this.config = config;
+	}
+
+
+	/**
+	 * Add/Set header values to be sent with all requests.
+	 *
+	 * @method setDefaultHeaders
+	 * @param  {Object}          headers A simple object with Keys/Value pairs for header/value pairs.
+	 * @return void
+	 */
+	setDefaultHeaders (headers) {
+		this.headers = {
+			...this.headers,
+			...headers
+		};
 	}
 
 
@@ -84,6 +100,7 @@ export default class DataServerInterface extends EventEmitter {
 		if (options.headers !== null) {
 			init.headers = {
 				...options.headers,
+				...this.headers,
 
 				//App Identifier headers
 				...(typeof BUILD_PACKAGE_NAME === 'undefined' ? {} : {'X-NTI-Client-App': BUILD_PACKAGE_NAME}),
