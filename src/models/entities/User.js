@@ -32,10 +32,7 @@ class User extends Entity {
 
 	static Fields = {
 		...Entity.Fields,
-		'accepting':          { type: 'model[]'   },
-		'following':          { type: 'model[]'   },
-		'ignoring':           { type: 'model[]'   },
-		'AvatarURLChoices':   { type: 'string[]'  },
+		//Do not define "cleaned" fields (see cleanData)
 		'Connections':        { type: '*'         },
 		'Communities':        { type: 'model[]'   },
 		'DynamicMemberships': { type: 'model[]'   },
