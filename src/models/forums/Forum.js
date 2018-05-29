@@ -6,6 +6,8 @@ import getLink from '../../utils/getlink';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+import ForumContentsDataSource from './forum-contents-data-source';
+
 export default
 @model
 @mixin(GetContents)
@@ -76,4 +78,7 @@ class Forum extends Base {
 
 	}
 
+	getContentsDataSource () {
+		return new ForumContentsDataSource(this[Service], this);
+	}
 }
