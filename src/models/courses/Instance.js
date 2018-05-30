@@ -327,7 +327,7 @@ class Instance extends Base {
 	}
 
 
-	getDiscussions () {
+	getDiscussions (reloadBoard) {
 		function logAndResume (reason) {
 			if (reason !== NOT_DEFINED) {
 				logger.warn('Could not load board: %o', reason);
@@ -340,22 +340,30 @@ class Instance extends Base {
 		const sectionId = getID(this.Discussions);
 		const parentId = getID(this.ParentDiscussions);
 
-		return Promise.all([
-			contents(this.Discussions).catch(logAndResume),
-			contents(this.ParentDiscussions).catch(logAndResume)
-		])
-			.then(([section, parent]) => {
+		let refreshRequest = Promise.resolve();
 
-				if (section) {
-					section.NTIID = sectionId;
-				}
+		if(reloadBoard) {
+			refreshRequest = this.Discussions.refresh();
+		}
 
-				if (parent) {
-					parent.NTIID = parentId;
-				}
+		return refreshRequest.then(() => {
+			return Promise.all([
+				contents(this.Discussions).catch(logAndResume),
+				contents(this.ParentDiscussions).catch(logAndResume)
+			])
+				.then(([section, parent]) => {
 
-				return binDiscussions(section, parent);
-			});
+					if (section) {
+						section.NTIID = sectionId;
+					}
+
+					if (parent) {
+						parent.NTIID = parentId;
+					}
+
+					return binDiscussions(section, parent);
+				});
+		});
 	}
 
 
