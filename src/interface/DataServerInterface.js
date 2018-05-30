@@ -176,7 +176,7 @@ export default class DataServerInterface extends EventEmitter {
 			let abortFlag = false;
 
 			logger.debug('REQUEST %d (send) -> %s %s', id, init.method, url);
-			logger.debug('REQUEST %d HEADERS: %s %s:\n%o', id, init.method, url, init.headers);
+			// logger.debug('REQUEST %d HEADERS: %s %s:\n%o', id, init.method, url, init.headers);
 
 			if (context) {
 				if(context.dead) {
