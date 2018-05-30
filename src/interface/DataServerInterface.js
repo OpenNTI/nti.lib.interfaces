@@ -38,6 +38,7 @@ export default class DataServerInterface extends EventEmitter {
 
 	constructor (config) {
 		super();
+		this.nextRequestId = 1;
 		this.config = config;
 
 		if (!config || !config.server) {
@@ -100,6 +101,7 @@ export default class DataServerInterface extends EventEmitter {
 	 * @private
 	 */
 	[Request] (options, context) {
+		const id = this.nextRequestId++;
 		//covers more than just undefined. (false, 0, null, and undefined.)
 		//Make sure options is the normalize shape.
 		options = (options && (typeof options === 'object' ? options : {url: options})) || {};
@@ -173,7 +175,8 @@ export default class DataServerInterface extends EventEmitter {
 		const result = new Promise((fulfillRequest, rejectRequest) => {
 			let abortFlag = false;
 
-			logger.debug('REQUEST <- %s %s', init.method, url);
+			logger.debug('REQUEST %d (send) -> %s %s', id, init.method, url);
+			logger.debug('REQUEST %d HEADERS: %s %s:\n%o', id, init.method, url, init.headers);
 
 			if (context) {
 				if(context.dead) {
@@ -197,10 +200,10 @@ export default class DataServerInterface extends EventEmitter {
 			const maybeReject = (...args) => !abortFlag && rejectRequest(...args);
 
 			const checkStatus = (response) => {
+				logger.debug('REQUEST %d (recv) <- %s %s %s %dms', id, init.method, url, response.statusText, Date.now() - start);
 				if (response.ok) {
 					return response;
 				} else {
-					logger.debug('REQUEST -> %s %s %s %dms', init.method, url, response.statusText, Date.now() - start);
 
 					const error = Object.assign(new Error(response.statusText), {
 						Message: response.statusText,
@@ -309,7 +312,7 @@ export default class DataServerInterface extends EventEmitter {
 			abortMethod = ()=> { abortFlag = true; rejectRequest('aborted'); };
 		});
 
-		result.abort = abortMethod || (()=> logger.warn('Attempting to abort request, but missing abort() method.'));
+		result.abort = abortMethod || (()=> logger.warn('REQUEST %d: Attempting to abort request, but missing abort() method.', id));
 
 		if (context) {
 			attachPendingQueue(context).addToPending(result);
