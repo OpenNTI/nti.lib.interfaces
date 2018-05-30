@@ -310,10 +310,10 @@ describe('Fields Mixin', () => {
 		});
 	});
 
-	test('Fields parse models');
-	test('Fields parse model arrays');
-	test('Fields parse model maps');
+	// test('Fields parse models');
+	// test('Fields parse model arrays');
+	// test('Fields parse model maps');
 
-	test('Fields allow direct Model types');
-	test('Fields allow functions as types');
+	// test('Fields allow direct Model types');
+	// test('Fields allow functions as types');
 });
