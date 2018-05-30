@@ -87,8 +87,11 @@ class User extends Entity {
 
 
 	get initials () {
-		let {displayName, firstName, lastName} = this;
-		return (firstName && lastName) ? `${firstName[0]}${lastName[0]}` : displayName[0];
+		const firstLetter = x => (x || '')[0];
+		const {displayName, firstName, lastName} = this;
+
+		const names = (firstName && lastName) ? [firstName, lastName] : [displayName];
+		return names.map(firstLetter).join('').trim();
 	}
 
 
