@@ -2,15 +2,16 @@
 import EventEmitter from 'events';
 
 import Logger from '@nti/util-logger';
-import {chain, FileType, URL} from '@nti/lib-commons';
+import { chain, FileType, URL } from '@nti/lib-commons';
 
 import DataCache from '../utils/datacache';
 import parseBody from '../utils/attempt-json-parse';
 import getContentType from '../utils/get-content-type-header';
-import getLink, {getLinks} from '../utils/getlink';
+import getLink, { getLinks } from '../utils/getlink';
 import encodeFormData from '../utils/encode-form-data';
 import toObject from '../utils/to-object';
-import {attach as attachPendingQueue} from '../mixins/Pendability';
+import { getTimezone } from '../utils/timezone';
+import { attach as attachPendingQueue } from '../mixins/Pendability';
 import Service from '../stores/Service';
 import {
 	SiteName,
@@ -61,8 +62,10 @@ export default class DataServerInterface extends EventEmitter {
 				headers['X-NTI-Client-Version'] = BUILD_PACKAGE_VERSION;
 			}
 
-			headers['X-NTI-Client-TZOffset'] = (new Date()).getTimezoneOffset();
-			headers['X-NTI-Client-Timezone'] = Intl.DateTimeFormat().resolvedOptions().timeZone;
+			const {offset, name} = getTimezone();
+			headers['X-NTI-Client-TZOffset'] = offset;
+			headers['X-NTI-Client-Timezone'] = name;
+
 		} catch (e) {
 			logger.warn('Could not set all custom headers: %s', e.stack || e.message || e);
 		}
