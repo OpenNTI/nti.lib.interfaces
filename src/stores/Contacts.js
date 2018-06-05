@@ -144,27 +144,25 @@ class Contacts extends EventEmitter {
 
 
 	[Symbol.iterator] () {
-		let snapshot = {};
+		const name = x => (x && x.displayName) || '';
+		const users = {};
 
 		//We can optimize this down to the dedicated hidden List if we think we can ensure all connections get into it.
 		for (let list of this[DATA]) {
 			for (let user of list) {
-				snapshot[user.getID()] = user;
+				users[user.getID()] = user;
 			}
 		}
 
-		snapshot = Object.values(snapshot);
-
-		snapshot = snapshot.sort((a, b) => ((a && a.displayName) || '').localeCompare((b && b.displayName) || ''));
-
-		let {length} = snapshot;
+		const snapshot = Object.values(users).sort((a, b) => name(a).localeCompare(name(b)));
+		const {length} = snapshot;
 		let index = 0;
 
 		return {
 
 			next () {
-				let done = index >= length;
-				let value = snapshot[index++];
+				const done = index >= length;
+				const value = snapshot[index++];
 
 				return { value, done };
 			}
@@ -175,7 +173,7 @@ class Contacts extends EventEmitter {
 
 	createList (name, friends) {
 		// unwrap full user entities to IDs.
-		let userIds = (friends || []).map( (friend) => friend.getID ? friend.getID() : friend );
+		const userIds = (friends || []).map( (friend) => friend.getID ? friend.getID() : friend );
 		return this[CREATE](getNewListData(name, false, MIME_TYPE, this.context, userIds));
 	}
 
@@ -193,14 +191,14 @@ class Contacts extends EventEmitter {
 
 
 	onChange (who, what) {
-		let data = this[DATA];
+		const data = this[DATA];
 		if (what === DELETED) {
-			let index = data.findIndex(x => x.getID() === who.getID());
+			const index = data.findIndex(x => x.getID() === who.getID());
 			if (index < 0) {
 				return;
 			}
 
-			let item = data.splice(index, 1)[0];//remove it;
+			const item = data.splice(index, 1)[0];//remove it;
 
 			item.removeListener('change', this.onChange);
 			logger.debug('Removed deleted list: %o', item);
@@ -232,8 +230,8 @@ class Contacts extends EventEmitter {
 	addContact (entity, toLists = []) {
 		const getList = x => typeof x === 'object' ? x : this[DATA].find(l => l.getID() === x);
 
-		let pending = [];
-		let lists = [...toLists, this.RESERVED_GROUP_ID];
+		const pending = [];
+		const lists = [...toLists, this.RESERVED_GROUP_ID];
 
 		for (let list of lists) {
 			list = getList(list);
@@ -252,9 +250,9 @@ class Contacts extends EventEmitter {
 
 
 	removeContact (entity) {
-		let pending = [];
-		let lists = [];
-		let undo = () => this.addContact(entity, lists);
+		const pending = [];
+		const lists = [];
+		const undo = () => this.addContact(entity, lists);
 
 		for(let list of this[DATA]) {
 			if (list.isGroup) { continue; }
@@ -271,17 +269,17 @@ class Contacts extends EventEmitter {
 
 
 	entityMatchesQuery (entity, query) {
-		let {displayName, realname} = entity;
+		const {displayName, realname} = entity;
 		query = query && new RegExp(query, 'i');
 		return !query || query.test(displayName) || query.test(realname);
 	}
 
 
 	search (query, allowAnyEntityType = false, allowContacts = false) {
-		let service = this[Service];
-		let {context: appUser} = this;
-		let parseList = parseListFn(this, service);
-		let fetch = service.getUserSearchURL(query);
+		const service = this[Service];
+		const {context: appUser} = this;
+		const parseList = parseListFn(this, service);
+		const fetch = service.getUserSearchURL(query);
 
 		const NO_QUERY = Symbol();
 		const ABORTED = Symbol();
@@ -292,7 +290,7 @@ class Contacts extends EventEmitter {
 
 		const clean = () => {
 			clearTimeout(this[SEARCH_THROTTLE]);
-			let prev = this[ACTIVE_SEARCH_REQUEST];
+			const prev = this[ACTIVE_SEARCH_REQUEST];
 			delete this[ACTIVE_SEARCH_REQUEST];
 			if (prev && prev.abort) {
 				prev.abort();
@@ -308,14 +306,14 @@ class Contacts extends EventEmitter {
 				return fail(NO_QUERY);
 			}
 
-			let abort = setTimeout(()=>fail(ABORTED), 1000);
+			const abort = setTimeout(()=>fail(ABORTED), 1000);
 
 			this[SEARCH_THROTTLE] = setTimeout(() => {
 				clearTimeout(abort);
 
 				clean();
 
-				let req = this[ACTIVE_SEARCH_REQUEST] = service.get(fetch);
+				const req = this[ACTIVE_SEARCH_REQUEST] = service.get(fetch);
 
 				req.then(data => data.Items)
 					.then(parseList)
