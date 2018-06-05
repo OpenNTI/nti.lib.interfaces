@@ -177,6 +177,7 @@ export default class DataServerInterface extends EventEmitter {
 		let abortMethod; //defined inside the promise
 		const result = new Promise((fulfillRequest, rejectRequest) => {
 			let abortFlag = false;
+			abortMethod = ()=> { abortFlag = true; rejectRequest('aborted'); };
 
 			logger.debug('REQUEST %d (send) -> %s %s', id, init.method, url);
 			// logger.debug('REQUEST %d HEADERS: %s %s:\n%o', id, init.method, url, init.headers);
@@ -311,8 +312,6 @@ export default class DataServerInterface extends EventEmitter {
 
 				//finally, finish
 				.then(maybeFulfill, maybeReject);
-
-			abortMethod = ()=> { abortFlag = true; rejectRequest('aborted'); };
 		});
 
 		result.abort = abortMethod || (()=> logger.warn('REQUEST %d: Attempting to abort request, but missing abort() method.', id));
