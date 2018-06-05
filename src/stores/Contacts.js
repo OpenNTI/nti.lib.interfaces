@@ -306,7 +306,8 @@ class Contacts extends EventEmitter {
 				return fail(NO_QUERY);
 			}
 
-			const abort = setTimeout(()=>fail(ABORTED), 1000);
+			// FIXME: we should add/use global timeouts
+			const abort = setTimeout(()=>fail(ABORTED), 30000);
 
 			this[SEARCH_THROTTLE] = setTimeout(() => {
 				clearTimeout(abort);
