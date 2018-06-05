@@ -19,7 +19,6 @@ const CREATE = Symbol();
 
 const ACTIVE_SEARCH_REQUEST = Symbol();
 const ENSURE_CONTACT_GROUP = Symbol();
-const SEARCH_THROTTLE = Symbol();
 
 const CONTACTS_LIST_ID = e => `mycontacts-${e.getID()}`;
 
@@ -275,61 +274,48 @@ class Contacts extends EventEmitter {
 	}
 
 
-	search (query, allowAnyEntityType = false, allowContacts = false) {
+	async search (query, allowAnyEntityType = false, allowContacts = false) {
 		const service = this[Service];
 		const {context: appUser} = this;
 		const parseList = parseListFn(this, service);
 		const fetch = service.getUserSearchURL(query);
 
-		const NO_QUERY = Symbol();
-		const ABORTED = Symbol();
+		if (!fetch) {
+			throw new Error('No Query');
+		}
 
 		const isUser = x => x.isUser;
 		const notInContacts = user => !this.contains(user) && user.getID() !== appUser.getID();
 		const byDisplayName = (a, b) => a.displayName.localeCompare(b.displayName);
-
-		const clean = () => {
-			clearTimeout(this[SEARCH_THROTTLE]);
-			const prev = this[ACTIVE_SEARCH_REQUEST];
-			delete this[ACTIVE_SEARCH_REQUEST];
-			if (prev && prev.abort) {
-				prev.abort();
-			}
-		};
-
 		const resultFilter = x => (allowAnyEntityType || isUser(x)) && (allowContacts || notInContacts(x));
+		const token = this.activeSearch = {query};
 
-		clean();
+		const prevReq = this[ACTIVE_SEARCH_REQUEST];
+		if (prevReq && prevReq.abort) {
+			prevReq.abort();
+		}
 
-		return new Promise((done, fail) => {
-			if (!fetch) {
-				return fail(NO_QUERY);
+		const req = this[ACTIVE_SEARCH_REQUEST] = service.get(fetch);
+
+		try {
+			const data = await req;
+
+			if (token !== this.activeSearch) {
+				return Promise.reject('aborted');
 			}
 
-			// FIXME: we should add/use global timeouts
-			const abort = setTimeout(()=>fail(ABORTED), 30000);
+			const list = await parseList(data.Items);
 
-			this[SEARCH_THROTTLE] = setTimeout(() => {
-				clearTimeout(abort);
+			if (token !== this.activeSearch) {
+				return Promise.reject('aborted');
+			}
 
-				clean();
-
-				const req = this[ACTIVE_SEARCH_REQUEST] = service.get(fetch);
-
-				req.then(data => data.Items)
-					.then(parseList)
-					.then(list => list.filter(resultFilter).sort(byDisplayName))
-					.then(done, fail)
-					.then(clean, clean);
-
-			}, 500);
-		})
-			.catch(err=> {
-				if (err === ABORTED || err === NO_QUERY || err.statusCode === 0) {
-					err = {statusCode: -1, message: 'Aborted'};
-				}
-
-				return Promise.reject(err);
-			});
+			return list.filter(resultFilter).sort(byDisplayName);
+		}
+		finally {
+			if (token === this.activeSearch) {
+				delete this[ACTIVE_SEARCH_REQUEST];
+			}
+		}
 	}
 }
