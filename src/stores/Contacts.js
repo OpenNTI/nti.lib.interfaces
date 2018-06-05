@@ -113,7 +113,7 @@ class Contacts extends EventEmitter {
 	[ENSURE_CONTACT_GROUP] () {
 		const {RESERVED_GROUP_ID} = this;
 
-		if(!this[DATA].find(x=> x.getID() === RESERVED_GROUP_ID)) {
+		if(!this.getContactsList()) {
 
 			const ContactsGroup = getNewListData(['My Contacts', RESERVED_GROUP_ID], false, MIME_TYPE, this.context);
 
@@ -180,17 +180,9 @@ class Contacts extends EventEmitter {
 	}
 
 
-
 	getContactsList () {
 		const {RESERVED_GROUP_ID} = this;
-
-		for (let list of this[DATA]) {
-			if (list.getID() === RESERVED_GROUP_ID) {
-				return list;
-			}
-		}
-
-		return null;
+		return this[DATA].find(x => x.getID() === RESERVED_GROUP_ID);
 	}
 
 
