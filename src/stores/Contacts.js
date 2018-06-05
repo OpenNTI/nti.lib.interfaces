@@ -274,7 +274,7 @@ class Contacts extends EventEmitter {
 	}
 
 
-	async search (query, allowAnyEntityType = false, allowContacts = false) {
+	async search (query, { allowAnyEntityType = false, allowContacts = true } = {}) {
 		const service = this[Service];
 		const {context: appUser} = this;
 		const parseList = parseListFn(this, service);
