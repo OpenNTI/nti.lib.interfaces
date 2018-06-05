@@ -181,6 +181,19 @@ class Contacts extends EventEmitter {
 
 
 
+	getContactsList () {
+		const {RESERVED_GROUP_ID} = this;
+
+		for (let list of this[DATA]) {
+			if (list.getID() === RESERVED_GROUP_ID) {
+				return list;
+			}
+		}
+
+		return null;
+	}
+
+
 	getLists () {
 		const {RESERVED_GROUP_ID} = this;
 		return this[DATA].filter(x => x.getID() !== RESERVED_GROUP_ID);
@@ -240,7 +253,9 @@ class Contacts extends EventEmitter {
 			pending.push(list);
 		}
 
-		return Promise.all(pending.map(list => list.add(entity)));
+		return Promise.all(
+			pending.map(list => list.add(entity))
+		);
 	}
 
 
@@ -259,7 +274,7 @@ class Contacts extends EventEmitter {
 		}
 
 		return Promise.all(pending)
-			.then(() => ({undo}));
+			.then(() => ({lists, undo}));
 	}
 
 
