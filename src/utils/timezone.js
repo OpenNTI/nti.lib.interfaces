@@ -4,7 +4,7 @@ const logger = Logger.get('interfaces:utils:timezone');
 const {document} = global;
 
 export function setTimezoneCookie (data, name = 'timezone') {
-	document.cookie = `${name}=${encodeURIComponent(JSON.strings(data))}; path=/`;
+	document.cookie = `${name}=${encodeURIComponent(JSON.stringify(data))}; path=/`;
 }
 
 export function getTimezoneFromCookie (name = 'timezone') {
