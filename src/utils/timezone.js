@@ -1,16 +1,25 @@
 import Logger from '@nti/util-logger';
 
 const logger = Logger.get('interfaces:utils:timezone');
-const {document} = global;
 
 export function setTimezoneCookie (data, name = 'timezone') {
-	document.cookie = `${name}=${encodeURIComponent(JSON.stringify(data))}; path=/`;
+	try {
+		const {document} = global;
+		document.cookie = `${name}=${encodeURIComponent(JSON.stringify(data))}; path=/`;
+	} catch (e) {
+		//
+	}
 }
 
 export function getTimezoneFromCookie (name = 'timezone') {
-	const cookie = document.cookie.split(/;\s*/).find(item => item.startsWith(name + '='));
-	const [,value] = cookie ? cookie.split('=') : [];
-	return value && JSON.parse(value);
+	try {
+		const {document} = global;
+		const cookie = document.cookie.split(/;\s*/).find(item => item.startsWith(name + '='));
+		const [,value] = cookie ? cookie.split('=') : [];
+		return value && JSON.parse(decodeURIComponent(value));
+	} catch (e) {
+		return null;
+	}
 }
 
 
