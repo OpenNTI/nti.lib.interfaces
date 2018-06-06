@@ -274,7 +274,13 @@ class Contacts extends EventEmitter {
 	}
 
 
-	async search (query, { allowAnyEntityType = false, allowContacts = true } = {}) {
+	async search (query, options) {
+		const {
+			allowAnyEntityType = false,
+			allowAppUser = false,
+			allowContacts = true
+		} = options || {};
+
 		const service = this[Service];
 		const {context: appUser} = this;
 		const parseList = parseListFn(this, service);
@@ -287,7 +293,11 @@ class Contacts extends EventEmitter {
 		const isUser = x => x.isUser;
 		const notInContacts = user => !this.contains(user) && user.getID() !== appUser.getID();
 		const byDisplayName = (a, b) => a.displayName.localeCompare(b.displayName);
-		const resultFilter = x => (allowAnyEntityType || isUser(x)) && (allowContacts || notInContacts(x));
+		const resultFilter = x => (
+			(allowAnyEntityType || isUser(x))
+			&& (allowAppUser || !x.isAppUser)
+			&& (allowContacts || notInContacts(x))
+		);
 		const token = this.activeSearch = {query};
 
 		const prevReq = this[ACTIVE_SEARCH_REQUEST];
