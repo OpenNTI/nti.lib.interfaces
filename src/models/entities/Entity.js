@@ -19,6 +19,8 @@ export default class Entity extends Base {
 		'Username':         { type: 'string' },
 	}
 
+	static trackInstances = true
+
 	static FANCY_COMPARATOR (a, b) {
 		//wrapper around localeCompare, but, you cannot call localeCompare on falsy values, so check those first.
 		const cmp = (A, B) => !A
@@ -88,5 +90,3 @@ export default class Entity extends Base {
 		);
 	}
 }
-
-Entity.trackInstances = true;
