@@ -29,6 +29,7 @@ class Topic extends Base {
 		'title':                       { type: 'string' },
 		'headline':                    { type: 'model'  },
 		'LikeCount':                   { type: 'number' },
+		'Reports':                     { type: 'model[]'}
 	}
 
 
