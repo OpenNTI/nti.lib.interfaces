@@ -12,7 +12,7 @@ export default class ForumContentsDataSource extends PagedDataSource {
 			batchSize
 		};
 
-		const contents = await forum.getContents(requestParams);
+		const contents = await forum.getContents(requestParams, false);
 
 		return new PagedBatch(this.service, this.parent, {
 			PageSize: requestParams.batchSize,

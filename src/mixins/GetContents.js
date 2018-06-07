@@ -4,7 +4,7 @@ import {Service, Parser as parse} from '../constants';
 
 
 export default {
-	getContents (params) {
+	getContents (params, parseItems = true) {
 		let link = this.getLink('contents');
 		if (!link) {
 			return Promise.reject('No Link!?');
@@ -15,7 +15,7 @@ export default {
 		}
 
 		return this[Service].get(link)
-			.then(raw =>
+			.then(raw => !parseItems ? raw :
 				Object.assign({},//assume `raw` is immutable
 					raw,
 					{
