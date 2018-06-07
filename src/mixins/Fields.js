@@ -370,7 +370,7 @@ function applyFieldStrategy (scope, name, type, value, declared, defaultValue, k
 function getFields (obj, data) {
 	const Type = getType(obj);
 	const {Fields} = Type;
-	const FieldKeys = Object.keys(Fields);
+	const FieldKeys = Object.keys(Fields).filter(k => Fields[k]);
 	const FieldRenames = FieldKeys.map(x => Fields[x].name).filter(Boolean);
 	const DataFields = Object.keys(data).filter(x => !FieldRenames.includes(x));
 	const AllFields = Array.from(new Set([...DataFields, ...FieldKeys]));
