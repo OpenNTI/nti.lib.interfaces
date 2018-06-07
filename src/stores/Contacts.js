@@ -2,7 +2,8 @@ import url from 'url';
 import EventEmitter from 'events';
 
 import Logger from '@nti/util-logger';
-import {mixin} from '@nti/lib-decorators';
+import { Promises } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 import uuid from 'uuid';
 
 import {Service, DELETED} from '../constants';
@@ -305,7 +306,7 @@ class Contacts extends EventEmitter {
 			prevReq.abort();
 		}
 
-		const req = this[ACTIVE_SEARCH_REQUEST] = service.get(fetch);
+		const req = this[ACTIVE_SEARCH_REQUEST] = Promises.buffer(300, () => service.get(fetch));
 
 		try {
 			const data = await req;
