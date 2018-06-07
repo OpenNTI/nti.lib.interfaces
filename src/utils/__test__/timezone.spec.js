@@ -21,7 +21,8 @@ describe('TimeZone setup tools', () => {
 		const data = getTimezoneFromEnvironment();
 		expect(logger.warn).not.toHaveBeenCalled();
 		expect(data).toEqual({
-			offset: (new Date()).getTimezoneOffset(),
+			// See comment in ../timzeon.js:28
+			offset: -(new Date()).getTimezoneOffset(),
 			name: Intl.DateTimeFormat().resolvedOptions().timeZone
 		});
 	});
@@ -31,7 +32,8 @@ describe('TimeZone setup tools', () => {
 		const data = getTimezoneFromEnvironment();
 		expect(logger.warn).toHaveBeenCalled();
 		expect(data).toEqual({
-			offset: (new Date()).getTimezoneOffset()
+			// See comment in ../timzeon.js:28
+			offset: -(new Date()).getTimezoneOffset(),
 		});
 	});
 
@@ -44,7 +46,8 @@ describe('TimeZone setup tools', () => {
 		const data = getTimezoneFromEnvironment();
 		expect(logger.warn).not.toHaveBeenCalled();
 		expect(data).toEqual({
-			offset: (new Date()).getTimezoneOffset()
+			// See comment in ../timzeon.js:28
+			offset: -(new Date()).getTimezoneOffset(),
 		});
 	});
 
@@ -74,7 +77,8 @@ describe('TimeZone setup tools', () => {
 	test ('getTimezone()', () => {
 		global.document = {};
 		const o = {
-			offset: (new Date()).getTimezoneOffset(),
+			// See comment in ../timzeon.js:28
+			offset: -(new Date()).getTimezoneOffset(),
 			name: Intl.DateTimeFormat().resolvedOptions().timeZone
 		};
 		expect(getTimezone()).toEqual(o);

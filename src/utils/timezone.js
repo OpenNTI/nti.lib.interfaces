@@ -25,7 +25,10 @@ export function getTimezoneFromCookie (name = 'timezone') {
 
 export function getTimezoneFromEnvironment () {
 	const data = {
-		offset: (new Date()).getTimezoneOffset()
+		// The inversion is not intuitive... but we're trying to make this line up with a timezone offset.
+		// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/getTimezoneOffset
+		// Return Value: A number representing the time-zone offset, in minutes, from the date based on CURRENT HOST system settings to UTC.
+		offset: -(new Date()).getTimezoneOffset()
 	};
 
 	try {
