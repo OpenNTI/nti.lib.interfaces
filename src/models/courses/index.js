@@ -21,6 +21,8 @@ export AdministrativeRole from './AdministrativeRole';
 export Enrollment from './Enrollment';
 export EnrollmentOptions from './EnrollmentOptions';
 export EnrollmentOption from './EnrollmentOption';
+export EnrollmentOptionContainer from './EnrollmentOptionContainer';
+export EnrollmentOptionExternal from './EnrollmentOptionExternal';
 export EnrollmentOptionOZone from './EnrollmentOptionOZone';
 export EnrollmentOption5Minute from './EnrollmentOption5Minute';
 export EnrollmentOptionPurchase from './EnrollmentOptionPurchase';
