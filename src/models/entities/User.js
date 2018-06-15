@@ -14,6 +14,7 @@ function cleanData (data) {
 	delete data.following;
 	delete data.ignoring;
 	delete data.AvatarURLChoices;
+	delete data.Communities; //copy of DynamicMemberships & deprecated
 
 	let toID = o => /user/i.test(o.MimeType) ? o.Username : o.NTIID;
 
@@ -34,7 +35,6 @@ class User extends Entity {
 		...Entity.Fields,
 		//Do not define "cleaned" fields (see cleanData)
 		'Connections':        { type: '*'         },
-		'Communities':        { type: 'model[]'   },
 		'DynamicMemberships': { type: 'model[]'   },
 		'MostRecentSession':  { type: 'model'     },
 		'Reports':            { type: 'model[]'   },
@@ -74,6 +74,11 @@ class User extends Entity {
 	applyRefreshedData (o) {
 		cleanData(o);
 		return super.applyRefreshedData(o);
+	}
+
+	get Communities () {
+		console.trace('Who calls this? Stop it. :}');//eslint-disable-line
+		return this.DynamicMemberships;
 	}
 
 
@@ -226,7 +231,8 @@ class User extends Entity {
 	 * @return {array} List of Communities
 	 */
 	getCommunities (excludeGroups) {
-		let list = this.Communities;
+		console.trace('Who calls this? Stop it. :}');//eslint-disable-line
+		let list = this.DynamicMemberships;
 		return excludeGroups ? list.filter(ONLY_COMMUNITIES) : list;
 	}
 }
