@@ -5,7 +5,10 @@ import EnrollmentOption from './EnrollmentOption';
 export default
 @model
 class EnrollmentOptionExternal extends EnrollmentOption {
-	static MimeType = COMMON_PREFIX + 'courseware.externalenrollmentoption'
+	static MimeType = [
+		COMMON_PREFIX + 'courseware.externalenrollmentoption',
+		COMMON_PREFIX + 'courseware.ensyncimisexternalenrollmentoption'
+	];
 
 	static Fields = {
 		...EnrollmentOption.Fields,
