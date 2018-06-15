@@ -75,7 +75,7 @@ export default function FieldsApplyer (target) {
 
 			for (let key of AllFields) {
 				//get the name, type, and defaultValue of the field...
-				const {name = key, type, required, defaultValue} = Fields[key] || {};
+				const {name = key, type, required, defaultValue} = Fields[key] || {}; //TODO: Add deprecated flag, and a forced value override.
 
 				const value = data[key];
 				const declared = key in Fields;
