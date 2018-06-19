@@ -9,6 +9,7 @@ import {parse} from '../models/Parser';
 import Capabilities from '../models/Capabilities';
 import AbstractPlaceholder from '../models/AbstractPlaceholder';
 import Batch from '../data-sources/data-types/Batch';
+import hasLinks from '../mixins/HasLinks';
 import {Mixin as Pendability, attach as attachPendingQueue} from '../mixins/Pendability';
 import {Mixin as InstanceCacheContainer} from '../mixins/InstanceCacheContainer';
 import DataCache from '../utils/datacache';
@@ -20,7 +21,6 @@ import {
 	REL_USER_UNIFIED_SEARCH,
 	REL_USER_RESOLVE,
 	REL_BULK_USER_RESOLVE,
-	NO_LINK,
 	Context,
 	Server,
 	Service,
@@ -615,23 +615,16 @@ class ServiceDocument extends EventEmitter {
 	getWorkspace (name) {
 		for(let workspace of this.Items) {
 			if (workspace.Title === name) {
-				if (!workspace.getLink) {
-					Object.defineProperty(workspace, 'getLink', {
-						value: (rel) => getLink(workspace, rel),
-						enumerable: false
-					});
-				}
 				if (!workspace.fetchLink) {
-					Object.defineProperty(workspace, 'fetchLink', {
-						value: (rel) => {
-							const link = getLink(workspace, rel);
-							if (!link) {
-								return Promise.reject(NO_LINK);
-							}
-							return this.get(link);
-						},
-						enumerable: false
-					});
+					for (let key of Object.keys(hasLinks)) {
+						Object.defineProperty(workspace, key, {
+							value: hasLinks[key],
+							enumerable: false
+						});
+					}
+				}
+				if (!workspace[Service]) {
+					Object.defineProperty(workspace, Service, {value: this, enumerable: false});
 				}
 				return workspace;
 			}
