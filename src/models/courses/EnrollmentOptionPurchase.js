@@ -40,8 +40,16 @@ class EnrollmentOptionStore extends EnrollmentOption {
 
 
 	getPurchasableForGifting () {
-		let p = this.getPurchasable(this[Purchasables].DefaultGiftingNTIID);
+		let p = this.getPurchasable();
 		if(p && p.giftable) {
+			return p;
+		}
+		return null;
+	}
+
+	getPurchasableForRedeeming () {
+		let p = this.getPurchasable();
+		if(p && p.redeemable) {
 			return p;
 		}
 		return null;
