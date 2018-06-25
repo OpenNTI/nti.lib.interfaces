@@ -172,8 +172,8 @@ export default class MediaIndex {
 
 	combine (that) {
 		let order = this[Order].concat(that[Order]);
-		let data = Object.assign({}, this[Data], that[Data]);
-		let containers = Object.assign({}, this[Containers], that[Containers]);
+		let data = {...this[Data], ...that[Data]};
+		let containers = {...this[Containers], ...that[Containers]};
 
 		return new MediaIndex(this[Service], this[Parent], data, order, containers);
 	}

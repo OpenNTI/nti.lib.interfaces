@@ -15,13 +15,9 @@ export default {
 		}
 
 		return this[Service].get(link)
-			.then(raw => !parseItems ? raw :
-				Object.assign({},//assume `raw` is immutable
-					raw,
-					{
-						Items: this[parse](raw.Items)
-					}
-				)
-			);
+			.then(raw => !parseItems ? raw : ({
+				...raw,
+				Items: this[parse](raw.Items)
+			}));
 	}
 };

@@ -23,7 +23,7 @@ class AggregatedOrderingPart extends Base {
 
 		for (let [labelIndex, label] of Object.entries(part.labels)) {
 
-			let mapping = Object.assign({}, results[labelIndex] || {});
+			let mapping = {...results[labelIndex] || {}};
 
 			for (let valueIndex of Object.keys(mapping)) {
 				let value = part.values[valueIndex];
@@ -47,13 +47,13 @@ class AggregatedOrderingPart extends Base {
 
 		// console.groupEnd('Ordering');
 		return mapped.map(item => {
-			const remap = Object.assign({series: []}, item);
+			const remap = {series: [], ...item};
 			const {matchedToValues: map} = item;
 
 			const entries = Object.entries(map).sort(byValuesOrder);
 
 			for (let [label, value] of entries) {
-				remap.series.push(Object.assign({label}, value));
+				remap.series.push({label, ...value});
 			}
 
 			return remap;

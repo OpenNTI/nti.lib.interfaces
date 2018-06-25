@@ -265,7 +265,7 @@ class Collection extends Base {
 			visibleAssignments: {items: assignments}
 		} = getPrivate(this);
 
-		let ungrouped = Object.assign({}, assignments);
+		let ungrouped = {...assignments};
 
 		let groups = {};
 

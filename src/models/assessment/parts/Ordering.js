@@ -15,6 +15,6 @@ class Ordering extends Part {
 	isAnswered () { return true; }
 
 	getInitialValue () {
-		return Object.assign({}, (this.labels || []).map((_, i) => i));
+		return {...(this.labels || []).map((_, i) => i)};
 	}
 }

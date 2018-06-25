@@ -17,7 +17,7 @@ class AggregatedMatchingPart extends Base {
 
 			let series = results
 				.filter(x => value in x.matchedToValues)
-				.map(x => Object.assign({ label: x.label, labelIndex: x.labelIndex }, x.matchedToValues[value]));
+				.map(x => ({label: x.label, labelIndex: x.labelIndex, ...x.matchedToValues[value]}));
 
 
 			pivotData.push({
