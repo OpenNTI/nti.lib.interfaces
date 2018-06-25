@@ -64,7 +64,7 @@ class OutlineNode extends Outline {
 	}
 
 
-	get isOpen () {}
+	get isOpen () { return null; }
 
 
 	get isLeaf () {
@@ -72,10 +72,10 @@ class OutlineNode extends Outline {
 	}
 
 
-	get isHeading () {}
+	get isHeading () { return null; }
 
 
-	get isSection () {}
+	get isSection () { return null; }
 
 
 	get isStaticOverContents () {

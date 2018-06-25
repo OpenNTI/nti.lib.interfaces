@@ -97,6 +97,8 @@ export default class OrderedContents {
 				return field;
 			}
 		}
+
+		return null;
 	}
 
 
