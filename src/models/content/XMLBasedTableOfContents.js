@@ -124,13 +124,14 @@ export default class XMLBasedTableOfContents extends Base {
 
 	flatten () { return this.root.flatten(); }
 
-	getRealPage (page) {
-		if (!page || !this.realPageIndex) { return null; }
+	getRealPage (pageNumber) {
+		if (!pageNumber || !this.realPageIndex) { return null; }
 
-		const NTIID = (this.realPageIndex['real-pages'] || {})[page];
+		const page = (this.realPageIndex['real-pages'] || {})[pageNumber];
+		const NTIID = page && page.NTIID;
 		const node = NTIID && this.getXMLNode(NTIID);
 
-		return node ? {page: page, node} : null;
+		return node ? {page: pageNumber, node} : null;
 	}
 
 	/**
