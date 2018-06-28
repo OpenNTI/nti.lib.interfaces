@@ -135,8 +135,8 @@ class Instance extends Base {
 
 
 	getPresentationProperties () {
-		let cce = this.PreferredAccess.getPresentationProperties(),
-			bundle = this.ContentPackageBundle;
+		let cce = (this.PreferredAccess && this.PreferredAccess.getPresentationProperties()) || {};
+		let bundle = this.ContentPackageBundle;
 
 		return {
 			author: cce.author || (bundle && bundle.author),
