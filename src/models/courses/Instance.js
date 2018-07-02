@@ -361,6 +361,16 @@ class Instance extends Base {
 						parent.NTIID = parentId;
 					}
 
+					if(!section.Items || section.Items.length === 0) {
+						return {
+							Other: {
+								Section: {
+									id: this.Discussions.id
+								}
+							}
+						};
+					}
+
 					return binDiscussions(section, parent);
 				});
 		});
