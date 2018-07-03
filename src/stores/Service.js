@@ -93,10 +93,21 @@ class ServiceDocument extends EventEmitter {
 
 	assignData (json, {silent = false} = {}) {
 		const {[Context]: context, [Server]: server} = this;
-		const {CapabilityList: caps = [], ...data} = json;
+		const {
+			CapabilityList: caps = [],
+			// Items,
+			...data
+		} = json;
 		Object.assign(this, data, {appUsername: null});
 
 		this.capabilities = new Capabilities(this, caps);
+
+		// if (Items !== this.Items) {
+		// 	this.Items = parse(this, this, Items);
+		// 	this.addToPending(
+		// 		Promise.all(this.Items.map(m => (m && m.waitForPending) ? m.waitForPending() : m))
+		// 	);
+		// }
 
 		if (!this.getAppUsername()) {
 			delete this[AppUser];
@@ -611,22 +622,31 @@ class ServiceDocument extends EventEmitter {
 		}
 	}
 
+	// temporary until we have a better solution for getting hasLinks on workspaces and collections
+	withHasLinks (source) {
+		try {
+			if (!source.fetchLink) {
+				for (let key of Object.keys(hasLinks)) {
+					Object.defineProperty(source, key, {
+						value: hasLinks[key],
+						enumerable: false
+					});
+				}
+			}
+			if (!source[Service]) {
+				Object.defineProperty(source, Service, {value: this, enumerable: false});
+			}
+		}
+		catch (e) {
+			throw e;
+		}
+		return source;
+	}
 
 	getWorkspace (name) {
 		for(let workspace of this.Items) {
 			if (workspace.Title === name) {
-				if (!workspace.fetchLink) {
-					for (let key of Object.keys(hasLinks)) {
-						Object.defineProperty(workspace, key, {
-							value: hasLinks[key],
-							enumerable: false
-						});
-					}
-				}
-				if (!workspace[Service]) {
-					Object.defineProperty(workspace, Service, {value: this, enumerable: false});
-				}
-				return workspace;
+				return this.withHasLinks(workspace);
 			}
 		}
 	}
@@ -640,7 +660,7 @@ class ServiceDocument extends EventEmitter {
 
 		for (let o of items) {
 			if (o.Title === title) {
-				return o;
+				return this.withHasLinks(o);
 			}
 		}
 	}
