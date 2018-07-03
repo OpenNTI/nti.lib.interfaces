@@ -18,6 +18,8 @@ export * as store from './store';
 export Base from './Base';
 export AnalyticsSession from './AnalyticsSession';
 export Change from './Change';
+export Workspace from './Workspace';
+export WorkspaceCollection from './WorkspaceCollection';
 
 Registry.ignore('link');
 

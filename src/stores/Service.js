@@ -9,7 +9,6 @@ import {parse} from '../models/Parser';
 import Capabilities from '../models/Capabilities';
 import AbstractPlaceholder from '../models/AbstractPlaceholder';
 import Batch from '../data-sources/data-types/Batch';
-import hasLinks from '../mixins/HasLinks';
 import {Mixin as Pendability, attach as attachPendingQueue} from '../mixins/Pendability';
 import {Mixin as InstanceCacheContainer} from '../mixins/InstanceCacheContainer';
 import DataCache from '../utils/datacache';
@@ -95,19 +94,26 @@ class ServiceDocument extends EventEmitter {
 		const {[Context]: context, [Server]: server} = this;
 		const {
 			CapabilityList: caps = [],
-			// Items,
+			Items: items,
 			...data
 		} = json;
 		Object.assign(this, data, {appUsername: null});
 
 		this.capabilities = new Capabilities(this, caps);
 
-		// if (Items !== this.Items) {
-		// 	this.Items = parse(this, this, Items);
-		// 	this.addToPending(
-		// 		Promise.all(this.Items.map(m => (m && m.waitForPending) ? m.waitForPending() : m))
-		// 	);
-		// }
+		if (this.Items !== items) {
+			const parsed = items && parse(items);
+
+			if (parsed) {
+				this.addToPending(
+					parsed
+						.filter(o => o && o.waitForPending)
+						.map(o => o.waitForPending())
+				);
+			}
+
+			this.Items = parsed;
+		}
 
 		if (!this.getAppUsername()) {
 			delete this[AppUser];
@@ -615,11 +621,7 @@ class ServiceDocument extends EventEmitter {
 
 
 	getUserWorkspace () {
-		for (let workspace of this.Items) {
-			if (getLink(workspace, 'ResolveSelf')) {
-				return workspace;
-			}
-		}
+		this.Items.find(x => x.hasLink('ResolveSelf'));
 	}
 
 	// temporary until we have a better solution for getting hasLinks on workspaces and collections
@@ -644,25 +646,18 @@ class ServiceDocument extends EventEmitter {
 	}
 
 	getWorkspace (name) {
-		for(let workspace of this.Items) {
-			if (workspace.Title === name) {
-				return this.withHasLinks(workspace);
-			}
-		}
+		return this.Items.find(x => x.Title === name);
 	}
 
 
 	getCollection (title, workspaceName) {
-		let workspace = workspaceName ?
-				this.getWorkspace(workspaceName) :
-				this.getUserWorkspace(),
-			items = (workspace && workspace.Items) || [];
+		const workspace = workspaceName
+			? this.getWorkspace(workspaceName)
+			: this.getUserWorkspace();
 
-		for (let o of items) {
-			if (o.Title === title) {
-				return this.withHasLinks(o);
-			}
-		}
+		const items = (workspace && workspace.Items) || [];
+
+		return items.find(o => o.Title === title);
 	}
 
 
