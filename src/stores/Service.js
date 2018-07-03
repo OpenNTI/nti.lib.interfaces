@@ -624,26 +624,6 @@ class ServiceDocument extends EventEmitter {
 		this.Items.find(x => x.hasLink('ResolveSelf'));
 	}
 
-	// temporary until we have a better solution for getting hasLinks on workspaces and collections
-	withHasLinks (source) {
-		try {
-			if (!source.fetchLink) {
-				for (let key of Object.keys(hasLinks)) {
-					Object.defineProperty(source, key, {
-						value: hasLinks[key],
-						enumerable: false
-					});
-				}
-			}
-			if (!source[Service]) {
-				Object.defineProperty(source, Service, {value: this, enumerable: false});
-			}
-		}
-		catch (e) {
-			throw e;
-		}
-		return source;
-	}
 
 	getWorkspace (name) {
 		return this.Items.find(x => x.Title === name);
