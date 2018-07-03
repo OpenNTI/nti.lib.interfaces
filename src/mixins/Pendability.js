@@ -44,6 +44,9 @@ export const Mixin = {
 				p.catch(noop)//prevent failures from interupting our cleanup
 					.then(remove(p));
 			}
+			else if (Array.isArray(p)) {
+				this.addToPending(...p);
+			}
 			else {
 				console.warn('Unexpected object in the pending queue: ', p); //eslint-disable-line no-console
 			}
