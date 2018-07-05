@@ -675,15 +675,10 @@ class ServiceDocument extends EventEmitter {
 
 		for (let workspace of items) {
 			for(let collection of (workspace.Items || [])) {
-
-				//TODO: make the Collection an official model and turn accepts into a method that returns boolean.
-				//if (collection.accepts(mimeType)) {
-				if (collection && collection.accepts.indexOf(mimeType) > -1) {
-
+				if (collection.acceptsType(mimeType)) {
 					if (!title || collection.Title === title) {
 						return collection;
 					}
-
 				}
 			}
 		}

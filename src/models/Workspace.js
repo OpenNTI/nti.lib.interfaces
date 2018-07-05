@@ -8,7 +8,6 @@ class Workspace extends Base {
 	static MimeType = COMMON_PREFIX + 'workspace'
 
 	static Fields = {
-		...Base.Fields,
 		'Items': { type: Collection.List },
 		'Title': { type: 'string'        },
 	}
