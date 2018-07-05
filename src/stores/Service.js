@@ -94,12 +94,10 @@ class ServiceDocument extends EventEmitter {
 		const {[Context]: context, [Server]: server} = this;
 		const {
 			CapabilityList: caps = [],
-			Items: items,
+			Items: items = [],
 			...data
 		} = json;
 		Object.assign(this, data, {appUsername: null});
-
-		this.capabilities = new Capabilities(this, caps);
 
 		if (this.Items !== items) {
 			const parsed = items && parse(items);
@@ -114,6 +112,8 @@ class ServiceDocument extends EventEmitter {
 
 			this.Items = parsed;
 		}
+
+		this.capabilities = new Capabilities(this, caps);
 
 		if (!this.getAppUsername()) {
 			delete this[AppUser];
@@ -621,12 +621,12 @@ class ServiceDocument extends EventEmitter {
 
 
 	getUserWorkspace () {
-		this.Items.find(x => x.hasLink('ResolveSelf'));
+		return (this.Items || []).find(x => x.hasLink('ResolveSelf'));
 	}
 
 
 	getWorkspace (name) {
-		return this.Items.find(x => x.Title === name);
+		return (this.Items || []).find(x => x.Title === name);
 	}
 
 
