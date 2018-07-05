@@ -8,7 +8,7 @@ import {parse} from '../models/Parser';
 
 const logger = Logger.get('mixins:Fields');
 const None = void 0;
-const RAW = Symbol('Raw Data');
+const RAW = Symbol.for('Raw Data');
 const PASCAL_CASE_REGEX = /(?:^|[^a-z0-9])([a-z0-9])?/igm;
 
 const getType = x => x.constructor;
