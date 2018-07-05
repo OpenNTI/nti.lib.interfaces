@@ -2,19 +2,19 @@ import EventEmitter from 'events';
 
 import Logger from '@nti/util-logger';
 import {mixin} from '@nti/lib-decorators';
-import {isNTIID} from '@nti/lib-ntiids';
-import {URL, wait} from '@nti/lib-commons';
+import { isNTIID } from '@nti/lib-ntiids';
+import { URL, wait } from '@nti/lib-commons';
 
-import {parse} from '../models/Parser';
+import { parse } from '../models/Parser';
 import Capabilities from '../models/Capabilities';
 import AbstractPlaceholder from '../models/AbstractPlaceholder';
 import Batch from '../data-sources/data-types/Batch';
-import {Mixin as Pendability, attach as attachPendingQueue} from '../mixins/Pendability';
-import {Mixin as InstanceCacheContainer} from '../mixins/InstanceCacheContainer';
+import { Mixin as Pendability, attach as attachPendingQueue } from '../mixins/Pendability';
+import { Mixin as InstanceCacheContainer } from '../mixins/InstanceCacheContainer';
 import DataCache from '../utils/datacache';
 import getLink from '../utils/getlink';
 import maybeWait from '../utils/maybe-wait';
-import {isHrefId, decodeHrefFrom} from '../utils/href-ntiids';
+import { isHrefId, decodeHrefFrom } from '../utils/href-ntiids';
 import {
 	REL_USER_SEARCH,
 	REL_USER_UNIFIED_SEARCH,
