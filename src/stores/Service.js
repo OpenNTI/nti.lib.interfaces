@@ -83,9 +83,17 @@ class ServiceDocument extends EventEmitter {
 
 
 	toJSON () {
-		const {capabilities, ...data} = this;
+		const {
+			capabilities,
+			Items = [],
+			...data
+		} = this;
 		return {
 			...data,
+			// This is a bandaid... once we have Collection fully defined (all fields declared) we can
+			// let the builtin json-serializer do its normal thing... I just don't want to whack-a-mole
+			// field names right now... :P
+			Items: Items.map(x => x[Symbol.for('Raw Data')]),
 			CapabilityList: capabilities,
 		};
 	}
