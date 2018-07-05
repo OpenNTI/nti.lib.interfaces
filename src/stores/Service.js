@@ -6,6 +6,7 @@ import { isNTIID } from '@nti/lib-ntiids';
 import { URL, wait } from '@nti/lib-commons';
 
 import { parse } from '../models/Parser';
+import { Workspace } from '../models';
 import Capabilities from '../models/Capabilities';
 import AbstractPlaceholder from '../models/AbstractPlaceholder';
 import Batch from '../data-sources/data-types/Batch';
@@ -94,23 +95,20 @@ class ServiceDocument extends EventEmitter {
 		const {[Context]: context, [Server]: server} = this;
 		const {
 			CapabilityList: caps = [],
-			Items: items = [],
+			Items: items,
 			...data
 		} = json;
 		Object.assign(this, data, {appUsername: null});
 
 		if (this.Items !== items) {
-			const parsed = items && parse(items);
+			//No mimetype on Workspace means, we have to force it...
+			const parsed = this.Items = (items || []).map(o => new Workspace(this, this, o));
 
-			if (parsed) {
-				this.addToPending(
-					parsed
-						.filter(o => o && o.waitForPending)
-						.map(o => o.waitForPending())
-				);
-			}
-
-			this.Items = parsed;
+			this.addToPending(
+				parsed
+					.filter(o => o && o.waitForPending)
+					.map(o => o.waitForPending())
+			);
 		}
 
 		this.capabilities = new Capabilities(this, caps);
