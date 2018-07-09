@@ -21,12 +21,12 @@ class LTIExternalToolAsset extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'description': { type: 'string' },
-		'icon': { type: 'string' },
-		'title': { type: 'string' },
-		'ConfiguredTool': { type: 'model' },
-	}
-
+		description: { type: 'string' },
+		icon: { type: 'string' },
+		title: { type: 'string' },
+		ConfiguredTool: { type: 'model' },
+		'launch_url': { type: 'string'}
+	};
 
 	constructor (service, parent, data) {
 		super(service, parent, data);
