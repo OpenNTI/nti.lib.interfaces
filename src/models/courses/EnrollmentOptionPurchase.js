@@ -8,6 +8,7 @@ const Purchasables = Symbol('Purchasables');
 class Collection extends Base {
 
 	static Fields = {
+		...Base.Fields,
 		'DefaultPurchaseNTIID': { type: 'string'  },
 		'DefaultGiftingNTIID':  { type: 'string'  },
 		'Items':                { type: 'model[]' },

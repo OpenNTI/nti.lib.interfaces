@@ -1,21 +1,68 @@
 /* eslint-env jest */
+import diff from 'jest-diff'; //eslint-disable-line
 import {mixin} from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
-import Fields from '../Fields';
+import Fields, {IsFieldSet} from '../Fields';
 
 const logger = Logger.get('mixins:Fields');
 
+expect.extend({
+	toEqualFields (received, expected) {
+		const {expand, utils} = this;
+		// const r = {...FieldSet, ...received};
+		const e = {[IsFieldSet]: true, ...expected};
+		const pass = this.equals(received, e);
+
+		const message = pass
+			? () =>
+				utils.matcherHint('.not.toEqualFields') +
+				'\n\n' +
+				'Expected value to not be:\n' +
+				`  ${utils.printExpected(e)}\n` +
+				'Received:\n' +
+				`  ${utils.printReceived(received)}`
+			: () => {
+				const diffString = diff(e, received, {expand});
+				return (
+					utils.matcherHint('.toEqualFields') +
+					'\n\n' +
+					'Expected value to be:\n' +
+					`  ${utils.printExpected(e)}\n` +
+					'Received:\n' +
+					`  ${utils.printReceived(received)}` +
+					(diffString ? `\n\nDifference:\n\n${diffString}` : '')
+				);
+			};
+
+		return {actual: received, message, pass};
+	},
+});
+
 describe('Fields Mixin', () => {
 
-	test ('Fields Combine', () => {
+	afterEach(() => {
+		jest.restoreAllMocks();
+	});
+
+	test ('Fields do not automatically combine on subclass', () => {
+		jest.spyOn(logger, 'debug').mockImplementation(() => {});
 
 		@mixin(Fields)
 		class Foo {
 			static Fields = {
 				'foo': {type: 'string'}
 			}
+
+			constructor () {
+				this.initMixins({});
+			}
 		}
+
+		expect(Foo.Fields).toEqualFields({
+			foo: {type: 'string'},
+		});
+		expect(() => new Foo).not.toThrow();
 
 		class Bar extends Foo {
 			static Fields = {
@@ -24,28 +71,77 @@ describe('Fields Mixin', () => {
 		}
 
 
-		expect(Foo.Fields).toEqual({
+		expect(Foo.Fields).toEqualFields({
 			foo: {type: 'string'},
 		});
 
 		expect(Bar.Fields).toEqual({
 			bar: {type: 'string'},
-			foo: {type: 'string'},
 		});
+
+		expect(Bar.Fields).not.toEqualFields({
+			bar: {type: 'string'},
+		});
+
+		expect(() => new Bar).not.toThrow();
+
+		expect(logger.debug).toHaveBeenCalledWith('Model "%s" has not included the base Fields', 'Bar');
 	});
 
+	test ('Fields do not log if you spread the base...', () => {
+		jest.spyOn(logger, 'debug').mockImplementation(() => {});
 
-	test ('Fields Combine (Crazy)', () => {
+		@mixin(Fields)
+		class Foo {
+			static Fields = {
+				'foo': {type: 'string'}
+			}
+
+			constructor () {
+				this.initMixins({});
+			}
+		}
+
+		class Bar extends Foo {
+			static Fields = {
+				...Foo.Fields,
+				'bar': {type: 'string'}
+			}
+		}
+
+		expect(Foo.Fields).toEqualFields({
+			foo: {type: 'string'},
+		});
+
+		expect(Bar.Fields).toEqualFields({
+			bar: {type: 'string'},
+			foo: {type: 'string'},
+		});
+
+		expect(() => new Bar).not.toThrow();
+
+		expect(logger.debug).not.toHaveBeenCalledWith('Model "%s" has not included the base Fields', 'Bar');
+	});
+
+	test ('Fields do not Combine when assigned', () => {
 
 		function TypeA (t) {
 			t.Fields = {
+				...t.Fields,
 				typeA: {type: 'string'}
 			};
 		}
 
 		function TypeB (t) {
 			t.Fields = {
+				...t.Fields,
 				typeB: {type: 'string'}
+			};
+		}
+
+		function TypeC (t) {
+			t.Fields = {
+				typeC: {type: 'string'}
 			};
 		}
 
@@ -56,18 +152,33 @@ describe('Fields Mixin', () => {
 			}
 		}
 
-		@mixin(TypeA, TypeB)
+		@mixin(TypeA)
 		class Bar extends Foo {}
 
+		@mixin(TypeA, TypeB)
+		class Baz extends Foo {}
 
-		expect(Foo.Fields).toEqual({
+		@mixin(TypeC)
+		class NoBaseFields extends Foo {}
+
+
+		expect(Foo.Fields).toEqualFields({
 			foo: {type: 'string'},
 		});
 
-		expect(Bar.Fields).toEqual({
+		expect(Bar.Fields).toEqualFields({
+			foo: {type: 'string'},
+			typeA: {type: 'string'},
+		});
+
+		expect(Baz.Fields).toEqualFields({
+			foo: {type: 'string'},
 			typeA: {type: 'string'},
 			typeB: {type: 'string'},
-			foo: {type: 'string'},
+		});
+
+		expect(NoBaseFields.Fields).toEqual({
+			typeC: {type: 'string'},
 		});
 	});
 
@@ -82,16 +193,17 @@ describe('Fields Mixin', () => {
 
 		class Bar extends Foo {
 			static Fields = {
+				...Foo.Fields,
 				'foo': {type: 'boolean'}
 			}
 		}
 
 
-		expect(Foo.Fields).toEqual({
+		expect(Foo.Fields).toEqualFields({
 			foo: {type: 'string'},
 		});
 
-		expect(Bar.Fields).toEqual({
+		expect(Bar.Fields).toEqualFields({
 			foo: {type: 'boolean'},
 		});
 	});

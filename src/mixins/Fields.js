@@ -5,6 +5,8 @@ import {ntiidEquals} from '@nti/lib-ntiids';
 import {Parser, RepresentsSameObject, Service, IsModel} from '../constants';
 import {parse} from '../models/Parser';
 
+export const IsFieldSet = Symbol('Is FieldSet');
+export const FieldSet = {[IsFieldSet]: true};
 
 const logger = Logger.get('mixins:Fields');
 const None = void 0;
@@ -64,6 +66,10 @@ export default function FieldsApplyer (target) {
 			} = getFields(this, data);
 
 			const MissingFields = FieldKeys.filter(x => !noData && !(x in data));
+
+			if (!Fields[IsFieldSet]) {
+				logger.debug('Model "%s" has not included the base Fields', getTypeName(this));
+			}
 
 			for(let overlaping of Object.keys(data).filter(x => FieldRenames.includes(x))) {
 				logger.debug('Model "%s" declares a field "%s" but it shadows another. data: %o', getTypeName(this), overlaping, data);
@@ -281,7 +287,7 @@ export default function FieldsApplyer (target) {
 function initFields (target) {
 
 	function validateFields (Fields, Class) {
-		const fields = Object.keys(Fields);
+		const fields = Object.keys(Fields || {});
 		for (let field of fields) {
 			const {name = field, type/*, required, defaultValue*/} = Fields[field] || {};
 			let tKey = isArrayType(type) ? type.substr(0, type.length - 2) : type;
@@ -294,6 +300,7 @@ function initFields (target) {
 	const slot = initFields.slot || (initFields.slot = Symbol.for('[[Fields]]'));
 
 	target[slot] = target.Fields;
+	target[slot][IsFieldSet] = true;
 	validateFields(target.Fields, target);
 
 	updateField(target, 'Fields', {
@@ -301,9 +308,7 @@ function initFields (target) {
 		configurable: true,
 		get () { return this[slot]; },
 		set (newFields) {
-			const current = this[slot];
 			validateFields(this[slot] = {
-				...current,
 				...newFields
 			}, this);
 		}
