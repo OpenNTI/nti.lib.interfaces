@@ -2,7 +2,7 @@ import Logger from '@nti/util-logger';
 import {Parsing} from '@nti/lib-commons';
 import {ntiidEquals} from '@nti/lib-ntiids';
 
-import {DateFields, Parser, RepresentsSameObject, Service, IsModel} from '../constants';
+import {Parser, RepresentsSameObject, Service, IsModel} from '../constants';
 import {parse} from '../models/Parser';
 
 
@@ -111,22 +111,7 @@ export default function FieldsApplyer (target) {
 					throw new TypeError(`Required field is null: ${key}${name === key ? '' : ` (aliased to ${name})`}`);
 				}
 			}
-
-
-			const legacyDateFields = this[DateFields] && (this[DateFields]() || []).filter(x => !Fields[x]);
-			if (legacyDateFields.length > 0) {
-				logger.warn('Declare your date fields instead of using [DateFields](): %o', this);
-				for (let fieldName of new Set(this[DateFields]())) {
-					applyDateField(this, fieldName, data[fieldName]);
-				}
-			}
-
 		},
-
-
-
-		//deprecated
-		[DateFields] () { return []; },
 
 
 

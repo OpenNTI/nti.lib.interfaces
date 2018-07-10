@@ -4,7 +4,6 @@ export const Service = Symbol.for('Service');
 export const Server = Symbol.for('Server');
 export const Context = Symbol.for('Context');
 
-export const DateFields = Symbol('DateFields');
 export const Parser = Symbol('Parser');
 
 export const SiteName = Symbol.for('nti:site-name');
