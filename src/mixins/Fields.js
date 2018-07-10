@@ -659,7 +659,7 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 		value
 	);
 
-	const get = declared
+	const get = (declared || fieldName === 'MimeType') //MimeType should always be treated as declared.
 		? getter
 		: warningGettter;
 
