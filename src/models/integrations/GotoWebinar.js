@@ -14,6 +14,12 @@ class GotoWebinar extends Integration {
 	]
 
 
+	static Fields = {
+		...Integration.Fields,
+		'webinar_realname': {type: 'string', name: 'accountName'}
+	}
+
+
 	isConnected () {
 		return this.MimeType === CONNECTED_MIMETYPE;
 	}
@@ -26,6 +32,13 @@ class GotoWebinar extends Integration {
 		}
 
 		const resp = await this.delete();
+
+		await this.sync();
+
+		return resp;
+	}
+
+	async sync () {
 		const parent = this.parent();
 
 		try {
@@ -34,7 +47,5 @@ class GotoWebinar extends Integration {
 		} catch (e) {
 			//swallow
 		}
-
-		return resp;
 	}
 }
