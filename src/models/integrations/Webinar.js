@@ -11,13 +11,13 @@ class Webinar extends Base {
 		'description':         { type: 'string'  },
 		'inSession':           { type: 'boolean' },
 		'numberOfRegistrants': { type: 'number'  },
-		'organizerKey':        { type: 'number'  },
+		'organizerKey':        { type: 'string'  },
 		'registrationUrl':     { type: 'string'  },
 		'subject':             { type: 'string'  },
 		'timezone':            { type: 'string'  },
 		'times':               { type: 'model[]' },
 		'webinarID':           { type: 'string'  },
-		'webinarKey':          { type: 'number'  }
+		'webinarKey':          { type: 'string'  }
 	}
 
 	/**
