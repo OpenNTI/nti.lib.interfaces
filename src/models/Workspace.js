@@ -9,6 +9,7 @@ class Workspace extends Base {
 
 	static Fields = {
 		'Items': { type: Collection.List },
+		'Links': { type: '*'             },
 		'Title': { type: 'string'        },
 	}
 
