@@ -48,15 +48,16 @@ class RelatedWorkReference extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'desc':           { type: 'string' },
-		'href':           { type: 'string' },
-		'icon':           { type: 'string' },
-		'label':          { type: 'string' },
-		'target-NTIID':   { type: 'string' },
-		'targetMimeType': { type: 'string' },
-		'type':           { type: 'string' },
-		'description':    { type: 'string' },
-		'byline':         { type: 'string' }
+		'desc':               { type: 'string' },
+		'href':               { type: 'string' },
+		'icon':               { type: 'string' },
+		'label':              { type: 'string' },
+		'target-NTIID':       { type: 'string' },
+		'targetMimeType':     { type: 'string' },
+		'type':               { type: 'string' },
+		'description':        { type: 'string' },
+		'byline':             { type: 'string' },
+		'TargetPublishState': { type: 'string' }
 	}
 
 	static fromID (service, id) {
