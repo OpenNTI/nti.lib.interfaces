@@ -8,6 +8,8 @@ class WebinarAsset extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'webinar': { type: 'model' },
+		'description': { type: 'string' },
+		'title':       { type: 'string' },
+		'webinar':     { type: 'model'  },
 	}
 }
