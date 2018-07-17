@@ -38,20 +38,21 @@ class MediaSource extends Base {
 
 	constructor (service, parent, data) {
 		super(service, parent, data);
+		this.meta = {};
 	}
 
 
 	getResolver () {
 		return this[resolver] || (
 			this[resolver] = MetaDataResolver.from(this)
-				.then(meta=>Object.assign(this, meta))
+				.then(meta=> this.meta = meta)
 		);
 	}
 
 
 	resolveCanAccess () {
 		return this[resolveCanAccess] || (
-			this[resolver] = MetaDataResolver.resolveCanAccess(this)
+			this[resolveCanAccess] = MetaDataResolver.resolveCanAccess(this)
 		);
 	}
 
@@ -62,7 +63,7 @@ class MediaSource extends Base {
 
 
 	getProperty (prop) {
-		return this[prop] ?
+		return this.meta[prop] ?
 			Promise.resolve(this[prop]) :
 			this.getResolver()
 				.then(()=>this[prop]);
@@ -76,7 +77,7 @@ class MediaSource extends Base {
 
 	getThumbnail () {
 		return this.getProperty('thumbnail')
-			.then(()=>this.thumbnail || this.poster);
+			.then(()=>this.meta.thumbnail || this.thumbnail || this.poster);
 	}
 
 

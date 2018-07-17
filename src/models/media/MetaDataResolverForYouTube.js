@@ -25,6 +25,15 @@ function buildURL (service, source) {
 		.then(key => URL.replace('{0}', id) + QueryString.stringify({ key, part: 'contentDetails,snippet,statistics', id }));
 }
 
+const CACHE = {};
+function get (url) {
+	if (!CACHE[url]) {
+		CACHE[url] = fetch(url)
+			.then(r => r.ok ? r.json() : Promise.reject(r));
+	}
+	return CACHE[url];
+}
+
 export default class MetaDataResolverForYouTube {
 
 	static resolve (service, source) {
@@ -32,8 +41,7 @@ export default class MetaDataResolverForYouTube {
 		id = Array.isArray(id) ? id[0] : id;
 
 		return buildURL(service, source)
-			.then(url => fetch(url))
-			.then(r => r.ok ? r.json() : Promise.reject(r))
+			.then(get)
 
 			.then(o=> o.items.find(x => x.id === id) || Promise.reject('Not Found'))
 
@@ -54,7 +62,7 @@ export default class MetaDataResolverForYouTube {
 
 	static resolveCanAccess (service, source) {
 		return buildURL(service, source)
-			.then(url => service.get(url))// TODO: use fetch not service
+			.then(get)
 			.then(() => true, () => false);
 	}
 }
