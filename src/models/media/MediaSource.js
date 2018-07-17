@@ -64,9 +64,9 @@ class MediaSource extends Base {
 
 	getProperty (prop) {
 		return this.meta[prop] ?
-			Promise.resolve(this[prop]) :
+			Promise.resolve(this.meta[prop]) :
 			this.getResolver()
-				.then(()=>this[prop]);
+				.then(()=>this.meta[prop]);
 	}
 
 
