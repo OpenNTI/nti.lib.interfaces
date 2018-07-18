@@ -15,27 +15,31 @@ const resolveCanAccess = () => Promise.reject('No resolve access for service');
 
 export default class MetaDataResolver {
 
-	static from (source) {
+	static getProvider (source) {
+		return services[source.service] || { resolve, resolveCanAccess };
+	}
+
+
+	static async from (source) {
 		let service = source[Service];
-
-		let resolver = services[source.service] || {resolve};
-
-		return resolver.resolve(service, source)
-			.then(meta => new MetaDataResolver(service, meta));
+		const provider = this.getProvider(source);
+		const meta = await provider.resolve(service, source);
+		return new MetaDataResolver(service, meta, provider);
 	}
 
 
 	static resolveCanAccess (source) {
 		const service = source[Service];
 
-		const resolver = services[source.service] || {resolveCanAccess};
+		const provider = this.getProvider(source);
 
-		return resolver.resolveCanAccess ? resolver.resolveCanAccess(service, source) : resolveCanAccess();
+		return provider.resolveCanAccess ? provider.resolveCanAccess(service, source) : resolveCanAccess();
 	}
 
 
-	constructor (service, meta) {
+	constructor (service, meta, provider) {
 		this[Service] = service;
+		this.provider = provider;
 		Object.assign(this, meta);
 		// console.log(this);
 	}

@@ -36,6 +36,12 @@ function get (url) {
 
 export default class MetaDataResolverForYouTube {
 
+	//Utility method for service side...
+	static /*async*/ resolveURL (service, videoId) {
+		return buildURL(service, {source: videoId});
+	}
+
+
 	static resolve (service, source) {
 		let id = source.source;
 		id = Array.isArray(id) ? id[0] : id;
