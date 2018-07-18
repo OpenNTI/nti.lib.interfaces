@@ -129,9 +129,15 @@ export default class XMLBasedTableOfContents extends Base {
 
 		const page = (this.realPageIndex['real-pages'] || {})[pageNumber];
 		const NTIID = page && page.NTIID;
+		const NavNTIID = page && page.NavNTIID;
 		const node = NTIID && this.getXMLNode(NTIID);
 
-		return node ? {page: pageNumber, node} : null;
+		return {
+			page: pageNumber,
+			node: node || null,
+			NTIID,
+			NavNTIID
+		};
 	}
 
 	/**
