@@ -162,7 +162,7 @@ class ServiceDocument extends EventEmitter {
 	}
 
 
-	isServerSide () {
+	get isServerSide () {
 		return Boolean(this[Context]);
 	}
 

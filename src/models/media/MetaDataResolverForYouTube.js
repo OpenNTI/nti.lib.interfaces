@@ -1,10 +1,12 @@
+import URL from 'url';
+import path from 'path';
+
 import QueryString from 'query-string';
 import {parse, toSeconds} from 'iso8601-duration';
 
 import {getAPIKey} from '../../utils/GoogleAPI';
 
-const URL = 'https://www.googleapis.com/youtube/v3/videos?';
-
+const API = 'https://www.googleapis.com/youtube/v3/videos?';
 const FAIL_POSTER = 'http://img.youtube.com/vi/{0}/hqdefault.jpg';
 const FAIL_THUMB = 'http://img.youtube.com/vi/{0}/default.jpg';
 
@@ -15,14 +17,27 @@ function getThumbnail (data, key) {
 	return url;
 }
 
-function buildURL (service, source) {
+async function buildURL (service, source) {
 	let id = source.source;
 	id = Array.isArray(id) ? id[0] : id;
 
-	return getAPIKey(service)
+	if (!service.isServerSide) {
+		const {server, basepath} = service.getConfig();
+		return URL.resolve(server, path.resolve(basepath, 'api/videos/youtube'))
+			+ '?' + QueryString.stringify({ part: 'contentDetails,snippet,statistics', id });
+	}
+
+	try {
 		// See here for details: https://developers.google.com/youtube/v3/docs/videos
-		.catch(e => console.error(e) || Promise.reject('No API')) //eslint-disable-line no-console
-		.then(key => URL.replace('{0}', id) + QueryString.stringify({ key, part: 'contentDetails,snippet,statistics', id }));
+		const key = await getAPIKey(service);
+		return API.replace('{0}', id) + QueryString.stringify({ key });
+	}
+	catch(e) {
+		//eslint-disable-next-line no-console
+		console.error(e);
+	}
+
+	return Promise.reject('No API');
 }
 
 const CACHE = {};
