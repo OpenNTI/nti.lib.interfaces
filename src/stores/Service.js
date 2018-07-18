@@ -162,8 +162,19 @@ class ServiceDocument extends EventEmitter {
 	}
 
 
+	isServerSide () {
+		return Boolean(this[Context]);
+	}
+
+
+	//meant to be used by models and interface code. Client code should use the config getter in web-client.
+	getConfig () {
+		return this[Server].config;
+	}
+
+
 	getSiteName () {
-		return this[Server].config.siteName || (this[Context] || {})[SiteName];
+		return this.getConfig().siteName || (this[Context] || {})[SiteName];
 	}
 
 
