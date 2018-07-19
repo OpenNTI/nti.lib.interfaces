@@ -1,7 +1,7 @@
-// import { mixin } from 'nti-lib-decorators';
+import {mixin} from '@nti/lib-decorators';
 
-// import Completable from '../../mixins/Completable';
 import { model, COMMON_PREFIX } from '../Registry';
+import Completable from '../../mixins/Completable';
 import Base from '../Base';
 
 // @mixin(Completable)
@@ -16,6 +16,7 @@ import Base from '../Base';
 
 export default
 @model
+@mixin(Completable)
 class LTIExternalToolAsset extends Base {
 	static MimeType = COMMON_PREFIX + 'ltiexternaltoolasset'
 
