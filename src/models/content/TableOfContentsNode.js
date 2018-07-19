@@ -87,7 +87,10 @@ export default class XMLBasedTableOfContentsNode {
 	// }
 
 
-	getAchorTarget () {
+	//TODO: remove this
+	getAchorTarget = this.getAnchorTarget
+
+	getAnchorTarget () {
 		let href = this.get('href');
 		return href.split(/#/)[1];
 	}
