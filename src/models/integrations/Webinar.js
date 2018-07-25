@@ -20,6 +20,24 @@ class Webinar extends Base {
 		'webinarKey':          { type: 'string'  }
 	}
 
+
+	/**
+	 * Returns the duration of the nearest session (based on either a given time or nearest from now)
+	 *
+	 * @param  {object} dateOrTime (Optional) Specifies a time on which to base the nearest session.  Now if unspecified
+	 * @return {number}            Milliseconds representing duration of the webinar session
+	 */
+	getDuration (dateOrTime) {
+		const nearestSession = this.getNearestSession(dateOrTime);
+
+		if(!nearestSession) {
+			return 0;
+		}
+
+		return nearestSession.getEndTime() - nearestSession.getStartTime();
+	}
+
+
 	/**
 	 * Returns the next session from a given time (or the current time if no time is given).  If there are no upcoming
 	 * sessions, return the most recent session.
