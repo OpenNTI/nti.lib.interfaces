@@ -79,7 +79,7 @@ class Webinar extends Base {
 
 
 	isJoinable (date = Date.now()) {
-		return !this.ieExpired(date) && this.hasLink('JoinWebinar');
+		return !this.isExpired(date) && this.hasLink('JoinWebinar');
 	}
 
 
