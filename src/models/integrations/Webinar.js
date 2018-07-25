@@ -24,39 +24,53 @@ class Webinar extends Base {
 	 * Returns the next session from a given time (or the current time if no time is given).  If there are no upcoming
 	 * sessions, return the most recent session.
 	 *
-	 * @param  {object} dateOrTime Can be either a Date object or a time in ms
+	 * @param  {Date|Number} date  Can be either a Date or a time in ms
 	 * @return {object}            WebinarSession object (with startTime/endTime)
 	 */
-	getNearestSession (dateOrTime) {
+	getNearestSession (date = Date.now()) {
 		const {times} = this;
 
 		if(!times || times.length === 0) {
 			return null;
 		}
 
-		const now = (dateOrTime && dateOrTime.getTime && dateOrTime.getTime()) || dateOrTime || Date.now();
 
 		let latestPast = null;
 		let nextUp = null;
 
-		times.forEach(session => {
-			const startTime = session.getStartTime().getTime();
+		for (let session of times) {
+			const startTime = session.getStartTime();
 
-			if(now > startTime) {
-				// if this session was in the past, see if it's closer to now than other past sessions
-				if(latestPast == null || latestPast.getStartTime().getTime() < startTime) {
+			if(date > startTime) {
+				// if this session was in the past, see if it's closer to date than other past sessions
+				if(latestPast == null || latestPast.getStartTime() < startTime) {
 					latestPast = session;
 				}
 			}
 			else {
-				// if this session is in the future, see if it's closer to now than other future sessions
-				if(nextUp == null || nextUp.getStartTime().getTime() > startTime) {
+				// if this session is in the future, see if it's closer to date than other future sessions
+				if(nextUp == null || nextUp.getStartTime() > startTime) {
 					nextUp = session;
 				}
 			}
-		});
+		}
 
 		// if there is an upcoming session, return that, otherwise fallback to the most recent past session
 		return nextUp || latestPast;
+	}
+
+
+	isJoinable (date = Date.now()) {
+		return this.isAvailable(date) && this.hasLink('JoinWebinar');
+	}
+
+
+	isAvailable (date = Date.now()) {
+		return (x => x && x.getStartTime() <= date && x.getEndTime() >= date)(this.getNearestSession(date));
+	}
+
+
+	isExpired (date = Date.now()) {
+		return (x => !x || (x.getStartTime() <= date && x.getEndTime() <= date))(this.getNearestSession(date));
 	}
 }
