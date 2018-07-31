@@ -37,11 +37,12 @@ const TYPE_MAP = {
 	'string?': coerceStringField
 };
 
-const isArrayType = RegExp.prototype.test.bind(/\[]$/);
-// const isDictionaryType = RegExp.prototype.test.bind(/\{}$/);
+const {prototype: {test: _t}} = RegExp;
+const isArrayType = _t.bind(/\[]$/);
+// const isDictionaryType = _t.bind(/\{}$/);
 // const isCollectionType = x => isArrayType(x) || isDictionaryType(x);
 
-export default function FieldsApplyer (target) {
+export default function FieldsApplier (target) {
 
 	initFields(target);
 
@@ -438,7 +439,7 @@ export function updateField (scope, field, desc) {
 
 
 // @private - used to read a value without warning.
-// INTERNAL only! -- intended for serializing scope to JSON in JSONValue.js
+// INTERNAL only! -- intended for serializing scope to JSON in JSONValue
 export function readValueFor (scope, fieldName) {
 	const descriptor = Object.getOwnPropertyDescriptor(scope, fieldName);
 	const readKey = ((descriptor || {}).get || {}).renamedTo || fieldName;
