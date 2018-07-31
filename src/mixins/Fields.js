@@ -71,8 +71,8 @@ export default function FieldsApplyer (target) {
 				logger.debug('Model "%s" has not included the base Fields', getTypeName(this));
 			}
 
-			for(let overlaping of Object.keys(data).filter(x => FieldRenames.includes(x))) {
-				logger.debug('Model "%s" declares a field "%s" but it shadows another. data: %o', getTypeName(this), overlaping, data);
+			for(let overlapping of Object.keys(data).filter(x => FieldRenames.includes(x))) {
+				logger.debug('Model "%s" declares a field "%s" but it shadows another. data: %o', getTypeName(this), overlapping, data);
 			}
 
 			for (let missing of MissingFields) {
@@ -150,7 +150,7 @@ export default function FieldsApplyer (target) {
 				this.addToPending(o);
 			}
 
-			if (key) {//If the paramater was a key, assign the parsed object back to the key...
+			if (key) {//If the parameter was a key, assign the parsed object back to the key...
 				applyField(this, key, o);
 				if (o == null || (Array.isArray(o) && o.length === 0)) {
 					if (arguments.length > 1) {//a value was passed to the 2nd argument. (use its value no matter what it is.)
@@ -396,14 +396,14 @@ function getterWarning (scope, name, originalName) {
 
 
 
-function GenEnumerabilityOf (obj, propName) {
+function GetEnumerabilityOf (obj, propName) {
 	const desc = obj && Object.getOwnPropertyDescriptor(obj, propName);
 	return desc && desc.enumerable;
 }
 
 
 //deprecated
-function setProtectedProperty (name, value, scope, enumerable = GenEnumerabilityOf(scope, name), renamedFrom = null) {
+function setProtectedProperty (name, value, scope, enumerable = GetEnumerabilityOf(scope, name), renamedFrom = null) {
 	const get = () => value;
 
 	let valueProperty = {writable: false, value};
@@ -654,14 +654,14 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 
 	const setter =  x => value = x;
 	const getter = () => value;
-	const warningGettter = () => (
+	const warningGetter = () => (
 		logger.warn('Undeclared Access of %s on %o', fieldName, scope.MimeType || scope),
 		value
 	);
 
 	const get = (declared || fieldName === 'MimeType') //MimeType should always be treated as declared.
 		? getter
-		: warningGettter;
+		: warningGetter;
 
 	Object.assign(get, { declared, getter });
 
