@@ -54,12 +54,17 @@ class Webinar extends Base {
 
 
 		let latestPast = null;
+		let current = null;
 		let nextUp = null;
 
 		for (let session of times) {
 			const startTime = session.getStartTime();
+			const endTime = session.getEndTime();
 
-			if(date > startTime) {
+			if(date >= startTime && date < endTime) {
+				current = session;
+			}
+			else if(date > startTime) {
 				// if this session was in the past, see if it's closer to date than other past sessions
 				if(latestPast == null || latestPast.getStartTime() < startTime) {
 					latestPast = session;
@@ -74,7 +79,7 @@ class Webinar extends Base {
 		}
 
 		// if there is an upcoming session, return that, otherwise fallback to the most recent past session
-		return nextUp || latestPast;
+		return current || nextUp || latestPast;
 	}
 
 

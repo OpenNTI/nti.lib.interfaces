@@ -28,6 +28,14 @@ describe ('Webinar model test', () => {
 		expect(nearestSession.getStartTime().getTime()).toEqual(now + 3333);
 	});
 
+	test('Get current session (happening now)', () => {
+		const now = Date.now();
+		const webinar = buildWebinar([[now + 5555, now + 6666], [now - 3333, now + 2222], [now + 7777, now + 8888]]);
+		const nearestSession = webinar.getNearestSession();
+
+		expect(nearestSession.getStartTime().getTime()).toEqual(now - 3333);
+	});
+
 	test('Get most recent session from now since there are no upcoming sessions', () => {
 		const now = Date.now();
 
