@@ -18,7 +18,8 @@ export default
 class Bundle extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'contentpackagebundle',
-		COMMON_PREFIX + 'coursecontentpackagebundle'
+		COMMON_PREFIX + 'coursecontentpackagebundle',
+		COMMON_PREFIX + 'publishablecontentpackagebundle'
 	]
 
 	static Fields = {
