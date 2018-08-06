@@ -1,13 +1,16 @@
-//const URL = '//vimeo.com/api/v2/video/{0}.json',
-const URL = 'https://vimeo.com/api/oembed.json?url=https%3A//vimeo.com/{0}';
+const { location } = global;
+const domain = !location ? '' : `&domain=${encodeURIComponent(location.hostname)}`;
+export const getMetaDataEntryPoint = x => `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(x)}${domain}`;
+
+const placeholder = encodeURIComponent('{0}');
+const URL = getMetaDataEntryPoint('https://vimeo.com/{0}');
 
 const FAIL = 'data:,';
 
-function buildURL (service, source) {
-	let id = source.source;
-	id = Array.isArray(id) ? id[0] : id;
+const getIDFromSource = ({source: id}) => Array.isArray(id) ? id[0] : id;
 
-	return URL.replace('{0}', id);
+function buildURL (service, source) {
+	return URL.replace(placeholder, getIDFromSource(source));
 }
 
 export default class MetaDataResolverForVimeo {
@@ -17,6 +20,14 @@ export default class MetaDataResolverForVimeo {
 		// console.log(url);
 		return fetch(url)
 			.then(r => r.ok ? r.json() : Promise.reject(r))
+			.then(x => {
+				// Check api response for 403 on oembed
+				if (x.domain_status_code === 403) {
+					return Promise.reject(new Error(`Vimeo Video: “${getIDFromSource(source)}” is not embeddable.`));
+				}
+
+				return x;
+			})
 			.then(o=> o[0] || o)
 			.then(o=>
 				({
@@ -60,6 +71,7 @@ export default class MetaDataResolverForVimeo {
 		const url = buildURL(service, source);
 
 		return fetch(url)
-			.then(r => r.ok ? true : false);
+			.then(r => r.ok ? r.json() : false)
+			.then(x => x.domain_status_code === 403 ? false : true);
 	}
 }

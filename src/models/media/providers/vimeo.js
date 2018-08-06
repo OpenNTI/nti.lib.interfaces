@@ -1,10 +1,11 @@
 import url from 'url';
+import { getMetaDataEntryPoint } from '../MetaDataResolverForVimeo';
 
 const vimeoRe = /vimeo/i;
 const VIMEO_URL_PARTS = /(?:https?:)?\/\/(?:(?:www|player)\.)?vimeo.com\/(?:(?:channels|video)\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?|#)/i;
 const VIMEO_PROTOCOL_PARTS = /vimeo:\/\/(\d+\/)?(\d+)/i;
 
-export const getMetaDataEntryPoint = x => `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(x)}`;
+export { getMetaDataEntryPoint }; //Re-export from here... something may be needing it from this module.
 
 export default class VimeoProvider {
 
@@ -46,7 +47,7 @@ export default class VimeoProvider {
 
 				return response.json();
 			})
-			.then(data => (data.video_id || '').toString());
+			.then(data => (data.video_id || '').toString() || Promise.reject('Video is not embeddable.'));
 	}
 
 
