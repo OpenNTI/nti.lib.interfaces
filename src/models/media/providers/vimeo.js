@@ -1,4 +1,5 @@
 import url from 'url';
+
 import { getMetaDataEntryPoint } from '../MetaDataResolverForVimeo';
 
 const vimeoRe = /vimeo/i;
