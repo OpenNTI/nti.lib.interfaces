@@ -145,6 +145,24 @@ class User extends Entity {
 		this[Service].getGroups().load();
 	}
 
+	async isAllReadOnly (s) {
+		const schema = s || await this.getProfileSchema();
+		const excludedFields = {
+			'password': true
+		};
+
+		let isReadOnly = true;
+		const fields = Object.values(schema);
+
+		for (let i = 0; i < fields.length; i++) {
+			if (!excludedFields[fields[i].name] && !fields[i].readonly) {
+				isReadOnly = false;
+				break;
+			}
+		}
+
+		return isReadOnly;
+	}
 
 	getID () {
 		return this.Username;
