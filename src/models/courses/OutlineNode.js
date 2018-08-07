@@ -116,17 +116,8 @@ class OutlineNode extends Outline {
 					: Promise.reject('empty'); //no link, and NOT legacy
 			};
 
-			const [assignments, data] = await Promise.all([
-				// You may be tempted to "optimize" this call out if 'isStatic' is false... don't.
-				// This call is already being made in other places and is not (currently) adding
-				// any additional overhead... until this becomes a true waste, leave this
-				// unconditional load of the assignments
-				course.getAssignments().catch(() => null),
-				(this.hasLink(link)
-					? fetchLink()
-					: fetchLegacy()
-				)
-			]);
+			const data = await (this.hasLink(link) ? fetchLink() : fetchLegacy());
+			const assignments = !data.isStatic ? null : await course.getAssignments().catch(() => null);
 
 			let content = !data.isStatic ? data : filterMissingAssignments(assignments, data);
 
