@@ -36,7 +36,6 @@ class User extends Entity {
 		//Do not define "cleaned" fields (see cleanData)
 		'Connections':        { type: '*'         },
 		'DynamicMemberships': { type: 'model[]'   },
-		'MostRecentSession':  { type: 'model'     },
 		'Reports':            { type: 'model[]'   },
 		'positions':          { type: 'model[]'   },
 		'education':          { type: 'model[]'   },
@@ -50,7 +49,8 @@ class User extends Entity {
 		'facebook':           { type: 'string'    },
 		'email':              { type: 'string'    },
 		'about':              { type: 'string[]'  },
-		'interests':          { type: 'string[]'  }
+		'interests':          { type: 'string[]'  },
+		'lastSeenTime':       { type: 'date'      }
 	}
 
 	isUser = true
@@ -70,6 +70,8 @@ class User extends Entity {
 	}
 
 	getLastLoginTime () {} //implemented by lastLoginTime date field.
+
+	getLastSeenTime () {} //implemented by lastSeenTime date field.
 
 	applyRefreshedData (o) {
 		cleanData(o);
