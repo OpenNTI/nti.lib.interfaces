@@ -12,4 +12,5 @@ export RelatedWorkReferencePointer from './RelatedWorkReferencePointer';
 export RenderablePackage from './RenderablePackage';
 export Root from './Root';
 export SharingPagePreference from './SharingPagePreference';
+export PageInfoStreamDataSource from './PageInfoStreamDataSource';
 export UserBundleRecord from './UserBundleRecord';
