@@ -368,7 +368,7 @@ class ServiceDocument extends EventEmitter {
 		const {parent, params} = options || {};
 
 		if (!isNTIID(ntiid)) {
-			return Promise.reject('Bad NTIID');
+			return Promise.reject(new Error(`Bad PageInfo NTIID: ${JSON.stringify(ntiid)}`));
 		}
 
 		return this.getObject(ntiid, {
@@ -387,7 +387,7 @@ class ServiceDocument extends EventEmitter {
 
 	getObjectRaw (ntiid, field, type, params) {
 		if (!isNTIID(ntiid)) {
-			return Promise.reject('Bad NTIID');
+			return Promise.reject(new Error(`Invalid Argument: Not an NTIID: ${JSON.stringify(ntiid)}`));
 		}
 
 
@@ -452,7 +452,7 @@ class ServiceDocument extends EventEmitter {
 
 	getObjectRelatedContext (ntiid) {
 		if (!isNTIID(ntiid)) {
-			return Promise.reject('Bad NTIID');
+			return Promise.reject(`Invalid Argument: Value is not an NTIID: ${JSON.stringify(ntiid)}`);
 		}
 
 		const url = this.getObjectRelatedContextURL(ntiid);
