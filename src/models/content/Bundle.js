@@ -26,6 +26,7 @@ class Bundle extends Base {
 		...Base.Fields,
 		'ContentPackages':                      { type: 'model[]', defaultValue: [] },
 		'DCCreator':                            { type: names,     name: 'author'   },
+		'byline':                               { type: 'string'                    },
 		'title':                                { type: 'string'                    },
 		'label':                                { type: 'string'                    },
 		'PlatformPresentationResources':        { type: 'object'                    },
