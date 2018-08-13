@@ -8,6 +8,8 @@ import MediaIndex from '../media/MediaIndex';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+import BundleStreamDataSource from './BundleStreamDataSource.js';
+
 const logger = Logger.get('models:content:Bundle');
 
 const names = (x, y, v) => Array.isArray(v) ? v.join(', ') : null;
@@ -153,5 +155,10 @@ class Bundle extends Base {
 	getVideoIndex () {
 		return Promise.all(this.map(pkg=>pkg.getVideoIndex()))
 			.then(indices => MediaIndex.combine(indices));
+	}
+
+
+	getStreamDataSource () {
+		return new BundleStreamDataSource(this[Service], this);
 	}
 }
