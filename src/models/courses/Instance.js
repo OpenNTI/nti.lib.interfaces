@@ -361,17 +361,19 @@ class Instance extends Base {
 						parent.NTIID = parentId;
 					}
 
+					let bins = binDiscussions(section, parent);
+
+					// Stub out empty case
 					if(!section.Items || section.Items.length === 0) {
-						return {
-							Other: {
-								Section: {
-									id: this.Discussions.id
-								}
+						bins.Other = {
+							...bins.Other,
+							Section: {
+								id: this.Discussions.id
 							}
 						};
 					}
 
-					return binDiscussions(section, parent);
+					return bins;
 				});
 		});
 	}

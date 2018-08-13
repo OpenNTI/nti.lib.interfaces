@@ -14,7 +14,7 @@ export default class Batch extends Base {
 
 		this.addToPending(
 			Promise.all(
-				this.Items.map(item => item.waitForPending ? item.waitForPending() : item)
+				this.Items.map(item => item && item.waitForPending ? item.waitForPending() : item)
 			)
 		);
 	}

@@ -13,6 +13,7 @@ import {
 } from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
+import PageInfoStreamDataSource from './PageInfoStreamDataSource';
 
 const NOT_FOUND = {statusCode: 404, message: 'Not Found'};
 
@@ -136,6 +137,10 @@ class PageInfo extends Base {
 		}
 
 		return Promise.resolve(store);//in the future, this may need to be async...
+	}
+
+	getStreamDataSource () {
+		return new PageInfoStreamDataSource(this[Service], this);
 	}
 }
 
