@@ -1,11 +1,6 @@
-import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
-class BaseSiteInvitation extends Base {
-	static MimeType = COMMON_PREFIX + 'siteinvitation'
-
+export default class BaseSiteInvitation extends Base {
 	static Fields = {
 		...Base.Fields,
 		'receiver':     { type: 'string'  },
