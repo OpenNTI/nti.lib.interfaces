@@ -11,6 +11,7 @@ export * as credit from './credit';
 export * as entities from './entities';
 export * as forums from './forums';
 export * as integrations from './integrations';
+export * as invitations from './invitations';
 export * as media from './media';
 export * as profile from './profile';
 export * as reports from './reports';
