@@ -75,9 +75,12 @@ class CourseCatalogEntry extends Base {
 		let taRe = (/Teaching Assistant/i),
 			instructors = this.Instructors;
 
-		return (instructors && instructors
-			.filter(n=>!taRe.test(n.JobTitle))
-			.map(n=>n.Name).join(', ')
-		) || '';
+		let nonAssistants = (instructors || [])
+			.filter(n=>!taRe.test(n.JobTitle));
+
+		let assistants = (instructors || [])
+			.filter(n=>taRe.test(n.JobTitle));
+
+		return nonAssistants.concat(assistants).map(n=>n.Name).join(', ');
 	}
 }
