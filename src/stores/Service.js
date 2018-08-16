@@ -891,10 +891,12 @@ class ServiceDocument extends EventEmitter {
 						parse(this, parent, item)))));
 		};
 
-		if (!cache.get(url)) {
-			cache.set(url, fetch());
+		let promise = cache.get(url);
+
+		if (!promise) {
+			cache.set(url, promise = fetch());
 		}
 
-		return cache.get(url);
+		return promise;
 	}
 }
