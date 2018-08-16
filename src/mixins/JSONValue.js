@@ -1,6 +1,6 @@
-import isFunction from 'is-function';
-
 import {readValueFor} from './Fields';
+
+const isFunction = f => typeof f === 'function';
 
 const BLACK_LISTED = {
 	Class: true,
