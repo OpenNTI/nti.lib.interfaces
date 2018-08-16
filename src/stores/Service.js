@@ -847,15 +847,44 @@ class ServiceDocument extends EventEmitter {
 	}
 
 
-	async getContextPathFor (ntiid) {
-		let {href} = this.getCollection('LibraryPath', 'Global') || {};
+	/**
 
-		if (!href) {
-			return Promise.reject({statusCode: NOT_IMPLEMENTED, message: 'PathToContainerId is not available here.'});
+	 * @method getContextPathFor
+	 * @param  {string|object} thing The NTIID or model to retrieve a LibraryPath for.
+	 * @return {Promise} Resolves with library path
+	 */
+	async getContextPathFor (thing) {
+		let url = thing.getLink && thing.getLink('LibraryPath');
+
+		if (!url) {
+			const id = thing && (thing.getID && thing.getID()) || thing;
+			if (typeof id !== 'string') {
+				throw new Error('Invalid Argument! Must be an id, or an object that implements getID()');
+			}
+
+			const {href} = this.getCollection('LibraryPath', 'Global') || {};
+			if (!href) {
+				throw Object.assign(new Error('PathToContainerId is not available here.'), { statusCode: NOT_IMPLEMENTED });
+			}
+
+			url = URL.appendQueryParams(href, {objectId: id});
 		}
 
-		const data = await this.get(URL.appendQueryParams(href, {objectId: ntiid}));
+		const fetch = async () => {
+			const parent = typeof thing === 'object' ? thing : this;
+			const data = await this.get(url);
+			// data will be an array of arrays of models.
+			// So:
+			// 		[
+			// 			[course, outline, etc...], // <- a path to thing
+			// 			[...] // <- another path to thing
+			// 		]
+			return Promise.all(
+				data.map(p =>
+					maybeWait(p.map(item =>
+						parse(this, parent, item)))));
+		};
 
-		return Promise.all(data.map(p => p.map(item => maybeWait(parse(this, this, item)))));
+		return fetch();
 	}
 }

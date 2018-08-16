@@ -101,19 +101,7 @@ class Base extends EventEmitter {
 
 
 	async getContextPath () {
-		let path = null;
-
-		try {
-			path = await this.fetchLinkParsed('LibraryPath');
-		} catch (reason) {
-			if(reason !== NO_LINK) {
-				throw reason;
-			}
-
-			path = await this[Service].getContextPathFor(this.getID());
-		}
-
-		return maybeWait(path);
+		return this[Service].getContextPathFor(this);
 	}
 
 
