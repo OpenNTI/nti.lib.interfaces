@@ -1,5 +1,4 @@
-import {updateValue} from '@nti/lib-commons';
-import isEmpty from 'isempty';
+import {isEmpty, updateValue} from '@nti/lib-commons';
 
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';

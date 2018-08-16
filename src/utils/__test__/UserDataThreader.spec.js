@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import isEmpty from 'isempty';
+import { isEmpty } from '@nti/lib-commons';
 
 import * as UserDataThreader from '../UserDataThreader';
 

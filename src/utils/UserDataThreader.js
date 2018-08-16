@@ -1,5 +1,5 @@
 import Logger from '@nti/util-logger';
-import isEmpty from 'isempty';
+import { isEmpty } from '@nti/lib-commons';
 
 export const PARENT = Symbol('Thread Links:Parent');
 export const CHILDREN = Symbol('Thread Links:Children');
