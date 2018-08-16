@@ -4,6 +4,7 @@ import Logger from '@nti/util-logger';
 import {mixin} from '@nti/lib-decorators';
 import { isNTIID } from '@nti/lib-ntiids';
 import { URL, wait } from '@nti/lib-commons';
+import LRU from 'lru-cache';
 
 import { parse } from '../models/Parser';
 import { Workspace } from '../models';
@@ -47,6 +48,8 @@ const RequestEntityResolve = Symbol('RequestEntityResolve');
 
 const logger = Logger.get('Service');
 
+const LibraryPathCache = LRU({ max: 100, maxAge: 3600000 /*1 hour*/ });
+
 function hideCurrentProperties (o) {
 	for (let key of Object.keys(o)) {
 		const desc = Object.getOwnPropertyDescriptor(o, key);
@@ -57,6 +60,8 @@ function hideCurrentProperties (o) {
 		}
 	}
 }
+
+
 
 export default
 @mixin(Pendability, InstanceCacheContainer)
@@ -854,6 +859,7 @@ class ServiceDocument extends EventEmitter {
 	 * @return {Promise} Resolves with library path
 	 */
 	async getContextPathFor (thing) {
+		const cache = LibraryPathCache;
 		let url = thing.getLink && thing.getLink('LibraryPath');
 
 		if (!url) {
@@ -885,6 +891,10 @@ class ServiceDocument extends EventEmitter {
 						parse(this, parent, item)))));
 		};
 
-		return fetch();
+		if (!cache.get(url)) {
+			cache.set(url, fetch());
+		}
+
+		return cache.get(url);
 	}
 }
