@@ -8,9 +8,10 @@ class UserBundleRecord extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'Bundle':       { type: 'model' },
-		'User':         { type: 'model' },
-		'LastSeenTime': { type: 'date' }
+		'Bundle':       { type: 'model'  },
+		'User':         { type: 'model'  },
+		'LastSeenTime': { type: 'date'   },
+		'Reports':      { type: 'model[]'}
 	}
 
 }
