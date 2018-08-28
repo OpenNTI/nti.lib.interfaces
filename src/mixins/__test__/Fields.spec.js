@@ -8,27 +8,27 @@ import Fields, {IsFieldSet} from '../Fields';
 const logger = Logger.get('mixins:Fields');
 
 expect.extend({
-	toEqualFields (received, expected) {
+	toEqualFields (received, _expected) {
 		const {expand, utils} = this;
 		// const r = {...FieldSet, ...received};
-		const e = {[IsFieldSet]: true, ...expected};
-		const pass = this.equals(received, e);
+		const expected = {[IsFieldSet]: true, ..._expected};
+		const pass = this.equals(received, expected);
 
 		const message = pass
 			? () =>
 				utils.matcherHint('.not.toEqualFields') +
 				'\n\n' +
 				'Expected value to not be:\n' +
-				`  ${utils.printExpected(e)}\n` +
+				`  ${utils.printExpected(expected)}\n` +
 				'Received:\n' +
 				`  ${utils.printReceived(received)}`
 			: () => {
-				const diffString = diff(e, received, {expand});
+				const diffString = diff(expected, received, {expand});
 				return (
 					utils.matcherHint('.toEqualFields') +
 					'\n\n' +
 					'Expected value to be:\n' +
-					`  ${utils.printExpected(e)}\n` +
+					`  ${utils.printExpected(expected)}\n` +
 					'Received:\n' +
 					`  ${utils.printReceived(received)}` +
 					(diffString ? `\n\nDifference:\n\n${diffString}` : '')
