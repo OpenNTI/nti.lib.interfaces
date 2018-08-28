@@ -10,11 +10,14 @@ class Annotation extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'ContainerId': 			{ type: 'string' 	},
-		'ID':          			{ type: 'string' 	},
-		'applicableRange': 		{ type: 'model' 	},
-		'sharedWith': 			{ type: 'string[]' 	},
-		'prohibitReSharing': 	{ type: 'boolean' 	},
+		'AutoTags':               { type: '*'        },
+		'ContainerId':            { type: 'string'   },
+		'ID':                     { type: 'string'   },
+		'applicableRange':        { type: 'model'    },
+		'sharedWith':             { type: 'string[]' },
+		'presentationProperties': { type: '*'        },
+		'prohibitReSharing':      { type: 'boolean'  },
+		'tags':                   { type: 'string[]' },
 	}
 
 	constructor (service, parent, data) {
