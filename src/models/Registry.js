@@ -50,13 +50,37 @@ export default class Registry {
 
 
 	register (o) {
-		if (!o || !o.MimeType || typeof o !== 'function') {
-			throw new TypeError('Illegial Argument: Model class expected');
+		if (!o || !o.MimeType || !o.hasOwnProperty('MimeType') || typeof o !== 'function') {
+			throw new TypeError(`Illegial Argument: Model class expected:
+				Has Argument: ${!!o}
+				Has MimeType: ${o && !!o.MimeType}
+				Is Own MimeType: ${o && o.hasOwnProperty('MimeType')}: ${o.MimeType} (${o.name})
+				Is Class: ${typeof o === 'function'}
+				`.replace(/\t+/g, '\t'));
 		}
 
-		o.MimeTypes = (Array.isArray(o.MimeType) ? o.MimeType : [o.MimeType]).filter(Boolean);
-		//force MimeType to be a scalar value instead of a list...
-		o.MimeType = o.MimeTypes[0];
+		const MimeTypes = (Array.isArray(o.MimeType) ? o.MimeType : [o.MimeType]).filter(Boolean);
+		const [MimeType] = MimeTypes;
+
+		delete o.MimeType;
+		delete o.MimeTypes;
+
+		Object.defineProperties(o, {
+			//force MimeType to be a scalar value instead of a list...
+			MimeType: {
+				configurable: true,
+				enumerable: true,
+				writable: true,
+				value: MimeType
+			},
+			MimeTypes: {
+				configurable: true,
+				enumerable: true,
+				writable: true,
+				value: MimeTypes
+			}
+		});
+
 		o.prototype[IsModel] = true;
 
 		const types = o.MimeTypes.map(trimCommonPrefix);
@@ -66,7 +90,7 @@ export default class Registry {
 				logger.warn('Overriding Type!! %s with %o was %o', type, o, this[MAP].get(type));
 			}
 
-			logger.debug('Registering %s to %o', type, o);
+			logger.debug('Registering %s to %o (%d)', type, o, this[MAP].size);
 			this[MAP].set(type, o);
 		}
 
