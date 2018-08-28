@@ -1,8 +1,9 @@
 import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
+export default
 @model
-export default class Bookmark extends Base {
+class Bookmark extends Base {
 	static MimeType = COMMON_PREFIX + 'bookmark';
 
 	static Fields = {
