@@ -23,7 +23,6 @@ class Note extends Highlight {
 		'ReferencedByCount':      { type: 'number'   },
 		'LikeCount':              { type: 'number'   },
 		'title':                  { type: 'string'   },
-		'sharedWith':             { type: 'string[]' },
 		'presentationProperties': { type: 'object'   },
 		'style':                  { type: 'string'   },
 		'Class':                  { type: 'string'   }

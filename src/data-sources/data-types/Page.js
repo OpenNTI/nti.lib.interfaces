@@ -1,8 +1,8 @@
 import Batch from './Batch';
 
 export default class Page extends Batch {
-	static Field = {
-		...Batch.fields,
+	static Fields = {
+		...Batch.Fields,
 		'PageSize':               {type: 'number'},
 		'TotalItemCount':         {type: 'number'},
 		'FilteredTotalItemCount': {type: 'number'}

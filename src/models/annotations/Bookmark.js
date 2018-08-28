@@ -1,17 +1,14 @@
 import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+
+import Annotation from './Annotation';
 
 export default
 @model
-class Bookmark extends Base {
+class Bookmark extends Annotation {
 	static MimeType = COMMON_PREFIX + 'bookmark';
 
 	static Fields = {
-		...Base.Fields,
-		sharedWith: { type: 'string[]' },
-		prohibitReSharing: { type: 'boolean' },
-		applicableRange: { type: 'model' },
-		selectedText: { type: 'string' },
+		...Annotation.Fields,
 	};
 }
 

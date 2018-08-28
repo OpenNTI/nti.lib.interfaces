@@ -9,7 +9,6 @@ class Highlight extends Annotation {
 
 	static Fields = {
 		...Annotation.Fields,
-		'applicableRange': { type: 'model' },
 		'selectedText': { type: 'string' },
 		'presentationProperties': { type: '*' }
 	}

@@ -2,6 +2,7 @@ import Base from '../../models/Base';
 
 export default class Batch extends Base {
 	static Fields = {
+		...Base.Fields,
 		'BatchPage':              {type: 'number'                   },
 		'Items':                  {type: 'model[]', defaultValue: []},
 		'Name':                   {type: 'string'                   },
