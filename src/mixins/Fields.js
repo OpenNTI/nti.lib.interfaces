@@ -44,8 +44,6 @@ const isArrayType = _t.bind(/\[]$/);
 
 export default function FieldsApplier (target) {
 
-	initFields(target);
-
 	return {
 
 		__toRaw () {
@@ -67,10 +65,6 @@ export default function FieldsApplier (target) {
 			} = getFields(this, data);
 
 			const MissingFields = FieldKeys.filter(x => !noData && !(x in data));
-
-			if (!Fields[IsFieldSet]) {
-				logger.debug('Model "%s" has not included the base Fields', getTypeName(this));
-			}
 
 			for(let overlapping of Object.keys(data).filter(x => FieldRenames.includes(x))) {
 				logger.debug('Model "%s" declares a field "%s" but it shadows another. data: %o', getTypeName(this), overlapping, data);
@@ -282,38 +276,6 @@ export default function FieldsApplier (target) {
 			return this;
 		}
 	};
-}
-
-
-function initFields (target) {
-
-	function validateFields (Fields, Class) {
-		const fields = Object.keys(Fields || {});
-		for (let field of fields) {
-			const {name = field, type/*, required, defaultValue*/} = Fields[field] || {};
-			let tKey = isArrayType(type) ? type.substr(0, type.length - 2) : type;
-			if (typeof tKey === 'string' && !TYPE_MAP.hasOwnProperty(tKey)) {
-				throw new TypeError(`${Class.name}: Invalid Field "${name}". The type "${type}" is not defined.`);
-			}
-		}
-	}
-
-	const slot = initFields.slot || (initFields.slot = Symbol.for('[[Fields]]'));
-
-	target[slot] = target.Fields;
-	target[slot][IsFieldSet] = true;
-	validateFields(target.Fields, target);
-
-	updateField(target, 'Fields', {
-		enumerable: true,
-		configurable: true,
-		get () { return this[slot]; },
-		set (newFields) {
-			validateFields(this[slot] = {
-				...newFields
-			}, this);
-		}
-	});
 }
 
 

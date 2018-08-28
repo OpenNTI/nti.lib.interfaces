@@ -8,10 +8,10 @@ import Fields, {IsFieldSet} from '../Fields';
 const logger = Logger.get('mixins:Fields');
 
 expect.extend({
-	toEqualFields (received, _expected) {
+	toEqualFields (received, expected) {
 		const {expand, utils} = this;
 		// const r = {...FieldSet, ...received};
-		const expected = {[IsFieldSet]: true, ..._expected};
+		// const expected = {[IsFieldSet]: true, ..._expected};
 		const pass = this.equals(received, expected);
 
 		const message = pass
@@ -75,17 +75,11 @@ describe('Fields Mixin', () => {
 			foo: {type: 'string'},
 		});
 
-		expect(Bar.Fields).toEqual({
-			bar: {type: 'string'},
-		});
-
-		expect(Bar.Fields).not.toEqualFields({
+		expect(Bar.Fields).toEqualFields({
 			bar: {type: 'string'},
 		});
 
 		expect(() => new Bar).not.toThrow();
-
-		expect(logger.debug).toHaveBeenCalledWith('Model "%s" has not included the base Fields', 'Bar');
 	});
 
 	test ('Fields do not log if you spread the base...', () => {
@@ -119,8 +113,6 @@ describe('Fields Mixin', () => {
 		});
 
 		expect(() => new Bar).not.toThrow();
-
-		expect(logger.debug).not.toHaveBeenCalledWith('Model "%s" has not included the base Fields', 'Bar');
 	});
 
 	test ('Fields do not Combine when assigned', () => {
