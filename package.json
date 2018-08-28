@@ -28,7 +28,7 @@
     "registry": "https://npm.nextthought.com"
   },
   "dependencies": {
-    "@nti/lib-commons": "^2.16.0",
+    "@nti/lib-commons": "^2.20.0",
     "@nti/lib-decorators": "^1.4.0",
     "@nti/lib-ntiids": "^1.0.0",
     "@nti/util-logger": "^1.0.0",
