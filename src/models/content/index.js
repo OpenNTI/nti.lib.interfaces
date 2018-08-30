@@ -1,3 +1,4 @@
+export ActivityStreamDataSource from './ActivityStreamDataSource';
 export Bundle from './Bundle';
 export ContentPackageRenderJob from './ContentPackageRenderJob';
 export File from './File';

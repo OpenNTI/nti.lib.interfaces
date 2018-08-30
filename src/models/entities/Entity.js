@@ -1,6 +1,7 @@
 import Stream from '../../stores/Stream';
 import ActivityCollator from '../../utils/activity-collator';
 import { Service } from '../../constants';
+import ActivityStreamDataSource from '../content/ActivityStreamDataSource';
 import Base from '../Base';
 
 
@@ -61,6 +62,11 @@ export default class Entity extends Base {
 
 	get displayName () {
 		return this.alias || this.realname || this.Username;
+	}
+
+
+	get activityStreamDataSource () {
+		return new ActivityStreamDataSource(this[Service], this);
 	}
 
 
