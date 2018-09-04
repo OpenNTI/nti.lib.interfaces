@@ -289,7 +289,7 @@ function applyFieldStrategy (scope, name, type, value, declared, defaultValue, k
 		if (typeof type === 'function') {
 			let val = null;
 			//Explicit model:
-			if (type.prototype[IsModel]) {
+			if (type.prototype && type.prototype[IsModel]) {
 				val = new type(scope[Service], scope, value);
 
 			//some one-off converter function: (please don't use this)
