@@ -65,6 +65,11 @@ class Base extends EventEmitter {
 	}
 
 
+	dispatch (...args) {
+		this[Service].dispatch(...args);
+	}
+
+
 	get isCreatedByAppUser () {
 		return this[Service].getAppUsername() === this.creator;
 	}

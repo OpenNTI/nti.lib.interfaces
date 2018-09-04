@@ -87,6 +87,11 @@ class ServiceDocument extends EventEmitter {
 	}
 
 
+	dispatch (...args) {
+		this[Server].dispatch(...args);
+	}
+
+
 	toJSON () {
 		const {
 			capabilities,

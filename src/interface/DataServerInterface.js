@@ -72,6 +72,13 @@ export default class DataServerInterface extends EventEmitter {
 	}
 
 
+	dispatch (...args) {
+		if (this.config.dispatch) {
+			this.config.dispatch.call(null, args);
+		}
+	}
+
+
 	/**
 	 * Add/Set header values to be sent with all requests.
 	 *
