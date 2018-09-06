@@ -38,7 +38,8 @@ class Enrollment extends Base {
 		'RealEnrollmentStatus':   { type: 'string'  },
 		'Username':               { type: 'string'  },
 		'UserProfile':            { type: 'model'   },
-		'Reports':                { type: 'model[]' }
+		'Reports':                { type: 'model[]' },
+		'LastSeenTime':           { type: 'date'    }
 	}
 
 	//@private
