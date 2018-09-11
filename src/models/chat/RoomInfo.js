@@ -7,6 +7,7 @@ export default
 class RoomInfo extends Base {
 	static MimeType = [
 		COMMON_PREFIX + '_meeting',
+		COMMON_PREFIX + 'meeting',
 		COMMON_PREFIX + 'roominfo'
 	]
 
