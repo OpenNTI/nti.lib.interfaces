@@ -13,7 +13,6 @@ import {
 import AssessmentCollectionStudentView from '../assessment/assignment/CollectionStudentView';
 import AssessmentCollectionInstructorView from '../assessment/assignment/CollectionInstructorView';
 import Roster from '../../stores/CourseRoster';
-import binDiscussions from '../../utils/forums-bin-discussions';
 import MediaIndex from '../media/MediaIndex';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -335,10 +334,6 @@ class Instance extends Base {
 		}
 
 		const contents = o => o ? o.getContents() : Promise.reject(NOT_DEFINED);
-		const getID = o => o ? o.getID() : null;
-
-		const sectionId = getID(this.Discussions);
-		const parentId = getID(this.ParentDiscussions);
 
 		let refreshRequest = Promise.resolve();
 
@@ -350,31 +345,7 @@ class Instance extends Base {
 			return Promise.all([
 				contents(this.Discussions).catch(logAndResume),
 				contents(this.ParentDiscussions).catch(logAndResume)
-			])
-				.then(([section, parent]) => {
-
-					if (section) {
-						section.NTIID = sectionId;
-					}
-
-					if (parent) {
-						parent.NTIID = parentId;
-					}
-
-					let bins = binDiscussions(section, parent);
-
-					// Stub out empty case
-					if(!section.Items || section.Items.length === 0) {
-						bins.Other = {
-							...bins.Other,
-							Section: {
-								id: this.Discussions.id
-							}
-						};
-					}
-
-					return bins;
-				});
+			]);
 		});
 	}
 
