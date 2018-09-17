@@ -19,6 +19,8 @@ class Forum extends Base {
 		COMMON_PREFIX + 'forums.dflforum',
 	]
 
+	static HIDE_PREFIXS = ['Open', 'In-Class']
+
 	static Fields = {
 		...Base.Fields,
 		'ID':                          { type: 'string' }, // Local id (within the container)
@@ -28,6 +30,16 @@ class Forum extends Base {
 		'TopicCount':                  { type: 'number' },
 		'description':                 { type: 'string' },
 		'title':                       { type: 'string' },
+	}
+
+	get displayTitle () {
+		for (let x of Forum.HIDE_PREFIXS) {
+			if (this.title.startsWith(x)) {
+				return this.title.replace(x, '');
+			}
+		}
+
+		return this.title;
 	}
 
 	getBin () {
@@ -80,5 +92,12 @@ class Forum extends Base {
 
 	getContentsDataSource () {
 		return new ForumContentsDataSource(this[Service], this);
+	}
+
+	async edit (payload) {
+		await this.putToLink('edit', payload);
+
+		const parent = this.parent();
+		parent.emit('change');
 	}
 }
