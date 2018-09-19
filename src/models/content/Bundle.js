@@ -7,6 +7,7 @@ import TablesOfContents from '../content/TablesOfContents';
 import MediaIndex from '../media/MediaIndex';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
+import Forum from '../forums/Forum';
 
 import BundleStreamDataSource from './BundleStreamDataSource.js';
 
@@ -46,6 +47,8 @@ class Bundle extends Base {
 		for (let p of this.ContentPackages) {
 			p.on('change', onChange);
 		}
+
+		this.addToPending(resolveDiscussions(this));
 	}
 
 
@@ -122,17 +125,12 @@ class Bundle extends Base {
 
 
 	getDiscussions () {
-		return this.fetchLinkParsed('DiscussionBoard')
-			.then(board => board.getContents())
-			.then(data => ({
-				Other: {
-					Section: {
-						forums: data.Items
-					}
-				}
-			}));
+		return this.Discussions.getContents().then(data => [data]);
 	}
 
+	getForumType () {
+		return Forum.MimeTypes[2];
+	}
 
 	hasDiscussions () {
 		return this.hasLink('DiscussionBoard');
@@ -161,4 +159,9 @@ class Bundle extends Base {
 	getStreamDataSource () {
 		return new BundleStreamDataSource(this[Service], this);
 	}
+}
+
+
+async function resolveDiscussions (bundle) {
+	bundle.Discussions = await bundle.fetchLinkParsed('DiscussionBoard');
 }

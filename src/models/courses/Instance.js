@@ -16,6 +16,7 @@ import Roster from '../../stores/CourseRoster';
 import MediaIndex from '../media/MediaIndex';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
+import Forum from '../forums/Forum';
 
 import ActivityStream from './BucketedActivityStream';
 import CourseIdentity from './mixins/CourseIdentity';
@@ -349,6 +350,9 @@ class Instance extends Base {
 		});
 	}
 
+	getForumType () {
+		return Forum.MimeTypes[1];
+	}
 
 	hasDiscussions () {
 		return !!(this.Discussions || this.ParentDiscussions);
