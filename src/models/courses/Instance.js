@@ -327,7 +327,7 @@ class Instance extends Base {
 	}
 
 
-	getDiscussions (reloadBoard) {
+	async getDiscussions (reloadBoard) {
 		function logAndResume (reason) {
 			if (reason !== NOT_DEFINED) {
 				logger.warn('Could not load board: %o', reason);
@@ -336,18 +336,17 @@ class Instance extends Base {
 
 		const contents = o => o ? o.getContents() : Promise.reject(NOT_DEFINED);
 
-		let refreshRequest = Promise.resolve();
-
 		if(reloadBoard) {
-			refreshRequest = this.Discussions.refresh();
+			await this.Discussions.refresh();
+			if (this.ParentDiscussions) {
+				await this.ParentDiscussions.refresh();
+			}
 		}
 
-		return refreshRequest.then(() => {
-			return Promise.all([
-				contents(this.Discussions).catch(logAndResume),
-				contents(this.ParentDiscussions).catch(logAndResume)
-			]);
-		});
+		return Promise.all([
+			contents(this.Discussions).catch(logAndResume),
+			contents(this.ParentDiscussions).catch(logAndResume)
+		]);
 	}
 
 	getForumType () {
