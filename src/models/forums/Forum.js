@@ -5,6 +5,7 @@ import GetContents from '../../mixins/GetContents';
 import getLink from '../../utils/getlink';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
+import { encodeIdFrom } from '../../utils/href-ntiids';
 
 import ForumContentsDataSource from './forum-contents-data-source';
 
@@ -40,6 +41,14 @@ class Forum extends Base {
 		}
 
 		return this.title;
+	}
+
+	getID () {
+		if (this.creator !== 'system' || this.title !== 'Forum') {
+			return super.getID();
+		}
+
+		return encodeIdFrom(this.href);
 	}
 
 	getBin () {
