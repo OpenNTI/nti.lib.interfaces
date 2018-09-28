@@ -124,7 +124,12 @@ class Bundle extends Base {
 	}
 
 
-	getDiscussions () {
+	async getDiscussions (reloadBoard) {
+
+		if (reloadBoard) {
+			await this.Discussions.refresh();
+		}
+
 		return this.Discussions.getContents().then(data => [data]);
 	}
 
