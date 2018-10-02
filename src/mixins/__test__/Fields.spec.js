@@ -3,7 +3,7 @@ import diff from 'jest-diff'; //eslint-disable-line
 import {mixin} from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
-import Fields, {IsFieldSet} from '../Fields';
+import Fields, {IsFieldSet, clone} from '../Fields';
 
 const logger = Logger.get('mixins:Fields');
 
@@ -411,6 +411,47 @@ describe('Fields Mixin', () => {
 		test('Coerce string from undefined', () => {
 			const asUndefined = new Foo({});
 			expect(asUndefined.field1).toBe(undefined);
+		});
+	});
+
+	describe('Clone Cases', () => {
+		test('Empty Object', () => {
+			const obj = {};
+			expect(clone(obj)).toEqual({});
+		});
+
+		test('Primative Values', () => {
+			const obj = { date: new Date('2018-10-05'), number: 34, name: 'John', isTrue: true };
+			expect(clone(obj)).toEqual(obj);
+			expect(clone(obj)).not.toEqual({ date: new Date('2018-10-06'), number: 43, name: 'Jake', isTrue: false });
+		});
+
+		test('Arrays', () => {
+			const obj = { test: ['test1', 'test2', 'test2'] };
+			expect(clone(obj)).toEqual(obj);
+		});
+
+		test('Objects', () => {
+			const obj = { attributes: { strength: 1, agility: 2 }, name: 'John', perks: { sneak: true, combat: ['hand-to-hand', 'archery'] } };
+			expect(clone(obj)).toEqual(obj);
+		});
+
+		test('Throw Error: Parse Twice', () => {
+			@mixin(Fields)
+			class Foo {
+				static Fields = {
+					'Items': { type: 'model[]', defaultValue: [] },
+				}
+			}
+
+			class HighLight {
+				static Fields = {
+					fieldA: { type: 'string' }
+				}
+			}
+
+			const Items = [new HighLight({ fieldA: 'test 1' }), new HighLight({ fieldA: 'test 2' })];
+			expect(() => clone(new Foo({ Items }))).toThrowErrorMatchingSnapshot();
 		});
 	});
 

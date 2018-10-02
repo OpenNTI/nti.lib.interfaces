@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Fields Mixin Clone Cases Throw Error: Parse Twice 1`] = `"Cannot clone model. Did you reparse a model?"`;

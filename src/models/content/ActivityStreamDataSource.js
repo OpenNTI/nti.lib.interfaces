@@ -15,13 +15,7 @@ export default class ActivityStreamDataSource extends PagedDataSource {
 
 		if (!link) { return Promise.reject('No Link'); }
 
-		const contents = await this.service.get(URL.appendQueryParams(link, requestParams));
-		const Items = await this.service.getObject(contents.Items);
-
-		const activity = {
-			...contents,
-			Items
-		};
+		const activity = await this.service.get(URL.appendQueryParams(link, requestParams));
 
 		return new PagedBatch(this.service, this.parent, {
 			PageSize: batchSize,
