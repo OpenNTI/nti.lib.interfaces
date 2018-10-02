@@ -640,13 +640,21 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 
 
 
-function clone (obj) {
+export function clone (obj) {
 	if (typeof obj !== 'object' || obj == null) {
 		return obj;
 	}
 
+	if (Object.getPrototypeOf(obj) !== Object.getPrototypeOf({})) {
+		if (obj[Parser]) {
+			throw new TypeError('Cannot clone model. Did you reparse a model?');
+		}
+
+		return obj;
+	}
+
 	const out = Array.isArray(obj) ? [] : {};
-	for(let key of Object.keys(obj)) {
+	for (let key of Object.keys(obj)) {
 		out[key] = clone(obj[key]);
 	}
 
