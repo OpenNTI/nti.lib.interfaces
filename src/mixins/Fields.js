@@ -1,5 +1,5 @@
 import Logger from '@nti/util-logger';
-import {Parsing} from '@nti/lib-commons';
+import {Parsing, Array as ArrayUtils} from '@nti/lib-commons';
 import {ntiidEquals} from '@nti/lib-ntiids';
 
 import {Parser, RepresentsSameObject, Service, IsModel} from '../constants';
@@ -595,7 +595,10 @@ function applyModelDictionaryField (scope, fieldName, value, declared, defaultVa
 
 
 function applyModelField (scope, fieldName, value, declared, defaultValue) {
-	const parsed = scope[Parser](value) || null;
+	const parsedValues = ArrayUtils.ensure(value).map(v => (v && Object.getPrototypeOf(v) !== Object.getPrototypeOf({}) ? v : scope[Parser](v))).filter(Boolean);
+
+	const parsed = Array.isArray(value) ? parsedValues : parsedValues[0] || null;
+
 	//Just preserve old behavior (things expect empty values to be falsy, including empty arrays)
 	const v = Array.isArray(parsed) && parsed.length === 0 ? null : parsed;
 
