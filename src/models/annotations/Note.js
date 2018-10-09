@@ -53,7 +53,7 @@ class Note extends Highlight {
 				MimeType: 'application/vnd.nextthought.note',
 				body,
 				ContainerId: this.ContainerId,
-				applicableRange: this.applicableRange,
+				applicableRange: this.applicableRange && this.applicableRange.getData(),
 				inReplyTo: this.getID(),
 				references: (this.references || []).slice().concat(this.getID())
 			});
