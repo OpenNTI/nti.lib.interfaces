@@ -73,7 +73,7 @@ export default {
 
 		Object.assign(result, {
 			ReferencedByCount: 0,
-			applicableRange,
+			applicableRange: applicableRange && applicableRange.getData(),
 			body: ['This message has been deleted.'],
 			Class,
 			ContainerId,
