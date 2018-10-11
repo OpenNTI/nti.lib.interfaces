@@ -48,6 +48,7 @@ class User extends Entity {
 		'linkedIn':           { type: 'string'    },
 		'facebook':           { type: 'string'    },
 		'email':              { type: 'string'    },
+		'role':               { type: 'string'    },
 		'about':              { type: 'string[]'  },
 		'interests':          { type: 'string[]'  },
 		'lastSeenTime':       { type: 'date'      }
