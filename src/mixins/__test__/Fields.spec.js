@@ -442,6 +442,9 @@ describe('Fields Mixin', () => {
 				static Fields = {
 					'Items': { type: 'model[]', defaultValue: [] },
 				}
+				constructor (data) {
+					this.initMixins(data);
+				}
 			}
 
 			class HighLight {
@@ -451,7 +454,8 @@ describe('Fields Mixin', () => {
 			}
 
 			const Items = [new HighLight({ fieldA: 'test 1' }), new HighLight({ fieldA: 'test 2' })];
-			expect(() => clone(new Foo({ Items }))).toThrowErrorMatchingSnapshot();
+			const clonedFoo = clone(new Foo({ Items }));
+			expect(clonedFoo.Items).toEqual(Items);
 		});
 	});
 
