@@ -649,9 +649,12 @@ export function clone (obj) {
 	}
 
 	if (Object.getPrototypeOf(obj) !== Object.getPrototypeOf({})) {
-		if (obj[Parser]) {
-			throw new TypeError('Cannot clone model. Did you reparse a model?');
-		}
+		/**
+		 * We decided to pass models along.
+		 * They will be handeled in the applyModelField as a model and not be reparsed.
+		 * This was a problem when we passed parsed models and then reparsed them again.
+		 * Since we are no longer doing that this shouldn't be an issue.
+		 */
 
 		return obj;
 	}
