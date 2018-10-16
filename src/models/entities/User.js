@@ -177,6 +177,10 @@ class User extends Entity {
 			.then(account => account.ProfileSchema);
 	}
 
+	preflightProfile (data) {
+		return this.putToLink('account.profile.preflight', data);
+	}
+
 
 	getAchievements () {
 		if (!this.hasLink('Badges')) {
