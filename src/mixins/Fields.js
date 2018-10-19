@@ -648,7 +648,7 @@ export function clone (obj) {
 		return obj;
 	}
 
-	if (Object.getPrototypeOf(obj) !== Object.getPrototypeOf({})) {
+	if (!Array.isArray(obj) && Object.getPrototypeOf(obj) !== Object.getPrototypeOf({})) {
 		/**
 		 * We decided to pass models along.
 		 * They will be handeled in the applyModelField as a model and not be reparsed.
