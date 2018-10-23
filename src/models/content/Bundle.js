@@ -35,6 +35,7 @@ class Bundle extends Base {
 		'PlatformPresentationResources':        { type: 'object'                    },
 		'root':                                 { type: 'string'                    },
 		'Reports':								{ type: 'model[]'					},
+		'PublicationState':                     { type: 'string'                    }
 	}
 
 	isBundle = true
@@ -68,6 +69,11 @@ class Bundle extends Base {
 		}
 
 		return root;
+	}
+
+
+	isPublished () {
+		return this.MimeType !== 'application/vnd.nextthought.publishablecontentpackagebundle' || !!this.PublicationState;
 	}
 
 
