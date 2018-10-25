@@ -3,6 +3,7 @@ export AssignmentFeedback from './AssignmentFeedback';
 export AssignmentFeedbackContainer from './AssignmentFeedbackContainer';
 export AssignmentHistoryCollection from './AssignmentHistoryCollection';
 export AssignmentHistoryItem from './AssignmentHistoryItem';
+export AssignmentHistoryItemContainer from './AssignmentHistoryItemContainer';
 export AssignmentHistoryItemSummary from './AssignmentHistoryItemSummary';
 export AssignmentMetadataItem from './AssignmentMetadataItem';
 export AssignmentPart from './AssignmentPart';
