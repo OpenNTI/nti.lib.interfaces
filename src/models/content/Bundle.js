@@ -49,7 +49,9 @@ class Bundle extends Base {
 			p.on('change', onChange);
 		}
 
-		this.addToPending(resolveDiscussions(this));
+		if(!data.homepage) {
+			this.addToPending(resolveDiscussions(this));
+		}
 	}
 
 
