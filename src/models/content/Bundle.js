@@ -48,8 +48,6 @@ class Bundle extends Base {
 		for (let p of this.ContentPackages) {
 			p.on('change', onChange);
 		}
-
-		this.addToPending(resolveDiscussions(this));
 	}
 
 
@@ -131,6 +129,10 @@ class Bundle extends Base {
 
 
 	async getDiscussions (reloadBoard) {
+
+		if(!this.Discussions) {
+			this.Discussions = await resolveDiscussions(this);
+		}
 
 		if (reloadBoard) {
 			await this.Discussions.refresh();
