@@ -129,16 +129,15 @@ class Bundle extends Base {
 
 
 	async getDiscussions (reloadBoard) {
-
 		if(!this.Discussions) {
-			this.Discussions = await resolveDiscussions(this);
-		}
+			this.addToPending(resolveDiscussions(this));
+		} else {
+			if (reloadBoard) {
+				await this.Discussions.refresh();
+			}
 
-		if (reloadBoard) {
-			await this.Discussions.refresh();
+			return this.Discussions.getContents().then(data => [data]);
 		}
-
-		return this.Discussions.getContents().then(data => [data]);
 	}
 
 	getForumType () {
