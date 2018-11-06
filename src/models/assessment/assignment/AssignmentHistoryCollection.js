@@ -50,10 +50,7 @@ class AssignmentHistoryCollection extends Base {
 
 
 	getItem (assignmentId) {
-		const container = this.Items[assignmentId];
-		const item = container && container.getHistoryItem();
-
-		return item || container;
+		return this.Items[assignmentId];
 	}
 
 

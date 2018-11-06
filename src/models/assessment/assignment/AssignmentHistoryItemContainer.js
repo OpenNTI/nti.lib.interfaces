@@ -8,10 +8,10 @@ class AssignmentHistoryItemContainer extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'Items':                     { type: 'model{}'  }
+		'Items':                     { type: 'model[]'  }
 	}
 
-	getHistoryItem () {
-		return this.Items && this.Items['UsersCourseAssignmentHistoryItem'];
+	getMostRecentHistoryItem () {
+		return this.Items && this.Items[this.Items.length - 1];
 	}
 }

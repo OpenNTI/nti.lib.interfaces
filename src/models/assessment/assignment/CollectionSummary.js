@@ -26,6 +26,12 @@ class AssignmentSummary extends EventEmitter {
 		}
 	}
 
+	get historyItem () {
+		const data = getPrivate(this);
+
+		return data.history && data.history.getMostRecentHistoryItem && data.history.getMostRecentHistoryItem();
+	}
+
 	get username () {
 		return getPrivate(this).username;
 	}
@@ -59,28 +65,23 @@ class AssignmentSummary extends EventEmitter {
 	}
 
 	get completed () {
-		const {history} = getPrivate(this);
-		return history && history.getCreatedTime();
+		return this.historyItem && this.historyItem.getCreatedTime();
 	}
 
 	get grade () {
-		const {history} = getPrivate(this);
-		return history && history.grade;
+		return this.historyItem && this.historyItem.grade;
 	}
 
 	get feedback () {
-		const {history} = getPrivate(this);
-		return history && history.Feedback;
+		return this.historyItem && this.historyItem.Feedback;
 	}
 
 	get feedbackCount () {
-		const {history} = getPrivate(this);
-		return history && history.feedbackCount;
+		return this.historyItem && this.historyItem.feedbackCount;
 	}
 
 	get isCreatedByAppUser () {
-		const {history} = getPrivate(this);
-		return history.isCreatedByAppUser;
+		return this.historyItem.isCreatedByAppUser;
 	}
 
 	getContentId () { return this.assignmentId; }
@@ -180,6 +181,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 		clearCache(this);
 
 		history.setItem(assignmentId, historyItem);
+
 		this.emit('change', 'new-history');
 	}
 
@@ -187,7 +189,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 	getHistoryFor (assignmentId) {
 		const {history} = getPrivate(this);
 		const container = history && history.getItem(assignmentId);
-		return container && container.getHistoryItem();
+		return container && container.getMostRecentHistoryItem();
 	}
 
 
