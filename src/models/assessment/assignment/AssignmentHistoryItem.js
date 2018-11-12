@@ -16,6 +16,7 @@ class AssignmentHistoryItem extends Base {
 		'Submission':          { type: 'model'                 },
 		'SyntheticSubmission': { type: 'boolean'               },
 		'pendingAssessment':   { type: 'model'                 },
+		'MetadataAttemptItem': { type: 'model' 				   },
 	}
 
 

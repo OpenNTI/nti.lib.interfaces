@@ -48,7 +48,8 @@ class Assignment extends Base {
 		'PublicationState':                     { type: 'string',                                      },
 		'NoSubmit':                             { type: 'boolean',                                     },
 		'Reports':                              { type: 'model[]'                                      },
-		'submission_buffer':                    { type: 'number', name: 'submissionBuffer'             }
+		'submission_buffer':                    { type: 'number', name: 'submissionBuffer'             },
+		'CurrentMetadataAttemptItem':					{ type: 'model' 									   },
 		// Do not add a Target-NTIID field to this model. Legacy overview models shared this mimetype but have a
 		// different shape... leave those warnings in the console.
 	}
@@ -61,6 +62,22 @@ class Assignment extends Base {
 
 	ensureNotSummary () {
 		return this.IsSummary ? this.refresh() : Promise.resolve(this);
+	}
+
+	shouldAutoStart () {
+		return !this.IsTimedAssignment;
+	}
+
+	async start () {
+		if (this.hasLink('Commence')) {
+			const rawAssignment = await this.postToLink('Commence');
+			await this.refresh(rawAssignment);
+		} else if (this.CurrentMetadataAttemptItem) {
+			const rawAssignment = await this.CurrentMetadataAttemptItem.fetchLink('Assignment');
+			await this.refresh(rawAssignment);
+		}
+
+		return this;
 	}
 
 

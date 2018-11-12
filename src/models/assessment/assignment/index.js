@@ -10,5 +10,6 @@ export AssignmentPart from './AssignmentPart';
 export AssignmentReference from './AssignmentReference';
 export AssignmentSubmission from './AssignmentSubmission';
 export DiscussionAssignment from './DiscussionAssignment';
+export MetadataAttemptItem from './MetadataAttemptItem';
 export SavePointItem from './SavePointItem';
 export TimedAssignment from './TimedAssignment';
