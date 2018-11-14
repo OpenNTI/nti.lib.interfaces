@@ -130,7 +130,7 @@ class Bundle extends Base {
 
 	async getDiscussions (reloadBoard) {
 		if(!this.Discussions) {
-			this.addToPending(resolveDiscussions(this));
+			return await resolveDiscussions(this);
 		} else {
 			if (reloadBoard) {
 				await this.Discussions.refresh();
