@@ -27,12 +27,16 @@ export function getInstanceCache (parent) {
 export function parseOrRefresh (service, parent, data) {
 	const Cls = this;
 	const cache = parent && getInstanceCache(parent);
-	const {NTIID: id} = data;
+	let {NTIID: id} = data;
 
 	const map = cache || {};
 
+	if(Cls.deriveCacheKeyFrom) {
+		id = Cls.deriveCacheKeyFrom(data);
+	}
+
 	let inst = map[id];
-	if (!inst) {
+	if (!inst || !id) {
 		let allowNewInstance = Boolean(cache) || Cls.AllowWildDisconntectedInstances;
 		if (!cache) {
 			logger.warn('Rogue Instance! %o This parent does not desend from an InstanceCacheContainer: %o', data, parent);

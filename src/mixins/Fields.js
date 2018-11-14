@@ -161,6 +161,12 @@ export default function FieldsApplier (target) {
 
 
 		[RepresentsSameObject] (o) {
+			const Cls = this.constructor;
+
+			if(Cls.deriveCacheKeyFrom) {
+				return Cls.deriveCacheKeyFrom(this) === Cls.deriveCacheKeyFrom(o);
+			}
+
 			return ntiidEquals(this.NTIID, o.NTIID, true/*ignore "specific provider" differences*/);
 		},
 

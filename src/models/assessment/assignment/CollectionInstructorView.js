@@ -204,7 +204,14 @@ export default class CollectionInstructorView extends Base {
 		}
 
 		return this.getHistoryItem(assignmentId, username)
-			.then(history => history && history.delete())
+			.then(history => {
+				if(history.hasLink('Reset')) {
+					return history.postToLink('Reset');
+				}
+				else {
+					return Promise.reject('No reset link on history container');
+				}
+			})
 			.then(() => {
 
 				const as = this.getAssignmentSummary(assignmentId, false);

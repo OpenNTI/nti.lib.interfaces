@@ -189,7 +189,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 	getHistoryFor (assignmentId) {
 		const {history} = getPrivate(this);
 		const container = history && history.getItem(assignmentId);
-		return container && container.getMostRecentHistoryItem();
+		return container;
 	}
 
 

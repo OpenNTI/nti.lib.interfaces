@@ -35,6 +35,14 @@ class Grade extends Base {
 		'CatalogEntryNTIID':   { type: 'string'  }
 	}
 
+	static deriveCacheKeyFrom (data) {
+		if(!data) {
+			return null;
+		}
+
+		return data.AssignmentId + '--' + data.Username;
+	}
+
 
 	static isEmpty (value, letter) {
 		let v = `${value || ''} ${letter || ''}`;
