@@ -59,7 +59,13 @@ export default {
 
 	deriveEvents (assignment, container, lastViewed) {
 		let now = new Date();
-		const historyItem = container && container.getMostRecentHistoryItem && container.getMostRecentHistoryItem();
+
+		let historyItem = container;
+
+		if(container && container.getMostRecentHistoryItem) {
+			historyItem = container.getMostRecentHistoryItem();
+		}
+
 		const {Submission, Feedback, grade} = historyItem || {};
 
 		let dateCompleted = Submission && Submission.getCreatedTime();
