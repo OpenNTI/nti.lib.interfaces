@@ -72,15 +72,21 @@ class AssignmentSubmission extends Base {
 	}
 
 
-	onSuccessfulSubmission () {
+	async onSuccessfulSubmission () {
 		let p = this.parent();
 		if (!p || !p.getSubmission) {
 			return;
 		}
 
-		return p.refresh().then(r => {
-			p.onChange('submit-state');
-			return r;
-		});
+		await p.refresh();
+		const history = await p.fetchLinkParsed('History');
+
+		if(history && history.MetadataAttemptItem && history.MetadataAttemptItem.hasLink('Assignment')) {
+			const newAssignmentData = await history.MetadataAttemptItem.fetchLink('Assignment');
+			p.refresh(newAssignmentData);
+		}
+
+		p.onChange('submit-state');
+		return p;
 	}
 }
