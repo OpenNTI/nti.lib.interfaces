@@ -15,7 +15,8 @@ class BaseCredit extends Base {
 		'description':       { type: 'string'                          },
 		'credit_definition': { type: 'model', name: 'creditDefinition' },
 		'issuer':            { type: 'string'                          },
-		'awarded_date':      { type: 'date',                           } //becomes getAwardedDate
+		'awarded_date':      { type: 'date',                           }, //becomes getAwardedDate
+		'user':              { type: 'model',                          }
 	}
 
 	getAwardedDate () {} //implemented by awarded_date date field.
