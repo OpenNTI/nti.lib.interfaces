@@ -83,7 +83,7 @@ class AssignmentSubmission extends Base {
 
 		if(history && history.MetadataAttemptItem && history.MetadataAttemptItem.hasLink('Assignment')) {
 			const newAssignmentData = await history.MetadataAttemptItem.fetchLink('Assignment');
-			p.refresh(newAssignmentData);
+			await p.refresh(newAssignmentData);
 		}
 
 		p.onChange('submit-state');
