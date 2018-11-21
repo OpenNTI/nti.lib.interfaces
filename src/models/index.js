@@ -3,6 +3,7 @@ import Registry, {COMMON_PREFIX} from './Registry';
 export * as annotations from './annotations';
 export * as anchors from './anchors';
 export * as assessment from './assessment';
+export * as calendar from './calendar';
 export * as chat from './chat';
 export * as completion from './completion';
 export * as content from './content';

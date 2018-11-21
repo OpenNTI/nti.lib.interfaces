@@ -1,0 +1,1 @@
+export CourseCalendarEvent from './CourseCalendarEvent';
