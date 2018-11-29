@@ -8,7 +8,6 @@ class CalendarEventRef extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'event':        { type: 'model'  },
-		'icon':         { type: 'string' }
+		'CalendarEvent':        { type: 'model'  }
 	}
 }
