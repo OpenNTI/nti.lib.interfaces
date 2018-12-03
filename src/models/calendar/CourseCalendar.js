@@ -8,6 +8,7 @@ class CourseCalendar extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'title':       { type: 'string' }
+		'title':       	{ type: 'string' },
+		'CatalogEntry': { type: 'model'  }
 	}
 }
