@@ -11,4 +11,8 @@ class AssignmentCalendarEvent extends BaseEvent {
 		...BaseEvent.Fields,
 		'assignment': { type: 'model' }
 	}
+
+	get dueDate () {
+		return this.assignment && this.assignment.getDueDate();
+	}
 }
