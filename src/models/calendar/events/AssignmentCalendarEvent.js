@@ -9,10 +9,12 @@ class AssignmentCalendarEvent extends BaseEvent {
 
 	static Fields = {
 		...BaseEvent.Fields,
-		'assignment': { type: 'model' }
+		'total_points': { type: 'number', name: 'totalPoints' },
+		'MaximumTimeAllowed': { type: 'number' },
+		'IsTimedAssignment': { type: 'boolean' }
 	}
 
 	get dueDate () {
-		return this.assignment && this.assignment.getDueDate();
+		return this.getStartTime();
 	}
 }
