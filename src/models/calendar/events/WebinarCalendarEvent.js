@@ -8,7 +8,6 @@ class WebinarCalendarEvent extends BaseEvent {
 	static MimeType = `${COMMON_PREFIX}webinar.webinarcalendarevent`
 
 	static Fields = {
-		...BaseEvent.Fields,
-		'webinar': { type: 'model' }
+		...BaseEvent.Fields
 	}
 }
