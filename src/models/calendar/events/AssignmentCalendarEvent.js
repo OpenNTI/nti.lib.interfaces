@@ -9,9 +9,10 @@ class AssignmentCalendarEvent extends BaseEvent {
 
 	static Fields = {
 		...BaseEvent.Fields,
-		'total_points': { type: 'number', name: 'totalPoints' },
-		'MaximumTimeAllowed': { type: 'number' },
-		'IsTimedAssignment': { type: 'boolean' }
+		'total_points':       { type: 'number', name: 'totalPoints' },
+		'MaximumTimeAllowed': { type: 'number'  },
+		'IsTimedAssignment':  { type: 'boolean' },
+		'AssignmentNTIID':    { type: 'string'  }
 	}
 
 	get dueDate () {
