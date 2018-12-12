@@ -10,4 +10,8 @@ class WebinarCalendarEvent extends BaseEvent {
 	static Fields = {
 		...BaseEvent.Fields
 	}
+
+	getUniqueIdentifier () {
+		return this.href;
+	}
 }

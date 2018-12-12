@@ -18,4 +18,8 @@ class AssignmentCalendarEvent extends BaseEvent {
 	get dueDate () {
 		return this.getStartTime();
 	}
+
+	getUniqueIdentifier () {
+		return this.AssignmentNTIID;
+	}
 }

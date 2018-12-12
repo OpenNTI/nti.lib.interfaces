@@ -17,4 +17,8 @@ class BaseEvent extends Base {
 		'CatalogEntryNTIID': 	{ type: 'string' },
 		'ContainerId': 			{ type: 'string' }
 	}
+
+	getUniqueIdentifier () {
+		return this.getID();
+	}
 }
