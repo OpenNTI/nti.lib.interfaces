@@ -18,7 +18,5 @@ class BaseEvent extends Base {
 		'ContainerId': 			{ type: 'string' }
 	}
 
-	getUniqueIdentifier () {
-		return this.getID();
-	}
+	getUniqueIdentifier = () => this.getID();
 }

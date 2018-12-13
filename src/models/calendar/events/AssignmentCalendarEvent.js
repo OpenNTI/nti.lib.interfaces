@@ -12,14 +12,13 @@ class AssignmentCalendarEvent extends BaseEvent {
 		'total_points':       { type: 'number', name: 'totalPoints' },
 		'MaximumTimeAllowed': { type: 'number'  },
 		'IsTimedAssignment':  { type: 'boolean' },
-		'AssignmentNTIID':    { type: 'string'  }
+		'AssignmentNTIID':    { type: 'string'  },
+		'CatalogEntryNTIID':  { type: 'string'  }
 	}
 
 	get dueDate () {
 		return this.getStartTime();
 	}
 
-	getUniqueIdentifier () {
-		return this.AssignmentNTIID;
-	}
+	getUniqueIdentifier = () => this.AssignmentNTIID + this.CatalogEntryNTIID;
 }
