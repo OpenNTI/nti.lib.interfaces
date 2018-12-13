@@ -11,7 +11,7 @@ class WebinarCalendarEvent extends BaseEvent {
 		...BaseEvent.Fields
 	}
 
-	getUniqueIdentifier () {
+	getUniqueIdentifier = () => {
 		return this.href;
 	}
 }
