@@ -52,6 +52,10 @@ class AssignmentSummary extends EventEmitter {
 		return getPrivate(this).assignment.getDueDate();
 	}
 
+	get passingScore () {
+		return getPrivate(this).assignment.passingScore;
+	}
+
 	get late () {
 		const {completed, dueDate} = this;
 		return !completed
