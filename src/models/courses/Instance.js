@@ -559,6 +559,16 @@ class Instance extends Base {
 		const configuredTools = await this.fetchLinkParsed('lti-configured-tools');
 		return configuredTools;
 	}
+
+
+	getCatalogFamily () {
+		return this.CatalogEntry && this.CatalogEntry.getCatalogFamily();
+	}
+
+
+	getCatalogFamilies () {
+		return this.fetchLinkParsed('CourseCatalogFamilies');
+	}
 }
 
 

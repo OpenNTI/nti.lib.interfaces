@@ -18,6 +18,7 @@ class CourseCatalogEntry extends Base {
 		'ContentPackages':                      { type: 'string[]'                          },
 		'ContentPackageNTIID':                  { type: 'string'                            },
 		'CourseNTIID':                          { type: 'string'                            },
+		'CatalogFamilies':                      { type: 'model'                             },
 		'EndDate':                              { type: 'date'                              },
 		'EnrollmentOptions':                    { type: 'model',    name: EnrollmentOptions },
 		'ProviderUniqueID':                     { type: 'string'                            },
@@ -82,5 +83,26 @@ class CourseCatalogEntry extends Base {
 			.filter(n=>taRe.test(n.JobTitle));
 
 		return nonAssistants.concat(assistants).map(n=>n.Name).join(', ');
+	}
+
+
+	getCatalogFamily () {
+		const {CatalogFamilies} = this;
+
+		return CatalogFamilies && CatalogFamilies.getPrimaryFamily();
+	}
+
+
+	isInFamily (id) {
+		return this.CatalogFamilies && this.CatalogFamilies.containsFamily(id);
+	}
+
+
+	inSameFamily (catalogEntry) {
+		const {CatalogFamilies} = this;
+
+		if (!CatalogFamilies) { return false; }
+
+		return CatalogFamilies.hasIntersectionWith(catalogEntry.CatalogFamilies);
 	}
 }
