@@ -6,7 +6,8 @@ export default class Batch extends Base {
 		'BatchPage':              {type: 'number'                   },
 		'Items':                  {type: 'model[]', defaultValue: []},
 		'Name':                   {type: 'string'                   },
-		'Total':                  {type: 'number'                   }
+		'Total':                  {type: 'number'                   },
+		'FilteredTotalItemCount': {type: 'number'                   }
 	}
 
 
