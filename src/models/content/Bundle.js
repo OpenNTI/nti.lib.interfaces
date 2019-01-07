@@ -5,6 +5,7 @@ import Logger from '@nti/util-logger';
 import { Service } from '../../constants';
 import TablesOfContents from '../content/TablesOfContents';
 import MediaIndex from '../media/MediaIndex';
+import {Publishable} from '../../mixins';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 import Forum from '../forums/Forum';
@@ -17,7 +18,7 @@ const names = (x, y, v) => Array.isArray(v) ? v.join(', ') : null;
 
 export default
 @model
-@mixin(forward(['every','filter','forEach','map', 'reduce'], 'ContentPackages'))
+@mixin(forward(['every','filter','forEach','map', 'reduce'], 'ContentPackages'), Publishable)
 class Bundle extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'contentpackagebundle',
