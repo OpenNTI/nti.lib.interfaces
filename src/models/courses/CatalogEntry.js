@@ -69,6 +69,15 @@ class CourseCatalogEntry extends Base {
 	get author () { return (this.creators || []).join(', '); }
 
 
+	getPresentationProperties () {
+		return {
+			author: this.getAuthorLine(),
+			title: this.Title,
+			label: this.ProviderUniqueID
+		};
+	}
+
+
 	getEnrollmentOptions () {return this[EnrollmentOptions]; }
 
 
