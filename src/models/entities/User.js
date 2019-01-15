@@ -5,6 +5,8 @@ import {model, COMMON_PREFIX} from '../Registry';
 
 import Entity from './Entity';
 
+const LOAD_PROFILE_CACHE = Symbol('Load Profile Cache');
+
 const ONLY_COMMUNITIES = x => x.isCommunity;
 
 
@@ -172,8 +174,27 @@ class User extends Entity {
 	}
 
 
+	getAccountProfile () {
+		if (!this[LOAD_PROFILE_CACHE]) {
+			this[LOAD_PROFILE_CACHE] = this.fetchLink('account.profile');
+
+			setTimeout(() => {
+				delete this[LOAD_PROFILE_CACHE];
+			}, 500);
+		}
+
+		return this[LOAD_PROFILE_CACHE];
+	}
+
+
+	getProfileType () {
+		return this.getAccountProfile()
+			.then(account => account.ProfileType);
+	}
+
+
 	getProfileSchema () {
-		return this.fetchLink('account.profile')
+		return this.getAccountProfile()
 			.then(account => account.ProfileSchema);
 	}
 
