@@ -52,6 +52,24 @@ export default class CollectionStudentView extends Base {
 		return data.summary;
 	}
 
+	getStudentSummaryWithHistory () {
+		const summary = this.getStudentSummary();
+
+		return new Promise((fulfill, reject) => {
+			if (summary.loading) {
+				const onChange = () => {
+					if (!summary.loading) {
+						fulfill(summary);
+						summary.removeListener('change', onChange);
+					}
+				};
+
+				summary.addListener('change', onChange);
+			} else {
+				fulfill(summary);
+			}
+		});
+	}
 
 	getActivity () {
 		return getHistoryFrom(this)

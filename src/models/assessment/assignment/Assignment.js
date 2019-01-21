@@ -49,7 +49,8 @@ class Assignment extends Base {
 		'NoSubmit':                             { type: 'boolean',                                     },
 		'Reports':                              { type: 'model[]'                                      },
 		'submission_buffer':                    { type: 'number', name: 'submissionBuffer'             },
-		'CurrentMetadataAttemptItem':					{ type: 'model' 									   },
+		'CurrentMetadataAttemptItem':			{ type: 'model' 									   },
+		'completion_passing_percent':			{ type: 'number', name: 'passingScore'				   }
 		// Do not add a Target-NTIID field to this model. Legacy overview models shared this mimetype but have a
 		// different shape... leave those warnings in the console.
 	}
