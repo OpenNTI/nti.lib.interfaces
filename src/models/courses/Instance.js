@@ -163,6 +163,13 @@ class Instance extends Base {
 		);
 	}
 
+	async getRosterSummary () {
+		if (!this.hasLink('RosterSummary')) {
+			return null;
+		}
+
+		return this.fetchLink('RosterSummary');
+	}
 
 	getActivity () {
 		if (!this.hasLink('CourseRecursiveStreamByBucket')) {
