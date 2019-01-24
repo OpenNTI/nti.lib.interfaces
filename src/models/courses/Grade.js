@@ -32,6 +32,8 @@ class Grade extends Base {
 		'IsPredicted':         { type: 'boolean' },
 		'Username':            { type: 'string'  },
 		'value':               { type: 'string?' },
+		'AutoGrade':           { type: 'number'  },
+		'AutoGradeMax':        { type: 'number'  },
 		'CatalogEntryNTIID':   { type: 'string'  }
 	}
 
@@ -110,6 +112,11 @@ class Grade extends Base {
 
 	isPredicted () {
 		return !!this.IsPredicted;
+	}
+
+
+	hasAutoGrade () {
+		return !!this.AutoGrade;
 	}
 
 

@@ -59,4 +59,9 @@ class AssignmentHistoryItem extends Base {
 		return g && g.value;
 	}
 
+
+	getDuration () {
+		return this.MetadataAttemptItem && this.MetadataAttemptItem.getDuration();
+	}
+
 }

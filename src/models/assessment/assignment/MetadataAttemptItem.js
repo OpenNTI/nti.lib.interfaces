@@ -11,4 +11,8 @@ class MetadataAttemptItem extends Base {
 		'SubmitTime': 	{ type: 'date' },
 		'Duration': 	{ type: 'any'  },
 	}
+
+	getDuration () {
+		return this.Duration && (this.Duration * 1000);
+	}
 }
