@@ -171,6 +171,12 @@ class Instance extends Base {
 		return this.fetchLink('RosterSummary');
 	}
 
+	async preflightInvitationsCsv (csv) {
+		const formData = new FormData();
+		formData.append('csv', csv);
+		return this.postToLink('CheckCourseInvitationsCSV', formData);
+	}
+
 	getActivity () {
 		if (!this.hasLink('CourseRecursiveStreamByBucket')) {
 			return null;
