@@ -171,10 +171,24 @@ class Instance extends Base {
 		return this.fetchLink('RosterSummary');
 	}
 
+	get canInvite () {
+		return this.hasLink('SendCourseInvitations');
+	}
+
 	async preflightInvitationsCsv (csv) {
 		const formData = new FormData();
 		formData.append('csv', csv);
 		return this.postToLink('CheckCourseInvitationsCSV', formData);
+	}
+
+	async sendInvitations (emails, message) {
+		const Items = (emails || []).map(email => ({email}));
+
+		return this.postToLink('SendCourseInvitations', {
+			Items,
+			message,
+			MimeType: 'application/vnd.nextthought.courses.usercourseinvitations'
+		});
 	}
 
 	getActivity () {
