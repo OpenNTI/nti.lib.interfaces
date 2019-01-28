@@ -58,6 +58,7 @@ class Grade extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
 		initPrivate(this);
+		processValue.call(this, data.value);
 	}
 
 
@@ -86,6 +87,8 @@ class Grade extends Base {
 		this.onChange();
 	}
 
+
+
 	get letter () { return getPrivate(this).letter; }
 	set letter (l) {
 		if (!l || l == null) {
@@ -99,6 +102,11 @@ class Grade extends Base {
 
 		getPrivate(this).letter = l;
 		this.onChange();
+	}
+
+
+	getValue () {
+		return getPrivate(this).value;
 	}
 
 
