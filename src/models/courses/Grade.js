@@ -24,17 +24,17 @@ class Grade extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'assignmentContainer': { type: 'string'                    },
-		'assignmentName':      { type: 'string'                    },
-		'AssignmentId':        { type: 'string'                    },
-		'Correctness':         { type: 'string'                    },
-		'IsExcused':           { type: 'boolean'                   },
-		'IsPredicted':         { type: 'boolean'                   },
-		'Username':            { type: 'string'                    },
-		'value':               { type: 'string?', name: 'rawValue' },
-		'AutoGrade':           { type: 'number'                    },
-		'AutoGradeMax':        { type: 'number'                    },
-		'CatalogEntryNTIID':   { type: 'string'                    }
+		'assignmentContainer': { type: 'string'  },
+		'assignmentName':      { type: 'string'  },
+		'AssignmentId':        { type: 'string'  },
+		'Correctness':         { type: 'string'  },
+		'IsExcused':           { type: 'boolean' },
+		'IsPredicted':         { type: 'boolean' },
+		'Username':            { type: 'string'  },
+		'value':               { type: 'string?' },
+		'AutoGrade':           { type: 'number'  },
+		'AutoGradeMax':        { type: 'number'  },
+		'CatalogEntryNTIID':   { type: 'string'  }
 	}
 
 	static deriveCacheKeyFrom (data) {
@@ -75,7 +75,9 @@ class Grade extends Base {
 			value = [value, letter].join(' ');
 		}
 
-		return this.save({value});
+		return this.save({value}, () => {
+			processValue.call(this, value);
+		});
 	}
 
 
