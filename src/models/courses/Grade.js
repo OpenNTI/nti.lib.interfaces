@@ -124,7 +124,7 @@ class Grade extends Base {
 
 
 	hasAutoGrade () {
-		return !!this.AutoGrade;
+		return this.AutoGrade != null;
 	}
 
 
