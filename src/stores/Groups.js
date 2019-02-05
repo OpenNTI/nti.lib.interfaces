@@ -63,7 +63,7 @@ export default class Groups extends EntityStore {
 	}
 
 
-	createGroup (name) {
-		return this[CREATE](getNewListData(name, true, MIME_TYPE, this.context));
+	createGroup (name, members) {
+		return this[CREATE](getNewListData(name, true, MIME_TYPE, this.context, members));
 	}
 }
