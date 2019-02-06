@@ -11,6 +11,7 @@ const CAPABILITIES = {
 	canCreateLists: 'nti.platform.p2p.friendslists',
 	canCreateGroups: 'nti.platform.p2p.dynamicfriendslists',
 	canDoAdvancedEditing: 'nti.platform.courseware.advanced_editing',
+	canManageOwnedGroups: 'nti.platform.groups.can_manage_owned_groups',
 
 	canShareRedaction: false,
 
