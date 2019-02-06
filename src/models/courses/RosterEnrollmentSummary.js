@@ -8,6 +8,7 @@ class RosterRecord extends Base {
 
 	static Fields = {
 		...Base.Fields,
+		'CourseProgress':         { type: 'model', name: 'courseProgress'    },
 		'LegacyEnrollmentStatus': { type: 'string', name: 'enrollmentStatus' },
 		'RealEnrollmentStatus':   { type: '*', name: 'status'                },
 		'Reports':                { type: 'model', name: 'reports'           },
