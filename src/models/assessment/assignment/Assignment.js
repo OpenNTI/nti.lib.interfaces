@@ -50,7 +50,9 @@ class Assignment extends Base {
 		'Reports':                              { type: 'model[]'                                      },
 		'submission_buffer':                    { type: 'number', name: 'submissionBuffer'             },
 		'CurrentMetadataAttemptItem':			{ type: 'model' 									   },
-		'completion_passing_percent':			{ type: 'number', name: 'passingScore'				   }
+		'completion_passing_percent':			{ type: 'number', name: 'passingScore'				   },
+		'max_submissions':                      { type: 'number', name: 'maxSubmissions'               },
+		'submission_count':                     { type: 'number', name: 'submissionCount'              }
 		// Do not add a Target-NTIID field to this model. Legacy overview models shared this mimetype but have a
 		// different shape... leave those warnings in the console.
 	}
@@ -306,6 +308,16 @@ class Assignment extends Base {
 
 	setDueDate (date) {
 		return this.save({'available_for_submission_ending': date}, void 0, 'date-edit');
+	}
+
+
+	canSetMaxSubmissions () {
+		return this.hasLink('max-submissions');
+	}
+
+
+	setMaxSubmissions (max) {
+		return this.save({'max_submissions': max}, void 0, 'max-submissions');
 	}
 
 	/**
