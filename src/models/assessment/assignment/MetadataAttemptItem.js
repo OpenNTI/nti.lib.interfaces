@@ -15,4 +15,10 @@ class MetadataAttemptItem extends Base {
 	getDuration () {
 		return this.Duration && (this.Duration * 1000);
 	}
+
+	getHistoryItem () {
+		if (!this.hasLink('HistoryItem')) { return Promise.resolve(null); }
+
+		return this.fetchLinkParsed('HistoryItem');
+	}
 }
