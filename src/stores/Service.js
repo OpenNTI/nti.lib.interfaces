@@ -48,7 +48,7 @@ const RequestEntityResolve = Symbol('RequestEntityResolve');
 
 const logger = Logger.get('Service');
 
-const LibraryPathCache = LRU({ max: 100, maxAge: 3600000 /*1 hour*/ });
+const LibraryPathCache = new LRU({ max: 100, maxAge: 3600000 /*1 hour*/ });
 
 function hideCurrentProperties (o) {
 	for (let key of Object.keys(o)) {
