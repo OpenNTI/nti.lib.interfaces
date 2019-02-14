@@ -101,6 +101,11 @@ class Instance extends Base {
 	}
 
 
+	get canManageEnrollment () {
+		return this.hasLink('ManageRoster');
+	}
+
+	
 	delete (rel = 'delete') {
 		//cleanup the potential cache
 		const cache = this[Service].getDataCache();
