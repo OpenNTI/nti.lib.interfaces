@@ -2,7 +2,7 @@ import {pluck} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import names from '../../mixins/CourseAndAssignmentNameResolving';
-import {cacheClassInstances} from '../../mixins/InstanceCacheable';
+import {cacheClassInstances, AfterInstanceRefresh} from '../../mixins/InstanceCacheable';
 import {initPrivate, getPrivate} from '../../utils/private';
 import {model, COMMON_PREFIX} from '../Registry';
 //
@@ -59,6 +59,13 @@ class Grade extends Base {
 		super(service, parent, data);
 		initPrivate(this);
 		processValue.call(this, data.value);
+	}
+
+
+	[AfterInstanceRefresh] (data, old) {
+		if (data.value !== old.value) {
+			processValue.call(this, data.value);
+		}
 	}
 
 
