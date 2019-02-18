@@ -15,6 +15,7 @@ class AssignmentHistoryItemSummary extends Base {
 		'FeedbackCount':         { type: 'number', name: 'feedbackCount' },
 		'Metadata':              { type: 'model'                         },
 		'SubmissionCreatedTime': { type: 'date'                          },
+		'MetadataAttemptItem':   { type: 'model'                         }
 	}
 
 
