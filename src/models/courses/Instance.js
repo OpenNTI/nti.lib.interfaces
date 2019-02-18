@@ -105,6 +105,11 @@ class Instance extends Base {
 		return this.hasLink('ManageRoster');
 	}
 
+
+	get canEmailEnrollees () {
+		return this.hasLink('Mail');
+	}
+
 	
 	delete (rel = 'delete') {
 		//cleanup the potential cache
