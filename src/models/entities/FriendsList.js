@@ -168,6 +168,21 @@ class FriendsList extends Entity {
 			.then(() => this);//always fulfill with 'this' (don't leak new/raw instances)
 	}
 
+	updateFields = fields => {
+		const preprocessors = {
+			friends: friends => [...friends.map(f => getID(f))]
+		};
+
+		const pre = field => preprocessors[field] || (x => x);
+
+		const data = this.getData();
+		Object.entries(fields).forEach(([field, value]) => data[field] = pre(field)(value));
+
+		return this.putToLink('edit', data)
+			.then(o => this.refresh(pluck.apply(void 0, [o, 'NTIID', ...Object.keys(fields)])))
+			.then(() => this.onChange())
+			.then(() => this); //always fulfill with 'this' (don't leak new/raw instances)
+	}
 
 	getID () { return this.ID; }
 }
