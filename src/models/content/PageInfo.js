@@ -30,7 +30,8 @@ class PageInfo extends Base {
 		'label':               { type: 'string'                    },
 		'sharingPreference':   { type: 'model'                     },
 		'title':               { type: 'string'                    },
-		'Title':               { type: 'string'                    }
+		'Title':               { type: 'string'                    },
+		'RootURL':             { type: 'string'                    }
 	}
 
 	constructor (service, parent, data) {
@@ -136,6 +137,14 @@ class PageInfo extends Base {
 		}
 
 		return Promise.resolve(store);//in the future, this may need to be async...
+	}
+
+
+	resolveContentURL (url) {
+		const {RootURL} = this;
+		const root = RootURL && URL.parse(RootURL);
+
+		return Promise.resolve(root ? root.resolve(url) : url);
 	}
 }
 
