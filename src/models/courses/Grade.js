@@ -119,6 +119,11 @@ class Grade extends Base {
 	}
 
 
+	getLetter () {
+		return getPrivate(this).letter;
+	}
+
+
 	isExcused () {
 		return this.hasLink('unexcuse') || this.IsExcused;
 	}
