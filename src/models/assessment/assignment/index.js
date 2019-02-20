@@ -11,5 +11,6 @@ export AssignmentReference from './AssignmentReference';
 export AssignmentSubmission from './AssignmentSubmission';
 export DiscussionAssignment from './DiscussionAssignment';
 export MetadataAttemptItem from './MetadataAttemptItem';
+export MetadataAttemptItemContainer from './MetadataAttemptItemContainer';
 export SavePointItem from './SavePointItem';
 export TimedAssignment from './TimedAssignment';

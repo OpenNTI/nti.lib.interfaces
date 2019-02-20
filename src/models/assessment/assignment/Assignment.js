@@ -84,6 +84,22 @@ class Assignment extends Base {
 	}
 
 
+	async getLatestAttempt () {
+		const {CurrentMetadataAttemptItem: current} = this;
+
+		if (current) { return current; }
+
+		try {
+			const attempts = await this.fetchLinkParsed('MetadataAttempts');
+
+			return attempts.getLatest();
+		} catch (e) {
+			//swallow
+			return null;
+		}
+	}
+
+
 	/**
 	 * Checks to see if the NTIID is within this Assignment (Checking the QuestionSet's id and all questions id's)
 	 *
