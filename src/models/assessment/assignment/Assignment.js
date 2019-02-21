@@ -237,6 +237,10 @@ class Assignment extends Base {
 	 * @return {Promise} The history.
 	 */
 	loadPreviousSubmission () {
+		if (this.CurrentMetadataAttemptItem) {
+			return this.loadSavePoint();
+		}
+
 		return this.loadHistory()
 			.catch(() => this.loadSavePoint());
 	}
