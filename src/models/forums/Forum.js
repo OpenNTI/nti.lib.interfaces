@@ -31,6 +31,7 @@ class Forum extends Base {
 		'TopicCount':                  { type: 'number' },
 		'description':                 { type: 'string' },
 		'title':                       { type: 'string' },
+		'EmailNotifications':          { type: 'boolean'}
 	}
 
 	get displayTitle () {

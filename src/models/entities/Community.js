@@ -24,7 +24,7 @@ class Community extends Entity {
 
 	getActivity (filterParams) {
 		let {source} = filterParams || {};
-		let service = this[Service], store, href;
+		let service = this[Service], store, href, forum;
 
 		let linkPromise = this.getDiscussionBoardContents().then(x => {
 
@@ -41,6 +41,7 @@ class Community extends Entity {
 		//Once a forum is picked, assign the href...
 			.then(x => {
 				href = x.getLink('add');//this sets the href for our "postToActivity" augmented method.
+				forum = x;
 
 				//return the value to be the Stream Store's data source.
 				return source //if there is a source set,
@@ -68,7 +69,7 @@ class Community extends Entity {
 			}
 
 			Object.assign(store, {
-
+				emailNoticiation: forum && forum.EmailNotifications,
 				postToActivity (body, title = '-') {
 					if (!href) {
 						return Promise.reject('No forum to post to.');
