@@ -29,13 +29,13 @@ class Community extends Entity {
 		let linkPromise = this.getDiscussionBoardContents().then(x => {
 
 			//What is the default forum?? Should there be a flag/id somewhere?
-			let forum = x.Items.find(item => (item.title === 'Forum')) || x.Items[0];
+			let f = x.Items.find(item => (item.title === 'Forum')) || x.Items[0];
 
 			if (source) {
-				forum = (x.Items || []).find(i=> i.ID === source);
+				f = (x.Items || []).find(i=> i.ID === source);
 			}
 
-			return forum || Promise.reject('Source Not Found.');
+			return f || Promise.reject('Source Not Found.');
 		})
 
 		//Once a forum is picked, assign the href...

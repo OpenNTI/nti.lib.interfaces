@@ -47,6 +47,7 @@ class User extends Entity {
 		'home_page':          { type: 'string'    },
 		'twitter':            { type: 'string'    },
 		'googlePlus':         { type: 'string'    },
+		'instagram':          { type: 'string'    },
 		'linkedIn':           { type: 'string'    },
 		'facebook':           { type: 'string'    },
 		'email':              { type: 'string'    },
