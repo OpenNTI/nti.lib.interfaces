@@ -16,8 +16,14 @@ class AssignmentCompletionMetadata extends Base {
 		'CompletionRequiredPassingPercentage': { type: 'number'   },
 		'Success':                             { type: 'boolean'  },
 		'TotalPoints':                         { type: 'number'   },
-		'UserPointsReceived':                  { type: 'number?'   },
+		'UserPointsReceived':                  { type: 'string'   },
 	}
+
+
+	getNumericUserPointsReceived () {
+		return parseFloat(this.UserPointsReceived, 10);
+	}
+
 
 	getCompletionDate () { } //implemented by CompletionDate date field.
 }
