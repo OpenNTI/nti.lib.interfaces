@@ -6,7 +6,7 @@ export default async function filter (children, filterFn, recursive) {
 	const resolved = await resolveChildrenItems(children);
 
 	return resolved.reduce((acc, {node, item}) => {
-		if (filterFn(item)) {
+		if (!filterFn(item)) {
 			acc.push(
 				recursive ?
 					node.filter(filterFn) :

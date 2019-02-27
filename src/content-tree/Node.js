@@ -30,17 +30,68 @@ function ifNotFunctionThrow (maybeFn, msg) {
 	}
 }
 
-export default class ContentTreeNode {
-	constructor (item, parent, config = {}) {
-		this[ITEM] = createValueResolver(item);
-		this[PARENT] = createValueResolver(parent);
+function getItem (item, clones) {
+	if (clones) {
+		return async () => {
+			const node = await clones.resolve();
 
-		this[CHILDREN] = createValueResolver(config[CHILDREN] || (() => this[RESOLVE_CHILDREN]()));
-		this[CLONES] = config[CLONES] && createValueResolver(config[CLONES]);
+			if (!node) { return null; }
+
+			return node.getItem();
+		};
 	}
 
-	get isClone () {
-		return !!this[CLONES];
+	return item;
+}
+
+function getParent (parent, clones) {
+	if (clones) {
+		return async () => {
+			const node = await clones.resolve();
+
+			if (!node) { return null; }
+
+			return node.getParentNode();
+		};
+	}
+
+	return parent;
+}
+
+function getChildren (children, clones, config) {
+	if (config[CHILDREN]) {
+		return config[CHILDREN];
+	}
+
+	if (clones) {
+		return async () => {
+			const node = await clones.resolve();
+
+			if (!node) { return null; }
+
+			return node.getChildNodes();
+		};
+	}
+
+	return children;
+}
+
+
+export default class ContentTreeNode {
+	constructor (item, parent, config = {}) {
+		this[CLONES] = config[CLONES] && createValueResolver(config[CLONES]);
+
+		this[ITEM] = createValueResolver(
+			getItem(item, this[CLONES], config)
+		);
+
+		this[PARENT] = createValueResolver(
+			getParent(parent, this[CLONES], config)
+		);
+
+		this[CHILDREN] = createValueResolver(
+			getChildren((() => this[RESOLVE_CHILDREN]()), this[CLONES], config)
+		);
 	}
 
 	async isEmptyNode () {
@@ -62,26 +113,14 @@ export default class ContentTreeNode {
 	}
 
 	async getItem () {
-		if (this.isClone) {
-			return this[CLONES].resolve().getItem();
-		}
-
 		return await this[ITEM].resolve();
 	}
 
 	async getParentNode () {
-		if (this.isClone) {
-			return this[CLONES].resolve().getParentNode();
-		}
-
 		return await this[PARENT].resolve();
 	}
 
 	async getChildNodes () {
-		if (this.isClone) {
-			return this[CLONES].resolve().getChildNodes();
-		}
-
 		return this[CHILDREN].resolve();
 	}
 
@@ -108,12 +147,15 @@ export default class ContentTreeNode {
 
 
 	[MUTATE_CHILDREN_AND_CLONE] (children) {
-		return new ContentTreeNode(() => this.getItem(), () => this.getParentNode(), {[CHILDREN]: children});
+		return new ContentTreeNode(null, null, {
+			[CHILDREN]: children,
+			[CLONES]: this
+		});
 	}
 
 
 	filterChildren (filterFn) {
-		ifNotFunctionThrow(filterFn, ERRORS.getMessage('filterChildren must be given a function.'));
+		ifNotFunctionThrow(filterFn, ERRORS.getMessage('filter must be given a function.'));
 
 		const filtered = async () => {
 			try {
@@ -121,7 +163,7 @@ export default class ContentTreeNode {
 
 				return filter(children, filterFn);
 			} catch (e) {
-				ifEmptyNodeError(e, ERRORS.getMessage('Cannot call filterChildren on an empty node.'));
+				ifEmptyNodeError(e, ERRORS.getMessage('Cannot call filter on an empty node.'));
 			}
 		};
 
@@ -179,13 +221,13 @@ export default class ContentTreeNode {
 
 
 	find (predicate) {
-		ifNotFunctionThrow(predicate, ERRORS.getMessgae('find must be given a function'));
+		ifNotFunctionThrow(predicate, ERRORS.getMessage('find must be given a function'));
 
 		const clone = async () => {
 			try {
 				const children = await this.getChildNodes();
 
-				return find(children, predicate);
+				return find(children, predicate, true);
 			} catch (e) {
 				ifEmptyNodeError(e, ERRORS.getMessage('Cannot call find on an empty node.'));
 			}

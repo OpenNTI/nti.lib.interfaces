@@ -6,7 +6,7 @@ import {createMockNode} from './common';
 const FILTERED_MATCH = /filtered$/;
 
 function filterFn (item) {
-	return item.matches;
+	return !item.matches;
 }
 
 function createHit (name) {
