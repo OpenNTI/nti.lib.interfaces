@@ -1,12 +1,15 @@
 import {Array as arr} from '@nti/lib-commons';
 
+import {GET_CONTENT_TREE_CHILDREN, ERRORS} from '../Contants';
+import {deferredValue} from '../utils';
+
 import {
-	createValueResolver,
 	filter,
+	findNextSibling,
+	findPrevSibling,
 	find,
 	flatten
 } from './utils';
-import {GET_CONTENT_TREE_CHILDREN, ERRORS} from './Contants';
 
 const ITEM = Symbol('Item');
 const PARENT = Symbol('Parent');
@@ -15,14 +18,6 @@ const CHILDREN = Symbol('Children');
 const CLONES = Symbol('Clones');
 const RESOLVE_CHILDREN = Symbol('Resolve Children');
 const MUTATE_CHILDREN_AND_CLONE = Symbol('Create Clone');
-
-function ifEmptyNodeError (error, newMsg) {
-	if (error instanceof ERRORS.EMPTY_NODE) {
-		throw new ERRORS.EMPTY_NODE(newMsg);
-	}
-
-	throw error;
-}
 
 function ifNotFunctionThrow (maybeFn, msg) {
 	if (!maybeFn || typeof maybeFn !== 'function') {
@@ -79,17 +74,17 @@ function getChildren (children, clones, config) {
 
 export default class ContentTreeNode {
 	constructor (item, parent, config = {}) {
-		this[CLONES] = config[CLONES] && createValueResolver(config[CLONES]);
+		this[CLONES] = config[CLONES] && deferredValue(config[CLONES]);
 
-		this[ITEM] = createValueResolver(
+		this[ITEM] = deferredValue(
 			getItem(item, this[CLONES], config)
 		);
 
-		this[PARENT] = createValueResolver(
+		this[PARENT] = deferredValue(
 			getParent(parent, this[CLONES], config)
 		);
 
-		this[CHILDREN] = createValueResolver(
+		this[CHILDREN] = deferredValue(
 			getChildren((() => this[RESOLVE_CHILDREN]()), this[CLONES], config)
 		);
 	}
@@ -101,13 +96,15 @@ export default class ContentTreeNode {
 	}
 
 	async resolve () {
+		const isEmpty = await this.isEmpty();
 		const item = await this.getItem();
-		const parent = await this.getParent();
+		const parentNode = await this.getParentNode();
 		const childNodes = await this.getChildNodes();
 
 		return {
+			isEmpty,
 			item,
-			parent,
+			parentNode,
 			childNodes
 		};
 	}
@@ -129,7 +126,7 @@ export default class ContentTreeNode {
 		const empty = await this.isEmptyNode();
 
 		if (empty) {
-			throw new ERRORS.EMPTY_NODE(ERRORS.getMessage('Cannot resolve children on an empty node.'));
+			return null;
 		}
 
 		const item = await this.getItem();
@@ -153,35 +150,26 @@ export default class ContentTreeNode {
 		});
 	}
 
-
-	filterChildren (filterFn) {
+	filter (filterFn) {
 		ifNotFunctionThrow(filterFn, ERRORS.getMessage('filter must be given a function.'));
 
 		const filtered = async () => {
-			try {
-				const children = await this.getChildNodes();
+			const children = await this.getChildNodes();
 
-				return filter(children, filterFn);
-			} catch (e) {
-				ifEmptyNodeError(e, ERRORS.getMessage('Cannot call filter on an empty node.'));
-			}
+			return filter(children, filterFn, true);
 		};
 
 		return this[MUTATE_CHILDREN_AND_CLONE](filtered);
 	}
 
 
-	filter (filterFn) {
+	filterChildren (filterFn) {
 		ifNotFunctionThrow(filterFn, ERRORS.getMessage('filter must be given a function.'));
 
 		const filtered = async () => {
-			try {
-				const children = await this.getChildNodes();
+			const children = await this.getChildNodes();
 
-				return filter(children, filterFn, true);
-			} catch (e) {
-				ifEmptyNodeError(e, ERRORS.getMessage('Cannot call filter on an empty node.'));
-			}
+			return filter(children, filterFn);
 		};
 
 		return this[MUTATE_CHILDREN_AND_CLONE](filtered);
@@ -190,33 +178,12 @@ export default class ContentTreeNode {
 
 	flatten () {
 		const flattened = async () => {
-			try {
-				const children = await this.getChildNodes();
+			const children = await this.getChildNodes();
 
-				return flatten(children);
-			} catch (e) {
-				ifEmptyNodeError(e, ERRORS.getMessage('Cannot call flatten on an empty node.'));
-			}
+			return flatten(children);
 		};
 
 		return this[MUTATE_CHILDREN_AND_CLONE](flattened);
-	}
-
-
-	findChild (predicate) {
-		ifNotFunctionThrow(predicate, ERRORS.getMessage('findChild must be given a function'));
-
-		const clone = async () => {
-			try {
-				const children = await this.getChildNodes();
-
-				return find(children, predicate);
-			} catch (e) {
-				ifEmptyNodeError(e, ERRORS.getMessage('Cannot call findChild on an empty node.'));
-			}
-		};
-
-		return new ContentTreeNode(null, null, {[CLONES]: clone});
 	}
 
 
@@ -224,13 +191,39 @@ export default class ContentTreeNode {
 		ifNotFunctionThrow(predicate, ERRORS.getMessage('find must be given a function'));
 
 		const clone = async () => {
-			try {
-				const children = await this.getChildNodes();
+			const children = await this.getChildNodes();
 
-				return find(children, predicate, true);
-			} catch (e) {
-				ifEmptyNodeError(e, ERRORS.getMessage('Cannot call find on an empty node.'));
-			}
+			return find(children, predicate, true);
+		};
+
+		return new ContentTreeNode(null, null, {[CLONES]: clone});
+	}
+
+	findChild (predicate) {
+		ifNotFunctionThrow(predicate, ERRORS.getMessage('findChild must be given a function'));
+
+		const clone = async () => {
+			const children = await this.getChildNodes();
+
+			return find(children, predicate);
+		};
+
+		return new ContentTreeNode(null, null, {[CLONES]: clone});
+	}
+
+
+	findNextSibling () {
+		const clone = async () => {
+			return findNextSibling(this);
+		};
+
+		return new ContentTreeNode(null, null, {[CLONES]: clone});
+	}
+
+
+	findPrevSibling () {
+		const clone = async () => {
+			return findPrevSibling(this);
 		};
 
 		return new ContentTreeNode(null, null, {[CLONES]: clone});

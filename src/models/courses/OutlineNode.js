@@ -5,6 +5,7 @@ import {encodeForURI, isNTIID} from '@nti/lib-ntiids';
 import Logger from '@nti/util-logger';
 
 import {Summary, Parser as parse} from '../../constants';
+import {Mixin as ContentTreeMixin, GET_CONTENT_TREE_CHILDREN} from '../../content-tree';
 import Publishable from '../../mixins/Publishable';
 import {model, COMMON_PREFIX} from '../Registry';
 import filterNonRequiredItems from '../../utils/filter-non-required-items';
@@ -17,7 +18,7 @@ const logger = Logger.get('models:courses:OutlineNode');
 
 export default
 @model
-@mixin(Publishable)
+@mixin(Publishable, ContentTreeMixin)
 class OutlineNode extends Outline {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseoutlinenode',
@@ -179,6 +180,21 @@ class OutlineNode extends Outline {
 			filter: 'TopLevel'
 		});
 	}
+
+	async [GET_CONTENT_TREE_CHILDREN] () {
+		if (!this.hasLink('overview-content')) {
+			return this.contents;
+		}
+
+		try {
+			const contents = await this.getContent({decorateProgress: false, decorateSummary: false});
+
+			return contents;
+		} catch (e) {
+			return null;
+		}
+	}
+
 }
 
 

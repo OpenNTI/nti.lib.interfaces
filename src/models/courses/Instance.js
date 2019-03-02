@@ -10,6 +10,7 @@ import {
 	NO_LINK,
 	Service
 } from '../../constants';
+import {Mixin as ContentTreeMixin, GET_CONTENT_TREE_CHILDREN} from '../../content-tree';
 import AssessmentCollectionStudentView from '../assessment/assignment/CollectionStudentView';
 import AssessmentCollectionInstructorView from '../assessment/assignment/CollectionInstructorView';
 import Roster from '../../stores/CourseRoster';
@@ -35,7 +36,7 @@ const VOID = () => {};
 
 export default
 @model
-@mixin(CourseIdentity)
+@mixin(CourseIdentity, ContentTreeMixin)
 class Instance extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseinstance',
@@ -110,7 +111,7 @@ class Instance extends Base {
 		return this.hasLink('Mail');
 	}
 
-	
+
 	delete (rel = 'delete') {
 		//cleanup the potential cache
 		const cache = this[Service].getDataCache();
@@ -589,6 +590,19 @@ class Instance extends Base {
 
 	getContentDataSource () {
 		return new ContentDataSource(this[Service], this);
+	}
+
+
+	async [GET_CONTENT_TREE_CHILDREN] () {
+		if (!this.hasOutline()) { return []; }
+
+		try {
+			const outline = await this.Outline.getContent();
+
+			return outline.contents;
+		} catch (e) {
+			return null;
+		}
 	}
 
 

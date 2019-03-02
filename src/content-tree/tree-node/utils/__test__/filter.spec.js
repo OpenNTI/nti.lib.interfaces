@@ -1,7 +1,7 @@
 /* eslint-env jest */
+import {createMockNode} from '../../../__test__/common';
 import filter from '../filter';
 
-import {createMockNode} from './common';
 
 const FILTERED_MATCH = /filtered$/;
 

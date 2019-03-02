@@ -1,7 +1,7 @@
 /* eslint-env jest */
+import {createMockNode} from '../../../__test__/common';
 import flatten from '../flatten';
 
-import {createMockNode} from './common';
 
 function create (name, flattened) {
 	return createMockNode({

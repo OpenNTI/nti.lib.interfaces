@@ -1,10 +1,10 @@
 /* eslint-env jest */
-import createValueResolver from '../create-value-resolver';
+import deferredValue from '../deferred-value';
 
-describe('ContentTree createValueResolver', () => {
+describe('ContentTree deferredValue', () => {
 	test('Resolving a non-function value, echoes the value', async () => {
 		const value = {a: 'test-value'};
-		const resolver = createValueResolver(value);
+		const resolver = deferredValue(value);
 
 		const resolved = await resolver.resolve();
 
@@ -13,7 +13,7 @@ describe('ContentTree createValueResolver', () => {
 
 	test('Resolving null values', async () => {
 		const value = null;
-		const resolver = createValueResolver(value);
+		const resolver = deferredValue(value);
 
 		const resolved = await resolver.resolve();
 
@@ -21,8 +21,8 @@ describe('ContentTree createValueResolver', () => {
 	});
 
 	test('Resolving a value resolver, does NOT create a new resolver', () => {
-		const value = createValueResolver('hello');
-		const resolver = createValueResolver(value);
+		const value = deferredValue('hello');
+		const resolver = deferredValue(value);
 
 		expect(resolver).toBe(value);
 	});
@@ -31,7 +31,7 @@ describe('ContentTree createValueResolver', () => {
 		test('returns the result of the function', async () => {
 			const value = {a: 'test-value'};
 			const fn = async () => value;
-			const resolver = createValueResolver(fn);
+			const resolver = deferredValue(fn);
 
 			const resolved = await resolver.resolve();
 
@@ -41,7 +41,7 @@ describe('ContentTree createValueResolver', () => {
 		test('does not call the function more than once', async () => {
 			const value = {a: 'test-value'};
 			const fn = jest.fn(() => value);
-			const resolver = createValueResolver(fn);
+			const resolver = deferredValue(fn);
 
 			const first = await resolver.resolve();
 			const second = await resolver.resolve();

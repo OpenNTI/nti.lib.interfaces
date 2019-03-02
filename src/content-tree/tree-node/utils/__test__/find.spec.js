@@ -1,7 +1,7 @@
 /* eslint-env jest */
+import {createMockNode} from '../../../__test__/common';
 import find from '../find';
 
-import {createMockNode} from './common';
 
 function create (name, children) {
 	return createMockNode({

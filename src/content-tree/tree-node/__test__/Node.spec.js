@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import Node from '../Node';
-import {GET_CONTENT_TREE_CHILDREN, ERRORS} from '../Contants';
+import {GET_CONTENT_TREE_CHILDREN} from '../../Contants';
 
 
 function createObject (name, children) {
@@ -89,24 +89,6 @@ describe('ContentTree Node', () => {
 
 
 	describe('getChildNodes', () => {
-		test('throws if no item', async () => {
-			const node = new Node();
-			let threw = false;
-
-			try {
-				const children = await node.getChildNodes();
-
-				expect(children).toEqual('Resolve did not throw');
-			} catch (e) {
-				threw = true;
-				expect(e).toBeInstanceOf(ERRORS.EMPTY_NODE);
-			}
-
-			if (!threw) {
-				expect('Did throw').toEqual('Did not Throw');
-			}
-		});
-
 		test('item does NOT define GET_CONTENT_TREE_CHILDREN', async () => {
 			const node = new Node(createObject('Item'));
 
@@ -455,5 +437,63 @@ describe('ContentTree Node', () => {
 			expect(item).toBe(find);
 		});
 
+	});
+
+	describe('findSibling methods (findNextSibling, findPrevSibling)', async () => {
+		const getTree = async () => {
+			const first = createObject('first-child');
+			const second = createObject('second-child');
+			const parent = new Node(createObject('parent', [
+				first,
+				second
+			]));
+
+			const children = await parent.getChildNodes();
+
+			return {
+				first: children[0],
+				second: children[1],
+				firstObject: first,
+				secondObject: second
+			};
+		};
+
+		describe('findNextSibling', () => {
+			test('returns null if last in parent\'s children', async () => {
+				const {second} = await getTree();
+
+				const next = await second.findNextSibling();
+
+				await expect(next.isEmptyNode()).resolves.toBeTruthy();
+			});
+
+			test('returns next sibling', async () => {
+				const {first, secondObject} = await getTree();
+
+				const next = await first.findNextSibling();
+				const item = await next.getItem();
+
+				expect(item).toBe(secondObject);
+			});
+		});
+
+		describe('findPrevSibling', () => {
+			test('returns null if last in parent\'s children', async () => {
+				const {first} = await getTree();
+
+				const prev = await first.findPrevSibling();
+
+				await expect(prev.isEmptyNode()).resolves.toBeTruthy();
+			});
+
+			test('returns prev sibling', async () => {
+				const {firstObject, second} = await getTree();
+
+				const prev = await second.findPrevSibling();
+				const item = await prev.getItem();
+
+				expect(item).toBe(firstObject);
+			});
+		});
 	});
 });
