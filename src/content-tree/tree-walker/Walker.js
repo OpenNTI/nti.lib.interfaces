@@ -2,6 +2,8 @@ import {ERRORS} from '../Contants';
 import {deferredValue} from '../utils';
 
 import {
+	findIndex,
+	getDescendantCount,
 	selectNext,
 	selectPrev,
 	selectDescendantMatching,
@@ -28,11 +30,25 @@ export default class ContentTreeWalker {
 	}
 
 	async getCurrentNode () {
-		return await this[CURRENT_NODE].resolve();
+		return this[CURRENT_NODE].resolve();
 	}
 
 	async getRootNode () {
-		return await this[ROOT].resolve();
+		return this[ROOT].resolve();
+	}
+
+	async getDescendantLength () {
+		const node = await this.getCurrentNode();
+
+		return getDescendantCount(node, this[SKIP], this[IGNORE_CHILDREN]);
+	}
+
+	async findIndexOfDescendant (predicate) {
+		ERRORS.throwIfNotFunction(predicate, ERRORS.getMessage('findIndexOfDescendant must be given a function'));
+
+		const node = await this.getCurrentNode();
+
+		return findIndex(node, predicate, this[SKIP], this[IGNORE_CHILDREN]);
 	}
 
 

@@ -1,4 +1,4 @@
-import {Node} from './node';
+import {Node} from './tree-node';
 
 export default {
 	getContentTree () {

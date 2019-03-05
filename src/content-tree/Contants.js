@@ -1,5 +1,8 @@
-export const GET_CONTENT_TREE_CHILDREN = Symbol('Get Content Tree Children');
-
 export const ERRORS = {
-	getMessage: (msg) => `ContentTree: ${msg}`
+	getMessage: (msg) => `ContentTree: ${msg}`,
+	throwIfNotFunction: (maybeFn, msg) => {
+		if (!maybeFn || typeof maybeFn !== 'function') {
+			throw new Error(msg);
+		}
+	}
 };

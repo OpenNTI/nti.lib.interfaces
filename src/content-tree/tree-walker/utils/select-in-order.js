@@ -21,13 +21,36 @@ async function findLastDescendant (node) {
 	return lastChildsDescendant || lastChild;
 }
 
+async function getParent (node) {
+	const parent = await node.getParentNode();
+	const empty = !parent || await parent.isEmptyNode();
+
+	return empty ? null : parent;
+}
+
+async function getNextSibling (node) {
+	const sibling = node.findNextSibling();
+	const empty = !sibling || await sibling.isEmptyNode();
+
+	return empty ? null : sibling;
+}
+
+async function getPrevSibling (node) {
+	const sibling = node.findPrevSibling();
+	const empty = !sibling || await sibling.isEmptyNode();
+
+	return empty ? null : sibling;
+}
+
 export async function selectNext (node, root, skip, ignoreChildren) {
 	let pointer = node;
 
 	while (pointer) {
 		const isRoot = await isSameNode(pointer, root);
 
-		if (isRoot) { return null; }
+		if (isRoot) {
+			return null;
+		}
 
 		const skipped = await nodeMatches(pointer, skip);
 		const ignored = await nodeMatches(pointer, ignoreChildren);
@@ -43,15 +66,15 @@ export async function selectNext (node, root, skip, ignoreChildren) {
 			continue;
 		}
 
-		const sibling = await pointer.findNextSibling();
+		const sibling = await getNextSibling(pointer);
 
 		if (sibling) {
 			pointer = sibling;
 			continue;
 		}
 
-		const parent = await pointer.getParentNode();
-		const isParentRoot = await isSameNode(parent, root);
+		const parent = await getParent(pointer);
+		const isParentRoot = parent && await isSameNode(parent, root);
 		const parentSibling = parent && await parent.findNextSibling();
 
 		if (!isParentRoot && parentSibling) {
@@ -83,7 +106,7 @@ export async function selectPrev (node, root, skip, ignoreChildren) {
 			return pointer;
 		}
 
-		const sibling = await pointer.findPrevSibling();
+		const sibling = await getPrevSibling(pointer);
 		const ignored = sibling && await nodeMatches(sibling, ignoreChildren);
 		const descendant = !ignored && sibling && await findLastDescendant(sibling);
 
@@ -98,7 +121,7 @@ export async function selectPrev (node, root, skip, ignoreChildren) {
 			continue;
 		}
 
-		const parent = await pointer.getParentNode();
+		const parent = await getParent(pointer);
 
 		if (parent) {
 			pointer = parent;

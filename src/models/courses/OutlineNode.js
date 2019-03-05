@@ -5,7 +5,7 @@ import {encodeForURI, isNTIID} from '@nti/lib-ntiids';
 import Logger from '@nti/util-logger';
 
 import {Summary, Parser as parse} from '../../constants';
-import {Mixin as ContentTreeMixin, GET_CONTENT_TREE_CHILDREN} from '../../content-tree';
+import {Mixin as ContentTreeMixin} from '../../content-tree';
 import Publishable from '../../mixins/Publishable';
 import {model, COMMON_PREFIX} from '../Registry';
 import filterNonRequiredItems from '../../utils/filter-non-required-items';
@@ -34,6 +34,12 @@ class OutlineNode extends Outline {
 		'AvailableEnding':      { type: 'date'                      },
 		'ntiid':                { type: 'string'                    },
 		'title':                { type: 'string'                    }
+	}
+
+	isOutlineNode = true
+
+	get hasOverviewContent () {
+		return this.hasLink('overview-content');
 	}
 
 
@@ -181,7 +187,7 @@ class OutlineNode extends Outline {
 		});
 	}
 
-	async [GET_CONTENT_TREE_CHILDREN] () {
+	async getContentTreeChildrenSource () {
 		if (!this.hasLink('overview-content')) {
 			return this.contents;
 		}

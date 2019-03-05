@@ -10,7 +10,7 @@ import {
 	NO_LINK,
 	Service
 } from '../../constants';
-import {Mixin as ContentTreeMixin, GET_CONTENT_TREE_CHILDREN} from '../../content-tree';
+import {Mixin as ContentTreeMixin} from '../../content-tree';
 import AssessmentCollectionStudentView from '../assessment/assignment/CollectionStudentView';
 import AssessmentCollectionInstructorView from '../assessment/assignment/CollectionInstructorView';
 import Roster from '../../stores/CourseRoster';
@@ -593,7 +593,7 @@ class Instance extends Base {
 	}
 
 
-	async [GET_CONTENT_TREE_CHILDREN] () {
+	async getContentTreeChildrenSource () {
 		if (!this.hasOutline()) { return []; }
 
 		try {

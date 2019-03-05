@@ -1,6 +1,5 @@
 /* eslint-env jest */
 import Node from '../Node';
-import {GET_CONTENT_TREE_CHILDREN} from '../../Contants';
 
 
 function createObject (name, children) {
@@ -9,8 +8,8 @@ function createObject (name, children) {
 	};
 
 	if (children) {
-		obj[GET_CONTENT_TREE_CHILDREN] = async () => children;
-		jest.spyOn(obj, GET_CONTENT_TREE_CHILDREN);
+		obj.getContentTreeChildrenSource = async () => children;
+		jest.spyOn(obj, 'getContentTreeChildrenSource');
 	}
 
 	return obj;
@@ -89,7 +88,7 @@ describe('ContentTree Node', () => {
 
 
 	describe('getChildNodes', () => {
-		test('item does NOT define GET_CONTENT_TREE_CHILDREN', async () => {
+		test('item does NOT define getContentTreeChildrenSource', async () => {
 			const node = new Node(createObject('Item'));
 
 			const children = await node.getChildNodes();
@@ -97,17 +96,17 @@ describe('ContentTree Node', () => {
 			expect(children).toBeNull();
 		});
 
-		test('items GET_CONTENT_TREE_CHILDREN returns one sub item', async () => {
+		test('items getContentTreeChildrenSource returns one sub item', async () => {
 			const subObject = createObject('Sub Item');
 			const object = createObject('Item', subObject);
 			const parent = new Node(createObject('Parent'));
 			const node = new Node(object, parent);
 
-			expect(object[GET_CONTENT_TREE_CHILDREN]).not.toHaveBeenCalled();
+			expect(object.getContentTreeChildrenSource).not.toHaveBeenCalled();
 
 			const children = await node.getChildNodes();
 
-			expect(object[GET_CONTENT_TREE_CHILDREN]).toHaveBeenCalledWith(parent);
+			expect(object.getContentTreeChildrenSource).toHaveBeenCalledWith(parent);
 
 			expect(children.length).toBe(1);
 
@@ -121,7 +120,7 @@ describe('ContentTree Node', () => {
 
 		});
 
-		test('item GET_CONTENT_TREE_CHILDREN returns a list of sub items', async () => {
+		test('item getContentTreeChildrenSource returns a list of sub items', async () => {
 			const subObjects = [
 				createObject('Sub Item 1'),
 				createObject('Sub Item 2'),
@@ -132,11 +131,11 @@ describe('ContentTree Node', () => {
 			const parent = new Node(createObject('Parent'));
 			const node = new Node(object, parent);
 
-			expect(object[GET_CONTENT_TREE_CHILDREN]).not.toHaveBeenCalled();
+			expect(object.getContentTreeChildrenSource).not.toHaveBeenCalled();
 
 			const children = await node.getChildNodes();
 
-			expect(object[GET_CONTENT_TREE_CHILDREN]).toHaveBeenCalledWith(parent);
+			expect(object.getContentTreeChildrenSource).toHaveBeenCalledWith(parent);
 
 			expect(children.length).toBe(3);
 
@@ -198,17 +197,17 @@ describe('ContentTree Node', () => {
 			}
 		});
 
-		test('do NOT call GET_CONTENT_TREE_CHILDREN on the item', async () => {
+		test('do NOT call getContentTreeChildrenSource on the item', async () => {
 			const object = createObject('Item', []);
 			const node = new Node(object);
 
 			node.filter(() => true);
 
-			expect(object[GET_CONTENT_TREE_CHILDREN]).not.toHaveBeenCalled();
+			expect(object.getContentTreeChildrenSource).not.toHaveBeenCalled();
 
 			node.filterChildren(() => true);
 
-			expect(object[GET_CONTENT_TREE_CHILDREN]).not.toHaveBeenCalled();
+			expect(object.getContentTreeChildrenSource).not.toHaveBeenCalled();
 		});
 
 		const filterName = 'filter';
@@ -347,17 +346,17 @@ describe('ContentTree Node', () => {
 			expect(() => node.findChild([])).toThrow();
 		});
 
-		test('do NOT call GET_CONTENT_TREE_CHILDREN on the item', async () => {
+		test('do NOT call getContentTreeChildrenSource on the item', async () => {
 			const object = createObject('Item', []);
 			const node = new Node(object);
 
 			node.find(() => {});
 
-			expect(object[GET_CONTENT_TREE_CHILDREN]).not.toHaveBeenCalled();
+			expect(object.getContentTreeChildrenSource).not.toHaveBeenCalled();
 
 			node.findChild(() => {});
 
-			expect(object[GET_CONTENT_TREE_CHILDREN]).not.toHaveBeenCalled();
+			expect(object.getContentTreeChildrenSource).not.toHaveBeenCalled();
 		});
 
 		test('return an empty node if no node found', async () => {

@@ -1,6 +1,7 @@
 import {Array as arr} from '@nti/lib-commons';
 
-import {GET_CONTENT_TREE_CHILDREN, ERRORS} from '../Contants';
+import {Walker as TreeWalker} from '../tree-walker';
+import {ERRORS} from '../Contants';
 import {deferredValue} from '../utils';
 
 import {
@@ -19,11 +20,6 @@ const CLONES = Symbol('Clones');
 const RESOLVE_CHILDREN = Symbol('Resolve Children');
 const MUTATE_CHILDREN_AND_CLONE = Symbol('Create Clone');
 
-function ifNotFunctionThrow (maybeFn, msg) {
-	if (!maybeFn || typeof maybeFn !== 'function') {
-		throw new Error(msg);
-	}
-}
 
 function getItem (item, clones) {
 	if (clones) {
@@ -121,7 +117,6 @@ export default class ContentTreeNode {
 		return this[CHILDREN].resolve();
 	}
 
-
 	async [RESOLVE_CHILDREN] () {
 		const empty = await this.isEmptyNode();
 
@@ -132,11 +127,11 @@ export default class ContentTreeNode {
 		const item = await this.getItem();
 		const parent = await this.getParentNode();
 
-		if (!item || !item[GET_CONTENT_TREE_CHILDREN]) {
+		if (!item || !item.getContentTreeChildrenSource) {
 			return null;
 		}
 
-		const children = await item[GET_CONTENT_TREE_CHILDREN](parent);
+		const children = await item.getContentTreeChildrenSource(parent);
 
 		return arr.ensure(children)
 			.map(child => new ContentTreeNode(child, this));
@@ -151,7 +146,7 @@ export default class ContentTreeNode {
 	}
 
 	filter (filterFn) {
-		ifNotFunctionThrow(filterFn, ERRORS.getMessage('filter must be given a function.'));
+		ERRORS.throwIfNotFunction(filterFn, ERRORS.getMessage('filter must be given a function.'));
 
 		const filtered = async () => {
 			const children = await this.getChildNodes();
@@ -164,7 +159,7 @@ export default class ContentTreeNode {
 
 
 	filterChildren (filterFn) {
-		ifNotFunctionThrow(filterFn, ERRORS.getMessage('filter must be given a function.'));
+		ERRORS.throwIfNotFunction(filterFn, ERRORS.getMessage('filter must be given a function.'));
 
 		const filtered = async () => {
 			const children = await this.getChildNodes();
@@ -188,7 +183,7 @@ export default class ContentTreeNode {
 
 
 	find (predicate) {
-		ifNotFunctionThrow(predicate, ERRORS.getMessage('find must be given a function'));
+		ERRORS.throwIfNotFunction(predicate, ERRORS.getMessage('find must be given a function'));
 
 		const clone = async () => {
 			const children = await this.getChildNodes();
@@ -200,7 +195,7 @@ export default class ContentTreeNode {
 	}
 
 	findChild (predicate) {
-		ifNotFunctionThrow(predicate, ERRORS.getMessage('findChild must be given a function'));
+		ERRORS.throwIfNotFunction(predicate, ERRORS.getMessage('findChild must be given a function'));
 
 		const clone = async () => {
 			const children = await this.getChildNodes();
@@ -227,6 +222,17 @@ export default class ContentTreeNode {
 		};
 
 		return new ContentTreeNode(null, null, {[CLONES]: clone});
+	}
+
+
+	createTreeWalker (root, config) {
+		//If we're passed config as the only argument
+		if (!(root instanceof ContentTreeNode) && !config) {
+			config = root;
+			root = null;
+		}
+
+		return new TreeWalker(this, root || this, config);
 	}
 }
 
