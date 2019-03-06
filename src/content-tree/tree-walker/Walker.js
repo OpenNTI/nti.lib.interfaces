@@ -2,8 +2,11 @@ import {ERRORS} from '../Contants';
 import {deferredValue} from '../utils';
 
 import {
-	findIndex,
-	getDescendantCount,
+	getNodes,
+	getNodeCount,
+	getNodesBefore,
+	getNodesAfter,
+	getIndexOf,
 	selectNext,
 	selectPrev,
 	selectDescendantMatching,
@@ -37,18 +40,40 @@ export default class ContentTreeWalker {
 		return this[ROOT].resolve();
 	}
 
-	async getDescendantLength () {
-		const node = await this.getCurrentNode();
+	async getNodes () {
+		const root = await this.getRootNode();
 
-		return getDescendantCount(node, this[SKIP], this[IGNORE_CHILDREN]);
+		return getNodes(root, this[SKIP], this[IGNORE_CHILDREN]);
 	}
 
-	async findIndexOfDescendant (predicate) {
-		ERRORS.throwIfNotFunction(predicate, ERRORS.getMessage('findIndexOfDescendant must be given a function'));
+	async getNodeCount () {
+		const root = await this.getRootNode();
 
-		const node = await this.getCurrentNode();
+		return getNodeCount(root, this[SKIP], this[IGNORE_CHILDREN]);
+	}
 
-		return findIndex(node, predicate, this[SKIP], this[IGNORE_CHILDREN]);
+	async getNodesBefore (predicate) {
+		ERRORS.throwIfNotFunction(predicate);
+
+		const root = await this.getRootNode();
+
+		return getNodesBefore(root, predicate, this[SKIP], this[IGNORE_CHILDREN]);
+	}
+
+	async getNodesAfter (predicate) {
+		ERRORS.throwIfNotFunction(predicate);
+
+		const root = await this.getRootNode();
+
+		return getNodesAfter(root, predicate, this[SKIP], this[IGNORE_CHILDREN]);
+	}
+
+	async getIndexOf (predicate) {
+		ERRORS.throwIfNotFunction(predicate);
+
+		const root = await this.getRootNode();
+
+		return getIndexOf(root, predicate, this[SKIP], this[IGNORE_CHILDREN]);
 	}
 
 
@@ -90,6 +115,8 @@ export default class ContentTreeWalker {
 
 
 	selectDescendantMatching (predicate) {
+		ERRORS.throwIfNotFunction(predicate);
+
 		const descendant = async () => {
 			try {
 				const node = await this.getCurrentNode();
@@ -107,7 +134,6 @@ export default class ContentTreeWalker {
 	selectFirstDescendant () {
 		const descendant = async () => {
 			try {
-
 				const node = await this.getCurrentNode();
 
 				return selectFirstDescendant(node, this[SKIP], this[IGNORE_CHILDREN]);

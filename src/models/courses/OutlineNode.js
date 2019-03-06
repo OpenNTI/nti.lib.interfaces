@@ -193,7 +193,7 @@ class OutlineNode extends Outline {
 		}
 
 		try {
-			const contents = await this.getContent({decorateProgress: false, decorateSummary: false});
+			const contents = await this.getContent();
 
 			return contents;
 		} catch (e) {

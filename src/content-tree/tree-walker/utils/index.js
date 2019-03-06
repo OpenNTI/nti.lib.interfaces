@@ -1,4 +1,3 @@
-export findIndex from './find-index';
-export getDescendantCount from './get-descendant-count';
+export * from './get-descendants';
 export * from './select-descendant';
 export * from './select-in-order';
