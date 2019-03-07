@@ -87,6 +87,12 @@ class UserData extends EventEmitter {
 	}
 
 
+	map = fn => Array.from(this).map(fn);
+
+	
+	filter = fn => Array.from(this).filter(fn);
+
+
 	[Symbol.iterator] () {
 		let {Items = {}} = this,
 			bins = Object.keys(Items),
