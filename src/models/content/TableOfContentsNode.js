@@ -23,6 +23,7 @@ export default class XMLBasedTableOfContentsNode {
 	}
 
 
+
 	[Symbol.iterator] () {
 		let {children} = this,
 			{length} = children,
@@ -40,6 +41,7 @@ export default class XMLBasedTableOfContentsNode {
 		};
 	}
 
+	isTableOfContentsNode = true
 
 	get children () {
 		return this[DATA].getchildren().map(n => new XMLBasedTableOfContentsNode(this.toc, n, this));

@@ -1,4 +1,4 @@
-import nodeMatches from './node-matches';
+import {nodeMatches} from '../../utils';
 
 export async function getNodes (root, skip, ignoreChildren) {
 	const skipRoot = await nodeMatches(root, skip);
@@ -6,9 +6,11 @@ export async function getNodes (root, skip, ignoreChildren) {
 	let nodes = [];
 	let pointer = root.createTreeWalker(root, {skip, ignoreChildren});
 
-	if (skipRoot) {
-		pointer = pointer.selectFirstDescendant();
+	if (!skipRoot) {
+		nodes.push(root);
 	}
+
+	pointer = pointer.selectFirstDescendant();
 
 	while (pointer) {
 		const pointerNode = await pointer.getCurrentNode();

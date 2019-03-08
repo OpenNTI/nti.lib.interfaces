@@ -94,7 +94,6 @@ class Outline extends Base {
 
 
 	getID () {
-		console.error('Do you really want the OutlineNode\'s ID or its Content ID?'); //eslint-disable-line no-console
 		return super.getID();
 	}
 

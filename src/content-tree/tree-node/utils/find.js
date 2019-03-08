@@ -1,3 +1,5 @@
+import {nodeMatches} from '../../utils';
+
 import resovleChildrenItems from './resolve-children-items';
 
 async function matches ({item, node}, predicate) {
@@ -41,7 +43,7 @@ async function getNextIteration (children) {
 	}, []);
 }
 
-export default async function find (children, predicate, recursive) {
+export async function find (children, predicate, recursive) {
 	if (!children || !children.length || !predicate) { return null; }
 
 	const match = await findMatch(children, predicate);
@@ -52,4 +54,18 @@ export default async function find (children, predicate, recursive) {
 	const iteration = await getNextIteration(children);
 
 	return find(iteration, predicate, true);
+}
+
+export async function findParent (node, predicate) {
+	let pointer = await node.getParentNode();
+
+	while (pointer) {
+		const found = await nodeMatches(pointer, predicate);
+
+		if (found) { return pointer; }
+
+		pointer = await pointer.getParentNode();
+	}
+
+	return null;
 }

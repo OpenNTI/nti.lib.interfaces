@@ -14,6 +14,9 @@ async function getIndex (children, node) {
 
 async function findSiblingAround (node, offset) {
 	const parent = await node.getParentNode();
+
+	if (!parent) { return null; }
+
 	const children = await parent.getChildNodes();
 	const index = await getIndex(children, node);
 

@@ -5,6 +5,7 @@ import {mixin} from '@nti/lib-decorators';
 import mime from 'mime-types';
 import {isNTIID} from '@nti/lib-ntiids';
 
+import {Mixin as ContentTreeMixin} from '../../content-tree';
 import Completable from '../../mixins/Completable';
 import UserDataStore from '../../stores/UserData';
 import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA, Service} from '../../constants';
@@ -42,7 +43,7 @@ const EXTERNAL_TYPE = 'application/vnd.nextthought.externallink';
 
 export default
 @model
-@mixin(Completable)
+@mixin(Completable, ContentTreeMixin)
 class RelatedWorkReference extends Base {
 	static MimeType = COMMON_PREFIX + 'relatedworkref'
 
@@ -149,5 +150,33 @@ class RelatedWorkReference extends Base {
 		const p = bundle.getPackage(this['target-NTIID']);
 
 		return p && p.icon;
+	}
+
+
+	async getContentTreeChildrenSource () {
+		if (!this.isContent && isNTIID(this.href)) { return null; }
+
+		try {
+			const course = this.parent('isCourse');
+			const pageId = this.href;
+			const page = await this[Service].getObject(pageId);
+
+			const contentPackage = course ?
+				course.getPackage(page.ContentPackageNTIID) :
+				await this[Service].getObject(page.ContentPackageNTIID);
+
+			if (contentPackage.isRenderable) { return null; }
+
+			const toc = await contentPackage.getTableOfContents();
+			const node = toc.getNode(page.getID());
+
+			return node
+				.flatten()
+				.filter((n) => {
+					return n && n.id !== pageId && n.isTopic() && !n.isAnchor();
+				});
+		} catch (e) {
+			return null;
+		}
 	}
 }
