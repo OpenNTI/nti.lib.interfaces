@@ -4,6 +4,7 @@ function getCompletedDate (item, items) {
 
 export default function Applyer (targetModelClass) {
 	Object.assign(targetModelClass.Fields, {
+		'CompletedItem':            { type: 'model'   },
 		'CompletionRequired':       { type: 'boolean' },
 		'CompletionDefaultState':   { type: 'boolean' },
 		'IsCompletionDefaultState': { type: 'boolean' },
