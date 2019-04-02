@@ -6,10 +6,7 @@ const getPending = p => PRIVATE_PENDING.get(p) || [];
 const setPending = (p, list) => (PRIVATE_PENDING.set(p, list), list);
 
 export const Mixin = {
-
-	initMixin () {
-		setPending(this, []);
-	},
+	getPending () { return getPending(this); },
 
 
 	addToPending (...pending) {

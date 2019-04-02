@@ -25,7 +25,7 @@ const is = Symbol('isTest');
 
 export default
 @model
-@mixin(Fields, HasLinks, JSONValue, Editable, Pendability)
+@mixin(HasLinks, JSONValue, Editable, Pendability, Fields)
 class Base extends EventEmitter {
 	static MimeType = '__base__'
 
