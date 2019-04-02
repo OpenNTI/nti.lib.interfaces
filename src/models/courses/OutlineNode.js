@@ -132,7 +132,7 @@ class OutlineNode extends Outline {
 				content = filterNonRequiredItems(data);
 			}
 
-			return this[parse](content);
+			return this[parse](content).waitForPending();
 		};
 
 		try {
