@@ -16,4 +16,12 @@ class AssignmentReference extends Base {
 		'label':         { type: 'string' },
 		'title':         { type: 'string' },
 	}
+
+	get target () {
+		return this['Target-NTIID'];
+	}
+
+	pointsToId (id) {
+		return this['Target-NTIID'] === id;
+	}
 }

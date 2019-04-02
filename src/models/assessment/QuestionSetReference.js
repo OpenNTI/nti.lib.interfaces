@@ -16,4 +16,13 @@ class QuestionSetReference extends Base {
 		'question-count': { type: 'number?' },
 		'label':          { type: 'string' }
 	}
+
+
+	get target () {
+		return this['Target-NTIID'];
+	}
+
+	pointsToId (id) {
+		return this.target === id;
+	}
 }

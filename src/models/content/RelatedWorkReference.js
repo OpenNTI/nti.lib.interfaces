@@ -105,6 +105,15 @@ class RelatedWorkReference extends Base {
 	}
 
 
+	get target () {
+		return this['target-NTIID'];
+	}
+
+	pointsToId (id) {
+		return this.target === id;
+	}
+
+
 	getUserData () {
 		let store = this[UserData];
 		let service = this[Service];
