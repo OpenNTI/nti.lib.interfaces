@@ -39,7 +39,7 @@ class Note extends Highlight {
 		let service = this[Service];
 		let target = (service.getCollectionFor(this, null, tryScopes) || {}).href;
 		if (!target) {
-			logger.error('No where to save object: %o', this);
+			logger.error('Nowhere to save object: %o', this);
 		}
 
 		if (!Array.isArray(body)) {
@@ -50,7 +50,7 @@ class Note extends Highlight {
 
 			let reply = new Note(service, this, {
 				Class: 'Note',
-				MimeType: 'application/vnd.nextthought.note',
+				MimeType: Note.MimeType,
 				body,
 				ContainerId: this.ContainerId,
 				applicableRange: this.applicableRange && this.applicableRange.getData(),
