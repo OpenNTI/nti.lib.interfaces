@@ -8,6 +8,15 @@ class CalendarEventRef extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'CalendarEvent':        { type: 'model'  }
+		'CalendarEvent':        { type: 'model'  },
+		'Target-NTIID':         { type: 'string'}
+	}
+
+	get target () {
+		return this['Target-NTIID'];
+	}
+
+	pointsToId (id) {
+		return this.target === id;
 	}
 }
