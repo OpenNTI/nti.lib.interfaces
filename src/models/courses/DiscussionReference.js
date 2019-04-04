@@ -1,4 +1,4 @@
-import {parseNTIID} from '@nti/lib-ntiids';
+import {parseNTIID, isNTIID} from '@nti/lib-ntiids';
 
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -58,7 +58,7 @@ class DiscussionReference extends Base {
 
 
 async function maybeFillInTargetNTIID (ref) {
-	if (ref['Target-NTIID']) {
+	if (ref['Target-NTIID'] && isNTIID(ref['Target-NTIID'])) {
 		ref[RESOLVED_TARGET_NTIID] = ref['Target-NTIID'];
 		return;
 	}
