@@ -49,16 +49,20 @@ class DiscussionReference extends Base {
 
 	async resolveTarget (course) {
 		if (!this[RESOLVED_TARGET]) {
-			this[RESOLVED_TARGET] = this['Target-NTIID'] ? resolveTargetNTIID(this, course) : resolveNTIID(this, course);
+			this[RESOLVED_TARGET] = hasValidTargetNTIID(this) ? resolveTargetNTIID(this, course) : resolveNTIID(this, course);
 		}
 
 		return this[RESOLVED_TARGET];
 	}
 }
 
+function hasValidTargetNTIID (ref) {
+	return ref['Target-NTIID'] && isNTIID(ref['Target-NTIID']);
+}
+
 
 async function maybeFillInTargetNTIID (ref) {
-	if (ref['Target-NTIID'] && isNTIID(ref['Target-NTIID'])) {
+	if (hasValidTargetNTIID(ref)) {
 		ref[RESOLVED_TARGET_NTIID] = ref['Target-NTIID'];
 		return;
 	}
