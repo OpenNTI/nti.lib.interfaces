@@ -89,7 +89,7 @@ class UserData extends EventEmitter {
 
 	map = fn => Array.from(this).map(fn);
 
-	
+
 	filter = fn => Array.from(this).filter(fn);
 
 
@@ -130,6 +130,23 @@ class UserData extends EventEmitter {
 		bin.push(item);
 
 		item.on('change', this.onChange.bind(this));
+		this.emit('change');
+	}
+
+
+	insertItem (item) {
+		return this[insert](item);
+	}
+
+
+	removeItem (target) {
+		const bId = binId(target, this.rootId);
+
+		if (!this.Items[bId]) { return; }
+
+		const targetId = target.getID();
+		this.Items[bId] = (this.Items[bId] || []).filter(item => item.getID() !== targetId);
+
 		this.emit('change');
 	}
 
