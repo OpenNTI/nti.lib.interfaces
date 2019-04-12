@@ -75,16 +75,16 @@ class Video extends Base {
 	 * @returns {Promise} A promise of a transcript or a rejection.
 	 */
 	getTranscript (lang) {
-		let target = lang || 'en';
-		let scripts = this.transcripts;
+		const language = lang || 'en';
+		const {transcripts} = this;
 
-		if (isEmpty(scripts)) {
+		if (isEmpty(transcripts)) {
 			return Promise.reject(NO_TRANSCRIPT);
 		}
 
-		target = this.transcripts.reduce(
+		const target = this.transcripts.reduce(
 			(result, potential)=>
-				result || (potential.lang === target && potential), null);
+				result || (potential.lang === language && potential), null);
 
 		if (!target) {
 			return Promise.reject(NO_TRANSCRIPT_LANG);
