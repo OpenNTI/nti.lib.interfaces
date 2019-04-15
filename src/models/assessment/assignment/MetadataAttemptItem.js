@@ -7,6 +7,7 @@ class MetadataAttemptItem extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmentattemptmetadataitem';
 
 	static Fields = {
+		...Base.Fields,
 		'StartTime': 	{ type: 'date' },
 		'SubmitTime': 	{ type: 'date' },
 		'Duration': 	{ type: 'any'  },
