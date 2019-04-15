@@ -77,7 +77,7 @@ class MediaSource extends Base {
 
 	getThumbnail () {
 		return this.getProperty('thumbnail')
-			.then(()=>this.meta.thumbnail || this.thumbnail || this.poster);
+			.then(() => this.meta.thumbnail || this.thumbnail || this.meta.poster || this.poster);
 	}
 
 
