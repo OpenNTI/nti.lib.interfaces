@@ -16,7 +16,7 @@ class AssignmentCompletionMetadata extends Base {
 		'CompletionRequiredPassingPercentage': { type: 'number'   },
 		'Success':                             { type: 'boolean'  },
 		'TotalPoints':                         { type: 'number'   },
-		'UserPointsReceived':                  { type: 'string'   },
+		'UserPointsReceived':                  { type: 'any'   },
 	}
 
 
