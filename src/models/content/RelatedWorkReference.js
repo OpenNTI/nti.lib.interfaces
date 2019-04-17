@@ -53,6 +53,7 @@ class RelatedWorkReference extends Base {
 		'href':               { type: 'string' },
 		'icon':               { type: 'string' },
 		'label':              { type: 'string' },
+		'target':             { type: 'string' },
 		'target-NTIID':       { type: 'string' },
 		'targetMimeType':     { type: 'string' },
 		'type':               { type: 'string' },
