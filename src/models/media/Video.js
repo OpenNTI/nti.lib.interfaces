@@ -47,7 +47,7 @@ class MediaSourceUtil {
 			return next();
 		}
 
-		return fallback || Promise.reject('No Source');
+		return fallback || Promise.reject(`Unable to resolve ${prop}.`);
 	}
 }
 
