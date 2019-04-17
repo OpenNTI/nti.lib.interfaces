@@ -42,10 +42,15 @@ class MediaSource extends Base {
 	}
 
 
+	get hasResolverFailure () {
+		return !!this.meta.failure;
+	}
+
+	
 	getResolver () {
 		return this[resolver] || (
 			this[resolver] = MetaDataResolver.from(this)
-				.then(meta=> this.meta = meta)
+				.then(meta => this.meta = meta)
 		);
 	}
 
