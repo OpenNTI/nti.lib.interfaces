@@ -19,6 +19,38 @@ const EXISTING_TRANSCRIPT = 'A Transcript already exists';
 
 //TODO: look into turning transcripts into full fledged models
 
+class MediaSourceUtil {
+	static methods = {
+		poster: 'getPoster',
+		thumbnail: 'getThumbnail',
+		duration: 'getDuration',
+	}
+
+	static async get (prop, sources, sourceIndex = 0, fallback) {
+		const method = MediaSourceUtil.methods[prop];
+		const next = (fallbackValue = fallback) => this.get(prop, sources, sourceIndex + 1, fallbackValue);
+
+		try {
+			const source = sources[sourceIndex];
+
+			if (source && source[method]) {
+				const value = await source[method]();
+				
+				if (source.hasResolverFailure && sources.length > sourceIndex + 1) {
+					return next(value);
+				}
+
+				return value;
+			}
+		}
+		catch (e) {
+			return next();
+		}
+
+		return Promise.reject('No Source');
+	}
+}
+
 export default
 @model
 @mixin(Completable)
@@ -50,24 +82,9 @@ class Video extends Base {
 		});
 	}
 
-
-	getThumbnail () {
-		let first = this.sources[0];
-		return first ? first.getThumbnail() : Promise.reject('No Source');
-	}
-
-
-	getPoster () {
-		let first = this.sources[0];
-		return first ? first.getPoster() : Promise.reject('No Source');
-	}
-
-
-	getDuration () {
-		let first = this.sources[0];
-		return first ? first.getDuration() : Promise.reject('No Source');
-	}
-
+	getThumbnail = async () => MediaSourceUtil.get('thumbnail', this.sources)
+	getPoster = async () => MediaSourceUtil.get('poster', this.sources)
+	getDuration = async () => MediaSourceUtil.get('duration', this.sources)
 
 	/**
 	 * @param {string} [lang] Request a language specific transcript. If
