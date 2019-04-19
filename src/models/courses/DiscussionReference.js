@@ -49,7 +49,7 @@ class DiscussionReference extends Base {
 
 	async resolveTarget (course) {
 		if (!this[RESOLVED_TARGET]) {
-			this[RESOLVED_TARGET] = hasValidTargetNTIID(this) ? resolveTargetNTIID(this, course) : resolveNTIID(this, course);
+			this[RESOLVED_TARGET] = resolveTarget(this, course);
 		}
 
 		return this[RESOLVED_TARGET];
@@ -78,7 +78,20 @@ async function maybeFillInTargetNTIID (ref) {
 }
 
 
+async function resolveTarget (ref, course) {
+	try {
+		return await resolveTargetNTIID(ref);
+	} catch (e) {
+		return resolveNTIID(ref, course);
+	}
+}
+
+
 async function resolveTargetNTIID (ref) {
+	if (!hasValidTargetNTIID(ref)) {
+		throw new Error('Invalid Target NTIID');
+	}
+
 	const service = ref[Service];
 	const target = await service.getObject(ref['Target-NTIID']);
 
