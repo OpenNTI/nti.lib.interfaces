@@ -20,7 +20,7 @@ async function selectFromList (nodes, predicate, ignoreChildren) {
 		if (ignore) { continue; }
 
 		const children = await node.getChildNodes();
-		const matchingChild = await selectFromList(children, predicate, ignoreChildren);
+		const matchingChild = children && await selectFromList(children, predicate, ignoreChildren);
 
 		if (matchingChild) { return matchingChild; }
 	}
