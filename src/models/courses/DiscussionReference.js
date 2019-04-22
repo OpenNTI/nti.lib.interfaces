@@ -80,20 +80,20 @@ async function maybeFillInTargetNTIID (ref) {
 
 async function resolveTarget (ref, course) {
 	try {
-		return await resolveTargetNTIID(ref);
+		return await resolveTargetNTIID(ref, course);
 	} catch (e) {
 		return resolveNTIID(ref, course);
 	}
 }
 
 
-async function resolveTargetNTIID (ref) {
+async function resolveTargetNTIID (ref, course) {
 	if (!hasValidTargetNTIID(ref)) {
 		throw new Error('Invalid Target NTIID');
 	}
 
 	const service = ref[Service];
-	const target = await service.getObject(ref['Target-NTIID']);
+	const target = await service.getObject(maybeFixNTIID(ref['Target-NTIID'], course));
 
 	return target;
 }
