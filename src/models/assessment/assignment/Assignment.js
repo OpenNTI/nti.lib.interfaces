@@ -142,6 +142,21 @@ class Assignment extends Base {
 		return date && due && date > due;
 	}
 
+	isOutsideSubmissionBuffer () {
+		const now = new Date();
+		const due = this.getDueDate();
+		const {submissionBuffer} = this;
+
+		//If there is no submission buffer or due date we aren't after the submission buffer
+		if ((!submissionBuffer && submissionBuffer !== 0) || !due) {
+			return false;
+		}
+
+		const latest = new Date(due.getTime() + ((submissionBuffer || 0) * 1000));
+
+		return latest < now;
+	}
+
 	get hasSubmission () {
 		return this.hasLink(ASSESSMENT_HISTORY_LINK);
 	}
