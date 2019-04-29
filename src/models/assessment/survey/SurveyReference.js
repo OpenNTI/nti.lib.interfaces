@@ -27,4 +27,8 @@ class SurveyReference extends Base {
 	getQuestionCount () {
 		return this['question-count'] || 0;
 	}
+
+	get target () {
+		return this['Target-NTIID'];
+	}
 }
