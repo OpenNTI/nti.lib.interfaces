@@ -29,13 +29,12 @@ export default function Applyer (targetModelClass) {
 		async updateCompletedState (enrollment) {
 			enrollment = enrollment || this.parent('getCompletedItems');
 
-			if (!enrollment) { return; }
+			if (!enrollment || !enrollment.hasCompletedItems()) { return; }
 
 			try {
 				const items = await enrollment.getCompletedItems();
 				const oldCompletedDate = this.getCompletedDate();
 				const completedDate = getCompletedDate(this, items);
-
 
 
 				this.CompletedDate = completedDate;

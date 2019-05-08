@@ -89,6 +89,11 @@ class Enrollment extends Base {
 	}
 
 
+	hasCompletedItems () {
+		return this.hasLink('CompletedItems');
+	}
+
+
 	async getCompletedItems () {
 		try {
 			const completedItems = await this.fetchLink('CompletedItems');
