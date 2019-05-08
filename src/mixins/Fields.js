@@ -193,6 +193,11 @@ export default function FieldsApplier (target) {
 			}
 			logger.debug('Refresh %o', this);
 
+			//TODO: in the case that we are getting the full object from the server
+			//we should look at the keys we currently have and the keys on the incoming
+			//data. If we had keys that are not in the incoming we should set them
+			//to null on the incoming data so the property on the model will be nulled out
+			//instead of retaining the previous value.
 			const fetch = newRaw
 				? Promise.resolve(newRaw)
 				: service.getObjectAtURL(this.getObjectHref(), this.getID());
