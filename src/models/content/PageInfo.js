@@ -17,6 +17,7 @@ import Base from '../Base';
 const NOT_FOUND = {statusCode: 404, message: 'Not Found'};
 
 const UserData = Symbol('UserData');
+const ContentPackageMimeTypes = 'application/vnd.nextthought.renderablecontentpackage';
 
 export default
 @model
@@ -40,6 +41,22 @@ class PageInfo extends Base {
 		if (this.AssessmentItems) {
 			this.AssessmentItems = setupAssessmentItems(this.AssessmentItems, this);
 		}
+	}
+
+
+	async getContentPackage () {
+		const url = this.getLink('package');
+
+		if (!url) { throw new Error('No Link'); }
+
+		const raw = await this[Service].get({
+			url,
+			headers: {
+				accept: ContentPackageMimeTypes
+			}
+		});
+
+		return this[parse](raw);
 	}
 
 
