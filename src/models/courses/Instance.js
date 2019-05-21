@@ -234,6 +234,21 @@ class Instance extends Base {
 	}
 
 
+	async createAsset (data) {
+		if (!this.hasLink('assets')) {
+			throw new Error('No Assets Link');
+		}
+
+		const asset = await this.postToLink('assets', data, true);
+
+		if (asset.isVideo) {
+			delete this[MEDIA_INDEX];
+		}
+
+		return asset;
+	}
+
+
 	getAssets (type) {
 		if (Array.isArray(type)) {
 			[type] = type;
