@@ -13,6 +13,7 @@ class SurveyReference extends Base {
 
 	static Fields = {
 		...Base.Fields,
+		'isClosed':       { type: 'boolean' },
 		'question-count': { type: 'number?' },
 		'label':          { type: 'string'  },
 		'submissions':    { type: 'number'  },
