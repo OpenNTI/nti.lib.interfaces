@@ -108,6 +108,11 @@ class OutlineNode extends Outline {
 
 			const fetchLink = async () => {
 				let content = await this.fetchLink(link);
+
+				if (typeof content !== 'object') {
+					throw new TypeError(`Expected JSON, received ${typeof content}`);
+				}
+
 				if(this.isStaticOverContents) {
 					content = fixRelativePaths(content, this.getLink(link));
 					content.isStatic = true;
