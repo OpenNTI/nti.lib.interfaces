@@ -132,7 +132,8 @@ class OutlineNode extends Outline {
 				content = filterNonRequiredItems(data);
 			}
 
-			return this[parse](content).waitForPending();
+			const parsed = this[parse](content);
+			return parsed && parsed.waitForPending();
 		};
 
 		try {
