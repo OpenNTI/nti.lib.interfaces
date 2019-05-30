@@ -11,7 +11,8 @@ const logger = Logger.get('store:GradeBookSummary');
 //@private
 const FILTERS = {
 	forcredit: 'ForCredit',
-	open: 'Open'
+	open: 'Open',
+	all: 'All'
 };
 
 const CATEGORIES = {
@@ -25,6 +26,7 @@ function setFilter (instance, scope = instance.scopeFilter, category = instance.
 	const {options} = instance;
 
 	options.filter = [scope, category].filter(x => x).join(',');
+
 	if (options.filter.length === 0) {
 		delete options.filter;
 	}
@@ -60,12 +62,17 @@ class GradeBookSummary extends Stream {
 		const data = getPrivate(this);
 		super.applyBatch(input);
 
-		const {EnrollmentScope, AvailableFinalGrade} = input;
+		const {EnrollmentScope, AvailableFinalGrade, ItemCount} = input;
 		// AvailableFinalGrade: true
 		// EnrollmentScope: "ForCredit"
 		// BatchPage: 1
 		// ItemCount: 1
 		// TotalItemCount: 1
+		const {scopeFilter, categoryFilter} = this;
+
+		if (!scopeFilter && !categoryFilter && ItemCount === 0) {
+			return this.retryBatch(() => this.setScopeFilter('All'));
+		}
 
 		if (EnrollmentScope && data.scopeFilter !== EnrollmentScope) {
 			if (data.scopeFilter) { //don't warn if not initialized
