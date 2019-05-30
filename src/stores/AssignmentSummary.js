@@ -11,6 +11,11 @@ const FILTERS = {
 	open: 'Open'
 };
 
+const OPPOSITE_FILTER = {
+	ForCredit: 'open',
+	Open: 'forcredit'
+};
+
 export default
 @mixin(Paged)
 class AssignmentSummary extends Stream {
@@ -38,7 +43,12 @@ class AssignmentSummary extends Stream {
 		super.applyBatch(input);
 
 		const {filter} = this.options;
-		const {EnrollmentScope} = input;
+		const {EnrollmentScope, ItemCount} = input;
+
+		if (!filter && ItemCount === 0) {
+			return this.retryBatch(() => this.setFilter(OPPOSITE_FILTER[EnrollmentScope]));
+		}
+
 		if (EnrollmentScope && filter !== EnrollmentScope) {
 			this.options.filter = EnrollmentScope;
 		}

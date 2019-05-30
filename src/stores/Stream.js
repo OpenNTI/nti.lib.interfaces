@@ -10,7 +10,12 @@ import getLink from '../utils/getlink';
 import {parseListFn} from '../models/Parser';
 import {initPrivate, getPrivate} from '../utils/private';
 
-
+class RetryBatch extends Error {
+	constructor (fn = () => {}) {
+		super('Retrying Batch');
+		this.retry = fn;
+	}
+}
 
 const logger = Logger.get('store:Stream');
 
@@ -147,6 +152,11 @@ export default class Stream extends EventEmitter {
 	get more () { return !!this.next; }
 
 
+	retryBatch (fn) {
+		throw new RetryBatch (fn);
+	}
+
+
 	nextBatch (prev = false) {
 		const store = getPrivate(this);
 
@@ -182,12 +192,19 @@ export default class Stream extends EventEmitter {
 			let loads = load(this, next)
 				.then(v => store.data = this.continuous ? store.data.concat(v) : v)
 				.catch(er => {
+					if (er instanceof RetryBatch) { return er; }
+
 					logger.error(er);
 					store.error = true;
 					store.dirty = true;
 				})
-				.then(() => {
+				.then((token) => {
 					store.loading = false;
+					
+					if (token instanceof RetryBatch) {
+						return token.retry(); 
+					}
+					
 					store.loaded = Date.now();
 					store.dirty = store.dirty || false;
 					this.emit('load', this, `${(store.loaded - start)}ms`);
