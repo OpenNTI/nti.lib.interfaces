@@ -12,8 +12,8 @@ const Canceled = 'canceled';
 const ChangeEvent = 'state-changed';
 
 export default class Task extends EventEmitter {
-	#Runner = null
-	#Canceler = null
+	#StartProcess = null
+	#ActiveProcess = null
 	#State = NotStarted
 
 	#resolve = null
@@ -25,17 +25,12 @@ export default class Task extends EventEmitter {
 	#progressCurrent = null
 	#progressTotal = null
 
-	constructor (runner, cancel) {
+	constructor (startProcess) {
 		super();
 
-		runner = runner || this.runner;
-		cancel = cancel || this.cancel;
+		if (!startProcess || typeof startProcess !== 'function') { throw new Error('Task must be provided a method to start a process'); }
 
-		if (!runner) { throw new Error('Task must be provided a runner'); }
-		if (typeof runner !== 'function') { throw new Error('Task runner must be a function'); }
-
-		this.#Runner = runner;
-		this.#Canceler = cancel;
+		this.#StartProcess = startProcess;
 
 		this.#setup();
 	}
@@ -43,7 +38,14 @@ export default class Task extends EventEmitter {
 	#setState = (state) => {
 		this.#State = state;
 
-		this.emit(ChangeEvent);
+		if (this.setStateTimeout) {
+			return;
+		}
+
+		this.setStateTimeout = setTimeout(() => {
+			this.emit(ChangeEvent);
+			delete this.setStateTimeout;
+		}, 100);
 	}
 
 	addChangeListener (fn) {
@@ -58,7 +60,6 @@ export default class Task extends EventEmitter {
 	#setProgress = (current, total) => {
 		this.#progressCurrent = current;
 		this.#progressTotal = total;
-		this.emit('progress', current, total);
 		this.emit(ChangeEvent);
 	}
 
@@ -77,9 +78,7 @@ export default class Task extends EventEmitter {
 		this.#reject = callOnce('task.reject');
 		this.#cancel = callOnce('task.cancel');
 
-		this.#resolve.onceCalled(() => {
-			this.#setState(Resolved);
-		});
+		this.#resolve.onceCalled(() => this.#setState(Resolved));
 		this.#reject.onceCalled(() => this.#setState(Rejected));
 		this.#cancel.onceCalled(() => this.#setState(Canceled));
 	}
@@ -97,7 +96,7 @@ export default class Task extends EventEmitter {
 
 	get canStart () { return !this.isStarted && !this.isRunning && !this.isFinished; }
 	get canRetry () { return (this.#State === Rejected || this.#State === Canceled) && this.#canRetry; }
-	get canCancel () { return this.isRunning && !!this.#Canceler; }
+	get canCancel () { return this.isRunning && this.#ActiveProcess && !!this.#ActiveProcess.cancel; }
 
 	get hasProgress () { return this.#progressTotal != null; }
 	get progress () {
@@ -106,39 +105,35 @@ export default class Task extends EventEmitter {
 		return {current: this.#progressCurrent || 0, total: this.#progressTotal};
 	}
 
-
 	start () {
-		if (this.isStarted) { throw new Error('Cannot start task that has already been started'); }
-		if (this.isFinished) { throw new Error('Cannot start a task that has finished'); }
+		if (this.isStarted) { throw new Error('Cannot start a task that has already been started'); }
+		if (this.isFinished) { throw new Error('Cannot start a task that has already finished'); }
 		if (this.isRunning) { return; }
 
-		const runner = this.#Runner;
+		const start = this.#StartProcess;
 
-		this._canRetry = false;
+		this.#canRetry = false;
 
 		this.#setState(Running);
-		runner({
+		
+		this.#ActiveProcess = start({
 			resolve: this.#resolve,
 			reject: this.#reject,
-			canRetry: () => this.#canRetry = true,
-			setProgress: this.#setProgress
+			setProgress: this.#setProgress,
+			canRetry: () => this.#canRetry = true
 		});
 	}
 
-	cancel () {
-		if (!this.#cancel) { throw new Error('Task does not define a cancel method'); }
-		if (!this.isRunning) { throw new Error('Cannot cancel task that is not running'); }
-
-		const canceler = this.#Canceler;
+	async cancel () {
+		if (!this.isRunning || !this.#ActiveProcess) { throw new Error('Cannot cancel task that is not running'); }
+		if (!this.#ActiveProcess.cancel) { throw new Error('The active process does not support cancel'); }
 
 		this.#clearProgress();
-
 		this.#setState(Canceling);
-		canceler({
-			cancel: this.#cancel,
-			canRetry: () => this.#canRetry = true,
-			setProgress: this.#setProgress
-		});
+
+		await this.#ActiveProcess.cancel();
+
+		this.#cancel();
 	}
 
 

@@ -2,6 +2,14 @@
 import Task from '../Task';
 
 describe('Task tests', () => {
+	beforeEach (() => {
+		jest.useFakeTimers();
+	});
+
+	afterEach (() => {
+		jest.useRealTimers();
+	});
+	
 	describe('constructors', () => {
 		test('throws if no runner given', () => {
 			expect(() => {
@@ -44,6 +52,7 @@ describe('Task tests', () => {
 			expect(mon).not.toHaveBeenCalled();
 
 			task.start();
+			jest.runAllTimers();
 
 			expect(mon).toHaveBeenCalled();
 			expect(task.isStarted).toBeTruthy();
@@ -61,6 +70,7 @@ describe('Task tests', () => {
 			expect(mon).not.toHaveBeenCalled();
 
 			task.start();
+			jest.runAllTimers();
 
 			expect(mon).toHaveBeenCalled();
 			expect(task.isResolved).toBeTruthy();
@@ -78,6 +88,7 @@ describe('Task tests', () => {
 			expect(mon).not.toHaveBeenCalled();
 
 			task.start();
+			jest.runAllTimers();
 
 			expect(mon).toHaveBeenCalled();
 			expect(task.isRejected).toBeTruthy();
@@ -94,6 +105,7 @@ describe('Task tests', () => {
 			expect(mon).not.toHaveBeenCalled();
 
 			task.start();
+			jest.runAllTimers();
 
 			expect(task.hasProgress).toBeTruthy();
 			expect(mon).toHaveBeenCalled();
