@@ -1,7 +1,7 @@
 /* global XMLHttpRequest*/
 import Task from './Task';
 
-export default function createUploadTask (url, payload, method = 'POST') {
+export default function createUploadTask (url, payload, method = 'POST', parseResponse = x => x) {
 	return new Task (
 		(task) => {
 			if (!url) {
@@ -27,7 +27,7 @@ export default function createUploadTask (url, payload, method = 'POST') {
 			xhr.upload.onload = () => {
 				if (xhr.status >= 200 && xhr.status < 300) {
 					task.setProgress(totalProgress, totalProgress);
-					task.resolve(xhr.responseText);
+					task.resolve(parseResponse(xhr.responseText));
 				} else {
 					task.reject({
 						status: xhr.status,

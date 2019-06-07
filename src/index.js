@@ -23,6 +23,7 @@ export * from './constants';
 export * as Authoring from './authoring';
 export * as Mixins from './mixins';
 export * as UserDataThreader from './utils/UserDataThreader';
+export * as Tasks from './tasks';
 
 export { Models };
 export function getModel (...args) { return Registry.lookup(...args); }

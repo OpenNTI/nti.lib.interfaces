@@ -4,6 +4,7 @@ import Logger from '@nti/util-logger';
 import getLinkImpl from '../utils/getlink';
 import maybeWait from '../utils/maybe-wait';
 import {Parser, Service, NO_LINK} from '../constants';
+import {createUploadTask} from '../tasks';
 
 const logger = Logger.get('mixins:HasLinks');
 
@@ -68,6 +69,24 @@ export default {
 		}
 
 		return result;
+	},
+
+
+	uploadToLink (rel, method, data, params, parseResponse) {
+		const link = this.getLink(rel, params);
+		const parser = parseResponse ? (r) => parseResult(this, r) : null;
+
+		return createUploadTask(link, data, method, parser);
+	},
+
+
+	putUploadToLink (rel, data, parseResponse) {
+		return this.uploadToLink(rel, 'PUT', data, void 0, parseResponse);
+	},
+
+
+	postUploadToLink (rel, data, parseResponse) {
+		return this.uploadToLink(rel, 'POST', data, void 0, parseResponse);
 	}
 };
 
