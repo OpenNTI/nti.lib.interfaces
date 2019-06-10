@@ -1,6 +1,14 @@
 /* global XMLHttpRequest*/
 import Task from './Task';
 
+function json (str) {
+	try {
+		return JSON.parse(str);
+	} catch (e) {
+		return {message: str};
+	}
+}
+
 export default function createUploadTask (url, payload, method = 'POST', parseResponse = x => x) {
 	return new Task (
 		(task) => {
@@ -24,14 +32,15 @@ export default function createUploadTask (url, payload, method = 'POST', parseRe
 				task.setProgress(e.loaded - 1, e.total);
 			};
 
-			xhr.upload.onload = () => {
+			xhr.onload = () => {
 				if (xhr.status >= 200 && xhr.status < 300) {
 					task.setProgress(totalProgress, totalProgress);
 					task.resolve(parseResponse(xhr.responseText));
 				} else {
 					task.reject({
 						status: xhr.status,
-						responseText: xhr.responseText
+						statusText: xhr.statusText,
+						...json(xhr.responseText)
 					});
 				}
 			};
