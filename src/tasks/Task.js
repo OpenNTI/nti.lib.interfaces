@@ -25,6 +25,8 @@ export default class Task extends EventEmitter {
 	#progressCurrent = null
 	#progressTotal = null
 
+	#name = null
+
 	constructor (startProcess) {
 		super();
 
@@ -50,6 +52,10 @@ export default class Task extends EventEmitter {
 
 	addChangeListener (fn) {
 		this.addListener(ChangeEvent, fn);
+
+		return () => {
+			this.removeChangeListener(fn);
+		};
 	}
 
 	removeChangeListener (fn) {
@@ -103,6 +109,14 @@ export default class Task extends EventEmitter {
 		if (!this.hasProgress) { return null;}
 
 		return {current: this.#progressCurrent || 0, total: this.#progressTotal};
+	}
+
+	get hasName () { return !!this.#name; }
+	get name () { return this.#name; }
+
+	setName (name) {
+		this.#name = name;
+		this.emit(ChangeEvent);
 	}
 
 	start () {
