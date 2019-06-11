@@ -12,6 +12,7 @@ class SCORMReference extends Base {
 		...Base.Fields,
 		'scorm_id':    { type: 'string', name: 'scormId' },
 		'title':       { type: 'string'                  },
-		'description': { type: 'string',                 }
+		'description': { type: 'string',                 },
+		'icon':        { type: 'string'                  }
 	}
 }
