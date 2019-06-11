@@ -1,7 +1,7 @@
 /* global XMLHttpRequest*/
 import Task from './Task';
 
-function json (str) {
+function jsonMessage (str) {
 	try {
 		return JSON.parse(str);
 	} catch (e) {
@@ -9,7 +9,17 @@ function json (str) {
 	}
 }
 
-export default function createUploadTask (url, payload, method = 'POST', parseResponse = x => x) {
+function maybeJSON (str) {
+	try {
+		return JSON.parse(str);
+	} catch (e) {
+		return str;
+	}
+}
+
+export default function createUploadTask (url, payload, method = 'POST', parseResponse) {
+	parseResponse = parseResponse || maybeJSON;
+
 	return new Task (
 		(task) => {
 			if (!url) {
@@ -40,7 +50,7 @@ export default function createUploadTask (url, payload, method = 'POST', parseRe
 					task.reject({
 						status: xhr.status,
 						statusText: xhr.statusText,
-						...json(xhr.responseText)
+						...jsonMessage(xhr.responseText)
 					});
 				}
 			};
@@ -48,9 +58,8 @@ export default function createUploadTask (url, payload, method = 'POST', parseRe
 			xhr.send(payload);
 
 			return {
-				cancel: ({cancel}) => {
+				cancel: () => {
 					xhr.abort();
-					cancel();
 				}
 			};
 		}
