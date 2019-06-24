@@ -5,7 +5,7 @@ export default
 @model
 class SCORMContentInfo extends Base {
 	static MimeType = [
-		COMMON_PREFIX + 'courseware_scorm.scormcontentinfo'
+		COMMON_PREFIX + 'scorm.scormcontentinfo'
 	]
 
 	static Fields = {
