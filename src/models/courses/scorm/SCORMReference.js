@@ -14,9 +14,10 @@ class SCORMReference extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'scorm_id':    { type: 'string', name: 'scormId' },
-		'title':       { type: 'string'                  },
-		'description': { type: 'string',                 },
-		'icon':        { type: 'string'                  }
+		'title':            { type: 'string' },
+		'description':      { type: 'string' },
+		'icon':             { type: 'string' },
+		'target':           { type: 'string' },
+		'ScormContentInfo': {type: 'model' }
 	}
 }
