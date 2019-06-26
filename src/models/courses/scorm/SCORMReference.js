@@ -6,7 +6,7 @@ import Base from '../../Base';
 
 export default
 @model
-@mixin(forward(['getCompletedDate', 'isCompletable', 'hasCompleted', 'updateCompletedState'], 'ScormContentInfo'))
+@mixin(forward(['getCompletedDate', 'isCompletable', 'hasCompleted', 'updateCompletedState', 'completedSuccessfully', 'completedUnsuccessfully'], 'ScormContentInfo'))
 class SCORMReference extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'scormcontentref'

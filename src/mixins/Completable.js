@@ -26,6 +26,20 @@ export default function Applyer (targetModelClass) {
 		},
 
 
+		completedSuccessfully () {
+			const {CompletedItem} = this;
+
+			return CompletedItem && CompletedItem.Success;
+		},
+
+
+		completedUnsuccessfully () {
+			const {CompletedItem} = this;
+
+			return CompletedItem && !CompletedItem.Success;
+		},
+
+
 		async updateCompletedState (enrollment) {
 			enrollment = enrollment || this.parent('getCompletedItems');
 
