@@ -74,7 +74,7 @@ export default {
 
 	uploadToLink (rel, method, data, params, parseResponse) {
 		const link = this.getLink(rel, params);
-		const parser = parseResponse ? (r) => parseResult(this, r) : null;
+		const parser = parseResponse ? (r) => parseResult(this, Promise.resolve(JSON.parse(r))) : null;
 
 		return createUploadTask(link, data, method, parser);
 	},
