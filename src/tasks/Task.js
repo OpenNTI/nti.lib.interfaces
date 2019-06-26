@@ -20,7 +20,7 @@ export default class Task extends EventEmitter {
 	#reject = null
 	#cancel = null
 
-	#canRetry = false;
+	#canRetry = false
 
 	#progressCurrent = null
 	#progressTotal = null
@@ -36,6 +36,8 @@ export default class Task extends EventEmitter {
 
 		this.#setup();
 	}
+
+	isTask = true
 
 	#setState = (state) => {
 		this.#State = state;
