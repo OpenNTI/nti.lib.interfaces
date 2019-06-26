@@ -1,8 +1,19 @@
 import {mixin} from '@nti/lib-decorators';
 
 import Completable from '../../../mixins/Completable';
+import {createPollingTask} from '../../../tasks';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
+
+const IMPLICIT_ERROR = Symbol('Implicit Error');
+
+const POLL_INTERVAL = 1000;
+const POLL_STEP_OFF = 1000;
+
+const CREATED = 'created';
+const RUNNING = 'running';
+const ERROR = 'error';
+const FINISHED = 'finished';
 
 export default
 @model
@@ -14,7 +25,62 @@ class SCORMContentInfo extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'scorm_id': {type: 'string', name: 'scormId'},
-		'title':    {type: 'string'                 }
+		'scorm_id':   { type: 'string', name: 'scormId'   },
+		'title':      { type: 'string'                    },
+		'upload_job': { type: 'object', name: 'uploadJob' }
+	}
+
+	get isProcessing () {
+		const {uploadJob} = this;
+
+		return uploadJob && (uploadJob.State === CREATED || uploadJob.State === RUNNING);
+	}
+
+	get isErrored () {
+		const {uploadJob} = this;
+
+		return this[IMPLICIT_ERROR] || (uploadJob && uploadJob.State === ERROR);
+	}
+
+	get isReady () {
+		const {uploadJob} = this;
+
+		return !uploadJob || uploadJob.State === FINISHED;
+	}
+
+	get errorMessage () {
+		const {uploadJob} = this;
+
+		return uploadJob && uploadJob.ErrorMessage;
+	}
+
+
+	get fileName () {
+		const {uploadJob} = this;
+
+		return uploadJob && uploadJob.UploadFilename;
+	}
+
+
+	getPoll () {
+		const poll = async (cont, done) => {
+			try {
+				const updated = await this.fetchLink('SCORMContentAsyncUploadStatusUpdate');
+
+				await this.refresh(updated);
+
+				if (this.isProcessing) {
+					cont();
+				} else {
+					done();
+				}
+			} catch (e) {
+				done();
+				this[IMPLICIT_ERROR] = e;
+				this.onChange();
+			}
+		};
+
+		return createPollingTask(poll, POLL_INTERVAL, POLL_STEP_OFF);
 	}
 }
