@@ -68,6 +68,7 @@ class SCORMContentInfo extends Base {
 				const updated = await this.fetchLink('SCORMContentAsyncUploadStatusUpdate');
 
 				await this.refresh(updated);
+				this.onChange();
 
 				if (this.isProcessing) {
 					cont();
