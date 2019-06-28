@@ -104,7 +104,7 @@ export default class Task extends EventEmitter {
 
 	get canStart () { return !this.isStarted && !this.isRunning && !this.isFinished; }
 	get canRetry () { return (this.#State === Rejected || this.#State === Canceled) && this.#canRetry; }
-	get canCancel () { return this.isRunning && this.#ActiveProcess && !!this.#ActiveProcess.cancel; }
+	get canCancel () { return this.isRunning && this.#ActiveProcess && !!this.#ActiveProcess.cancel && (!this.#ActiveProcess.canCancel || this.#ActiveProcess.canCancel()); }
 
 	get hasProgress () { return this.#progressTotal != null; }
 	get progress () {

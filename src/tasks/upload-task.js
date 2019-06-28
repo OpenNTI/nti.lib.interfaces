@@ -28,6 +28,7 @@ export default function createUploadTask (url, payload, method = 'POST', parseRe
 
 			const xhr = new XMLHttpRequest();
 
+			let uploadFinished = false;
 			let totalProgress = 0;
 
 			xhr.open(method, url, true);
@@ -40,6 +41,11 @@ export default function createUploadTask (url, payload, method = 'POST', parseRe
 			xhr.upload.onprogress = (e) => {
 				totalProgress = e.total;
 				task.setProgress(e.loaded - 1, e.total);
+			};
+
+			xhr.upload.onloadend = (e) => {
+				uploadFinished = true;
+				task.setProgress(totalProgress, totalProgress);
 			};
 
 			xhr.onload = () => {
@@ -58,6 +64,7 @@ export default function createUploadTask (url, payload, method = 'POST', parseRe
 			xhr.send(payload);
 
 			return {
+				canCancel: () => !uploadFinished,
 				cancel: () => {
 					xhr.abort();
 				}
