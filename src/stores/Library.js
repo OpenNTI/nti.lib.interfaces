@@ -96,7 +96,7 @@ export default class Library extends EventEmitter {
 
 async function loadCollection (scope, url, key, filter) {
 	const {service} = scope;
-	scope[key] = [];
+	let list = scope[key] = [];
 
 	url = URL.appendQueryParams(url, {batchSize: 10, batchStart: 0});
 
@@ -107,7 +107,7 @@ async function loadCollection (scope, url, key, filter) {
 
 		url = getLink(data, 'batch-next');
 
-		scope[key] = [...scope[key], ...items];
+		list.push(...items);
 
 		scope.onChange();
 

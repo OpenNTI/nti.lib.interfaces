@@ -4,7 +4,7 @@ import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 import {Service} from '../../constants';
 
-const RESOLVED_TARGET = Symbol('Target');
+const RESOLVE_TARGET = Symbol('Target');
 const RESOLVED_TARGET_NTIID = Symbol('Resolved Target NTIID');
 
 /*
@@ -35,7 +35,7 @@ class DiscussionReference extends Base {
 	constructor (service, parent, data) {
 		super(service, parent, data);
 
-		this.addToPending(maybeFillInTargetNTIID(this));
+		this.addToPending(this.resolveTarget());
 	}
 
 
@@ -48,33 +48,24 @@ class DiscussionReference extends Base {
 	}
 
 	async resolveTarget (course) {
-		if (!this[RESOLVED_TARGET]) {
-			this[RESOLVED_TARGET] = resolveTarget(this, course);
-		}
+		if (this[RESOLVE_TARGET]) { return this[RESOLVE_TARGET]; }
 
-		return this[RESOLVED_TARGET];
+		try {
+			this[RESOLVE_TARGET] = resolveTarget(this, course);
+
+			const target = await this[RESOLVE_TARGET];
+
+			if (!hasValidTargetNTIID(this)) {
+				this[RESOLVED_TARGET_NTIID] = target.getID();
+			}
+		} catch (e) {
+			//swallow
+		}
 	}
 }
 
 function hasValidTargetNTIID (ref) {
 	return ref['Target-NTIID'] && isNTIID(ref['Target-NTIID']);
-}
-
-
-async function maybeFillInTargetNTIID (ref) {
-	if (hasValidTargetNTIID(ref)) {
-		ref[RESOLVED_TARGET_NTIID] = ref['Target-NTIID'];
-		return;
-	}
-
-	try {
-		const target = await ref.resolveTarget();
-
-		ref[RESOLVED_TARGET_NTIID] = target.getID();
-		return target;
-	} catch (e) {
-		//swallow
-	}
 }
 
 
