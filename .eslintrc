@@ -4,7 +4,8 @@
 		"FormData": true,
 		"File": true,
 		"Blob": true,
-		"URLSearchParams": true
+		"URLSearchParams": true,
+		"XMLHttpRequest": true
 	},
 	"extends": "./node_modules/@nti/lib-scripts/config/eslintrc.js"
 }

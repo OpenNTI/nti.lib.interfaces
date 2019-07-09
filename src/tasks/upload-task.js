@@ -1,4 +1,3 @@
-/* global XMLHttpRequest*/
 import Task from './Task';
 
 function jsonMessage (str) {
