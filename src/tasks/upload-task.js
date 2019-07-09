@@ -1,3 +1,4 @@
+/* eslint-env browser */
 import Task from './Task';
 
 function jsonMessage (str) {
