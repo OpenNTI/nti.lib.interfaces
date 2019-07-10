@@ -612,7 +612,7 @@ class Instance extends Base {
 		if (!this.hasOutline()) { return []; }
 
 		try {
-			const outline = await this.Outline.getContent();
+			const outline = await this.Outline.getContent({force: true});
 
 			return outline.contents;
 		} catch (e) {
