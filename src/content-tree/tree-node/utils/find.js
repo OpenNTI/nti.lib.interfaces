@@ -69,3 +69,11 @@ export async function findParent (node, predicate) {
 
 	return null;
 }
+
+export async function findParentOrSelf (node, predicate) {
+	const found = await nodeMatches(node, predicate);
+
+	if (found) { return node; }
+
+	return findParent(node, predicate);
+}

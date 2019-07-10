@@ -10,6 +10,7 @@ import {
 	findPrevSibling,
 	find,
 	findParent,
+	findParentOrSelf,
 	flatten
 } from './utils';
 
@@ -213,6 +214,16 @@ export default class ContentTreeNode {
 
 		const clone = async () => {
 			return findParent(this, predicate);
+		};
+
+		return new ContentTreeNode(null, null, {[CLONES]: clone});
+	}
+
+	findParentOrSelf (predicate) {
+		ERRORS.throwIfNotFunction(predicate, ERRORS.getMessage('findParentOrSelf must be given a function'));
+
+		const clone = async () => {
+			return findParentOrSelf(this, predicate);
 		};
 
 		return new ContentTreeNode(null, null, {[CLONES]: clone});
