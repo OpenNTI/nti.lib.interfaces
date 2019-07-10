@@ -7,6 +7,7 @@ import Logger from '@nti/util-logger';
 import {Summary, Parser as parse} from '../../constants';
 import {Mixin as ContentTreeMixin} from '../../content-tree';
 import Publishable from '../../mixins/Publishable';
+import ContentConstraints from '../../mixins/ContentConstraints';
 import {model, COMMON_PREFIX} from '../Registry';
 import filterNonRequiredItems from '../../utils/filter-non-required-items';
 import getFuzzyTargetProperty from '../../utils/get-fuzzy-target-property';
@@ -18,7 +19,7 @@ const logger = Logger.get('models:courses:OutlineNode');
 
 export default
 @model
-@mixin(Publishable, ContentTreeMixin)
+@mixin(Publishable, ContentTreeMixin, ContentConstraints)
 class OutlineNode extends Outline {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseoutlinenode',
@@ -37,6 +38,10 @@ class OutlineNode extends Outline {
 	}
 
 	isOutlineNode = true
+
+	hasMetContentConstraints () {
+		return this.hasOverviewContent;
+	}
 
 	get hasOverviewContent () {
 		return this.hasLink('overview-content');

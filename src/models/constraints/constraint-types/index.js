@@ -1,0 +1,1 @@
+export AssignmentCompletionConstraint from './AssignmentCompletionConstraint';

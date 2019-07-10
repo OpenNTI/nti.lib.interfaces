@@ -7,6 +7,7 @@ export * as calendar from './calendar';
 export * as catalog from './catalog';
 export * as chat from './chat';
 export * as completion from './completion';
+export * as constraints from './constraints';
 export * as content from './content';
 export * as courses from './courses';
 export * as credit from './credit';
