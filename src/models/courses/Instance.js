@@ -34,6 +34,9 @@ const OutlineCache = Symbol('OutlineCache');
 const OutlineCacheUnpublished = Symbol('OutlineCacheUnpublished');
 const VOID = () => {};
 
+const AvailableContentSummary = Symbol('Available Content Summary');
+const AvailableContentSummaryTimeout = 5000;
+
 export default
 @model
 @mixin(CourseIdentity, ContentTreeMixin)
@@ -605,6 +608,27 @@ class Instance extends Base {
 
 	getContentDataSource () {
 		return new ContentDataSource(this[Service], this);
+	}
+
+
+	async getAvailableContentSummary () {
+		const load = async () => {
+			try {
+				const {Items} = await this.fetchLink('CourseContentLibrarySummary');
+				
+				return Items.reduce((acc, i) => ({...acc, [i]: true}), {});
+			} catch (e) {
+				return {};
+			}
+		};
+
+		this[AvailableContentSummary] = this[AvailableContentSummary] || load();
+
+		setTimeout(() => {
+			delete this[AvailableContentSummary];
+		}, AvailableContentSummaryTimeout);
+
+		return this[AvailableContentSummary];
 	}
 
 
