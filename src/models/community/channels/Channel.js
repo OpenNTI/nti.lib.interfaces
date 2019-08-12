@@ -11,7 +11,7 @@ export default class CommunityChannel extends EventEmitter {
 			null;
 
 		return new CommunityChannel({
-			id: forum.getId(),
+			id: forum.getID(),
 			title: forum.title,
 			contentsDataSource: forum.getContentsDataSource(),
 			setTitle,
@@ -35,7 +35,9 @@ export default class CommunityChannel extends EventEmitter {
 		this.#addTopic = addTopic;
 	}
 
-	getId () { return this.#id; }
+	isCommunityChannel = true
+
+	getID () { return this.#id; }
 
 	get title () { return this.#title; }
 

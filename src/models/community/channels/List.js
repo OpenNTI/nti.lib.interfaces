@@ -40,4 +40,19 @@ export default class CommunityChannelList extends EventEmitter {
 
 		return channel;
 	}
+
+	findChannel (predicate) {
+		if (typeof predicate === 'string') {
+			const match = predicate;
+			predicate = (channel) => channel.getID() === match;
+		}
+
+		for (let channel of this.channels) {
+			if (predicate(channel)) {
+				return channel;
+			}
+		}
+
+		return null;
+	}
 }
