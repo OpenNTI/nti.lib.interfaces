@@ -19,6 +19,7 @@ import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 import Forum from '../forums/Forum';
 
+import CourseCommunity from './CourseCommunity';
 import ActivityStream from './BucketedActivityStream';
 import CourseIdentity from './mixins/CourseIdentity';
 import ContentDataSource from './content-data-source';
@@ -29,6 +30,8 @@ const logger = Logger.get('models:courses:Instance');
 const NOT_DEFINED = {reason: 'Not defined'};
 
 const MEDIA_INDEX = Symbol('Media Index');
+
+const CourseCommunityCache = Symbol('Course Community');
 
 const OutlineCache = Symbol('OutlineCache');
 const OutlineCacheUnpublished = Symbol('OutlineCacheUnpublished');
@@ -413,6 +416,19 @@ class Instance extends Base {
 		return !!(this.Discussions || this.ParentDiscussions);
 	}
 
+
+	hasCommunity () {
+		return CourseCommunity.hasCommunity(this);
+	}
+
+
+	getCommunity () {
+		if (!this[CourseCommunityCache]) {
+			this[CourseCommunityCache] = CourseCommunity.from(this);
+		}
+
+		return this[CourseCommunityCache];
+	}
 
 
 	hasOutline () {

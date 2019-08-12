@@ -9,6 +9,13 @@ import { encodeIdFrom } from '../../utils/href-ntiids';
 
 import ForumContentsDataSource from './forum-contents-data-source';
 
+const KnownSorts = [
+	'createdTime',
+	'NewestDescendantCreatedTime',
+	'PostCount',
+	'LikeCount'
+];
+
 export default
 @model
 @mixin(GetContents)
@@ -76,6 +83,10 @@ class Forum extends Base {
 		return this.getContents(params); //.then(function(result) { return result.Items; });
 	}
 
+	canCreateTopic () {
+		return this.hasLink('add');
+	}
+
 	createTopic (data) {
 		const service = this[Service];
 
@@ -101,7 +112,9 @@ class Forum extends Base {
 	}
 
 	getContentsDataSource () {
-		return new ForumContentsDataSource(this[Service], this);
+		return new ForumContentsDataSource(this[Service], this, {
+			sortOn: KnownSorts
+		});
 	}
 
 	async edit (payload) {

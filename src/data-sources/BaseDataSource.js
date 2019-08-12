@@ -1,18 +1,22 @@
 /** @module BaseDataSource */
-const BASE = Symbol('Base');
-
 import {Service, Parent} from '../constants';
+
+const BASE = Symbol('Base');
+const KNOWN_PARAMS = Symbol('Known Params');
 
 
 export default class BaseDataSource {
-	constructor (service, parent) {
+	constructor (service, parent, knownParams) {
 		this[Service] = service;
 		this[Parent] = parent;
+
+		this[KNOWN_PARAMS] = knownParams;
 	}
 
 
 	get service () { return this[Service]; }
 	get parent () { return this[Parent]; }
+	get knownParams () { return this[KNOWN_PARAMS]; }
 
 
 	/**

@@ -22,6 +22,10 @@ class Board extends Base {
 		'title':       { type: 'string' },
 	}
 
+	canCreateForum () {
+		return this.hasLink('add');
+	}
+
 	async createForum (newForum) {
 		const forum = await this.postToLink('add', newForum, true);
 		this.emit('change');
