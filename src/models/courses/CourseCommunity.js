@@ -118,5 +118,5 @@ async function getChannelListFromBoard (board, activityLink, label) {
 		(title) => board.createForum({title}) :
 		null;
 
-	return new Channels.List({label, channels, createChannel});
+	return new Channels.List({id: board.getID(), label, channels, createChannel});
 }

@@ -11,19 +11,23 @@ function validateChannels (channels) {
 }
 
 export default class CommunityChannelList extends EventEmitter {
+	#id = null
 	#label = null
 	#channels = null
 	#createChannel = null
 
-	constructor ({label, channels, createChannel}) {
+	constructor ({id, label, channels, createChannel}) {
 		super();
 
 		validateChannels(channels);
 
+		this.#id = id;
 		this.#label = label;
 		this.#channels = channels;
 		this.#createChannel = createChannel;
 	}
+
+	getID () { return this.#id; }
 
 	get label () { return this.#label; }
 	get channels () { return this.#channels; }
