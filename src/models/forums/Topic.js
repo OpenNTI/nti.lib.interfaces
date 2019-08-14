@@ -32,6 +32,8 @@ class Topic extends Base {
 		'Reports':                     { type: 'model[]'}
 	}
 
+	isTopic = true
+
 
 	isTopLevel () {
 		return true;
