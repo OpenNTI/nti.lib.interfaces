@@ -18,6 +18,8 @@ export default class BaseDataSource {
 	get parent () { return this[Parent]; }
 	get knownParams () { return this[KNOWN_PARAMS]; }
 
+	getKnownParam (param) { return (this.knownParams || {})[param]; }
+
 
 	/**
 	 * A indicator that it is a DataSource
