@@ -12,6 +12,8 @@ class Comment extends Post {
 		COMMON_PREFIX + 'forums.personalblogcomment',
 	]
 
+	isComment = true;
+
 
 	isTopLevel () {
 		return false;

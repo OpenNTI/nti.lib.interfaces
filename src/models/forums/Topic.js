@@ -39,6 +39,9 @@ class Topic extends Base {
 		return true;
 	}
 
+	canAddComment () {
+		return this.hasLink('add');
+	}
 
 	addComment (comment, inReplyTo) {
 		const link = this.getLink('add');
