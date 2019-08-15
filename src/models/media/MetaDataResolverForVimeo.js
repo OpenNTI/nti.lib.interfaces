@@ -1,6 +1,6 @@
 const { location } = global;
 const domain = !location ? '' : `&domain=${encodeURIComponent(location.hostname)}`;
-const size = '&width=640';
+const size = '&width=960';
 export const getMetaDataEntryPoint = x => `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(x)}${domain}${size}`;
 
 const placeholder = encodeURIComponent('{0}');
