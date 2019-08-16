@@ -28,6 +28,21 @@ export default class PagedDataSource extends BaseDataSource {
 	}
 
 	/**
+	 * Load  the page around a given id
+	 *
+	 * @param  {String} around the id to load around
+	 * @param  {Object} params params to load aroudn with
+	 * @return {Promise}       fullfills/rejects with load around
+	 */
+	async loadAround (around, params) {
+		const handler = this.getHandlerFor(params);
+
+		const resp = await (handler && handler.loadAround ? handler.loadAround(around, params) : this.requestAround(around, params));
+
+		return resp.waitForPending ? resp.waitForPending() : resp;
+	}
+
+	/**
 	 * Request the page from the server. Must be overriden in sub-classes.
 	 *
 	 * @abstract
@@ -37,5 +52,9 @@ export default class PagedDataSource extends BaseDataSource {
 	 */
 	requestPage (pageID, params) {
 		throw new Error('requestPage must be implemented by the subclass');
+	}
+
+	requestAround (around, params) {
+		throw new Error('requestAround must be implemented by the sub class');
 	}
 }
