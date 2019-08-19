@@ -10,7 +10,7 @@ import { encodeIdFrom } from '../../utils/href-ntiids';
 import ForumContentsDataSource from './forum-contents-data-source';
 
 const KnownSorts = [
-	'CreatedTime',
+	'createdTime',
 	'NewestDescendantCreatedTime',
 	'PostCount',
 	'LikeCount'
