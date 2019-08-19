@@ -76,7 +76,7 @@ function getBoardContents (board) {
 }
 
 function buildAllActivityChannel (forum, activityLink) {
-	debugger;
+
 }
 
 /**
