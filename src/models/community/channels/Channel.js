@@ -11,6 +11,7 @@ export default class CommunityChannel extends EventEmitter {
 			null;
 
 		return new CommunityChannel({
+			backer: forum,
 			id: forum.getID(),
 			title: forum.title,
 			contentsDataSource: forum.getContentsDataSource(),
@@ -19,21 +20,25 @@ export default class CommunityChannel extends EventEmitter {
 		});
 	}
 
+	#backer = null
 	#id = null
 	#title = null
 	#setTitle = null
 	#contentsDataSource = null
 	#addTopic = null
 
-	constructor ({id, title, setTitle, contentsDataSource, addTopic}) {
+	constructor ({backer, id, title, setTitle, contentsDataSource, addTopic}) {
 		super();
 
+		this.#backer = backer;
 		this.#id = id;
 		this.#title = title;
 		this.#setTitle = setTitle;
 		this.#contentsDataSource = contentsDataSource;
 		this.#addTopic = addTopic;
 	}
+
+	get backer () { return this.#backer; }
 
 	isCommunityChannel = true
 
@@ -61,7 +66,7 @@ export default class CommunityChannel extends EventEmitter {
 
 		const newTopic = await this.#addTopic(topic);
 
-		this.emit('topic-added');
+		this.emit('item-added', newTopic);
 
 		return newTopic;
 	}
