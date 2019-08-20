@@ -28,12 +28,16 @@ class Note extends Highlight {
 		'Class':                  { type: 'string'   }
 	}
 
+	isNote = true
 
 	get replyCount () {
 		// Rely on this value, placeholders will have a getter for the ReferencedByCount property.
 		return this.ReferencedByCount;
 	}
 
+	canReply (tryScopes = []) {
+		return !!(this[Service].getCollectionFor(this, null, tryScopes) || {}).href;
+	}
 
 	postReply (body, tryScopes = []) {
 		let service = this[Service];
