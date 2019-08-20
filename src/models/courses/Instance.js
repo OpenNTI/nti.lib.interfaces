@@ -19,6 +19,7 @@ import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 import Forum from '../forums/Forum';
 
+import CourseAllActivityDataSource from './data-sources/CourseAllActivityDataSource';
 import CourseCommunity from './CourseCommunity';
 import ActivityStream from './BucketedActivityStream';
 import CourseIdentity from './mixins/CourseIdentity';
@@ -39,6 +40,13 @@ const VOID = () => {};
 
 const AvailableContentSummary = Symbol('Available Content Summary');
 const AvailableContentSummaryTimeout = 5000;
+
+const KnownActivitySorts = [
+	'createdTime',
+	'NewestDescendantCreatedTime',
+	'PostCount',
+	'LikeCount'
+];
 
 export default
 @model
@@ -624,6 +632,23 @@ class Instance extends Base {
 
 	getContentDataSource () {
 		return new ContentDataSource(this[Service], this);
+	}
+
+
+	getAllActivityDataSource () {
+		const link = this.getLink('AllCourseActivity');
+
+		return link ?
+			new CourseAllActivityDataSource(this[Service], this, {sortOn: KnownActivitySorts}, {link}) :
+			null;
+	}
+
+	getParentActivityDataSource () {
+		const link = this.getLink('AllParentCourseActivity');
+
+		return link ?
+			new CourseAllActivityDataSource(this[Service], this, {sortOn: KnownActivitySorts}, {link}) :
+			null;
 	}
 
 

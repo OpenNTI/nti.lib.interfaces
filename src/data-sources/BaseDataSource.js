@@ -3,19 +3,22 @@ import {Service, Parent} from '../constants';
 
 const BASE = Symbol('Base');
 const KNOWN_PARAMS = Symbol('Known Params');
+const CONFIG = Symbol('Config');
 
 
 export default class BaseDataSource {
-	constructor (service, parent, knownParams) {
+	constructor (service, parent, knownParams, config) {
 		this[Service] = service;
 		this[Parent] = parent;
 
 		this[KNOWN_PARAMS] = knownParams;
+		this[CONFIG] = config;
 	}
 
 
 	get service () { return this[Service]; }
 	get parent () { return this[Parent]; }
+	get config () { return this[CONFIG]; }
 	get knownParams () { return this[KNOWN_PARAMS]; }
 
 	getKnownParam (param) { return (this.knownParams || {})[param]; }

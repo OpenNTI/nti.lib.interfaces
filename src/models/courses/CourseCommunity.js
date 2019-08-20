@@ -50,12 +50,12 @@ class CourseCommunity {
 
 			if (showParent) {
 				return Promise.all([
-					getChannelListFromBoard(this.#board, this.#course.getLink('activity'), 'my section'),
-					getChannelListFromBoard(this.#parentBoard, this.#course.getLink('parent-activity'), 'parent section')
+					getChannelListFromBoard(this.#board, this.#course.getAllActivityDataSource(), 'my section'),
+					getChannelListFromBoard(this.#parentBoard, this.#course.getParentActivityDataSource(), 'parent section')
 				]);
 			}
 
-			return getChannelListFromBoard(this.#board, this.#course.getLink('activity'));
+			return getChannelListFromBoard(this.#board, this.#course.getAllActivityDataSource());
 		} finally {
 			cleanup(this.#parentBoard);
 			cleanup(this.#board);
@@ -75,8 +75,23 @@ function getBoardContents (board) {
 	return ContentsCache.get(board);
 }
 
-function buildAllActivityChannel (forum, activityLink) {
+function buildAllActivityChannel (forum, dataSource) {
+	const addTopic = forum.canCreateTopic() ?
+		(topic) => forum.createTopic(topic) :
+		null;
 
+	const channel = new Channels.Channel({
+		backer: forum,
+		id: forum.getID(),
+		title: forum.title,
+		contentsDataSource: dataSource,
+		setTitle: null,
+		addTopic
+	});
+
+	channel.isAllActivityChannel = true;
+
+	return channel;
 }
 
 /**
@@ -106,13 +121,15 @@ async function shouldShowParentBoard (parentBoard) {
 	}
 }
 
-async function getChannelListFromBoard (board, activityLink, label) {
+async function getChannelListFromBoard (board, activityDataSource, label) {
 	const contents = await getBoardContents(board);
-	const channels = (contents.Items || []).map((forum) => {
-		if (forum.isDefaultForum) { return buildAllActivityChannel(forum, activityLink); }
+	const channels = (contents.Items || []).reduce((acc, forum) => {
+		if (forum.IsDefaultForum && activityDataSource) {
+			return [buildAllActivityChannel(forum, activityDataSource), ...acc];
+		}
 
-		return Channels.Channel.fromForum(forum);
-	});
+		return [...acc, Channels.Channel.fromForum(forum)];
+	}, []);
 
 	const createChannel = board.canCreateForum() ?
 		(title) => board.createForum({title}) :
