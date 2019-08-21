@@ -1,10 +1,12 @@
+import EventEmitter from 'events';
+
 import {Channels} from '../community';
 
 const ContentsCache = new Map();
 const ResolveChannelList = Symbol('Resolve Channel List');
 
 export default
-class CourseCommunity {
+class CourseCommunity extends EventEmitter {
 	static hasCommunity (course) {
 		return course.Discussions || course.ParentDiscussions;
 	}
@@ -21,6 +23,8 @@ class CourseCommunity {
 	#channelListPromise = null
 
 	constructor (course) {
+		super();
+
 		this.#course = course;
 		
 		this.#board = course.Discussions || course.ParentDiscussions;
@@ -42,8 +46,24 @@ class CourseCommunity {
 		return this.#board.hasLink('edit');
 	}
 
-	save () {
-		//TODO: fill this in
+	async save (data) {
+		const payload = {};
+
+		if (data.displayName != null) {payload.title = data.displayName; }
+		if (data.about != null) {payload.description = data.about; }
+
+		try {
+			await this.#board.save(payload);
+			this.onChange();
+		} catch (e) {
+			if (e.field === 'title') { e.field = 'displayName'; }
+		
+			throw e;
+		}
+	}
+
+	onChange () {
+		this.emit('change');
 	}
 
 	[ResolveChannelList] = async () => {
