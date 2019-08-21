@@ -21,17 +21,19 @@ export default class CommunityChannel extends EventEmitter {
 	}
 
 	#backer = null
+	#pinned = false
 	#id = null
 	#title = null
 	#setTitle = null
 	#contentsDataSource = null
 	#addTopic = null
 
-	constructor ({backer, id, title, setTitle, contentsDataSource, addTopic}) {
+	constructor ({backer, id, title, setTitle, contentsDataSource, addTopic, pinned}) {
 		super();
 
 		this.#backer = backer;
 		this.#id = id;
+		this.#pinned = pinned || false;
 		this.#title = title;
 		this.#setTitle = setTitle;
 		this.#contentsDataSource = contentsDataSource;
@@ -43,6 +45,8 @@ export default class CommunityChannel extends EventEmitter {
 	isCommunityChannel = true
 
 	getID () { return this.#id; }
+
+	get pinned () { return this.#pinned; }
 
 	get title () { return this.#title; }
 

@@ -59,4 +59,12 @@ export default class CommunityChannelList extends EventEmitter {
 
 		return null;
 	}
+
+	get channelOrder () {
+		return (this.channels || []).reduce((acc, channel) => {
+			if (channel.pinned) { return acc; }
+
+			return [...acc, channel.getID()];
+		}, []);
+	}
 }

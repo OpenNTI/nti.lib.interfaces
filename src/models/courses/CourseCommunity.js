@@ -1,6 +1,7 @@
 import {Channels} from '../community';
 
 const ContentsCache = new Map();
+const ResolveChannelList = Symbol('Resolve Channel List');
 
 export default
 class CourseCommunity {
@@ -17,6 +18,7 @@ class CourseCommunity {
 	#course = null
 	#board = null
 	#parentBoard = null
+	#channelListPromise = null
 
 	constructor (course) {
 		this.#course = course;
@@ -25,6 +27,7 @@ class CourseCommunity {
 		this.#parentBoard = course.Discussions ? course.ParentDiscussions : null;
 	}
 
+	isCommunity = true
 
 	get displayName () {
 		return this.#board.title;
@@ -43,8 +46,7 @@ class CourseCommunity {
 		//TODO: fill this in
 	}
 
-
-	async getChannelList () {
+	[ResolveChannelList] = async () => {
 		try {
 			const showParent = await shouldShowParentBoard(this.#parentBoard);
 
@@ -60,6 +62,14 @@ class CourseCommunity {
 			cleanup(this.#parentBoard);
 			cleanup(this.#board);
 		}
+	}
+
+	async getChannelList () {
+		if (!this.#channelListPromise) {
+			this.#channelListPromise = this[ResolveChannelList]();
+		}
+
+		return this.#channelListPromise;
 	}
 }
 
@@ -86,6 +96,7 @@ function buildAllActivityChannel (forum, dataSource) {
 		title: forum.title,
 		contentsDataSource: dataSource,
 		setTitle: null,
+		pinned: true,
 		addTopic
 	});
 
