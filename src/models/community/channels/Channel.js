@@ -2,9 +2,13 @@ import EventEmitter from 'events';
 
 export default class CommunityChannel extends EventEmitter {
 	static fromForum (forum) {
-		const setTitle = forum.isModifiable ?
-			(title) => forum.save({title}) :
+		const save = forum.isModifiable ?
+			async (data) => {
+				await forum.save(data);
+				return {title: forum.title, description: forum.description};
+			} :
 			null;
+
 
 		const addTopic = forum.canCreateTopic() ?
 			(topic) => forum.createTopic(topic) :
@@ -14,8 +18,9 @@ export default class CommunityChannel extends EventEmitter {
 			backer: forum,
 			id: forum.getID(),
 			title: forum.title,
+			description: forum.description,
 			contentsDataSource: forum.getContentsDataSource(),
-			setTitle,
+			save,
 			addTopic,
 		});
 	}
@@ -24,18 +29,19 @@ export default class CommunityChannel extends EventEmitter {
 	#pinned = false
 	#id = null
 	#title = null
-	#setTitle = null
+	#description = null
+	#save = null
 	#contentsDataSource = null
 	#addTopic = null
 
-	constructor ({backer, id, title, setTitle, contentsDataSource, addTopic, pinned}) {
+	constructor ({backer, id, title, description, save, contentsDataSource, addTopic, pinned}) {
 		super();
 
 		this.#backer = backer;
 		this.#id = id;
 		this.#pinned = pinned || false;
 		this.#title = title;
-		this.#setTitle = setTitle;
+		this.#save = save;
 		this.#contentsDataSource = contentsDataSource;
 		this.#addTopic = addTopic;
 	}
@@ -50,16 +56,18 @@ export default class CommunityChannel extends EventEmitter {
 
 	get title () { return this.#title; }
 
-	get canSetTitle () { return !!this.#setTitle; }
-	async setTitle (title) {
-		if (!this.canSetTitle) { throw new Error('Cannot set title on channel'); }
+	get isModifiable () { return !!this.#save; }
+	async save (data) {
+		if (!this.isModifiable) { throw new Error('Cannot modifiy channel'); }
 
-		const newTitle = await this.#setTitle(title);
+		const resp = await this.#save(data);
+		const {title, description} = resp || {};
 
-		this.#title = newTitle || title;
+		this.#title = title || this.#description;
+		this.#description = description || this.#description;
 		this.emit('change');
 
-		return newTitle || title;
+		return resp;
 	}
 
 	get contentsDataSource () { return this.#contentsDataSource; }
