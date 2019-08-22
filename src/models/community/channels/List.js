@@ -15,8 +15,9 @@ export default class CommunityChannelList extends EventEmitter {
 	#label = null
 	#channels = null
 	#createChannel = null
+	#setOrder = null
 
-	constructor ({id, label, channels, createChannel}) {
+	constructor ({id, label, channels, createChannel, setOrder}) {
 		super();
 
 		validateChannels(channels);
@@ -25,6 +26,7 @@ export default class CommunityChannelList extends EventEmitter {
 		this.#label = label;
 		this.#channels = channels;
 		this.#createChannel = createChannel;
+		this.#setOrder = setOrder;
 	}
 
 	getID () { return this.#id; }
@@ -33,14 +35,12 @@ export default class CommunityChannelList extends EventEmitter {
 	get channels () { return this.#channels; }
 
 	get canCreateChannel () { return !!this.#createChannel; }
-
-	async createChannel (title) {
-		if (!this.canCreateChannels) { throw new Error('Cannot create a channel'); }
+	async createChannel (data) {
+		if (!this.canCreateChannel) { throw new Error('Cannot create a channel'); }
 		
-		const channel = await this.#createChannel(title);
+		const channel = await this.#createChannel(data);
 
 		this.#channels = [...this.#channels, channel];
-		this.emit('change');
 
 		return channel;
 	}
@@ -62,5 +62,19 @@ export default class CommunityChannelList extends EventEmitter {
 
 	get channelOrder () {
 		return (this.channels || []).map(channel => channel.getID());
+	}
+
+	get canSetOrder () { return !!this.#setOrder; }
+	async setOrder (order) {
+		if (!this.canSetOrder) { throw new Error('Cannot set channel order'); }
+
+		const newOrder = await this.#setOrder(order);
+		const idMap = this.#channels.reduce((acc, channel) => {
+			return {...acc, [channel.getID()]: channel};
+		}, {});
+
+		this.#channels = newOrder.map((id) => idMap[id]);
+
+		return newOrder;
 	}
 }

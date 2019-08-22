@@ -17,9 +17,10 @@ class Board extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'ForumCount':  { type: 'number' },
-		'description': { type: 'string' },
-		'title':       { type: 'string' },
+		'ForumCount':   { type: 'number'                        },
+		'description':  { type: 'string'                        },
+		'title':        { type: 'string'                        },
+		'ordered_keys': { type: 'string[]', name: 'orderedKeys' }
 	}
 
 	canCreateForum () {

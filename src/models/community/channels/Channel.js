@@ -9,10 +9,15 @@ export default class CommunityChannel extends EventEmitter {
 			} :
 			null;
 
+		const doDelete = forum.isModifiable ?
+			() => forum.delete() :
+			null;
+
 
 		const addTopic = forum.canCreateTopic() ?
 			(topic) => forum.createTopic(topic) :
 			null;
+
 
 		return new CommunityChannel({
 			backer: forum,
@@ -22,6 +27,7 @@ export default class CommunityChannel extends EventEmitter {
 			contentsDataSource: forum.getContentsDataSource(),
 			save,
 			addTopic,
+			delete: doDelete
 		});
 	}
 
@@ -30,20 +36,22 @@ export default class CommunityChannel extends EventEmitter {
 	#id = null
 	#title = null
 	#description = null
-	#save = null
 	#contentsDataSource = null
+	#save = null
 	#addTopic = null
+	#doDelete = null
 
-	constructor ({backer, id, title, description, save, contentsDataSource, addTopic, pinned}) {
+	constructor ({backer, id, title, description, save, contentsDataSource, addTopic, pinned, delete: doDelete}) {
 		super();
 
 		this.#backer = backer;
 		this.#id = id;
 		this.#pinned = pinned || false;
 		this.#title = title;
-		this.#save = save;
 		this.#contentsDataSource = contentsDataSource;
+		this.#save = save;
 		this.#addTopic = addTopic;
+		this.#doDelete = doDelete;
 	}
 
 	get backer () { return this.#backer; }
@@ -55,6 +63,8 @@ export default class CommunityChannel extends EventEmitter {
 	get pinned () { return this.#pinned; }
 
 	get title () { return this.#title; }
+
+	get contentsDataSource () { return this.#contentsDataSource; }
 
 	get isModifiable () { return !!this.#save; }
 	async save (data) {
@@ -70,7 +80,6 @@ export default class CommunityChannel extends EventEmitter {
 		return resp;
 	}
 
-	get contentsDataSource () { return this.#contentsDataSource; }
 
 	get canAddTopic () { return !!this.addTopic; }
 	async addTopic (topic) {
@@ -81,6 +90,16 @@ export default class CommunityChannel extends EventEmitter {
 		this.emit('item-added', newTopic);
 
 		return newTopic;
+	}
+
+
+	get canDelete () { return !!this.#doDelete; }
+	async delete () {
+		if (!this.canDelete) { throw new Error('Cannot delete channel'); }
+
+		await this.#doDelete();
+		this.wasDeleted = true;
+		this.emit('deleted');
 	}
 
 }

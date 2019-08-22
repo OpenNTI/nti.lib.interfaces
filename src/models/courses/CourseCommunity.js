@@ -162,9 +162,20 @@ async function getChannelListFromBoard (board, activityDataSource, label) {
 		return [...acc, Channels.Channel.fromForum(forum)];
 	}, []);
 
-	const createChannel = board.canCreateForum() ?
-		(title) => board.createForum({title}) :
+	const setOrder = board.isModifiable ?
+		async (order) => {
+			await board.save({'ordered_keys': order});
+			return board.orderedKeys;
+		} :
 		null;
 
-	return new Channels.List({id: board.getID(), label, channels, createChannel});
+	const createChannel = board.canCreateForum() ?
+		async (data) => {
+			const forum = await board.createForum(data);
+
+			return Channels.Channel.fromForum(forum);
+		} :
+		null;
+
+	return new Channels.List({id: board.getID(), label, channels, createChannel, setOrder});
 }
