@@ -32,7 +32,7 @@ export default class CommunityChannelList extends EventEmitter {
 	get label () { return this.#label; }
 	get channels () { return this.#channels; }
 
-	get canCreateChannels () { return !!this.#createChannel; }
+	get canCreateChannel () { return !!this.#createChannel; }
 
 	async createChannel (title) {
 		if (!this.canCreateChannels) { throw new Error('Cannot create a channel'); }
@@ -61,10 +61,6 @@ export default class CommunityChannelList extends EventEmitter {
 	}
 
 	get channelOrder () {
-		return (this.channels || []).reduce((acc, channel) => {
-			if (channel.pinned) { return acc; }
-
-			return [...acc, channel.getID()];
-		}, []);
+		return (this.channels || []).map(channel => channel.getID());
 	}
 }
