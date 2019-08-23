@@ -30,6 +30,8 @@ export default class Page extends Batch {
 	}
 
 	async loadNextPage () {
+		if (!this.hasLink('batch-next')) { return null; }
+
 		const resp = await this.fetchLink('batch-next');
 
 		return new Page(this[Service], this, {
