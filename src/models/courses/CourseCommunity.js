@@ -110,7 +110,7 @@ function getAllParentActivityInfo (course) {
 	return {
 		dataSource: course.getAllActivityDataSource(),
 		title: course.getLinkProperty('ParentAllCourseActivity', 'title'),
-		id: course.getLinkProperty('ParentAllCourseActivity', 'title')
+		id: course.getLinkProperty('ParentAllCourseActivity', 'ntiid')
 	};
 }
 
