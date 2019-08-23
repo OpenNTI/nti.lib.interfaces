@@ -71,13 +71,14 @@ class CourseCommunity extends EventEmitter {
 			const showParent = await shouldShowParentBoard(this.#parentBoard);
 
 			if (showParent) {
+
 				return Promise.all([
-					getChannelListFromBoard(this.#board, this.#course.getAllActivityDataSource(), 'my section'),
-					getChannelListFromBoard(this.#parentBoard, this.#course.getParentActivityDataSource(), 'parent section')
+					getChannelListFromBoard(this.#board, getAllActivityInfo(this.#course), 'my section'),
+					getChannelListFromBoard(this.#parentBoard, getAllParentActivityInfo(this.#course), 'parent section')
 				]);
 			}
 
-			return getChannelListFromBoard(this.#board, this.#course.getAllActivityDataSource());
+			return getChannelListFromBoard(this.#board, getAllActivityInfo(this.#course));
 		} finally {
 			cleanup(this.#parentBoard);
 			cleanup(this.#board);
@@ -105,22 +106,36 @@ function getBoardContents (board) {
 	return ContentsCache.get(board);
 }
 
-function buildAllActivityChannel (forum, dataSource) {
+function getAllParentActivityInfo (course) {
+	return {
+		dataSource: course.getAllActivityDataSource(),
+		title: course.getLinkProperty('AllParentCourseActivity', 'title'),
+		id: course.getLinkProperty('AllParentCourseActivity', 'title')
+	};
+}
+
+function getAllActivityInfo (course) {
+	return {
+		dataSource: course.getAllActivityDataSource(),
+		title: course.getLinkProperty('AllCourseActivity', 'title'),
+		id: course.getLinkProperty('AllCourseActivity', 'ntiid')
+	};
+}
+
+function buildAllActivityChannel (forum, activityInfo) {
 	const addTopic = forum.canCreateTopic() ?
 		(topic) => forum.createTopic(topic) :
 		null;
 
 	const channel = new Channels.Channel({
 		backer: forum,
-		id: forum.getID(),
-		title: forum.title,
-		contentsDataSource: dataSource,
+		id: activityInfo.id,
+		title: activityInfo.title,
+		contentsDataSource:activityInfo.dataSource,
 		setTitle: null,
 		pinned: true,
 		addTopic
 	});
-
-	channel.isAllActivityChannel = true;
 
 	return channel;
 }
