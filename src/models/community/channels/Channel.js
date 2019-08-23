@@ -48,6 +48,7 @@ export default class CommunityChannel extends EventEmitter {
 		this.#id = id;
 		this.#pinned = pinned || false;
 		this.#title = title;
+		this.#description = description;
 		this.#contentsDataSource = contentsDataSource;
 		this.#save = save;
 		this.#addTopic = addTopic;
@@ -63,6 +64,7 @@ export default class CommunityChannel extends EventEmitter {
 	get pinned () { return this.#pinned; }
 
 	get title () { return this.#title; }
+	get description () { return this.#description; }
 
 	get contentsDataSource () { return this.#contentsDataSource; }
 
