@@ -642,7 +642,7 @@ class Instance extends Base {
 	}
 
 	getParentActivityDataSource () {
-		const link = this.getLink('AllParentCourseActivity');
+		const link = this.getLink('ParentAllCourseActivity');
 
 		return link ?
 			new CourseAllActivityDataSource(this[Service], this, {sortOn: KnownActivitySorts}, {link}) :

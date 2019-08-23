@@ -109,8 +109,8 @@ function getBoardContents (board) {
 function getAllParentActivityInfo (course) {
 	return {
 		dataSource: course.getAllActivityDataSource(),
-		title: course.getLinkProperty('AllParentCourseActivity', 'title'),
-		id: course.getLinkProperty('AllParentCourseActivity', 'title')
+		title: course.getLinkProperty('ParentAllCourseActivity', 'title'),
+		id: course.getLinkProperty('ParentAllCourseActivity', 'title')
 	};
 }
 
