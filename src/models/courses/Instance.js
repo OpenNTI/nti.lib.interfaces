@@ -43,6 +43,7 @@ const AvailableContentSummaryTimeout = 5000;
 
 const KnownActivitySorts = [
 	'createdTime',
+	'Last Modified',
 	'LikeCount'
 ];
 

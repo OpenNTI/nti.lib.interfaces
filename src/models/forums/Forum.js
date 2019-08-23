@@ -11,7 +11,7 @@ import ForumContentsDataSource from './forum-contents-data-source';
 
 const KnownSorts = [
 	'createdTime',
-	'NewestDescendantCreatedTime',
+	'Last Modified',
 	'PostCount',
 	'LikeCount'
 ];
