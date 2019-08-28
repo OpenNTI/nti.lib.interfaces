@@ -12,6 +12,8 @@ class Annotation extends Base {
 		...Base.Fields,
 		'AutoTags':               { type: '*'        },
 		'ContainerId':            { type: 'string'   },
+		'ContainerTitle':         { type: 'string'   },
+		'ContainerMimeType':      { type: 'string'   },
 		'ID':                     { type: 'string'   },
 		'applicableRange':        { type: 'model'    },
 		'sharedWith':             { type: 'string[]' },
