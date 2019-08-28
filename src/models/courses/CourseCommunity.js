@@ -111,16 +111,14 @@ function getBoardContents (board) {
 function getAllParentActivityInfo (course) {
 	return {
 		dataSource: course.getAllActivityDataSource(),
-		title: course.getLinkProperty('ParentAllCourseActivity', 'title'),
-		id: course.getLinkProperty('ParentAllCourseActivity', 'ntiid')
+		title: course.getLinkProperty('ParentAllCourseActivity', 'title')
 	};
 }
 
 function getAllActivityInfo (course) {
 	return {
 		dataSource: course.getAllActivityDataSource(),
-		title: course.getLinkProperty('AllCourseActivity', 'title'),
-		id: course.getLinkProperty('AllCourseActivity', 'ntiid')
+		title: course.getLinkProperty('AllCourseActivity', 'title')
 	};
 }
 
@@ -131,7 +129,7 @@ function buildAllActivityChannel (forum, activityInfo) {
 
 	const channel = new Channels.Channel({
 		backer: forum,
-		id: activityInfo.id,
+		id: forum.getID(),
 		title: activityInfo.title,
 		contentsDataSource:activityInfo.dataSource,
 		setTitle: null,
