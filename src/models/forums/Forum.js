@@ -53,7 +53,7 @@ class Forum extends Base {
 	}
 
 	getID () {
-		if (this.creator !== 'system' || this.title !== 'Forum') {
+		if (!this.IsDefaultForum) {
 			return super.getID();
 		}
 

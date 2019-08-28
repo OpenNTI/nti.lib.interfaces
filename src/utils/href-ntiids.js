@@ -1,5 +1,7 @@
 import {parseNTIID} from '@nti/lib-ntiids';
 
+//NOTE: this utility exists in lib-ntiids and needs to be imported from there
+
 const COMMON_PREFIX = 'tag:nextthought.com,2011-10:';
 const {atob, btoa} = global;
 
