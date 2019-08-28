@@ -27,7 +27,8 @@ export default class CommunityChannel extends EventEmitter {
 			contentsDataSource: forum.getContentsDataSource(),
 			save,
 			addTopic,
-			delete: doDelete
+			delete: doDelete,
+			reports: forum.Reports
 		});
 	}
 
@@ -40,8 +41,9 @@ export default class CommunityChannel extends EventEmitter {
 	#save = null
 	#addTopic = null
 	#doDelete = null
+	#reports = null
 
-	constructor ({backer, id, title, description, save, contentsDataSource, addTopic, pinned, delete: doDelete}) {
+	constructor ({backer, id, title, description, save, contentsDataSource, addTopic, pinned, delete: doDelete, reports}) {
 		super();
 
 		this.#backer = backer;
@@ -53,6 +55,7 @@ export default class CommunityChannel extends EventEmitter {
 		this.#save = save;
 		this.#addTopic = addTopic;
 		this.#doDelete = doDelete;
+		this.#reports = reports;
 	}
 
 	get backer () { return this.#backer; }
@@ -65,6 +68,8 @@ export default class CommunityChannel extends EventEmitter {
 
 	get title () { return this.#title; }
 	get description () { return this.#description; }
+
+	get Reports () { return this.#reports; }
 
 	get contentsDataSource () { return this.#contentsDataSource; }
 
