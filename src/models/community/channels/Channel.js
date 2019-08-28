@@ -88,7 +88,7 @@ export default class CommunityChannel extends EventEmitter {
 	}
 
 
-	get canAddTopic () { return !!this.addTopic; }
+	get canAddTopic () { return !!this.#addTopic; }
 	async addTopic (topic) {
 		if (!this.canAddTopic) { throw new Error('Cannot add topic to channel'); }
 
