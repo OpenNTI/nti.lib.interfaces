@@ -75,8 +75,8 @@ class CourseCommunity extends EventEmitter {
 			if (showParent) {
 
 				return Promise.all([
-					getChannelListFromBoard(this.#board, getAllActivityInfo(this.#course), 'my section'),
-					getChannelListFromBoard(this.#parentBoard, getAllParentActivityInfo(this.#course), 'parent section')
+					getChannelListFromBoard(this.#parentBoard, getAllParentActivityInfo(this.#course), 'Public'), //gross, but we can't localize this string easily right now
+					getChannelListFromBoard(this.#board, getAllActivityInfo(this.#course), this.#course.ProviderUniqueID)
 				]);
 			}
 
