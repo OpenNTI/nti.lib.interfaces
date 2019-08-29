@@ -655,7 +655,7 @@ class Instance extends Base {
 		const load = async () => {
 			try {
 				const {Items} = await this.fetchLink('CourseContentLibrarySummary');
-				
+
 				return Items.reduce((acc, i) => ({...acc, [i]: true}), {});
 			} catch (e) {
 				return {};
@@ -706,27 +706,28 @@ class Instance extends Base {
 
 
 async function resolvePreferredAccess (service, instance, parent) {
+	const self = instance;
 	try {
 		const enrollment = (parent instanceof Enrollment)
 			? parent
-			: await instance.fetchLinkParsed('UserCoursePreferredAccess');
+			: await self.fetchLinkParsed('UserCoursePreferredAccess');
 
 		if (parent !== enrollment) {
 			// For legacy compatability
-			instance.reparent(enrollment);
+			self.reparent(enrollment);
 			// now the enrollment will have the instance as a parent since its who parsed it...
 			// so set the instance's parent to our "parent" to fix the chain.
 			enrollment.reparent(parent);
 		}
 
 		//legacy lookup path:
-		instance.CatalogEntry = enrollment.CatalogEntry;
+		self.CatalogEntry = enrollment.CatalogEntry;
 
 		//new preferred property
-		instance.PreferredAccess = enrollment;
+		self.PreferredAccess = enrollment;
 
-		enrollment.setCourseInstance(instance);
+		enrollment.setCourseInstance(self);
 	} catch (e) {
-		instance.reparent(null);
+		self.reparent(null);
 	}
 }

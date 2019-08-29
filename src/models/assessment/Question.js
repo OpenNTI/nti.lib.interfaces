@@ -55,7 +55,7 @@ class Question extends Base {
 
 	get individual () {
 		let result = this[Individual];
-		if (!this.hasOwnProperty(Individual)) {
+		if (!Object.prototype.hasOwnProperty.call(this,Individual)) {
 			result = !this.parent({test: p=>p instanceof QuestionSet});
 			this[Individual] = result; //stop computing
 		}

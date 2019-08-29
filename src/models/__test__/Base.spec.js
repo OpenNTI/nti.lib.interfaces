@@ -25,26 +25,26 @@ describe ('Model: Base Class', () => {
 	test('Mixed in properties are non-enumerable', () => {
 		const o = new Base(MockService, null);
 		expect(o.initMixins).toBeTruthy();
-		expect(o.hasOwnProperty('initMixins')).toBe(false);
+		expect(o).toHaveProperty('initMixins');
 
 		//Editable mixin
 		expect(o.save).toBeTruthy();
-		expect(o.hasOwnProperty('save')).toBe(false);
+		expect(o).toHaveProperty('save');
 		expect(o.delete).toBeTruthy();
-		expect(o.hasOwnProperty('delete')).toBe(false);
+		expect(o).toHaveProperty('delete');
 		expect(o.canEdit).toBeTruthy();
-		expect(o.hasOwnProperty('canEdit')).toBe(false);
+		expect(o).toHaveProperty('canEdit');
 
 		//JSONValue
 		expect(o.toJSON).toBeTruthy();
-		expect(o.hasOwnProperty('toJSON')).toBe(false);
+		expect(o).toHaveProperty('toJSON');
 		expect(o.getData).toBeTruthy();
-		expect(o.hasOwnProperty('getData')).toBe(false);
+		expect(o).toHaveProperty('getData');
 
 		//Pendability
 		expect(o.addToPending).toBeTruthy();
-		expect(o.hasOwnProperty('addToPending')).toBe(false);
+		expect(o).toHaveProperty('addToPending');
 		expect(o.waitForPending).toBeTruthy();
-		expect(o.hasOwnProperty('waitForPending')).toBe(false);
+		expect(o).toHaveProperty('waitForPending');
 	});
 });

@@ -20,6 +20,7 @@ const ActiveSavePointPost = Symbol('ActiveSavePointPost');
 
 const isSummary = ({parts}) => parts && parts.some(x => x.IsSummary);
 const getAssociationCount = (x) => x.LessonContainerCount;
+const has = (x, k) => Object.prototype.hasOwnProperty.call(x, k);
 
 export default
 @model
@@ -120,11 +121,11 @@ class Assignment extends Base {
 	isNonSubmit () {
 		let p = this.parts;
 
-		if (this.hasOwnProperty('NoSubmit')) {
+		if (has(this, 'NoSubmit')) {
 			return this.NoSubmit;
 		}
 
-		if (this.hasOwnProperty('no_submit')) {
+		if (has(this, 'no_submit')) {
 			return this.no_submit;
 		}
 

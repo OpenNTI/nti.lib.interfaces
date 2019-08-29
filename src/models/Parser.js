@@ -98,7 +98,7 @@ function ConstructorFunc (service, parent, data) {
 	const useParent = getConstructorArgumentLength(Ctor) > 2;
 	const make = ()=> useParent ? new Ctor(service, parent, data) : new Ctor(service, data);
 
-	return (this.prototype.isPrototypeOf(data))
+	return (Object.prototype.isPrototypeOf.call(this.prototype,data))
 		? data
 		: this.trackInstances
 			? trackInstances.call(this, service, data, make)

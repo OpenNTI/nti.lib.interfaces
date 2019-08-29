@@ -131,7 +131,7 @@ class Bundle extends Base {
 
 	async getDiscussions (reloadBoard) {
 		if (!this.Discussions) {
-			await resolveDiscussions(this);
+			this.Discussions = await this.fetchLinkParsed('DiscussionBoard');
 		} else if (reloadBoard) {
 			await this.Discussions.refresh();
 		}
@@ -172,9 +172,4 @@ class Bundle extends Base {
 	getStreamDataSource () {
 		return new BundleStreamDataSource(this[Service], this);
 	}
-}
-
-
-async function resolveDiscussions (bundle) {
-	bundle.Discussions = await bundle.fetchLinkParsed('DiscussionBoard');
 }

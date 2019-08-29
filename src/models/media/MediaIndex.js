@@ -75,7 +75,7 @@ export default class MediaIndex {
 		let vi = (json && json.Items) || json;
 
 		for (let n in vi) {
-			if (vi.hasOwnProperty(n)) {
+			if (Object.prototype.hasOwnProperty.call(vi,n)) {
 				n = vi[n];
 				if (n && !isEmpty(n.transcripts)) {
 					n.transcripts = n.transcripts.map(prefix).map(applyTranscriptMimeType);

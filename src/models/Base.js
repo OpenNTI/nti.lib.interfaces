@@ -222,6 +222,6 @@ class Base extends EventEmitter {
 		// have a 'OUID' on the user record, we will check for its existence.
 		// TODO: we need to define what this 'visibility' means for an AppUser in general (rather than just OU) or
 		// have a convention on how have we resolve it.
-		return !attr || u.hasOwnProperty(attr) || attr === status || (/everyone/i).test(attr);
+		return !attr || Object.prototype.hasOwnProperty.call(u,attr) || attr === status || (/everyone/i).test(attr);
 	}
 }

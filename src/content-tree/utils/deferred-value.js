@@ -10,6 +10,7 @@ export default function deferredValue (value) {
 
 		resolve: async () => {
 			if (typeof resolved === 'function') {
+				// eslint-disable-next-line require-atomic-updates
 				resolved = await resolved();
 			}
 

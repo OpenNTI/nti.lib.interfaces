@@ -99,7 +99,7 @@ export default {
  */
 function ensureSavingKeysOn (o, savingKeys) {
 	for (let key of savingKeys) {
-		if (!o.hasOwnProperty(key)) {
+		if (!Object.prototype.hasOwnProperty.call(o,key)) {
 			o[key] = undefined;
 		}
 	}

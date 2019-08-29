@@ -50,11 +50,13 @@ export default class Registry {
 
 
 	register (o) {
-		if (!o || !o.MimeType || !o.hasOwnProperty('MimeType') || typeof o !== 'function') {
+		const has = (x, k) => Object.prototype.hasOwnProperty.call(x, k);
+
+		if (!o || !o.MimeType || !has(o,'MimeType') || typeof o !== 'function') {
 			throw new TypeError(`Illegial Argument: Model class expected:
 				Has Argument: ${!!o}
 				Has MimeType: ${o && !!o.MimeType}
-				Is Own MimeType: ${o && o.hasOwnProperty('MimeType')}: ${o.MimeType} (${o.name})
+				Is Own MimeType: ${o && has(o,'MimeType')}: ${o.MimeType} (${o.name})
 				Is Class: ${typeof o === 'function'}
 				`.replace(/\t+/g, '\t'));
 		}

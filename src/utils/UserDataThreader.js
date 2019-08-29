@@ -163,7 +163,7 @@ export function buildItemTree (items, tree) {
 
 		r[CHILDREN] = r[CHILDREN] || {};
 
-		if (!tree.hasOwnProperty(oid)) {
+		if (!Object.prototype.hasOwnProperty.call(tree,oid)) {
 			tree[oid] = r;
 		}
 
