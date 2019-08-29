@@ -1,5 +1,7 @@
 import EventEmitter from 'events';
 
+import {hideField} from '../../../mixins/Fields';
+
 export default class CommunityChannel extends EventEmitter {
 	static fromForum (forum) {
 		const save = forum.isModifiable ?
@@ -45,6 +47,9 @@ export default class CommunityChannel extends EventEmitter {
 
 	constructor ({backer, id, title, description, save, contentsDataSource, addTopic, pinned, delete: doDelete, reports}) {
 		super();
+		this.setMaxListeners(100);
+		//Make EventEmitter properties non-enumerable
+		Object.keys(this).map(key => hideField(this, key));
 
 		this.#backer = backer;
 		this.#id = id;
