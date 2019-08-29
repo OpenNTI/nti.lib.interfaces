@@ -83,10 +83,15 @@ export default class CommunityChannel extends EventEmitter {
 		if (!this.isModifiable) { throw new Error('Cannot modifiy channel'); }
 
 		const resp = await this.#save(data);
-		const {title, description} = resp || {};
 
-		this.#title = title || this.#description;
-		this.#description = description || this.#description;
+		if ('title' in resp) {
+			this.#title = resp.title;
+		}
+
+		if ('description' in resp) {
+			this.#description = resp.description;
+		}
+
 		this.emit('change');
 
 		return resp;
