@@ -11,6 +11,41 @@ function validateChannels (channels) {
 }
 
 export default class CommunityChannelList extends EventEmitter {
+	static async fromBoard (board, label, getDefaultForumOverride) {
+		const contents = await board.getContents();
+		const channels = (contents.Items || []).reduce((acc, forum) => {
+			if (forum.IsDefaultForum && getDefaultForumOverride) {
+				const override = getDefaultForumOverride(forum);
+
+				return override ? [...acc, override] : acc;
+			}
+
+			return [...acc, Channel.fromForum(forum)];
+		}, []);
+
+		const setOrder = board.isModifiable ?
+			async (order) => {
+				await board.save({'ordered_keys': order});
+				return board.orderedKeys;
+			} :
+			null;
+
+		const createChannel = board.canCreateForum() ?
+			async (data) => {
+				const forum = await board.createForum(data);
+				return Channel.fromForum(forum);
+			} :
+			null;
+
+		return new CommunityChannelList({
+			id: board.getID(),
+			label,
+			channels,
+			createChannel,
+			setOrder
+		});
+	} 
+
 	#id = null
 	#label = null
 	#channels = null

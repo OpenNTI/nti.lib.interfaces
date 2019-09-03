@@ -1,8 +1,19 @@
 import Stream from '../../stores/Stream';
 import { Service } from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
+import {Channels} from '../community';
+import PagedLinkDataSource from '../../data-sources/common/PagedLinkDataSource';
 
 import Entity from './Entity';
+
+const ResolveChannelList = Symbol('Resolve Channel List');
+
+const KnownActivitySorts = [
+	'createdTime',
+	'Last Modified',
+	'ReferencedByCount',
+	'LinkCount'
+];
 
 export default
 @model
@@ -10,6 +21,8 @@ class Community extends Entity {
 	static MimeType = COMMON_PREFIX + 'community'
 
 	isCommunity = true
+
+	#channelListPromise = null
 
 
 	constructor (service, data) {
@@ -119,5 +132,42 @@ class Community extends Entity {
 
 	leave () {
 		return this.postToLink('leave', {});
+	}
+
+	getAllActivityDataSource () {
+		return new PagedLinkDataSource.forLink(this[Service], this, this.getLink('Activity'), {sortOn: KnownActivitySorts});
+	}
+
+	getChannelList () {
+		if (!this.#channelListPromise) {
+			this.#channelListPromise = this[ResolveChannelList]();
+		}
+
+		return this.#channelListPromise;
+	}
+
+	[ResolveChannelList] = async () => {
+		const board = await this.getDiscussionBoard();
+		const channelList = await Channels.List.fromBoard(
+			board,
+			'',
+			(forum) => {
+				const addTopic = forum.canCreateTopic() ?
+					(topic) => forum.createTopic(topic) :
+					null;
+
+				return new Channels.Channel({
+					backer: forum,
+					id: forum.getID(),
+					title: this.getLinkProperty('Activity', 'title') || 'Activity',
+					contentsDataSource: this.getAllActivityDataSource(),
+					setTitle: null,
+					pinned: true,
+					addTopic
+				});
+			}
+		);
+
+		return channelList;
 	}
 }
