@@ -131,7 +131,7 @@ function buildAllActivityChannel (forum, activityInfo) {
 		backer: forum,
 		id: forum.getID(),
 		title: activityInfo.title,
-		contentsDataSource:activityInfo.dataSource,
+		contentsDataSource: activityInfo.dataSource,
 		setTitle: null,
 		pinned: true,
 		addTopic
