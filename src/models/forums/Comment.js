@@ -14,6 +14,14 @@ class Comment extends Post {
 
 	isComment = true;
 
+	get isBlogComment () {
+		return this.MimeType === COMMON_PREFIX + 'forums.personalblogcomment';
+	}
+
+	get isTopicComment () {
+		return !this.isBlogComment;
+	}
+
 
 	isTopLevel () {
 		return false;

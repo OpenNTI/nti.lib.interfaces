@@ -21,6 +21,8 @@ class BlogEntry extends Topic {
 		this.handleSharingMappings();
 	}
 
+	isBlogEntry = true
+
 
 	get isPublished () {
 		return this.hasLink('unpublish');
