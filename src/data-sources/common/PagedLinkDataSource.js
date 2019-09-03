@@ -13,7 +13,7 @@ export default class PageLinkDataSource extends PagedDataSource {
 	}
 
 	async requestPage (pageId, params) {
-		const {link} = this.link;
+		const {link} = this;
 
 		if (!link) { throw new Error('No link provided.'); }
 
