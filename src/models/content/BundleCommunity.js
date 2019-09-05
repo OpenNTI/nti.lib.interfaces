@@ -18,7 +18,7 @@ export default class BundleCommunity extends EventEmitter {
 	#bundle = null
 	#board = null
 	#channelListPromise = null
-
+  
 	constructor (bundle) {
 		super();
 
