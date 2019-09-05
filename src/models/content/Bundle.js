@@ -10,9 +10,11 @@ import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 import Forum from '../forums/Forum';
 
+import BundleCommunity from './BundleCommunity';
 import BundleStreamDataSource from './BundleStreamDataSource.js';
 
 const logger = Logger.get('models:content:Bundle');
+const BundleCommunityCache = Symbol('Bundle Community Cache');
 
 const names = (x, y, v) => Array.isArray(v) ? v.join(', ') : null;
 
@@ -49,6 +51,8 @@ class Bundle extends Base {
 		for (let p of this.ContentPackages) {
 			p.on('change', onChange);
 		}
+
+		this.addToPending(resolveDiscussions(this));
 	}
 
 
@@ -129,6 +133,20 @@ class Bundle extends Base {
 	}
 
 
+	hasCommunity () {
+		return BundleCommunity.hasCommunity(this);
+	}
+
+
+	getCommunity () {
+		if (!this[BundleCommunityCache]) {
+			this[BundleCommunityCache] = BundleCommunity.from(this);
+		}
+
+		return this[BundleCommunityCache];
+	}
+
+
 	async getDiscussions (reloadBoard) {
 		if (!this.Discussions) {
 			this.Discussions = await this.fetchLinkParsed('DiscussionBoard');
@@ -171,5 +189,17 @@ class Bundle extends Base {
 
 	getStreamDataSource () {
 		return new BundleStreamDataSource(this[Service], this);
+	}
+}
+
+async function resolveDiscussions (bundle) {
+	if (bundle.Discussions) { return; }
+
+	try {
+		const discussions = await bundle.fetchLinkParsed('DiscussionBoard');
+
+		bundle.Discussions = discussions;//eslint-disable-line
+	} catch (e) {
+		//swallow
 	}
 }
