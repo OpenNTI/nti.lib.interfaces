@@ -9,6 +9,7 @@ import LRU from 'lru-cache';
 import { parse } from '../models/Parser';
 import { Workspace } from '../models';
 import Capabilities from '../models/Capabilities';
+import CommunitiesWorkspace from '../models/community/Workspace';
 import AbstractPlaceholder from '../models/AbstractPlaceholder';
 import Batch from '../data-sources/data-types/Batch';
 import { Mixin as Pendability, attach as attachPendingQueue } from '../mixins/Pendability';
@@ -29,7 +30,6 @@ import {
 } from '../constants';
 
 import ContactsStore from './Contacts';
-import CommunitiesStore from './EntityStore';
 import GroupsStore from './Groups';
 import Enrollment from './Enrollment';
 
@@ -49,6 +49,10 @@ const RequestEntityResolve = Symbol('RequestEntityResolve');
 const logger = Logger.get('Service');
 
 const LibraryPathCache = new LRU({ max: 100, maxAge: 3600000 /*1 hour*/ });
+
+const TitleSpecificWorkspaces = {
+	'Communities': CommunitiesWorkspace
+};
 
 function hideCurrentProperties (o) {
 	for (let key of Object.keys(o)) {
@@ -120,7 +124,11 @@ class ServiceDocument extends EventEmitter {
 
 		if (this.Items !== items) {
 			//No mimetype on Workspace means, we have to force it...
-			const parsed = this.Items = (items || []).map(o => new Workspace(this, this, o));
+			const parsed = this.Items = (items || []).map(o => {
+				const Cls = TitleSpecificWorkspaces[o.Title] || Workspace;
+
+				return new Cls(this, this, o);
+			});
 
 			this.addToPending(
 				parsed
@@ -204,17 +212,7 @@ class ServiceDocument extends EventEmitter {
 
 
 	getCommunities () {
-		if (!this[Communities]) {
-			let u = this[AppUser];
-			let {href} = this.getCollection('Communities', this.getAppUsername()) || {};
-			if (href) {
-				this[Communities] = new CommunitiesStore(this, href, u);
-			} else {
-				logger.warn('No Communities Collection');
-			}
-		}
-
-		return this[Communities];
+		return this.Items.find((item) => item.Title === 'Communities');
 	}
 
 

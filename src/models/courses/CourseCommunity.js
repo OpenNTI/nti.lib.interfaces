@@ -168,29 +168,11 @@ async function shouldShowParentBoard (parentBoard) {
 }
 
 async function getChannelListFromBoard (board, activityDataSource, label) {
-	const contents = await getBoardContents(board);
-	const channels = (contents.Items || []).reduce((acc, forum) => {
-		if (forum.IsDefaultForum && activityDataSource) {
-			return [buildAllActivityChannel(forum, activityDataSource), ...acc];
-		}
+	const channelList = await Channels.List.fromBoard(
+		board,
+		label,
+		(forum) => buildAllActivityChannel(forum, activityDataSource)
+	);
 
-		return [...acc, Channels.Channel.fromForum(forum)];
-	}, []);
-
-	const setOrder = board.isModifiable ?
-		async (order) => {
-			await board.save({'ordered_keys': order});
-			return board.orderedKeys;
-		} :
-		null;
-
-	const createChannel = board.canCreateForum() ?
-		async (data) => {
-			const forum = await board.createForum(data);
-
-			return Channels.Channel.fromForum(forum);
-		} :
-		null;
-
-	return new Channels.List({id: board.getID(), label, channels, createChannel, setOrder});
+	return channelList;
 }

@@ -24,4 +24,12 @@ export default class WorkspaceCollection extends Base {
 	acceptsType (mime) {
 		return this.accepts.includes(mime);
 	}
+
+	async fetch () {
+		if (this.Items) { return this; }
+
+		await this.refresh();
+
+		return this;
+	}
 }

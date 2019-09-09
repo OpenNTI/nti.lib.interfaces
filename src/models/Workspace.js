@@ -13,4 +13,8 @@ class Workspace extends Base {
 		'Title': { type: 'string'        },
 	}
 
+	getCollection (title) {
+		return (this.Items || []).find(c => c.Title === title);
+	}
+
 }
