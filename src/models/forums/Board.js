@@ -23,6 +23,8 @@ class Board extends Base {
 		'ordered_keys': { type: 'string[]', name: 'orderedKeys' }
 	}
 
+	isBoard = true
+
 	canCreateForum () {
 		return this.hasLink('add');
 	}
