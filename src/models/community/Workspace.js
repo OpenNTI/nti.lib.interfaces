@@ -1,6 +1,7 @@
 import Workspace from '../Workspace';
 import {Service} from '../../constants';
 import {parseListFn} from '../Parser';
+import Community from '../entities/Community';
 
 const CommunitiesCache = Symbol('CommunitiesCache');
 
@@ -14,7 +15,7 @@ export default class CommunitiesWorkspace extends Workspace {
 	}
 
 	get AdminCommunities () {
-		return this.getCollection('AdminCommunities');
+		return this.getCollection('AdministeredCommunities');
 	}
 
 	fetch (url) {
@@ -27,9 +28,38 @@ export default class CommunitiesWorkspace extends Workspace {
 	async load (force) {
 		if (this[CommunitiesCache] && !force) { return this[CommunitiesCache]; }
 
-		const {Communities} = this;
+		const {Communities, AdminCommunities} = this;
 		const {Items: communities} = Communities ? await Communities.fetch() : {};
+		const {Items: adminCommunities} = AdminCommunities ? await AdminCommunities.fetch() : {};
 		
-		return communities;
+		if (!communities && !adminCommunities) { return null; }
+
+		return [...(adminCommunities || []), ...(communities || [])];
+	}
+
+
+	canCreateCommunity () {
+		return this.AllCommunities && this.AllCommunities.acceptsType(Community.MimeType);
+	}
+
+
+	async createCommunity (data) {
+		const payload = {...data};
+
+		if (data.displayName) {
+			payload.alias = data.displayName;
+			delete payload.displayName;
+		}
+
+		try {
+			const community = await this.AllCommunities.postToLink('self', payload, true);
+
+			delete this[CommunitiesCache];
+
+			return community;
+		} catch (e) {
+			if (e.field === 'alias') { e.field === 'displayName'; }
+			throw e;
+		}
 	}
 }
