@@ -12,7 +12,7 @@ const KnownActivitySorts = [
 	'createdTime',
 	'Last Modified',
 	'ReferencedByCount',
-	'LinkCount'
+	'LikeCount'
 ];
 
 export default
