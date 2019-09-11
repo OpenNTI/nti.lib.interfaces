@@ -34,7 +34,17 @@ export default class CommunitiesWorkspace extends Workspace {
 		
 		if (!communities && !adminCommunities) { return null; }
 
-		return [...(adminCommunities || []), ...(communities || [])];
+		const {ordered} = [...(communities || []), ...(adminCommunities || [])]
+			.reduce((acc, community) => {
+				if (!acc.seen.has(community.getID())) {
+					acc.ordered.push(community);
+				}
+
+				acc.seen.add(community.getID());
+				return acc;
+			}, {ordered: [], seen: new Set()});
+
+		return ordered;
 	}
 
 
