@@ -31,6 +31,7 @@ class Bundle extends Base {
 	static Fields = {
 		...Base.Fields,
 		'ContentPackages':                      { type: 'model[]', defaultValue: [] },
+		'Discussions':                          { type: 'model'                     },
 		'DCCreator':                            { type: names,     name: 'author'   },
 		'byline':                               { type: 'string'                    },
 		'title':                                { type: 'string'                    },
