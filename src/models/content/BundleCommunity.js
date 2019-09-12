@@ -27,6 +27,7 @@ export default class BundleCommunity extends EventEmitter {
 	}
 
 	isCommunity = true
+	noAvatar = true
 
 	getID () { return this.#bundle.getID(); }
 
