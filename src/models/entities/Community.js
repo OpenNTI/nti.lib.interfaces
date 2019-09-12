@@ -170,4 +170,20 @@ class Community extends Entity {
 
 		return channelList;
 	}
+
+	async save (data) {
+		const payload = {...data};
+
+		if (data.displayName) {
+			payload.alias = data.displayName;
+			delete payload.displayName;
+		}
+
+		try {
+			await super.save(payload);
+		} catch (e) {
+			if (e.field === 'alias') { e.field === 'displayName'; }
+			throw e;
+		}
+	}
 }
