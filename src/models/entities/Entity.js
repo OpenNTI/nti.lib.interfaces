@@ -12,6 +12,7 @@ export default class Entity extends Base {
 		'about':            { type: 'string' },
 		'alias':            { type: 'string' },
 		'avatarURL':        { type: 'string' },
+		'blurredAvatarURL': { type: 'string' },
 		'backgroundURL':    { type: 'string' },
 		'ID':               { type: 'string' },
 		'NonI18NFirstName': { type: 'string' },
