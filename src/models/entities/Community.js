@@ -20,6 +20,11 @@ export default
 class Community extends Entity {
 	static MimeType = COMMON_PREFIX + 'community'
 
+	static Fields = {
+		...Entity.Fields,
+		'RemoteIsMember': {type: 'boolean'}
+	}
+
 	isCommunity = true
 
 	#channelListPromise = null
@@ -32,6 +37,10 @@ class Community extends Entity {
 
 	get displayType () {
 		return 'Community';
+	}
+
+	get isJoined () {
+		return this.RemoteIsMember;
 	}
 
 
@@ -129,9 +138,28 @@ class Community extends Entity {
 		);
 	}
 
+	get canJoin () {
+		return this.hasLink('join');
+	}
 
-	leave () {
-		return this.postToLink('leave', {});
+	async join () {
+		const resp = await this.postToLink('join', {});
+
+		await this.refresh(resp);
+
+		return resp;
+	}
+
+	get canLeave () {
+		return this.hasLink('leave');
+	}
+
+	async leave () {
+		const resp = await this.postToLink('leave', {});
+
+		await this.refresh(resp);
+
+		return resp;
 	}
 
 	getAllActivityDataSource () {
