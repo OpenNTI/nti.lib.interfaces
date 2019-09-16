@@ -33,6 +33,7 @@ class CourseCommunity extends EventEmitter {
 
 	isCommunity = true
 	noAvatar = true
+	hasMembers = false
 
 	getID () { return this.#course.getID(); }
 
