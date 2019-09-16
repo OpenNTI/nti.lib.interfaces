@@ -127,6 +127,7 @@ class Community extends Entity {
 
 
 	get hasMembers () { return this.hasLink('members'); }
+	get canManageMembers () { return this.hasLink('AddMembers') || this.hasLink('RemoveMembers'); }
 
 
 	getMembersDataSource () {
