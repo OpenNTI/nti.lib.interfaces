@@ -126,6 +126,14 @@ class Community extends Entity {
 	}
 
 
+	get hasMembers () { return this.hasLink('members'); }
+
+
+	getMembersDataSource () {
+		return new PagedLinkDataSource.forLink(this[Service], this, this.getLink('members'));
+	}
+
+
 	getMembers () {
 		if (!this.hasLink('members')) {
 			return null;

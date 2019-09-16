@@ -17,10 +17,19 @@ export default class PageLinkDataSource extends PagedDataSource {
 
 		if (!link) { throw new Error('No link provided.'); }
 
-		const contents = await this.service.get(URL.appendQueryParams(link, params));
+		const requestParams = {
+			...params
+		};
+
+		if (requestParams.batchSize != null) {
+			requestParams.batchStart = pageId * requestParams.batchSize;
+		}
+
+		const contents = await this.service.get(URL.appendQueryParams(link, requestParams));
+
 
 		return new PageBatch(this.service, this.parent, {
-			PageSize: params.batchSize,
+			PageSize: requestParams.batchSize,
 			...contents
 		});
 	}
