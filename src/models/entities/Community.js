@@ -20,6 +20,8 @@ export default
 class Community extends Entity {
 	static MimeType = COMMON_PREFIX + 'community'
 
+	static SiteAutoSubscribe = {'MimeType': 'application/vnd.nextthought.autosubscribe.siteautosubscribe'}
+
 	static Fields = {
 		...Entity.Fields,
 		'RemoteIsMember': {type: 'boolean'}
