@@ -127,11 +127,31 @@ class Community extends Entity {
 
 
 	get hasMembers () { return this.hasLink('members'); }
-	get canManageMembers () { return this.hasLink('AddMembers') || this.hasLink('RemoveMembers'); }
+	get canAddMembers () { return this.hasLink('AddMembers'); }
+	get canRemoveMembers () { return this.hasLink('RemoveMembers'); }
+	get canManageMembers () { return this.canAddMembers || this.canRemoveMembers; }
 
 
 	getMembersDataSource () {
 		return new PagedLinkDataSource.forLink(this[Service], this, this.getLink('members'));
+	}
+
+
+	addMembers (users) {
+		if (!Array.isArray(users)) {
+			users = [users];
+		}
+
+		return this.postToLink('AddMembers', {users: users.join(',')});
+	}
+
+
+	removeMembers (users) {
+		if (!Array.isArray(users)) {
+			users = [users];
+		}
+
+		return this.postToLink('RemoveMembers', {users: users.join(',')});
 	}
 
 
