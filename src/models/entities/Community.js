@@ -233,7 +233,7 @@ class Community extends Entity {
 	async save (data) {
 		const payload = {...data};
 
-		if (data.displayName) {
+		if (data.displayName != null) {
 			payload.alias = data.displayName;
 			delete payload.displayName;
 		}
