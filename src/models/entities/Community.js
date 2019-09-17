@@ -155,6 +155,7 @@ class Community extends Entity {
 		await this.refresh({NumberOfMembers, NTIID: this.NTIID});
 
 		this.emit('members-added', Added);
+		this.emit('members-changed', resp);
 
 		return resp;
 	}
@@ -171,6 +172,7 @@ class Community extends Entity {
 		await this.refresh({NumberOfMembers, NTIID: this.NTIID});
 
 		this.emit('members-removed', Removed);
+		this.emit('members-changed', resp);
 
 		return resp;
 	}
