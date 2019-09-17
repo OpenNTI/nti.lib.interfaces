@@ -24,7 +24,8 @@ class Community extends Entity {
 
 	static Fields = {
 		...Entity.Fields,
-		'RemoteIsMember': {type: 'boolean'}
+		'RemoteIsMember': {type: 'boolean'},
+		'NumberOfMembers': {type: 'number'}
 	}
 
 	isCommunity = true
@@ -133,27 +134,45 @@ class Community extends Entity {
 	get canRemoveMembers () { return this.hasLink('RemoveMembers'); }
 	get canManageMembers () { return this.canAddMembers || this.canRemoveMembers; }
 
+	get memberCount () {
+		return this.NumberOfMembers;
+	}
+
 
 	getMembersDataSource () {
 		return new PagedLinkDataSource.forLink(this[Service], this, this.getLink('members'));
 	}
 
 
-	addMembers (users) {
+	async addMembers (users) {
 		if (!Array.isArray(users)) {
 			users = [users];
 		}
 
-		return this.postToLink('AddMembers', {users: users});
+		const resp = await this.postToLink('AddMembers', {users: users});
+		const {Added, NumberOfMembers} = resp;
+
+		await this.refresh({NumberOfMembers, NTIID: this.NTIID});
+
+		this.emit('members-added', Added);
+
+		return resp;
 	}
 
 
-	removeMembers (users) {
+	async removeMembers (users) {
 		if (!Array.isArray(users)) {
 			users = [users];
 		}
 
-		return this.postToLink('RemoveMembers', {users: users});
+		const resp = await this.postToLink('RemoveMembers', {users: users});
+		const {Removed, NumberOfMembers} = resp;
+
+		await this.refresh({NumberOfMembers, NTIID: this.NTIID});
+
+		this.emit('members-removed', Removed);
+
+		return resp;
 	}
 
 
