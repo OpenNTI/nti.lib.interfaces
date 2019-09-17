@@ -142,7 +142,7 @@ class Community extends Entity {
 			users = [users];
 		}
 
-		return this.postToLink('AddMembers', {users: users.join(',')});
+		return this.postToLink('AddMembers', {users: users});
 	}
 
 
@@ -151,7 +151,7 @@ class Community extends Entity {
 			users = [users];
 		}
 
-		return this.postToLink('RemoveMembers', {users: users.join(',')});
+		return this.postToLink('RemoveMembers', {users: users});
 	}
 
 
