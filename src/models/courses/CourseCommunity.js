@@ -34,6 +34,7 @@ class CourseCommunity extends EventEmitter {
 	isCommunity = true
 	noAvatar = true
 	hasMembers = false
+	notAutoSubscribeable = true
 
 	getID () { return this.#course.getID(); }
 

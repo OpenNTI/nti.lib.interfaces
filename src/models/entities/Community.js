@@ -25,7 +25,8 @@ class Community extends Entity {
 	static Fields = {
 		...Entity.Fields,
 		'RemoteIsMember': {type: 'boolean'},
-		'NumberOfMembers': {type: 'number'}
+		'NumberOfMembers': {type: 'number'},
+		'auto_subscribe': {type: 'object'}
 	}
 
 	isCommunity = true
@@ -44,6 +45,10 @@ class Community extends Entity {
 
 	get isJoined () {
 		return this.RemoteIsMember;
+	}
+
+	get autoSubscribeRule () {
+		return this['auto_subscribe'];
 	}
 
 
@@ -251,10 +256,17 @@ class Community extends Entity {
 			delete payload.displayName;
 		}
 
+		if ('autoSubscribeRule' in data) {
+			payload['auto_subscribe'] = data.autoSubscribeRule;
+			delete payload.autoSubscribeRule;
+		}
+
 		try {
 			await super.save(payload);
 		} catch (e) {
 			if (e.field === 'alias') { e.field === 'displayName'; }
+			if (e.field === 'auto_subscribe') { e.field === 'autoSubscribeRule'; }
+
 			throw e;
 		}
 	}
