@@ -145,10 +145,6 @@ class Community extends Entity {
 
 
 	async addMembers (users) {
-		if (!Array.isArray(users)) {
-			users = [users];
-		}
-
 		const resp = await this.postToLink('AddMembers', {users: users});
 		const {Added, NumberOfMembers} = resp;
 
@@ -162,10 +158,6 @@ class Community extends Entity {
 
 
 	async removeMembers (users) {
-		if (!Array.isArray(users)) {
-			users = [users];
-		}
-
 		const resp = await this.postToLink('RemoveMembers', {users: users});
 		const {Removed, NumberOfMembers} = resp;
 
