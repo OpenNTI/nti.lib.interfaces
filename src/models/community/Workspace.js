@@ -25,26 +25,30 @@ export default class CommunitiesWorkspace extends Workspace {
 			.then(o => parseListFn(Object.values(o.Items || [])));
 	}
 
-	async load (force) {
-		if (this[CommunitiesCache] && !force) { return this[CommunitiesCache]; }
+	load (force) {
+		const doLoad = async () => {
+			const {Communities, AdminCommunities} = this;
+			const {Items: communities} = Communities ? await Communities.fetch(true) : {};
+			const {Items: adminCommunities} = AdminCommunities ? await AdminCommunities.fetch(true) : {};
+			
+			if (!communities && !adminCommunities) { return null; }
 
-		const {Communities, AdminCommunities} = this;
-		const {Items: communities} = Communities ? await Communities.fetch() : {};
-		const {Items: adminCommunities} = AdminCommunities ? await AdminCommunities.fetch() : {};
-		
-		if (!communities && !adminCommunities) { return null; }
+			const {ordered} = [...(communities || []), ...(adminCommunities || [])]
+				.reduce((acc, community) => {
+					if (!acc.seen.has(community.getID())) {
+						acc.ordered.push(community);
+					}
 
-		const {ordered} = [...(communities || []), ...(adminCommunities || [])]
-			.reduce((acc, community) => {
-				if (!acc.seen.has(community.getID())) {
-					acc.ordered.push(community);
-				}
+					acc.seen.add(community.getID());
+					return acc;
+				}, {ordered: [], seen: new Set()});
 
-				acc.seen.add(community.getID());
-				return acc;
-			}, {ordered: [], seen: new Set()});
+			return ordered;
+		};
 
-		return ordered;
+		this[CommunitiesCache] = !this[CommunitiesCache] || force ? doLoad() : this[CommunitiesCache];
+
+		return this[CommunitiesCache];
 	}
 
 
