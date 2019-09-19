@@ -10,6 +10,20 @@ function validateChannels (channels) {
 	return true;
 }
 
+function sortChannels (channels) {
+	const {pinned, sortable} = channels.reduce((acc, channel) => {
+		if (channel.pinned) {
+			acc.pinned.push(channel);
+		} else {
+			acc.sortable.push(channel);
+		}
+
+		return acc;
+	}, {pinned: [], sortable: []});
+
+	return [...pinned, ...sortable];
+}
+
 export default class CommunityChannelList extends EventEmitter {
 	static async fromBoard (board, label, getDefaultForumOverride) {
 		const contents = await board.getContents();
@@ -59,7 +73,7 @@ export default class CommunityChannelList extends EventEmitter {
 
 		this.#id = id;
 		this.#label = label;
-		this.#channels = channels;
+		this.#channels = sortChannels(channels);
 		this.#createChannel = createChannel;
 		this.#setOrder = setOrder;
 	}
