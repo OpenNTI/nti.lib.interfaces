@@ -51,6 +51,10 @@ class Community extends Entity {
 		return this['auto_subscribe'];
 	}
 
+	get canDelete () {
+		return this.hasLink('delete');
+	}
+
 
 	getActivity (filterParams) {
 		let {source} = filterParams || {};
@@ -269,5 +273,14 @@ class Community extends Entity {
 
 			throw e;
 		}
+	}
+
+	async delete () {
+		this.emit('deleting');
+		const resp = await super.delete('delete');
+		
+		this.emit('deleted');
+
+		return resp;
 	}
 }
