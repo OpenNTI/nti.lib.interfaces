@@ -188,7 +188,7 @@ export default {
 
 
 	getRecentReplies (count = 1) {
-		let shouldRequest = this.hasLink('replies') && this.ReferencedByCount > 0;
+		let shouldRequest = this.hasLink('replies');
 		let request = shouldRequest ?
 			this.fetchLinkParsed('replies', {
 				sortOn: 'createdTime',
