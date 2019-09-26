@@ -105,6 +105,7 @@ export default class DataServerInterface extends EventEmitter {
 	 * @param {string} [options.url] - The dataserver resource we wish to make the request for, or an absolute url.
 	 * @param {string} [options.method] - defaults to GET, and POST if `form` is set.
 	 * @param {object} [options.data] - A dictionary of form values to send with the request.
+	 * @param {boolean} [options.blob] - return a blob
 	 * @param {object} [options.headers] - HTTP headers to add to the request.
 	 * @param {object} [context] - An active request context to the node's "express" http server.
 	 * @returns {Promise} The promise of data or rejection ;)
@@ -120,7 +121,7 @@ export default class DataServerInterface extends EventEmitter {
 		const url = URL.resolve(this.config.server, options.url || '');
 
 
-		const {data} = options;
+		const {data, blob} = options;
 		const {accept} = options.headers || {};
 		const mime = accept && new FileType.MimeComparator(accept);
 
@@ -137,7 +138,7 @@ export default class DataServerInterface extends EventEmitter {
 				...(this.headers || {}),
 
 				//Always override these headers
-				'accept': mime || 'application/json',
+				'accept': mime || blob ? void 0 : 'application/json',
 				'x-requested-with': 'XMLHttpRequest'
 			};
 		}
@@ -284,9 +285,10 @@ export default class DataServerInterface extends EventEmitter {
 				//Parsing response
 				.then(response => abortFlag
 					? Promise.reject('Aborted')
-					: response.text()//we don't use .json() because we need to fallback if it doesn't parse.
-						.then(parseBody)
-						.then(body => ({response, body})))
+					: blob ? Promise.reject({skip: response.blob()})
+						: response.text()//we don't use .json() because we need to fallback if it doesn't parse.
+							.then(parseBody)
+							.then(body => ({response, body})))
 
 				//Handle cookies and validate mimes. (server side stuff mostly)
 				.then(({body, response}) => {
