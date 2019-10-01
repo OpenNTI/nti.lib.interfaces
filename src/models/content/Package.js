@@ -92,7 +92,7 @@ class Package extends Base {
 
 	getTablesOfContents () {//implement common expected interface
 		return this.getTableOfContents()
-			.then(table => new TablesOfContents.fromIterable([table], this[Service], this));
+			.then(table => TablesOfContents.fromIterable([table], this[Service], this));
 	}
 
 
