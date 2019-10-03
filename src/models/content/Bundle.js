@@ -12,6 +12,7 @@ import Forum from '../forums/Forum';
 
 import BundleCommunity from './BundleCommunity';
 import BundleStreamDataSource from './BundleStreamDataSource.js';
+import BundleSearchDataSource from './BundleSearchDataSource.js';
 
 const logger = Logger.get('models:content:Bundle');
 const BundleCommunityCache = Symbol('Bundle Community Cache');
@@ -190,6 +191,10 @@ class Bundle extends Base {
 
 	getStreamDataSource () {
 		return new BundleStreamDataSource(this[Service], this);
+	}
+
+	getSearchDataSource () {
+		return new BundleSearchDataSource(this[Service], this);
 	}
 }
 

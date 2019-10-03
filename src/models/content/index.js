@@ -12,5 +12,7 @@ export RelatedWorkReference from './RelatedWorkReference';
 export RelatedWorkReferencePointer from './RelatedWorkReferencePointer';
 export RenderablePackage from './RenderablePackage';
 export Root from './Root';
+export SearchFragment from './SearchFragment';
+export SearchHit from './SearchHit';
 export SharingPagePreference from './SharingPagePreference';
 export UserBundleRecord from './UserBundleRecord';
