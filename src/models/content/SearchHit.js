@@ -10,6 +10,7 @@ class Metadata extends Base {
 		...Base.Fields,
 		'Class':          { type: 'string'   },
 		'Containers':     { type: 'string[]' },
+		'ContainerTitle': { type: 'string'   },
 		'Fragments':      { type: 'model[]'  },
 		'Score':          { type: 'number'   },
 		'TargetMimeType': { type: 'string'   }
