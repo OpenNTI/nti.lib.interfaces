@@ -3,7 +3,7 @@ import Base from '../Base';
 
 export default
 @model
-class Metadata extends Base {
+class ContentUnitSearchHit extends Base {
 	static MimeType = COMMON_PREFIX + 'search.contentunitsearchhit'
 
 	static Fields = {
@@ -15,4 +15,6 @@ class Metadata extends Base {
 		'Score':          { type: 'number'   },
 		'TargetMimeType': { type: 'string'   }
 	}
+
+	isContentUnitSearchHit = true
 }
