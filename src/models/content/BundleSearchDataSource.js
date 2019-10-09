@@ -10,6 +10,12 @@ export default class BundleSearchDataSource extends PagedDataSource {
 		const batchSize = params.batchSize || 10;
 		const {term, ...others} = params;
 
+		const rootPackage = this.parent.ContentPackages[0];
+
+		if (!rootPackage) {
+			throw new Error('No Content Package to Search');
+		}
+
 		const requestParams = {
 			...others,
 			batchStart: page * batchSize,
@@ -17,7 +23,7 @@ export default class BundleSearchDataSource extends PagedDataSource {
 			sortOn: 'relevance'
 		};
 
-		const href = path.join(this.service.getUserUnifiedSearchURL(), encodeURI(this.parent.getID()), encodeURI(term));
+		const href = path.join(this.service.getUserUnifiedSearchURL(), encodeURI(rootPackage.NTIID), encodeURI(term));
 
 		const contents = await this.service.get(URL.appendQueryParams(href, requestParams));
 
