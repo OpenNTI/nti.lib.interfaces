@@ -12,7 +12,7 @@
 			"autoAttachChildProcesses": true,
 			"args": [
 				"--runInBand",
-				"${relativeFile}",
+				"${relativeFile}"
 			]
         }
     ]
