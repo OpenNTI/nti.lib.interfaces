@@ -7,11 +7,25 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Debug lib-interfaces Tests",
+            "name": "All Tests",
 			"program": "${workspaceFolder}/node_modules/.bin/jest",
 			"autoAttachChildProcesses": true,
+			"sourceMaps": true,
 			"args": [
 				"--runInBand",
+				"--no-cache"
+			]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Current File",
+			"program": "${workspaceFolder}/node_modules/.bin/jest",
+			"autoAttachChildProcesses": true,
+			"sourceMaps": true,
+			"args": [
+				"--runInBand",
+				"--no-cache",
 				"${relativeFile}"
 			]
         }
