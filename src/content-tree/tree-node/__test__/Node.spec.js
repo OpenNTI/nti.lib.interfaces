@@ -438,7 +438,7 @@ describe('ContentTree Node', () => {
 
 	});
 
-	describe('findSibling methods (findNextSibling, findPrevSibling)', async () => {
+	describe('findSibling methods (findNextSibling, findPrevSibling)', () => {
 		const getTree = async () => {
 			const first = createObject('first-child');
 			const second = createObject('second-child');
