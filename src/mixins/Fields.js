@@ -2,6 +2,7 @@ import Logger from '@nti/util-logger';
 import {Parsing, Array as ArrayUtils} from '@nti/lib-commons';
 import {ntiidEquals} from '@nti/lib-ntiids';
 
+import {getPropertyDescriptor} from '../utils';
 import {Parser, RepresentsSameObject, Service, IsModel} from '../constants';
 import {parse} from '../models/Parser';
 
@@ -626,6 +627,18 @@ function applyModelField (scope, fieldName, value, declared, defaultValue) {
 
 function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 	let value = valueIn !== None ? valueIn : clone(defaultValue);
+
+	if (fieldName in scope) {
+		const descriptor = getPropertyDescriptor(scope, fieldName) || {};
+		const hasGetter = descriptor.get != null;
+		const hasSetter = descriptor.set != null;
+		if (hasGetter || hasSetter) {
+			return;
+		}
+		if (descriptor) {
+			logger.warn(`Overwiting existing field '${fieldName}' in '${scope.MimeType || scope}'`);
+		}
+	}
 
 	delete scope[fieldName];
 
