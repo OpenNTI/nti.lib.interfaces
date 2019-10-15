@@ -1,0 +1,25 @@
+{
+	"AssignmentId": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload",
+	"AutoGrade": null,
+	"AutoGradeMax": null,
+	"CatalogEntryNTIID": "tag:nextthought.com,2011-10:NTI-CourseInfo-DefaultAPICopied_NTI_1000",
+	"Class": "Grade",
+	"ContainerId": "tag:nextthought.com,2011-10:NextThought-gradebookentry-NTI_1000.homework.File_Upload",
+	"CreatedTime": 1571086923.517924,
+	"Creator": "instructor.001",
+	"IsExcused": false,
+	"Last Modified": 1571088357.468628,
+	"Links": [{
+		"Class": "Link",
+		"href": "/dataserver2/++etc++hostsites/alpha.dev/++etc++site/Courses/DefaultAPICopied/NTI%201000/AssignmentHistories/demouser.001/tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload/UsersCourseAssignmentHistoryItem",
+		"ntiid": "tag:nextthought.com,2011-10:demouser.001-OID-0xd77e:5573657273:NMGbYWTRZxC",
+		"rel": "AssignmentHistoryItem"
+	}],
+	"MimeType": "application/vnd.nextthought.grade",
+	"NTIID": "tag:nextthought.com,2011-10:system-OID-0xd77f:5573657273:NMGbYWTRZxB",
+	"OID": "tag:nextthought.com,2011-10:system-OID-0xd77f:5573657273:NMGbYWTRZxB",
+	"Username": "demouser.001",
+	"containerId": "tag:nextthought.com,2011-10:NextThought-gradebookentry-NTI_1000.homework.File_Upload",
+	"href": "/dataserver2/++etc++hostsites/alpha.dev/++etc++site/Courses/DefaultAPICopied/NTI%201000/GradeBook/homework/File_Upload/demouser.001",
+	"value": "C -"
+}
