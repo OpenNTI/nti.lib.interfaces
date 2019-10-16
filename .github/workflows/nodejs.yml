@@ -34,8 +34,8 @@ jobs:
       # Skip post-install scripts here, as a malicious
       # script could steal NODE_AUTH_TOKEN.
       run: |
-		npm install --ignore-scripts
-		npm install @nti/gen-docs --no-save --ignore-scripts
+        npm install --ignore-scripts
+        npm install @nti/gen-docs --no-save --ignore-scripts
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
