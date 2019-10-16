@@ -1,12 +1,12 @@
 name: Node CI
 
-on: 
+on:
   push:
-    branches: 
+    branches:
       - master
       - maint*
   pull_request:
-    branches: 
+    branches:
       - master
   schedule:
     - cron: 0 2 * * 1-5
@@ -34,18 +34,19 @@ jobs:
       # Skip post-install scripts here, as a malicious
       # script could steal NODE_AUTH_TOKEN.
       run: |
-        npm install --ignore-scripts
+		npm install --ignore-scripts
+		npm install @nti/gen-docs --no-save --ignore-scripts
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     # `npm rebuild` will run all those post-install scritps for us
     - name: dependency setup
       run: |
-        npm rebuild 
+        npm rebuild
         npm run prepare --if-present
 
     - name: Testing/Linting/Building
       run: npm pack
-    
+
     # TODO: Setup code coverage/test result reporting?
     # TODO: Publish Docs?
