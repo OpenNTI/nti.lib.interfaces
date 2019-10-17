@@ -149,7 +149,7 @@ class Community extends Entity {
 
 
 	getMembersDataSource () {
-		return new PagedLinkDataSource.forLink(this[Service], this, this.getLink('members'));
+		return PagedLinkDataSource.forLink(this[Service], this, this.getLink('members'));
 	}
 
 
@@ -216,7 +216,7 @@ class Community extends Entity {
 	}
 
 	getAllActivityDataSource () {
-		return new PagedLinkDataSource.forLink(this[Service], this, this.getLink('Activity'), {sortOn: KnownActivitySorts});
+		return PagedLinkDataSource.forLink(this[Service], this, this.getLink('Activity'), {sortOn: KnownActivitySorts});
 	}
 
 	getChannelList () {
