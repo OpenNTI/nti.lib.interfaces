@@ -631,7 +631,7 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 	let value = valueIn !== None ? valueIn : clone(defaultValue);
 
 	if (fieldName in scope) {
-		const descriptor = getPropertyDescriptor(scope, fieldName) || {};
+		const descriptor = getPropertyDescriptor(scope, fieldName);
 		const {get, set} = descriptor || {};
 
 		// We only want to skip when the class has defined its own getter/setter.
