@@ -3,7 +3,7 @@ import diff from 'jest-diff'; //eslint-disable-line
 import {mixin} from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
-import Fields, {IsFieldSet, clone} from '../Fields';
+import Fields, {clone} from '../Fields';
 
 const logger = Logger.get('mixins:Fields');
 
@@ -420,7 +420,7 @@ describe('Fields Mixin', () => {
 			expect(clone(obj)).toEqual({});
 		});
 
-		test('Primative Values', () => {
+		test('Primitive Values', () => {
 			const obj = { date: new Date('2018-10-05'), number: 34, name: 'John', isTrue: true };
 			expect(clone(obj)).toEqual(obj);
 			expect(clone(obj)).not.toEqual({ date: new Date('2018-10-06'), number: 43, name: 'Jake', isTrue: false });
@@ -456,6 +456,68 @@ describe('Fields Mixin', () => {
 			const Items = [new HighLight({ fieldA: 'test 1' }), new HighLight({ fieldA: 'test 2' })];
 			const clonedFoo = clone(new Foo({ Items }));
 			expect(clonedFoo.Items).toEqual(Items);
+		});
+	});
+
+	describe ('Class getters/setters', () => {
+		
+		const value = {
+			initial: 'initial value',
+			changed: 'changed value'
+		};
+
+		const getter = jest.fn();
+		const setter = jest.fn();
+
+		beforeEach(() => getter.mockReturnValue(value.initial));
+
+		@mixin(Fields)
+		class Foo {
+			static Fields = {
+				'field1': {type: 'string'},
+				'field2': {type: 'string'},
+			}
+			constructor (data) {
+				this.initMixins(data);
+			}
+			get field1 () {
+				return getter();
+			}
+			set field1 (v) {
+				setter();
+				getter.mockReturnValue(v);
+			}
+		}
+
+		test('Preserves class getter', () => {
+			const f = new Foo({field1: 'test', field2: value.initial });
+			const {field1, field2} = f;
+			expect(getter).toHaveBeenCalled();
+			expect(field1).toEqual(value.initial);
+			expect(field2).toEqual(value.initial);
+		});
+
+		test('Preserves class setter', () => {
+			const f = new Foo({field1: 'test', field2: value.initial });
+			expect(f.field1).toEqual(value.initial);
+			expect(f.field2).toEqual(value.initial);
+
+			f.field1 = value.changed;
+			expect(setter).toHaveBeenCalled();
+			expect(f.field1).toEqual(value.changed);
+			expect(f.field2).toEqual(value.initial);
+		});
+
+		test('Refresh applies fields as expected', () => {
+			const f = new Foo({field1: 'test', field2: value.initial });
+			expect(f.field1).toEqual(value.initial);
+			expect(f.field2).toEqual(value.initial);
+
+			f.applyRefreshedData({field1: 'test1', field2: value.changed});
+
+			expect(setter).toHaveBeenCalled();
+			expect(f.field1).toEqual(value.initial);
+			expect(f.field2).toEqual(value.changed);
 		});
 	});
 
