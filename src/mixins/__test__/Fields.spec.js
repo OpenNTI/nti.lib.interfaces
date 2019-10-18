@@ -487,10 +487,11 @@ describe('Fields Mixin', () => {
 				setter();
 				getter.mockReturnValue(v);
 			}
+			static make = (data = {}) => new Foo({field1: 'test', field2: value.initial, ...data })
 		}
 
 		test('Preserves class getter', () => {
-			const f = new Foo({field1: 'test', field2: value.initial });
+			const f = Foo.make();
 			const {field1, field2} = f;
 			expect(getter).toHaveBeenCalled();
 			expect(field1).toEqual(value.initial);
@@ -498,7 +499,7 @@ describe('Fields Mixin', () => {
 		});
 
 		test('Preserves class setter', () => {
-			const f = new Foo({field1: 'test', field2: value.initial });
+			const f = Foo.make();
 			expect(f.field1).toEqual(value.initial);
 			expect(f.field2).toEqual(value.initial);
 
@@ -509,7 +510,7 @@ describe('Fields Mixin', () => {
 		});
 
 		test('Refresh applies fields as expected', () => {
-			const f = new Foo({field1: 'test', field2: value.initial });
+			const f = Foo.make();
 			expect(f.field1).toEqual(value.initial);
 			expect(f.field2).toEqual(value.initial);
 
