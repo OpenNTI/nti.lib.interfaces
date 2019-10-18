@@ -623,31 +623,41 @@ function applyModelField (scope, fieldName, value, declared, defaultValue) {
 	);
 }
 
-
+const FieldsFn = Symbol('is fields fn');
+const makeFieldsFn = fn => (fn[FieldsFn] = true, fn);
+const isNonFieldsFn = fn => fn && !fn[FieldsFn];
 
 function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 	let value = valueIn !== None ? valueIn : clone(defaultValue);
 
 	if (fieldName in scope) {
 		const descriptor = getPropertyDescriptor(scope, fieldName) || {};
-		const hasGetter = descriptor.get != null;
-		const hasSetter = descriptor.set != null;
-		if (hasGetter || hasSetter) {
+		const {get, set} = descriptor || {};
+
+		// We only want to skip when the class has defined its own getter/setter.
+		// When applyField is invoked as part of a refresh, the Fields getter/setter
+		// functions (assigned below) will already be present but we still want to proceed. 
+		const hasOwnGetter = isNonFieldsFn(get);
+		const hasOwnSetter = isNonFieldsFn(set);
+		if (hasOwnGetter || hasOwnSetter) {
 			return;
 		}
-		if (descriptor) {
+
+		// 'get' will be the Fields getter here. Checking it to just
+		// avoid logger noise when overwriting our own descriptor
+		if (descriptor && !get) {
 			logger.warn(`Overwiting existing field '${fieldName}' in '${scope.MimeType || scope}'`);
 		}
 	}
 
 	delete scope[fieldName];
 
-	const setter =  x => value = x;
-	const getter = () => value;
-	const warningGetter = () => (
+	const setter =  makeFieldsFn(x => value = x);
+	const getter = makeFieldsFn(() => value);
+	const warningGetter = makeFieldsFn(() => (
 		logger.warn('Undeclared Access of %s on %o', fieldName, scope.MimeType || scope),
 		value
-	);
+	));
 
 	const get = (declared || fieldName === 'MimeType') //MimeType should always be treated as declared.
 		? getter
