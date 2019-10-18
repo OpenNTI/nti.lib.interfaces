@@ -646,7 +646,7 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 		// 'get' will be the Fields getter here. Checking it to just
 		// avoid logger noise when overwriting our own descriptor
 		if (descriptor && !get) {
-			logger.warn(`Overwiting existing field '${fieldName}' in '${scope.MimeType || scope}'`);
+			logger.warn(`Overwiting existing field '${fieldName}' in %o'`, scope.MimeType || scope);
 		}
 	}
 
