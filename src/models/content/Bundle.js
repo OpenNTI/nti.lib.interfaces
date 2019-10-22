@@ -174,7 +174,7 @@ class Bundle extends Base {
 
 		return Promise.all(this.ContentPackages.map(p =>p.getTableOfContents()))
 
-			.then(tables => new TablesOfContents.fromIterable(tables, this[Service], this));
+			.then(tables => TablesOfContents.fromIterable(tables, this[Service], this));
 	}
 
 
