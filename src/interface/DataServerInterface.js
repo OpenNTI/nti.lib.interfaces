@@ -120,6 +120,7 @@ export default class DataServerInterface extends EventEmitter {
 		const start = Date.now();
 		const url = URL.resolve(this.config.server, options.url || '');
 
+		delete options.url; //make sure we only give fetch() one url...
 
 		const {data, blob} = options;
 		const {accept} = options.headers || {};
@@ -279,7 +280,7 @@ export default class DataServerInterface extends EventEmitter {
 			};
 
 			fetch(url, init)
-				.catch(() => Promise.reject({Message: 'Request Failed.', statusCode: 0}))
+				.catch(e => Promise.reject({Message: 'Request Failed.', statusCode: 0, error: e}))
 				.then(checkStatus)
 
 				//Parsing response
