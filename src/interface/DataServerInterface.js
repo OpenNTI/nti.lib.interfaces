@@ -474,6 +474,7 @@ export default class DataServerInterface extends EventEmitter {
 	ping (username, context) {
 		if ((arguments.length === 1 && typeof username === 'object')
 		||  (arguments.length === 2 && typeof context === 'string')) {
+			console.trace('Is this still needed?');
 			//swap values for api back-compat
 			[username, context] = [context, username];
 		}
@@ -483,13 +484,12 @@ export default class DataServerInterface extends EventEmitter {
 		return this.get('logon.ping', context)//ping
 			//pong
 			.then(pong => {
+				if (context && pong && pong.Site) {
+					context[SiteName] = pong.Site;
+				}
 
 				if (!getLink(pong, HANDSHAKE)) {
 					return Promise.reject('No handshake present');
-				}
-
-				if (context && pong && pong.Site) {
-					context[SiteName] = pong.Site;
 				}
 
 				if (!username) {
