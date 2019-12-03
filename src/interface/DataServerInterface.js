@@ -471,7 +471,7 @@ export default class DataServerInterface extends EventEmitter {
 	}
 
 
-	ping (username, context) {
+	async ping (username, context) {
 		if ((arguments.length === 1 && typeof username === 'object')
 		||  (arguments.length === 2 && typeof context === 'string')) {
 			console.trace('Is this still needed?');
@@ -481,58 +481,55 @@ export default class DataServerInterface extends EventEmitter {
 
 		username = username || (context && context.cookies && context.cookies.username);
 
-		return this.get('logon.ping', context)//ping
-			//pong
-			.then(pong => {
-				if (context && pong && pong.Site) {
-					context[SiteName] = pong.Site;
-				}
+		const pong = await this.get('logon.ping', context);
 
-				if (!getLink(pong, HANDSHAKE)) {
-					return Promise.reject('No handshake present');
-				}
+		if (context && pong && pong.Site) {
+			// eslint-disable-next-line require-atomic-updates
+			context[SiteName] = pong.Site;
+		}
 
-				if (!username) {
-					return !getLink(pong, CONTINUE)
-						//Not logged in... we need the urls
-						? {
-							pong,
-							links: getLinks(pong).map(x => x.rel),
-							getLink: (...rel) => getLink(pong, ...rel),
-							hasLink: (rel) => !!getLink(pong, rel)
-						}
-						//There is a continue link, but we need our username to handshake...
-						: this.handshake(pong, (username = pong.AuthenticatedUsername), context);
-				}
+		if (!getLink(pong, HANDSHAKE)) {
+			return Promise.reject('No handshake present');
+		}
 
-				return this.handshake(pong, username, context);
+		if (!username) {
+			//Not logged in... we need the urls
+			if (!getLink(pong, CONTINUE)) {
+				return {
+					pong,
+					links: getLinks(pong).map(x => x.rel),
+					getLink: (...rel) => getLink(pong, ...rel),
+					hasLink: (rel) => !!getLink(pong, rel)
+				};
+			}
 
-			});
+			//There is a continue link, but we need our username to handshake...
+			username = pong.AuthenticatedUsername;
+		}
+
+		return this.handshake(pong, username, context);
 	}
 
 
-	handshake (pong, username, context) {
+	async handshake (pong, username, context) {
 		const data = !username ? {} : {username};
-		return this.post(getLink(pong, HANDSHAKE), {[AsFormSubmission]: true, ...data}, context)
-			.then(handshake => {
+		const handshake = await this.post(getLink(pong, HANDSHAKE), {[AsFormSubmission]: true, ...data}, context);
+		const result = {
+			pong,
+			handshake,
+			links: [...(new Set([
+				...getLinks(pong).map(x => x.rel),
+				...getLinks(handshake).map(x => x.rel)
+			]))],
+			getLink: (...rel) => getLink(handshake, ...rel) || getLink(pong, ...rel),
+			hasLink: (rel) => !!(getLink(handshake, rel) || getLink(pong, rel))
+		};
 
-				const result = {
-					pong,
-					handshake,
-					links: [...(new Set([
-						...getLinks(pong).map(x => x.rel),
-						...getLinks(handshake).map(x => x.rel)
-					]))],
-					getLink: (...rel) => getLink(handshake, ...rel) || getLink(pong, ...rel),
-					hasLink: (rel) => !!(getLink(handshake, rel) || getLink(pong, rel))
-				};
-
-				if (!result.getLink(CONTINUE)) {
-					result.reason = 'Not authenticated, no continue after handshake.';
-					return Promise.reject(result);
-				}
-				return result;
-			});
+		if (!result.getLink(CONTINUE)) {
+			result.reason = 'Not authenticated, no continue after handshake.';
+			return Promise.reject(result);
+		}
+		return result;
 	}
 
 
