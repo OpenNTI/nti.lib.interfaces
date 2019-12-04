@@ -534,70 +534,64 @@ export default class DataServerInterface extends EventEmitter {
 	}
 
 
-	deleteTOS (context) {
-		return this.ping(context)
-			.then(result => {
-				let link = result.getLink(TOS_NOT_ACCEPTED);
-				if (link) {
-					return this.delete(link, context);
-				}
-				//wut?
-				return 'initial_tos_page link not present.';
-			});
+	async deleteTOS (context) {
+		const pong = await this.ping(context);
+		const link = pong.getLink(TOS_NOT_ACCEPTED);
+
+		if (!link) {
+			//wut? - This should throw
+			return 'initial_tos_page link not present.';
+		}
+
+		return this.delete(link, context);
 	}
 
 
-	recoverUsername (email, context) {
-		return this.ping(context)
-			.then(result =>
+	async recoverUsername (email, context) {
+		const data = {
+			[AsFormSubmission]: true,
+			email
+		};
 
-				this.post(result.getLink('logon.forgot.username'), {
-					[AsFormSubmission]: true,
-					email
-				}, context)
-
-			);
+		return this._pongPost('logon.forgot.username', data, context);
 	}
 
 
-	recoverPassword (email, username, returnURL, context) {
-		return this.ping(context)
-			.then(result =>
+	async recoverPassword (email, username, returnURL, context) {
+		const data = {
+			[AsFormSubmission]: true,
+			email, username,
+			success: returnURL
+		};
 
-				this.post(result.getLink('logon.forgot.passcode'), {
-					[AsFormSubmission]: true,
-					email, username,
-					success: returnURL
-				}, context)
-
-			);
+		return this._pongPost('logon.forgot.passcode', data, context);
 	}
 
 
-	resetPassword (username, password, id, context) {
-		return this.ping(context)
-			.then(result =>
-				this.post(result.getLink('logon.reset.passcode'), {
-					[AsFormSubmission]: true,
-					id, username, password
-				}, context)
-			);
+	async resetPassword (username, password, id, context) {
+		const data = {
+			[AsFormSubmission]: true,
+			id,
+			username,
+			password
+		};
+
+		return this._pongPost('logon.reset.passcode', data, context);
 	}
 
 
-	preflightAccountCreate (fields, context) {
-		return this.ping(context)
-			.then(result =>
-				this.post(result.getLink('account.preflight.create'), fields, context)
-			);
+	async preflightAccountCreate (fields, context) {
+		return this._pongPost('account.preflight.create', fields, context);
 	}
 
 
-	createAccount (fields, context) {
-		return this.ping(context)
-			.then(result =>
-				this.post(result.getLink('account.create'), fields, context)
-			);
+	async createAccount (fields, context) {
+		return this._pongPost('account.create', fields, context);
 	}
 
+
+	async _pongPost (link, data, context) {
+		const pong = await this.ping(context);
+		return this.post(pong.getLink(link), data, context);
+	}
 }
