@@ -41,7 +41,7 @@ const LOGOUT_URL = '%%logout-url%%';
 
 const AppUser = Symbol('LoggedInUser');
 const Contacts = Symbol('Contacts');
-const Communities = Symbol('Communities');
+// const Communities = Symbol('Communities');
 const Groups = Symbol('Groups');
 const Lists = Symbol('Lists');
 const RequestEntityResolve = Symbol('RequestEntityResolve');

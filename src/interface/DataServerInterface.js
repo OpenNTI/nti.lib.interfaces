@@ -474,6 +474,7 @@ export default class DataServerInterface extends EventEmitter {
 	async ping (username, context) {
 		if ((arguments.length === 1 && typeof username === 'object')
 		||  (arguments.length === 2 && typeof context === 'string')) {
+			// eslint-disable-next-line no-console
 			console.trace('Is this still needed?');
 			//swap values for api back-compat
 			[username, context] = [context, username];
