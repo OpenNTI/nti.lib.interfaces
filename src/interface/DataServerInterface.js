@@ -484,10 +484,13 @@ export default class DataServerInterface extends EventEmitter {
 
 		const pong = await this.get('logon.ping', context);
 
-		if (context && pong && pong.Site) {
+		if (context) {
+			// eslint-disable-next-line require-atomic-updates
+			context.pong = pong;
 			// eslint-disable-next-line require-atomic-updates
 			context[SiteName] = pong.Site;
 		}
+
 
 		if (!getLink(pong, HANDSHAKE)) {
 			return Promise.reject('No handshake present');
