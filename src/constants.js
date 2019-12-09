@@ -6,7 +6,6 @@ export const Context = Symbol.for('Context');
 
 export const Parser = Symbol('Parser');
 
-export const SiteName = Symbol.for('nti:site-name');
 export const ServiceStash = Symbol.for('nti:service');
 
 export const Progress = Symbol.for('Progress');

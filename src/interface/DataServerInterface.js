@@ -14,7 +14,6 @@ import { getTimezone } from '../utils/timezone';
 import { attach as attachPendingQueue } from '../mixins/Pendability';
 import Service from '../stores/Service';
 import {
-	SiteName,
 	REQUEST_CONFLICT_EVENT,
 	REQUEST_ERROR_EVENT,
 	TOS_NOT_ACCEPTED
@@ -482,8 +481,6 @@ export default class DataServerInterface extends EventEmitter {
 		if (context) {
 			// eslint-disable-next-line require-atomic-updates
 			context.pong = pong;
-			// eslint-disable-next-line require-atomic-updates
-			context[SiteName] = pong.Site;
 		}
 
 

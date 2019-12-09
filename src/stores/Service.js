@@ -26,7 +26,6 @@ import {
 	Context,
 	Server,
 	Service,
-	SiteName
 } from '../constants';
 
 import ContactsStore from './Contacts';
@@ -192,7 +191,7 @@ class ServiceDocument extends EventEmitter {
 
 
 	getSiteName () {
-		return this.getConfig().siteName || (this[Context] || {})[SiteName];
+		return this.getConfig().siteName || this[Context]?.pong?.Site;
 	}
 
 
