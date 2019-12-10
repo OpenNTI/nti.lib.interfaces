@@ -392,7 +392,7 @@ export default class DataServerInterface extends EventEmitter {
 				? Promise.resolve(new Service(data, this, context))
 
 				//No... okay... get the data, but first we have to perform a ping/handshake...
-				: this.ping(context)
+				: this.ping(void 0, context)
 
 					// now we can get the url of the service doc...
 					.then(result =>
@@ -530,7 +530,7 @@ export default class DataServerInterface extends EventEmitter {
 
 
 	async deleteTOS (context) {
-		const pong = await this.ping(context);
+		const pong = await this.ping(void 0, context);
 		const link = pong.getLink(TOS_NOT_ACCEPTED);
 
 		if (!link) {
@@ -586,7 +586,7 @@ export default class DataServerInterface extends EventEmitter {
 
 
 	async _pongPost (link, data, context) {
-		const pong = await this.ping(context);
+		const pong = await this.ping(void 0, context);
 		return this.post(pong.getLink(link), data, context);
 	}
 }
