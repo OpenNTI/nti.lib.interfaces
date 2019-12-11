@@ -2,7 +2,7 @@
 import EventEmitter from 'events';
 
 import Logger from '@nti/util-logger';
-import { chain, FileType, URL } from '@nti/lib-commons';
+import { FileType, URL } from '@nti/lib-commons';
 
 import DataCache from '../utils/datacache';
 import parseBody from '../utils/attempt-json-parse';
@@ -115,6 +115,8 @@ export default class DataServerInterface extends EventEmitter {
 			options = {url: options};
 		}
 
+		const controller = new AbortController();
+		const abort = () => controller.abort();
 		const id = this.nextRequestId++;
 		const start = Date.now();
 		const url = URL.resolve(this.config.server, options.url || '');
@@ -128,6 +130,7 @@ export default class DataServerInterface extends EventEmitter {
 		const init = {
 			credentials: 'same-origin',
 			method: data ? 'POST' : 'GET',
+			signal: controller.signal,
 			...options
 		};
 
@@ -182,11 +185,8 @@ export default class DataServerInterface extends EventEmitter {
 			}
 		}
 
-		let abortMethod; //defined inside the promise
-		const result = new Promise((fulfillRequest, rejectRequest) => {
-			let abortFlag = false;
-			abortMethod = ()=> { abortFlag = true; rejectRequest('aborted'); };
 
+		const result = new Promise((fulfillRequest, rejectRequest) => {
 			logger.debug('REQUEST %d (send) -> %s %s', id, init.method, url);
 			// logger.debug('REQUEST %d HEADERS: %s %s:\n%o', id, init.method, url, init.headers);
 
@@ -196,97 +196,28 @@ export default class DataServerInterface extends EventEmitter {
 				}
 
 				if (context.on) {
-					const abort = ()=> abortMethod();
-					const clean = event => context.removeListener(event, abort);
-					const n = ()=> (clean('aborted'), clean('close'));
-
-					fulfillRequest = chain(fulfillRequest, n);
-					rejectRequest = chain(rejectRequest, n);
-
 					context.on('aborted', abort);
 					context.on('close', abort);
 				}
 			}
 
-			const maybeFulfill = (...args) => !abortFlag && fulfillRequest(...args);
-			const maybeReject = (...args) => !abortFlag && rejectRequest(...args);
-
-			const checkStatus = (response) => {
-				logger.debug('REQUEST %d (recv) <- %s %s %s %dms', id, init.method, url, response.statusText, Date.now() - start);
-				if (response.ok) {
-					return response;
-				} else {
-
-					const error = Object.assign(new Error(response.statusText), {
-						Message: response.statusText,
-						response,
-						statusCode: response.status
-					});
-
-					return response.json()
-						.then(json => {
-							json.Message = json.Message || json.message;
-
-							Object.assign(error, json);
-
-							const isConflict = response.status === 409;
-
-							if (isConflict) {
-								error.confirm = (config = {}) => {
-									const {rel = 'confirm', data:conflictData} = config;
-									const link = getLink(json, rel, true);
-									const {method, href} = link;
-									const newData = method === 'GET' ? null : conflictData || data;
-
-									if (!href) {
-										return Promise.reject(error);
-									}
-
-									return this[Request]({url: href, method: method || init.method, data: newData}, context);
-								};
-
-								let confirm;
-								let reject;
-
-								const waitOn = new Promise((continueRequest, rejectConflict) => {
-									confirm = (...args) => error.confirm(...args).then(continueRequest, rejectConflict);
-									reject = () => rejectConflict(Object.assign(error, {resolved: true}));
-								});
-
-
-								// We're expecting a top-level App-Wide component to listen and handle this event.
-								// Allowing for a Centralized Conflict Resolver.  If this is not handled, we will
-								// continue to reject (leaving a confirm method).
-								if (this.emit(REQUEST_CONFLICT_EVENT, {...json, confirm, reject})) {
-									//Reject with an object that has a key 'skip' which is our confirm Promise
-									//...so we can skip the parsing and body handling below. (the confirm will
-									// do that work for itself)
-									return Promise.reject({skip: waitOn});
-								}
-							}
-
-							return Promise.reject(error);
-						})
-						.catch(reason => (
-							//Let the world know there was a request failure...and let them potentially display/act on it
-							!reason.skip && this.emit(REQUEST_ERROR_EVENT, error),
-
-							// If this is our skip object, pass it on. Otherwise,
-							// its an unknown error and just reject with the error above.
-							Promise.reject(reason.skip ? reason : error)
-						));
-				}
-			};
+			const maybeFulfill = (...args) => !controller.aborted && fulfillRequest(...args);
+			const maybeReject = (...args) => !controller.aborted && rejectRequest(...args);
 
 			fetch(url, init)
+				// Normalize request failures
 				.catch(e => Promise.reject({Message: 'Request Failed.', statusCode: 0, error: e}))
-				.then(checkStatus)
+
+				// Check status
+				.then(this.__checkRequestStatus.bind(this, id, url, init, data, start, context))
 
 				//Parsing response
-				.then(response => abortFlag
-					? Promise.reject('Aborted')
-					: blob ? Promise.reject({skip: response.blob()})
-						: response.text()//we don't use .json() because we need to fallback if it doesn't parse.
+				.then(response =>
+					blob //caller wants a blob
+						? Promise.reject({skip: response.blob()})
+
+						//we don't use .json() because we need to fallback if it doesn't parse.
+						: response.text()
 							.then(parseBody)
 							.then(body => ({response, body})))
 
@@ -323,12 +254,80 @@ export default class DataServerInterface extends EventEmitter {
 				.then(maybeFulfill, maybeReject);
 		});
 
-		result.abort = abortMethod || (()=> logger.warn('REQUEST %d: Attempting to abort request, but missing abort() method.', id));
+		result.abort = () => controller.abort();
+		result.id = id;
 
 		if (context) {
 			attachPendingQueue(context).addToPending(result);
 		}
 		return result;
+	}
+
+	async __checkRequestStatus (id, url, init, data, start, context, response) {
+		logger.debug('REQUEST %d (recv) <- %s %s %s %dms', id, init.method, url, response.statusText, Date.now() - start);
+		if (response.ok) {
+			return response;
+		}
+
+		const error = Object.assign(new Error(response.statusText), {
+			Message: response.statusText,
+			response,
+			statusCode: response.status
+		});
+
+		try {
+			const json = await response.json();
+
+			json.Message = json.Message || json.message;
+
+			Object.assign(error, json);
+
+			const isConflict = response.status === 409;
+
+			if (isConflict) {
+				error.confirm = (config = {}) => {
+					const {rel = 'confirm', data:conflictData} = config;
+					const link = getLink(json, rel, true);
+					const {method, href} = link;
+					const newData = method === 'GET' ? null : conflictData || data;
+
+					if (!href) {
+						return Promise.reject(error);
+					}
+
+					return this[Request]({url: href, method: method || init.method, data: newData}, context);
+				};
+
+				let confirm;
+				let reject;
+
+				const waitOn = new Promise((continueRequest, rejectConflict) => {
+					confirm = (...args) => error.confirm(...args).then(continueRequest, rejectConflict);
+					reject = () => rejectConflict(Object.assign(error, {resolved: true}));
+				});
+
+
+				// We're expecting a top-level App-Wide component to listen and handle this event.
+				// Allowing for a Centralized Conflict Resolver.  If this is not handled, we will
+				// continue to reject (leaving a confirm method).
+				if (this.emit(REQUEST_CONFLICT_EVENT, {...json, confirm, reject})) {
+					//Reject with an object that has a key 'skip' which is our confirm Promise
+					//...so we can skip the parsing and body handling below. (the confirm will
+					// do that work for itself)
+					return Promise.reject({skip: waitOn});
+				}
+			}
+
+			throw error;
+		}
+		catch(reason) {
+			//Let the world know there was a request failure...and let them potentially display/act on it
+			!reason.skip && this.emit(REQUEST_ERROR_EVENT, error);
+
+			// If this is our skip object, pass it on. Otherwise,
+			// its an unknown error and just reject with the error above.
+			throw (reason.skip ? reason : error);
+		}
 	}
 
 
