@@ -475,15 +475,10 @@ export default class DataServerInterface extends EventEmitter {
 	async ping (username, context) {
 		username = username || context?.cookies?.username;
 
-		const pong = /*context?.pong || */await this.get('logon.ping', context);
+		const pong = context?.pong || await this.get('logon.ping', context);
 
-		if (context) {
-			if (context.pong && context.pong.Site !== pong.Site) {
-				throw new Error(`Context Reuse!!\nContext already has a pong and its Site differs from the pong we just recieved. (${context.pong.Site} != ${pong.Site})`);
-			}
-			// eslint-disable-next-line require-atomic-updates
-			context.pong = pong;
-		}
+		// eslint-disable-next-line require-atomic-updates
+		if (context) { context.pong = pong; }
 
 
 		if (!getLink(pong, HANDSHAKE)) {
