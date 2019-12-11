@@ -338,26 +338,26 @@ export default class DataServerInterface extends EventEmitter {
 
 	post (url, data, context) {
 		return this[Request]({
-			url: url,
 			method: 'POST',
-			data: data
+			url,
+			data
 		}, context);
 	}
 
 
 	put (url, data, context) {
 		return this[Request]({
-			url: url,
 			method: 'PUT',
-			data: data
+			url,
+			data
 		}, context);
 	}
 
 
 	delete (url, context) {
 		return this[Request]({
-			url: url,
-			method: 'DELETE'
+			method: 'DELETE',
+			url,
 		}, context);
 	}
 
