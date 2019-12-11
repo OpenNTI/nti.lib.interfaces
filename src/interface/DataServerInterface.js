@@ -31,7 +31,6 @@ const logger = Logger.get('DataServerInterface');
 const {btoa} = global;
 
 const Request = Symbol('Request Adaptor');
-const AsFormSubmission = Symbol('');
 
 
 export default class DataServerInterface extends EventEmitter {
@@ -173,13 +172,11 @@ export default class DataServerInterface extends EventEmitter {
 							|| (typeof URLSearchParams !== 'undefined' && data instanceof URLSearchParams)
 							|| typeof data === 'string';
 
-			init.body = (data[AsFormSubmission])
-				? encodeFormData(data)
-				: useDataRaw
-					? data
-					: JSON.stringify(data);
+			init.body = useDataRaw
+				? data
+				: JSON.stringify(data);
 
-			if (!useDataRaw && !data[AsFormSubmission]) {
+			if (!useDataRaw) {
 				init.headers['Content-Type'] = 'application/json';
 			}
 		}
@@ -506,7 +503,7 @@ export default class DataServerInterface extends EventEmitter {
 
 	async handshake (pong, username, context) {
 		const data = !username ? {} : {username};
-		const handshake = await this.post(getLink(pong, HANDSHAKE), {[AsFormSubmission]: true, ...data}, context);
+		const handshake = await this.post(getLink(pong, HANDSHAKE), encodeFormData(data), context);
 		const result = {
 			pong,
 			handshake,
@@ -540,33 +537,30 @@ export default class DataServerInterface extends EventEmitter {
 
 
 	async recoverUsername (email, context) {
-		const data = {
-			[AsFormSubmission]: true,
+		const data = encodeFormData({
 			email
-		};
+		});
 
 		return this._pongPost('logon.forgot.username', data, context);
 	}
 
 
 	async recoverPassword (email, username, returnURL, context) {
-		const data = {
-			[AsFormSubmission]: true,
+		const data = encodeFormData({
 			email, username,
 			success: returnURL
-		};
+		});
 
 		return this._pongPost('logon.forgot.passcode', data, context);
 	}
 
 
 	async resetPassword (username, password, id, context) {
-		const data = {
-			[AsFormSubmission]: true,
+		const data = encodeFormData({
 			id,
 			username,
 			password
-		};
+		});
 
 		return this._pongPost('logon.reset.passcode', data, context);
 	}
