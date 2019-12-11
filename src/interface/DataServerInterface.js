@@ -110,11 +110,12 @@ export default class DataServerInterface extends EventEmitter {
 	 * @private
 	 */
 	[Request] (options, context) {
-		const id = this.nextRequestId++;
-		//covers more than just undefined. (false, 0, null, and undefined.)
 		//Make sure options is the normalize shape.
-		options = (options && (typeof options === 'object' ? options : {url: options})) || {};
+		if (typeof options === 'string') {
+			options = {url: options};
+		}
 
+		const id = this.nextRequestId++;
 		const start = Date.now();
 		const url = URL.resolve(this.config.server, options.url || '');
 
