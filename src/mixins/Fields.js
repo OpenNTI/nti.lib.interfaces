@@ -353,14 +353,17 @@ function getFields (obj, data) {
 
 function getterWarning (scope, name, originalName) {
 	function warn () {
-		let m = 'There is a new accessor to use instead.';
+		if (!scope[SKIP_WARN]) {
+			let m = 'There is a new accessor to use instead.';
 
-		if (typeof name === 'string') {
-			m = `Use ${name} instead.`;
+			if (typeof name === 'string') {
+				m = `Use ${name} instead.`;
+			}
+
+			m = new Error(`Access to ${originalName} is deprecated. ${m}`);
+			logger.error(m.stack || m.message || m);
 		}
 
-		m = new Error(`Access to ${originalName} is deprecated. ${m}`);
-		logger.error(m.stack || m.message || m);
 		return scope[name];
 	}
 
