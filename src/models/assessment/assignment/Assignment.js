@@ -223,7 +223,7 @@ class Assignment extends Base {
 			parts: (this.parts || []).map(p => p.getSubmission())
 		};
 
-		const submitTo = resolveSubmitTo(this);
+		const submitTo = this.getLink('PracticeSubmission') || resolveSubmitTo(this);
 		const submission = new AssignmentSubmission(this[Service], this, data, submitTo);
 
 		submission.parts.forEach(s => s.reparent(submission));

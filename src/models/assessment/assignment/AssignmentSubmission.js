@@ -4,6 +4,12 @@ import Submission from '../../../mixins/Submission';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
+const RELS = {
+	ASSIGNMENT: 'Assignment',
+	ASSIGNMENT_HISTORY_ITEM: 'AssignmentHistoryItem',
+	HISTORY: 'History',
+};
+
 export default
 @model
 @mixin(Submission)
@@ -38,7 +44,7 @@ class AssignmentSubmission extends Base {
 	 * @return {Promise} The history.
 	 */
 	getHistory () {
-		return this.fetchLinkParsed('AssignmentHistoryItem');
+		return this.fetchLinkParsed(RELS.ASSIGNMENT_HISTORY_ITEM);
 	}
 
 
@@ -79,11 +85,13 @@ class AssignmentSubmission extends Base {
 		}
 
 		await p.refresh();
-		const history = await p.fetchLinkParsed('History');
-
-		if(history && history.MetadataAttemptItem && history.MetadataAttemptItem.hasLink('Assignment')) {
-			const newAssignmentData = await history.MetadataAttemptItem.fetchLink('Assignment');
-			await p.refresh(newAssignmentData);
+		if (p.hasLink(RELS.HISTORY)) {
+			const history = await p.fetchLinkParsed(RELS.HISTORY);
+	
+			if(history && history.MetadataAttemptItem && history.MetadataAttemptItem.hasLink(RELS.ASSIGNMENT)) {
+				const newAssignmentData = await history.MetadataAttemptItem.fetchLink(RELS.ASSIGNMENT);
+				await p.refresh(newAssignmentData);
+			}
 		}
 
 		p.onChange('submit-state');
