@@ -20,8 +20,7 @@ class File extends Part {
 		this.allowed_mime_types || ['*/*']
 	)
 
-
-	isFileAcceptable (file) {
+	validateFile (file) {
 		const r = this.reasons = [];
 
 		if (!this.fileSetDescriptor.matches(file)) {
@@ -32,9 +31,12 @@ class File extends Part {
 			r.push('The file is too large.');
 		}
 
-		return r.length === 0;
+		return r;
 	}
 
+	isFileAcceptable (file) {
+		return this.validateFile(file).length === 0;
+	}
 
 	checkFileSize (size) {
 		let max = this.max_file_size || Infinity;
