@@ -1,3 +1,5 @@
+import path from 'path';
+
 import {FileType} from '@nti/lib-commons';
 
 import {model, COMMON_PREFIX} from '../../Registry';
@@ -24,7 +26,10 @@ class File extends Part {
 		const r = this.reasons = [];
 
 		if (!this.fileSetDescriptor.matches(file)) {
-			r.push('The file type is not allowed.');
+			const extension = path.extname((file || {}).name || '');
+			const parens = s => s ? `(${s})` : s;
+			const typeString = parens([extension, (file || {}).type].filter(Boolean).join(', '));
+			r.push(`The file type ${typeString} is not allowed.`);
 		}
 
 		if (!this.checkFileSize(file.size)) {
