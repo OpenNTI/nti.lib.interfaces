@@ -285,7 +285,7 @@ class Assignment extends Base {
 	}
 
 
-	postSavePoint (data) {
+	postSavePoint (data, parseResponse) {
 		if (!this.hasLink('Savepoint')) {
 			return Promise.resolve({});
 		}
@@ -295,7 +295,7 @@ class Assignment extends Base {
 			last.abort();
 		}
 
-		let result = this[ActiveSavePointPost] = this.postToLink('Savepoint', data);
+		let result = this[ActiveSavePointPost] = this.postToLink('Savepoint', data, parseResponse);
 
 		result.catch(()=> {}).then(()=> {
 			if (result === this[ActiveSavePointPost]) {
