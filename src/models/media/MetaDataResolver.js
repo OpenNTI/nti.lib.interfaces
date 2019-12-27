@@ -3,11 +3,13 @@ import {Service} from '../../constants';
 import Vimeo from './MetaDataResolverForVimeo';
 import YouTube from './MetaDataResolverForYouTube';
 import Kaltura from './MetaDataResolverForKaltura';
+import Wistia from './MetaDataResolverForWistia';
 
 const services = {
 	vimeo: Vimeo,
 	youtube: YouTube,
-	kaltura: Kaltura
+	kaltura: Kaltura,
+	wistia: Wistia
 };
 
 const resolve = () => Promise.reject('No resolver for service');
