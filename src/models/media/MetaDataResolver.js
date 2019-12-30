@@ -17,6 +17,8 @@ const resolveCanAccess = () => Promise.reject('No resolve access for service');
 
 export default class MetaDataResolver {
 
+	static services = services;
+
 	static getProvider (source) {
 		return services[source.service] || { resolve, resolveCanAccess };
 	}
