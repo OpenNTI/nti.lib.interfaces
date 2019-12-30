@@ -8,10 +8,13 @@ import {getMetaDataEntryPoint} from '../MetaDataResolverForWistia';
  */
 
 const WistiaRegex = /https?:\/\/(.+)?(wistia\.com|wi\.st)\/.*/;
+const IdRegexs = [
+	(href) => {
+		const matches = href.match(/https?:\/\/(.+)?(wistia\.com|wi\.st)\/embed\/iframe\/(.*)/);
 
-function getIDFromIframe (html) {
-
-}
+		return matches[3];
+	}
+];
 
 export default class WistiaProvider {
 	static service = 'wistia';
@@ -21,7 +24,11 @@ export default class WistiaProvider {
 	}
 
 	static getID (href) {
-		return null;
+		for (let idRegex of IdRegexs) {
+			const id = idRegex(href);
+
+			if (id) { return id; }
+		}
 	}
 
 	static resolveID (service, url) {
@@ -32,15 +39,15 @@ export default class WistiaProvider {
 				if (!resp.ok) {
 					throw new Error(`Invalid: ${resp.statusCode}: ${resp.statusText}`);
 				}
-
-				return resp.json();
 			})
-			.then((data) => {
-				return getIDFromIframe(data.html);
+			.then(() => {
+				return this.getID(url);
 			});
 	}
 
 	static getCanonicalURL (uri, videoId) {
+		const id = videoId || this.getID(uri);
 
+		return `https://fast.wisita.net/embed/iframe/${id}`;
 	}
 }
