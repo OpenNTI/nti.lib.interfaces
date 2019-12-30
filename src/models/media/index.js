@@ -8,3 +8,4 @@ export Timeline from './Timeline';
 export Transcript from './Transcript';
 export Video from './Video';
 export VideoRef from './VideoRef';
+export * as Providers from './providers';

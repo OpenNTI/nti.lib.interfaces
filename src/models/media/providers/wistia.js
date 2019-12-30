@@ -48,6 +48,6 @@ export default class WistiaProvider {
 	static getCanonicalURL (uri, videoId) {
 		const id = videoId || this.getID(uri);
 
-		return `https://fast.wisita.net/embed/iframe/${id}`;
+		return `https://fast.wistia.com/embed/iframe/${id}`;
 	}
 }
