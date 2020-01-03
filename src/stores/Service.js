@@ -145,8 +145,6 @@ class ServiceDocument extends EventEmitter {
 		else {
 			this.addToPending(
 				this.getAppUser().then(u => {
-					this[AppUser] = u;
-
 					//Not all apps that use this library are a Platform App... for those apps that do not need contacts,
 					//skip loading them.
 					if (server.config.SKIP_FRIENDSLISTS) {
@@ -551,17 +549,53 @@ class ServiceDocument extends EventEmitter {
 	}
 
 
-	getAppUser () {
+	async getAppUser () {
 		if (this[AppUser]) {
-			return Promise.resolve(this[AppUser]);
+			return this[AppUser];
 		}
 
-		const inflate = data => parse(this, this, data);
-		const url = this.getResolveAppUserURL();
 
-		return url
-			? this.get({url}).then(inflate)
-			: Promise.reject('Not logged in');
+		// We don't want to allow multiple calls to getAppUser to trigger several requests,
+		// so we need to collapse them into one. This will make a promise that we can resolve
+		// when we have the user so that calls between the cached state above and the in-flight
+		// state don't create duplicates
+		const RE_ENTRY = 'Re-entry Guard for getAppUser()';
+		if (this[RE_ENTRY]) {
+			return this[RE_ENTRY];
+		}
+
+
+		let resolve, reject;
+		const nonce = new Promise((a, b) => (resolve = a, reject = b));
+
+		this[RE_ENTRY] = nonce;
+
+		const url = this.getResolveAppUserURL();
+		if (!url) {
+			return Promise.reject('Not logged in');
+		}
+
+		try {
+			const data = await this.get({url});
+			const user = await parse(this, this, data);
+
+			this[AppUser] = user;
+
+			// node will not have dispatchEvent nor CustomEvent defeined globally.
+			if (typeof dispatchEvent !== 'undefined' && typeof CustomEvent !== 'undefined') {
+				dispatchEvent(new CustomEvent('user-set', { detail: user }));
+			}
+
+			resolve(user);
+			return user;
+		} catch (e) {
+			reject(e);
+			throw e;
+		} finally {
+			if (this[RE_ENTRY] === nonce) {
+				delete this[RE_ENTRY];
+			}
+		}
 	}
 
 
