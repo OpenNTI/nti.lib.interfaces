@@ -570,12 +570,13 @@ class ServiceDocument extends EventEmitter {
 
 		this[RE_ENTRY] = nonce;
 
-		const url = this.getResolveAppUserURL();
-		if (!url) {
-			return Promise.reject('Not logged in');
-		}
 
 		try {
+			const url = this.getResolveAppUserURL();
+			if (!url) {
+				throw new Error('Not logged in');
+			}
+
 			const data = await this.get({url});
 			const user = await parse(this, this, data);
 
