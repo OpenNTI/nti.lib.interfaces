@@ -24,7 +24,8 @@ class AssignmentSubmission extends Base {
 		'assignmentId':                  { type: 'string'                    },
 		'parts':                         { type: 'model[]', defaultValue: [] },
 		'CreatorRecordedEffortDuration': { type: 'number'                    },
-		'version':                       { type: 'string'                    }
+		'version':                       { type: 'string'                    },
+		'isPracticeSubmission':          { type: 'boolean'                   }
 	}
 
 	constructor (service, parent, data, submitTo) {

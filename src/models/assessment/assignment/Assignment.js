@@ -220,7 +220,8 @@ class Assignment extends Base {
 		const data = {
 			assignmentId: this.getID(),
 			version: this.version,
-			parts: (this.parts || []).map(p => p.getSubmission())
+			parts: (this.parts || []).map(p => p.getSubmission()),
+			isPracticeSubmission: this.hasLink('PracticeSubmission')
 		};
 
 		const submitTo = this.getLink('PracticeSubmission') || resolveSubmitTo(this);
