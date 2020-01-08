@@ -287,6 +287,16 @@ class Assignment extends Base {
 
 
 	postSavePoint (data, parseResponse) {
+		if (this.hasLink('PracticeSubmission')) {
+			return Promise.resolve({
+				Submission: data,
+				getQuestions: () => data.getQuestions ? data.getQuestions() : [],
+				isSyntheticSubmission: () => false,
+				isSubmitted: () => false,
+				isPracticeSubmission: true
+			});
+		}
+
 		if (!this.hasLink('Savepoint')) {
 			return Promise.resolve({});
 		}
