@@ -1,12 +1,8 @@
-import {forward} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
-
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
 export default
 @model
-@mixin(forward(['getCompletedDate', 'isCompletable', 'hasCompleted', 'updateCompletedState', 'completedSuccessfully', 'completedUnsuccessfully'], 'ScormContentInfo'))
 class SCORMReference extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'scormcontentref'
@@ -20,4 +16,10 @@ class SCORMReference extends Base {
 		'target':           { type: 'string' },
 		'ScormContentInfo': {type: 'model' }
 	}
+
+	getCompletedDate (...args) { return this.ScormContentInfo ? this.ScormContentInfo.getCompletedDate(...args) : null; }
+	hasCompleted (...args) { return this.ScormContentInfo ? this.ScormContentInfo.hasCompleted(...args) : null; }
+	updateCompletedState (...args) { return this.ScormContentInfo ? this.ScormContentInfo.updateCompletedState(...args) : null; }
+	completedSuccessfully (...args) { return this.ScormContentInfo ? this.ScormContentInfo.completedSuccessfully(...args) : null; }
+	completedUnsuccessfully (...args) { return this.ScormContentInfo ? this.ScormContentInfo.completedUnsuccessfully(...args) : null; }
 }
