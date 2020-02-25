@@ -31,7 +31,7 @@ function generateID (name, context) {
 	//when manipulating the list by the object url (say for deletion).
 	name = (name + '').replace(/@@|@\(/ig, '');
 	name = name.replace(/[^0-9A-Z\-@+._]/ig, '');
-	return name + '-' + context.getID() + '_' + uuid();
+	return name + '-' + context.getID() + '_' + uuid.v4();
 }
 
 

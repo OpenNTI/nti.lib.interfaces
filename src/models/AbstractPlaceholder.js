@@ -47,7 +47,7 @@ export default class Placeholder extends Base {
 				value: true
 			},
 			NTIID: {
-				value: uuid()
+				value: uuid.v4()
 			},
 			BLACK_LIST_OVERRIDE: {
 				value: {Class: true}
