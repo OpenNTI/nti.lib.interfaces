@@ -41,7 +41,7 @@
     "lru-cache": "^5.1.1",
     "mime-types": "^2.1.0",
     "query-string": "^6.1.0",
-    "uuid": "^3.0.1"
+    "uuid": "^7.0.1"
   },
   "devDependencies": {
     "@nti/lib-scripts": "^2.0.0"
