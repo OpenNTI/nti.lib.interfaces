@@ -4,7 +4,7 @@ import EventEmitter from 'events';
 import Logger from '@nti/util-logger';
 import { Promises } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
-import uuid from 'uuid';
+import {v4 as uuid} from 'uuid';
 
 import {Service, DELETED} from '../constants';
 import {Mixin as Pendability} from '../mixins/Pendability';
@@ -31,7 +31,7 @@ function generateID (name, context) {
 	//when manipulating the list by the object url (say for deletion).
 	name = (name + '').replace(/@@|@\(/ig, '');
 	name = name.replace(/[^0-9A-Z\-@+._]/ig, '');
-	return name + '-' + context.getID() + '_' + uuid.v4();
+	return name + '-' + context.getID() + '_' + uuid();
 }
 
 
