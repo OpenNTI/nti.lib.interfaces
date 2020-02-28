@@ -6,6 +6,7 @@ export GetContents from './GetContents';
 export JSONValue from './JSONValue';
 export Likable from './Likable';
 export Paged from './Paged';
+export Pinnable from './Pinnable';
 export Publishable from './Publishable';
 export Submission from './Submission';
 export Threadable from './Threadable';
