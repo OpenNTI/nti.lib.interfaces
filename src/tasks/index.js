@@ -4,5 +4,5 @@ export function createTask (start) {
 	return new Task(start);
 }
 
-export createPollingTask from './polling-task';
-export createUploadTask from './upload-task';
+export { default as createPollingTask } from './polling-task';
+export { default as createUploadTask } from './upload-task';

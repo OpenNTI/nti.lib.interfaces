@@ -1,4 +1,4 @@
-export filter from './filter';
+export { default as filter } from './filter';
 export * from './find-sibling';
 export * from './find';
-export flatten from './flatten';
+export { default as flatten } from './flatten';

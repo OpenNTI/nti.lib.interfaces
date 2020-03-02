@@ -1,2 +1,2 @@
-export BaseReport from './BaseReport';
-export InstructorReport from './InstructorReport';
+export { default as BaseReport } from './BaseReport';
+export { default as InstructorReport } from './InstructorReport';

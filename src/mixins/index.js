@@ -1,15 +1,15 @@
 //Simple Mixins (only a default export)
-export AssessedAssessmentPart from './AssessedAssessmentPart';
-export CourseAndAssignmentNameResolving from './CourseAndAssignmentNameResolving';
-export Editable from './Editable';
-export GetContents from './GetContents';
-export JSONValue from './JSONValue';
-export Likable from './Likable';
-export Paged from './Paged';
-export Pinnable from './Pinnable';
-export Publishable from './Publishable';
-export Submission from './Submission';
-export Threadable from './Threadable';
+export { default as AssessedAssessmentPart } from './AssessedAssessmentPart';
+export { default as CourseAndAssignmentNameResolving } from './CourseAndAssignmentNameResolving';
+export { default as Editable } from './Editable';
+export { default as GetContents } from './GetContents';
+export { default as JSONValue } from './JSONValue';
+export { default as Likable } from './Likable';
+export { default as Paged } from './Paged';
+export { default as Pinnable } from './Pinnable';
+export { default as Publishable } from './Publishable';
+export { default as Submission } from './Submission';
+export { default as Threadable } from './Threadable';
 
 //Complex Mixins (named exports)
 export * as HasContent from './HasContent';

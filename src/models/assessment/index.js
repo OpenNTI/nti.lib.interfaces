@@ -1,19 +1,19 @@
 import Registry from '../Registry';
 
-export AssessedPart from './AssessedPart';
-export AssessedQuestion from './AssessedQuestion';
-export AssessedQuestionSet from './AssessedQuestionSet';
-export Hint from './Hint';
-export Part from './Part';
-export Question from './Question';
-export QuestionSet from './QuestionSet';
-export QuestionSetReference from './QuestionSetReference';
-export QuestionSetSubmission from './QuestionSetSubmission';
-export QuestionSubmission from './QuestionSubmission';
-export Response from './Response';
-export Solution from './Solution';
-export WordBank from './WordBank';
-export WordEntry from './WordEntry';
+export { default as AssessedPart } from './AssessedPart';
+export { default as AssessedQuestion } from './AssessedQuestion';
+export { default as AssessedQuestionSet } from './AssessedQuestionSet';
+export { default as Hint } from './Hint';
+export { default as Part } from './Part';
+export { default as Question } from './Question';
+export { default as QuestionSet } from './QuestionSet';
+export { default as QuestionSetReference } from './QuestionSetReference';
+export { default as QuestionSetSubmission } from './QuestionSetSubmission';
+export { default as QuestionSubmission } from './QuestionSubmission';
+export { default as Response } from './Response';
+export { default as Solution } from './Solution';
+export { default as WordBank } from './WordBank';
+export { default as WordEntry } from './WordEntry';
 
 export * as parts from './parts';
 export * as assignment from './assignment';

@@ -1,2 +1,2 @@
-export Families from './Families';
-export Family from './Family';
+export { default as Families } from './Families';
+export { default as Family } from './Family';

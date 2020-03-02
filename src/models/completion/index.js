@@ -1,5 +1,5 @@
-export Policy from './Policy';
-export Progress from './Progress';
-export AssignmentCompletionMetadata from './AssignmentCompletionMetadata';
-export ScormCompletionMetadata from './ScormCompletionMetadata';
-export CompletionMetadata from './CompletionMetadata';
+export { default as Policy } from './Policy';
+export { default as Progress } from './Progress';
+export { default as AssignmentCompletionMetadata } from './AssignmentCompletionMetadata';
+export { default as ScormCompletionMetadata } from './ScormCompletionMetadata';
+export { default as CompletionMetadata } from './CompletionMetadata';

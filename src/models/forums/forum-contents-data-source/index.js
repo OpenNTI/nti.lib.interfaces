@@ -1,1 +1,1 @@
-export default from './ForumContentsDataSource';
+export { default as default } from './ForumContentsDataSource';

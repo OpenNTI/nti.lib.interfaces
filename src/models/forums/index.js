@@ -1,9 +1,9 @@
-export Board from './Board';
-export Topic from './Topic';
-export Forum from './Forum';
-export Post from './Post';
-export Comment from './Comment';
-export BlogEntry from './BlogEntry';
-export Blog from './Blog';
-export UserTopicParticipationSummary from './UserTopicParticipationSummary';
-export UserTopicParticipationContext from './UserTopicParticipationContext';
+export { default as Board } from './Board';
+export { default as Topic } from './Topic';
+export { default as Forum } from './Forum';
+export { default as Post } from './Post';
+export { default as Comment } from './Comment';
+export { default as BlogEntry } from './BlogEntry';
+export { default as Blog } from './Blog';
+export { default as UserTopicParticipationSummary } from './UserTopicParticipationSummary';
+export { default as UserTopicParticipationContext } from './UserTopicParticipationContext';

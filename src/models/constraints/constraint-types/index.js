@@ -1,1 +1,1 @@
-export AssignmentCompletionConstraint from './AssignmentCompletionConstraint';
+export { default as AssignmentCompletionConstraint } from './AssignmentCompletionConstraint';

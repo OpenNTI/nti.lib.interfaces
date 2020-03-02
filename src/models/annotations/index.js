@@ -1,4 +1,4 @@
-export Highlight from './Highlight';
-export Note from './Note';
-export Redaction from './Redaction';
-export Bookmark from './Bookmark';
+export { default as Highlight } from './Highlight';
+export { default as Note } from './Note';
+export { default as Redaction } from './Redaction';
+export { default as Bookmark } from './Bookmark';

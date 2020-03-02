@@ -1,3 +1,3 @@
-export Group from './Group';
-export LessonOverview from './LessonOverview';
-export VideoRoll from './VideoRoll';
+export { default as Group } from './Group';
+export { default as LessonOverview } from './LessonOverview';
+export { default as VideoRoll } from './VideoRoll';

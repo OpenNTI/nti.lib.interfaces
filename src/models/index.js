@@ -20,11 +20,11 @@ export * as profile from './profile';
 export * as reports from './reports';
 export * as store from './store';
 
-export Base from './Base';
-export AnalyticsSession from './AnalyticsSession';
-export Change from './Change';
-export Workspace from './Workspace';
-export WorkspaceCollection from './WorkspaceCollection';
+export { default as Base } from './Base';
+export { default as AnalyticsSession } from './AnalyticsSession';
+export { default as Change } from './Change';
+export { default as Workspace } from './Workspace';
+export { default as WorkspaceCollection } from './WorkspaceCollection';
 
 Registry.ignore('link');
 

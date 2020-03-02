@@ -14,9 +14,9 @@ export default function setup (config) {
 }
 
 
-export Library from './stores/Library';
-export Notifications from './stores/Notifications';
-export FiveMinuteEnrollmentInterface from './interface/FiveMinuteInterface';
+export { default as Library } from './stores/Library';
+export { default as Notifications } from './stores/Notifications';
+export { default as FiveMinuteEnrollmentInterface } from './interface/FiveMinuteInterface';
 
 
 export * from './constants';
@@ -28,4 +28,4 @@ export * as Tasks from './tasks';
 export { Models };
 export function getModel (...args) { return Registry.lookup(...args); }
 export function registerModel (o) { return Registry.register(o); }
-export getLink from './utils/getlink';
+export { default as getLink } from './utils/getlink';

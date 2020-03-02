@@ -1,3 +1,3 @@
-export CalendarEventRef from './CalendarEventRef';
-export CourseCalendar from './CourseCalendar';
+export { default as CalendarEventRef } from './CalendarEventRef';
+export { default as CourseCalendar } from './CourseCalendar';
 export * from './events';

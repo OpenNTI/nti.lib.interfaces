@@ -1,4 +1,4 @@
-export MessageInfo from './MessageInfo';
-export RoomInfo from './RoomInfo';
-export Transcript from './Transcript';
-export TranscriptSummary from './TranscriptSummary';
+export { default as MessageInfo } from './MessageInfo';
+export { default as RoomInfo } from './RoomInfo';
+export { default as Transcript } from './Transcript';
+export { default as TranscriptSummary } from './TranscriptSummary';

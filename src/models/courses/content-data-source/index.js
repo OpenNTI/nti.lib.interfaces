@@ -1,1 +1,1 @@
-export default from './CourseContentDataSource';
+export { default as default } from './CourseContentDataSource';

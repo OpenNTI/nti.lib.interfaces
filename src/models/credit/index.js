@@ -1,4 +1,4 @@
-export CreditDefinition from './CreditDefinition';
-export UserAwardedCredit from './UserAwardedCredit';
-export CourseAwardedCredit from './CourseAwardedCredit';
-export CourseAwardableCredit from './CourseAwardableCredit';
+export { default as CreditDefinition } from './CreditDefinition';
+export { default as UserAwardedCredit } from './UserAwardedCredit';
+export { default as CourseAwardedCredit } from './CourseAwardedCredit';
+export { default as CourseAwardableCredit } from './CourseAwardableCredit';

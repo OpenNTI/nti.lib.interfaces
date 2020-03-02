@@ -1,2 +1,2 @@
-export RecursiveStreamBucket from './RecursiveStreamBucket';
-export RecursiveStreamByBucket from './RecursiveStreamByBucket';
+export { default as RecursiveStreamBucket } from './RecursiveStreamBucket';
+export { default as RecursiveStreamByBucket } from './RecursiveStreamByBucket';

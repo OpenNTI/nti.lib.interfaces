@@ -1,1 +1,1 @@
-export LTIConfiguredTool from './LTIConfiguredTool';
+export { default as LTIConfiguredTool } from './LTIConfiguredTool';

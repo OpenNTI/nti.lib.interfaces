@@ -1,4 +1,4 @@
-export Badge from './Badge';
-export BadgeIssuer from './BadgeIssuer';
-export EducationalExperience from './EducationalExperience';
-export ProfessionalPosition from './ProfessionalPosition';
+export { default as Badge } from './Badge';
+export { default as BadgeIssuer } from './BadgeIssuer';
+export { default as EducationalExperience } from './EducationalExperience';
+export { default as ProfessionalPosition } from './ProfessionalPosition';

@@ -1,6 +1,6 @@
-export Community from './Community';
-export DynamicFriendsList from './DynamicFriendsList';
-export FriendsList from './FriendsList';
-export PresenceInfo from './PresenceInfo';
-export SuggestedContacts from './SuggestedContacts';
-export User from './User';
+export { default as Community } from './Community';
+export { default as DynamicFriendsList } from './DynamicFriendsList';
+export { default as FriendsList } from './FriendsList';
+export { default as PresenceInfo } from './PresenceInfo';
+export { default as SuggestedContacts } from './SuggestedContacts';
+export { default as User } from './User';

@@ -1,4 +1,4 @@
-export SCORMContentInfo from './SCORMContentInfo';
-export SCORMCourseMetadata from './SCORMCourseMetadata';
-export SCORMInstance from './SCORMInstance';
-export SCORMReference from './SCORMReference';
+export { default as SCORMContentInfo } from './SCORMContentInfo';
+export { default as SCORMCourseMetadata } from './SCORMCourseMetadata';
+export { default as SCORMInstance } from './SCORMInstance';
+export { default as SCORMReference } from './SCORMReference';

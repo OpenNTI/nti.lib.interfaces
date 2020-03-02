@@ -1,2 +1,2 @@
-export Channel from './Channel';
-export List from './List';
+export { default as Channel } from './Channel';
+export { default as List } from './List';
