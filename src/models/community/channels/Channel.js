@@ -78,6 +78,17 @@ export default class CommunityChannel extends EventEmitter {
 
 	get contentsDataSource () { return this.#contentsDataSource; }
 
+	loadPinnedContents (params) {
+		const {contentsDataSource} = this;
+
+		return contentsDataSource.loadPage(0, {
+			sortOn: 'CreatedTime',
+			sortOrder: 'descending',
+			filter: 'Pinned',
+			...params
+		});
+	}
+
 	get isModifiable () { return !!this.#save; }
 	async save (data) {
 		if (!this.isModifiable) { throw new Error('Cannot modifiy channel'); }
