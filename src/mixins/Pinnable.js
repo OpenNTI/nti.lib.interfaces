@@ -30,19 +30,6 @@ export default function PinnableApplyer (targetModelClass) {
 
 		togglePinned () {
 			return this.isPinned ? this.unpin() : this.pin();
-		},
-
-		addPinChangeListener (fn) {
-			const pin = () => fn(true);
-			const unpin = () => fn(false);
-
-			this.addListener('pinned', pin);
-			this.addListener('unpinned', unpin);
-
-			return () => {
-				this.removeListener('pinned', pin);
-				this.removeListener('unpinned', unpin);
-			};
 		}
 	};
 }

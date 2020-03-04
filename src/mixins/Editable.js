@@ -16,7 +16,19 @@ export default {
 
 		const previousSave = this.saving || Promise.resolve();
 
-		return after(previousSave, ()=> this[Service].delete(link))
+		const worker = this.deleting = after(previousSave, ()=> this[Service].delete(link));
+
+		const clean = () => {
+			if (this.deleting === worker) {
+				delete this.deleting;
+			}
+		};
+
+		worker.then(clean, clean);
+
+		this.onChange('deleting');
+
+		return worker
 			.then(() => this.onChange(DELETED, this.getID()))
 			.then(...finishers(this, DELETED))
 			.then(() => true);//control the success result
@@ -75,6 +87,8 @@ export default {
 
 		this.saving.values = {...otherQueued, ...values};
 		this.saving.then(clean, clean);
+
+		this.onChange('saving');
 
 		return this.saving;
 	},

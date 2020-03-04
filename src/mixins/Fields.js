@@ -203,7 +203,7 @@ export default function FieldsApplier (target) {
 				? Promise.resolve(newRaw)
 				: service.getObjectAtURL(this.getObjectHref(), this.getID());
 
-			const inflight = fetch.then(o => this.applyRefreshedData(o));
+			const inflight = fetch.then(o => this.applyRefreshedData(o, !newRaw));
 
 			this[INFLIGHT] = inflight
 				.catch((r) => (delete this[INFLIGHT], Promise.reject(r))) //swallow all errors so we can cleanup
@@ -242,10 +242,19 @@ export default function FieldsApplier (target) {
 
 
 
-		applyRefreshedData (data) {
+		applyRefreshedData (data, force) {
 			if (!this[RepresentsSameObject](data)) {
 				throw new Error('Mismatch!');
 			}
+
+			if (data.__toRaw) {
+				data = data.__toRaw();
+			}
+
+			//TODO: check if the data's Last Modified is older than my Last Modified
+			// if (!force && this.getLastModified() > Parsing.parseDate(data['Last Modified'])) {
+			// 	throw new Error('Attempting to refresh with older data');
+			// }
 
 			// Update raw
 			this[RAW] = {...this[RAW], ...data};

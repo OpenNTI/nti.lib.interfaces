@@ -108,9 +108,36 @@ class Base extends EventEmitter {
 	}
 
 
+	getEventPrefix () { return this.OID; }
+	
 	onChange (who) {
 		this.emit('change', this, who);
+
+		this[Service].emit(`${this.getEventPrefix()}-change`, this, who);
 	}
+
+
+	subscribeToChange (fn) {
+		//NOTE: in the future if we need to subscribe to more than just the
+		//change event, we can create a GlobalEventEmitter class and make the base
+		//model extend that.
+		const event = `${this.getEventPrefix()}-change`;
+		const listener = async (item, ...args) => {
+			if (item === this) { return fn(item, ...args); }
+
+			if (item.getLastModified() >= this.getLastModified()) {
+				await this.refresh(item);
+				fn();
+			}
+		};
+
+		this[Service].addListener(event, listener);
+
+		return () => {
+			this[Service].removeListener(event, listener);
+		};
+	}
+
 
 
 	/**
