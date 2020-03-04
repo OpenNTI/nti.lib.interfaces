@@ -3,12 +3,13 @@ import {mixin} from '@nti/lib-decorators';
 import GetContents from '../../mixins/GetContents';
 import Likable from '../../mixins/Likable';
 import Pinnable from '../../mixins/Pinnable';
+import Flaggable from '../../mixins/Flaggable';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 export default
 @model
-@mixin(GetContents, Likable, Pinnable)
+@mixin(GetContents, Likable, Pinnable, Flaggable)
 class Topic extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.topic',

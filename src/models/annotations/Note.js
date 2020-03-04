@@ -2,6 +2,7 @@ import Logger from '@nti/util-logger';
 import {mixin} from '@nti/lib-decorators';
 
 import { Service, Parser as parse } from '../../constants';
+import {Flaggable} from '../../mixins';
 import Threadable from '../../mixins/Threadable';
 import {model, COMMON_PREFIX} from '../Registry';
 
@@ -11,7 +12,7 @@ const logger = Logger.get('models:annotations:Note');
 
 export default
 @model
-@mixin(Threadable)
+@mixin(Threadable, Flaggable)
 class Note extends Highlight {
 	static MimeType = COMMON_PREFIX + 'note'
 

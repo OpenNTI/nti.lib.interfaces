@@ -2,6 +2,7 @@
 export { default as AssessedAssessmentPart } from './AssessedAssessmentPart';
 export { default as CourseAndAssignmentNameResolving } from './CourseAndAssignmentNameResolving';
 export { default as Editable } from './Editable';
+export { default as Flaggable } from './Flaggable';
 export { default as GetContents } from './GetContents';
 export { default as JSONValue } from './JSONValue';
 export { default as Likable } from './Likable';
