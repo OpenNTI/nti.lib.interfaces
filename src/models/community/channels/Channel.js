@@ -78,6 +78,18 @@ export default class CommunityChannel extends EventEmitter {
 
 	get contentsDataSource () { return this.#contentsDataSource; }
 
+	containsPost (item) {
+		const itemContainer = item?.ContainerId;
+
+		if (!itemContainer) { return false; }
+
+		return ([
+			this.getID(),
+			this.backer?.getID(),
+			this.backer?.NTIID
+		]).some((id) => id === itemContainer); 
+	}
+
 	loadPinnedContents (params) {
 		const {contentsDataSource} = this;
 
