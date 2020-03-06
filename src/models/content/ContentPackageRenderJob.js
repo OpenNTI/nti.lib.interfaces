@@ -4,6 +4,7 @@ import Base from '../Base';
 
 const POLL_INTERVAL = 3000;
 const POLL_TIMEOUT = Symbol('Poll Timeout');
+const ACTIVE_POLL = Symbol('Active Poll');
 const ON_INTERVAL = Symbol('On Interval');
 const ON_FINISH = Symbol('On Finish');
 
@@ -49,11 +50,13 @@ class ContentPackageRenderJob extends Base {
 
 
 	startMonitor () {
-		if (!this.running) {
+		const wasRunning = this.running;
+		this.running = true;
+
+		if (!wasRunning) {
 			this[ON_INTERVAL]();
 		}
 
-		this.running = true;
 	}
 
 
@@ -64,12 +67,18 @@ class ContentPackageRenderJob extends Base {
 
 
 	[ON_INTERVAL] () {
+		if (!this.running) { return; }
+
 		clearTimeout(this[POLL_TIMEOUT]);
 
 		this[POLL_TIMEOUT] = setTimeout(() => {
-			this.fetchLink('QueryRenderJob')
+			if (this[ACTIVE_POLL]) { return; }
+
+			this[ACTIVE_POLL] = this.fetchLink('QueryRenderJob')
 				.then(newJob => {
 					const changed = newJob.State !== this.State;
+
+					delete this[ACTIVE_POLL];
 
 					this.refresh(newJob)
 						.then(() => {
@@ -85,6 +94,7 @@ class ContentPackageRenderJob extends Base {
 						});
 				})
 				.catch(() => {
+					delete this[ACTIVE_POLL];
 					this.State = FAILED;
 				});
 		}, POLL_INTERVAL);
