@@ -54,8 +54,8 @@ class CourseCommunity extends EventEmitter {
 	async save (data) {
 		const payload = {};
 
-		if (data.displayName != null) {payload.title = data.displayName; }
-		if (data.about != null) {payload.description = data.about; }
+		if (Object.hasOwnProperty.call(data, 'displayName')) {payload.title = data.displayName; }
+		if (Object.hasOwnProperty.call(data, 'about')) {payload.description = data.about || ''; }
 
 		try {
 			await this.#board.save(payload);
