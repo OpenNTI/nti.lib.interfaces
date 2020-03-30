@@ -12,6 +12,16 @@ const SUCCESS = 'Success';
 const PENDING = 'Pending';
 const FAILED = 'Failed';
 
+function getIntervalTimeout (interval) {
+	if (interval <= 5) {
+		return POLL_INTERVAL;
+	} else if (interval <= 15) {
+		return POLL_INTERVAL * 3;
+	} else {
+		return 30000;
+	}
+}
+
 export default
 @model
 class ContentPackageRenderJob extends Base {
@@ -66,7 +76,7 @@ class ContentPackageRenderJob extends Base {
 	}
 
 
-	[ON_INTERVAL] () {
+	[ON_INTERVAL] (interval = 0) {
 		if (!this.running) { return; }
 
 		clearTimeout(this[POLL_TIMEOUT]);
@@ -87,7 +97,7 @@ class ContentPackageRenderJob extends Base {
 							}
 
 							if (!this.isFinished) {
-								this[ON_INTERVAL]();
+								this[ON_INTERVAL](interval + 1);
 							} else {
 								this[ON_FINISH]();
 							}
@@ -97,7 +107,7 @@ class ContentPackageRenderJob extends Base {
 					delete this[ACTIVE_POLL];
 					this.State = FAILED;
 				});
-		}, POLL_INTERVAL);
+		}, getIntervalTimeout(interval));
 	}
 
 
