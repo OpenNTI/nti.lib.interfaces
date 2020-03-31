@@ -290,7 +290,7 @@ export default class DataServerInterface extends EventEmitter {
 		//A zero response status means there was a network error
 		//so we need to tell people
 		//
-		//TODO: there is an opportunity here to retry requests (update a max)
+		//TODO: there is an opportunity here to retry requests (up to a max)
 		//to help smooth out transient network issues
 		this.OnlineStatus.hadNetworkError();
 		throw response;
