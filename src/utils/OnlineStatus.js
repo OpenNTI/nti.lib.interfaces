@@ -6,10 +6,6 @@ const OfflineEvent = '__offline-event';
 export default class OnlineStatus extends EventEmitter {
 	#online = true;
 
-	constructor () {
-		super();
-	}
-
 	get isOnline () { return this.#online; }
 
 	hadNetworkError () {
@@ -34,11 +30,7 @@ export default class OnlineStatus extends EventEmitter {
 
 
 	subscribeToChange (fn) {
-		const callback = (...args) => {
-			setTimeout(() => {
-				fn(this.isOnline);
-			}, 0);
-		};
+		const callback = () => void setTimeout(fn, 0, this.isOnline);
 
 		this.addListener(OnlineEvent, callback);
 		this.addListener(OfflineEvent, callback);
