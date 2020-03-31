@@ -16,6 +16,8 @@ import Service from '../stores/Service';
 import {
 	REQUEST_CONFLICT_EVENT,
 	REQUEST_ERROR_EVENT,
+	REQUEST_NETWORK_SUCCESS,
+	REQUEST_NETWORK_ERROR,
 	TOS_NOT_ACCEPTED
 } from '../constants';
 
@@ -204,9 +206,14 @@ export default class DataServerInterface extends EventEmitter {
 			const maybeFulfill = (...args) => !controller.aborted && fulfillRequest(...args);
 			const maybeReject = (...args) => !controller.aborted && rejectRequest(...args);
 
+			const networkCheck = this.__checkRequestNetwork.bind(this, id, url, init, data, start, context);
+
 			fetch(url, init)
 				// Normalize request failures
 				.catch(e => Promise.reject({Message: 'Request Failed.', statusCode: 0, error: e}))
+
+				// Check Network Status
+				.then(networkCheck, networkCheck)
 
 				// Check status
 				.then(this.__checkRequestStatus.bind(this, id, url, init, data, start, context))
@@ -261,6 +268,21 @@ export default class DataServerInterface extends EventEmitter {
 			attachPendingQueue(context).addToPending(result);
 		}
 		return result;
+	}
+
+	async __checkRequestNetwork (id, url, init, data, start, context, response) {
+		const status = response.statusCode ?? response.status;
+
+		//If we got a non-zero response status, there was no network error
+		//so we can just continue on our merry way.
+		if (status !== 0) {
+			this.emit(REQUEST_NETWORK_SUCCESS);
+			return response;
+		}
+
+
+		this.emit(REQUEST_NETWORK_ERROR);
+		throw response;
 	}
 
 	async __checkRequestStatus (id, url, init, data, start, context, response) {

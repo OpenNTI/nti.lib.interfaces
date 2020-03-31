@@ -23,6 +23,8 @@ export const EVENT_FINISH = 'finish';
 
 export const REQUEST_CONFLICT_EVENT = 'request-needs-confirmation';
 export const REQUEST_ERROR_EVENT = 'global-request-error-notification';
+export const REQUEST_NETWORK_ERROR = 'request-network-error';
+export const REQUEST_NETWORK_SUCCESS = 'request-network-success';
 
 export const MODEL_INSTANCE_CACHE_KEY = '%%model.instances%%';
 
