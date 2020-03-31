@@ -9,6 +9,7 @@ import parseBody from '../utils/attempt-json-parse';
 import getContentType from '../utils/get-content-type-header';
 import getLink, { getLinks } from '../utils/getlink';
 import encodeFormData from '../utils/encode-form-data';
+import OnlineStatus from '../utils/OnlineStatus.js';
 import toObject from '../utils/to-object';
 import { getTimezone } from '../utils/timezone';
 import { attach as attachPendingQueue } from '../mixins/Pendability';
@@ -16,8 +17,6 @@ import Service from '../stores/Service';
 import {
 	REQUEST_CONFLICT_EVENT,
 	REQUEST_ERROR_EVENT,
-	REQUEST_NETWORK_SUCCESS,
-	REQUEST_NETWORK_ERROR,
 	TOS_NOT_ACCEPTED
 } from '../constants';
 
@@ -33,6 +32,7 @@ const logger = Logger.get('DataServerInterface');
 const {btoa} = global;
 
 const Request = Symbol('Request Adaptor');
+const onlineStatus = Symbol('Online Status');
 
 
 export default class DataServerInterface extends EventEmitter {
@@ -69,6 +69,12 @@ export default class DataServerInterface extends EventEmitter {
 		} catch (e) {
 			logger.warn('Could not set all custom headers: %s', e.stack || e.message || e);
 		}
+	}
+
+	get OnlineStatus () {
+		if (!this[onlineStatus]) { this[onlineStatus] = new OnlineStatus(); }
+
+		return this[onlineStatus];
 	}
 
 
@@ -276,7 +282,7 @@ export default class DataServerInterface extends EventEmitter {
 		//If we got a non-zero response status, there was no network error
 		//so we can just continue on our merry way.
 		if (status !== 0) {
-			this.emit(REQUEST_NETWORK_SUCCESS);
+			this.OnlineStatus.hadNetworkSuccess();
 			return response;
 		}
 
@@ -286,7 +292,7 @@ export default class DataServerInterface extends EventEmitter {
 		//
 		//TODO: there is an opportunity here to retry requests (update a max)
 		//to help smooth out transient network issues
-		this.emit(REQUEST_NETWORK_ERROR);
+		this.OnlineStatus.hadNetworkError();
 		throw response;
 	}
 
