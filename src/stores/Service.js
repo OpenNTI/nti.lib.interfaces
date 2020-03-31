@@ -89,6 +89,10 @@ class ServiceDocument extends EventEmitter {
 		this.assignData(json, {silent: true});
 	}
 
+	get OnlineStatus () {
+		return this[Server].OnlineStatus;
+	}
+
 
 	dispatch (...args) {
 		this[Server].dispatch(...args);
