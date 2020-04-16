@@ -1,6 +1,6 @@
-import {model, COMMON_PREFIX} from '../Registry';
+import {model, COMMON_PREFIX} from '../../Registry';
 
-import Integration from './Integration';
+import Integration from '../Integration';
 
 const DISCONNECTED_MIMETYPE = COMMON_PREFIX + 'integration.gotowebinarintegration';
 const CONNECTED_MIMETYPE = COMMON_PREFIX + 'integration.gotowebinarauthorizedintegration';

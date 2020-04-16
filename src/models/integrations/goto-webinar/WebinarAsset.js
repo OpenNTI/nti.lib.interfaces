@@ -1,8 +1,8 @@
 import {mixin} from '@nti/lib-decorators';
 
-import {model, COMMON_PREFIX} from '../Registry';
-import Base from '../Base';
-import Completable from '../../mixins/Completable';
+import {model, COMMON_PREFIX} from '../../Registry';
+import Base from '../../Base';
+import Completable from '../../../mixins/Completable';
 
 export default
 @model
