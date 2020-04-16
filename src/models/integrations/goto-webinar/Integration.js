@@ -1,5 +1,4 @@
 import {model, COMMON_PREFIX} from '../../Registry';
-
 import Integration from '../Integration';
 
 const DISCONNECTED_MIMETYPE = COMMON_PREFIX + 'integration.gotowebinarintegration';
@@ -18,6 +17,8 @@ class GotoWebinar extends Integration {
 		...Integration.Fields,
 		'webinar_realname': {type: 'string', name: 'accountName'}
 	}
+
+	name = 'goto-webinar'
 
 
 	isConnected () {
