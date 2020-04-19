@@ -13,15 +13,43 @@ class StripeIntegration extends Base {
 
 	name = 'stripe'
 
+	isEnabled () {
+		return this.canConnect() || this.canDisconnect();
+	}
+
 	isConnected () {
-		return this.hasLink(DisconnectRel);
+		return true;//this.hasLink(DisconnectRel);
 	}
 
 	canConnect () {
-		return this.hasLink(ConnectRel);
+		return false;//this.hasLink(ConnectRel);
 	}
 
 	canDisconnect () {
-		return this.hasLink(DisconnectRel);
+		return true;//this.hasLink(DisconnectRel);
+	}
+
+	getConnectLink (...args) {
+		return this.getLink(ConnectRel, ...args);
+	}
+
+	getAccountName () {
+		return 'Test Stripe Account';
+	}
+	
+	async disconnect () {
+		await this.requestLink(DisconnectRel, 'delete');
+		await this.sync();
+	}
+
+	async sync () {
+		const parent = this.parent();
+
+		try {
+			await parent.refresh();
+			parent.onChange();
+		} catch (e) {
+			//swallow
+		}
 	}
 }

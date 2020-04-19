@@ -20,11 +20,29 @@ class GotoWebinar extends Integration {
 
 	name = 'goto-webinar'
 
+	isEnabled () {
+		return true;
+	}
 
 	isConnected () {
 		return this.MimeType === CONNECTED_MIMETYPE;
 	}
 
+	canConnect () {
+		return !this.isConnected();
+	}
+
+	canDisconnect () {
+		return this.isConnected();
+	}
+
+	getConnectLink (...args) {
+		return this.getLink('authorize.webinar', ...args);
+	}
+
+	getAccountName () {
+		return this.accountName;
+	}
 
 	async disconnect () {
 		//If we aren't connected there's nothing to delete
