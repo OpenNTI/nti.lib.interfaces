@@ -18,15 +18,15 @@ class StripeIntegration extends Base {
 	}
 
 	isConnected () {
-		return true;//this.hasLink(DisconnectRel);
+		return this.hasLink(DisconnectRel);
 	}
 
 	canConnect () {
-		return false;//this.hasLink(ConnectRel);
+		return this.hasLink(ConnectRel);
 	}
 
 	canDisconnect () {
-		return true;//this.hasLink(DisconnectRel);
+		return this.hasLink(DisconnectRel);
 	}
 
 	getConnectLink (...args) {
