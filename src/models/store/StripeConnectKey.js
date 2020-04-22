@@ -4,7 +4,10 @@ import Base from '../Base';
 export default
 @model
 class StripeConnectKey extends Base {
-	static MimeType = COMMON_PREFIX + 'store.stripeconnectkey'
+	static MimeType = [
+		COMMON_PREFIX + 'store.stripeconnectkey',
+		COMMON_PREFIX + 'store.persistentstripeconnectkey'
+	]
 
 	static Fields = {
 		...Base.Fields,
