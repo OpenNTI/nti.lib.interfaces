@@ -3,6 +3,7 @@ import Base from '../../Base';
 
 const ConnectRel = 'connect_stripe_account';
 const DisconnectRel = 'disconnect_stripe_account';
+const AccountInfoRel = 'account_info';
 
 export default
 @model
@@ -33,8 +34,10 @@ class StripeIntegration extends Base {
 		return this.getLink(ConnectRel, ...args);
 	}
 
-	getAccountName () {
-		return 'Test Stripe Account';
+	async getAccountName () {
+		const info = await this.fetchLink(AccountInfoRel);
+
+		return info && info.StripeAccountID;
 	}
 	
 	async disconnect () {
