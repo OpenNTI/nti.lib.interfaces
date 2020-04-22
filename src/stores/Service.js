@@ -163,8 +163,8 @@ class ServiceDocument extends EventEmitter {
 					} else {
 						logger.warn('No FriendsLists Collection');
 					}
-				},
-				e => logger.log(e.stack || e.message || e))
+				})
+				.catch(e => logger.log(e.stack || e.message || e))
 			);
 		}
 
@@ -571,7 +571,12 @@ class ServiceDocument extends EventEmitter {
 
 		let resolve, reject;
 		const nonce = new Promise((a, b) => (resolve = a, reject = b));
-
+		// Prevent unhandled rejection warnings, because this promise very well
+		// may not ever get a listener (especially if there is not a re-entry
+		// before resolution). This adds a no-op handler to the nonce promise,
+		// leaving the nonce reference to the original so that rejections still
+		// propagate.
+		nonce.catch(() => { });
 		this[RE_ENTRY] = nonce;
 
 
