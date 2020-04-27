@@ -364,7 +364,9 @@ export default class DataServerInterface extends EventEmitter {
 		}
 		catch(reason) {
 			//Let the world know there was a request failure...and let them potentially display/act on it
-			!reason.skip && this.emit(REQUEST_ERROR_EVENT, error);
+			if (!reason.skip) {
+				this.emit(REQUEST_ERROR_EVENT, error);
+			}
 
 			// If this is our skip object, pass it on. Otherwise,
 			// its an unknown error and just reject with the error above.
