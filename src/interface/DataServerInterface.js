@@ -34,6 +34,13 @@ const {btoa} = global;
 const Request = Symbol('Request Adaptor');
 const onlineStatus = Symbol('Online Status');
 
+const BLACKLIST_FORWARDED_HEADERS = [
+	'content-type',
+	'etag',
+	'if-modified-since',
+	'referer',
+	'x-forwarded-protocol'
+];
 
 export default class DataServerInterface extends EventEmitter {
 
@@ -158,14 +165,16 @@ export default class DataServerInterface extends EventEmitter {
 
 		if(context) {
 			init.headers = {
+				//FIXME: This really just needs to copy a few known headers (such as host/origin/cookie/etc)
+				// instead of blacklisting below.
 				...(context.headers || {}),
 				...init.headers,
 				'accept-encoding': ''
 			};
 
-			delete init.headers['content-length'];
-			delete init.headers['content-type'];
-			delete init.headers['referer'];
+			for (const blocked of BLACKLIST_FORWARDED_HEADERS) {
+				delete init.headers[blocked];
+			}
 
 		} else if (!process.browser) {
 			throw new Error('Calling request w/o context!');
