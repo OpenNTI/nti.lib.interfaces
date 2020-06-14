@@ -122,7 +122,6 @@ export default class CommunityChannel extends EventEmitter {
 
 	get canAddDiscussion () { return !!this.#addDiscussion; }
 	async addDiscussion (payload) {
-		debugger;
 		if (!this.canAddDiscussion) { throw new Error('Cannot add discussions to channel'); }
 
 		const newDiscussion = await this.#addDiscussion(payload);
