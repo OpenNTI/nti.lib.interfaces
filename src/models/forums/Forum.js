@@ -96,13 +96,14 @@ class Forum extends Base {
 			return Promise.reject('Cannot post comment. Item has no \'add\' link.');
 		}
 
-		const {title, body} = data;
+		const {title, body, mentions, tags} = data;
 
 		const payload = {
 			MimeType: 'application/vnd.nextthought.forums.post',
-			tags: [],
 			title: title,
-			body: Array.isArray(body) ? body : [body]
+			body: Array.isArray(body) ? body : [body],
+			mentions,
+			tags: tags ?? []
 		};
 
 		return service.post(link, payload)

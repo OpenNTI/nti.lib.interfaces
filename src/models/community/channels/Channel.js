@@ -15,8 +15,7 @@ export default class CommunityChannel extends EventEmitter {
 			() => forum.delete() :
 			null;
 
-
-		const addTopic = forum.canCreateTopic() ?
+		const addDiscussion = forum.canCreateTopic() ?
 			(topic) => forum.createTopic(topic) :
 			null;
 
@@ -28,7 +27,7 @@ export default class CommunityChannel extends EventEmitter {
 			description: forum.description,
 			contentsDataSource: forum.getContentsDataSource(),
 			save,
-			addTopic,
+			addDiscussion,
 			delete: doDelete,
 			reports: forum.Reports
 		});
@@ -41,11 +40,11 @@ export default class CommunityChannel extends EventEmitter {
 	#description = null
 	#contentsDataSource = null
 	#save = null
-	#addTopic = null
+	#addDiscussion = null
 	#doDelete = null
 	#reports = null
 
-	constructor ({backer, id, title, description, save, contentsDataSource, addTopic, pinned, delete: doDelete, reports}) {
+	constructor ({backer, id, title, description, save, contentsDataSource, addDiscussion, pinned, delete: doDelete, reports}) {
 		super();
 		this.setMaxListeners(100);
 		//Make EventEmitter properties non-enumerable
@@ -58,7 +57,7 @@ export default class CommunityChannel extends EventEmitter {
 		this.#description = description;
 		this.#contentsDataSource = contentsDataSource;
 		this.#save = save;
-		this.#addTopic = addTopic;
+		this.#addDiscussion = addDiscussion;
 		this.#doDelete = doDelete;
 		this.#reports = reports;
 	}
@@ -121,15 +120,16 @@ export default class CommunityChannel extends EventEmitter {
 	}
 
 
-	get canAddTopic () { return !!this.#addTopic; }
-	async addTopic (topic) {
-		if (!this.canAddTopic) { throw new Error('Cannot add topic to channel'); }
+	get canAddDiscussion () { return !!this.#addDiscussion; }
+	async addDiscussion (payload) {
+		debugger;
+		if (!this.canAddDiscussion) { throw new Error('Cannot add discussions to channel'); }
 
-		const newTopic = await this.#addTopic(topic);
+		const newDiscussion = await this.#addDiscussion(payload);
 
-		this.emit('item-added', newTopic);
+		this.emit('item-added', newDiscussion);
 
-		return newTopic;
+		return newDiscussion;
 	}
 
 

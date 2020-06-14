@@ -233,7 +233,7 @@ class Community extends Entity {
 			board,
 			'',
 			(forum) => {
-				const addTopic = forum.canCreateTopic() ?
+				const addDiscussion = forum.canCreateTopic() ?
 					(topic) => forum.createTopic(topic) :
 					null;
 
@@ -244,7 +244,7 @@ class Community extends Entity {
 					contentsDataSource: this.getAllActivityDataSource(),
 					setTitle: null,
 					pinned: true,
-					addTopic
+					addDiscussion
 				});
 			}
 		);
