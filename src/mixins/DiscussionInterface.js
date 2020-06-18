@@ -1,26 +1,86 @@
+import {Service} from '../constants';
+
 const DiscussionAdded = 'discussion-added';
+const ResolvedMentions = Symbol('ResolvedMentions');
+
+function getBody (discussion) {
+	const post = discussion.getPost();
+
+	return post === discussion ? discussion.body : post.getBody();
+}
+
+function getTags (discussion) {
+	const post = discussion.getPost();
+
+	return post === discussion ? discussion.tags : post.getTags();
+}
+
+function getMentions (discussion) {
+	const post = discussion.getPost();
+
+	if (post !== discussion) { return post.getMentions(); }
+
+	return post[ResolvedMentions];
+}
+
+async function resolveMentions (discussion) {
+	const post = discussion.getPost();
+
+	if (post !== discussion) { return; }
+
+	const mentions = post.UserMentions ?? [];
+
+	const resolved = await Promise.all(
+		mentions.map(async (mention) => {
+			const User = await post[Service].getObject(mention.User);
+
+			return {
+				...mention,
+				User
+			};
+		})
+	);
+
+	post[ResolvedMentions] = resolved;
+}
 
 export default function PostInterface (targetModelClass) {
 	Object.assign(targetModelClass.Fields, {
 		'body': targetModelClass.Fields.body ?? ({type: '*[]'}),
 		'tags': targetModelClass.Fields.tags ?? ({type: 'string[]'}),
 		'mentions': targetModelClass.Fields.mentions ?? ({type: 'string[]'}),
-		'UserMentions': targetModelClass.Fields.mentions ?? ({type: 'model[]'})
+		'UserMentions': targetModelClass.Fields.mentions ?? ({type: 'object[]'})
 	});
 
 	return {
-		isPost: true,
+		isDiscussion: true,
+		getPost () { return this; },
 
-		getBody () {
-			return this.body;
+		initMixin () {
+			const resolve = resolveMentions(this);
+
+			this.addToPending?.(resolve);
+		},
+
+		getBody () { return getBody(this); },
+		getTags () { return getTags(this); },
+		getMentions () { return getMentions(this); },
+
+		getMentionFor (username) {
+			if (username.getID) {
+				username = username.getID();
+			}
+
+			const mentions = this.getMentions();
+
+			return (mentions || []).find(mention => mention.User.getID() === username);
 		},
 
 		getDepth () {
 			const parent = this.parent();
 
-			return parent?.isPost ? (parent.getDepth() + 1) : 0;
+			return parent?.isDiscussion ? (parent.getDepth() + 1) : 0;
 		},
-
 
 		canAddDiscussion () { throw new Error('canAddDiscussion not implementd'); },
 
@@ -66,7 +126,7 @@ export default function PostInterface (targetModelClass) {
 
 			const parent = this.parent();
 
-			if (parent.isPost) {
+			if (parent.isDiscussion) {
 				parent.onDiscussionAdded(discussion);
 			}
 		},

@@ -6,13 +6,13 @@ import GetContents from '../../mixins/GetContents';
 import Likable from '../../mixins/Likable';
 import Pinnable from '../../mixins/Pinnable';
 import Flaggable from '../../mixins/Flaggable';
-import PostInterface from '../../mixins/PostInterface';
+import DiscussionInterface from '../../mixins/DiscussionInterface';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 export default
 @model
-@mixin(GetContents, Likable, Pinnable, Flaggable, PostInterface)
+@mixin(GetContents, Likable, Pinnable, Flaggable, DiscussionInterface)
 class Topic extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.topic',
@@ -45,8 +45,8 @@ class Topic extends Base {
 		return true;
 	}
 
-	getBody () {
-		return this.headline.body;
+	getPost () {
+		return this.headline;
 	}
 
 	canAddComment () {

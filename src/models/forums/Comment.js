@@ -1,14 +1,14 @@
 import {mixin} from '@nti/lib-decorators';
 
 import Threadable from '../../mixins/Threadable';
-import PostInterface from '../../mixins/PostInterface';
+import DiscussionInterface from '../../mixins/DiscussionInterface';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import Post from './Post';
 
 export default
 @model
-@mixin(Threadable, PostInterface)
+@mixin(Threadable, DiscussionInterface)
 class Comment extends Post {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.comment',
