@@ -121,7 +121,7 @@ export default function PostInterface (targetModelClass) {
 
 		addDiscussion () { throw new Error('addDiscussion not implented'); },
 		onDiscussionAdded (discussion) {
-			this.updateDiscussionCount(this.getDiscussionCount += 1);
+			this.updateDiscussionCount(this.getDiscussionCount() + 1);
 			this.emit(DiscussionAdded, discussion);
 
 			const parent = this.parent();
