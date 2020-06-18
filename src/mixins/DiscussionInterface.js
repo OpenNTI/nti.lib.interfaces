@@ -49,7 +49,7 @@ export default function PostInterface (targetModelClass) {
 		'body': targetModelClass.Fields.body ?? ({type: '*[]'}),
 		'tags': targetModelClass.Fields.tags ?? ({type: 'string[]'}),
 		'mentions': targetModelClass.Fields.mentions ?? ({type: 'string[]'}),
-		'UserMentions': targetModelClass.Fields.mentions ?? ({type: 'object[]'})
+		'UserMentions': targetModelClass.Fields.UserMentions ?? ({type: 'object[]'})
 	});
 
 	return {
