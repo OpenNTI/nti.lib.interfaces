@@ -1,15 +1,18 @@
 import {mixin} from '@nti/lib-decorators';
 
+import {Service} from '../../constants';
+import Page from '../../data-sources/data-types/Page';
 import GetContents from '../../mixins/GetContents';
 import Likable from '../../mixins/Likable';
 import Pinnable from '../../mixins/Pinnable';
 import Flaggable from '../../mixins/Flaggable';
+import PostInterface from '../../mixins/PostInterface';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 export default
 @model
-@mixin(GetContents, Likable, Pinnable, Flaggable)
+@mixin(GetContents, Likable, Pinnable, Flaggable, PostInterface)
 class Topic extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.topic',
@@ -40,6 +43,10 @@ class Topic extends Base {
 
 	isTopLevel () {
 		return true;
+	}
+
+	getBody () {
+		return this.headline.body;
 	}
 
 	canAddComment () {
@@ -74,5 +81,34 @@ class Topic extends Base {
 		const params = user ? {user} : {};
 
 		return this.fetchLinkParsed('UserTopicParticipationSummary', params);
+	}
+
+	canAddDiscussion () { return this.hasLink('add'); }
+	getDiscussionCount () {	return this.PostCount; }
+
+	async getDiscussions (params) {
+		const raw = await this.fetchLink('contents', {...params, filter: 'TopLevel'});
+		const page = new Page(this[Service], this, raw);
+
+		return page.waitForPending();
+	}
+
+	async addDiscussion (data) {
+		if (!this.hasLink('add')) { throw new Error('Cannot add discussion'); }
+
+		const {inReplyTo, ...otherData} = data;
+		const payload = {
+			MimeType: 'application/vnd.nextthought.forums.post',
+			...otherData
+		};
+
+		if (inReplyTo) {
+			Object.assign(payload, {
+				inReplyTo: inReplyTo.NTIID,
+				references: [...(inReplyTo.references || []), inReplyTo.NTIID]
+			});
+		}
+
+		return this.postToLink('add', payload, true);
 	}
 }

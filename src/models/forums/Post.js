@@ -20,7 +20,8 @@ class Post extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'body':  { type: '*[]'    },
-		'title': { type: 'string' },
+		'body':    { type: '*[]'     },
+		'title':   { type: 'string'  },
+		'Deleted': { type: 'boolean' }
 	}
 }
