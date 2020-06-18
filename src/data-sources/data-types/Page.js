@@ -29,6 +29,11 @@ export default class Page extends Batch {
 		return this.FilteredTotalItemCount != null ? this.FilteredTotalItemCount : this.TotalItemCount;
 	}
 
+
+	getUnfilteredItemCount () {
+		return this.TotalItemCount;
+	}
+
 	async loadNextPage () {
 		if (!this.hasLink('batch-next')) { return null; }
 
