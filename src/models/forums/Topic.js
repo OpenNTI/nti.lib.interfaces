@@ -84,7 +84,12 @@ class Topic extends Base {
 	}
 
 	canAddDiscussion () { return this.hasLink('add'); }
+
 	getDiscussionCount () {	return this.PostCount; }
+	updateDiscussionCount (updated) {
+		this.PostCount = updated;
+		this.onChange();
+	}
 
 	async getDiscussions (params) {
 		const raw = await this.fetchLink('contents', {...params, filter: 'TopLevel'});

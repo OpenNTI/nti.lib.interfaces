@@ -23,7 +23,9 @@ export default function PostInterface (targetModelClass) {
 
 
 		canAddDiscussion () { throw new Error('canAddDiscussion not implementd'); },
+
 		getDiscussionCount () {	throw new Error('getCommountCount not implemented'); },
+		updateDiscussionCount () { throw new Error('updateDiscussionCount not implemented'); },
 
 		getDiscussions () {	throw new Error('getComments not implemented');	},
 		async getFlatDiscussions (sort) {
@@ -59,6 +61,7 @@ export default function PostInterface (targetModelClass) {
 
 		addDiscussion () { throw new Error('addDiscussion not implented'); },
 		onDiscussionAdded (discussion) {
+			this.updateDiscussionCount(this.getDiscussionCount += 1);
 			this.emit(DiscussionAdded, discussion);
 
 			const parent = this.parent();

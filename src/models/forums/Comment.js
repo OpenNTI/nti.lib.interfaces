@@ -67,6 +67,11 @@ class Comment extends Post {
 	}
 
 	getDiscussionCount () { return this.ReferencedByCount; }
+	updateDiscussionCount (updated) {
+		this.ReferencedByCount = updated;
+		this.onChange();
+	}
+
 	getDiscussions () { return this.getReplies(); }
 
 	async addDiscussion (data) {
@@ -74,9 +79,6 @@ class Comment extends Post {
 		const discussion = await topic.addDiscussion({...data, inReplyTo: this});
 
 		discussion.reparent(this);
-
-		this.ReferencedByCount += 1;
-		this.onChange();
 
 		this.onDiscussionAdded(discussion);
 
