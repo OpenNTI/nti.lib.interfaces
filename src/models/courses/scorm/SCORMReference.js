@@ -17,6 +17,7 @@ class SCORMReference extends Base {
 		'ScormContentInfo': {type: 'model' }
 	}
 
+	isCompletable (...args) { return this.ScormContentInfo ? this.ScormContentInfo.isCompletable(...args) : null; }
 	getCompletedDate (...args) { return this.ScormContentInfo ? this.ScormContentInfo.getCompletedDate(...args) : null; }
 	hasCompleted (...args) { return this.ScormContentInfo ? this.ScormContentInfo.hasCompleted(...args) : null; }
 	updateCompletedState (...args) { return this.ScormContentInfo ? this.ScormContentInfo.updateCompletedState(...args) : null; }
