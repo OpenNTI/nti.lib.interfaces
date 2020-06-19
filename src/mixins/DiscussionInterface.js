@@ -3,6 +3,12 @@ import {Service} from '../constants';
 const DiscussionAdded = 'discussion-added';
 const ResolvedMentions = Symbol('ResolvedMentions');
 
+function getTitle (discussion) {
+	const post = discussion.getPost();
+
+	return post === discussion ? discussion.title : post.getTitle();
+}
+
 function getBody (discussion) {
 	const post = discussion.getPost();
 
@@ -44,8 +50,18 @@ async function resolveMentions (discussion) {
 	post[ResolvedMentions] = resolved;
 }
 
+function updatePost (discussion, ...args) {
+	const post = discussion.getPost();
+
+	if (post !== discussion) { return post.updatePost(...args); }
+
+	return discussion.save(...args);
+}
+
+
 export default function PostInterface (targetModelClass) {
 	Object.assign(targetModelClass.Fields, {
+		'title': targetModelClass.Fields.title ?? ({type: 'string'}),
 		'body': targetModelClass.Fields.body ?? ({type: '*[]'}),
 		'tags': targetModelClass.Fields.tags ?? ({type: 'string[]'}),
 		'mentions': targetModelClass.Fields.mentions ?? ({type: 'string[]'}),
@@ -61,6 +77,8 @@ export default function PostInterface (targetModelClass) {
 
 			this.addToPending?.(resolve);
 		},
+
+		getTitle () { return getTitle(this); },
 
 		getBody () { return getBody(this); },
 		getTags () { return getTags(this); },
@@ -80,6 +98,10 @@ export default function PostInterface (targetModelClass) {
 			const parent = this.parent();
 
 			return parent?.isDiscussion ? (parent.getDepth() + 1) : 0;
+		},
+
+		updatePost (...args) {
+			return updatePost(this, ...args);
 		},
 
 		canAddDiscussion () { throw new Error('canAddDiscussion not implementd'); },
@@ -137,6 +159,14 @@ export default function PostInterface (targetModelClass) {
 			return () => {
 				this.removeListener(DiscussionAdded, fn);
 			};
+		},
+
+		subscribeToPostChange (fn) {
+			const post = this.getPost();
+
+			if (post === this) { return this.subscribeToChange(fn); }
+
+			return post.subscribeToPostChange(fn);
 		}
 	};
 }
