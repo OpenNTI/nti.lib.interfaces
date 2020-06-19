@@ -2,6 +2,7 @@ import {Service} from '../constants';
 
 const DiscussionAdded = 'discussion-added';
 const ResolvedMentions = Symbol('ResolvedMentions');
+const ParentOverride = Symbol('Parent Override');
 
 function getTitle (discussion) {
 	const post = discussion.getPost();
@@ -59,7 +60,76 @@ function updatePost (discussion, ...args) {
 }
 
 
-export default function PostInterface (targetModelClass) {
+class DiscussionTree {
+	static forDiscussion (discussion, sort, depth) {
+		const tree = new DiscussionTree(discussion, sort, depth);
+
+		return tree.load();
+	}
+
+	#node = null;
+	#children = null;
+	#depth = null;
+
+	#sort = null;
+
+	constructor (discussion, sort, depth = 0) {
+		this.#node = discussion;
+		this.#sort = sort;
+		this.#depth = depth;
+	}
+
+	get node () { return this.#node; }
+	get children () { return this.#children || []; }
+	get depth () { return this.#depth; }
+
+	async load () {
+		let replies = await this.#node?.getDiscussions?.();
+
+		if (!replies) { return; }
+
+		if (this.#sort) {
+			replies = replies.sort(this.#sort);
+		}
+
+		this.#children = await Promise.all(
+			replies.map((reply) => DiscussionTree.forDiscussion(reply, this.#sort, this.depth + 1))
+		);
+
+		return this;
+	}
+
+	subscribeToUpdates (fn) {
+		const update = () => fn(this);
+
+		const cleanUps = [
+			...this.children.map((child) => {
+				return child.subscribeToUpdates(update);
+			}),
+			this.#node.subscribeToDiscussionAdded((newDiscussion) => {
+				let newReplies = [...this.children];
+
+				newReplies.push(newDiscussion);
+
+				if (this.#sort) {
+					newReplies = newReplies.sort(this.#sort);
+				}
+
+				this.#children = newReplies;
+
+				update();
+			})
+		];
+
+		return () => {
+			for (let cleanup of cleanUps) {
+				cleanup();
+			}
+		};
+	}
+}
+
+export default function DiscussionInterface (targetModelClass) {
 	Object.assign(targetModelClass.Fields, {
 		'title': targetModelClass.Fields.title ?? ({type: 'string'}),
 		'body': targetModelClass.Fields.body ?? ({type: '*[]'}),
@@ -94,50 +164,31 @@ export default function PostInterface (targetModelClass) {
 			return (mentions || []).find(mention => mention.User.getID() === username);
 		},
 
-		getDepth () {
-			const parent = this.parent();
-
-			return parent?.isDiscussion ? (parent.getDepth() + 1) : 0;
-		},
-
 		updatePost (...args) {
 			return updatePost(this, ...args);
+		},
+	
+		getParentDiscussion () {
+			if (this[ParentOverride]) { return this[ParentOverride]; }
+
+			const parent = this.parent();
+
+			return parent?.isDiscussion ? parent : null;
+		},
+
+		overrideParentDiscussion (parent) {
+			this[ParentOverride] = parent;
 		},
 
 		canAddDiscussion () { throw new Error('canAddDiscussion not implementd'); },
 
-		getDiscussionCount () {	throw new Error('getCommountCount not implemented'); },
+		getDiscussionCount () {	throw new Error('getDiscussionCount not implemented'); },
 		updateDiscussionCount () { throw new Error('updateDiscussionCount not implemented'); },
 
-		getDiscussions () {	throw new Error('getComments not implemented');	},
-		async getFlatDiscussions (sort) {
-			let discussions = await this.getDiscussions();
-	
-			if (sort) {
-				discussions = discussions.sort(sort);
-			}
+		getDiscussions () {	throw new Error('getDiscussions not implemented');	},
 
-			const expanded = await Promise.all(
-				discussions.reduce((acc, discussion) => {
-					if (!discussion.getFlatReplies) {
-						return [...acc, discussion];
-					}
-
-					return [
-						...acc,
-						discussion,
-						discussion.getFlatReplies()
-					];
-				}, [])
-			);
-
-			return expanded.reduce((acc, discussion) => {
-				if (Array.isArray(discussion)) {
-					return acc.concat(discussion);
-				}
-
-				return [...acc, discussion];
-			}, []);
+		getDiscussionTree (sort) {
+			return DiscussionTree.forDiscussion(this, sort);
 		},
 
 
