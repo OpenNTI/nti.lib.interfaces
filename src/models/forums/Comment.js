@@ -24,7 +24,9 @@ class Comment extends Post {
 		'ContainerMimeType': { type: 'string'   },
 		'ReferencedByCount': { type: 'number'   },
 		'inReplyTo':         { type: 'string'   },
-		'references':        { type: 'string[]' }
+		'references':        { type: 'string[]' },
+		'LikeCount':         { type: 'number'   },
+		'Class':             { type: 'string'   }
 	}
 
 	isComment = true;
