@@ -1,6 +1,8 @@
 import {Service} from '../constants';
 
 const DiscussionAdded = 'discussion-added';
+const DiscussionDeleted = 'discussion-deleted';
+
 const ResolvedMentions = Symbol('ResolvedMentions');
 const ParentOverride = Symbol('Parent Override');
 
@@ -110,7 +112,7 @@ class DiscussionTree {
 				let newTree = new DiscussionTree(newDiscussion, this.#sort, this.depth + 1);
 				let newReplies = [...this.children];
 
-				newReplies.push(newDiscussion);
+				newReplies.push(newTree);
 
 				if (this.#sort) {
 					newReplies = newReplies.sort((a, b) => this.#sort(a.node, b.node));
@@ -181,6 +183,15 @@ export default function DiscussionInterface (targetModelClass) {
 			this[ParentOverride] = parent;
 		},
 
+		afterDelete () { this.onPostDeleted(); },
+		onPostDeleted () {
+			const parent = this.getParentDiscussion();
+
+			if (parent?.isDiscussion) {
+				parent.onDiscussionDeleted(this.getPost());
+			}
+		},
+		
 		canAddDiscussion () { throw new Error('canAddDiscussion not implementd'); },
 
 		getDiscussionCount () {	throw new Error('getDiscussionCount not implemented'); },
@@ -192,16 +203,26 @@ export default function DiscussionInterface (targetModelClass) {
 			return DiscussionTree.forDiscussion(this, sort);
 		},
 
-
 		addDiscussion () { throw new Error('addDiscussion not implented'); },
 		onDiscussionAdded (discussion) {
 			this.updateDiscussionCount(this.getDiscussionCount() + 1);
 			this.emit(DiscussionAdded, discussion);
 
-			const parent = this.parent();
+			const parent = this.getParentDiscussion();
 
-			if (parent.isDiscussion) {
+			if (parent?.isDiscussion) {
 				parent.onDiscussionAdded(discussion);
+			}
+		},
+
+		onDiscussionDeleted (discussion) {
+			this.updateDiscussionCount(this.getDiscussionCount() - 1);
+			this.emit(DiscussionDeleted, discussion);
+
+			const parent = this.getParentDiscussion();
+
+			if (parent?.isDiscussion) {
+				parent.onDiscussionDeleted(discussion);
 			}
 		},
 
@@ -213,12 +234,21 @@ export default function DiscussionInterface (targetModelClass) {
 			};
 		},
 
+		subscribeToDeleted (fn) {
+			this.addListener(DiscussionDeleted, fn);
+
+			return () => {
+				this.removeListener(DiscussionDeleted, fn);
+			};
+		},
+
 		subscribeToPostChange (fn) {
 			const post = this.getPost();
 
 			if (post === this) { return this.subscribeToChange(fn); }
 
 			return post.subscribeToPostChange(fn);
-		}
+		},
+
 	};
 }

@@ -29,6 +29,7 @@ export default {
 		this.onChange('deleting');
 
 		return worker
+			.then(o => (this.afterDelete?.(o), o))
 			.then(() => this.onChange(DELETED, this.getID()))
 			.then(...finishers(this, DELETED))
 			.then(() => true);//control the success result

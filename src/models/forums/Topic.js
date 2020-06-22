@@ -95,6 +95,10 @@ class Topic extends Base {
 		const raw = await this.fetchLink('contents', {...params, filter: 'TopLevel'});
 		const page = new Page(this[Service], this, raw);
 
+		for (let item of page.Items) {
+			item.overrideParentDiscussion?.(this);
+		}
+
 		return page.waitForPending();
 	}
 
@@ -114,6 +118,11 @@ class Topic extends Base {
 			});
 		}
 
-		return this.postToLink('add', payload, true);
+		const discussion = await this.postToLink('add', payload, true);
+
+		discussion.overrideParentDiscussion(this);
+		this.onDiscussionAdded(discussion);
+
+		return discussion;
 	}
 }
