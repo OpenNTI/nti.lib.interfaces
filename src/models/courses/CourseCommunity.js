@@ -126,7 +126,7 @@ function getAllActivityInfo (course) {
 }
 
 function buildAllActivityChannel (forum, activityInfo) {
-	const addTopic = forum.canCreateTopic() ?
+	const addDiscussion = forum.canCreateTopic() ?
 		(topic) => forum.createTopic(topic) :
 		null;
 
@@ -137,7 +137,7 @@ function buildAllActivityChannel (forum, activityInfo) {
 		contentsDataSource: activityInfo.dataSource,
 		setTitle: null,
 		pinned: true,
-		addTopic
+		addDiscussion
 	});
 
 	return channel;
