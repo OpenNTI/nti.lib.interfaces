@@ -2,6 +2,7 @@ import {mixin} from '@nti/lib-decorators';
 
 import {Service, Parser as parse} from '../../constants';
 import GetContents from '../../mixins/GetContents';
+import DiscussionInterface from '../../mixins/DiscussionInterface';
 import getLink from '../../utils/getlink';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -98,13 +99,13 @@ class Forum extends Base {
 
 		const {title, body, mentions, tags} = data;
 
-		const payload = {
+		const payload = DiscussionInterface.getPayload({
 			MimeType: 'application/vnd.nextthought.forums.post',
 			title: title,
 			body: Array.isArray(body) ? body : [body],
 			mentions,
 			tags: tags ?? []
-		};
+		});
 
 		return service.post(link, payload)
 			.then(o => getLink(o, 'publish'))

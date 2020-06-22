@@ -1,3 +1,5 @@
+import {v4 as uuid} from 'uuid';
+
 import {Service} from '../constants';
 
 const DiscussionAdded = 'discussion-added';
@@ -132,6 +134,35 @@ class DiscussionTree {
 	}
 }
 
+DiscussionInterface.getPayload = (payload) => {
+	//If we have non-string body parts we most likely need to do form data...
+	if (!payload?.body?.some?.(part => typeof part !== 'string')) { return payload; }
+
+	const json = {...payload, body: []}; 
+	const formData = new FormData();
+
+	for (let part of (payload.body || [])) {
+		if (typeof part === 'string') {
+			json.body.push(part);
+			continue;
+		}
+
+		const clone = {...part};
+
+		if (clone && clone.file) {
+			const name = uuid();
+
+			formData.append(name, clone.file, (clone.file || {}).name);
+			clone.name = name;
+			delete clone.file;
+		}
+
+		json.body.push(clone);
+	}
+
+	formData.append('__json__', JSON.stringify(json));
+	return formData;
+};
 export default function DiscussionInterface (targetModelClass) {
 	Object.assign(targetModelClass.Fields, {
 		'title': targetModelClass.Fields.title ?? ({type: 'string'}),

@@ -118,7 +118,7 @@ class Topic extends Base {
 			});
 		}
 
-		const discussion = await this.postToLink('add', payload, true);
+		const discussion = await this.postToLink('add', DiscussionInterface.getPayload(payload), true);
 
 		discussion.overrideParentDiscussion(this);
 		this.onDiscussionAdded(discussion);
