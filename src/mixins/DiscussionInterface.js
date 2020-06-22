@@ -106,13 +106,14 @@ class DiscussionTree {
 			...this.children.map((child) => {
 				return child.subscribeToUpdates(update);
 			}),
-			this.#node.subscribeToDiscussionAdded((newDiscussion) => {
+			this.#node.subscribeToDiscussionAdded(async (newDiscussion) => {
+				let newTree = new DiscussionTree(newDiscussion, this.#sort, this.depth + 1);
 				let newReplies = [...this.children];
 
 				newReplies.push(newDiscussion);
 
 				if (this.#sort) {
-					newReplies = newReplies.sort(this.#sort);
+					newReplies = newReplies.sort((a, b) => this.#sort(a.node, b.node));
 				}
 
 				this.#children = newReplies;
