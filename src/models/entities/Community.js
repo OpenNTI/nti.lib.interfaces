@@ -227,16 +227,10 @@ class Community extends Entity {
 		return this.#channelListPromise;
 	}
 
-	getSharingSuggestions () {
-		return {
-			entities: [this],
-			allowRestricted: false,
-			allowPrivate: false
-		};
-	}
-
 	getDefaultSharing () {
-		return this;
+		return {
+			forcedScopes: [this]
+		};
 	}
 
 	[ResolveChannelList] = async () => {

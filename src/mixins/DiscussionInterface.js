@@ -187,6 +187,7 @@ export default function DiscussionInterface (targetModelClass) {
 		getBody () { return getBody(this); },
 		getTags () { return getTags(this); },
 		getMentions () { return getMentions(this); },
+		getLockedMentions () { return null; },
 
 		getMentionFor (username) {
 			if (username.getID) {

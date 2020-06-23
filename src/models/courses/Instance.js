@@ -588,6 +588,22 @@ class Instance extends Base {
 	}
 
 
+	async getDefaultSharing () {
+		let parentScopes = this.ParentSharingScopes;
+
+		//see definition of defaultScope "getter"
+		let {defaultScopeId, defaultScope} = this.SharingScopes || {};
+
+		if (!defaultScope && parentScopes) {
+			defaultScope = parentScopes.getScopeForId(defaultScopeId);
+		}
+
+		return {
+			scopes: [defaultScope].filter(Boolean)
+		};
+	}
+
+
 	getSharingSuggestions () {
 		const parent = this.parent();
 
