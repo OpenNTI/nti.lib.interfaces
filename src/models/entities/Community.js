@@ -227,6 +227,18 @@ class Community extends Entity {
 		return this.#channelListPromise;
 	}
 
+	getSharingSuggestions () {
+		return {
+			entities: [this],
+			allowRestricted: false,
+			allowPrivate: false
+		};
+	}
+
+	getDefaultSharing () {
+		return this;
+	}
+
 	[ResolveChannelList] = async () => {
 		const board = await this.getDiscussionBoard();
 		const channelList = await Channels.List.fromBoard(
