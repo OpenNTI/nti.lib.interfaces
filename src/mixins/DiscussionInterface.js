@@ -91,6 +91,8 @@ class DiscussionTree {
 	async load () {
 		let replies = await this.#node?.getDiscussions?.();
 
+		replies = replies.Items ?? replies;
+
 		if (!replies) { return; }
 
 		if (this.#sort) {
@@ -211,6 +213,8 @@ export default function DiscussionInterface (targetModelClass) {
 
 			return (mentions || []).find(mention => mention.User.getID() === username);
 		},
+
+		isDeleted () { return false; },
 
 		updatePost (...args) {
 			return updatePost(this, ...args);

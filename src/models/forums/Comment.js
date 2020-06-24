@@ -39,6 +39,8 @@ class Comment extends Post {
 		return !this.isBlogComment;
 	}
 
+	isDeleted () { return this.Deleted;	}
+
 	afterDelete () {
 		this.Deleted = true;
 		this.onPostDeleted();

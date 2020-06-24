@@ -75,6 +75,10 @@ class Note extends Highlight {
 			});
 	}
 
+	isDeleted () {
+		return this.placeholder;
+	}
+
 	canAddDiscussion () { return this.canReply(); }
 	getDiscussionCount () { return this.replyCount; }
 	updateDiscussionCount () {}
