@@ -3,6 +3,18 @@ import {Service} from '../../constants';
 import Batch from './Batch';
 
 export default class Page extends Batch {
+	static fromList (list, params, service, parent) {
+		return new Page(service, this, {
+			BatchPage: 1,
+			PageSize: list.length,
+			Total: list.length,
+			ItemCount: list.length,
+			TotalItemCount: list.length,
+			FilteredTotalItemCount: list.length,
+			Items: list
+		});
+	}
+
 	static Fields = {
 		...Batch.Fields,
 		'PageSize':               {type: 'number'},

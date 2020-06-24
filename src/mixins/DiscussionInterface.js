@@ -1,4 +1,5 @@
 import {v4 as uuid} from 'uuid';
+import {isNTIID} from '@nti/lib-ntiids';
 
 import {Service} from '../constants';
 
@@ -135,10 +136,22 @@ class DiscussionTree {
 }
 
 DiscussionInterface.getPayload = (payload) => {
-	//If we have non-string body parts we most likely need to do form data...
-	if (!payload?.body?.some?.(part => typeof part !== 'string')) { return payload; }
+	const json = {...payload, mentions: [], body: []};
 
-	const json = {...payload, body: []}; 
+	//For now strip out any ntiid like mentions
+	for (let mention of (payload.mention || [])) {
+		if (!isNTIID(mention)) {
+			json.mentions.push(mention);
+		}
+	}
+
+	//If we have non-string body parts we most likely need to do form data...
+	if (!payload?.body?.some?.(part => typeof part !== 'string')) {
+		json.body = payload.body;
+
+		return json;
+	}
+
 	const formData = new FormData();
 
 	for (let part of (payload.body || [])) {

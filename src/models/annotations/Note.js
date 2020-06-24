@@ -2,8 +2,10 @@ import Logger from '@nti/util-logger';
 import {mixin} from '@nti/lib-decorators';
 
 import { Service, Parser as parse } from '../../constants';
+import Page from '../../data-sources/data-types/Page';
 import {Flaggable} from '../../mixins';
 import Threadable from '../../mixins/Threadable';
+import DiscussionInterface from '../../mixins/DiscussionInterface';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import Highlight from './Highlight';
@@ -12,7 +14,7 @@ const logger = Logger.get('models:annotations:Note');
 
 export default
 @model
-@mixin(Threadable, Flaggable)
+@mixin(Threadable, Flaggable, DiscussionInterface)
 class Note extends Highlight {
 	static MimeType = COMMON_PREFIX + 'note'
 
@@ -71,5 +73,46 @@ class Note extends Highlight {
 				this.appendNewChild(reply);
 				this.emit('change');
 			});
+	}
+
+	canAddDiscussion () { return this.canReply(); }
+	getDiscussionCount () { return this.replyCount; }
+	updateDiscussionCount () {}
+
+
+	async getDiscussions (params) {
+		const replies = await this.getReplies();
+
+		return Page.fromList(replies, params, this[Service], this);
+	}
+
+
+	async addDiscussion (data) {
+		let service = this[Service];
+		let href = service.getCollectionFor(this, null, [])?.href;
+
+		if (!href) {
+			throw new Error('No link');
+		}
+
+		const discussion = await service.postParseResponse(
+			href,
+			DiscussionInterface.getPayload({
+				Class: 'Note',
+				MimeType: Note.MimeType,
+				ContainerId: this.ContainerId,
+				applicableRange: this.applicableRange?.getData() ?? null,
+				inReplyTo: this.getID(),
+				references: [...(this.references || []), this.getID()],
+				...data
+			}),
+			this
+		);
+
+		this.appendNewChild(discussion);
+		discussion.overrideParentDiscussion(this);
+		this.onDiscussionAdded(discussion);
+
+		return discussion;
 	}
 }
