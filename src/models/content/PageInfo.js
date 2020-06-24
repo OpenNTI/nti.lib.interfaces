@@ -1,8 +1,9 @@
 import path from 'path';
 
 import {Markup, URL} from '@nti/lib-commons';
+import {isNTIID} from '@nti/lib-ntiids';
 
-
+import DiscussionInterface from '../../mixins/DiscussionInterface';
 import UserDataStore from '../../stores/UserData';
 import {
 	NO_LINK,
@@ -18,6 +19,8 @@ const NOT_FOUND = {statusCode: 404, message: 'Not Found'};
 
 const UserData = Symbol('UserData');
 const ContentPackageMimeTypes = 'application/vnd.nextthought.renderablecontentpackage';
+
+const DiscussionType = 'application/vnd.nextthought.note';
 
 export default
 @model
@@ -162,6 +165,44 @@ class PageInfo extends Base {
 		const root = RootURL && URL.parse(RootURL);
 
 		return Promise.resolve(root ? root.resolve(url) : url);
+	}
+
+
+	async addDiscussion (data) {
+		const service = this[Service];
+
+		const {pagesURL, ...discussionData} = data;
+		const href = pagesURL || service.getCollectionFor(DiscussionType)?.href;
+
+		if (!href) {
+			throw new Error('No Collection to post to.');
+		}
+
+		const {mentions: originalMentions, ...otherData} = discussionData;
+
+		const {sharedWith, mentions} = originalMentions.reduce((acc, mention) => {
+			if (!isNTIID(mention)) {
+				acc.mentions.push(mention);
+			}
+
+			acc.sharedWith.push(mention);
+			return acc;
+		}, {sharedWith: [], mentions: []});
+
+		const payload = DiscussionInterface.getPayload({
+			MimeType: DiscussionType,
+			...otherData,
+			sharedWith,
+			mentions
+		});
+
+		const newDiscussion = await service.postParseResponse(href, payload);
+
+		if (this[UserData]) {
+			this[UserData].insertItem(newDiscussion);
+		}
+
+		return newDiscussion;
 	}
 }
 
