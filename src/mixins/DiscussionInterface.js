@@ -44,7 +44,7 @@ async function resolveMentions (discussion) {
 
 	const resolved = await Promise.all(
 		mentions.map(async (mention) => {
-			const User = await post[Service].getObject(mention.User);
+			const User = mention.User ? await post[Service].getObject(mention.User) : null;
 
 			return {
 				...mention,
@@ -141,6 +141,8 @@ DiscussionInterface.getPayload = (payload) => {
 	const json = {...payload, mentions: [], body: []};
 
 	//For now strip out any ntiid like mentions
+	//since only users can be mentions and usernames
+	//won't be NTIID like :fingers-crossed:
 	for (let mention of (payload.mention || [])) {
 		if (!isNTIID(mention)) {
 			json.mentions.push(mention);
@@ -211,7 +213,7 @@ export default function DiscussionInterface (targetModelClass) {
 
 			const mentions = this.getMentions();
 
-			return (mentions || []).find(mention => mention.User.getID() === username);
+			return (mentions || []).find(mention => mention?.User?.getID?.() === username);
 		},
 
 		isDeleted () { return false; },
