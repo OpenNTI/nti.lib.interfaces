@@ -12,6 +12,7 @@ import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA, Service} from '../../constan
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
+import Pages from './mixins/Pages';
 
 const UserData = Symbol('UserData');
 
@@ -43,7 +44,7 @@ const EXTERNAL_TYPE = 'application/vnd.nextthought.externallink';
 
 export default
 @model
-@mixin(Completable, ContentTreeMixin)
+@mixin(Completable, ContentTreeMixin, Pages)
 class RelatedWorkReference extends Base {
 	static MimeType = COMMON_PREFIX + 'relatedworkref'
 
