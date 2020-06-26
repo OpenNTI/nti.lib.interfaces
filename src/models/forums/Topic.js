@@ -40,6 +40,12 @@ class Topic extends Base {
 
 	isTopic = true
 
+	getLockedMentions (container) {
+		if (!Array.isArray(container)) { container = [container]; }
+
+		return [container[0]];
+	}
+
 
 	isTopLevel () {
 		return true;
