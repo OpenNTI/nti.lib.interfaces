@@ -143,7 +143,7 @@ DiscussionInterface.getPayload = (payload) => {
 	//For now strip out any ntiid like mentions
 	//since only users can be mentions and usernames
 	//won't be NTIID like :fingers-crossed:
-	for (let mention of (payload.mention || [])) {
+	for (let mention of (payload.mentions || [])) {
 		if (!isNTIID(mention)) {
 			json.mentions.push(mention);
 		}
