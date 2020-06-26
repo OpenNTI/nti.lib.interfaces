@@ -1,5 +1,6 @@
 import Logger from '@nti/util-logger';
 import {mixin} from '@nti/lib-decorators';
+import {isNTIID} from '@nti/lib-ntiids';
 
 import { Service, Parser as parse } from '../../constants';
 import Page from '../../data-sources/data-types/Page';
@@ -77,6 +78,12 @@ class Note extends Highlight {
 
 	isDeleted () {
 		return this.placeholder;
+	}
+
+	getExtraMentions () {
+		return (this.sharedWith ?? [])
+			.filter(x => isNTIID(x))
+			.map(x => ({CanAccessContent: true, User: x}));
 	}
 
 	canAddDiscussion () { return this.canReply(); }
