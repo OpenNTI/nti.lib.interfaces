@@ -16,7 +16,6 @@ export default {
 
 		const payload = DiscussionInterface.getPayload({
 			MimeType: DiscussionType,
-			sharedWith: [...(discussionData.mentions || [])],
 			...discussionData
 		});
 
