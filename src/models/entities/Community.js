@@ -229,7 +229,8 @@ class Community extends Entity {
 
 	getDefaultSharing () {
 		return {
-			forcedScopes: [this]
+			scopes: [this],
+			locked: true
 		};
 	}
 

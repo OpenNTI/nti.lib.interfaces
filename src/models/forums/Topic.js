@@ -40,7 +40,8 @@ class Topic extends Base {
 
 	isTopic = true
 
-	getLockedMentions (container) {
+	canEditSharing () { return false; }
+	getSharedWith (container) {
 		if (!Array.isArray(container)) { container = [container]; }
 
 		return [container[0]];

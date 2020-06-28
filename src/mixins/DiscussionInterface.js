@@ -205,6 +205,10 @@ export default function DiscussionInterface (targetModelClass) {
 		getBody () { return getBody(this); },
 		getTags () { return getTags(this); },
 		getMentions () { return getMentions(this); },
+
+		getSharedWith () { return null; },
+		canEditSharing () { return null; },
+
 		getLockedMentions () { return null; },
 
 		getMentionFor (username) {

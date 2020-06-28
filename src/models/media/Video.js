@@ -9,6 +9,7 @@ import {
 } from '../../constants';
 import getLink from '../../utils/getlink';
 import {model, COMMON_PREFIX} from '../Registry';
+import Pages from '../content/mixins/Pages';
 import Base from '../Base';
 
 const UserData = Symbol('UserData');
@@ -53,7 +54,7 @@ class MediaSourceUtil {
 
 export default
 @model
-@mixin(Completable)
+@mixin(Completable, Pages)
 class Video extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'ntivideo',
