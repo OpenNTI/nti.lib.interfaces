@@ -23,7 +23,9 @@ export default class BundleSearchDataSource extends PagedDataSource {
 			sortOn: 'relevance'
 		};
 
-		const href = path.join(this.service.getUserUnifiedSearchURL(), encodeURI(rootPackage.NTIID), encodeURI(term));
+		const href = path.join(this.service.getUserUnifiedSearchURL(),
+							   encodeURIComponent(rootPackage.NTIID),
+							   encodeURIComponent(term));
 
 		const contents = await this.service.get(URL.appendQueryParams(href, requestParams));
 
