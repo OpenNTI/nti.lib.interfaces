@@ -211,6 +211,7 @@ export default function DiscussionInterface (targetModelClass) {
 		getLockedMentions () { return null; },
 
 		getMentionFor (username) {
+			if (!username) { return null; }
 			if (username.getID) {
 				username = username.getID();
 			}
