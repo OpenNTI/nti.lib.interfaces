@@ -97,6 +97,11 @@ class CourseCommunity extends EventEmitter {
 
 		return this.#channelListPromise;
 	}
+
+
+	getDefaultSharing () {
+		return this.#course.getDefaultSharing();
+	}
 }
 
 function cleanup (board) {
