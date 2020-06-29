@@ -41,10 +41,9 @@ async function resolveMentions (discussion) {
 	if (post !== discussion) { return; }
 
 	const mentions = post.UserMentions ?? [];
-	const extraMentions = post.getExtraMentions?.() ?? [];
 
 	const resolved = await Promise.all(
-		([...mentions, ...extraMentions]).map(async (mention) => {
+		mentions.map(async (mention) => {
 			const User = mention.User ? await post[Service].getObject(mention.User) : null;
 
 			return {
@@ -223,8 +222,14 @@ export default function DiscussionInterface (targetModelClass) {
 
 		isDeleted () { return false; },
 
-		updatePost (...args) {
-			return updatePost(this, ...args);
+		updatePost (data, ...args) {
+			const post = this.getPost();
+
+			if (post !== this) { return post.updatePost(data, ...args); }
+
+			const payload = DiscussionInterface.getPayload(data);	
+
+			return this.save(payload, ...args);
 		},
 	
 		getParentDiscussion () {
