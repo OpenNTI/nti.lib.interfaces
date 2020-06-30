@@ -99,8 +99,13 @@ class CourseCommunity extends EventEmitter {
 	}
 
 
-	getDefaultSharing () {
-		return this.#course.getDefaultSharing();
+	async getDefaultSharing () {
+		const sharing = await this.#course.getDefaultSharing();
+	
+		return {
+			scopes: sharing?.scopes ?? [],
+			locked: true
+		};
 	}
 }
 
