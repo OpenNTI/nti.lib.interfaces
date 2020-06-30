@@ -56,14 +56,6 @@ async function resolveMentions (discussion) {
 	post[ResolvedMentions] = resolved;
 }
 
-function updatePost (discussion, ...args) {
-	const post = discussion.getPost();
-
-	if (post !== discussion) { return post.updatePost(...args); }
-
-	return discussion.save(...args);
-}
-
 
 class DiscussionTree {
 	static forDiscussion (discussion, sort, depth) {
@@ -150,7 +142,7 @@ DiscussionInterface.getPayload = (payload) => {
 	}
 
 	//If we have non-string body parts we most likely need to do form data...
-	if (!payload?.body?.some?.(part => typeof part !== 'string')) {
+	if (!payload?.body?.some?.(part => typeof part !== 'string' && part.file)) {
 		json.body = payload.body;
 
 		return json;

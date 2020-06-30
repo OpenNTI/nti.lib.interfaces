@@ -35,9 +35,44 @@ export default {
 			.then(() => true);//control the success result
 	},
 
+	saveFormData (data, onAfterRefresh = x => x, rel = 'edit') {
+		if (!this.hasLink(rel)) {
+			return Promise.reject('No Edit Link.');
+		}
+
+		begin(this, SAVE);
+
+		const previousSave = this.saving || Promise.resolve();
+
+		const worker = this.saving = after(previousSave, () => this.putToLink(rel, data))
+			.then(o => (
+				this.refresh(o)
+					.then(() => o)
+			))
+			.then(o => (onAfterRefresh(this, o), o))
+			.then(...finishers(this, SAVE))
+			.then(() => this.onChange());
+
+		const clean = () => {
+			if (this.saving === worker) {
+				delete this.saving.data;
+				delete this.saving;
+			}
+		};
+
+		this.saving.data = data;
+		this.saving.then(clean, clean);
+
+		this.onChange('saving');
+
+		return this.saving;
+	},
+
 
 
 	save (newValues, onAfterRefresh = x=>x, rel = 'edit') {
+		if (newValues instanceof FormData) { return this.saveFormData(newValues, onAfterRefresh, rel); }
+
 		if (!this.hasLink(rel)) {
 			return Promise.reject('No Edit Link.');
 		}
