@@ -109,7 +109,7 @@ class Topic extends Base {
 		return page.waitForPending();
 	}
 
-	async addDiscussion (data) {
+	async addDiscussion (data, forComment) {
 		if (!this.hasLink('add')) { throw new Error('Cannot add discussion'); }
 
 		const {inReplyTo, ...otherData} = data;
@@ -127,8 +127,10 @@ class Topic extends Base {
 
 		const discussion = await this.postToLink('add', DiscussionInterface.getPayload(payload), true);
 
-		discussion.overrideParentDiscussion(this);
-		this.onDiscussionAdded(discussion);
+		if (!forComment) {
+			discussion.overrideParentDiscussion(this);
+			this.onDiscussionAdded(discussion);
+		}
 
 		return discussion;
 	}

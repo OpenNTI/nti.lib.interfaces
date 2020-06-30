@@ -92,10 +92,9 @@ class Comment extends Post {
 
 	async addDiscussion (data) {
 		const topic = this.#getParentTopic();
-		const discussion = await topic.addDiscussion({...data, inReplyTo: this});
+		const discussion = await topic.addDiscussion({...data, inReplyTo: this}, true);
 
 		discussion.overrideParentDiscussion(this);
-
 		this.onDiscussionAdded(discussion);
 
 		return discussion;

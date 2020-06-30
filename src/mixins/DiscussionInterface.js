@@ -107,6 +107,9 @@ class DiscussionTree {
 			}),
 			this.#node.subscribeToDiscussionAdded(async (newDiscussion) => {
 				let newTree = new DiscussionTree(newDiscussion, this.#sort, this.depth + 1);
+
+				cleanUps.push(newTree.subscribeToUpdates(update));
+
 				let newReplies = [...this.children];
 
 				newReplies.push(newTree);
@@ -258,14 +261,17 @@ export default function DiscussionInterface (targetModelClass) {
 		},
 
 		addDiscussion () { throw new Error('addDiscussion not implented'); },
-		onDiscussionAdded (discussion) {
+		onDiscussionAdded (discussion, silent) {
 			this.updateDiscussionCount(this.getDiscussionCount() + 1);
-			this.emit(DiscussionAdded, discussion);
+			
+			if (!silent) {
+				this.emit(DiscussionAdded, discussion);
+			}
 
 			const parent = this.getParentDiscussion();
 
 			if (parent?.isDiscussion) {
-				parent.onDiscussionAdded(discussion);
+				parent.onDiscussionAdded(discussion, true);
 			}
 		},
 
