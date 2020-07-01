@@ -82,7 +82,7 @@ class Note extends Highlight {
 	getSharedWith () { return this.sharedWith; }
 	canEditSharing () { return this.replyCount <= 0; }
 
-	canAddDiscussion () { return this.canReply(); }
+	canAddDiscussion () { return this.canReply() && !this.isDeleted(); }
 	getDiscussionCount () { return this.replyCount; }
 	updateDiscussionCount () {}
 
