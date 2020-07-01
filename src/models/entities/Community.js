@@ -251,7 +251,8 @@ class Community extends Entity {
 					contentsDataSource: this.getAllActivityDataSource(),
 					setTitle: null,
 					pinned: true,
-					addDiscussion
+					addDiscussion,
+					DefaultSharedToNTIIDs: forum.DefaultSharedToNTIIDs
 				});
 			}
 		);

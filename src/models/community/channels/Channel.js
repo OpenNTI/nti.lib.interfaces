@@ -29,7 +29,8 @@ export default class CommunityChannel extends EventEmitter {
 			save,
 			addDiscussion,
 			delete: doDelete,
-			reports: forum.Reports
+			reports: forum.Reports,
+			DefaultSharedToNTIIDs: forum.DefaultSharedToNTIIDs
 		});
 	}
 
@@ -43,8 +44,21 @@ export default class CommunityChannel extends EventEmitter {
 	#addDiscussion = null
 	#doDelete = null
 	#reports = null
+	#DefaultSharedToNTIIDs = null
 
-	constructor ({backer, id, title, description, save, contentsDataSource, addDiscussion, pinned, delete: doDelete, reports}) {
+	constructor ({
+		backer,
+		id,
+		title,
+		description,
+		save,
+		contentsDataSource,
+		addDiscussion,
+		pinned,
+		delete: doDelete,
+		reports,
+		DefaultSharedToNTIIDs
+	}) {
 		super();
 		this.setMaxListeners(100);
 		//Make EventEmitter properties non-enumerable
@@ -60,6 +74,7 @@ export default class CommunityChannel extends EventEmitter {
 		this.#addDiscussion = addDiscussion;
 		this.#doDelete = doDelete;
 		this.#reports = reports;
+		this.#DefaultSharedToNTIIDs = DefaultSharedToNTIIDs;
 	}
 
 	get backer () { return this.#backer; }
@@ -141,4 +156,11 @@ export default class CommunityChannel extends EventEmitter {
 		this.emit('deleted');
 	}
 
+
+	getDefaultSharing () {
+		return {
+			scopes: this.#DefaultSharedToNTIIDs ?? [],
+			locked: true
+		};
+	}
 }

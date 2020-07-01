@@ -147,7 +147,8 @@ function buildAllActivityChannel (forum, activityInfo) {
 		contentsDataSource: activityInfo.dataSource,
 		setTitle: null,
 		pinned: true,
-		addDiscussion
+		addDiscussion,
+		DefaultSharedToNTIIDs: forum.DefaultSharedToNTIIDs
 	});
 
 	return channel;
