@@ -218,14 +218,18 @@ export default function DiscussionInterface (targetModelClass) {
 
 		isDeleted () { return false; },
 
-		updatePost (data, ...args) {
+		async updatePost (data, ...args) {
 			const post = this.getPost();
 
 			if (post !== this) { return post.updatePost(data, ...args); }
 
 			const payload = DiscussionInterface.getPayload(data);	
 
-			return this.save(payload, ...args);
+			const result = await this.save(payload, ...args);
+
+			await resolveMentions(this);
+
+			return result;
 		},
 	
 		getParentDiscussion () {
