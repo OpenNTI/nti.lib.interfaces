@@ -187,6 +187,21 @@ export default function DiscussionInterface (targetModelClass) {
 	return {
 		isDiscussion: true,
 		getPost () { return this; },
+		getPostHash () {
+			const post = this.getPost();
+			const parts = [
+				post.getID(),
+				post.getLastModified(),
+				(this.getMentions() ?? []).map(x => x.User?.getID()).join(',')
+			];
+
+			return parts.join('-');
+		},
+
+		async applyChange (item) {
+			await this.refresh(item);
+			await resolveMentions(this);
+		},
 
 		initMixin () {
 			const resolve = resolveMentions(this);
@@ -226,8 +241,9 @@ export default function DiscussionInterface (targetModelClass) {
 			const payload = DiscussionInterface.getPayload(data);	
 
 			const result = await this.save(payload, ...args);
-
 			await resolveMentions(this);
+
+			this.onChange();
 
 			return result;
 		},

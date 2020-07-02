@@ -126,7 +126,12 @@ class Base extends EventEmitter {
 			if (item === this) { return fn(item, ...args); }
 
 			if (item.getLastModified() >= this.getLastModified()) {
-				await this.refresh(item);
+				if (this.applyChange) {
+					await this.applyChange(item);
+				} else {
+					await this.refresh(item);
+				}
+
 				fn();
 			}
 		};
