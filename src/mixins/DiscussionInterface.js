@@ -41,9 +41,10 @@ async function resolveMentions (discussion) {
 	if (post !== discussion) { return; }
 
 	const mentions = post.UserMentions ?? [];
+	const extraMentions = post.getExtraMentions?.() ?? [];
 
 	const resolved = await Promise.all(
-		mentions.map(async (mention) => {
+		([...mentions, ...extraMentions]).map(async (mention) => {
 			const User = mention.User ? await post[Service].getObject(mention.User) : null;
 
 			return {
