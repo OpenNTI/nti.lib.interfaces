@@ -86,7 +86,6 @@ class Note extends Highlight {
 			.map(x => ({CanAccessContent: true, User: x}));
 	}
 
-	getSharedWith () { return this.sharedWith; }
 	canEditSharing () { return this.replyCount <= 0; }
 
 	canAddDiscussion () { return this.canReply() && !this.isDeleted(); }

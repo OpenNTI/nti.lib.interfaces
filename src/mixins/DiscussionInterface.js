@@ -7,6 +7,8 @@ const DiscussionAdded = 'discussion-added';
 const DiscussionDeleted = 'discussion-deleted';
 
 const ResolvedMentions = Symbol('ResolvedMentions');
+const ResolvedSharedWith = Symbol('ResolvedSharedWith');
+
 const ParentOverride = Symbol('Parent Override');
 
 function getTitle (discussion) {
@@ -35,17 +37,25 @@ function getMentions (discussion) {
 	return post[ResolvedMentions];
 }
 
+function getSharedWith (discussion) {
+	const post = discussion.getPost();
+
+	if (post !== discussion) { return post.getSharedWith(); }
+
+	return post[ResolvedSharedWith];
+}
+
 async function resolveMentions (discussion) {
 	const post = discussion.getPost();
 
 	if (post !== discussion) { return; }
 
+	const service = post[Service];
 	const mentions = post.UserMentions ?? [];
-	const extraMentions = post.getExtraMentions?.() ?? [];
 
 	const resolved = await Promise.all(
-		([...mentions, ...extraMentions]).map(async (mention) => {
-			const User = mention.User ? await post[Service].getObject(mention.User) : null;
+		mentions.map(async (mention) => {
+			const User = mention.User ? await service.getObject(mention.User) : null;
 
 			return {
 				...mention,
@@ -55,6 +65,25 @@ async function resolveMentions (discussion) {
 	);
 
 	post[ResolvedMentions] = resolved;
+}
+
+async function resolveSharedWith (discussion) {
+	const post = discussion.getPost();
+
+	if (post !== discussion) { return; }
+
+	const service = post[Service];
+	const sharedWith = post.sharedWith ?? [];
+
+	const resolved = await Promise.all(
+		sharedWith.map(async (entity) => (
+			typeof entity === 'string' ?
+				service.resolveEntity(entity) :
+				entity
+		))
+	);
+
+	post[ResolvedSharedWith] = resolved;
 }
 
 
@@ -180,12 +209,19 @@ export default function DiscussionInterface (targetModelClass) {
 	Object.assign(targetModelClass.Fields, {
 		'title': targetModelClass.Fields.title ?? ({type: 'string'}),
 		'body': targetModelClass.Fields.body ?? ({type: '*[]'}),
+
 		'tags': targetModelClass.Fields.tags ?? ({type: 'string[]'}),
+
 		'mentions': targetModelClass.Fields.mentions ?? ({type: 'string[]'}),
 		'UserMentions': targetModelClass.Fields.UserMentions ?? ({type: 'object[]'})
 	});
 
 	return {
+		initMixin () {
+			this.addToPending?.(resolveMentions(this));
+			this.addToPending?.(resolveSharedWith(this));
+		},
+
 		isDiscussion: true,
 		getPost () { return this; },
 		getPostHash () {
@@ -193,7 +229,8 @@ export default function DiscussionInterface (targetModelClass) {
 			const parts = [
 				post.getID(),
 				post.getLastModified(),
-				(this.getMentions() ?? []).map(x => x.User?.getID()).join(',')
+				(this.getMentions() ?? []).map(x => x.User?.getID()).join(','),
+				(this.getSharedWith() ?? []).map(x => x.getID?.()).join(',')
 			];
 
 			return parts.join('-');
@@ -202,25 +239,16 @@ export default function DiscussionInterface (targetModelClass) {
 		async applyChange (item) {
 			await this.refresh(item);
 			await resolveMentions(this);
+			await resolveSharedWith(this);
 		},
 
-		initMixin () {
-			const resolve = resolveMentions(this);
-
-			this.addToPending?.(resolve);
-		},
 
 		getTitle () { return getTitle(this); },
-
 		getBody () { return getBody(this); },
+		
 		getTags () { return getTags(this); },
+
 		getMentions () { return getMentions(this); },
-
-		getSharedWith () { return null; },
-		canEditSharing () { return null; },
-
-		getLockedMentions () { return null; },
-
 		getMentionFor (username) {
 			if (!username) { return null; }
 			if (username.getID) {
@@ -230,6 +258,19 @@ export default function DiscussionInterface (targetModelClass) {
 			const mentions = this.getMentions();
 
 			return (mentions || []).find(mention => mention?.User?.getID?.() === username);
+		},
+
+		getSharedWith () { return getSharedWith(this); },
+		canEditSharing () { return null; },
+		getSharedWithFor (username) {
+			if (!username) { return null; }
+			if (username.getID) {
+				username = username.getID();
+			}
+
+			const sharedWith = this.getSharedWith();
+
+			return (sharedWith || []).find(entity => entity?.getID?.() === username || entity?.NTIID === username);
 		},
 
 		isDeleted () { return false; },
@@ -243,6 +284,7 @@ export default function DiscussionInterface (targetModelClass) {
 
 			const result = await this.save(payload, ...args);
 			await resolveMentions(this);
+			await resolveSharedWith(this);
 
 			this.onChange();
 
