@@ -10,43 +10,6 @@ import DiscussionInterface from '../../mixins/DiscussionInterface';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-const Forum = Symbol('Forum');
-
-async function findForumInCommunity (community, topic) {
-	const {ContainerId} = topic;
-
-	const channels = await community.getChannelList();
-	const list = Array.isArray(channels) ? channels : [channels];
-
-	for (let channelList of list) {
-		const channel = channelList.findChannel(c => {
-			const {backer} = c;
-
-			return backer.getID() === ContainerId || backer.NTIID === ContainerId;
-		});
-	
-		if (channel) {
-			return channel.backer;
-		}
-	}
-}
-
-function findForum (topic) {
-	let pointer = topic.parent();
-
-	while (pointer) {
-		if (pointer.isForum) {
-			return pointer;
-		} else if (pointer.isCommunity) {
-			return findForumInCommunity(pointer, topic);
-		}
-
-		pointer = pointer?.parent?.();
-	}
-
-	return topic[Service].getObject(topic.ContainerId);
-}
-
 export default
 @model
 @mixin(GetContents, Likable, Pinnable, Flaggable, DiscussionInterface)
@@ -63,37 +26,24 @@ class Topic extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'ContainerId':                 { type: 'string' },
-		'ContainerTitle':              { type: 'string' },
-		'NewestDescendant':            { type: 'model'  },
-		'NewestDescendantCreatedTime': { type: 'date'   },
-		'PostCount':                   { type: 'number' },
-		'PublicationState':            { type: '*'      },
-		'title':                       { type: 'string' },
-		'headline':                    { type: 'model'  },
-		'LikeCount':                   { type: 'number' },
-		'Reports':                     { type: 'model[]'}
+		'ContainerId':                    { type: 'string' },
+		'ContainerTitle':                 { type: 'string' },
+		'ContainerDefaultSharedToNTIIDs': {type: 'string[]'},
+		'NewestDescendant':               { type: 'model'  },
+		'NewestDescendantCreatedTime':    { type: 'date'   },
+		'PostCount':                      { type: 'number' },
+		'PublicationState':               { type: '*'      },
+		'title':                          { type: 'string' },
+		'headline':                       { type: 'model'  },
+		'LikeCount':                      { type: 'number' },
+		'Reports':                        { type: 'model[]'}
 	}
 
 
 	isTopic = true
 
-	async getParentForum () {
-		if (this[Forum]) { return this[Forum]; }
-
-		const forum = await findForum(this);
-
-		this[Forum] = forum;
-
-		return forum;
-	}
-
 	canEditSharing () { return false; }
-	async getRawSharedWith () {
-		const forum = await this.getParentForum();
-
-		return forum?.DefaultSharedToNTIIDs ?? [];
-	}
+	getSharedWith () { return this.ContainerDefaultSharedToNTIIDs; }
 
 	isTopLevel () {
 		return true;

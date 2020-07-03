@@ -37,13 +37,6 @@ function getMentions (discussion) {
 	return post[ResolvedMentions];
 }
 
-function getSharedWith (discussion) {
-	const post = discussion.getPost();
-
-	if (post !== discussion) { return post.getSharedWith(); }
-
-	return post[ResolvedSharedWith];
-}
 
 async function resolveMentions (discussion) {
 	const post = discussion.getPost();
@@ -65,27 +58,6 @@ async function resolveMentions (discussion) {
 	);
 
 	post[ResolvedMentions] = resolved;
-}
-
-async function resolveSharedWith (discussion) {
-	const post = discussion.getPost();
-
-	if (post !== discussion) { return; }
-
-	const service = post[Service];
-	const sharedWith = post.getRawSharedWith ?
-		(await post.getRawSharedWith() ?? []) :
-		(post.sharedWith ?? []);
-
-	const resolved = await Promise.all(
-		sharedWith.map(async (entity) => (
-			typeof entity === 'string' ?
-				service.resolveEntity(entity) :
-				entity
-		))
-	);
-
-	post[ResolvedSharedWith] = resolved;
 }
 
 
@@ -223,7 +195,6 @@ export default function DiscussionInterface (targetModelClass) {
 	return {
 		initMixin () {
 			this.addToPending?.(resolveMentions(this));
-			this.addToPending?.(resolveSharedWith(this));
 		},
 
 		isDiscussion: true,
@@ -243,7 +214,6 @@ export default function DiscussionInterface (targetModelClass) {
 		async applyChange (item) {
 			await this.refresh(item);
 			await resolveMentions(this);
-			await resolveSharedWith(this);
 		},
 
 
@@ -264,18 +234,23 @@ export default function DiscussionInterface (targetModelClass) {
 			return (mentions || []).find(mention => mention?.User?.getID?.() === username);
 		},
 
-		getSharedWith () { return getSharedWith(this); },
 		canEditSharing () { return null; },
-		getSharedWithFor (username) {
-			if (!username) { return null; }
-			if (username.getID) {
-				username = username.getID();
-			}
+		getSharedWith () { return this.sharedWith; },
 
+		isSharedWith (entity) {
 			const sharedWith = this.getSharedWith();
 
-			return (sharedWith || []).find(entity => entity?.getID?.() === username || entity?.NTIID === username);
+			if (typeof entity === 'string') { return sharedWith.indexOf(entity) !== -1; }
+
+			return sharedWith.some((s) => {
+				if (s === entity.getID()) { return true; }
+				if (s === entity.NTIID) { return true; }
+				if (s === entity.Username) { return true; }
+
+				return false;
+			});
 		},
+
 
 		isDeleted () { return false; },
 
@@ -288,7 +263,6 @@ export default function DiscussionInterface (targetModelClass) {
 
 			const result = await this.save(payload, ...args);
 			await resolveMentions(this);
-			await resolveSharedWith(this);
 
 			this.onChange();
 
