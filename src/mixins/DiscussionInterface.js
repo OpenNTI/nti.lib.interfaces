@@ -73,7 +73,9 @@ async function resolveSharedWith (discussion) {
 	if (post !== discussion) { return; }
 
 	const service = post[Service];
-	const sharedWith = post.sharedWith ?? [];
+	const sharedWith = post.getRawSharedWith ?
+		(await post.getRawSharedWith() ?? []) :
+		(post.sharedWith ?? []);
 
 	const resolved = await Promise.all(
 		sharedWith.map(async (entity) => (
@@ -213,7 +215,9 @@ export default function DiscussionInterface (targetModelClass) {
 		'tags': targetModelClass.Fields.tags ?? ({type: 'string[]'}),
 
 		'mentions': targetModelClass.Fields.mentions ?? ({type: 'string[]'}),
-		'UserMentions': targetModelClass.Fields.UserMentions ?? ({type: 'object[]'})
+		'UserMentions': targetModelClass.Fields.UserMentions ?? ({type: 'object[]'}),
+
+		'sharedWith': targetModelClass.Fields.sharedWith ?? ({type: 'string[]'})
 	});
 
 	return {

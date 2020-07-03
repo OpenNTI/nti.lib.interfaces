@@ -21,8 +21,12 @@ class Post extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'body':    { type: '*[]'     },
-		'title':   { type: 'string'  },
-		'Deleted': { type: 'boolean' }
+		'body':       { type: '*[]'     },
+		'title':      { type: 'string'  },
+		'Deleted':    { type: 'boolean' }
+	}
+
+	getRawSharedWith () {
+		return this.parent().getRawSharedWith();
 	}
 }

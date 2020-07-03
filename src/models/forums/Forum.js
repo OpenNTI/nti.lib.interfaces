@@ -40,8 +40,11 @@ class Forum extends Base {
 		'description':                 { type: 'string' },
 		'title':                       { type: 'string' },
 		'EmailNotifications':          { type: 'boolean'},
-		'IsDefaultForum':              { type: 'boolean'}
+		'IsDefaultForum':              { type: 'boolean'},
+		'DefaultSharedToNTIIDs':       { type: 'string[]'},
 	}
+
+	isForum = true
 
 	get displayTitle () {
 		for (let x of Forum.HIDE_PREFIXS) {

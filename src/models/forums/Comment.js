@@ -39,6 +39,8 @@ class Comment extends Post {
 		return !this.isBlogComment;
 	}
 
+	getRawSharedWith () { return []; }
+
 	isDeleted () { return this.Deleted;	}
 
 	afterDelete () {
