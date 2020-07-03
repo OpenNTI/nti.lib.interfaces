@@ -42,6 +42,7 @@ class Topic extends Base {
 
 	canEditSharing () { return false; }
 	getSharedWith (container) {
+		if (!container) { return []; }
 		if (!Array.isArray(container)) { container = [container]; }
 
 		return [container[0]];
