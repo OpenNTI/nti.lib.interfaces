@@ -38,6 +38,14 @@ class CourseCommunity extends EventEmitter {
 
 	getID () { return this.#course.getID(); }
 
+	get isCourseCommunity () {
+		return true;
+	}
+
+	get courseId () {
+		return this.#course.getID();
+	}
+
 	get displayName () {
 		return this.#board.title;
 	}

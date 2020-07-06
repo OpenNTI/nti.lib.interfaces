@@ -55,6 +55,14 @@ class Community extends Entity {
 		return this.hasLink('delete');
 	}
 
+	get isCourseCommunity () {
+		return this.hasLink('CourseInstance');
+	}
+
+	get courseId () {
+		return this.getLinkProperty('CourseInstance', 'ntiid');
+	}
+
 
 	getActivity (filterParams) {
 		let {source} = filterParams || {};
