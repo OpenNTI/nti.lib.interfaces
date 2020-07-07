@@ -1,12 +1,10 @@
 import path from 'path';
 
-import {FileType} from '@nti/lib-commons';
+import {decorate,FileType} from '@nti/lib-commons';
 
 import {model, COMMON_PREFIX} from '../../Registry';
 import Part from '../Part';
 
-export default
-@model
 class File extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.filepart'
 
@@ -49,3 +47,5 @@ class File extends Part {
 	}
 
 }
+
+export default decorate(File, {with:[model]});

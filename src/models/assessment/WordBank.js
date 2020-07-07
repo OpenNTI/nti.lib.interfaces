@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class WordBank extends Base {
 	static MimeType = COMMON_PREFIX + 'naqwordbank'
 
@@ -17,3 +17,4 @@ class WordBank extends Base {
 	}
 
 }
+export default decorate(WordBank, {with:[model]});

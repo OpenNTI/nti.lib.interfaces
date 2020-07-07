@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {Service} from '../../constants';
@@ -10,9 +11,6 @@ import DiscussionInterface from '../../mixins/DiscussionInterface';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
-@mixin(GetContents, Likable, Pinnable, Flaggable, DiscussionInterface)
 class Topic extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.topic',
@@ -137,3 +135,8 @@ class Topic extends Base {
 		return discussion;
 	}
 }
+
+export default decorate(Topic, {with:[
+	model,
+	mixin(GetContents, Likable, Pinnable, Flaggable, DiscussionInterface),
+]});

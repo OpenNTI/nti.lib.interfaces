@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
 class SCORMCourseMetadata extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courseware_scorm.scormcoursemetadata',
@@ -13,3 +13,5 @@ class SCORMCourseMetadata extends Base {
 		'scorm_id': { type: 'string', name: 'scormId' }
 	}
 }
+
+export default decorate(SCORMCourseMetadata, {with:[model]});

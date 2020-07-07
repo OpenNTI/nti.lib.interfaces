@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class CompletableItemDefaultRequiredPolicy extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'completion.defaultrequiredpolicy',
@@ -13,3 +13,5 @@ class CompletableItemDefaultRequiredPolicy extends Base {
 		'mime_types': { type: 'string[]', name: 'mimeTypes' }
 	}
 }
+
+export default decorate(CompletableItemDefaultRequiredPolicy, {with:[model]});

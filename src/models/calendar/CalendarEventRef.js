@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class CalendarEventRef extends Base {
 	static MimeType = `${COMMON_PREFIX}nticalendareventref`
 
@@ -20,3 +20,5 @@ class CalendarEventRef extends Base {
 		return this.target === id;
 	}
 }
+
+export default decorate(CalendarEventRef, {with:[model]});

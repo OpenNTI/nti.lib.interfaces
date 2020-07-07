@@ -1,3 +1,5 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
@@ -7,8 +9,6 @@ import MediaSourceFactory from './MediaSourceFactory';
 const resolver = Symbol('Resolver');
 const resolveCanAccess = Symbol('Resolve Can Access');
 
-export default
-@model
 class MediaSource extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'ntivideosource',
@@ -46,7 +46,7 @@ class MediaSource extends Base {
 		return !!this.meta.failure;
 	}
 
-	
+
 	getResolver () {
 		return this[resolver] || (
 			this[resolver] = MetaDataResolver.from(this)
@@ -95,3 +95,5 @@ class MediaSource extends Base {
 		return this.getProperty('duration');
 	}
 }
+
+export default decorate(MediaSource, {with:[model]});

@@ -1,12 +1,10 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {Mixin as ContentTreeMixin} from '../../../content-tree';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
-@mixin(ContentTreeMixin)
 class VideoRoll extends Base {
 	static MimeType = COMMON_PREFIX + 'videoroll'
 
@@ -19,3 +17,8 @@ class VideoRoll extends Base {
 		return this.Items;
 	}
 }
+
+export default decorate(VideoRoll, {with:[
+	model,
+	mixin(ContentTreeMixin),
+]});

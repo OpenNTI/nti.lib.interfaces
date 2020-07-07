@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 
 import BaseEvent from './BaseEvent';
 
-export default
-@model
 class CourseCalendarEvent extends BaseEvent {
 	static MimeType = `${COMMON_PREFIX}courseware.coursecalendarevent`
 
@@ -11,3 +11,5 @@ class CourseCalendarEvent extends BaseEvent {
 		...BaseEvent.Fields,
 	}
 }
+
+export default decorate(CourseCalendarEvent, {with:[model]});

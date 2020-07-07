@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class SlideVideo extends Base {
 	static MimeType = COMMON_PREFIX + 'ntislidevideo'
 
@@ -16,3 +16,5 @@ class SlideVideo extends Base {
 		'video-ntiid':   { type: 'string', name: 'videoId'     },
 	}
 }
+
+export default decorate(SlideVideo, {with:[model]});

@@ -1,10 +1,10 @@
+import {decorate} from '@nti/lib-commons';
+
 import {Service} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 
-export default
-@model
 class SharingPagePreference extends Base {
 	static MimeType = COMMON_PREFIX + 'sharingpagepreference'
 
@@ -33,3 +33,5 @@ class SharingPagePreference extends Base {
 		return this.addToPending(...resolving).waitForPending();
 	}
 }
+
+export default decorate(SharingPagePreference, {with:[model]});

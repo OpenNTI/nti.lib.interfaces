@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import TimeContentPointer from './TimeContentPointer';
 
-export default
-@model
 class TranscriptContentPointer extends TimeContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.transcriptcontentpointer'
 
@@ -20,3 +20,5 @@ class TranscriptContentPointer extends TimeContentPointer {
 	getPointer () { return this.pointer; }
 	getCueId () { return this.cueid; }
 }
+
+export default decorate(TranscriptContentPointer, {with: [model]});

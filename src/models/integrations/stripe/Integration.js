@@ -1,3 +1,5 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
@@ -5,8 +7,6 @@ const ConnectRel = 'connect_stripe_account';
 const DisconnectRel = 'disconnect_stripe_account';
 const AccountInfoRel = 'account_info';
 
-export default
-@model
 class StripeIntegration extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'integration.stripeintegration'
@@ -39,7 +39,7 @@ class StripeIntegration extends Base {
 
 		return info && info.StripeAccountID;
 	}
-	
+
 	async disconnect () {
 		await this.requestLink(DisconnectRel, 'delete');
 		await this.sync();
@@ -56,3 +56,5 @@ class StripeIntegration extends Base {
 		}
 	}
 }
+
+export default decorate(StripeIntegration, {with:[model]});

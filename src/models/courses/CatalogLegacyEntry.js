@@ -1,11 +1,11 @@
+import {decorate} from '@nti/lib-commons';
+
 import {encodeIdFrom} from '../../utils/href-ntiids';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import CatalogEntry from './CatalogEntry';
 
 
-export default
-@model
 class CourseCatalogLegacyEntry extends CatalogEntry {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.coursecataloglegacyentry', //Really?! Two packages?! :P
@@ -17,3 +17,5 @@ class CourseCatalogLegacyEntry extends CatalogEntry {
 		return encodeIdFrom(this.href);
 	}
 }
+
+export default decorate(CourseCatalogLegacyEntry, {with:[model]});

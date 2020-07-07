@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class Timeline extends Base {
 	static MimeType = COMMON_PREFIX + 'ntitimeline'
 
@@ -16,3 +16,5 @@ class Timeline extends Base {
 	}
 
 }
+
+export default decorate(Timeline, {with:[model]});

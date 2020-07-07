@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
@@ -35,8 +36,6 @@ function setFilter (instance, scope = instance.scopeFilter, category = instance.
 	instance.loadPage(1);
 }
 
-export default
-@mixin(Paged)
 class GradeBookSummary extends Stream {
 
 	constructor (service, owner, href, options, ...args) {
@@ -129,3 +128,5 @@ class GradeBookSummary extends Stream {
 	get scopeFilter () { return getPrivate(this).scopeFilter; }
 	get categoryFilter () { return getPrivate(this).categoryFilter; }
 }
+
+export default decorate(GradeBookSummary, {with:[mixin(Paged)]});

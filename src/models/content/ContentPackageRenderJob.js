@@ -1,3 +1,5 @@
+import {decorate} from '@nti/lib-commons';
+
 import {Service} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -22,8 +24,6 @@ function getIntervalTimeout (interval) {
 	}
 }
 
-export default
-@model
 class ContentPackageRenderJob extends Base {
 	static MimeType = COMMON_PREFIX + 'content.packagerenderjob'
 
@@ -122,3 +122,5 @@ class ContentPackageRenderJob extends Base {
 		}
 	}
 }
+
+export default decorate(ContentPackageRenderJob, {with:[model]});

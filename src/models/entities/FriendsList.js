@@ -1,4 +1,4 @@
-import {pluck} from '@nti/lib-commons';
+import {decorate,pluck} from '@nti/lib-commons';
 
 import {model, COMMON_PREFIX} from '../Registry';
 
@@ -7,8 +7,6 @@ import Entity from './Entity';
 
 const getID = e => typeof e === 'object' ? e.getID() : e;
 
-export default
-@model
 class FriendsList extends Entity {
 	static MimeType = COMMON_PREFIX + 'friendslist'
 
@@ -186,3 +184,5 @@ class FriendsList extends Entity {
 
 	getID () { return this.ID; }
 }
+
+export default decorate(FriendsList, {with:[model]});

@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 // import Editable from '../../mixins/Editable'; //Base already mixes in Editable
@@ -6,9 +7,6 @@ import DiscussionInterface from '../../mixins/DiscussionInterface';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
-@mixin(Likable, DiscussionInterface)
 class Post extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.post',
@@ -30,3 +28,8 @@ class Post extends Base {
 		return this.parent().getRawSharedWith();
 	}
 }
+
+export default decorate(Post, {with:[
+	model,
+	mixin(Likable, DiscussionInterface)
+]});

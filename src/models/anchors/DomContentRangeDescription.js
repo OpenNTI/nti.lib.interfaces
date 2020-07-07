@@ -1,10 +1,10 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import ContentRangeDescription from './ContentRangeDescription';
 import DomContentPointer from './DomContentPointer';
 
-export default
-@model
 class DomContentRangeDescription extends ContentRangeDescription {
 	static MimeType = COMMON_PREFIX + 'contentrange.domcontentrangedescription'
 
@@ -44,3 +44,5 @@ class DomContentRangeDescription extends ContentRangeDescription {
 		return (o && o instanceof DomContentPointer);
 	}
 }
+
+export default decorate(DomContentRangeDescription, {with: [model]});

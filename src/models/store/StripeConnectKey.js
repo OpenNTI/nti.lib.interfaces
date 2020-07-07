@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class StripeConnectKey extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'store.stripeconnectkey',
@@ -17,3 +17,5 @@ class StripeConnectKey extends Base {
 		'StripeUserID': { type: 'string'  },
 	}
 }
+
+export default decorate(StripeConnectKey, {with:[model]});

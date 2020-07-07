@@ -1,12 +1,10 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import Completable from '../../../mixins/Completable';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
-@mixin(Completable)
 class AssignmentReference extends Base {
 	static MimeType = COMMON_PREFIX + 'assignmentref'
 
@@ -25,3 +23,8 @@ class AssignmentReference extends Base {
 		return this['Target-NTIID'] === id;
 	}
 }
+
+export default decorate(AssignmentReference, {with:[
+	model,
+	mixin(Completable),
+]});

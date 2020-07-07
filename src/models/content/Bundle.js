@@ -1,4 +1,4 @@
-import {URL, forward} from '@nti/lib-commons';
+import {decorate,URL, forward} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
@@ -19,9 +19,6 @@ const BundleCommunityCache = Symbol('Bundle Community Cache');
 
 const names = (x, y, v) => Array.isArray(v) ? v.join(', ') : null;
 
-export default
-@model
-@mixin(forward(['every','filter','forEach','map', 'reduce'], 'ContentPackages'), Publishable)
 class Bundle extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'contentpackagebundle',
@@ -209,3 +206,8 @@ async function resolveDiscussions (bundle) {
 		//swallow
 	}
 }
+
+export default decorate(Bundle, {with:[
+	model,
+	mixin(forward(['every','filter','forEach','map', 'reduce'], 'ContentPackages'), Publishable),
+]});

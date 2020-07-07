@@ -1,3 +1,5 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
@@ -7,8 +9,6 @@ import CatalogEntryFactory from './CatalogEntryFactory';
 const EnrollmentOptions = Symbol('EnrollmentOptions');
 
 
-export default
-@model
 class CourseCatalogEntry extends Base {
 	static MimeType = COMMON_PREFIX + 'courses.catalogentry'
 
@@ -115,3 +115,5 @@ class CourseCatalogEntry extends Base {
 		return CatalogFamilies.hasIntersectionWith(catalogEntry.CatalogFamilies);
 	}
 }
+
+export default decorate(CourseCatalogEntry, {with:[model]});

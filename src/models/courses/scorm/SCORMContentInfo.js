@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import Completable from '../../../mixins/Completable';
@@ -15,9 +16,6 @@ const RUNNING = 'running';
 const ERROR = 'error';
 const FINISHED = 'finished';
 
-export default
-@model
-@mixin(Completable)
 class SCORMContentInfo extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'scorm.scormcontentinfo'
@@ -85,3 +83,8 @@ class SCORMContentInfo extends Base {
 		return createPollingTask(poll, POLL_INTERVAL, POLL_STEP_OFF);
 	}
 }
+
+export default decorate(SCORMContentInfo, {with:[
+	model,
+	mixin(Completable),
+]});

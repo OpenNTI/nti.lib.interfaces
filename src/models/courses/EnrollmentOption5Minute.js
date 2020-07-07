@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import EnrollmentOption from './EnrollmentOption';
 
-export default
-@model
 class EnrollmentOption5Minute extends EnrollmentOption {
 	static MimeType = COMMON_PREFIX + 'courseware.fiveminuteenrollmentoption'
 
@@ -30,3 +30,5 @@ class EnrollmentOption5Minute extends EnrollmentOption {
 	getEnrollCutOffDate () {} //implemented by the date Field type
 	getRefundCutOffDate () {} //implemented by the date Field type
 }
+
+export default decorate(EnrollmentOption5Minute, {with:[model]});

@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import Base from '../Base';
 import {model, COMMON_PREFIX} from '../Registry';
 
 
-export default
-@model
 class PresenceInfo extends Base {
 	static MimeType = COMMON_PREFIX + 'presenceinfo'
 
@@ -37,3 +37,5 @@ class PresenceInfo extends Base {
 		return show;
 	}
 }
+
+export default decorate(PresenceInfo, {with:[model]});

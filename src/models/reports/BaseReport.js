@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
-class InstructorReport extends Base {
+class BaseReport extends Base {
 	static MimeType = COMMON_PREFIX + 'reports.basereport'
 
 	static Fields = {
@@ -14,3 +14,5 @@ class InstructorReport extends Base {
 		'contexts':        {type: 'object'}
 	}
 }
+
+export default decorate(BaseReport, {with:[model]});

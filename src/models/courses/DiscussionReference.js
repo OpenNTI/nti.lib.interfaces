@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {parseNTIID, isNTIID} from '@nti/lib-ntiids';
 
 import {model, COMMON_PREFIX} from '../Registry';
@@ -15,8 +16,6 @@ const RESOLVED_TARGET_NTIID = Symbol('Resolved Target NTIID');
 "title": "1.1 Warmer: Elias Hill"
 }
 */
-export default
-@model
 class DiscussionReference extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'discussion',
@@ -63,6 +62,9 @@ class DiscussionReference extends Base {
 		}
 	}
 }
+
+export default decorate(DiscussionReference, {with:[model]});
+
 
 function hasValidTargetNTIID (ref) {
 	return ref['Target-NTIID'] && isNTIID(ref['Target-NTIID']);

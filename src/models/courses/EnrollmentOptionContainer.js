@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class EnrollmentOptionContainer extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courseware.enrollmentoptioncontainer',
@@ -15,3 +15,5 @@ class EnrollmentOptionContainer extends Base {
 		'ItemCount':                  { type: 'number'  }
 	}
 }
+
+export default decorate(EnrollmentOptionContainer, {with:[model]});

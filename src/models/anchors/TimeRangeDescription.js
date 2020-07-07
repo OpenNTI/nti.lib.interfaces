@@ -1,10 +1,10 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import ContentRangeDescription from './ContentRangeDescription';
 import TimeContentPointer from './TimeContentPointer';
 
-export default
-@model
 class TimeRangeDescription extends ContentRangeDescription {
 	static MimeType = COMMON_PREFIX + 'contentrange.timerangedescription'
 
@@ -36,3 +36,5 @@ class TimeRangeDescription extends ContentRangeDescription {
 		return Boolean(o && o instanceof TimeContentPointer);
 	}
 }
+
+export default decorate(TimeRangeDescription, {with: [model]});

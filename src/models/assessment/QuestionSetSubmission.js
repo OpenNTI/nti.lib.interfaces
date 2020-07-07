@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {Service} from '../../constants';
@@ -5,9 +6,6 @@ import Submission from '../../mixins/Submission';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
-@mixin(Submission)
 class QuestionSetSubmission extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.questionsetsubmission'
 
@@ -52,3 +50,8 @@ class QuestionSetSubmission extends Base {
 			sum + (questionSet.getQuestion(q.getID()).isAnswered(q) ? 0 : 1), 0);
 	}
 }
+
+export default decorate(QuestionSetSubmission, {with:[
+	model,
+	mixin(Submission),
+]});

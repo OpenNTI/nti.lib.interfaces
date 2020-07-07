@@ -1,10 +1,10 @@
+import {decorate} from '@nti/lib-commons';
+
 // import {Parser as parse} from '../../../../../constants';
 import {model, COMMON_PREFIX} from '../../../../Registry';
 
 import Base from './Part';
 
-export default
-@model
 class AggregatedMultipleChoicePart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedmultiplechoicepart'
 
@@ -29,3 +29,5 @@ class AggregatedMultipleChoicePart extends Base {
 		}));
 	}
 }
+
+export default decorate(AggregatedMultipleChoicePart, {with:[model]});

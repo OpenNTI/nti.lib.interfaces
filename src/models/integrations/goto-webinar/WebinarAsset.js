@@ -1,12 +1,10 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 import Completable from '../../../mixins/Completable';
 
-export default
-@model
-@mixin(Completable)
 class WebinarAsset extends Base {
 	static MimeType = COMMON_PREFIX + 'webinarasset'
 
@@ -19,3 +17,8 @@ class WebinarAsset extends Base {
 		'icon':         { type: 'string' }
 	}
 }
+
+export default decorate(WebinarAsset, {with:[
+	model,
+	mixin(Completable),
+]});

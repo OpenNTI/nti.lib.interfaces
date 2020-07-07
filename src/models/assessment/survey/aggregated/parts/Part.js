@@ -1,9 +1,8 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin/*, readonly*/} from '@nti/lib-decorators';
 
 import Base from '../../../../Base';
 
-export default
-@mixin({/*@readonly*/ isAggregated: true})
 class Part extends Base {
 
 	static Fields = {
@@ -17,3 +16,7 @@ class Part extends Base {
 		throw new Error('Not Implemented');
 	}
 }
+
+export default decorate(Part, {with: [
+	mixin({/*@readonly*/ isAggregated: true}),
+]});

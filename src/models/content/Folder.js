@@ -1,10 +1,10 @@
+import {decorate} from '@nti/lib-commons';
+
 import {Service} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import FileSystemEntity, {validateSortObject} from './FileSystemEntity';
 
-export default
-@model
 class Folder extends FileSystemEntity {
 	static MimeType = [
 		COMMON_PREFIX + 'contentfolder',
@@ -51,3 +51,5 @@ class Folder extends FileSystemEntity {
 	}
 
 }
+
+export default decorate(Folder, {with:[model]});

@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class BadgeIssuer extends Base {
 	static MimeType = COMMON_PREFIX + 'openbadges.issuer'
 
@@ -16,3 +16,5 @@ class BadgeIssuer extends Base {
 		'url':            { type: 'string' },
 	}
 }
+
+export default decorate(BadgeIssuer, {with:[model]});

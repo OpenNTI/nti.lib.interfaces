@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from './Registry';
 import Base from './Base';
 import Collection from './WorkspaceCollection';
 
-export default
-@model
 class Workspace extends Base {
 	static MimeType = COMMON_PREFIX + 'workspace'
 
@@ -18,3 +18,5 @@ class Workspace extends Base {
 	}
 
 }
+
+export default decorate(Workspace, { with: [model]});

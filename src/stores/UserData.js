@@ -1,5 +1,6 @@
 import EventEmitter from 'events';
 
+import {decorate} from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 import {mixin} from '@nti/lib-decorators';
 
@@ -20,9 +21,6 @@ export function binId (i, rootId) {
 	return id !== rootId ? binId : 'root';
 }
 
-
-export default
-@mixin(Pendability)
 class UserData extends EventEmitter {
 
 	constructor (service, rootContainerId, source) {
@@ -201,3 +199,5 @@ class UserData extends EventEmitter {
 			});
 	}
 }
+
+export default decorate(UserData, {with:[mixin(Pendability)]});

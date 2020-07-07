@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import PlacementProvider from '../../../authoring/placement/providers/Assignment';
@@ -22,9 +23,6 @@ const isSummary = ({parts}) => parts && parts.some(x => x.IsSummary);
 const getAssociationCount = (x) => x.LessonContainerCount;
 const has = (x, k) => Object.prototype.hasOwnProperty.call(x, k);
 
-export default
-@model
-@mixin(Completable, Publishable, SubmittableIdentity, AssignmentIdentity)
 class Assignment extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.assignment'
 
@@ -405,3 +403,8 @@ class Assignment extends Base {
 			.then(() => this.onChange('all'));
 	}
 }
+
+export default decorate(Assignment, {with:[
+	model,
+	mixin(Completable, Publishable, SubmittableIdentity, AssignmentIdentity),
+]});

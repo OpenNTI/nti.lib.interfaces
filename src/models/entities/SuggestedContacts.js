@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class SuggestedContacts extends Base {
 	static MimeType = COMMON_PREFIX + 'suggestedcontacts'
 
@@ -17,3 +17,5 @@ class SuggestedContacts extends Base {
 		console.debug('TODO: SuggestedContacts:', data); //eslint-disable-line no-console
 	}
 }
+
+export default decorate(SuggestedContacts, {with:[model]});

@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import Purchasable from './Purchasable';
 
-export default
-@model
 class PurchasableCourse extends Purchasable {
 	static MimeType = COMMON_PREFIX + 'store.purchasablecourse'
 
@@ -12,3 +12,5 @@ class PurchasableCourse extends Purchasable {
 		'ID': { type: 'string' }
 	}
 }
+
+export default decorate(PurchasableCourse, {with:[model]});

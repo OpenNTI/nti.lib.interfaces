@@ -1,3 +1,5 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import Part from '../Part';
 
@@ -9,8 +11,6 @@ const keyName = /name=['"]([^'"]+)['"]/i;
 
 const ValueKeys = Symbol('value-keys');
 
-export default
-@model
 class FillInTheBlank extends Part {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.fillintheblank',
@@ -56,3 +56,5 @@ class FillInTheBlank extends Part {
 		return maybe;
 	}
 }
+
+export default decorate(FillInTheBlank, {with:[model]});

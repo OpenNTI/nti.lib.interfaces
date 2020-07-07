@@ -1,3 +1,5 @@
+import {decorate} from '@nti/lib-commons';
+
 import Stream from '../../stores/Stream';
 import { Service } from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
@@ -15,8 +17,6 @@ const KnownActivitySorts = [
 	'LikeCount'
 ];
 
-export default
-@model
 class Community extends Entity {
 	static MimeType = COMMON_PREFIX + 'community'
 
@@ -294,9 +294,11 @@ class Community extends Entity {
 	async delete () {
 		this.emit('deleting');
 		const resp = await super.delete('delete');
-		
+
 		this.emit('deleted');
 
 		return resp;
 	}
 }
+
+export default decorate(Community, {with:[model]});

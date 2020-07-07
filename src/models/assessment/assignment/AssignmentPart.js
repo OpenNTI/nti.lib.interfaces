@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
 class AssignmentPart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.assignmentpart'
 
@@ -43,3 +43,5 @@ class AssignmentPart extends Base {
 	}
 
 }
+
+export default decorate(AssignmentPart, {with:[model]});

@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class ContentUnitSearchHit extends Base {
 	static MimeType = COMMON_PREFIX + 'search.contentunitsearchhit'
 
@@ -18,3 +18,5 @@ class ContentUnitSearchHit extends Base {
 
 	isContentUnitSearchHit = true
 }
+
+export default decorate(ContentUnitSearchHit, {with:[model]});

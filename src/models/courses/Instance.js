@@ -1,9 +1,9 @@
 import Url from 'url';
 import path from 'path';
 
+import {decorate,wait} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
-import {wait} from '@nti/lib-commons';
 
 import {
 	MEDIA_BY_OUTLINE_NODE,
@@ -48,9 +48,6 @@ const KnownActivitySorts = [
 	'LikeCount'
 ];
 
-export default
-@model
-@mixin(CourseIdentity, ContentTreeMixin)
 class Instance extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseinstance',
@@ -718,6 +715,10 @@ class Instance extends Base {
 	}
 }
 
+export default decorate(Instance, {with:[
+	model,
+	mixin(CourseIdentity, ContentTreeMixin),
+]});
 
 //Private methods
 

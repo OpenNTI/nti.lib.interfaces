@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import Logger from '@nti/util-logger';
 import {mixin} from '@nti/lib-decorators';
 import { isNTIID } from '@nti/lib-ntiids';
-import { URL, wait } from '@nti/lib-commons';
+import {decorate, URL, wait } from '@nti/lib-commons';
 import LRU from 'lru-cache';
 
 import { parse } from '../models/Parser';
@@ -64,10 +64,6 @@ function hideCurrentProperties (o) {
 	}
 }
 
-
-
-export default
-@mixin(Pendability, InstanceCacheContainer)
 class ServiceDocument extends EventEmitter {
 
 	constructor (json, server, context) {
@@ -953,3 +949,5 @@ class ServiceDocument extends EventEmitter {
 		return promise;
 	}
 }
+
+export default decorate(ServiceDocument, {with:[mixin(Pendability, InstanceCacheContainer)]});

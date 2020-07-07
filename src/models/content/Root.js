@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import Folder from './Folder';
 
-export default
-@model
 class Root extends Folder {
 	static MimeType = [
 		COMMON_PREFIX + 'contentrootfolder',
@@ -13,3 +13,5 @@ class Root extends Folder {
 
 	isRoot = true
 }
+
+export default decorate(Root, {with:[model]});

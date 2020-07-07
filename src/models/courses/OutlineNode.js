@@ -1,5 +1,6 @@
 import url from 'url';
 
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 import {encodeForURI, isNTIID} from '@nti/lib-ntiids';
 import Logger from '@nti/util-logger';
@@ -17,9 +18,6 @@ import fallbackOverview from './_fallbacks.OverviewFromToC';
 
 const logger = Logger.get('models:courses:OutlineNode');
 
-export default
-@model
-@mixin(Publishable, ContentTreeMixin, ContentConstraints)
 class OutlineNode extends Outline {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseoutlinenode',
@@ -214,6 +212,10 @@ class OutlineNode extends Outline {
 
 }
 
+export default decorate(OutlineNode, {with:[
+	model,
+	mixin(Publishable, ContentTreeMixin, ContentConstraints),
+]});
 
 function applyProgress ([content, progress]) {
 	if (!content || !progress) { return; }

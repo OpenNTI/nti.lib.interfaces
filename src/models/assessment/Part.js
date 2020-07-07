@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {Mixin as HasContent, SetupContentProperties} from '../../mixins/HasContent';
@@ -9,9 +10,6 @@ import Base from '../Base';
 // Show Solutions if the part is answered & incorrect (as apposed to correct or 'unknown'), and there are solutions
 
 
-export default
-@model
-@mixin(HasContent)
 class Part extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.part'
 
@@ -107,3 +105,8 @@ class Part extends Base {
 		}
 	}
 }
+
+export default decorate(Part, {with: [
+	model,
+	mixin(HasContent),
+]});

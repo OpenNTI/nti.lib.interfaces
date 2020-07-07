@@ -1,3 +1,5 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
@@ -15,8 +17,6 @@ href: "/dataserver2/Objects/tag%3Anextthought.com%2C2011-10%3Aglobal.admin.alpha
 target :"tag:nextthought.com,2011-10:NTI-NTIRelatedWorkRef-global_admin_alpha1_4743953516163133541_b62c3bd2"
 */
 
-export default
-@model
 class RelatedWorkReferencePointer extends Base {
 	static MimeType = COMMON_PREFIX + 'relatedworkrefpointer'
 
@@ -26,3 +26,5 @@ class RelatedWorkReferencePointer extends Base {
 		'target':     { type: 'string'   },
 	}
 }
+
+export default decorate(RelatedWorkReferencePointer, {with:[model]});

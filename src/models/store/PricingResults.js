@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 
-export default
-@model
 class PricingResults extends Base {
 	static MimeType = COMMON_PREFIX + 'store.pricingresults'
 
@@ -15,3 +15,5 @@ class PricingResults extends Base {
 		'TotalNonDiscountedPrice':    { type: 'number'                    },
 	}
 }
+
+export default decorate(PricingResults, {with:[model]});

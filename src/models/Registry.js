@@ -111,7 +111,7 @@ export default class Registry {
 		}
 
 		if (!map.has(existingType)) {
-			throw new TypeError('Cannot alias a non-existing type');
+			throw new TypeError(`Cannot alias a non-existing type (${existingType})`);
 		}
 
 		if (map.has(alias)) {

@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class EnrollmentOptions extends Base {
 	static MimeType = COMMON_PREFIX + 'courseware.enrollmentoptions'
 
@@ -45,3 +45,5 @@ class EnrollmentOptions extends Base {
 		return this.Items.FiveminuteEnrollment;
 	}
 }
+
+export default decorate(EnrollmentOptions, {with:[model]});

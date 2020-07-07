@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class AssignmentCompletionMetadata extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assignmentcompletionmetadata',
@@ -27,3 +27,5 @@ class AssignmentCompletionMetadata extends Base {
 
 	getCompletionDate () { } //implemented by CompletionDate date field.
 }
+
+export default decorate(AssignmentCompletionMetadata, {with:[model]});

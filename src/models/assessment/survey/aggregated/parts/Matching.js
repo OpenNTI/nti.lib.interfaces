@@ -1,10 +1,10 @@
+import {decorate} from '@nti/lib-commons';
+
 // import {Parser as parse} from '../../../../../constants';
 import {model, COMMON_PREFIX} from '../../../../Registry';
 
 import Base from './Ordering';
 
-export default
-@model
 class AggregatedMatchingPart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedmatchingpart'
 
@@ -30,3 +30,5 @@ class AggregatedMatchingPart extends Base {
 		return pivotData;
 	}
 }
+
+export default decorate(AggregatedMatchingPart, {with:[model]});

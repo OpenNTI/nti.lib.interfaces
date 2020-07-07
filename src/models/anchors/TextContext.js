@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import Base from './Base';
 
-export default
-@model
 class TextContext extends Base {
 	static MimeType = COMMON_PREFIX + 'contentrange.textcontext'
 
@@ -43,3 +43,5 @@ class TextContext extends Base {
 		}
 	}
 }
+
+export default decorate(TextContext, {with: [model]});

@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
 class SavePointItem extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.savepointitem',
@@ -23,8 +23,10 @@ class SavePointItem extends Base {
 	isSyntheticSubmission () {
 		return false;
 	}
-	
+
 
 	isSubmitted () { return false; }
 
 }
+
+export default decorate(SavePointItem, {with:[model]});

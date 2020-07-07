@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin/*, readonly*/} from '@nti/lib-decorators';
 
 import {
@@ -10,9 +11,6 @@ import Question from '../Question';
 
 import PollSubmission from './PollSubmission';
 
-export default
-@model
-@mixin({/*@readonly*/ isPoll: true})
 class Poll extends Question {
 	static MimeType = COMMON_PREFIX + 'napoll'
 
@@ -48,3 +46,8 @@ class Poll extends Question {
 		return this.fetchLinkParsed(ASSESSMENT_HISTORY_LINK);
 	}
 }
+
+export default decorate(Poll, {with: [
+	model,
+	mixin({/*@readonly*/ isPoll: true}),
+]});

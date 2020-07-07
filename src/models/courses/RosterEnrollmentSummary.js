@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import Base from '../Base';
 import {model, COMMON_PREFIX} from '../Registry';
 
-export default
-@model
 class RosterRecord extends Base {
 	static MimeType = COMMON_PREFIX + 'courses.rosterenrollmentsummary'
 
@@ -26,3 +26,5 @@ class RosterRecord extends Base {
 		return `${this.username}: ${this.user.displayName} (${this.user.displayType}) - enrolled: ${this.enrollmentStatus}`;
 	}
 }
+
+export default decorate(RosterRecord, {with:[model]});

@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class Metadata extends Base {
 	static MimeType = COMMON_PREFIX + 'metadata.contentmetadata'
 
@@ -17,3 +17,5 @@ class Metadata extends Base {
 		'title':           { type: 'string'  },
 	}
 }
+
+export default decorate(Metadata, {with:[model]});

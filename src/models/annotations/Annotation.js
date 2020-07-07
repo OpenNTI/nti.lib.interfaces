@@ -1,11 +1,10 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {Service} from '../../constants';
 import Likable from '../../mixins/Likable';
 import Base from '../Base';
 
-export default
-@mixin(Likable)
 class Annotation extends Base {
 
 	static Fields = {
@@ -37,3 +36,5 @@ class Annotation extends Base {
 		return this[Service].getObject(this.getContainerID());
 	}
 }
+
+export default decorate(Annotation, {with:[mixin(Likable)]});

@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import BaseSiteInvitation from './BaseSiteInvitation';
 
-export default
-@model
 class SiteAdminInvitation extends BaseSiteInvitation {
 	static MimeType = COMMON_PREFIX + 'siteadmininvitation'
 
@@ -12,3 +12,5 @@ class SiteAdminInvitation extends BaseSiteInvitation {
 	}
 
 }
+
+export default decorate(SiteAdminInvitation, {with:[model]});

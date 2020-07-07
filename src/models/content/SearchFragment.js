@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
-class Metadata extends Base {
+class SearchFragment extends Base {
 	static MimeType = COMMON_PREFIX + 'search.searchfragment'
 
 	static Fields = {
@@ -11,3 +11,5 @@ class Metadata extends Base {
 		'Field':   { type: 'string'   },
 	}
 }
+
+export default decorate(SearchFragment, {with:[model]});

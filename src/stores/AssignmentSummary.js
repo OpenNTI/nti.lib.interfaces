@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {getPrivate} from '../utils/private';
@@ -16,8 +17,6 @@ const OPPOSITE_FILTER = {
 	Open: 'forcredit'
 };
 
-export default
-@mixin(Paged)
 class AssignmentSummary extends Stream {
 
 	constructor (...args) {
@@ -85,3 +84,5 @@ class AssignmentSummary extends Stream {
 	get filter () { return this.options.filter; }
 	getFilter () { return this.filter; }
 }
+
+export default decorate(AssignmentSummary, {with:[mixin(Paged)]});

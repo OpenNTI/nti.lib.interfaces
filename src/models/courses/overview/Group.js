@@ -1,12 +1,10 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {Mixin as ContentTreeMixin} from '../../../content-tree';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
-@mixin(ContentTreeMixin)
 class OverviewGroup extends Base {
 	static MimeType = COMMON_PREFIX + 'nticourseoverviewgroup'
 
@@ -28,3 +26,8 @@ class OverviewGroup extends Base {
 		return this.Items;
 	}
 }
+
+export default decorate(OverviewGroup, {with:[
+	model,
+	mixin(ContentTreeMixin),
+]});

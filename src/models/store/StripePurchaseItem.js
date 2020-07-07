@@ -1,10 +1,10 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 const Items = Symbol('Items');
 
-export default
-@model
 class StripePurchaseItem extends Base {
 	static MimeType = COMMON_PREFIX + 'store.stripepurchaseitem'
 
@@ -15,3 +15,5 @@ class StripePurchaseItem extends Base {
 		'Quantity': { type: 'number',  name: 'quantity' },
 	}
 }
+
+export default decorate(StripePurchaseItem, {with:[model]});

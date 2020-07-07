@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import Submission from '../../../mixins/Submission';
@@ -10,9 +11,6 @@ const RELS = {
 	HISTORY: 'History',
 };
 
-export default
-@model
-@mixin(Submission)
 class AssignmentSubmission extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.assignmentsubmission',
@@ -88,7 +86,7 @@ class AssignmentSubmission extends Base {
 		await p.refresh();
 		if (p.hasLink(RELS.HISTORY)) {
 			const history = await p.fetchLinkParsed(RELS.HISTORY);
-	
+
 			if(history && history.MetadataAttemptItem && history.MetadataAttemptItem.hasLink(RELS.ASSIGNMENT)) {
 				const newAssignmentData = await history.MetadataAttemptItem.fetchLink(RELS.ASSIGNMENT);
 				await p.refresh(newAssignmentData);
@@ -99,3 +97,8 @@ class AssignmentSubmission extends Base {
 		return p;
 	}
 }
+
+export default decorate(AssignmentSubmission, {with: [
+	model,
+	mixin(Submission),
+]});

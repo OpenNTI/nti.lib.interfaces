@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class OutlineNodeProgress extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courseoutlinenodeprogress',
@@ -19,3 +19,5 @@ class OutlineNodeProgress extends Base {
 		return this.Items[ntiid];
 	}
 }
+
+export default decorate(OutlineNodeProgress, {with:[model]});

@@ -2,7 +2,7 @@ import url from 'url';
 import EventEmitter from 'events';
 
 import Logger from '@nti/util-logger';
-import { Promises } from '@nti/lib-commons';
+import {decorate, Promises } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 import {v4 as uuid} from 'uuid';
 
@@ -54,8 +54,6 @@ export function getNewListData (name, isDynamic, MimeType, context, friends = []
 }
 
 
-export default
-@mixin(Pendability)
 class Contacts extends EventEmitter {
 
 	/**
@@ -330,3 +328,5 @@ class Contacts extends EventEmitter {
 		}
 	}
 }
+
+export default decorate(Contacts, {with:[mixin(Pendability)]});

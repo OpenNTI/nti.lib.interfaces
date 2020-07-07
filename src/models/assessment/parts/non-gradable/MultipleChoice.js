@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../../Registry';
 import MultipleChoice from '../MultipleChoice';
 
-export default
-@model
 class NonGradableMultipleChoice extends MultipleChoice {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.nongradablemultiplechoicepart',
@@ -11,3 +11,5 @@ class NonGradableMultipleChoice extends MultipleChoice {
 
 	isNonGradable = true
 }
+
+export default decorate(NonGradableMultipleChoice, {with:[model]});

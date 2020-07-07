@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {model, COMMON_PREFIX} from '../Registry';
@@ -5,9 +6,6 @@ import {model, COMMON_PREFIX} from '../Registry';
 import AdministrativeIdentity from './mixins/AdministrativeIdentity';
 import Enrollment from './Enrollment';
 
-export default
-@model
-@mixin(AdministrativeIdentity)
 class InstanceAdministrativeRole extends Enrollment {
 	static MimeType = COMMON_PREFIX + 'courseware.courseinstanceadministrativerole'
 
@@ -88,3 +86,8 @@ function buildSuggestionsFrom (scopes, sectionName = 'My Course') {
 
 	return items;
 }
+
+export default decorate(InstanceAdministrativeRole, {with:[
+	model,
+	mixin(AdministrativeIdentity),
+]});

@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from './Registry';
 import Base from './Base';
 
-export default
-@model
 class AnalyticsSession extends Base {
 	static MimeType = COMMON_PREFIX + 'analytics.analyticssession'
 
@@ -19,3 +19,5 @@ class AnalyticsSession extends Base {
 	getSessionStartTime () {} //implemented by SessionStartTime date field.
 	getSessionEndTime () {} //implemented by SessionEndTime date field.
 }
+
+export default decorate(AnalyticsSession, {with: [model]});

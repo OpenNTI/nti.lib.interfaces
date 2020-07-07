@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
 class LTIConfiguredTool extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'ims.consumer.configuredtool',
@@ -18,3 +18,5 @@ class LTIConfiguredTool extends Base {
 		'secure_launch_url': { types: 'string' }
 	}
 }
+
+export default decorate(LTIConfiguredTool, {with:[model]});

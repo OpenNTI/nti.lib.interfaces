@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class CourseProgress extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'completion.completioncontextprogress',
@@ -24,3 +24,5 @@ class CourseProgress extends Base {
 
 	getCompletedDate () {} //implemented by CompletedDate date field.
 }
+
+export default decorate(CourseProgress, {with:[model]});

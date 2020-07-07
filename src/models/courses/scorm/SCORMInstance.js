@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import { model, COMMON_PREFIX } from '../../Registry';
 import Instance from '../Instance';
 
-export default
-@model
 class ScormInstance extends Instance {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.scormcourseinstance',
@@ -19,3 +19,5 @@ class ScormInstance extends Instance {
 		return this.Metadata.getLink('LaunchSCORM');
 	}
 }
+
+export default decorate(ScormInstance, {with:[model]});

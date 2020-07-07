@@ -1,12 +1,10 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import assessed from '../../mixins/AssessedAssessmentPart';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
-@mixin(assessed)
 class AssessedQuestionSet extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.assessedquestionset'
 
@@ -56,3 +54,8 @@ class AssessedQuestionSet extends Base {
 		}
 	}
 }
+
+export default decorate(AssessedQuestionSet, {with:[
+	model,
+	mixin(assessed),
+]});

@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import Part from '../Part';
 
-export default
-@model
 class Matching extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.matchingpart'
 
@@ -24,3 +24,5 @@ class Matching extends Part {
 		return maybe;
 	}
 }
+
+export default decorate(Matching, {with:[model]});
