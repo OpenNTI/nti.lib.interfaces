@@ -4,22 +4,19 @@
   "author": "nextthought",
   "license": "UNLICENSED",
   "description": "Provides an interface for interacting with the dataserver via javascript.",
-  "main": "lib/index.js",
+  "main": ".index.js",
   "module": "src/index.js",
   "files": [
-    "lib",
+    ".index.js",
     "src"
   ],
   "scripts": {
     "fix": "lib-scripts fix",
     "test": "lib-scripts test",
     "start": "lib-scripts test --watch",
-    "prepack": "lib-scripts build",
-    "build": "lib-scripts build",
     "clean": "lib-scripts clean",
     "check": "lib-scripts check",
-    "release": "lib-scripts release",
-    "install-snapshots": "lib-scripts install-snapshots"
+    "release": "lib-scripts release"
   },
   "repository": {
     "type": "git",
@@ -29,10 +26,10 @@
     "registry": "https://npm.nextthought.com"
   },
   "dependencies": {
-    "@nti/lib-commons": "^2.20.0",
-    "@nti/lib-decorators": "^1.4.0",
-    "@nti/lib-ntiids": "^1.0.0",
-    "@nti/util-logger": "^1.0.0",
+    "@nti/lib-commons": "NextThought/nti.lib.commons",
+    "@nti/lib-decorators": "NextThought/nti.lib.decorators",
+    "@nti/lib-ntiids": "NextThought/nti.lib.ntiids",
+    "@nti/util-logger": "NextThought/nti.util.logger",
     "date-fns": "^2.8.1",
     "elementtree": "^0.1.6",
     "get-video-id": "^3.1.0",
@@ -41,7 +38,8 @@
     "lru-cache": "^5.1.1",
     "mime-types": "^2.1.0",
     "query-string": "^6.1.0",
-    "uuid": "^8.0.0"
+    "uuid": "^8.0.0",
+    "esm": "^3.2.25"
   },
   "devDependencies": {
     "@nti/lib-scripts": "^2.0.0"
