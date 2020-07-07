@@ -1,4 +1,4 @@
-import {URL} from '@nti/lib-commons';
+import {decorate,URL} from '@nti/lib-commons';
 
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -7,8 +7,6 @@ const getRoot = x => (x ? x.root : x) || '/missing-root/';
 const findRoot = p => getRoot((p && p.parent) ? p.parent('root') : null);
 const resolve = (s, p, path) => URL.resolve(findRoot(p), path);
 
-export default
-@model
 class Slide extends Base {
 	static MimeType = COMMON_PREFIX + 'slide'
 
@@ -22,3 +20,5 @@ class Slide extends Base {
 		'slidevideoend':   { type: 'number?', name: 'endTime'   },
 	}
 }
+
+export default decorate(Slide, {with:[model]});

@@ -1,10 +1,10 @@
+import {decorate} from '@nti/lib-commons';
+
 import {Service} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 
 import Assignment from './Assignment';
 
-export default
-@model
 class DiscussionAssignment extends Assignment {
 	static MimeType = COMMON_PREFIX + 'assessment.discussionassignment'
 
@@ -22,3 +22,5 @@ class DiscussionAssignment extends Assignment {
 		return this.fetchLinkParsed('ResolveTopic', params);
 	}
 }
+
+export default decorate(DiscussionAssignment, {with:[model]});

@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class VideoRef extends Base {
 	static MimeType = COMMON_PREFIX + 'ntivideoref'
 
@@ -12,3 +12,5 @@ class VideoRef extends Base {
 		console.debug('What is this?', this); //eslint-disable-line no-console
 	}
 }
+
+export default decorate(VideoRef, {with:[model]});

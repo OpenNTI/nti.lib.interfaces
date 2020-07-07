@@ -1,6 +1,6 @@
 import path from 'path';
 
-import {Markup, URL} from '@nti/lib-commons';
+import {decorate,Markup, URL} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import UserDataStore from '../../stores/UserData';
@@ -21,9 +21,6 @@ const NOT_FOUND = {statusCode: 404, message: 'Not Found'};
 const UserData = Symbol('UserData');
 const ContentPackageMimeTypes = 'application/vnd.nextthought.renderablecontentpackage';
 
-export default
-@model
-@mixin(Pages)
 class PageInfo extends Base {
 	static MimeType = COMMON_PREFIX + 'pageinfo'
 
@@ -214,3 +211,8 @@ function setupAssessmentItems (items, pageInfo) {
 			found || set.containsId(o.getID()), null)
 	);
 }
+
+export default decorate(PageInfo, {with:[
+	model,
+	mixin(Pages),
+]});

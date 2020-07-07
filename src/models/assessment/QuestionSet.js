@@ -1,4 +1,4 @@
-import {pluck} from '@nti/lib-commons';
+import {decorate, pluck} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import Completable from '../../mixins/Completable';
@@ -11,9 +11,6 @@ import QuestionSetSubmission from './QuestionSetSubmission';
 
 const SUBMITTED_TYPE = 'application/vnd.nextthought.assessment.assessedquestionset';
 
-export default
-@model
-@mixin(SubmittableIdentity, Completable)
 class QuestionSet extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'questionset',
@@ -185,3 +182,8 @@ class QuestionSet extends Base {
 		});
 	}
 }
+
+export default decorate(QuestionSet, {with: [
+	model,
+	mixin(SubmittableIdentity, Completable),
+]});

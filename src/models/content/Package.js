@@ -1,5 +1,5 @@
+import {decorate,URL} from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
-import {URL} from '@nti/lib-commons';
 
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -18,8 +18,6 @@ const VideoIndexReqest = Symbol('VideoIndexReqest');
 const getAssociationCount = (x) => x.LessonContainerCount;
 const names = (x, y, v) => Array.isArray(v) ? v.join(', ') : null;
 
-export default
-@model
 class Package extends Base {
 	static MimeType = COMMON_PREFIX + 'contentpackage'
 
@@ -173,3 +171,5 @@ class Package extends Base {
 		}
 	}
 }
+
+export default decorate(Package, {with:[model]});

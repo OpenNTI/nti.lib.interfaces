@@ -1,12 +1,10 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import GetContents from '../../mixins/GetContents';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
-@mixin(GetContents)
 class Board extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.board',
@@ -35,3 +33,8 @@ class Board extends Base {
 		return forum;
 	}
 }
+
+export default decorate(Board, {with:[
+	model,
+	mixin(GetContents),
+]});

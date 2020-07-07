@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../../Registry';
 import Base from '../../../Base';
 
-export default
-@model
 class AggregatedSurveyResults extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedsurvey'
 
@@ -23,3 +23,5 @@ class AggregatedSurveyResults extends Base {
 			found || (q.getID() === id && q), null);
 	}
 }
+
+export default decorate(AggregatedSurveyResults, {with:[model]});

@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import { model } from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
 class BaseEvent extends Base {
 	static MimeType = '__base-event__';
 
@@ -20,3 +20,5 @@ class BaseEvent extends Base {
 
 	getUniqueIdentifier = () => this.getID();
 }
+
+export default decorate(BaseEvent, {with:[model]});

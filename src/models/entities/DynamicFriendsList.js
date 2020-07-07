@@ -1,11 +1,11 @@
+import {decorate} from '@nti/lib-commons';
+
 import { Service, DELETED } from '../../constants';
 import Stream from '../../stores/Stream';
 import {model, COMMON_PREFIX} from '../Registry';
 
 import FriendsList from './FriendsList';
 
-export default
-@model
 class DynamicFriendsList extends FriendsList {
 	static MimeType = COMMON_PREFIX + 'dynamicfriendslist'
 
@@ -125,3 +125,5 @@ class DynamicFriendsList extends FriendsList {
 		return this.getDiscussionBoard().then(x => x.getContents());
 	}
 }
+
+export default decorate(DynamicFriendsList, {with:[model]});

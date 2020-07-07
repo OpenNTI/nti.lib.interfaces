@@ -1,5 +1,6 @@
 import EventEmitter from 'events';
 
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
@@ -23,9 +24,6 @@ const PHANTOM = Symbol.for('Phantom');
 const is = Symbol('isTest');
 
 
-export default
-@model
-@mixin(HasLinks, JSONValue, Editable, Pendability, Fields)
 class Base extends EventEmitter {
 	static MimeType = '__base__'
 
@@ -109,7 +107,7 @@ class Base extends EventEmitter {
 
 
 	getEventPrefix () { return this.OID; }
-	
+
 	onChange (who) {
 		this.emit('change', this, who);
 
@@ -257,3 +255,8 @@ class Base extends EventEmitter {
 		return !attr || Object.prototype.hasOwnProperty.call(u,attr) || attr === status || (/everyone/i).test(attr);
 	}
 }
+
+export default decorate(Base, { with: [
+	model,
+	mixin(HasLinks, JSONValue, Editable, Pendability, Fields)
+]});

@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../../Registry';
 import Base from '../../../Base';
 
-export default
-@model
 class AggregatedPoll extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedpoll'
 
@@ -18,3 +18,5 @@ class AggregatedPoll extends Base {
 		return this.pollId;
 	}
 }
+
+export default decorate(AggregatedPoll, {with:[model]});

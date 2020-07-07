@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import Completable from '../../../mixins/Completable';
@@ -5,9 +6,6 @@ import {ASSESSMENT_HISTORY_LINK} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
-@mixin(Completable)
 class SurveyReference extends Base {
 	static MimeType = COMMON_PREFIX + 'surveyref'
 
@@ -33,3 +31,8 @@ class SurveyReference extends Base {
 		return this['Target-NTIID'];
 	}
 }
+
+export default decorate(SurveyReference, {with: [
+	model,
+	mixin(Completable),
+]});

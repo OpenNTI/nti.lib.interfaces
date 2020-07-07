@@ -1,10 +1,10 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 const StripeConnectKey = Symbol('StripeConnectKey');
 
-export default
-@model
 class Purchasable extends Base {
 	static MimeType = COMMON_PREFIX + 'store.purchasable'
 
@@ -32,3 +32,5 @@ class Purchasable extends Base {
 		return this[StripeConnectKey];
 	}
 }
+
+export default decorate(Purchasable, {with:[model]});

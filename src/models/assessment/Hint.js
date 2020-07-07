@@ -1,12 +1,10 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {Mixin as HasContent} from '../../mixins/HasContent';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
-@mixin(HasContent)
 class Hint extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.hint',
@@ -19,3 +17,8 @@ class Hint extends Base {
 		'value': { type: 'string', content: true },
 	}
 }
+
+export default decorate(Hint, {with:[
+	model,
+	mixin(HasContent),
+]});

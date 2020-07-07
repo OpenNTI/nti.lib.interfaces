@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import Base from './Base';
 
-export default
-@model
 class ContentRangeDescription extends Base {
 	static MimeType = COMMON_PREFIX + 'contentrange.contentrangedescription'
 
@@ -31,3 +31,5 @@ class ContentRangeDescription extends Base {
 		return this[this.locatorKey()];
 	}
 }
+
+export default decorate(ContentRangeDescription, { with: [model]});

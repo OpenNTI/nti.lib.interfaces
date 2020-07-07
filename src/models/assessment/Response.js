@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class Response extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.response',
@@ -10,3 +10,5 @@ class Response extends Base {
 		COMMON_PREFIX + 'assessment.textresponse',
 	]
 }
+
+export default decorate(Response, {with:[model]});

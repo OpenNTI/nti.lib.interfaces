@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class SharingScopes extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courseinstancesharingscopes',
@@ -49,3 +49,5 @@ class SharingScopes extends Base {
 		}
 	}
 }
+
+export default decorate(SharingScopes, {with:[model]});

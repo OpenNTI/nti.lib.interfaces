@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
 class Webinar extends Base {
 	static MimeType = COMMON_PREFIX + 'webinar'
 
@@ -97,3 +97,5 @@ class Webinar extends Base {
 		return (x => !x || (x.getStartTime() <= date && x.getEndTime() <= date))(this.getNearestSession(date));
 	}
 }
+
+export default decorate(Webinar, {with:[model]});

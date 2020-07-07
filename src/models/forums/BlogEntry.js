@@ -1,12 +1,10 @@
+import {decorate} from '@nti/lib-commons';
 import {isNTIID} from '@nti/lib-ntiids';
 
 import {model, COMMON_PREFIX} from '../Registry';
 
 import Topic from './Topic';
 
-
-export default
-@model
 class BlogEntry extends Topic {
 	static MimeType = COMMON_PREFIX + 'forums.personalblogentry'
 
@@ -86,3 +84,5 @@ class BlogEntry extends Topic {
 		}
 	}
 }
+
+export default decorate(BlogEntry, {with:[model]});

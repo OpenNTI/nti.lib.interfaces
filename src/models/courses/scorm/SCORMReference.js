@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
 class SCORMReference extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'scormcontentref'
@@ -24,3 +24,5 @@ class SCORMReference extends Base {
 	completedSuccessfully (...args) { return this.ScormContentInfo ? this.ScormContentInfo.completedSuccessfully(...args) : null; }
 	completedUnsuccessfully (...args) { return this.ScormContentInfo ? this.ScormContentInfo.completedUnsuccessfully(...args) : null; }
 }
+
+export default decorate(SCORMReference, {with:[model]});

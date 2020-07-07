@@ -1,3 +1,5 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
@@ -5,8 +7,6 @@ const HasCompleted = Symbol('Has Completed Field');
 const HasProgress = Symbol('Has Progress Field');
 const ResourceID = Symbol('Resource ID Field');
 
-export default
-@model
 class Progress extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'progress',
@@ -47,3 +47,5 @@ class Progress extends Base {
 		return this[ResourceID] || super.getID();
 	}
 }
+
+export default decorate(Progress, {with:[model]});

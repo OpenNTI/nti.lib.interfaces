@@ -1,3 +1,5 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import ContentPointer from './ContentPointer';
@@ -8,8 +10,6 @@ const VALID_ROLES = [
 	'ancestor'
 ];
 
-export default
-@model
 class DomContentPointer extends ContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.domcontentpointer'
 
@@ -41,3 +41,5 @@ class DomContentPointer extends ContentPointer {
 		return {confidence: 0, node: null};
 	}
 }
+
+export default decorate(DomContentPointer, {with: [model]});

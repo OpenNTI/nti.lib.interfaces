@@ -1,3 +1,5 @@
+import {decorate} from '@nti/lib-commons';
+
 import Achievements from '../../stores/Achievements';
 import Stream from '../../stores/Stream';
 import { Service, TOS_NOT_ACCEPTED} from '../../constants';
@@ -28,8 +30,6 @@ function cleanData (data) {
 	};
 }
 
-export default
-@model
 class User extends Entity {
 	static MimeType = COMMON_PREFIX + 'user'
 
@@ -283,3 +283,5 @@ class User extends Entity {
 		return excludeGroups ? list.filter(ONLY_COMMUNITIES) : list;
 	}
 }
+
+export default decorate(User, {with:[model]});

@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin/*, readonly*/} from '@nti/lib-decorators';
 
 import UserDataStore from '../../stores/UserData';
@@ -10,9 +11,6 @@ import Base from '../Base';
 
 const UserData = Symbol('UserData');
 
-export default
-@model
-@mixin({/*@readonly*/ isSlideDeck: true})
 class SlideDeck extends Base {
 	[Symbol.iterator] = () => this.Slides[Symbol.iterator]();
 
@@ -39,3 +37,8 @@ class SlideDeck extends Base {
 		return Promise.resolve(store); //in the future, this may need to be async...
 	}
 }
+
+export default decorate(SlideDeck, {with:[
+	model,
+	mixin({/*@readonly*/ isSlideDeck: true}),
+]});

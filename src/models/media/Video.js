@@ -1,4 +1,4 @@
-import { isEmpty } from '@nti/lib-commons';
+import {decorate, isEmpty } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
 import Completable from '../../mixins/Completable';
@@ -36,7 +36,7 @@ class MediaSourceUtil {
 
 			if (source && source[method]) {
 				const value = await source[method]();
-				
+
 				if (source.hasResolverFailure && sources.length > sourceIndex + 1) {
 					return next(value);
 				}
@@ -52,9 +52,6 @@ class MediaSourceUtil {
 	}
 }
 
-export default
-@model
-@mixin(Completable, Pages)
 class Video extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'ntivideo',
@@ -200,3 +197,8 @@ class Video extends Base {
 		return updatedTranscript;
 	}
 }
+
+export default decorate(Video, {with:[
+	model,
+	mixin(Completable, Pages),
+]});

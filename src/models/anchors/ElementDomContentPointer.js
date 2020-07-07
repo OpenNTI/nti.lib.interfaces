@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import DomContentPointer from './DomContentPointer';
 
-export default
-@model
 class ElementDomContentPointer extends DomContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.elementdomcontentpointer'
 
@@ -58,3 +58,5 @@ class ElementDomContentPointer extends DomContentPointer {
 		return AnchorLib.locateElementDomContentPointer(this, ancestorNode, startResult);
 	}
 }
+
+export default decorate(ElementDomContentPointer, {with: [model]});

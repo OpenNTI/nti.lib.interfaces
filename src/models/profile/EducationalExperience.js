@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class EducationalExperience extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'profile.educationalexperience',
@@ -18,3 +18,5 @@ class EducationalExperience extends Base {
 		'startYear':   { type: 'number'                 },
 	}
 }
+
+export default decorate(EducationalExperience, {with:[model]});

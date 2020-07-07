@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {Service} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
 class AssignmentFeedbackContainer extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitemfeedbackcontainer'
 
@@ -54,3 +54,5 @@ class AssignmentFeedbackContainer extends Base {
 		return (this.Items || []).map(fn);
 	}
 }
+
+export default decorate(AssignmentFeedbackContainer, {with:[model]});

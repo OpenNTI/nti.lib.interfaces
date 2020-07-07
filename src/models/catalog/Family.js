@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class CatalogFamily extends Base {
 	static MimeType = COMMON_PREFIX + 'catalogfamily'
 
@@ -27,3 +27,5 @@ class CatalogFamily extends Base {
 		};
 	}
 }
+
+export default decorate(CatalogFamily, {with:[model]});

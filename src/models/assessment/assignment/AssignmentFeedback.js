@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {Service} from '../../../constants';
@@ -5,9 +6,6 @@ import names from '../../../mixins/CourseAndAssignmentNameResolving';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
-@mixin(names)
 class AssignmentFeedback extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitemfeedback'
 
@@ -44,3 +42,8 @@ class AssignmentFeedback extends Base {
 	}
 
 }
+
+export default decorate(AssignmentFeedback, {with:[
+	model,
+	mixin(names),
+]});

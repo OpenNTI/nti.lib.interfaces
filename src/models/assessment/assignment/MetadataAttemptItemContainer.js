@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import Base from '../../Base';
 import { model, COMMON_PREFIX } from '../../Registry';
 
-export default
-@model
 class MetadataAttemptItemContainer extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmentattemptmetadataitemcontainer'
 
@@ -14,3 +14,5 @@ class MetadataAttemptItemContainer extends Base {
 		return this.Items ? this.Items[this.Items.length - 1] : null;
 	}
 }
+
+export default decorate(MetadataAttemptItemContainer, {with:[model]});

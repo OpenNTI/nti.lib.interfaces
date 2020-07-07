@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
 class AssignmentCompletionConstraint extends Base {
 	static MimeType = COMMON_PREFIX + 'lesson.assignmentcompletionconstraint'
 
@@ -18,3 +18,5 @@ class AssignmentCompletionConstraint extends Base {
 		return assignments && assignments.some(assignment => assignment === id);
 	}
 }
+
+export default decorate(AssignmentCompletionConstraint, {with:[model]});

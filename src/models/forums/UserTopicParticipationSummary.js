@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class UserTopicParticipationSummary extends Base {
 	static MimeType = COMMON_PREFIX + 'forums.usertopicparticipationsummary'
 
@@ -15,3 +15,5 @@ class UserTopicParticipationSummary extends Base {
 	}
 
 }
+
+export default decorate(UserTopicParticipationSummary, {with:[model]});

@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import QuestionSetSubmission from '../QuestionSetSubmission';
 import {resolveSubmitTo} from '../utils';
 
-export default
-@model
 class SurveySubmission extends QuestionSetSubmission {
 	static MimeType = COMMON_PREFIX + 'assessment.surveysubmission'
 	static COURSE_SUBMISSION_REL = 'CourseInquiries'
@@ -42,3 +42,5 @@ class SurveySubmission extends QuestionSetSubmission {
 		return this.surveyId || this.NTIID;
 	}
 }
+
+export default decorate(SurveySubmission, {with:[model]});

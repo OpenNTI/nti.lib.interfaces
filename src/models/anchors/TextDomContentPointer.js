@@ -1,10 +1,10 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import DomContentPointer from './DomContentPointer';
 import ElementDomContentPointer from './ElementDomContentPointer';
 
-export default
-@model
 class TextDomContentPointer extends DomContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.textdomcontentpointer'
 
@@ -72,3 +72,5 @@ class TextDomContentPointer extends DomContentPointer {
 		return AnchorLib.locateRangeEdgeForAnchor(this, ancestorNode, startResult);
 	}
 }
+
+export default decorate(TextDomContentPointer, {with: [model]});

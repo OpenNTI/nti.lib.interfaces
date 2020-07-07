@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import { model, COMMON_PREFIX } from '../../Registry';
 
 import BaseEvent from './BaseEvent';
 
-export default
-@model
 class AssignmentCalendarEvent extends BaseEvent {
 	static MimeType = `${COMMON_PREFIX}assessment.assignmentcalendarevent`
 
@@ -22,3 +22,5 @@ class AssignmentCalendarEvent extends BaseEvent {
 
 	getUniqueIdentifier = () => this.AssignmentNTIID + this.CatalogEntryNTIID;
 }
+
+export default decorate(AssignmentCalendarEvent, {with:[model]});

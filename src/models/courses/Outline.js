@@ -1,4 +1,4 @@
-import {isEmpty, updateValue} from '@nti/lib-commons';
+import {decorate,isEmpty, updateValue} from '@nti/lib-commons';
 
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
@@ -14,8 +14,6 @@ function getMaxDepthFrom (n) {
 		.reduce((max, depth) => Math.max(max, depth), 0);
 }
 
-export default
-@model
 class Outline extends Base {
 	static MimeType = COMMON_PREFIX + 'courses.courseoutline'
 
@@ -137,3 +135,5 @@ class Outline extends Base {
 		return flatten(this);
 	}
 }
+
+export default decorate(Outline, {with:[model]});

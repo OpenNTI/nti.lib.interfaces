@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
-class InqueryItemResponse extends Base {
+class InquiryItemResponse extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseinquiryitemresponse'
 
 	static Fields = {
@@ -23,3 +23,5 @@ class InqueryItemResponse extends Base {
 		return !!this.Submission || this.Aggregated;
 	}
 }
+
+export default decorate(InquiryItemResponse, {with:[model]});

@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class StripeCoupon extends Base {
 	static MimeType = COMMON_PREFIX + 'store.stripecoupon'
 
@@ -20,3 +20,5 @@ class StripeCoupon extends Base {
 
 	getCode () { return this.ID; }
 }
+
+export default decorate(StripeCoupon, {with:[model]});

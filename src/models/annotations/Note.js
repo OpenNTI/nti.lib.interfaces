@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 import {mixin} from '@nti/lib-decorators';
 import {isNTIID} from '@nti/lib-ntiids';
@@ -14,9 +15,6 @@ import Highlight from './Highlight';
 const logger = Logger.get('models:annotations:Note');
 const UpdatedDiscussionCount = Symbol('Discussion Count');
 
-export default
-@model
-@mixin(Threadable, Flaggable, DiscussionInterface)
 class Note extends Highlight {
 	static MimeType = COMMON_PREFIX + 'note'
 
@@ -135,3 +133,8 @@ class Note extends Highlight {
 		return discussion;
 	}
 }
+
+export default decorate(Note, {with: [
+	model,
+	mixin(Threadable, Flaggable, DiscussionInterface),
+]});

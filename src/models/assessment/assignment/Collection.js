@@ -5,6 +5,7 @@
  * non-assignment assessment object.  We also have a reference to all the
  * assignments that we can currently see.
  */
+import {decorate} from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 import {mixin} from '@nti/lib-decorators';
 
@@ -75,9 +76,6 @@ const sortComparatorTitle = (a, b) => (a.title || '').localeCompare(b.title);
 
 const GetListFrom = Symbol();
 
-export default
-@mixin(ActivityMixin)
-@exposeOrderBySymbols
 class Collection extends Base {
 
 	/**
@@ -460,3 +458,8 @@ class Collection extends Base {
 		return finalGrade ? finalGrade.getID() : void 0;
 	}
 }
+
+export default decorate(Collection, {with:[
+	mixin(ActivityMixin),
+	exposeOrderBySymbols,
+]});

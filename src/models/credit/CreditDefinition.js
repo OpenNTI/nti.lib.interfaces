@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class CreditDefinition extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'credit.creditdefinition'
@@ -15,3 +15,5 @@ class CreditDefinition extends Base {
 	}
 
 }
+
+export default decorate(CreditDefinition, {with:[model]});

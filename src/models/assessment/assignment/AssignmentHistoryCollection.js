@@ -1,10 +1,8 @@
-import {pluck} from '@nti/lib-commons';
+import {decorate,pluck} from '@nti/lib-commons';
 
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
 class AssignmentHistoryCollection extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistory'
 
@@ -90,3 +88,5 @@ class AssignmentHistoryCollection extends Base {
 			.then(() => this.onChange('lastViewed'));
 	}
 }
+
+export default decorate(AssignmentHistoryCollection, {with:[model]});

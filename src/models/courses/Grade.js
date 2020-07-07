@@ -1,4 +1,4 @@
-import {pluck} from '@nti/lib-commons';
+import {decorate,pluck} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import names from '../../mixins/CourseAndAssignmentNameResolving';
@@ -11,10 +11,6 @@ import Base from '../Base';
 const ENDS_IN_LETTER_REGEX = /\s[a-fiw-]$/i;
 
 
-export default
-@cacheClassInstances
-@model
-@mixin(names)
 class Grade extends Base {
 	static AllowWildDisconntectedInstances = true
 	static MimeType = [
@@ -171,6 +167,11 @@ class Grade extends Base {
 	}
 }
 
+export default decorate(Grade, {with:[
+	cacheClassInstances,
+	model,
+	mixin(names),
+]});
 
 
 function processValue (value) {

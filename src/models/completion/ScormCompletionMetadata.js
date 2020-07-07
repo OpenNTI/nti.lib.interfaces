@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class SCORMCompletionMetadata extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'scormcompletionmetadata',
@@ -19,3 +19,5 @@ class SCORMCompletionMetadata extends Base {
 
 	getCompletionDate () { } //implemented by CompletionDate date field.
 }
+
+export default decorate(SCORMCompletionMetadata, {with:[model]});

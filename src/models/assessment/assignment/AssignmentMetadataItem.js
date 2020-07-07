@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
 class AssignmentMetadataItem extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmentmetadataitem'
 
@@ -22,3 +22,5 @@ class AssignmentMetadataItem extends Base {
 		return this.duration;
 	}
 }
+
+export default decorate(AssignmentMetadataItem, {with:[model]});

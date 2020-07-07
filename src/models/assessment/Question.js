@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import PlacementProvider from '../../authoring/placement/providers/Question';
@@ -13,9 +14,6 @@ import QuestionSubmission from './QuestionSubmission';
 
 const Individual = Symbol('Individual');
 
-export default
-@model
-@mixin(HasContent, SubmittableIdentity, QuestionIdentity)
 class Question extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'question',
@@ -143,3 +141,8 @@ class Question extends Base {
 	}
 
 }
+
+export default decorate(Question, {with: [
+	model,
+	mixin(HasContent, SubmittableIdentity, QuestionIdentity),
+]});

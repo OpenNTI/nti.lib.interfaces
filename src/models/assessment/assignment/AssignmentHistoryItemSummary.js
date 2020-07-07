@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
 class AssignmentHistoryItemSummary extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.assignmenthistoryitemsummary',
@@ -23,3 +23,5 @@ class AssignmentHistoryItemSummary extends Base {
 		return this.getSubmissionCreatedTime();
 	}
 }
+
+export default decorate(AssignmentHistoryItemSummary, {with:[model]});

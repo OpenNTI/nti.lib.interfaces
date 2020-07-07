@@ -1,3 +1,5 @@
+import {decorate} from '@nti/lib-commons';
+
 import {threadThreadables} from '../../../utils/UserDataThreader';
 import {Parser as parse} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
@@ -5,8 +7,6 @@ import Base from '../../Base';
 
 const thread = (_, bucket, data) => threadThreadables(bucket[parse](data));
 
-export default
-@model
 class RecursiveStreamBucket extends Base {
 	static MimeType = COMMON_PREFIX + 'courseware.courserecursivestreambucket'
 
@@ -51,3 +51,5 @@ class RecursiveStreamBucket extends Base {
 		return Array.from(this).map(fn);
 	}
 }
+
+export default decorate(RecursiveStreamBucket, {with:[model]});

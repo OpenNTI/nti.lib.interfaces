@@ -1,3 +1,5 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import FileSystemEntity from './FileSystemEntity';
@@ -7,8 +9,6 @@ import FileSystemEntity from './FileSystemEntity';
 //	associate    - ?
 //	external     - ?
 
-export default
-@model
 class File extends FileSystemEntity {
 	static MimeType = [
 		COMMON_PREFIX + 'contentfile',
@@ -44,3 +44,5 @@ class File extends FileSystemEntity {
 		return this['download_url'];
 	}
 }
+
+export default decorate(File, {with:[model]});

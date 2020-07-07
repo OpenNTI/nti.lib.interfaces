@@ -1,11 +1,11 @@
+import {decorate} from '@nti/lib-commons';
+
 import {Parent} from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 const EXISTING_TRANSCRIPT = ' A Transcript already exists';
 
-export default
-@model
 class Transcript extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'ntitranscript'
@@ -48,3 +48,5 @@ class Transcript extends Base {
 		this.emit('changed');
 	}
 }
+
+export default decorate(Transcript, {with:[model]});

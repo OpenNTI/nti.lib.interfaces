@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 
-export default
-@model
 class GradeBookUserSummary extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'gradebook.userassignmentsummary',
@@ -48,3 +48,5 @@ class GradeBookUserSummary extends Base {
 		return this.AvailableFinalGrade;
 	}
 }
+
+export default decorate(GradeBookUserSummary, {with:[model]});

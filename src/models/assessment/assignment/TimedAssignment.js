@@ -1,3 +1,5 @@
+import {decorate} from '@nti/lib-commons';
+
 import {Service} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 
@@ -5,8 +7,6 @@ import Assignment from './Assignment';
 
 const secondsToMilliseconds = s => s * 1000;
 
-export default
-@model
 class TimedAssignment extends Assignment {
 	static MimeType = COMMON_PREFIX + 'assessment.timedassignment'
 
@@ -76,3 +76,5 @@ class TimedAssignment extends Assignment {
 			(max - (now - start));
 	}
 }
+
+export default decorate(TimedAssignment, {with:[model]});

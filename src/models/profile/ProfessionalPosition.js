@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class ProfessionalPosition extends Base {
 	static MimeType = COMMON_PREFIX + 'profile.professionalposition'
 
@@ -15,3 +15,5 @@ class ProfessionalPosition extends Base {
 		'title':       { type: 'string'                 },
 	}
 }
+
+export default decorate(ProfessionalPosition, {with:[model]});

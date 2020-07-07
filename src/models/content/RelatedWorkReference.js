@@ -1,6 +1,7 @@
 import {parse as parseUrl} from 'url';
 import {extname} from 'path';
 
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 import mime from 'mime-types';
 import {isNTIID} from '@nti/lib-ntiids';
@@ -42,9 +43,6 @@ External Links:
 const CONTENT_TYPE = 'application/vnd.nextthought.content';
 const EXTERNAL_TYPE = 'application/vnd.nextthought.externallink';
 
-export default
-@model
-@mixin(Completable, ContentTreeMixin, Pages)
 class RelatedWorkReference extends Base {
 	static MimeType = COMMON_PREFIX + 'relatedworkref'
 
@@ -191,3 +189,8 @@ class RelatedWorkReference extends Base {
 		}
 	}
 }
+
+export default decorate(RelatedWorkReference, {with:[
+	model,
+	mixin(Completable, ContentTreeMixin, Pages),
+]});

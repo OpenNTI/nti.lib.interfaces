@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 
-export default
-@model
 class RoomInfo extends Base {
 	static MimeType = [
 		COMMON_PREFIX + '_meeting',
@@ -20,3 +20,5 @@ class RoomInfo extends Base {
 		'Occupants':    { type: 'string[]', name: 'occupants'    },
 	}
 }
+
+export default decorate(RoomInfo, {with:[model]});

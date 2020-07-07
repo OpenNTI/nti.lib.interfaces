@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class PurchasableVendorInfo extends Base {
 	static MimeType = COMMON_PREFIX + 'store.purchasablevendorinfo'
 
@@ -22,3 +22,5 @@ class PurchasableVendorInfo extends Base {
 	getEndDate () {} //implemented by the date Field type
 	getStartDate () {} //implemented by the date Field type
 }
+
+export default decorate(PurchasableVendorInfo, {with:[model]});

@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import Board from './Board';
 
-export default
-@model
 class Blog extends Board {
 	static MimeType = COMMON_PREFIX + 'forums.personalblog'
 
@@ -15,3 +15,5 @@ class Blog extends Board {
 	}
 
 }
+
+export default decorate(Blog, {with:[model]});

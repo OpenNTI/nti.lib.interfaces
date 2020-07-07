@@ -1,11 +1,11 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import ContentPointer from './ContentPointer';
 
 const VALID_ROLES = ['start', 'end'];
 
-export default
-@model
 class TimeContentPointer extends ContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.timecontentpointer'
 
@@ -55,3 +55,5 @@ class TimeContentPointer extends ContentPointer {
 		}
 	}
 }
+
+export default decorate(TimeContentPointer, {with:[model]});

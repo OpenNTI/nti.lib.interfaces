@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class CatalogFamilies extends Base {
 	static MimeType = COMMON_PREFIX + 'catalogfamilies'
 
@@ -49,3 +49,5 @@ class CatalogFamilies extends Base {
 		return this.Items.map(family => family.getFamilyID());
 	}
 }
+
+export default decorate(CatalogFamilies, {with:[model]});

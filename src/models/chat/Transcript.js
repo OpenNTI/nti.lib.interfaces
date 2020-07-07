@@ -1,10 +1,10 @@
+import {decorate} from '@nti/lib-commons';
+
 import {thread} from '../../utils/UserDataThreader';
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 
-export default
-@model
 class Transcript extends Base {
 	static MimeType = COMMON_PREFIX + 'transcript'
 
@@ -45,3 +45,5 @@ class Transcript extends Base {
 		return contributors.filter( x => x !== originator);
 	}
 }
+
+export default decorate(Transcript, {with:[model]});

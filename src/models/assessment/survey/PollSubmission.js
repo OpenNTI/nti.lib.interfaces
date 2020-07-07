@@ -1,9 +1,9 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import QuestionSubmission from '../QuestionSubmission';
 import {resolveSubmitTo} from '../utils';
 
-export default
-@model
 class PollSubmission extends QuestionSubmission {
 	static MimeType = COMMON_PREFIX + 'assessment.pollsubmission'
 	static COURSE_SUBMISSION_REL = 'CourseInquiries'
@@ -50,3 +50,5 @@ class PollSubmission extends QuestionSubmission {
 		return this.parts && this.parts.filter(answered).length > 0;
 	}
 }
+
+export default decorate(PollSubmission, {with:[model]});

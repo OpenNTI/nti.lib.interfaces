@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {Service} from '../constants';
@@ -34,8 +35,6 @@ class RosterRecord extends Base {
 	}
 }
 
-export default
-@mixin(Paged)
 class CourseRosterStream extends Stream {
 
 	constructor (...args) {
@@ -66,3 +65,5 @@ class CourseRosterStream extends Stream {
 		this.nextBatch();
 	}
 }
+
+export default decorate(CourseRosterStream, {with:[mixin(Paged)]});

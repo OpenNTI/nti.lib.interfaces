@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {Service, Parser as parse} from '../../constants';
@@ -17,9 +18,6 @@ const KnownSorts = [
 	'LikeCount'
 ];
 
-export default
-@model
-@mixin(GetContents)
 class Forum extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.forum',
@@ -130,3 +128,8 @@ class Forum extends Base {
 		parent.emit('change');
 	}
 }
+
+export default decorate(Forum, {with:[
+	model,
+	mixin(GetContents),
+]});

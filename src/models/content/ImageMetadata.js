@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
-export default
-@model
 class ImageMetadata extends Base {
 	static MimeType = COMMON_PREFIX + 'metadata.imagemetadata'
 	static Fields = {
@@ -15,3 +15,6 @@ class ImageMetadata extends Base {
 	// known links:
 	// - safeimage
 }
+
+
+export default decorate(ImageMetadata, {with:[model]});

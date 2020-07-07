@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import Part from '../Part';
 
-export default
-@model
 class MultipleChoice extends Part {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.multiplechoicepart',
@@ -16,3 +16,5 @@ class MultipleChoice extends Part {
 		'choices': { type: 'string[]', content: true },
 	}
 }
+
+export default decorate(MultipleChoice, {with:[model]});

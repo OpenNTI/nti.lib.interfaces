@@ -1,8 +1,8 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
 
-export default
-@model
 class AssignmentHistoryItemContainer extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitemcontainer'
 
@@ -15,3 +15,5 @@ class AssignmentHistoryItemContainer extends Base {
 		return this.Items && this.Items[this.Items.length - 1];
 	}
 }
+
+export default decorate(AssignmentHistoryItemContainer, {with:[model]});

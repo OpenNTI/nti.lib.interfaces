@@ -1,10 +1,10 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../Registry';
 
 import PurchaseAttempt from './PurchaseAttempt';
 
 
-export default
-@model
 class GiftPurchaseAttempt extends PurchaseAttempt {
 	static MimeType = COMMON_PREFIX + 'store.giftpurchaseattempt'
 
@@ -18,3 +18,5 @@ class GiftPurchaseAttempt extends PurchaseAttempt {
 	}
 
 }
+
+export default decorate(GiftPurchaseAttempt, {with:[model]});

@@ -1,4 +1,4 @@
-import {forward} from '@nti/lib-commons';
+import {decorate,forward} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {
@@ -13,17 +13,6 @@ import EnrollmentIdentity from './mixins/EnrollmentIdentity';
 const emptyFunction = () => {};
 const EMPTY_CATALOG_ENTRY = {getAuthorLine: emptyFunction};
 
-export default
-@model
-@mixin(
-	CourseIdentity,
-	EnrollmentIdentity,
-	forward([
-		'getEndDate',
-		'getStartDate'
-	//From:
-	], 'CatalogEntry')
-)
 class Enrollment extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseenrollment',
@@ -121,3 +110,16 @@ class Enrollment extends Base {
 		this.CourseInstance = instance;
 	}
 }
+
+export default decorate(Enrollment, {with:[
+	model,
+	mixin(
+		CourseIdentity,
+		EnrollmentIdentity,
+		forward([
+			'getEndDate',
+			'getStartDate'
+		//From:
+		], 'CatalogEntry')
+	),
+]});

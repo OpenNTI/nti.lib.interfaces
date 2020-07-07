@@ -1,3 +1,4 @@
+import {decorate} from '@nti/lib-commons';
 import {ntiidEquals} from '@nti/lib-ntiids';
 
 import {RepresentsSameObject} from '../../constants';
@@ -7,8 +8,6 @@ import Package from './Package';
 
 const RST_TYPE = 'text/x-rst';
 
-export default
-@model
 class RenderablePackage extends Package {
 	static MimeType = COMMON_PREFIX + 'renderablecontentpackage'
 
@@ -76,3 +75,5 @@ class RenderablePackage extends Package {
 			.then(() => this.onChange());
 	}
 }
+
+export default decorate(RenderablePackage, {with:[model]});

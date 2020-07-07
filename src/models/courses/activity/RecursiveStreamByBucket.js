@@ -1,3 +1,5 @@
+import {decorate} from '@nti/lib-commons';
+
 import {Parser as parse} from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
 import Base from '../../Base';
@@ -6,8 +8,6 @@ const BY_MOST_RECENT = (a, b) => b.MostRecentTimestamp - a.MostRecentTimestamp;
 const sorted = (_, stream, data) => (stream[parse](data) || []).sort(BY_MOST_RECENT);
 
 
-export default
-@model
 class RecursiveStreamByBucket extends Base {
 	static MimeType = COMMON_PREFIX + 'courseware.courserecursivestreambybucket'
 
@@ -49,3 +49,5 @@ class RecursiveStreamByBucket extends Base {
 	}
 
 }
+
+export default decorate(RecursiveStreamByBucket, {with:[model]});

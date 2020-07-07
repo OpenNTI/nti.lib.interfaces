@@ -1,11 +1,11 @@
+import {decorate} from '@nti/lib-commons';
+
 import {model, COMMON_PREFIX} from '../../Registry';
 import Integration from '../Integration';
 
 const DISCONNECTED_MIMETYPE = COMMON_PREFIX + 'integration.gotowebinarintegration';
 const CONNECTED_MIMETYPE = COMMON_PREFIX + 'integration.gotowebinarauthorizedintegration';
 
-export default
-@model
 class GotoWebinar extends Integration {
 	static MimeType = [
 		DISCONNECTED_MIMETYPE,
@@ -68,3 +68,5 @@ class GotoWebinar extends Integration {
 		}
 	}
 }
+
+export default decorate(GotoWebinar, {with:[model]});
