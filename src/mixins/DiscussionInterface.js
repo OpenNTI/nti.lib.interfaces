@@ -272,7 +272,7 @@ export default function DiscussionInterface (targetModelClass) {
 		getParentDiscussion () {
 			if (this[ParentOverride]) { return this[ParentOverride]; }
 
-			const parent = this.parent();
+			const parent = this.parent(p => p.isDiscussion);
 
 			return parent?.isDiscussion ? parent : null;
 		},

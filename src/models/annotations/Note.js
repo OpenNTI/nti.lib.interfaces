@@ -12,6 +12,7 @@ import {model, COMMON_PREFIX} from '../Registry';
 import Highlight from './Highlight';
 
 const logger = Logger.get('models:annotations:Note');
+const UpdatedDiscussionCount = Symbol('Discussion Count');
 
 export default
 @model
@@ -89,8 +90,11 @@ class Note extends Highlight {
 	canEditSharing () { return this.replyCount <= 0; }
 
 	canAddDiscussion () { return this.canReply() && !this.isDeleted(); }
-	getDiscussionCount () { return this.replyCount; }
-	updateDiscussionCount () {}
+	getDiscussionCount () { return this[UpdatedDiscussionCount] ?? this.replyCount; }
+	updateDiscussionCount (discussionCount) {
+		this[UpdatedDiscussionCount] = discussionCount;
+		this.onChange();
+	}
 
 
 	async getDiscussions (params) {
@@ -121,6 +125,8 @@ class Note extends Highlight {
 			}),
 			this
 		);
+
+		this[UpdatedDiscussionCount] = this.getDiscussionCount();
 
 		this.appendNewChild(discussion);
 		discussion.overrideParentDiscussion(this);

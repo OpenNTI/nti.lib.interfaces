@@ -36,8 +36,10 @@ export default {
 
 						if (!parent.placeholder) {
 							try {
+								const count = parent.ReferencedByCount;
+
 								delete parent.ReferencedByCount;
-								Object.defineProperty(parent, 'ReferencedByCount', {value: parent.ReferencedByCount - 1});
+								Object.defineProperty(parent, 'ReferencedByCount', {value: count - 1});
 							} catch (e) {
 								logger.warn(e.stack || e.message || e);
 							}
@@ -267,6 +269,7 @@ export default {
 	appendNewChild (newChild) {
 		this.ReferencedByCount++;
 		newChild[PARENT] = this;
+
 
 		let children = this[CHILDREN] || [];
 

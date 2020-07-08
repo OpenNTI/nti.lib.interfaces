@@ -4,7 +4,7 @@ import Batch from './Batch';
 
 export default class Page extends Batch {
 	static fromList (list, params, service, parent) {
-		return new Page(service, this, {
+		return new Page(service, parent, {
 			BatchPage: 1,
 			PageSize: list.length,
 			Total: list.length,
