@@ -18,7 +18,7 @@ export default {
 					body: ['This message has been deleted.'],
 					phantom: void 0,
 					placeholder: true
-				});
+				}).then(() => this.onChange());
 
 				if (this.isLeaf()) {
 					//Remove refs
