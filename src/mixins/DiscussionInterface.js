@@ -212,7 +212,7 @@ export default function DiscussionInterface (targetModelClass) {
 		},
 
 		async applyChange (item) {
-			await this.refresh(item);
+			await this.refresh(item.toJSON());
 			await resolveMentions(this);
 		},
 

@@ -129,7 +129,7 @@ class Base extends EventEmitter {
 				if (this.applyChange) {
 					await this.applyChange(item);
 				} else {
-					await this.refresh(item);
+					await this.refresh(item.toJSON());
 				}
 
 				fn();
