@@ -97,6 +97,11 @@ class Topic extends Base {
 
 	async getDiscussions (params) {
 		const raw = await this.fetchLink('contents', {...params, filter: 'TopLevel'});
+		
+		if (params.batchSize) {
+			raw.PageSize = params.batchSize;
+		}
+
 		const page = new Page(this[Service], this, raw);
 
 		for (let item of page.Items) {
