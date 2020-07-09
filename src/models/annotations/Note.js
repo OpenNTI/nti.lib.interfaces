@@ -90,9 +90,9 @@ class Note extends Highlight {
 	canEditSharing () { return this.replyCount <= 0; }
 
 	canAddDiscussion () { return this.canReply() && !this.isDeleted(); }
-	getDiscussionCount () { return this[UpdatedDiscussionCount] ?? this.replyCount; }
+	getDiscussionCount () { return this.replyCount; }
 	updateDiscussionCount (discussionCount) {
-		this[UpdatedDiscussionCount] = discussionCount;
+		this.ReferencedByCount = discussionCount;
 		this.onChange();
 	}
 
@@ -128,7 +128,7 @@ class Note extends Highlight {
 
 		this[UpdatedDiscussionCount] = this.getDiscussionCount();
 
-		this.appendNewChild(discussion);
+		this.appendNewChild(discussion, true);
 		discussion.overrideParentDiscussion(this);
 		this.onDiscussionAdded(discussion);
 

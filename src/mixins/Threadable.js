@@ -20,7 +20,7 @@ export default {
 					placeholder: true
 				}).then(() => this.onChange());
 
-				if (this.isLeaf()) {
+				if (this.isLeaf() && !this.isDiscussion) {
 					//Remove refs
 					const parent = this[PARENT];
 					const parentRefs = (parent || {})[CHILDREN];
@@ -266,10 +266,12 @@ export default {
 	},
 
 
-	appendNewChild (newChild) {
-		this.ReferencedByCount++;
-		newChild[PARENT] = this;
+	appendNewChild (newChild, doNotUpdateCount) {
+		if (!doNotUpdateCount) {
+			this.ReferencedByCount++;
+		}
 
+		newChild[PARENT] = this;
 
 		let children = this[CHILDREN] || [];
 
