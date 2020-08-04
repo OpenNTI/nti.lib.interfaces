@@ -8,7 +8,6 @@ import CatalogEntryFactory from './CatalogEntryFactory';
 
 const EnrollmentOptions = Symbol('EnrollmentOptions');
 
-
 class CourseCatalogEntry extends Base {
 	static MimeType = COMMON_PREFIX + 'courses.catalogentry'
 
@@ -54,8 +53,8 @@ class CourseCatalogEntry extends Base {
 	isCourse = true
 	isCourseCatalogEntry = true
 
-	constructor (service, data) {
-		super(service, null, data);
+	constructor (service, parent, data) {
+		super(service, parent.isEnrollment ? parent : null, data);
 
 		if (!this.ContentPackages) {
 			this.ContentPackages = [this.ContentPackageNTIID];
