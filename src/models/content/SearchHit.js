@@ -4,7 +4,12 @@ import {model, COMMON_PREFIX} from '../Registry';
 import Base from '../Base';
 
 class ContentUnitSearchHit extends Base {
-	static MimeType = COMMON_PREFIX + 'search.contentunitsearchhit'
+	static MimeType = [
+		COMMON_PREFIX + 'search.contentunitsearchhit',
+		COMMON_PREFIX + 'search.searchhit',
+		COMMON_PREFIX + 'search.ugdsearchhit',
+		COMMON_PREFIX + 'search.transcriptsearchhit'
+	]
 
 	static Fields = {
 		...Base.Fields,
