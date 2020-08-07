@@ -334,6 +334,11 @@ class Instance extends Base {
 	}
 
 
+	getAssessment (ntiid) {
+		return this.getAssignment(ntiid);
+	}
+
+
 	getAssignment (ntiid) {
 		const service = this[Service];
 		const href = this.getLink('Assessments');
