@@ -11,6 +11,7 @@ import {
 	Service
 } from '../../constants';
 import {Mixin as ContentTreeMixin} from '../../content-tree';
+import HasEvaluations from '../../mixins/HasEvaluations';
 import AssessmentCollectionStudentView from '../assessment/assignment/CollectionStudentView';
 import AssessmentCollectionInstructorView from '../assessment/assignment/CollectionInstructorView';
 import Roster from '../../stores/CourseRoster';
@@ -722,7 +723,7 @@ class Instance extends Base {
 
 export default decorate(Instance, {with:[
 	model,
-	mixin(CourseIdentity, ContentTreeMixin),
+	mixin(CourseIdentity, ContentTreeMixin, HasEvaluations),
 ]});
 
 //Private methods
