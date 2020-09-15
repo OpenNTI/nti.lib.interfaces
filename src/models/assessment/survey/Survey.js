@@ -7,6 +7,7 @@ import {
 	SURVEY_REPORT_LINK
 } from '../../../constants';
 import {model, COMMON_PREFIX} from '../../Registry';
+import Publishable from '../../../mixins/Publishable';
 import Completable from '../../../mixins/Completable';
 import QuestionSet from '../QuestionSet';
 
@@ -19,7 +20,8 @@ class Survey extends QuestionSet {
 
 	static Fields = {
 		...QuestionSet.Fields,
-		'title': { type: 'string' }
+		'title':            { type: 'string' },
+		'PublicationState': { type: 'string' },
 	}
 
 	get hasAggregationData () {
@@ -55,9 +57,19 @@ class Survey extends QuestionSet {
 	loadPreviousSubmission () {
 		return this.fetchLinkParsed(ASSESSMENT_HISTORY_LINK);
 	}
+
+	/**
+	 * DANGER: Resets all submissions on an assignment across all students.
+	 * @returns {Promise} Promise that fulfills with request code.
+	 */
+	resetAllSubmissions () {
+		return this.postToLink('Reset')
+			.then(o => this.refresh(o))
+			.then(() => this.onChange('all'));
+	}
 }
 
 export default decorate(Survey, {with:[
 	model,
-	mixin(Completable),
+	mixin(Completable, Publishable),
 ]});
