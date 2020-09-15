@@ -20,8 +20,10 @@ class Survey extends QuestionSet {
 
 	static Fields = {
 		...QuestionSet.Fields,
-		'title':            { type: 'string' },
-		'PublicationState': { type: 'string' },
+		'title':                              { type: 'string' },
+		'PublicationState':                   { type: 'string' },
+		'available_for_submission_beginning': {type: 'date' },
+		'available_for_submission_ending':    {type: 'date' }
 	}
 
 	get hasAggregationData () {
@@ -66,6 +68,42 @@ class Survey extends QuestionSet {
 		return this.postToLink('Reset')
 			.then(o => this.refresh(o))
 			.then(() => this.onChange('all'));
+	}
+
+
+	getAssignedDate () {
+		return this.getAvailableForSubmissionBeginning();
+	}
+
+
+	getDueDate () {
+		return this.getAvailableForSubmissionEnding();
+	}
+
+
+	getPublishDate () {
+		return this.isPublished() ? this.getAssignedDate() : null;
+	}
+
+	/**
+	 * Sets the publish state of the survey
+	 *
+	 * @param {boolean|Date} state Publish States: Publish - True, Unpublish - False, or Schedule - Date
+	 * @returns {Promise} Fulfills when the state is set
+	 */
+	setPublishState (state) {
+		const isDate = state instanceof Date;
+		const value = isDate ? true : !!state;
+
+		const work = (!isDate && !value)
+			? Promise.resolve()
+			: this.save({ 'available_for_submission_beginning': isDate ? state : null}, void 0, 'date-edit');
+
+		return work.then(() => {
+			if (this.canPublish() || this.canUnpublish()) {
+				return Publishable.setPublishState.call(this, value, 'available_for_submission_beginning', 'parts', 'IsAvailable');
+			}
+		});
 	}
 }
 
