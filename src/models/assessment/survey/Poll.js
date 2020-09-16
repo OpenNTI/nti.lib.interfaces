@@ -45,6 +45,9 @@ class Poll extends Question {
 	loadPreviousSubmission () {
 		return this.fetchLinkParsed(ASSESSMENT_HISTORY_LINK);
 	}
+
+
+	preflight (data) { return this.putToLink('preflight_update', data); }
 }
 
 export default decorate(Poll, {with: [
