@@ -71,6 +71,10 @@ class Survey extends QuestionSet {
 			.then(() => this.onChange('all'));
 	}
 
+	maybeResetAllSubmissions () {
+		return this.hasLink('Reset') ? this.postToLink('Reset') : Promise.resolve();
+	}
+
 
 	getAssignedDate () {
 		return this.getAvailableForSubmissionBeginning();
@@ -84,6 +88,13 @@ class Survey extends QuestionSet {
 
 	getPublishDate () {
 		return this.isPublished() ? this.getAssignedDate() : null;
+	}
+
+	isAvailable () {
+		const now = new Date();
+		const available = this.getAvailableForSubmissionBeginning();
+
+		return this.isPublished() && now > available;
 	}
 
 	/**
