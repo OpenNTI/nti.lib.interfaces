@@ -72,7 +72,7 @@ class Survey extends QuestionSet {
 	}
 
 	maybeResetAllSubmissions () {
-		return this.hasLink('Reset') ? this.postToLink('Reset') : Promise.resolve();
+		return this.hasLink('Reset') ? this.resetAllSubmissions() : Promise.resolve();
 	}
 
 
