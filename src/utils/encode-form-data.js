@@ -17,11 +17,12 @@ function modern (data) {
 }
 
 
+// Node doesn't have FormData
 function legacy (data) {
 	let out = [];
 
 	for (let key of Object.keys(data)) {
-		const value = data[data];
+		const value = data[key];
 
 		out = [...out, [key, value].map(encodeURIComponent).join('=')];
 	}
