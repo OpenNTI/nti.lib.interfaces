@@ -22,6 +22,7 @@ class Survey extends QuestionSet {
 		...QuestionSet.Fields,
 		'title':                              { type: 'string' },
 		'description':                        { type: 'string' },
+		'disclosure':                         { type: 'string' },
 		'contents':                           { type: 'string' },
 		'PublicationState':                   { type: 'string' },
 		'available_for_submission_beginning': { type: 'date'   },
