@@ -70,7 +70,7 @@ class Note extends Highlight {
 			.then(reply => service.post(target, reply.getData()))
 			.then(data => this[parse](data))
 			.then(reply => {
-				this.appendNewChild(reply);
+				this.appendChild(reply);
 				this.emit('change');
 			});
 	}
@@ -126,7 +126,7 @@ class Note extends Highlight {
 
 		this[UpdatedDiscussionCount] = this.getDiscussionCount();
 
-		this.appendNewChild(discussion, true);
+		this.prependChild(discussion, true);
 		discussion.overrideParentDiscussion(this);
 		this.onDiscussionAdded(discussion);
 

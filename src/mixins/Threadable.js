@@ -265,16 +265,27 @@ export default {
 		);
 	},
 
+	appendChild (newChild, doNotUpdateCount) {
+		return addChild.call(this, newChild, doNotUpdateCount, 'append');
+	},
 
-	appendNewChild (newChild, doNotUpdateCount) {
-		if (!doNotUpdateCount) {
-			this.ReferencedByCount++;
-		}
-
-		newChild[PARENT] = this;
-
-		let children = this[CHILDREN] || [];
-
-		this[CHILDREN] = [...children, newChild];
+	prependChild (newChild, doNotUpdateCount) {
+		return addChild.call(this, newChild, doNotUpdateCount, 'prepend');
 	}
 };
+
+function addChild (newChild, doNotUpdateCount, mode = 'append') {
+	if (!this?.isThreadable) {
+		throw new Error('Invalid call context');
+	}
+
+	if (!doNotUpdateCount) {
+		this.ReferencedByCount++;
+	}
+
+	newChild[PARENT] = this;
+
+	let children = this[CHILDREN] || [];
+
+	this[CHILDREN] = mode === 'append' ? [...children, newChild] : [newChild, ...children];
+}
