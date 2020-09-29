@@ -9,6 +9,7 @@ import {
 import {model, COMMON_PREFIX} from '../../Registry';
 import Publishable from '../../../mixins/Publishable';
 import Completable from '../../../mixins/Completable';
+import Pages from '../../content/mixins/Pages';
 import QuestionSet from '../QuestionSet';
 
 import SurveySubmission from './SurveySubmission';
@@ -123,5 +124,5 @@ class Survey extends QuestionSet {
 
 export default decorate(Survey, {with:[
 	model,
-	mixin(Completable, Publishable),
+	mixin(Completable, Publishable, Pages),
 ]});
