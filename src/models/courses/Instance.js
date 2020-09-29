@@ -368,6 +368,27 @@ class Instance extends Base {
 			.then(parseResult);
 	}
 
+	getInquiry (ntiid) {
+		const service = this[Service];
+		const href = this.getLink('CourseInquiries');
+
+		if (!href) {
+			return Promise.reject(NO_LINK);
+		}
+
+		const inquiryParentRef = this;
+
+		const parseResult = o => service.getObject(o, {parent: inquiryParentRef});
+		const uri = Url.parse(href);
+
+		uri.pathname = path.join(uri.pathname, encodeURIComponent(ntiid));
+
+		const url = uri.format();
+
+		return service.get(url)
+			.then(parseResult);
+	}
+
 
 	getAccessTokens () {
 		if(!this.hasLink('CourseAccessTokens')) {
