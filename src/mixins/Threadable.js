@@ -163,7 +163,7 @@ export default {
 			//get the list of children promises. (if we have an hit, short-circuit)
 			const pendingChildren = item ? [] : list.map(x => x[CHILDREN]).filter(x => (x || {}).then);
 
-			//if our search didn't yeild anything, and we have pending children... wait on them, and then search them.
+			//if our search didn't yield anything, and we have pending children... wait on them, and then search them.
 			if (!item &&  pendingChildren.length > 0) {
 
 				return Promise.all(pendingChildren) //These will resolve to lists... so
