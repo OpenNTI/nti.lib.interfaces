@@ -11,11 +11,13 @@ class SurveyReference extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'isClosed':       { type: 'boolean' },
-		'question-count': { type: 'number?' },
-		'label':          { type: 'string'  },
-		'submissions':    { type: 'number'  },
-		'Target-NTIID':   { type: 'string'  }
+		'isClosed':                              { type: 'boolean' },
+		'question-count':                        { type: 'number?' },
+		'label':                                 { type: 'string'  },
+		'submissions':                           { type: 'number'  },
+		'Target-NTIID':                          { type: 'string'  },
+		'TargetAvailableForSubmissionBeginning': { type: 'date'    },
+		'TargetPublishState':                    { type: 'string'  }
 	}
 
 
@@ -29,6 +31,14 @@ class SurveyReference extends Base {
 
 	get target () {
 		return this['Target-NTIID'];
+	}
+
+	isTargetPublished () {
+		return this.TargetPublishState === 'DefaultPublished';
+	}
+
+	getTargetAvailableBeginning () {
+		return this.getTargetAvailableForSubmissionBeginning();
 	}
 }
 
