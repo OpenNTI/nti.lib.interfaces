@@ -12,6 +12,7 @@ class SurveySubmission extends QuestionSetSubmission {
 		...QuestionSetSubmission.Fields,
 		'parts':    { type: 'model[]', defaultValue: [] },
 		'surveyId': { type: 'string'                    },
+		'version':  { type: 'string'                    }
 	}
 
 

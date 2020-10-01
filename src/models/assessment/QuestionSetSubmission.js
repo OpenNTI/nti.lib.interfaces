@@ -24,7 +24,8 @@ class QuestionSetSubmission extends Base {
 			questionSetId: questionSet.getID(),
 			ContainerId: questionSet.containerId,
 			CreatorRecordedEffortDuration: null,
-			questions: (questionSet.questions ?? []).map(q => q.getSubmission())
+			questions: (questionSet.questions ?? []).map(q => q.getSubmission()),
+			version: questionSet.version
 		};
 
 		const s = new this(questionSet[Service], questionSet, data);
