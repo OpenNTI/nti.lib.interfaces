@@ -89,6 +89,14 @@ class Survey extends QuestionSet {
 		return this.getAvailableForSubmissionEnding();
 	}
 
+	canSetDueDate () {
+		return this.hasLink('date-edit');
+	}
+
+	setDueDate (date) {
+		return this.save({'available_for_submission_ending': date}, void 0, 'date-edit');
+	}
+
 
 	getPublishDate () {
 		return this.isPublished() ? this.getAssignedDate() : null;
