@@ -28,7 +28,8 @@ class Survey extends QuestionSet {
 		'PublicationState':                   { type: 'string' },
 		'available_for_submission_beginning': { type: 'date'   },
 		'available_for_submission_ending':    { type: 'date'   },
-		'version':                            { type: 'string' }
+		'version':                            { type: 'string' },
+		'submissions':                        { type: 'number' }
 	}
 
 	get hasAggregationData () {

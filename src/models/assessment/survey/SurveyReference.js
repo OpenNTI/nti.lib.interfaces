@@ -37,7 +37,7 @@ class SurveyReference extends Base {
 		return this.TargetPublishState === 'DefaultPublished';
 	}
 
-	getTargetAvailableBeginning () {
+	getTargetAssignedDate () {
 		return this.getTargetAvailableForSubmissionBeginning();
 	}
 }
