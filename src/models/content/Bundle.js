@@ -179,6 +179,12 @@ class Bundle extends Base {
 		return preferences ? preferences.value : [];
 	}
 
+	getDefaultSharing () {
+		return {
+			scopes: []
+		};
+	}
+
 
 	getVideoIndex () {
 		return Promise.all(this.map(pkg=>pkg.getVideoIndex()))
