@@ -126,7 +126,7 @@ class Survey extends QuestionSet {
 
 		return work.then(() => {
 			if (this.canPublish() || this.canUnpublish()) {
-				return Publishable.setPublishState.call(this, value, 'available_for_submission_beginning', 'parts', 'IsAvailable');
+				return Publishable.setPublishState.call(this, value, 'available_for_submission_beginning', 'questions', 'IsAvailable');
 			}
 		});
 	}
