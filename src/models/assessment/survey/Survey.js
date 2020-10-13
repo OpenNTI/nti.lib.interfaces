@@ -21,15 +21,16 @@ class Survey extends QuestionSet {
 
 	static Fields = {
 		...QuestionSet.Fields,
-		'title':                              { type: 'string' },
-		'description':                        { type: 'string' },
-		'disclosure':                         { type: 'string' },
-		'contents':                           { type: 'string' },
-		'PublicationState':                   { type: 'string' },
-		'available_for_submission_beginning': { type: 'date'   },
-		'available_for_submission_ending':    { type: 'date'   },
-		'version':                            { type: 'string' },
-		'submissions':                        { type: 'number' }
+		'title':                              { type: 'string'  },
+		'description':                        { type: 'string'  },
+		'disclosure':                         { type: 'string'  },
+		'contents':                           { type: 'string'  },
+		'PublicationState':                   { type: 'string'  },
+		'available_for_submission_beginning': { type: 'date'    },
+		'available_for_submission_ending':    { type: 'date'    },
+		'version':                            { type: 'string'  },
+		'submissions':                        { type: 'number'  },
+		'Reports':                            { type: 'model[]' }
 	}
 
 	get hasAggregationData () {
