@@ -368,6 +368,20 @@ class Instance extends Base {
 			.then(parseResult);
 	}
 
+	getAllSurveys (params) {
+		const service = this[Service];
+		const href = this.getLink('Inquiries');
+
+		if (!href) {
+			throw new Error('Survey request failed.');
+		}
+
+		return service.getBatch(href, {
+			accept: 'application/vnd.nextthought.nasurvey',
+			...params
+		});
+	}
+
 	getInquiry (ntiid) {
 		const service = this[Service];
 		const href = this.getLink('CourseInquiries');
