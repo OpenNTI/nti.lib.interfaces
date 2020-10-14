@@ -17,6 +17,7 @@ class SurveyReference extends Base {
 		'submissions':                           { type: 'number'  },
 		'Target-NTIID':                          { type: 'string'  },
 		'TargetAvailableForSubmissionBeginning': { type: 'date'    },
+		'TargetAvailableForSubmissionEnding':    { type: 'date'    },
 		'TargetPublishState':                    { type: 'string'  }
 	}
 
@@ -39,6 +40,10 @@ class SurveyReference extends Base {
 
 	getTargetAssignedDate () {
 		return this.getTargetAvailableForSubmissionBeginning();
+	}
+
+	getTargetDueDate () {
+		return this.getTargetAvailableForSubmissionEnding();
 	}
 }
 
