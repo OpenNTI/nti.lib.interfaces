@@ -7,7 +7,6 @@ const DiscussionAdded = 'discussion-added';
 const DiscussionDeleted = 'discussion-deleted';
 
 const ResolvedMentions = Symbol('ResolvedMentions');
-const ResolvedSharedWith = Symbol('ResolvedSharedWith');
 
 const ParentOverride = Symbol('Parent Override');
 
@@ -219,7 +218,7 @@ export default function DiscussionInterface (targetModelClass) {
 
 		getTitle () { return getTitle(this); },
 		getBody () { return getBody(this); },
-		
+
 		getTags () { return getTags(this); },
 
 		getMentions () { return getMentions(this); },
@@ -259,7 +258,7 @@ export default function DiscussionInterface (targetModelClass) {
 
 			if (post !== this) { return post.updatePost(data, ...args); }
 
-			const payload = DiscussionInterface.getPayload(data);	
+			const payload = DiscussionInterface.getPayload(data);
 
 			const result = await this.save(payload, ...args);
 			await resolveMentions(this);
@@ -268,7 +267,7 @@ export default function DiscussionInterface (targetModelClass) {
 
 			return result;
 		},
-	
+
 		getParentDiscussion () {
 			if (this[ParentOverride]) { return this[ParentOverride]; }
 
@@ -289,7 +288,7 @@ export default function DiscussionInterface (targetModelClass) {
 				parent.onDiscussionDeleted(this.getPost());
 			}
 		},
-		
+
 		canAddDiscussion () { throw new Error('canAddDiscussion not implementd'); },
 
 		getDiscussionCount () {	throw new Error('getDiscussionCount not implemented'); },
@@ -304,7 +303,7 @@ export default function DiscussionInterface (targetModelClass) {
 		addDiscussion () { throw new Error('addDiscussion not implented'); },
 		onDiscussionAdded (discussion, silent) {
 			this.updateDiscussionCount(this.getDiscussionCount() + 1);
-			
+
 			if (!silent) {
 				this.emit(DiscussionAdded, discussion);
 			}
