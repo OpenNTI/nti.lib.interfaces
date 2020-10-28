@@ -127,6 +127,17 @@ export default {
 		this.onChange('saving');
 
 		return this.saving;
+	},
+
+
+	/**
+	* isModifiable
+	* @deprecated
+	* @return {bool} isModifiable
+	*/
+	canEdit () {
+		console.warn('Use isModifiable instead of canEdit()');//eslint-disable-line no-console
+		return this.isModifiable;
 	}
 };
 
