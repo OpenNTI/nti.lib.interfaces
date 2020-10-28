@@ -26,7 +26,7 @@ class CourseCommunity extends EventEmitter {
 		super();
 
 		this.#course = course;
-		
+
 		this.#board = course.Discussions || course.ParentDiscussions;
 		this.#parentBoard = course.Discussions ? course.ParentDiscussions : null;
 	}
@@ -55,7 +55,7 @@ class CourseCommunity extends EventEmitter {
 		return this.#board.description;
 	}
 
-	canEdit () {
+	get isModifiable () {
 		return this.#board.hasLink('edit');
 	}
 
@@ -70,7 +70,7 @@ class CourseCommunity extends EventEmitter {
 			this.onChange();
 		} catch (e) {
 			if (e.field === 'title') { e.field = 'displayName'; }
-		
+
 			throw e;
 		}
 	}
@@ -109,7 +109,7 @@ class CourseCommunity extends EventEmitter {
 
 	async getDefaultSharing () {
 		const sharing = await this.#course.getDefaultSharing();
-	
+
 		return {
 			scopes: sharing?.scopes ?? [],
 			locked: true
