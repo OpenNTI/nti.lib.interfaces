@@ -15,6 +15,7 @@ class SurveyReference extends Base {
 		'question-count':                        { type: 'number?' },
 		'label':                                 { type: 'string'  },
 		'submissions':                           { type: 'number'  },
+		'title':                                 { type: 'string'  },
 		'Target-NTIID':                          { type: 'string'  },
 		'TargetAvailableForSubmissionBeginning': { type: 'date'    },
 		'TargetAvailableForSubmissionEnding':    { type: 'date'    },
