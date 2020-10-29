@@ -648,7 +648,7 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 
 		// We only want to skip when the class has defined its own getter/setter.
 		// When applyField is invoked as part of a refresh, the Fields getter/setter
-		// functions (assigned below) will already be present but we still want to proceed. 
+		// functions (assigned below) will already be present but we still want to proceed.
 		const hasOwnGetter = isNonFieldsFn(get);
 		const hasOwnSetter = isNonFieldsFn(set);
 		if (hasOwnGetter || hasOwnSetter) {
@@ -667,7 +667,7 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 	const setter =  makeFieldsFn(x => value = x);
 	const getter = makeFieldsFn(() => value);
 	const warningGetter = makeFieldsFn(() => (
-		logger.warn('Undeclared Access of %s on %o', fieldName, scope.MimeType || scope),
+		logger.warn('Undeclared Access of %s on %o', fieldName, scope),
 		value
 	));
 

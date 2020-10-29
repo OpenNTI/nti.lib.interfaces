@@ -28,7 +28,8 @@ class Question extends Base {
 		'wordbank':                 { type: 'model'                     },
 		'AssessmentContainerCount': { type: 'number'                    },
 		'ContentRoot':              { type: 'string'                    },
-		'containerId':              { type: 'string'                    }
+		'containerId':              { type: 'string'                    },
+		'IsAvailable':              { type: 'boolean'                   },
 	};
 
 

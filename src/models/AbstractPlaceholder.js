@@ -36,8 +36,8 @@ function MarkerFactory (obj) {
 
 export default class Placeholder extends Base {
 	constructor (service, parent, data) {
-		super(service, parent, data);
-
+		super(service, parent, {}); //bypass field declaration checks for Placeholders
+		Object.assign(this, data);
 		this.keys = new Set(Object.keys(data));
 
 		const makeMarker = MarkerFactory(this);
