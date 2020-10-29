@@ -22,12 +22,15 @@ class QuestionSet extends Base {
 
 	static Fields = {
 		...Base.Fields,
-		'draw':                { type: 'number',                               },
-		'question-count':      { type: 'number?'                               },
-		'questions':           { type: 'model[]'                               },
-		'Randomized':          { type: 'boolean', name: 'isRandomized'         },
-		'RandomizedPartsType': { type: 'boolean', name: 'isPartTypeRandomized' },
-		'containerId':         { type: 'string'                                }
+		'draw':                                  { type: 'number',                               },
+		'question-count':                        { type: 'number?'                               },
+		'questions':                             { type: 'model[]'                               },
+		'Randomized':                            { type: 'boolean', name: 'isRandomized'         },
+		'RandomizedPartsType':                   { type: 'boolean', name: 'isPartTypeRandomized' },
+		'containerId':                           { type: 'string'                                },
+		'LimitedEditingCapabilities':            { type: 'boolean'                               },
+		'LimitedEditingCapabilitiesSavepoints':  { type: 'boolean'                               },
+		'LimitedEditingCapabilitiesSubmissions': { type: 'boolean'                               },
 	};
 
 
