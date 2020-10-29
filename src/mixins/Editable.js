@@ -131,12 +131,12 @@ export default {
 
 
 	/**
-	* isModifiable
-	* @deprecated
-	* @return {bool} isModifiable
-	*/
+	 * Checks if this is modifiable
+	 *
+	 * @deprecated
+	 * @return {bool} isModifiable
+	 */
 	canEdit () {
-		console.warn('Use isModifiable instead of canEdit()');//eslint-disable-line no-console
 		return this.isModifiable;
 	}
 };

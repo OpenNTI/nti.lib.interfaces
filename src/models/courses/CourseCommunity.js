@@ -59,6 +59,10 @@ class CourseCommunity extends EventEmitter {
 		return this.#board.hasLink('edit');
 	}
 
+	canEdit () {
+		return this.isModifiable;
+	}
+
 	async save (data) {
 		const payload = {};
 
