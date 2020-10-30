@@ -20,20 +20,20 @@ class AssignmentFeedback extends Base {
 	}
 
 
-	delete () {
+	async delete () {
 		let link = this.getLink('edit');
 		if (!link) {
-			return Promise.reject(new Error('No Edit Link'));
+			throw new Error('No Edit Link');
 		}
 
 		return this[Service].delete(link);
 	}
 
 
-	editBody (body) {
+	async editBody (body) {
 		let link = this.getLink('edit');
 		if (!link) {
-			return Promise.reject(new Error('No Edit Link'));
+			throw new Error('No Edit Link');
 		}
 
 		this.body = body;

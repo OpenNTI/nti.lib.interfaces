@@ -69,9 +69,9 @@ class FriendsList extends Entity {
 	 * @param {...string|Entity} entity The entity to add.
 	 * @return {Promise} To fulfill if successfull, or reject with an error.
 	 */
-	add (...entities) {
+	async add (...entities) {
 		if (!this.isModifiable) {
-			return Promise.reject('No Edit Link');
+			throw new Error('No Edit Link');
 		}
 
 		let data = this.getData();
@@ -113,11 +113,11 @@ class FriendsList extends Entity {
 	 *
 	 * @return {Promise} To fulfill if successfull, or reject with an error.
 	 */
-	remove (entity) {
+	async remove (entity) {
 		const entityId = getID(entity);
 
 		if (!this.isModifiable) {
-			return Promise.reject('No Edit Link');
+			throw new Error('No Edit Link');
 		}
 
 		const {friends = []} = this;
@@ -152,9 +152,9 @@ class FriendsList extends Entity {
 	 * @param {...string|Entity} entities The new list of entities.
 	 * @return {Promise} To fulfill if successful, or reject with an error.
 	 */
-	update (...entities) {
+	async update (...entities) {
 		if (!this.isModifiable) {
-			return Promise.reject('No Edit Link');
+			throw new Error('No Edit Link');
 		}
 
 		let data = this.getData();

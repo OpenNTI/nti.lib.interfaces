@@ -5,11 +5,11 @@ const after = (task, call) => task.catch(()=>{}).then(()=>call());
 
 
 export default {
-	delete (rel = 'edit') {
+	async delete (rel = 'edit') {
 		const link = this.getLink(rel);
 
 		if (!link) {
-			return Promise.reject('No Edit Link.');
+			throw new Error('No Edit Link');
 		}
 
 		begin(this, DELETED);
@@ -35,9 +35,9 @@ export default {
 			.then(() => true);//control the success result
 	},
 
-	saveFormData (data, onAfterRefresh = x => x, rel = 'edit') {
+	async saveFormData (data, onAfterRefresh = x => x, rel = 'edit') {
 		if (!this.hasLink(rel)) {
-			return Promise.reject('No Edit Link.');
+			throw new Error('No Edit Link');
 		}
 
 		begin(this, SAVE);
@@ -70,11 +70,11 @@ export default {
 
 
 
-	save (newValues, onAfterRefresh = x=>x, rel = 'edit') {
+	async save (newValues, onAfterRefresh = x=>x, rel = 'edit') {
 		if (newValues instanceof FormData) { return this.saveFormData(newValues, onAfterRefresh, rel); }
 
 		if (!this.hasLink(rel)) {
-			return Promise.reject('No Edit Link.');
+			throw new Error('No Edit Link');
 		}
 
 		const {...values} = newValues;

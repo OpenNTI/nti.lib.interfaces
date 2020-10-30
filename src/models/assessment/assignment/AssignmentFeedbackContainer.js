@@ -13,10 +13,10 @@ class AssignmentFeedbackContainer extends Base {
 	}
 
 
-	addPost (body) {
+	async addPost (body) {
 		let link = this.getLink('edit');
 		if (!link) {
-			return Promise.reject(new Error('No Edit Link'));
+			throw new Error('No Edit Link');
 		}
 
 		let payload = {
