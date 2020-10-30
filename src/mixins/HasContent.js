@@ -1,5 +1,7 @@
 import {isEmpty, Markup} from '@nti/lib-commons';
 
+import {getPropertyDescriptor} from '../utils';
+
 function cleanupContentString (content) {
 	try {
 		let root = this.getContentRoot() || '/content/missing-root/';
@@ -16,22 +18,31 @@ function setup (data, keys) {
 
 	let buildProperty = key => {
 		let content = data[key] || '';
+		const descriptor = getPropertyDescriptor(this, key);
+		function filterContent () {
+			if (filterContent.cached) {
+				return filterContent.cached;
+			}
+
+			if (Array.isArray(content)) {
+				content = content.map(filter);
+			} else {
+				content = filter(content);
+			}
+
+			filterContent.cached = content;
+
+			return content;
+		}
+
 		Object.defineProperty(this, key, {
+			...descriptor,
 			enumerable: true,
-			configurable: true,
-			get () {
-
-				if (Array.isArray(content)) {
-					content = content.map(filter);
-				} else {
-					content = filter(content);
-				}
-
-				//re-define the getter
-				delete this[key];
-				this[key] = content;
-
-				return content;
+			configurable: false,
+			get: Object.assign(filterContent, {declared:true}),
+			set: (descriptor && !descriptor.set) ? undefined : (x) => {
+				delete filterContent.cashed;
+				return descriptor.set(x);
 			}
 		});
 	};
