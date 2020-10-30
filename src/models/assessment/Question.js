@@ -24,6 +24,7 @@ class Question extends Base {
 
 	static Fields = {
 		...Base.Fields,
+		'content':                  { type: 'string'                    },
 		'parts':                    { type: 'model[]', defaultValue: [] },
 		'wordbank':                 { type: 'model'                     },
 		'AssessmentContainerCount': { type: 'number'                    },
