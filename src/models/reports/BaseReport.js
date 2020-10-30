@@ -11,6 +11,7 @@ class BaseReport extends Base {
 		'title':           {type: 'string'},
 		'supported_types': {type: 'string[]', name: 'supportedTypes'},
 		'rel':             {type: 'string'},
+		'href':            {type: 'string'},
 		'contexts':        {type: 'object'}
 	}
 }
