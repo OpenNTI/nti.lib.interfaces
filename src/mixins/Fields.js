@@ -669,7 +669,7 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 
 	delete scope[fieldName];
 
-	const setter =  makeFieldsFn(x => value = x);
+	const setter =  makeFieldsFn(x => void (value = x));
 	const getter = makeFieldsFn(() => value);
 	const warningGetter = makeFieldsFn(() => (
 		logger.warn('Undeclared Access of %s on %o', fieldName, scope),

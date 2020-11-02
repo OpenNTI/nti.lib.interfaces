@@ -43,7 +43,7 @@ function setup (data, keys) {
 			set: (descriptor && !descriptor.set) ? undefined : (x) => {
 				delete filterContent.cashed;
 				content = x;
-				return descriptor.set?.apply?.(this, x);
+				return descriptor.set?.call?.(this, x);
 			}
 		});
 	};
