@@ -652,6 +652,11 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 		const hasOwnGetter = isNonFieldsFn(get);
 		const hasOwnSetter = isNonFieldsFn(set);
 		if (hasOwnGetter || hasOwnSetter) {
+			try {
+				scope[fieldName] = value;
+			} catch (e) {
+				logger.error(e.stack || e.message || e);
+			}
 			return;
 		}
 

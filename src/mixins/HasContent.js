@@ -17,8 +17,8 @@ function setup (data, keys) {
 	let filter = cleanupContentString.bind(this);
 
 	let buildProperty = key => {
-		let content = data[key] || '';
 		const descriptor = getPropertyDescriptor(this, key);
+		let content = data[key] || '';
 		function filterContent () {
 			if (filterContent.cached) {
 				return filterContent.cached;
@@ -42,7 +42,8 @@ function setup (data, keys) {
 			get: Object.assign(filterContent, {declared:true}),
 			set: (descriptor && !descriptor.set) ? undefined : (x) => {
 				delete filterContent.cashed;
-				return descriptor.set(x);
+				content = x;
+				return descriptor.set?.apply?.(this, x);
 			}
 		});
 	};
