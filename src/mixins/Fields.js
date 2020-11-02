@@ -653,9 +653,11 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 		const hasOwnSetter = isNonFieldsFn(set);
 		if (hasOwnGetter || hasOwnSetter) {
 			try {
-				scope[fieldName] = value;
+				if ((descriptor.writable && 'value' in descriptor) || hasOwnSetter) {
+					scope[fieldName] = value;
+				}
 			} catch (e) {
-				logger.error(e.stack || e.message || e);
+				logger.debug(e.stack || e.message || e);
 			}
 			return;
 		}
