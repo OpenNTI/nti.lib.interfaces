@@ -460,7 +460,7 @@ describe('Fields Mixin', () => {
 	});
 
 	describe ('Class getters/setters', () => {
-		
+
 		const value = {
 			initial: 'initial value',
 			changed: 'changed value'
@@ -476,6 +476,7 @@ describe('Fields Mixin', () => {
 			static Fields = {
 				'field1': {type: 'string'},
 				'field2': {type: 'string'},
+				'field3': {type: 'string'},
 			}
 			constructor (data) {
 				this.initMixins(data);
@@ -487,38 +488,48 @@ describe('Fields Mixin', () => {
 				setter();
 				getter.mockReturnValue(v);
 			}
-			static make = (data = {}) => new Foo({field1: 'test', field2: value.initial, ...data })
+
+			get field3 () {
+				return 'constant value';
+			}
+
+			static make = (data) => new Foo({field1: 'test', field2: value.initial, field3: 'not this', ...data })
 		}
 
 		test('Preserves class getter', () => {
 			const f = Foo.make();
-			const {field1, field2} = f;
+			const {field1, field2, field3} = f;
 			expect(getter).toHaveBeenCalled();
-			expect(field1).toEqual(value.initial);
+			expect(field1).toEqual('test');
 			expect(field2).toEqual(value.initial);
+			expect(field3).toEqual('constant value');
 		});
 
 		test('Preserves class setter', () => {
 			const f = Foo.make();
-			expect(f.field1).toEqual(value.initial);
+			expect(f.field1).toEqual('test');
 			expect(f.field2).toEqual(value.initial);
+			expect(f.field3).toEqual('constant value');
 
 			f.field1 = value.changed;
 			expect(setter).toHaveBeenCalled();
 			expect(f.field1).toEqual(value.changed);
 			expect(f.field2).toEqual(value.initial);
+			expect(f.field3).toEqual('constant value');
 		});
 
 		test('Refresh applies fields as expected', () => {
 			const f = Foo.make();
-			expect(f.field1).toEqual(value.initial);
+			expect(f.field1).toEqual('test');
 			expect(f.field2).toEqual(value.initial);
+			expect(f.field3).toEqual('constant value');
 
-			f.applyRefreshedData({field1: 'test1', field2: value.changed});
+			f.applyRefreshedData({field1: 'test1', field2: value.changed, field3: 'new'});
 
 			expect(setter).toHaveBeenCalled();
-			expect(f.field1).toEqual(value.initial);
+			expect(f.field1).toEqual('test1');
 			expect(f.field2).toEqual(value.changed);
+			expect(f.field3).toEqual('constant value');
 		});
 	});
 
