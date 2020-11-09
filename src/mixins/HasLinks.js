@@ -43,6 +43,11 @@ export default {
 	},
 
 
+	deleteLink (rel) {
+		return this.requestLink(rel, 'delete');
+	},
+
+
 	postToLink (rel, data, parseResponse) {
 		return this.requestLink(rel, 'post', data, void 0, parseResponse);
 	},
