@@ -32,7 +32,9 @@ export default {
 			} else if (v && isFunction(v.getData)) {
 				v = v.getData();
 			}
-
+			else if (v && isFunction(v.toJSON)) {
+				v = v.toJSON();
+			}
 			return v;
 		};
 

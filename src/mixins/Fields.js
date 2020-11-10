@@ -580,7 +580,11 @@ function applyModelMappedDictionaryField (scope, fieldName, value, declared, def
 			if (Object.keys(map).length === 0) {
 				delete out[dK];
 			}
+
+			Object.defineProperty(map, 'toJSON', { value: mapToJson });
 		}
+
+		Object.defineProperty(out, 'toJSON', { value: mapToJson });
 	}
 
 	applyField(
@@ -605,6 +609,8 @@ function applyModelDictionaryField (scope, fieldName, value, declared, defaultVa
 				delete out[dK];
 			}
 		}
+
+		Object.defineProperty(out, 'toJSON', { value: mapToJson });
 	}
 
 	applyField(
@@ -633,6 +639,19 @@ function applyModelField (scope, fieldName, value, declared, defaultValue) {
 		declared,
 		defaultValue
 	);
+}
+
+
+
+function mapToJson () {
+	const scope = this;
+	const out = {};
+
+	for (const key of Object.keys(scope)) {
+		out[key] = scope[key].toJSON?.() ?? scope[key];
+	}
+
+	return out;
 }
 
 const FieldsFn = Symbol('is fields fn');
@@ -671,7 +690,11 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 
 	delete scope[fieldName];
 
-	const setter =  makeFieldsFn(x => void (value = x));
+	const setter =  makeFieldsFn(x => {
+		// eslint-disable-next-line no-console
+		// console.trace('setting %s to', fieldName, x);
+		value = x;
+	});
 	const getter = makeFieldsFn(() => value);
 	const warningGetter = makeFieldsFn(() => (
 		logger.warn('Undeclared Access of %s on %o', fieldName, scope),

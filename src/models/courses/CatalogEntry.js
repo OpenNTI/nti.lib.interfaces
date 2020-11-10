@@ -56,7 +56,7 @@ class CourseCatalogEntry extends Base {
 	constructor (service, parent, data) {
 		super(service, parent.isEnrollment ? parent : null, data);
 
-		if (!this.ContentPackages) {
+		if (!this.ContentPackages && this.ContentPackageNTIID) {
 			this.ContentPackages = [this.ContentPackageNTIID];
 		}
 	}
