@@ -12,6 +12,7 @@ import EnrollmentIdentity from './mixins/EnrollmentIdentity';
 
 const emptyFunction = () => {};
 const EMPTY_CATALOG_ENTRY = {getAuthorLine: emptyFunction};
+const ACKNOWLEDGE = 'AcknowledgeCompletion';
 
 class Enrollment extends Base {
 	static MimeType = [
@@ -31,7 +32,7 @@ class Enrollment extends Base {
 		'LastSeenTime':           { type: 'date'    }
 	}
 
-	//@private
+	/** @private */
 	CourseInstance = null;
 
 
@@ -48,6 +49,16 @@ class Enrollment extends Base {
 		const courseInstanceLink = this.Links && this.Links.filter(x => x.rel === 'CourseInstance')[0];
 
 		return courseInstanceLink && courseInstanceLink.type && courseInstanceLink.type.match(/scormcourseinstance/);
+	}
+
+	get hasCompletionAcknowledgmentRequest () {
+		return this.hasLink(ACKNOWLEDGE);
+	}
+
+
+	async acknowledgeCourseCompletion () {
+		await this.postToLink(ACKNOWLEDGE);
+		await this.refresh();
 	}
 
 
@@ -105,7 +116,11 @@ class Enrollment extends Base {
 		}
 	}
 
-	//@private
+	/**
+	 * @private
+	 * @param {Instance} instance Course Instance
+	 * @returns {void}
+	 */
 	setCourseInstance (instance) {
 		this.CourseInstance = instance;
 	}
