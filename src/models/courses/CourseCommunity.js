@@ -160,7 +160,8 @@ function buildAllActivityChannel (forum, activityInfo) {
 		setTitle: null,
 		pinned: true,
 		addDiscussion,
-		DefaultSharedToNTIIDs: forum.DefaultSharedToNTIIDs
+		DefaultSharedToNTIIDs: forum.DefaultSharedToNTIIDs,
+		DefaultSharedToDisplayNames: forum.DefaultSharedToDisplayNames
 	});
 
 	return channel;

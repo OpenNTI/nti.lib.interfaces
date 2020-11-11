@@ -19,7 +19,6 @@ export default class CommunityChannel extends EventEmitter {
 			(topic) => forum.createTopic(topic) :
 			null;
 
-
 		return new CommunityChannel({
 			backer: forum,
 			id: forum.getID(),
@@ -30,7 +29,8 @@ export default class CommunityChannel extends EventEmitter {
 			addDiscussion,
 			delete: doDelete,
 			reports: forum.Reports,
-			DefaultSharedToNTIIDs: forum.DefaultSharedToNTIIDs
+			DefaultSharedToNTIIDs: forum.DefaultSharedToNTIIDs,
+			DefaultSharedToDisplayNames: forum.DefaultSharedToDisplayNames
 		});
 	}
 
@@ -45,6 +45,7 @@ export default class CommunityChannel extends EventEmitter {
 	#doDelete = null
 	#reports = null
 	#DefaultSharedToNTIIDs = null
+	#DefaultSharedToDisplayNames = null
 
 	constructor ({
 		backer,
@@ -57,7 +58,8 @@ export default class CommunityChannel extends EventEmitter {
 		pinned,
 		delete: doDelete,
 		reports,
-		DefaultSharedToNTIIDs
+		DefaultSharedToNTIIDs,
+		DefaultSharedToDisplayNames
 	}) {
 		super();
 		this.setMaxListeners(100);
@@ -75,6 +77,7 @@ export default class CommunityChannel extends EventEmitter {
 		this.#doDelete = doDelete;
 		this.#reports = reports;
 		this.#DefaultSharedToNTIIDs = DefaultSharedToNTIIDs;
+		this.#DefaultSharedToDisplayNames = DefaultSharedToDisplayNames;
 	}
 
 	get backer () { return this.#backer; }
@@ -101,7 +104,7 @@ export default class CommunityChannel extends EventEmitter {
 			this.getID(),
 			this.backer?.getID(),
 			this.backer?.NTIID
-		]).some((id) => id === itemContainer); 
+		]).some((id) => id === itemContainer);
 	}
 
 	loadPinnedContents (params) {
@@ -160,6 +163,7 @@ export default class CommunityChannel extends EventEmitter {
 	getDefaultSharing () {
 		return {
 			scopes: this.#DefaultSharedToNTIIDs ?? [],
+			displayNames: this.#DefaultSharedToDisplayNames,
 			locked: true
 		};
 	}

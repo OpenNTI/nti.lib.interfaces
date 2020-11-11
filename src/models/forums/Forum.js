@@ -40,6 +40,7 @@ class Forum extends Base {
 		'EmailNotifications':          { type: 'boolean'},
 		'IsDefaultForum':              { type: 'boolean'},
 		'DefaultSharedToNTIIDs':       { type: 'string[]'},
+		'DefaultSharedToDisplayNames': { type: 'string[]'}
 	}
 
 	isForum = true
