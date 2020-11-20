@@ -104,7 +104,7 @@ function parseResult (scope, requestPromise) {
 		const extract = x && x.Items && !x.MimeType;
 
 		if (extract && x.Links) {
-			logger.warn('Dropping Collection Links');
+			logger.debug('Unboxing array collection. (Collection wrapper has Links and will not be accessible)');
 		}
 
 		return extract ? x.Items : x;
