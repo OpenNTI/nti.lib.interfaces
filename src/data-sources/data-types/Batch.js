@@ -5,6 +5,7 @@ export default class Batch extends Base {
 		...Base.Fields,
 		'BatchPage':              {type: 'number'                   },
 		'Items':                  {type: 'model[]', defaultValue: []},
+		'ItemCount':              {type: 'number'                   },
 		'Name':                   {type: 'string'                   },
 		'Total':                  {type: 'number'                   },
 		'TotalItemCount':         {type: 'number'                   },
