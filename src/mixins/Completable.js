@@ -40,6 +40,12 @@ export default function Applyer (targetModelClass) {
 		},
 
 
+		getPercentageCompleted () {
+			//TODO: fill this out
+			return 0;
+		},
+
+
 		async updateCompletedState (enrollment) {
 			enrollment = enrollment || this.parent('getCompletedItems');
 
