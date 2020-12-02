@@ -73,7 +73,8 @@ export default class MetaDataResolverForYouTube {
 				description: (o.snippet || {}).description,
 				duration: toSeconds(parse((o.contentDetails || {}).duration || ''))
 			}))
-			.catch(failure => console.error(failure) || ({ //eslint-disable-line no-console
+			//eslint-disable-next-line no-console
+			.catch(failure => console.error('Failed to load YouTube info: %s\n%o', id , failure) || ({
 				failure,
 				poster: FAIL_POSTER.replace('{0}', id),
 				thumbnail: FAIL_THUMB.replace('{0}', id)
