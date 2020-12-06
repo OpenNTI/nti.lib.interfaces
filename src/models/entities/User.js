@@ -54,7 +54,8 @@ class User extends Entity {
 		'role':               { type: 'string'    },
 		'about':              { type: 'string[]'  },
 		'interests':          { type: 'string[]'  },
-		'lastSeenTime':       { type: 'date'      }
+		'lastSeenTime':       { type: 'date'      },
+		'Deactivated':        { type: 'boolean'   }
 	}
 
 	isUser = true
