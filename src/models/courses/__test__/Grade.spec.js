@@ -9,7 +9,7 @@ describe('Grade Model', () => {
 	test('Parses', async () => {
 		const MockService = {
 			...MockServiceBase,
-			get: async () => ({Title: 'Mock Course'}),
+			getObject: async () => ({Title: 'Mock Course'}),
 			getObjectRaw: async () => ({title: 'Mock Assignment'}),
 		};
 
