@@ -8,46 +8,57 @@ import getLink from '../utils/getlink';
 export default {
 
 	initMixin () {
-		let service = this[Service];
+		const service = this[Service];
 
-		let courseInstanceUrl = (this.getLink('AssignmentHistoryItem') || this.href || '')
-			.replace(/\/AssignmentHistories.*/, '');
-
-		let assignmentId = this.AssignmentId;
-
-
-		//If this model has an assignment parent model instance,
-		let a = this.parent('MimeType', /assessment.assignment$/i);
-		a = (a ?
-		//... the assignment title is already known... use it.
-			Promise.resolve(a) :
-			//Otherwise, load the assignment object
-			service.getObjectRaw(assignmentId)
-		)
-		//then... Pluck the assignment object title...
-			.then(assignment=>
-				this.AssignmentName = assignment.title);
+		const resolveAssignmentTitle = async () => {
+			//If this model has an assignment parent model instance,
+			let assignment = this.parent('MimeType', /assessment.assignment$/i);
+			if (!assignment) {
+				//Otherwise, load the assignment object
+				assignment = await service.getObjectRaw(this.AssignmentId);
+			}
+			//then... Pluck the assignment object title...
+			this.AssignmentName = assignment.title;
+		};
 
 
+		const resolveCatalogItem = async () => {
+			let catalogEntryUrl = this.CatalogEntryNTIID;
 
-		//This is really dirty (IMO),
-		//TODO: Find a better way to resolve the "Course Name"
-		let b = !courseInstanceUrl
+			if (!catalogEntryUrl) {
+				const courseInstanceUrl = (this.getLink('AssignmentHistoryItem') || this.href || '')
+					.replace(/\/AssignmentHistories.*/, '');
 
-			? Promise.resolve('No Course URL')
-			: (service.get(courseInstanceUrl).then(courseInstanceData =>
-				//OMG, ICK! Yet another request...
-				service.get(getLink(courseInstanceData, 'CourseCatalogEntry')))
-				//Okay, the scary part is over! just grab what we need and run.
-				.then(catalogEntryData => this.CourseName = catalogEntryData.Title)
-			);
+				if (!courseInstanceUrl) {
+					throw new Error('No Course URL');
+				}
+
+				const courseInstanceData = await service.get(courseInstanceUrl);
+				catalogEntryUrl = getLink(courseInstanceData, 'CourseCatalogEntry');
+			}
+
+			if (!catalogEntryUrl) {
+				throw new Error('No Catalog Entry URL');
+			}
+
+			const catalogEntry = await service.getObject(catalogEntryUrl);
+
+			//Okay, the scary part is over! just grab what we need and run.
+			this.CourseName = catalogEntry.Title;
+			this.CatalogEntry = catalogEntry;
+		};
 
 
-		//Wait on the two async operations (a and b), then fire a change
-		// event so views know values changed.
-		let result = Promise.all([a, b]).then(()=>this.emit('change'));
+		this.addToPending((async () => {
+			//Wait on the two async operations (a and b), then fire a change
+			// event so views know values changed.
+			await Promise.all([
+				resolveAssignmentTitle(),
+				resolveCatalogItem(),
+			]);
 
-		this.addToPending(result);
+			this.emit('change');
+		})());
 	}
 
 };
