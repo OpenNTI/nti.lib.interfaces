@@ -97,7 +97,7 @@ class OutlineNode extends Outline {
 	 * If no progress is required, pass an object with decorateProgress set to false to prevent decorating it.
 	 *
 	 * @method getContent
-	 * @param  {Object} [params] optional paramaters
+	 * @param  {Object} [params] optional parameters
 	 * @param  {Boolean} [params.requiredOnly] limit the items to only the required ones
 	 * @param {Boolean} [params.decorateProgress] if false do not decorate the progress on the items
 	 * @param {Boolean} [params.decorateSummary] if false do not decorate the summary call on the items
@@ -223,7 +223,7 @@ function applyProgress ([content, progress]) {
 		const node = (progress && progress.getProgress(id));
 		if (node != null) {
 			content.CompletedDate = node.getCompletedDate();
-			//TODO: Add other fiedls as we need them
+			//TODO: Add other fields as we need them
 			content.onChange();
 		}
 	});
@@ -321,7 +321,7 @@ function fixRelativePaths (item, root) {
 
 function collateVideo (json) {
 	const re = /ntivideo$/;
-	const vroll = /videoroll$/;
+	const videoRoll = /videoroll$/;
 	function collate (list, current) {
 		let last = list[list.length - 1];
 		if (re.test(current.MimeType)) {
@@ -334,12 +334,12 @@ function collateVideo (json) {
 			}
 
 			//The previous item is a video set...(or we just created it)
-			if (last && vroll.test(last.MimeType)) {
+			if (last && videoRoll.test(last.MimeType)) {
 				last.Items.push(current);
 				return list;
 			}
 
-		} else if (current.Items && !vroll.test(current.MimeType)) {
+		} else if (current.Items && !videoRoll.test(current.MimeType)) {
 			current = collateVideo(current);
 		}
 
