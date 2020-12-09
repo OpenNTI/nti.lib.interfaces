@@ -124,6 +124,13 @@ class Enrollment extends Base {
 	setCourseInstance (instance) {
 		this.CourseInstance = instance;
 	}
+
+
+	async getScopedCourseInstance () {
+		const course = await this.fetchLinkParsed('CourseInstance');
+		course[Symbol.for('scoped')] = true;
+		return course;
+	}
 }
 
 export default decorate(Enrollment, {with:[

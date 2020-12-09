@@ -140,6 +140,12 @@ class OutlineNode extends Outline {
 				content = filterNonRequiredItems(data);
 			}
 
+			const enrollment = this.parent((x) => (x[Symbol.for('scoped')] && x.hasLink('UserLessonCompletionStatsByOutlineNode')));
+			if (enrollment) {
+				await applyContentsOverlayWithUserCompletionStats(content, enrollment);
+			}
+
+
 			const parsed = this[parse](content);
 			return parsed && parsed.waitForPending();
 		};
@@ -256,6 +262,45 @@ function applyStuff (content, applier) {
 	}
 
 	return content;
+}
+
+async function applyContentsOverlayWithUserCompletionStats (rawContent, enrollment) {
+	function findItem (id, collection) {
+		if (collection.NTIID === id) {
+			return collection;
+		}
+
+		for (const item of collection.Items || []) {
+			const candidate = findItem(id, item);
+			if (candidate) {
+				return candidate;
+			}
+		}
+
+		return null;
+	}
+
+	(function removeExistingCompletionItems (container) {
+		delete container.CompletionItem;
+		for (const item of container.Items || []) {
+			removeExistingCompletionItems(item);
+		}
+	})(rawContent);
+
+	const pluckItems = o => ['SuccessfulItems','UnSuccessfulItems','UnrequiredSuccessfulItems','UnrequiredUnSuccessfulItems'].reduce((_, k) => _.concat(o[k] || []), []);
+
+	const {Outline: o, Assignments} = await enrollment.fetchLink('UserLessonCompletionStatsByOutlineNode');
+	const outline = o.reduce((_, i) => [..._, ...Object.values(i)],[]).flat().find(x => x.LessonNTIID === rawContent.NTIID);
+	const items = [outline, Assignments].map(pluckItems).flat();
+
+
+	for (const completionItem of items) {
+		const {ItemNTIID: id} = completionItem;
+		const item = findItem(id, rawContent);
+		if  (item) {
+			item.CompletedItem = completionItem;
+		}
+	}
 }
 
 
