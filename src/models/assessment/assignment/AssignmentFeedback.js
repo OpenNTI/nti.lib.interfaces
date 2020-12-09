@@ -12,7 +12,8 @@ class AssignmentFeedback extends Base {
 	static Fields = {
 		...Base.Fields,
 		'AssignmentId': { type: 'string'   },
-		'body':         { type: '*[]' }
+		'body':         { type: '*[]'      },
+		'title':        { type: 'string'   }
 	}
 
 	constructor (service, parent, data) {
