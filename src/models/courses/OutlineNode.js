@@ -266,7 +266,7 @@ function applyStuff (content, applier) {
 
 async function applyContentsOverlayWithUserCompletionStats (rawContent, enrollment) {
 	function findItem (id, collection) {
-		if (collection.NTIID === id) {
+		if (collection.NTIID === id || collection['Target-NTIID'] === id) {
 			return collection;
 		}
 
