@@ -5,7 +5,7 @@ import {mixin} from '@nti/lib-decorators';
 import {encodeForURI, isNTIID} from '@nti/lib-ntiids';
 import Logger from '@nti/util-logger';
 
-import {Summary, Parser as parse} from '../../constants';
+import {Summary, Parser as parse, SCOPED_COURSE_INSTANCE} from '../../constants';
 import {Mixin as ContentTreeMixin} from '../../content-tree';
 import Publishable from '../../mixins/Publishable';
 import ContentConstraints from '../../mixins/ContentConstraints';
@@ -140,7 +140,9 @@ class OutlineNode extends Outline {
 				content = filterNonRequiredItems(data);
 			}
 
-			const enrollment = this.parent((x) => (x[Symbol.for('scoped')] && x.hasLink('UserLessonCompletionStatsByOutlineNode')));
+			const scope = this.parent(x => x[SCOPED_COURSE_INSTANCE]);
+			const enrollment = scope?.parent(x => x.hasLink('UserLessonCompletionStatsByOutlineNode'));
+
 			if (enrollment) {
 				await applyContentsOverlayWithUserCompletionStats(content, enrollment);
 			}
@@ -299,6 +301,9 @@ async function applyContentsOverlayWithUserCompletionStats (rawContent, enrollme
 		const item = findItem(id, rawContent);
 		if  (item) {
 			item.CompletedItem = completionItem;
+		} else {
+			// eslint-disable-next-line no-console
+			console.warn('Not found: ', id, completionItem);
 		}
 	}
 }

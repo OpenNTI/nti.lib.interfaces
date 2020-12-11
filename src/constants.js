@@ -44,6 +44,8 @@ export const ASSESSMENT_HISTORY_LINK = 'History';
 export const SURVEY_REPORT_LINK = 'report-InquiryReport.pdf';
 export const SURVEY_AGGREGATED_LINK = 'Aggregated';
 
+export const SCOPED_COURSE_INSTANCE = Symbol('scoped course instance');
+
 export const MEDIA_BY_OUTLINE_NODE = 'MediaByOutlineNode';
 
 export const NO_LINK = 'No Link';

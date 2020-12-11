@@ -2,6 +2,7 @@ import {decorate,forward} from '@nti/lib-commons';
 import {mixin} from '@nti/lib-decorators';
 
 import {
+	SCOPED_COURSE_INSTANCE,
 	Service,
 } from '../../constants';
 import {model, COMMON_PREFIX} from '../Registry';
@@ -128,7 +129,7 @@ class Enrollment extends Base {
 
 	async getScopedCourseInstance () {
 		const course = await this.fetchLinkParsed('CourseInstance');
-		course[Symbol.for('scoped')] = true;
+		course[SCOPED_COURSE_INSTANCE] = true;
 		return course;
 	}
 }
