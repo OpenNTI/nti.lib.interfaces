@@ -303,7 +303,7 @@ async function applyContentsOverlayWithUserCompletionStats (rawContent, enrollme
 			item.CompletedItem = completionItem;
 		} else {
 			// eslint-disable-next-line no-console
-			console.warn('Not found: ', id, completionItem);
+			// console.warn('Not found: ', id, completionItem);
 		}
 	}
 }
