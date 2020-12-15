@@ -462,8 +462,9 @@ function dateGetter (key) {
 	return function () {
 		this[SKIP_WARN] = true;
 		try {
-			if (typeof this[symbol] !== 'object' || this[key] !== last) {
-				last = this[key];
+			const v = this[key];
+			if (typeof this[symbol] !== 'object' || v !== last) {
+				last = v;
 				this[symbol] = Array.isArray(last)
 					? last.map(x => Parsing.parseDate(x))
 					: Parsing.parseDate(last);
