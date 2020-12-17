@@ -36,6 +36,7 @@ const TYPE_MAP = {
 	'string?': coerceStringField
 };
 
+const __get = Symbol('get');
 const {prototype: {test: _t}} = RegExp;
 const isArrayType = _t.bind(/\[]$/);
 // const isDictionaryType = _t.bind(/\{}$/);
@@ -271,13 +272,11 @@ export default function FieldsApplier (target) {
 				const desc = getPropertyDescriptor(this, name);
 
 				// pull the current getter/declared state from the get() method...
-				const {getter, declared} = (desc || {}).get || {};
+				const {[__get]:getter, declared} = (desc || {}).get || {};
 
-				const current = !getter
-					? this[key]
-					: getter.direct
-						? getter.direct()
-						: getter();
+				const current = getter
+					? getter()
+					: this[key];
 
 				// throw if we're about to replace a function
 				if (typeof current === 'function') {
@@ -373,7 +372,7 @@ function getterWarning (scope, name, originalName) {
 	}
 
 	warn.renamedTo = name;
-	warn.direct = () => scope[name];
+	warn[__get] = () => scope[name];
 	return warn;
 }
 
@@ -424,9 +423,9 @@ export function updateField (scope, field, desc) {
 // INTERNAL only! -- intended for serializing scope to JSON in JSONValue
 export function readValueFor (scope, fieldName) {
 	const descriptor = getPropertyDescriptor(scope, fieldName);
-	const getter = descriptor?.get;
-	const readKey = getter?.renamedTo || fieldName;
-	return getter?.direct ? getter?.direct() : scope[readKey];
+	const {renamedTo, [__get]:getter} = descriptor?.get || {};
+	const readKey = renamedTo || fieldName;
+	return getter ? getter() : scope[readKey];
 }
 
 
@@ -521,15 +520,15 @@ function coerceStringField (scope, fieldName, valueIn, declared, defaultValue) {
 
 
 
-function applyDateField (scope, fieldName, value) {
-	let v = value;
+function applyDateField (scope, fieldName, value, declared, defaultValue) {
+	let v = value ?? defaultValue;
 	const methodName = getMethod(fieldName);
 
 	const getter = ( ) => {
 		logger.warn(`The value of the ${fieldName} field is not a Date instance. Use the ${methodName}() method instead.`);
 		return v;
 	};
-	getter.direct = () => v;
+	Object.assign(getter, { declared, [__get]: () => v });
 
 	updateField(scope, fieldName, {
 		configurable: true,
@@ -687,13 +686,12 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 		logger.warn('Undeclared Access of %s on %o', fieldName, scope),
 		value
 	));
-	warningGetter.direct = getter;
 
 	const get = (declared || fieldName === 'MimeType') //MimeType should always be treated as declared.
 		? getter
 		: warningGetter;
 
-	Object.assign(get, { declared, getter });
+	Object.assign(get, { declared, [__get]: getter });
 
 	const set = setter;
 

@@ -1,5 +1,3 @@
 export default function getPropertyDescriptor (scope, property) {
-	return Object.getOwnPropertyDescriptor(scope, property) || (
-		Object.getPrototypeOf(scope) && getPropertyDescriptor(Object.getPrototypeOf(scope), property)
-	);
+	return !scope ? null : (Object.getOwnPropertyDescriptor(scope, property) || getPropertyDescriptor(Object.getPrototypeOf(scope), property));
 }
