@@ -72,20 +72,28 @@ class AssignmentSummary extends EventEmitter {
 		return a.isOverTime && a.isOverTime();
 	}
 
+	get failed () {
+		const {assignment} = getPrivate(this);
+		const complete = assignment?.CompletedItem;
+		return complete?.Success === false;
+	}
+
 	get completed () {
-		return this.historyItem && this.historyItem.getCreatedTime();
+		const {assignment: a} = getPrivate(this);
+
+		return a.CompletedItem && this.historyItem?.getCreatedTime();
 	}
 
 	get grade () {
-		return this.historyItem && this.historyItem.grade;
+		return this.historyItem?.grade;
 	}
 
 	get feedback () {
-		return this.historyItem && this.historyItem.Feedback;
+		return this.historyItem?.Feedback;
 	}
 
 	get feedbackCount () {
-		return this.historyItem && this.historyItem.feedbackCount;
+		return this.historyItem?.feedbackCount;
 	}
 
 	get isCreatedByAppUser () {
