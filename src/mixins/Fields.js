@@ -268,7 +268,7 @@ export default function FieldsApplier (target) {
 				const value = data[key];
 
 				// get the current property descriptor.
-				const desc = Object.getOwnPropertyDescriptor(this, name);
+				const desc = getPropertyDescriptor(this, name);
 
 				// pull the current getter/declared state from the get() method...
 				const {getter, declared} = (desc || {}).get || {};
@@ -423,7 +423,7 @@ export function updateField (scope, field, desc) {
 // @private - used to read a value without warning.
 // INTERNAL only! -- intended for serializing scope to JSON in JSONValue
 export function readValueFor (scope, fieldName) {
-	const descriptor = Object.getOwnPropertyDescriptor(scope, fieldName);
+	const descriptor = getPropertyDescriptor(scope, fieldName);
 	const getter = descriptor?.get;
 	const readKey = getter?.renamedTo || fieldName;
 	return getter?.direct ? getter?.direct() : scope[readKey];
