@@ -21,8 +21,6 @@ const getMethod = x => 'get' + x.replace(
 	(_, c) => (c || '').toUpperCase()
 );
 
-const SKIP_WARN = Symbol('Warning Skip');//only used to prevent internal references from triggering a warning.
-
 const TYPE_MAP = {
 	'*': null, // wildcard "ANY" type
 	'any': null, // wildcard "ANY" type
@@ -275,10 +273,11 @@ export default function FieldsApplier (target) {
 				// pull the current getter/declared state from the get() method...
 				const {getter, declared} = (desc || {}).get || {};
 
-				// get the current value...
-				this[SKIP_WARN] = true;
-				const current = getter ? getter() : this[key];
-				delete this[SKIP_WARN];
+				const current = !getter
+					? this[key]
+					: getter.direct
+						? getter.direct()
+						: getter();
 
 				// throw if we're about to replace a function
 				if (typeof current === 'function') {
@@ -362,22 +361,19 @@ function getFields (obj, data) {
 
 function getterWarning (scope, name, originalName) {
 	function warn () {
-		if (!scope[SKIP_WARN]) {
-			let m = 'There is a new accessor to use instead.';
+		let m = 'There is a new accessor to use instead.';
 
-			if (typeof name === 'string') {
-				m = `Use ${name} instead.`;
-			}
-
-			m = new Error(`Access to ${originalName} is deprecated. ${m}`);
-			logger.error(m.stack || m.message || m);
+		if (typeof name === 'string') {
+			m = `Use ${name} instead.`;
 		}
 
+		m = new Error(`Access to ${originalName} is deprecated. ${m}`);
+		logger.error(m.stack || m.message || m);
 		return scope[name];
 	}
 
 	warn.renamedTo = name;
-
+	warn.direct = () => scope[name];
 	return warn;
 }
 
@@ -428,13 +424,9 @@ export function updateField (scope, field, desc) {
 // INTERNAL only! -- intended for serializing scope to JSON in JSONValue
 export function readValueFor (scope, fieldName) {
 	const descriptor = Object.getOwnPropertyDescriptor(scope, fieldName);
-	const readKey = ((descriptor || {}).get || {}).renamedTo || fieldName;
-	try {
-		scope[SKIP_WARN] = true;
-		return scope[readKey];
-	} finally {
-		delete scope[SKIP_WARN];
-	}
+	const getter = descriptor?.get;
+	const readKey = getter?.renamedTo || fieldName;
+	return getter?.direct ? getter?.direct() : scope[readKey];
 }
 
 
@@ -460,19 +452,14 @@ function dateGetter (key) {
 	const symbol = getParsedDateKey(key);
 	let last;
 	return function () {
-		this[SKIP_WARN] = true;
-		try {
-			const v = this[key];
-			if (typeof this[symbol] !== 'object' || v !== last) {
-				last = v;
-				this[symbol] = Array.isArray(last)
-					? last.map(x => Parsing.parseDate(x))
-					: Parsing.parseDate(last);
-			}
-			return this[symbol];
-		} finally {
-			delete this[SKIP_WARN];
+		const v = readValueFor(this, key);
+		if (typeof this[symbol] !== 'object' || v !== last) {
+			last = v;
+			this[symbol] = Array.isArray(v)
+				? v.map(x => Parsing.parseDate(x))
+				: Parsing.parseDate(v);
 		}
+		return this[symbol];
 	};
 }
 
@@ -539,11 +526,10 @@ function applyDateField (scope, fieldName, value) {
 	const methodName = getMethod(fieldName);
 
 	const getter = ( ) => {
-		if (!scope[SKIP_WARN]) {
-			logger.warn(`The value of the ${fieldName} field is not a Date instance. Use the ${methodName}() method instead.`);
-		}
+		logger.warn(`The value of the ${fieldName} field is not a Date instance. Use the ${methodName}() method instead.`);
 		return v;
 	};
+	getter.direct = () => v;
 
 	updateField(scope, fieldName, {
 		configurable: true,
@@ -701,6 +687,7 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 		logger.warn('Undeclared Access of %s on %o', fieldName, scope),
 		value
 	));
+	warningGetter.direct = getter;
 
 	const get = (declared || fieldName === 'MimeType') //MimeType should always be treated as declared.
 		? getter
