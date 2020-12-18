@@ -16,6 +16,7 @@ class CourseProgress extends Base {
 		'AbsoluteProgress':       { type: 'number'                     },
 		'Completed':              { type: 'boolean'                    },
 		'CompletedDate':          { type: 'date'                       },
+		'CountCompleted':         { type: 'number'                     }, // Admin
 		'HasProgress':            { type: 'boolean'                    },
 		'MaxPossibleProgress':    { type: 'number'                     },
 		'PercentageProgress':     { type: 'number'                     },
