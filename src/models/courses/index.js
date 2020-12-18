@@ -17,7 +17,7 @@ export { default as CompletedItem } from './CompletedItem';
 export { default as CourseProgress } from './CourseProgress';
 export { default as Instance } from './Instance';
 export { default as Invitation } from './Invitation';
-export { default as Invigations } from './Invitations';
+export { default as Invitations } from './Invitations';
 export { default as AdministrativeRole } from './AdministrativeRole';
 export { default as Enrollment } from './Enrollment';
 export { default as EnrollmentOptions } from './EnrollmentOptions';
