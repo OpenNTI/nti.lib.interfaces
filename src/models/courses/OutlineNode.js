@@ -227,7 +227,7 @@ export default decorate(OutlineNode, {with:[
 
 function applyProgress ([content, progress]) {
 	if (!content || !progress) { return; }
-	return applyStuff(content, (item, id) => {
+	return walk(content, (item, id) => {
 		const node = (progress && progress.getProgress(id));
 		if (node != null) {
 			content.CompletedDate = node.getCompletedDate();
@@ -240,9 +240,9 @@ function applyProgress ([content, progress]) {
 
 function applySummary ([content, summary]) {
 	if (!content || !summary) { return content; }
-	return applyStuff(content, (item) => {
+	return walk(content, (item, id) => {
 		const commentCounts = summary || {};
-		const node = commentCounts[item.getID()] || commentCounts[item['target-NTIID']] || commentCounts[item['Target-NTIID']];
+		const node = commentCounts[id];
 
 		if (node != null) {
 			item[Summary] = node || {ItemCount: 0};
@@ -252,60 +252,29 @@ function applySummary ([content, summary]) {
 }
 
 
-function applyStuff (content, applier) {
-	if (!content) { return; }
-
-	const id = content[getFuzzyTargetProperty(content)];
-
-	applier(content, id);
-
-	if (Array.isArray(content.Items)) {
-		content.Items.forEach(item => applyStuff(item, applier));
+function walk (site, visit) {
+	if (site) { visit(site, site?.[getFuzzyTargetProperty(site)]); }
+	for (const item of site?.Items || []) {
+		walk(item, visit);
 	}
-
-	return content;
+	return site;
 }
 
+
 async function applyContentsOverlayWithUserCompletionStats (rawContent, enrollment) {
-	function findItem (id, collection) {
-		if (collection.NTIID === id || collection['Target-NTIID'] === id) {
-			return collection;
-		}
-
-		for (const item of collection.Items || []) {
-			const candidate = findItem(id, item);
-			if (candidate) {
-				return candidate;
-			}
-		}
-
-		return null;
-	}
-
-	(function removeExistingCompletionItems (container) {
-		delete container.CompletionItem;
-		for (const item of container.Items || []) {
-			removeExistingCompletionItems(item);
-		}
-	})(rawContent);
-
 	const pluckItems = o => ['SuccessfulItems','UnSuccessfulItems','UnrequiredSuccessfulItems','UnrequiredUnSuccessfulItems'].reduce((_, k) => _.concat(o[k] || []), []);
 
 	const {Outline: o, Assignments} = await enrollment.fetchLink('UserLessonCompletionStatsByOutlineNode');
 	const outline = o.reduce((_, i) => [..._, ...Object.values(i)],[]).flat().find(x => x.LessonNTIID === rawContent.NTIID);
-	const items = [outline, Assignments].map(pluckItems).flat();
+	const completionItems = [outline, Assignments]
+		.map(pluckItems)
+		.flat()
+		.reduce((acc, i) => (acc[i.ItemNTIID] = i, acc), {});
 
-
-	for (const completionItem of items) {
-		const {ItemNTIID: id} = completionItem;
-		const item = findItem(id, rawContent);
-		if  (item) {
-			item.CompletedItem = completionItem;
-		} else {
-			// eslint-disable-next-line no-console
-			// console.warn('Not found: ', id, completionItem);
-		}
-	}
+	walk(rawContent, (item, id) => {
+		item.CompletedItem = completionItems[id];
+		logger.debug('Overlaying UserCompletionStats: MimeType: %s, id: %s, applying completion item: %o', item?.MimeType, id, item.CompletedItem);
+	});
 }
 
 
