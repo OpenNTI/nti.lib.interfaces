@@ -62,6 +62,10 @@ class Enrollment extends Base {
 		await this.refresh();
 	}
 
+	get isForAppUser () {
+		return this[Service].getAppUsername() === this.Username;
+	}
+
 
 	getPresentationProperties () {
 		//Called by library view... The version in Course Instance is called on by everything else.

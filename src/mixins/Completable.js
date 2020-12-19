@@ -14,7 +14,7 @@ export default function Applyer (targetModelClass) {
 
 	return {
 		getCompletedDate () {
-			return this.CompletedItem?.getCompletedDate() ?? this.__CompletedDate;
+			return this.CompletedItem?.getCompletedDate() ?? this.get_CompletedDate();
 		},
 
 

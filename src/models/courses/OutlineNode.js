@@ -143,7 +143,7 @@ class OutlineNode extends Outline {
 			const scope = this.parent(x => x[SCOPED_COURSE_INSTANCE]);
 			const enrollment = scope?.parent(x => x.hasLink('UserLessonCompletionStatsByOutlineNode'));
 
-			if (enrollment) {
+			if (enrollment?.isForAppUser === false) {
 				await applyContentsOverlayWithUserCompletionStats(content, enrollment);
 			}
 
