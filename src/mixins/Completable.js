@@ -8,11 +8,13 @@ export default function Applyer (targetModelClass) {
 		'CompletionRequired':       { type: 'boolean' },
 		'CompletionDefaultState':   { type: 'boolean' },
 		'IsCompletionDefaultState': { type: 'boolean' },
+		'CompletedDate':            { type: 'date', name: '__CompletedDate' },
+
 	});
 
 	return {
 		getCompletedDate () {
-			return this.CompletedItem?.getCompletedDate();
+			return this.CompletedItem?.getCompletedDate() ?? this.__CompletedDate;
 		},
 
 
@@ -50,7 +52,7 @@ export default function Applyer (targetModelClass) {
 		async updateCompletedState (enrollment) {
 			enrollment = enrollment || this.parent('getCompletedItems');
 
-			if (!enrollment || !enrollment.hasCompletedItems()) { return; }
+			if (!enrollment?.hasCompletedItems?.()) { return; }
 
 			try {
 				const items = await enrollment.getCompletedItems();
@@ -58,15 +60,20 @@ export default function Applyer (targetModelClass) {
 				const completedDate = getCompletedDate(this, items);
 
 
-				this.CompletedDate = completedDate;
+				this.__CompletedDate = completedDate;
+				if (this.CompletedItem) {
+					this.CompletedItem.CompletedDate = completedDate;
+				}
 				this.onChange('CompletedDate');
 
-				if (oldCompletedDate !== this.getCompletedDate() && enrollment.updateCourseProgress) {
-					enrollment.updateCourseProgress();
+				if (oldCompletedDate !== this.getCompletedDate()) {
+					enrollment.updateCourseProgress?.();
 				}
 
 				return this;
 			} catch (e) {
+				// eslint-disable-next-line no-console
+				console.error('in updateCompletedState():', e.stack || e.message || e);
 				//Its fine if this fails
 			}
 		}
