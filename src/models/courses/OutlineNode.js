@@ -242,7 +242,7 @@ function applySummary ([content, summary]) {
 	if (!content || !summary) { return content; }
 	return walk(content, (item, id) => {
 		const commentCounts = summary || {};
-		const node = commentCounts[id];
+		const node = commentCounts[item.getID()] || commentCounts[id];
 
 		if (node != null) {
 			item[Summary] = node || {ItemCount: 0};
