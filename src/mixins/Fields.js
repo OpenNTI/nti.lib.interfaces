@@ -530,6 +530,8 @@ function applyDateField (scope, fieldName, value, declared, defaultValue) {
 	};
 	Object.assign(getter, { declared, [__get]: () => v });
 
+	delete scope[getParsedDateKey(fieldName)];
+
 	updateField(scope, fieldName, {
 		configurable: true,
 		get: getter,
