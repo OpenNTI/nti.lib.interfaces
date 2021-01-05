@@ -314,7 +314,7 @@ const SORT_SPECS = {
 	title: ['title', 'due'],
 	assigned: ['assigned', 'due', 'title'],
 	due: ['due', 'assigned', 'title'],
-	grade: ['completed:bool', 'grade', 'due', 'title']
+	grade: ['grade', 'due', 'title']
 };
 
 function comparatorFor (property, order) {
