@@ -79,9 +79,7 @@ class AssignmentSummary extends EventEmitter {
 	}
 
 	get completed () {
-		const {assignment: a} = getPrivate(this);
-
-		return a.CompletedItem && this.historyItem?.getCreatedTime();
+		return this.historyItem?.getCreatedTime();
 	}
 
 	get grade () {
@@ -314,7 +312,7 @@ const SORT_SPECS = {
 	title: ['title', 'due'],
 	assigned: ['assigned', 'due', 'title'],
 	due: ['due', 'assigned', 'title'],
-	grade: ['grade', 'due', 'title']
+	grade: ['completed:bool', 'grade', 'due', 'title']
 };
 
 function comparatorFor (property, order) {
