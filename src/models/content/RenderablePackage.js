@@ -13,10 +13,12 @@ class RenderablePackage extends Package {
 
 	static Fields = {
 		...Package.Fields,
-		'LatestRenderJob': { type: 'model' },
-		'isPublished':     { type: 'boolean'},
-		'isRendered':      { type: 'boolean'},
-		'isLocked':        { type: 'boolean'}
+		'description':          { type: 'string' },
+		'LatestRenderJob':      { type: 'model'  },
+		'LessonContainerCount': { type: 'number' },
+		'isPublished':          { type: 'boolean'},
+		'isRendered':           { type: 'boolean'},
+		'isLocked':             { type: 'boolean'}
 	}
 
 	isRenderable = true
