@@ -327,8 +327,8 @@ function comparatorFn (property, order) {
 	}
 
 	const direction = order === SortOrder.ASC ? 1 : -1;
-	const LESS = -direction;
-	const MORE = direction;
+	const LESS_THAN = -direction;
+	const GREATER_THAN = direction;
 	const SAME = 0;
 
 	function grade (x) {
@@ -345,10 +345,10 @@ function comparatorFn (property, order) {
 			const bD = +oB.dueDate;
 
 			if (!a) {
-				return b ? LESS : aD === bD ? SAME : aD < bD ? LESS : MORE;
+				return b ? LESS_THAN : aD === bD ? SAME : aD < bD ? LESS_THAN : GREATER_THAN;
 			}
 
-			return !b ? MORE : a === b ? SAME : a < b ? LESS : MORE;
+			return !b ? GREATER_THAN : a === b ? SAME : a < b ? LESS_THAN : GREATER_THAN;
 		};
 	}
 
@@ -359,8 +359,8 @@ function comparatorFn (property, order) {
 			return a === b
 				? SAME
 				: !a
-					? LESS
-					: MORE;
+					? LESS_THAN
+					: GREATER_THAN;
 		};
 	}
 
@@ -374,27 +374,27 @@ function comparatorFn (property, order) {
 			const tB = typeof b;
 
 			if (a == null && b != null) {
-				return LESS;
+				return LESS_THAN;
 			}
 
 			if (a != null && b == null) {
-				return MORE;
+				return GREATER_THAN;
 			}
 
 			if (tA === 'string' && tB === 'string') {
 				let c = -a.localeCompare(b); //Grade "string compare" inverts alphabetical order
-				return c === 0 ? SAME : (c < 0) ? LESS : MORE;
+				return c === 0 ? SAME : (c < 0) ? LESS_THAN : GREATER_THAN;
 			}
 
 			if (tA === 'string' && tB !== 'string') {
-				return LESS;
+				return LESS_THAN;
 			}
 
 			if (tA !== 'string' && tB === 'string') {
-				return MORE;
+				return GREATER_THAN;
 			}
 
-			return a === b ? SAME : a < b ? LESS : MORE;
+			return a === b ? SAME : a < b ? LESS_THAN : GREATER_THAN;
 		};
 
 	}
@@ -405,14 +405,18 @@ function comparatorFn (property, order) {
 		const tA = typeof a;
 
 		if (a === b) { return SAME; }
-		if (!a && b) { return LESS; }
-		if (a && !b) { return MORE; }
+		if (!a && b) { return LESS_THAN; }
+		if (a && !b) { return GREATER_THAN; }
 
 		if (tA === 'string') {
 			let cmp = a.localeCompare(b);
-			return cmp === 0 ? SAME : cmp < 0 ? LESS : MORE;
+			return cmp === 0
+				? SAME
+				: cmp < 0
+					? LESS_THAN
+					: GREATER_THAN;
 		}
 
-		return a < b ? LESS : MORE;
+		return a < b ? LESS_THAN : GREATER_THAN;
 	};
 }
