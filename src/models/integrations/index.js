@@ -1,4 +1,5 @@
 export { default as CredlyAcclaim} from './credly-acclaim/Integration';
+export { default as CredlyAcclaimOrganization} from './credly-acclaim/Organization';
 export { default as GoogleAPIKey } from './google/APIKey';
 export { default as GotoWebinar } from './goto-webinar/Integration';
 export { default as Webinar } from './goto-webinar/Webinar';
