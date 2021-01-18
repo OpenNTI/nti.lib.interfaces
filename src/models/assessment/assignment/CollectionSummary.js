@@ -252,7 +252,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 				);
 
 			if (sortOn) {
-				data.cache.sort(comparatorFor(sortOn, sortOrder));
+				data.cache.sort(comparator(sortOn, sortOrder));
 			}
 		}
 
@@ -315,13 +315,13 @@ const SORT_SPECS = {
 	grade: ['completed:bool', 'grade', 'due', 'title']
 };
 
-function comparatorFor (property, order) {
-	const spec = (SORT_SPECS[property] || [property]).map(p => comparatorFnFor(p, order));
+function comparator (property, order) {
+	const spec = (SORT_SPECS[property] || [property]).map(p => comparatorFn(p, order));
 
 	return (...args) => spec.reduce((r, fn) => r !== 0 ? r : fn(...args), 0);
 }
 
-function comparatorFnFor (property, order) {
+function comparatorFn (property, order) {
 	if (Array.isArray(property)) {
 		[property, order] = property;
 	}
