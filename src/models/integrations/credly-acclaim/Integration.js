@@ -39,13 +39,12 @@ class CredlyAcclaimIntegration extends BaseIntegration {
 	}
 
 	async connect (authToken) {
-		const resp = await this.postToLink(ConnectRel, {
+		await this.postToLink(ConnectRel, {
 			mimetype: ConnectMimeType,
 			'authorization_token': authToken
 		});
 
-		await this.refresh(resp);
-		this.onChange();
+		await this.sync();
 	}
 
 	async disconnect () {
