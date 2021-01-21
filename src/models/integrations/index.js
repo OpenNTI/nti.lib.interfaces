@@ -1,6 +1,10 @@
-export { default as CredlyAcclaim} from './credly-acclaim/Integration';
+export { default as CredlyAcclaimIntegration} from './credly-acclaim/Integration';
 export { default as CredlyAcclaimOrganization} from './credly-acclaim/Organization';
+export { default as CredlyAcclaimBadgeCollection} from './credly-acclaim/BadgeCollection';
+export { default as CredlyAcclaimBadge} from './credly-acclaim/Badge';
+export { default as CredlyAcclaimAwardedBadge} from './credly-acclaim/AwardedBadge';
 export { default as GoogleAPIKey } from './google/APIKey';
+export { default as GoogleSSOIntegration} from './google/SSOIntegration';
 export { default as GotoWebinar } from './goto-webinar/Integration';
 export { default as Webinar } from './goto-webinar/Webinar';
 export { default as WebinarAsset } from './goto-webinar/WebinarAsset';
