@@ -20,4 +20,4 @@ class CredlyAcclaimAwardedBadge extends Base {
 	}
 }
 
-export default decorate(CredlyAcclaimBadge, {with: [model]});
+export default decorate(CredlyAcclaimAwardedBadge, {with: [model]})
