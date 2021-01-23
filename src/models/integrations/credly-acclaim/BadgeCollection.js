@@ -12,10 +12,10 @@ class CredlyAcclaimBadgeCollection extends Batch {
 
 	static Fields = {
 		...Batch.Fields,
-		badges_count: {type: 'number', name: 'badgeCount'},
-		current_page: {type: 'number', name: 'currentPage'},
-		total_badges_count: {type: 'number', name: 'totalBadgesCount'},
-		total_pages: {type: 'number', name: 'totalPages'}
+		'badges_count': {type: 'number', name: 'badgeCount'},
+		'current_page': {type: 'number', name: 'currentPage'},
+		'total_badges_count': {type: 'number', name: 'totalBadgesCount'},
+		'total_pages': {type: 'number', name: 'totalPages'}
 	}
 }
 
