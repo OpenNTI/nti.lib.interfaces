@@ -1,11 +1,10 @@
-import EventEmitter from 'events';
-
+import AbstractCommunity from '../AbstractCommunity';
 import {Channels} from '../community';
 
 const ContentsCache = new Map();
 
 export default
-class CourseCommunity extends EventEmitter {
+class CourseCommunity extends AbstractCommunity {
 	static hasCommunity (course) {
 		return course.Discussions || course.ParentDiscussions;
 	}
@@ -19,7 +18,6 @@ class CourseCommunity extends EventEmitter {
 	#course = null
 	#board = null
 	#parentBoard = null
-	#channelListPromise = null
 
 	constructor (course) {
 		super();
@@ -78,11 +76,8 @@ class CourseCommunity extends EventEmitter {
 		}
 	}
 
-	onChange () {
-		this.emit('change');
-	}
 
-	async #ResolveChannelList () {
+	async [AbstractCommunity.ResolveChannelList] () {
 		try {
 			const showParent = await shouldShowParentBoard(this.#parentBoard);
 
@@ -100,15 +95,6 @@ class CourseCommunity extends EventEmitter {
 			cleanup(this.#board);
 		}
 	}
-
-	async getChannelList () {
-		if (!this.#channelListPromise) {
-			this.#channelListPromise = this.#ResolveChannelList();
-		}
-
-		return this.#channelListPromise;
-	}
-
 
 	async getDefaultSharing () {
 		const sharing = await this.#course.getDefaultSharing();

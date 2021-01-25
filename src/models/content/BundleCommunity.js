@@ -1,10 +1,9 @@
-import EventEmitter from 'events';
-
 import {Channels} from '../community';
+import AbstractCommunity from '../AbstractCommunity';
 
 export const ResolveChannelList = Symbol('ResolveChannelList');
 
-export default class BundleCommunity extends EventEmitter {
+export default class BundleCommunity extends AbstractCommunity {
 	static hasCommunity (bundle) {
 		return bundle && bundle.Discussions;
 	}
@@ -17,7 +16,6 @@ export default class BundleCommunity extends EventEmitter {
 
 	#bundle = null
 	#board = null
-	#channelListPromise = null
 
 	constructor (bundle) {
 		super();
@@ -57,21 +55,10 @@ export default class BundleCommunity extends EventEmitter {
 		}
 	}
 
-	onChange () {
-		this.emit('change');
-	}
-
-	[ResolveChannelList] = async () => {
+	async [AbstractCommunity.ResolveChannelList] () {
 		const channelList = await Channels.List.fromBoard(this.#board);
 
 		return channelList;
 	}
 
-	async getChannelList () {
-		if (!this.#channelListPromise) {
-			this.#channelListPromise = this[ResolveChannelList]();
-		}
-
-		return this.#channelListPromise;
-	}
 }
