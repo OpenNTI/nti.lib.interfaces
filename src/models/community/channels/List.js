@@ -58,7 +58,7 @@ export default class CommunityChannelList extends EventEmitter {
 			createChannel,
 			setOrder
 		});
-	} 
+	}
 
 	#id = null
 	#label = null
@@ -80,13 +80,17 @@ export default class CommunityChannelList extends EventEmitter {
 
 	getID () { return this.#id; }
 
+	[Symbol.iterator] () {
+		return this.#channels[Symbol.iterator]();
+	}
+
 	get label () { return this.#label; }
 	get channels () { return this.#channels; }
 
 	get canCreateChannel () { return !!this.#createChannel; }
 	async createChannel (data) {
 		if (!this.canCreateChannel) { throw new Error('Cannot create a channel'); }
-		
+
 		const channel = await this.#createChannel(data);
 
 		this.#channels = [...this.#channels, channel];
