@@ -18,7 +18,7 @@ export default class BundleCommunity extends EventEmitter {
 	#bundle = null
 	#board = null
 	#channelListPromise = null
-  
+
 	constructor (bundle) {
 		super();
 
@@ -29,7 +29,7 @@ export default class BundleCommunity extends EventEmitter {
 	isCommunity = true
 	noAvatar = true
 	hasMembers= false
-	notAutoSubscribeable = true
+	autoSubscribable = false
 
 	getID () { return this.#bundle.getID(); }
 
@@ -61,7 +61,7 @@ export default class BundleCommunity extends EventEmitter {
 		this.emit('change');
 	}
 
-	[ResolveChannelList] = async () => { 
+	[ResolveChannelList] = async () => {
 		const channelList = await Channels.List.fromBoard(this.#board);
 
 		return channelList;

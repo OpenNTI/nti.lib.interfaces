@@ -3,7 +3,6 @@ import EventEmitter from 'events';
 import {Channels} from '../community';
 
 const ContentsCache = new Map();
-const ResolveChannelList = Symbol('Resolve Channel List');
 
 export default
 class CourseCommunity extends EventEmitter {
@@ -34,7 +33,7 @@ class CourseCommunity extends EventEmitter {
 	isCommunity = true
 	noAvatar = true
 	hasMembers = false
-	notAutoSubscribeable = true
+	autoSubscribable = false
 
 	getID () { return this.#course.getID(); }
 
@@ -83,7 +82,7 @@ class CourseCommunity extends EventEmitter {
 		this.emit('change');
 	}
 
-	[ResolveChannelList] = async () => {
+	async #ResolveChannelList () {
 		try {
 			const showParent = await shouldShowParentBoard(this.#parentBoard);
 
@@ -104,7 +103,7 @@ class CourseCommunity extends EventEmitter {
 
 	async getChannelList () {
 		if (!this.#channelListPromise) {
-			this.#channelListPromise = this[ResolveChannelList]();
+			this.#channelListPromise = this.#ResolveChannelList();
 		}
 
 		return this.#channelListPromise;
