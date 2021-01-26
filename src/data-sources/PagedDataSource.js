@@ -20,7 +20,7 @@ export default class PagedDataSource extends BaseDataSource {
 	 * @return {Promise}        		fulfills/rejects with loading the page
 	 */
 	async loadPage (pageID, params) {
-		const handler = this.getHandlerFor(params);
+		const handler = this.getHandler(params);
 
 		const resp =  await (handler && handler.loadPage ? handler.loadPage(pageID, params) : this.requestPage(pageID, params));
 
@@ -35,7 +35,7 @@ export default class PagedDataSource extends BaseDataSource {
 	 * @return {Promise}       fullfills/rejects with load around
 	 */
 	async loadAround (around, params) {
-		const handler = this.getHandlerFor(params);
+		const handler = this.getHandler(params);
 
 		const resp = await (handler && handler.loadAround ? handler.loadAround(around, params) : this.requestAround(around, params));
 

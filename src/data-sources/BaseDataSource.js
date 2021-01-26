@@ -59,7 +59,7 @@ export default class BaseDataSource {
 	 * @param  {Object} params         the params to get the handler for
 	 * @return {BaseDataSource}        the data source to load for the params
 	 */
-	getHandlerFor (params) {
+	getHandler (params) {
 		const {handlers} = this;
 
 		const isDataSource = handler => handler.isDataSource && handler.dataSourceType === this.dataSourceType;
@@ -89,7 +89,7 @@ export default class BaseDataSource {
 	 * @return {Promise}       fulfills/rejects with the load of the datasource
 	 */
 	async load (params) {
-		const handler = this.getHandlerFor(params);
+		const handler = this.getHandler(params);
 
 		const resp = await (handler ? handler.load(params) : this.request(params));
 

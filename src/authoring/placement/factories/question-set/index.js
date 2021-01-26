@@ -1,5 +1,5 @@
 import {register} from '../registry';
-import {createHandlersFor} from '../createHandlers';
+import {createScopedHandlers} from '../createHandlers';
 
 import Question from './Question';
 
@@ -10,4 +10,4 @@ const handlers = [
 	Question
 ];
 
-register(createHandlersFor([QuestionSetType, QuestionBankType], handlers));
+register(createScopedHandlers([QuestionSetType, QuestionBankType], handlers));

@@ -3,15 +3,15 @@ import {Handlers} from '@nti/lib-commons';
 function create (handles, subHandlers, useContainer) {
 	const handlers = new Handlers(subHandlers);
 
-	function getHandlerFor (item, container) {
-		return handlers.getHandlerFor(useContainer ? container : item);
+	function getHandler (item, container) {
+		return handlers.getHandler(useContainer ? container : item);
 	}
 
 	return {
 		handles: handles,
 
 		placeItemIn (item, container, scope) {
-			const handler = getHandlerFor(item, container);
+			const handler = getHandler(item, container);
 
 			return handler && handler.placeItemIn ?
 				handler.placeItemIn(item, container, scope) :
@@ -20,7 +20,7 @@ function create (handles, subHandlers, useContainer) {
 
 
 		removeItemFrom (item, container, scope) {
-			const handler = getHandlerFor(item, container);
+			const handler = getHandler(item, container);
 
 			return handler && handler.removeItemFrom ?
 				handler.removeItemFrom(item, container, scope) :
@@ -29,7 +29,7 @@ function create (handles, subHandlers, useContainer) {
 	};
 }
 
-export function createHandlersFor (handles, subHandlers) {
+export function createScopedHandlers (handles, subHandlers) {
 	return create(handles, subHandlers);
 }
 

@@ -1,5 +1,5 @@
 import {register} from '../registry';
-import {createHandlersFor} from '../createHandlers';
+import {createScopedHandlers} from '../createHandlers';
 
 import Question from './Question';
 import QuestionSet from './QuestionSet';
@@ -11,4 +11,4 @@ const handlers = [
 	QuestionSet
 ];
 
-register(createHandlersFor([AssignmentType, TimedAssignmentType], handlers));
+register(createScopedHandlers([AssignmentType, TimedAssignmentType], handlers));

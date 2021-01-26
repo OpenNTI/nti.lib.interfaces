@@ -1,5 +1,5 @@
 import {register} from '../registry';
-import {createHandlersFor} from '../createHandlers';
+import {createScopedHandlers} from '../createHandlers';
 
 import Assignment from './Assignment';
 import ContentPackage from './ContentPackage';
@@ -10,4 +10,4 @@ const handlers = [
 	ContentPackage
 ];
 
-register(createHandlersFor(ContentNodeType, handlers));
+register(createScopedHandlers(ContentNodeType, handlers));
