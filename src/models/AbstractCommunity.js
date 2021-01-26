@@ -23,11 +23,12 @@ export default class AbstractCommunity extends EventEmitter {
 
 	async getChannelList () {
 		if (!this.#channelListPromise) {
-			this.#channelListPromise = this[ResolveChannelList]()
-				.then(list => {
-					this.#channelList = list;
-					this.onChange();
-				});
+			this.#channelListPromise = (async () => {
+				const list = await this[ResolveChannelList]();
+				this.#channelList = list;
+				this.onChange();
+				return list;
+			})();
 		}
 
 		return this.#channelListPromise;
