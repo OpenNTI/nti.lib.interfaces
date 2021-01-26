@@ -1,6 +1,7 @@
 import EventEmitter from 'events';
 
 import {hideField} from '../../../mixins/Fields';
+import Iterator from '../../../data-sources/Iterator';
 
 export default class CommunityChannel extends EventEmitter {
 	static fromForum (forum) {
@@ -94,6 +95,11 @@ export default class CommunityChannel extends EventEmitter {
 	get Reports () { return this.#reports; }
 
 	get contentsDataSource () { return this.#contentsDataSource; }
+
+	getIterable (sort, filter) {
+		// TODO: figure out sort/filter params
+		return new Iterator(this.contentsDataSource, {sort, filter});
+	}
 
 	containsPost (item) {
 		const itemContainer = item?.ContainerId;
