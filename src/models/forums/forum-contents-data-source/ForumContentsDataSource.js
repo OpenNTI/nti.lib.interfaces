@@ -4,7 +4,7 @@ import PagedBatch from '../../../data-sources/data-types/Page';
 export default class ForumContentsDataSource extends PagedDataSource {
 	async requestPage (pageID, params) {
 		const forum = this.parent;
-		const batchSize = params.batchSize || 10;
+		const batchSize = params?.batchSize || 10;
 
 		const requestParams = {
 			...params,
@@ -22,7 +22,7 @@ export default class ForumContentsDataSource extends PagedDataSource {
 
 	async requestAround (around, params) {
 		const forum = this.parent;
-		const batchSize = params.batchSize || 3;
+		const batchSize = params?.batchSize || 3;
 
 		const requestParams = {
 			...params,
