@@ -8,8 +8,7 @@ class CredlyAcclaimAwardedBadge extends Base {
 
 	static Fields = {
 		'accept_badge_url': {type: 'string', name: 'acceptBadgeURL'},
-		'badge_template': {type: 'model'},
-		'badge_url': {type: 'string', name: 'badgeURL'},
+		'badge_template': {type: 'model', name: 'badgeTemplate'},
 		'created_at': {type: 'string', name: 'createdAt'},
 		'image_url': {type: 'string', name: 'imageURL'},
 		'locale': {type: 'string'},
@@ -18,6 +17,11 @@ class CredlyAcclaimAwardedBadge extends Base {
 		'state': {type: 'string'},
 		'updated_at': {type: 'string', name: 'updatedAt'}
 	}
+
+	get name () { return this.badgeTemplate.name; }
+	get description () { return this.badgeTemplate.description; }
+	get badgeURL () { return this.badgeTemplate.badgeURL; }
+	get organizationName () { return this.badgeTemplate.organizationName; }
 }
 
 export default decorate(CredlyAcclaimAwardedBadge, {with: [model]});
