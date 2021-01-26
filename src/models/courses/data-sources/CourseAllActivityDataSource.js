@@ -9,7 +9,7 @@ export default class CourseAllActivityDataSource extends PagedDataSource {
 
 		if (!link) { throw new Error('No All Activity Link'); }
 
-		const batchSize = params.batchSize || 10;
+		const batchSize = params?.batchSize || 10;
 
 		const requestParams = {
 			...params,
