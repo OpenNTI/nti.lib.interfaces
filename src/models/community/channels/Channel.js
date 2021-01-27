@@ -96,9 +96,8 @@ export default class CommunityChannel extends EventEmitter {
 
 	get contentsDataSource () { return this.#contentsDataSource; }
 
-	getIterable (sort, filter) {
-		// TODO: figure out sort/filter params
-		return new Iterator(this.contentsDataSource, {sort, filter});
+	getIterable (params) {
+		return new Iterator(this.contentsDataSource, params);
 	}
 
 	containsPost (item) {
