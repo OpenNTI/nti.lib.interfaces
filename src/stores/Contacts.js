@@ -63,7 +63,7 @@ class Contacts extends EventEmitter {
 	 * @param {string} entryPoint The URL to interact with.
 	 * @param {User} context The user.
 	 *
-	 * @return {void}
+	 * @returns {void}
 	 */
 	constructor (service, entryPoint, context) {
 		super();
@@ -211,7 +211,7 @@ class Contacts extends EventEmitter {
 	 *
 	 * @param {string|Entity} entity The User entity, string or Model Instance.
 	 *
-	 * @return {boolean} true if the store has any reference to the entity.
+	 * @returns {boolean} true if the store has any reference to the entity.
 	 */
 	contains (entity) {
 		let found = false;

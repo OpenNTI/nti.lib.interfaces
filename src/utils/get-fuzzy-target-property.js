@@ -2,9 +2,9 @@
  * Finds the NTIID field on the given object.
  *
  * @method getFuzzyID
- * @param  {object}         object                               The object to find an ID for.
+ * @param  {Object}         object                               The object to find an ID for.
  * @param  {Array<string>}  [keys=['Target-NTIID', 'NTIID']]     The possible ID fields.
- * @return {string}         The key name, or undefined.
+ * @returns {string}         The key name, or undefined.
  */
 export default function getFuzzyTargetID (object, keys = ['Target-NTIID', 'NTIID']) {
 	const objectKeys = Object.keys(object);

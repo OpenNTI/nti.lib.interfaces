@@ -134,7 +134,7 @@ export default {
 	 * Checks if this is modifiable
 	 *
 	 * @deprecated
-	 * @return {bool} isModifiable
+	 * @returns {bool} isModifiable
 	 */
 	canEdit () {
 		return this.isModifiable;
@@ -144,8 +144,8 @@ export default {
 /**
  * Make sure the fields we are saving are keys on the object we refresh with
  * @param  {Object} o          the object we are going to update with
- * @param  {String} savingKeys the keys we tried to save
- * @return {Object}            the object to update with including all the saved keys
+ * @param  {string} savingKeys the keys we tried to save
+ * @returns {Object}            the object to update with including all the saved keys
  */
 function ensureSavingKeysOn (o, savingKeys) {
 	for (let key of savingKeys) {

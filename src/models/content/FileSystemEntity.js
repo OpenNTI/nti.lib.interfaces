@@ -52,7 +52,7 @@ export default class FileSystemEntity extends Base {
 
 
 	/**
-	 * @return {string} The url-safe slugified version of the filename.
+	 * @returns {string} The url-safe slugified version of the filename.
 	 */
 	getEntityName () {
 		return this.name;

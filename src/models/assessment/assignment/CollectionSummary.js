@@ -116,7 +116,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 	 * @param {Collection} parent Instance of the Assignment Collection. (parent)
 	 * @param {Promise} HistoryPromise  A promise that fulfills with an AssignmentHistoryCollection
 	 *
-	 * @return {void}
+	 * @returns {void}
 	 */
 	constructor (service, parent, HistoryPromise) {
 

@@ -5,7 +5,7 @@ import { EVENT_BEGIN, EVENT_FINISH } from '../constants';
  *
  * @param  {EventEmitter} emitter - The emitter to fire the event on.
  * @param  {*} action - Any value to identify what is beginning.
- * @return {void}
+ * @returns {void}
  */
 export const begin = (emitter, action) => (emitter.emit(EVENT_BEGIN, action), void 0);
 
@@ -17,7 +17,7 @@ export const begin = (emitter, action) => (emitter.emit(EVENT_BEGIN, action), vo
  * @param  {*} action - Any value to identify what is finishing.
  * @param  {*} data - Any value to passed for data.
  * @param  {*} [e] - Some error value.
- * @return {void|Promise} If error is supplied, will return a rejected Promise (rejected with the error) - so that
+ * @returns {void|Promise} If error is supplied, will return a rejected Promise (rejected with the error) - so that
  * we can use this as a catch callback, and not swallow the rejection.
  */
 export const finish = (emitter, action, data, e) => (emitter.emit(EVENT_FINISH, action, data, e), e ? Promise.reject(e) : void e);
@@ -29,7 +29,7 @@ export const finish = (emitter, action, data, e) => (emitter.emit(EVENT_FINISH, 
  * @param  {EventEmitter} emitter - The emitter to fire the event on.
  * @param  {*} action - Any value to identify what is finishing.
  * @param  {*} data - Any value to passed for data.
- * @return {arrau} Two callbacks to be applied/spread on a Promise@then()
+ * @returns {arrau} Two callbacks to be applied/spread on a Promise@then()
  */
 export const finishers = (emitter, action, data) => [
 	(response) => finish(emitter, action, {response, ...data}),

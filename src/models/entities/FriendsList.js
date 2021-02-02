@@ -48,7 +48,7 @@ class FriendsList extends Entity {
 	 *
 	 * @param {string|Entity} entity The User entity, string or Model Instance.
 	 *
-	 * @return {boolean} true if the entity is in this list.
+	 * @returns {boolean} true if the entity is in this list.
 	 */
 	contains (entity) {
 		let entityId = getID(entity);
@@ -67,7 +67,7 @@ class FriendsList extends Entity {
 	 * Add a new entity to the list.
 	 *
 	 * @param {...string|Entity} entity The entity to add.
-	 * @return {Promise} To fulfill if successfull, or reject with an error.
+	 * @returns {Promise} To fulfill if successfull, or reject with an error.
 	 */
 	async add (...entities) {
 		if (!this.isModifiable) {
@@ -111,7 +111,7 @@ class FriendsList extends Entity {
 	 *
 	 * @param {string|Entity} entity The entity to be removed.
 	 *
-	 * @return {Promise} To fulfill if successfull, or reject with an error.
+	 * @returns {Promise} To fulfill if successfull, or reject with an error.
 	 */
 	async remove (entity) {
 		const entityId = getID(entity);
@@ -150,7 +150,7 @@ class FriendsList extends Entity {
 	 * overwriting any existing friends list.
 	 *
 	 * @param {...string|Entity} entities The new list of entities.
-	 * @return {Promise} To fulfill if successful, or reject with an error.
+	 * @returns {Promise} To fulfill if successful, or reject with an error.
 	 */
 	async update (...entities) {
 		if (!this.isModifiable) {

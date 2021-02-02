@@ -250,7 +250,7 @@ class Assignment extends Base {
 	 * Interface method. Called to load the last submission (Savepoint or final submission).
 	 * Intended to be called by the assessment Store in the Mobile App when viewing an assessment.
 	 *
-	 * @return {Promise} The history.
+	 * @returns {Promise} The history.
 	 */
 	loadPreviousSubmission () {
 		if (this.CurrentMetadataAttemptItem) {
@@ -266,7 +266,7 @@ class Assignment extends Base {
 	 * Load the history directly from the Link on this object.
 	 *
 	 * @private
-	 * @return {Promise} The history.
+	 * @returns {Promise} The history.
 	 */
 	loadHistory () {
 		return this.fetchLinkParsed(ASSESSMENT_HISTORY_LINK);

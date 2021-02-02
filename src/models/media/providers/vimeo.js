@@ -35,7 +35,7 @@ export default class VimeoProvider {
 	 *
 	 * @param  {Service} service the service instance.
 	 * @param  {string} uri the url of the vimeo video.
-	 * @return {Promise} resolves with the video id, or rejects with an error.
+	 * @returns {Promise} resolves with the video id, or rejects with an error.
 	 */
 	static resolveID (service, uri) {
 		const endpoint = getMetaDataEntryPoint(uri);

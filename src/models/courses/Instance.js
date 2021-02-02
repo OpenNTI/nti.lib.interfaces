@@ -484,7 +484,7 @@ class Instance extends Base {
 	/**
 	 * Get the Outline for this course instance.
 	 *
-	 * @param {object} [options] - An object of options
+	 * @param {Object} [options] - An object of options
 	 * @param {boolean} [options.force] - Force a new request, bypass & replace caches.
 	 * @param {boolean} [options.unpublished] - include the unpublished nodes.
 	 * @returns {Promise} fulfills with the outline, or rejects on error.
@@ -532,7 +532,7 @@ class Instance extends Base {
 	/**
 	 * Gets an outline node by id.
 	 * @param {string} id - the outlineNode id. (ntiid)
-	 * @param {object} [options] - options to pass to getOutline().
+	 * @param {Object} [options] - options to pass to getOutline().
 	 * @returns {Promise} fulfills with outline node, or rejects if not found.
 	 */
 	getOutlineNode (id, options) {

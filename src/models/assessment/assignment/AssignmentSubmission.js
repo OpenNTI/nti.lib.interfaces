@@ -40,7 +40,7 @@ class AssignmentSubmission extends Base {
 	/**
 	 * Load the history directly from the Link on this object.
 	 *
-	 * @return {Promise} The history.
+	 * @returns {Promise} The history.
 	 */
 	getHistory () {
 		return this.fetchLinkParsed(RELS.ASSIGNMENT_HISTORY_ITEM);

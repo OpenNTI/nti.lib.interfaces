@@ -18,9 +18,9 @@
  *		Other: ...(same as above)
  *	}
  *
- * @param  {object} section Object of forums in this section
- * @param  {object} parent  Object of forums in the parent if there are any
- * @return {object}        The binned forums
+ * @param  {Object} section Object of forums in this section
+ * @param  {Object} parent  Object of forums in the parent if there are any
+ * @returns {Object}        The binned forums
  */
 export default function binDiscussions (section, parent) {
 	let bins = {};

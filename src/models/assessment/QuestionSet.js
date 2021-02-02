@@ -114,7 +114,7 @@ class QuestionSet extends Base {
 
 	/**
 	 * Returns the max number of questions from the set to pick from.
-	 * @return {number} max or null if unrestricted
+	 * @returns {number} max or null if unrestricted
 	 */
 	getQuestionLimit () {
 		return this.draw;
@@ -155,7 +155,7 @@ class QuestionSet extends Base {
 	 * Toggle the Randomization state of Questions or Parts.
 	 *
 	 * @param  {boolean} parts if true toggles the parts randomization. if false (default) it will toggle the randomization of questions.
-	 * @return {Promise} The promise of the work being done.
+	 * @returns {Promise} The promise of the work being done.
 	 */
 	toggleRandomized (parts) {
 		const cap = (s) => s[0].toUpperCase() + s.substr(1);

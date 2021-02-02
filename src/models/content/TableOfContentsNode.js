@@ -48,7 +48,7 @@ export default class XMLBasedTableOfContentsNode {
 	}
 
 	get id () { return this.getID(); }
-	get idx () { return this[DATA]._id; }//eslint-disable-line no-underscore-dangle
+	get idx () { return this[DATA]._id; }
 	get length () { return this[DATA].getchildren().length; }
 	get tag () { return this[DATA].tag; }
 	get title () { return this.get('label'); }

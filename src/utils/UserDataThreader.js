@@ -18,7 +18,7 @@ const GETTERS = {
  * @param {Model} item A User Generated Data model instance (Note, Highlight, etc)
  * @param {string[]} ids All the IDs in the response.
  *
- * @return {boolean} Returns true if the item's references are not in the set of all ids.
+ * @returns {boolean} Returns true if the item's references are not in the set of all ids.
  */
 export function topLevelOnly (item, ids) {
 	// I'm not convinced this will (in a single pass) filter out all non-top-level items.
@@ -40,9 +40,9 @@ export function topLevelOnly (item, ids) {
  * items and the Root items...where a Root item may have been deleted and only
  * its children remain. (hence threading will recreate the placeholder)
  *
- * @param {object[]} list All the user data for a container.
+ * @param {Object[]} list All the user data for a container.
  *
- * @return {object[]} All the top-level user data, rootes, and placeholder roots.
+ * @returns {Object[]} All the top-level user data, rootes, and placeholder roots.
  */
 export function threadThreadables (list) {
 	let A = [], B = []; //To sets. Lets call A non-threadable, and B threadable.
@@ -61,9 +61,9 @@ export function threadThreadables (list) {
  * Given a set of Threadables, in the form of bins of arrays or just an array,
  * this will return an array of Threadable trees.
  *
- * @param {object|array} data Something to thread. @see getData
+ * @param {Object|array} data Something to thread. @see getData
  *
- * @return {array} An array of Threadable trees. (Threadables that are roots to their trees)
+ * @returns {array} An array of Threadable trees. (Threadables that are roots to their trees)
  */
 export function thread (data) {
 	data = getData(data);
@@ -84,9 +84,9 @@ export function thread (data) {
 /**
  * Returns an array of objects to thread.
  *
- * @param {object|array} data Can be a single Threadable, an array of Threadables, or bins of Threadables.
+ * @param {Object|array} data Can be a single Threadable, an array of Threadables, or bins of Threadables.
  *
- * @return {array} Objects ready to thread
+ * @returns {array} Objects ready to thread
  */
 function getData (data) {
 	let isArray = Array.isArray(data);

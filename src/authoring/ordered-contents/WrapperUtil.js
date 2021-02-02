@@ -250,10 +250,10 @@ export default class OrderedContents {
 	 * Given an item and an index, place that the item to that index in the ordered contents
 	 *
 	 * @param {Object} item the item to place
-	 * @param {Number} index the index to place it at
-	 * @param {Boolean} delaySave whether or not to save immediately
-	 * @param {Boolean} replace replace the item at the index or insert
-	 * @return {Promise} fulfills or rejects if the item is placed
+	 * @param {number} index the index to place it at
+	 * @param {boolean} delaySave whether or not to save immediately
+	 * @param {boolean} replace replace the item at the index or insert
+	 * @returns {Promise} fulfills or rejects if the item is placed
 	 */
 	[PLACE_ITEM_AT_INDEX] (item, index, delaySave, replace) {
 		const queue = getQueueFor(this.backingObject);
@@ -310,9 +310,9 @@ export default class OrderedContents {
 	 * If it's successful, replace the optimistic placeholder with the item from the server.
 	 * If it fails, add an error to the optimistic placeholder and trigger a change
 	 * @param  {Object} item the item to append
-	 * @param {Number} index the index to insert the item at
-	 * @param {Boolean} delaySave insert the placeholder, but wait to save it
-	 * @return {Promise}      fulfills or rejects if the item is successfully added or not
+	 * @param {number} index the index to insert the item at
+	 * @param {boolean} delaySave insert the placeholder, but wait to save it
+	 * @returns {Promise}      fulfills or rejects if the item is successfully added or not
 	 */
 	insertAt (item, index, delaySave) {
 		if (index === Infinity || index === undefined) {
@@ -332,8 +332,8 @@ export default class OrderedContents {
 	 * If it's successful, replace the optimistic placeholder with the item from the server.
 	 * If it fails, add an error to the optimistic placeholder and trigger a change
 	 * @param  {Object} item the item to append
-	 * @param {Boolean} delaySave insert the placeholder, but delay saving
-	 * @return {Promise}      fulfills or rejects if the item is successfully added or not
+	 * @param {boolean} delaySave insert the placeholder, but delay saving
+	 * @returns {Promise}      fulfills or rejects if the item is successfully added or not
 	 */
 	append (item, delaySave) {
 		return this.insertAt(item, Infinity, delaySave);
@@ -346,8 +346,8 @@ export default class OrderedContents {
 	 *
 	 * @param  {Object} replacement what to replace with
 	 * @param  {Object} index        the index to replace
-	 * @param  {Boolean} delaySave   insert the placeholder, but delay saving
-	 * @return {Promise}             fulfills or rejects if the item is successfully replaced or not
+	 * @param  {boolean} delaySave   insert the placeholder, but delay saving
+	 * @returns {Promise}             fulfills or rejects if the item is successfully replaced or not
 	 */
 	replaceAt (replacement, index, delaySave) {
 		return this[PLACE_ITEM_AT_INDEX](replacement, index, delaySave, true);
@@ -359,8 +359,8 @@ export default class OrderedContents {
 	 *
 	 * @param  {Object} item        the item to replace
 	 * @param  {Object} replacement what to replace with
-	 * @param  {Boolean} delaySave   insert the placeholder, but delay saving
-	 * @return {Promise}             fulfills or rejects if the item is successfully replaced or not
+	 * @param  {boolean} delaySave   insert the placeholder, but delay saving
+	 * @returns {Promise}             fulfills or rejects if the item is successfully replaced or not
 	 */
 	replaceItem (item, replacement, delaySave) {
 		const index = this.indexOf(item);
@@ -377,7 +377,7 @@ export default class OrderedContents {
 	 * If the item isn't in the ordered contents there's nothing to do so just resolve
 	 *
 	 * @param  {Object} item the item to delete
-	 * @return {Promise}     fulfills or rejects if the item is successfully deleted or not
+	 * @returns {Promise}     fulfills or rejects if the item is successfully deleted or not
 	 */
 	remove (item) {
 		const obj = this.backingObject;
@@ -448,13 +448,13 @@ export default class OrderedContents {
 	 *
 	 * If there is an error saving, either move it back to the old index or remove it, and mark it with an error
 	 *
-	 * @param  {Object|String} item    the record or NTIID to move
-	 * @param  {Number} newIndex     the index to move to
-	 * @param  {Number} oldIndex  the original index
-	 * @param  {Object|String} oldParent the original parent
+	 * @param  {Object|string} item    the record or NTIID to move
+	 * @param  {number} newIndex     the index to move to
+	 * @param  {number} oldIndex  the original index
+	 * @param  {Object|string} oldParent the original parent
 	 * @param  {Object} moveRoot  the root to move items between
-	 * @param {Boolean} delaySave wait to actually save, for now only works if adding a new item
-	 * @return {Promise}           fulfills or rejects if the move was successful
+	 * @param {boolean} delaySave wait to actually save, for now only works if adding a new item
+	 * @returns {Promise}           fulfills or rejects if the move was successful
 	 */
 	move (item, newIndex, oldIndex, oldParent, moveRoot, delaySave) {
 		const obj = this.backingObject;

@@ -128,7 +128,7 @@ class User extends Entity {
 	/**
 	 * Toggles the state of following.
 	 *
-	 * @return {Promise} You can wait on the promise to refresh the UI
+	 * @returns {Promise} You can wait on the promise to refresh the UI
 	 */
 	follow () {
 		let contacts = this[Service].getContacts();
@@ -276,7 +276,7 @@ class User extends Entity {
 	 *
 	 * @param {boolean} excludeGroups Exclude DFL's from the result.
 	 *
-	 * @return {array} List of Communities
+	 * @returns {array} List of Communities
 	 */
 	getCommunities (excludeGroups) {
 		console.trace('Who calls this? Stop it. :}');//eslint-disable-line

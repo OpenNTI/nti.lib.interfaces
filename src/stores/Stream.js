@@ -28,9 +28,9 @@ export default class Stream extends EventEmitter {
 	 * @param {Service} service		Service document instance.
 	 * @param {Model} owner			Parent object. (the thing that called the constructor)
 	 * @param {string|Promise} href			initial URL to load.
-	 * @param {object} options		Query-String param object.
+	 * @param {Object} options		Query-String param object.
 	 * @param {function} collator	Optional collator function that returns an array, given an array in its first argument.
-	 * @return {void}
+	 * @returns {void}
 	 */
 	constructor (service, owner, href, options = {}, collator = null) {
 		super();
@@ -147,7 +147,7 @@ export default class Stream extends EventEmitter {
 	/**
 	 * Returns true if there is more to load from the stream. (show a load more button)
 	 *
-	 * @return {boolean} True, if there is more, False, otherwise.
+	 * @returns {boolean} True, if there is more, False, otherwise.
 	 */
 	get more () { return !!this.next; }
 

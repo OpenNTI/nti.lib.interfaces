@@ -83,10 +83,10 @@ class Collection extends Base {
 	 *
 	 * @param  {ServiceDocument} service     Service descriptor/interface.
 	 * @param  {Model} parent                Parent model.
-	 * @param  {object} assignments          Object of keys where each key is an
+	 * @param  {Object} assignments          Object of keys where each key is an
 	 *                                       array of Assignments that are visible
 	 *                                       to the current user.
-	 * @param  {object} assessments          Object of keys where each key is an
+	 * @param  {Object} assessments          Object of keys where each key is an
 	 *                                       array of Non-Assignment assessments
 	 *                                       visible to the current user.
 	 * @param  {string} historyLink          URL to fetch assignment histories.
@@ -385,7 +385,7 @@ class Collection extends Base {
 	 *
 	 * @param {string} outlineNodeId Optional. The outlineNode NTIID you wish to scope to.
 	 *
-	 * @return {array} An array of Assignments.
+	 * @returns {array} An array of Assignments.
 	 */
 	getAssignments (outlineNodeId) {
 		return this[GetListFrom](getPrivate(this).visibleAssignments, outlineNodeId);
@@ -398,7 +398,7 @@ class Collection extends Base {
 	 *
 	 * @param {string} outlineNodeId Optional. The outlineNode NTIID you wish to scope to.
 	 *
-	 * @return {array} An array of Assessments.
+	 * @returns {array} An array of Assessments.
 	 */
 	getAssessments (outlineNodeId) {
 		return this[GetListFrom](getPrivate(this).notAssignments, outlineNodeId);

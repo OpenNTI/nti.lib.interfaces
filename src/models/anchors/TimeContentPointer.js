@@ -40,7 +40,7 @@ class TimeContentPointer extends ContentPointer {
 	 * This is called by the JSONValue mixin, in the #getData() method
 	 * when it tries to read the `seconds` property.
 	 *
-	 * @return {number} milliseconds
+	 * @returns {number} milliseconds
 	 */
 	['translate:seconds'] () {
 		return Math.floor(this.seconds * 1000);

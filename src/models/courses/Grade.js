@@ -156,7 +156,7 @@ class Grade extends Base {
 	 *
 	 * @param  {string} value the value of the grade
 	 * @param  {char} letter the letter value of the grade
-	 * @return {Boolean}        if they are the same values
+	 * @returns {boolean}        if they are the same values
 	 */
 	equals (value, letter) {
 		const normalizeLetter = x => (!x || x === '-') ? false : x;

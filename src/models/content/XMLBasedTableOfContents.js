@@ -144,8 +144,8 @@ export default class XMLBasedTableOfContents extends Base {
 	 * NOTE: for now we are doing an exact match so having getRealPage and getRealPages
 	 * doesn't make sense, but its just trying to future proof
 	 *
-	 * @param  {String} page page number to look for
-	 * @return {Object}      the page number and NTIID
+	 * @param  {string} page page number to look for
+	 * @returns {Object}      the page number and NTIID
 	 */
 	getRealPages (page) {
 		const realPages = [

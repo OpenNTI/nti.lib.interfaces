@@ -10,7 +10,7 @@ export default {
 	 * loadPage
 	 *
 	 * @param {number} page Page number. (1...n)
-	 * @return {void}
+	 * @returns {void}
 	 */
 	loadPage (page = 1) {
 		delete this.next;

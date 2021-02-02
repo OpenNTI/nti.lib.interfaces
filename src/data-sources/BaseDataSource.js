@@ -57,7 +57,7 @@ export default class BaseDataSource {
 	 * If there is a handler defined for the given params, create it with the same arguments this dataSource was constructed with
 	 *
 	 * @param  {Object} params         the params to get the handler for
-	 * @return {BaseDataSource}        the data source to load for the params
+	 * @returns {BaseDataSource}        the data source to load for the params
 	 */
 	getHandler (params) {
 		const {handlers} = this;
@@ -86,7 +86,7 @@ export default class BaseDataSource {
 	 *
 	 * @async
 	 * @param  {Object} params the params to load the data source with
-	 * @return {Promise}       fulfills/rejects with the load of the datasource
+	 * @returns {Promise}       fulfills/rejects with the load of the datasource
 	 */
 	async load (params) {
 		const handler = this.getHandler(params);
@@ -102,7 +102,7 @@ export default class BaseDataSource {
 	 *
 	 * @abstract
 	 * @param  {Object} params the params to request with
-	 * @return {Batch}         a batch (or batch like) object
+	 * @returns {Batch}         a batch (or batch like) object
 	 */
 	request (params) {
 		throw new Error('request must be implemented by the subclass');

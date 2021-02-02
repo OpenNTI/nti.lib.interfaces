@@ -36,7 +36,7 @@ export default class KalturaProvider {
 	 *
 	 * @param  {Service} service the service instance.
 	 * @param  {string} uri the url of the kaltura video.
-	 * @return {Promise} resolves with the video id, or rejects with an error.
+	 * @returns {Promise} resolves with the video id, or rejects with an error.
 	 */
 	static async resolveID (service, uri) {
 		const meta = await service.getMetadataFor(uri);
@@ -133,7 +133,7 @@ function normalizeUrl (href) {
  * with Vimeo and YouTube (and the Video component), but in rst the
  * server expects `${partnerId}:${entryId}`.
  * @param  {string} href kaltura video href
- * @return {string} id of the form `${partnerId}/${entryId}`
+ * @returns {string} id of the form `${partnerId}/${entryId}`
  */
 function getIDParts (href) {
 	if (Array.isArray(href) || href == null) {
@@ -172,10 +172,8 @@ function kalturaSig (str) {
 	if (str.length === 0) { return hash; }
 	for (let i = 0; i < str.length; i++) {
 		let currentChar = str.charCodeAt(i);
-		/* eslint-disable no-bitwise */
 		hash = ((hash << 5) - hash) + currentChar;
 		hash = hash & hash;
-		/* eslint-enable no-bitwise */
 	}
 	return hash;
 }

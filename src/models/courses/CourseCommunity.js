@@ -163,7 +163,7 @@ function buildAllActivityChannel (forum, activityInfo) {
  * 2.b) the default forum has a topic
  *
  * @param  {Board} parentBoard the ParentDiscussions of the course
- * @return {Boolean}             [description]
+ * @returns {boolean}             [description]
  */
 async function shouldShowParentBoard (parentBoard) {
 	if (!parentBoard) { return false; }

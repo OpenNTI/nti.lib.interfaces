@@ -24,12 +24,12 @@ export default class MoveRoot {
 	/**
 	 * Move a record from one parent to another at an index
 	 *
-	 * @param  {Object|String} record         the record or NTIID to move
-	 * @param  {Number} index          the index to move to
-	 * @param  {Number} originalIndex  the index to move from
-	 * @param  {Object|String} newParent      the record or NTIID to move to
-	 * @param  {Object|String} originalParent the record or NTIID to move from
-	 * @return {Promise}                fulfills with the record that was moved
+	 * @param  {Object|string} record         the record or NTIID to move
+	 * @param  {number} index          the index to move to
+	 * @param  {number} originalIndex  the index to move from
+	 * @param  {Object|string} newParent      the record or NTIID to move to
+	 * @param  {Object|string} originalParent the record or NTIID to move from
+	 * @returns {Promise}                fulfills with the record that was moved
 	 */
 	moveRecord (record, index, originalIndex, newParent, originalParent) {
 		const link = this.moveLink;

@@ -29,7 +29,7 @@ class Outline extends Base {
 	/**
 	 * Fill in the Outline Contents.
 	 *
-	 * @param {object} [options] - An object of options
+	 * @param {Object} [options] - An object of options
 	 * @param {boolean} [options.force] - Force a new request, bypass & replace caches.
 	 * @param {boolean} [options.unpublished] - include the unpublished nodes.
 	 * @returns {Promise} fulfills with `this` instance, or rejects on error.

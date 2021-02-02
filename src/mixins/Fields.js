@@ -679,7 +679,6 @@ function applyField (scope, fieldName, valueIn, declared, defaultValue) {
 	delete scope[fieldName];
 
 	const setter =  makeFieldsFn(x => {
-		// eslint-disable-next-line no-console
 		// console.trace('setting %s to', fieldName, x);
 		value = x;
 	});

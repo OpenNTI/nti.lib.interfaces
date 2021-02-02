@@ -20,7 +20,7 @@ class Folder extends FileSystemEntity {
 	 *
 	 * adopt the file into this folder.
 	 *
-	 * @param {object|File} file The file, raw or instance.
+	 * @param {Object|File} file The file, raw or instance.
 	 * @returns {File} swizzled object.
 	 */
 	castFile (file) {

@@ -98,10 +98,10 @@ class OutlineNode extends Outline {
 	 *
 	 * @method getContent
 	 * @param  {Object} [params] optional parameters
-	 * @param  {Boolean} [params.requiredOnly] limit the items to only the required ones
-	 * @param {Boolean} [params.decorateProgress] if false do not decorate the progress on the items
-	 * @param {Boolean} [params.decorateSummary] if false do not decorate the summary call on the items
-	 * @return {Promise} fulfills with the outlineNode's content or rejects with an error.
+	 * @param  {boolean} [params.requiredOnly] limit the items to only the required ones
+	 * @param {boolean} [params.decorateProgress] if false do not decorate the progress on the items
+	 * @param {boolean} [params.decorateSummary] if false do not decorate the summary call on the items
+	 * @returns {Promise} fulfills with the outlineNode's content or rejects with an error.
 	 */
 	async getContent ({requiredOnly = false, decorateProgress = true, decorateSummary = true} = {}) {
 		const getContent = async () => {
@@ -283,8 +283,8 @@ async function applyContentsOverlayWithUserCompletionStats (rawContent, enrollme
  *
  * @method filterMissingAssignments
  * @param  {Collection}             assignments The Assignments Collection instance.
- * @param  {object}                 item        The raw data for the overview contents of this outline node.
- * @return {object} The item but without assignments that cannot be resolved.
+ * @param  {Object}                 item        The raw data for the overview contents of this outline node.
+ * @returns {Object} The item but without assignments that cannot be resolved.
  */
 function filterMissingAssignments (assignments, item) {
 	function test (o) {
@@ -316,9 +316,9 @@ function filterMissingAssignments (assignments, item) {
  * Recursively fix items with relative href paths.
  *
  * @method fixRelativePaths
- * @param  {object}         item The content to fix.
+ * @param  {Object}         item The content to fix.
  * @param  {string}         root The content root url to resolve against.
- * @return {object} Returns the item given. (potentially modified)
+ * @returns {Object} Returns the item given. (potentially modified)
  */
 function fixRelativePaths (item, root) {
 	if (item && item.href && !isNTIID(item.href)) {

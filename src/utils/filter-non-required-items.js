@@ -18,8 +18,8 @@ function filterItems (items) {
  * Recursively remove all items that aren't required
  *
  * @method  filterNonRequiredItems
- * @param  {object} item  the raw data to filter
- * @return {object}       the item but without non-required items
+ * @param  {Object} item  the raw data to filter
+ * @returns {Object}       the item but without non-required items
  */
 export default function filterNonRequiredItems (item) {
 	return {

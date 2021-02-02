@@ -22,7 +22,7 @@ class EntityStore extends EventEmitter {
 	 * @param {string} entryPoint The URL to interact with.
 	 * @param {User} context The user.
 	 *
-	 * @return {void}
+	 * @returns {void}
 	 */
 	constructor (service, entryPoint, context) {
 		super();

@@ -370,10 +370,10 @@ class ServiceDocument extends EventEmitter {
 	 * Get a PageInfo
 	 *
 	 * @param {string} ntiid - the page id.
-	 * @param {object} [options] - an object of additional options
-	 * @param {object} [options.parent] - the parent reference to assign the PageInfo
-	 * @param {object} [options.params] - params to add to the request url.
-	 * @return {Promise} resolves with a PageInfo
+	 * @param {Object} [options] - an object of additional options
+	 * @param {Object} [options.parent] - the parent reference to assign the PageInfo
+	 * @param {Object} [options.params] - params to add to the request url.
+	 * @returns {Promise} resolves with a PageInfo
 	 */
 	getPageInfo (ntiid, options) {
 		const mime = 'application/vnd.nextthought.pageinfo+json';
@@ -485,13 +485,13 @@ class ServiceDocument extends EventEmitter {
 	/**
 	 * Get an Object
 	 *
-	 * @param {string|object} ntiid - the object's id, or a raw JSO to parse into a Model.
-	 * @param {object} [options] - an object of additional options
+	 * @param {string|Object} ntiid - the object's id, or a raw JSO to parse into a Model.
+	 * @param {Object} [options] - an object of additional options
 	 * @param {string} [options.field] - field of the object to retrieve.
 	 * @param {Model} [options.parent] - the parent reference to assign the returned Model
-	 * @param {object} [options.params] - params to add to the request url.
+	 * @param {Object} [options.params] - params to add to the request url.
 	 * @param {string} [options.type] - enforce an expected type.
-	 * @return {Promise} resolves with a Model instance of the object
+	 * @returns {Promise} resolves with a Model instance of the object
 	 */
 	getObject (ntiid, options) {
 		const {field, params, parent, type} = options || {};
@@ -654,7 +654,7 @@ class ServiceDocument extends EventEmitter {
 	 *
 	 * @param {string} entityId ID to resolve to entity.
 	 *
-	 * @return {Promise} Promise for an Entity.
+	 * @returns {Promise} Promise for an Entity.
 	 */
 	resolveEntity (entityId) {
 		const key = 'entity-respository';
@@ -717,7 +717,7 @@ class ServiceDocument extends EventEmitter {
 	 * @param {string} mimeType The mimetype of what we're looking for
 	 * @param {string} [title] Optionally, restrict by title
 	 * @param {array} [tryScopes] Optionally, pick a destination from contextual scopes. Treat as a stack!
-	 * @returns {object} the collection
+	 * @returns {Object} the collection
 	 */
 	getCollectionFor (mimeType, title, tryScopes) {
 		let items = this.Items || [];
@@ -904,8 +904,8 @@ class ServiceDocument extends EventEmitter {
 	/**
 
 	 * @method getContextPathFor
-	 * @param  {string|object} thing The NTIID or model to retrieve a LibraryPath for.
-	 * @return {Promise} Resolves with library path
+	 * @param  {string|Object} thing The NTIID or model to retrieve a LibraryPath for.
+	 * @returns {Promise} Resolves with library path
 	 */
 	async getContextPathFor (thing) {
 		const cache = LibraryPathCache;

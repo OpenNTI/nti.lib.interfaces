@@ -97,7 +97,7 @@ export default class DataServerInterface extends EventEmitter {
 	 *
 	 * @method setDefaultHeaders
 	 * @param  {Object}          headers A simple object with Keys/Value pairs for header/value pairs.
-	 * @return {void}
+	 * @returns {void}
 	 */
 	setDefaultHeaders (headers) {
 		this.headers = {
@@ -117,10 +117,10 @@ export default class DataServerInterface extends EventEmitter {
 	 * @param {object/string} [options] - Request options or URL.
 	 * @param {string} [options.url] - The dataserver resource we wish to make the request for, or an absolute url.
 	 * @param {string} [options.method] - defaults to GET, and POST if `form` is set.
-	 * @param {object} [options.data] - A dictionary of form values to send with the request.
+	 * @param {Object} [options.data] - A dictionary of form values to send with the request.
 	 * @param {boolean} [options.blob] - return a blob
-	 * @param {object} [options.headers] - HTTP headers to add to the request.
-	 * @param {object} [context] - An active request context to the node's "express" http server.
+	 * @param {Object} [options.headers] - HTTP headers to add to the request.
+	 * @param {Object} [context] - An active request context to the node's "express" http server.
 	 * @returns {Promise} The promise of data or rejection ;)
 	 * @private
 	 */
@@ -518,7 +518,6 @@ export default class DataServerInterface extends EventEmitter {
 
 		const pong = context?.pong || await this.get('logon.ping', context);
 
-		// eslint-disable-next-line require-atomic-updates
 		if (context) { context.pong = pong; }
 
 
