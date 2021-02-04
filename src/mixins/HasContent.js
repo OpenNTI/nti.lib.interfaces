@@ -41,7 +41,7 @@ function setup (data, keys) {
 			configurable: false,
 			get: Object.assign(filterContent, {declared:true}),
 			set: (descriptor && !descriptor.set) ? undefined : (x) => {
-				delete filterContent.cashed;
+				delete filterContent.cached;
 				content = x;
 				return descriptor.set?.call?.(this, x);
 			}
