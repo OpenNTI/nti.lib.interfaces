@@ -10,7 +10,11 @@ export default class AbstractCommunity extends EventEmitter {
 
 	[Symbol.iterator] () {
 		this.getChannelList();
-		return this.#channelList[Symbol.iterator]();
+		const list = this.#channelList;
+		if (Array.isArray(list)) {
+			return iterate(list);
+		}
+		return list[Symbol.iterator]();
 	}
 
 	onChange () {
@@ -34,4 +38,24 @@ export default class AbstractCommunity extends EventEmitter {
 		return this.#channelListPromise;
 	}
 
+}
+
+
+function* iterate (input) {
+	if (!input || !input[Symbol.iterator]) {
+		yield input;
+		return;
+	}
+
+	const it = input[Symbol.iterator]();
+	let current;
+	do {
+		current = it.next();
+		if (current.done) {
+			continue;
+		}
+
+		yield * iterate(current.value);
+
+	} while(!current.done);
 }
