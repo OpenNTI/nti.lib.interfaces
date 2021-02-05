@@ -17,6 +17,11 @@ export default class AbstractCommunity extends EventEmitter {
 		return list[Symbol.iterator]();
 	}
 
+	get hasCompoundList () {
+		const list = this.#channelList;
+		return Array.isArray(list) && list.length > 1;
+	}
+
 	onChange () {
 		this.emit('change');
 	}
