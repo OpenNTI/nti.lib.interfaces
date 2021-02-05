@@ -47,7 +47,7 @@ export default class CommunityChannelList extends EventEmitter {
 		const createChannel = board.canCreateForum() ?
 			async (data) => {
 				const forum = await board.createForum(data);
-				return Channel.fromForum(forum);
+				return Channel.fromForum(forum, label);
 			} :
 			null;
 
