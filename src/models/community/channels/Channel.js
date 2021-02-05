@@ -1,10 +1,12 @@
 import EventEmitter from 'events';
 
+import {defineReadOnly} from '@nti/lib-commons';
+
 import {hideField} from '../../../mixins/Fields';
 import Iterator from '../../../data-sources/Iterator';
 
 export default class CommunityChannel extends EventEmitter {
-	static fromForum (forum) {
+	static fromForum (forum, section = null) {
 		const save = forum.isModifiable ?
 			async (data) => {
 				await forum.save(data);
@@ -31,7 +33,8 @@ export default class CommunityChannel extends EventEmitter {
 			delete: doDelete,
 			reports: forum.Reports,
 			DefaultSharedToNTIIDs: forum.DefaultSharedToNTIIDs,
-			DefaultSharedToDisplayNames: forum.DefaultSharedToDisplayNames
+			DefaultSharedToDisplayNames: forum.DefaultSharedToDisplayNames,
+			section
 		});
 	}
 
@@ -60,7 +63,8 @@ export default class CommunityChannel extends EventEmitter {
 		delete: doDelete,
 		reports,
 		DefaultSharedToNTIIDs,
-		DefaultSharedToDisplayNames
+		DefaultSharedToDisplayNames,
+		section
 	}) {
 		super();
 		this.setMaxListeners(100);
@@ -79,6 +83,8 @@ export default class CommunityChannel extends EventEmitter {
 		this.#reports = reports;
 		this.#DefaultSharedToNTIIDs = DefaultSharedToNTIIDs;
 		this.#DefaultSharedToDisplayNames = DefaultSharedToDisplayNames;
+
+		Object.defineProperty(this, 'section', defineReadOnly(section, true));
 	}
 
 	get backer () { return this.#backer; }

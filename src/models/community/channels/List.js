@@ -34,7 +34,7 @@ export default class CommunityChannelList extends EventEmitter {
 				return override ? [...acc, override] : acc;
 			}
 
-			return [...acc, Channel.fromForum(forum)];
+			return [...acc, Channel.fromForum(forum, label)];
 		}, []);
 
 		const setOrder = board.isModifiable ?
