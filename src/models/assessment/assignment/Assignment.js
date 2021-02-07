@@ -52,7 +52,8 @@ class Assignment extends Base {
 		'CurrentMetadataAttemptItem':			{ type: 'model' 									   },
 		'completion_passing_percent':			{ type: 'number', name: 'passingScore'				   },
 		'max_submissions':                      { type: 'number', name: 'maxSubmissions'               },
-		'submission_count':                     { type: 'number', name: 'submissionCount'              }
+		'submission_count':                     { type: 'number', name: 'submissionCount'              },
+		'HideAfterSubmission':                  { type: 'boolean'                                      }
 		// Do not add a Target-NTIID field to this model. Legacy overview models shared this mimetype but have a
 		// different shape... leave those warnings in the console.
 	}
