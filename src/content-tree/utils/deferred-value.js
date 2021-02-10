@@ -9,9 +9,16 @@ export default function deferredValue (value) {
 		[isDeferredValue]: true,
 
 		resolve: async () => {
-			if (typeof resolved === 'function') {
-				// eslint-disable-next-line require-atomic-updates
-				resolved = await resolved();
+			if (typeof value === 'function') {
+				const resolver = resolved;
+				resolved = new Promise((resolve, reject) => {
+					resolver()
+						.then(x => {
+							resolved = x;
+							resolve(x);
+						})
+						.catch(reject);
+				});
 			}
 
 			return resolved;
