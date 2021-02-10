@@ -12,7 +12,7 @@ export default function deferredValue (value) {
 			if (typeof value === 'function') {
 				const resolver = resolved;
 				resolved = new Promise((resolve, reject) => {
-					resolver()
+					Promise.resolve(resolver())
 						.then(x => {
 							resolved = x;
 							resolve(x);
