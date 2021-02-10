@@ -9,7 +9,7 @@ export default function deferredValue (value) {
 		[isDeferredValue]: true,
 
 		resolve: async () => {
-			if (typeof value === 'function') {
+			if (typeof resolved === 'function') {
 				const resolver = resolved;
 				resolved = new Promise((resolve, reject) => {
 					Promise.resolve(resolver())
