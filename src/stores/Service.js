@@ -1,9 +1,9 @@
 import EventEmitter from 'events';
 
 import Logger from '@nti/util-logger';
-import {mixin} from '@nti/lib-decorators';
+import { mixin } from '@nti/lib-decorators';
 import { isNTIID } from '@nti/lib-ntiids';
-import {decorate, URL, wait } from '@nti/lib-commons';
+import { decorate, URL, wait } from '@nti/lib-commons';
 import LRU from 'lru-cache';
 
 import { parse } from '../models/Parser';
@@ -12,7 +12,10 @@ import Capabilities from '../models/Capabilities';
 import CommunitiesWorkspace from '../models/community/Workspace';
 import AbstractPlaceholder from '../models/AbstractPlaceholder';
 import Batch from '../data-sources/data-types/Batch';
-import { Mixin as Pendability, attach as attachPendingQueue } from '../mixins/Pendability';
+import {
+	Mixin as Pendability,
+	attach as attachPendingQueue,
+} from '../mixins/Pendability';
 import { Mixin as InstanceCacheContainer } from '../mixins/InstanceCacheContainer';
 import DataCache from '../utils/datacache';
 import getLink from '../utils/getlink';
@@ -50,10 +53,10 @@ const logger = Logger.get('Service');
 const LibraryPathCache = new LRU({ max: 100, maxAge: 3600000 /*1 hour*/ });
 
 const TitleSpecificWorkspaces = {
-	'Communities': CommunitiesWorkspace
+	Communities: CommunitiesWorkspace,
 };
 
-function hideCurrentProperties (o) {
+function hideCurrentProperties(o) {
 	for (let key of Object.keys(o)) {
 		const desc = Object.getOwnPropertyDescriptor(o, key);
 		if (desc) {
@@ -65,8 +68,7 @@ function hideCurrentProperties (o) {
 }
 
 class ServiceDocument extends EventEmitter {
-
-	constructor (json, server, context) {
+	constructor(json, server, context) {
 		super();
 
 		this.setMaxListeners(100);
@@ -82,25 +84,19 @@ class ServiceDocument extends EventEmitter {
 			this.initMixins(json);
 		}
 
-		this.assignData(json, {silent: true});
+		this.assignData(json, { silent: true });
 	}
 
-	get OnlineStatus () {
+	get OnlineStatus() {
 		return this[Server].OnlineStatus;
 	}
 
-
-	dispatch (...args) {
+	dispatch(...args) {
 		this[Server].dispatch(...args);
 	}
 
-
-	toJSON () {
-		const {
-			capabilities,
-			Items = [],
-			...data
-		} = this;
+	toJSON() {
+		const { capabilities, Items = [], ...data } = this;
 		return {
 			...data,
 			// This is a bandaid... once we have Collection fully defined (all fields declared) we can
@@ -111,23 +107,18 @@ class ServiceDocument extends EventEmitter {
 		};
 	}
 
-
-	assignData (json, {silent = false} = {}) {
-		const {[Context]: context, [Server]: server} = this;
-		const {
-			CapabilityList: caps = [],
-			Items: items,
-			...data
-		} = json;
-		Object.assign(this, data, {appUsername: null});
+	assignData(json, { silent = false } = {}) {
+		const { [Context]: context, [Server]: server } = this;
+		const { CapabilityList: caps = [], Items: items, ...data } = json;
+		Object.assign(this, data, { appUsername: null });
 
 		if (this.Items !== items) {
 			//No mimetype on Workspace means, we have to force it...
-			const parsed = this.Items = (items || []).map(o => {
+			const parsed = (this.Items = (items || []).map(o => {
 				const Cls = TitleSpecificWorkspaces[o.Title] || Workspace;
 
 				return new Cls(this, this, o);
-			});
+			}));
 
 			this.addToPending(
 				parsed
@@ -141,8 +132,7 @@ class ServiceDocument extends EventEmitter {
 		if (!this.getAppUsername()) {
 			delete this[AppUser];
 			delete this[Contacts];
-		}
-		else {
+		} else {
 			this.addToPending(
 				this.getAppUser()
 					.then(u => {
@@ -153,7 +143,11 @@ class ServiceDocument extends EventEmitter {
 							return;
 						}
 
-						let {href} = this.getCollection('FriendsLists', this.getAppUsername()) || {};
+						let { href } =
+							this.getCollection(
+								'FriendsLists',
+								this.getAppUsername()
+							) || {};
 						if (href) {
 							this[Contacts] = new ContactsStore(this, href, u);
 							return this[Contacts].waitForPending();
@@ -170,54 +164,46 @@ class ServiceDocument extends EventEmitter {
 		}
 
 		if (!silent) {
-			this.waitForPending()
-				.then(() => this.emit('change', this));
+			this.waitForPending().then(() => this.emit('change', this));
 		}
 
 		return this;
 	}
 
-
-	get isServerSide () {
+	get isServerSide() {
 		return Boolean(this[Context]);
 	}
 
-
 	//meant to be used by models and interface code. Client code should use the config getter in web-client.
-	getConfig () {
+	getConfig() {
 		return this[Server].config;
 	}
 
-
-	getSiteName () {
+	getSiteName() {
 		return this.getConfig().siteName || this[Context]?.pong?.Site;
 	}
 
-
-	getServer () {
+	getServer() {
 		return this[Server];
 	}
 
-
-	getDataCache () {
+	getDataCache() {
 		return DataCache.getForContext(this[Context]);
 	}
 
-
-	getContacts () {
+	getContacts() {
 		return this[Contacts];
 	}
 
-
-	getCommunities () {
-		return this.Items.find((item) => item.Title === 'Communities');
+	getCommunities() {
+		return this.Items.find(item => item.Title === 'Communities');
 	}
 
-
-	getGroups () {
+	getGroups() {
 		if (!this[Groups]) {
 			let u = this[AppUser];
-			let {href} = this.getCollection('Groups', this.getAppUsername()) || {};
+			let { href } =
+				this.getCollection('Groups', this.getAppUsername()) || {};
 			if (href) {
 				this[Groups] = new GroupsStore(this, href, u);
 			} else {
@@ -228,39 +214,34 @@ class ServiceDocument extends EventEmitter {
 		return this[Groups];
 	}
 
-
-	getLists () {
+	getLists() {
 		const contacts = this[Contacts];
 		if (!this[Lists] && contacts) {
-
 			this[Lists] = Object.create(contacts, {
 				[Symbol.iterator]: {
 					value: function () {
 						const snapshot = this.getLists();
-						const {length} = snapshot;
+						const { length } = snapshot;
 						let index = 0;
 						return {
-
-							next () {
+							next() {
 								const done = index >= length;
 								const value = snapshot[index++];
 
 								return { value, done };
-							}
-
+							},
 						};
-					}
-				}
+					},
+				},
 			});
 		}
 
 		return this[Lists];
 	}
 
-
-	get (url) {
+	get(url) {
 		let key = typeof url === 'string' ? url : JSON.stringify(url);
-		const inflight = this.inflightRequests = (this.inflightRequests || {});
+		const inflight = (this.inflightRequests = this.inflightRequests || {});
 
 		if (inflight[key]) {
 			return inflight[key];
@@ -270,11 +251,11 @@ class ServiceDocument extends EventEmitter {
 			return Promise.reject('No URL');
 		}
 
-		function clean () {
+		function clean() {
 			delete inflight[key];
 		}
 
-		let p = inflight[key] = this.getServer().get(url, this[Context]);
+		let p = (inflight[key] = this.getServer().get(url, this[Context]));
 
 		wait.on(p) //once the request finishes
 			// .then(()=>wait(1000)) //wait one second before
@@ -283,88 +264,82 @@ class ServiceDocument extends EventEmitter {
 		return p;
 	}
 
+	async getBatch(url, params = {}, transform, parent = this) {
+		let raw = await this.get(URL.appendQueryParams(url, params));
 
-	getBatch (url, params = {}, transform, parent = this) {
-		return this.get(URL.appendQueryParams(url, params))
-			.then(raw => transform ? transform(raw) : raw)
-			.then(raw => new Batch(this, parent, raw))
-			.then(batch => batch.waitForPending());
+		if (transform) {
+			raw = await transform(raw);
+		}
+
+		const batch = new Batch(this, parent, raw);
+
+		return batch.waitForPending();
 	}
 
-	getPostBatch (url, params = {}, data, transform, parent = this) {
+	async getPostBatch(url, params = {}, data, transform, parent = this) {
 		return this.post(URL.appendQueryParams(url, params), data)
-			.then(raw => transform ? transform(raw) : raw)
+			.then(raw => (transform ? transform(raw) : raw))
 			.then(raw => new Batch(this, parent, raw))
 			.then(batch => batch.waitForPending());
 	}
 
-	head (url) {
-		return this.get({method: 'HEAD', url: url});
+	head(url) {
+		return this.get({ method: 'HEAD', url: url });
 	}
 
-
-	post (url, data) {
+	post(url, data) {
 		return this.getServer().post(url, data, this[Context]);
 	}
 
-
-	put (url, data) {
+	put(url, data) {
 		return this.getServer().put(url, data, this[Context]);
 	}
 
-
-	delete (url, data) {
+	delete(url, data) {
 		return this.getServer().delete(url, data, this[Context]);
 	}
 
-
-	postParseResponse (url, data, parent = this) {
-		return this.post(url, data)
-			.then(x => {
-				try {
-					return parse(this, parent, x);
-				} catch (e) {
-					return x;
-				}
-			});
+	async postParseResponse(url, data, parent = this) {
+		return this.post(url, data).then(x => {
+			try {
+				return parse(this, parent, x);
+			} catch (e) {
+				return x;
+			}
+		});
 	}
 
-
-	putParseResponse (url, data, parent = this) {
-		return this.put(url, data)
-			.then(x => {
-				try {
-					return parse(this, parent, x);
-				} catch (e) {
-					return x;
-				}
-			});
+	async putParseResponse(url, data, parent = this) {
+		return this.put(url, data).then(x => {
+			try {
+				return parse(this, parent, x);
+			} catch (e) {
+				return x;
+			}
+		});
 	}
 
-
-	hasCookie (cookie) {
+	hasCookie(cookie) {
 		let c = this[Context];
 		let d = global.document;
 		c = (c && c.headers) || d;
 		c = c && (c.Cookie || c.cookie);
 		c = (c && c.split(/;\W*/)) || [];
 
-		function search (found, v) {
-			return found || (v && v.indexOf(cookie) === 0);
-		}
+		const search = (found, v) => found || (v && v.indexOf(cookie) === 0);
 
 		return c.reduce(search, false);
 	}
 
-
-	getEnrollment () {
+	getEnrollment() {
 		if (!this[ENROLLMENT]) {
-			logger.warn('TODO: Move the guts of store/Enrollent into the app as API.');
+			logger.warn(
+				'TODO: Move the guts of store/Enrollent into the app as API.'
+			);
 			this[ENROLLMENT] = new Enrollment(this);
 		}
 		return this[ENROLLMENT];
 	}
-
 
 	/**
 	 * Get a PageInfo
@@ -375,33 +350,35 @@ class ServiceDocument extends EventEmitter {
 	 * @param {Object} [options.params] - params to add to the request url.
 	 * @returns {Promise} resolves with a PageInfo
 	 */
-	getPageInfo (ntiid, options) {
+	async getPageInfo(ntiid, options) {
 		const mime = 'application/vnd.nextthought.pageinfo+json';
-		const {parent, params} = options || {};
+		const { parent, params } = options || {};
 
 		if (!isNTIID(ntiid)) {
-			return Promise.reject(new Error(`Bad PageInfo NTIID: ${JSON.stringify(ntiid)}`));
+			return Promise.reject(
+				new Error(`Bad PageInfo NTIID: ${JSON.stringify(ntiid)}`)
+			);
 		}
 
 		return this.getObject(ntiid, {
 			params,
 			parent: parent || this,
-			type: mime
+			type: mime,
 		});
 	}
 
-
-	getObjectAtURL (url, ntiid) {
-		return this.get(url)
-			.catch(this.buildGetObjectErrorHandler(ntiid));
+	async getObjectAtURL(url, ntiid) {
+		return this.get(url).catch(this.buildGetObjectErrorHandler(ntiid));
 	}
 
-
-	getObjectRaw (ntiid, field, type, params) {
+	async getObjectRaw(ntiid, field, type, params) {
 		if (!isNTIID(ntiid)) {
-			return Promise.reject(new Error(`Invalid Argument: Not an NTIID: ${JSON.stringify(ntiid)}`));
+			return Promise.reject(
+				new Error(
+					`Invalid Argument: Not an NTIID: ${JSON.stringify(ntiid)}`
+				)
+			);
 		}
-
 
 		let url = this.getObjectURL(ntiid, field);
 
@@ -409,7 +386,7 @@ class ServiceDocument extends EventEmitter {
 			const headers = {};
 			const extras = {
 				...(params || {}),
-				...(type ? {type} : {})
+				...(type ? { type } : {}),
 			};
 
 			if (type) {
@@ -417,26 +394,24 @@ class ServiceDocument extends EventEmitter {
 			}
 
 			url = URL.appendQueryParams(url, extras);
-			url = {url, headers};
+			url = { url, headers };
 		}
 
 		return this.getObjectAtURL(url, ntiid);
 	}
 
-
-	buildGetObjectErrorHandler (ntiid) {
+	async buildGetObjectErrorHandler(ntiid) {
 		return o => {
 			if (o.statusCode === 404 && 'MimeType' in o) {
 				delete o.statusCode;
 				delete o.Message;
-				return {...o};
+				return { ...o };
 			}
 
 			if (o.statusCode === 403 && ntiid) {
 				return this.getObjectRelatedContext(ntiid)
-					.catch(()=> null)
+					.catch(() => null)
 					.then(e => {
-
 						if (e) {
 							e.statusCode = 403;
 						}
@@ -449,22 +424,27 @@ class ServiceDocument extends EventEmitter {
 		};
 	}
 
-
-	getObjectsRaw (ntiids) {
+	async getObjectsRaw(ntiids) {
 		if (!Array.isArray(ntiids)) {
 			ntiids = [ntiids];
 		}
 
-		return Promise.all(ntiids.map(n => this.getObjectRaw(n)))
-			.then(results =>
-				(!Array.isArray(results) ? [results] : results)
-					.map(o => o && o.MimeType ? o : null));
+		return Promise.all(
+			ntiids.map(n => this.getObjectRaw(n))
+		).then(results =>
+			(!Array.isArray(results) ? [results] : results).map(o =>
+				o && o.MimeType ? o : null
+			)
+		);
 	}
 
-
-	getObjectRelatedContext (ntiid) {
+	async getObjectRelatedContext(ntiid) {
 		if (!isNTIID(ntiid)) {
-			return Promise.reject(`Invalid Argument: Value is not an NTIID: ${JSON.stringify(ntiid)}`);
+			return Promise.reject(
+				`Invalid Argument: Value is not an NTIID: ${JSON.stringify(
+					ntiid
+				)}`
+			);
 		}
 
 		const url = this.getObjectRelatedContextURL(ntiid);
@@ -472,15 +452,13 @@ class ServiceDocument extends EventEmitter {
 		return this.get(url)
 			.catch(() => null)
 			.then(o => {
-
 				// if (o && o.Items) {
 				// 	o.Items = parse(this, this, o.Items);
 				// }
 
-				return (!o || !o.Items || !o.Items.length) ? null : o;
+				return !o || !o.Items || !o.Items.length ? null : o;
 			});
 	}
-
 
 	/**
 	 * Get an Object
@@ -493,35 +471,40 @@ class ServiceDocument extends EventEmitter {
 	 * @param {string} [options.type] - enforce an expected type.
 	 * @returns {Promise} resolves with a Model instance of the object
 	 */
-	getObject (ntiid, options) {
-		const {field, params, parent, type} = options || {};
+	async getObject(ntiid, options) {
+		const { field, params, parent, type } = options || {};
 
-		const resolve = (typeof ntiid === 'object')
-			? Promise.resolve(ntiid)
-			: this.getObjectRaw(ntiid, field, type, params);
+		const resolve =
+			typeof ntiid === 'object'
+				? Promise.resolve(ntiid)
+				: this.getObjectRaw(ntiid, field, type, params);
 
 		return resolve
 			.then(o => parse(this, parent || this, o))
-			.then(model => Array.isArray(model)
-				? Promise.all(model.map(m => (m && m.waitForPending) ? m.waitForPending() : m))
-				: (model && model.waitForPending)
+			.then(model =>
+				Array.isArray(model)
+					? Promise.all(
+							model.map(m =>
+								m && m.waitForPending ? m.waitForPending() : m
+							)
+					  )
+					: model && model.waitForPending
 					? model.waitForPending()
 					: model
 			);
 	}
 
-
-	getObjectPlaceholder (obj) {
+	getObjectPlaceholder(obj) {
 		return new AbstractPlaceholder(this, this, obj);
 	}
 
-
-	getObjects (ntiids, parent) {
-		return this.getObjectsRaw(ntiids).then(o => parse(this, parent || this, o));
+	async getObjects(ntiids, parent) {
+		return this.getObjectsRaw(ntiids).then(o =>
+			parse(this, parent || this, o)
+		);
 	}
 
-
-	getPurchasables (ids) {
+	async getPurchasables(ids) {
 		let url = '/dataserver2/store/get_purchasables';
 
 		if (ids) {
@@ -529,32 +512,30 @@ class ServiceDocument extends EventEmitter {
 				ids = ids.join(',');
 			}
 
-			url = URL.appendQueryParams(url, {purchasables: ids});
+			url = URL.appendQueryParams(url, { purchasables: ids });
 		}
 
-		return this.get(url)
-			.then(collection=> parse(this, null, collection.Items));
+		return this.get(url).then(collection =>
+			parse(this, null, collection.Items)
+		);
 	}
 
-
-	getAppUsername () {
-		let {appUsername} = this;
+	getAppUsername() {
+		let { appUsername } = this;
 
 		if (!appUsername) {
-			let {Title} = this.getUserWorkspace() || {};
+			let { Title } = this.getUserWorkspace() || {};
 			appUsername = Title;
-			Object.assign(this, {appUsername});
+			Object.assign(this, { appUsername });
 		}
 
 		return appUsername;
 	}
 
-
-	async getAppUser () {
+	async getAppUser() {
 		if (this[AppUser]) {
 			return this[AppUser];
 		}
-
 
 		// We don't want to allow multiple calls to getAppUser to trigger several requests,
 		// so we need to collapse them into one. This will make a promise that we can resolve
@@ -565,17 +546,15 @@ class ServiceDocument extends EventEmitter {
 			return this[RE_ENTRY];
 		}
 
-
 		let resolve, reject;
-		const nonce = new Promise((a, b) => (resolve = a, reject = b));
+		const nonce = new Promise((a, b) => ((resolve = a), (reject = b)));
 		// Prevent unhandled rejection warnings, because this promise very well
 		// may not ever get a listener (especially if there is not a re-entry
 		// before resolution). This adds a no-op handler to the nonce promise,
 		// leaving the nonce reference to the original so that rejections still
 		// propagate.
-		nonce.catch(() => { });
+		nonce.catch(() => {});
 		this[RE_ENTRY] = nonce;
-
 
 		try {
 			const url = this.getResolveAppUserURL();
@@ -583,13 +562,16 @@ class ServiceDocument extends EventEmitter {
 				throw new Error('Not logged in');
 			}
 
-			const data = await this.get({url});
+			const data = await this.get({ url });
 			const user = await parse(this, this, data);
 
 			this[AppUser] = user;
 
 			// node will not have dispatchEvent nor CustomEvent defeined globally.
-			if (typeof dispatchEvent !== 'undefined' && typeof CustomEvent !== 'undefined') {
+			if (
+				typeof dispatchEvent !== 'undefined' &&
+				typeof CustomEvent !== 'undefined'
+			) {
 				dispatchEvent(new CustomEvent('user-set', { detail: user }));
 			}
 
@@ -605,49 +587,52 @@ class ServiceDocument extends EventEmitter {
 		}
 	}
 
-
 	/**
 	 * Do not use this method for general purpose resolving the user,
 	 * use the async method.
 	 * @returns {User} A user model
 	 */
-	getAppUserSync () {
-		return this[AppUser] ||
-			(()=> { throw new Error('User is not resolved'); })();
+	getAppUserSync() {
+		return (
+			this[AppUser] ||
+			(() => {
+				throw new Error('User is not resolved');
+			})()
+		);
 	}
 
-
-	[RequestEntityResolve] (entityId) {
+	async [RequestEntityResolve](entityId) {
 		let key = `entity-${entityId}`;
 		let cache = this.getDataCache();
 		let cached = cache.get(key);
 		let result;
 
-		let entityMatcher = d => d.NTIID === entityId || d.Username === entityId;
+		let entityMatcher = d =>
+			d.NTIID === entityId || d.Username === entityId;
 
 		if (cached) {
 			result = Promise.resolve(cached);
-		}
-		else {
-			result = this.get(this.getResolveUserURL(entityId))
-				.then(data => {
-					let items = data.Items || (data.MimeType ? [data] : []);
-					let entity = items.find(entityMatcher);
+		} else {
+			result = this.get(this.getResolveUserURL(entityId)).then(data => {
+				let items = data.Items || (data.MimeType ? [data] : []);
+				let entity = items.find(entityMatcher);
 
-					if (entity) {
-						cache.set(key, entity);
-					}
+				if (entity) {
+					cache.set(key, entity);
+				}
 
-					return entity || Promise.reject(`Could not resolve entity: "${entityId}".`);
-				});
+				return (
+					entity ||
+					Promise.reject(`Could not resolve entity: "${entityId}".`)
+				);
+			});
 
-			cache.setVolatile(key, result);//if this is asked for again before we resolve, reuse this promise.
+			cache.setVolatile(key, result); //if this is asked for again before we resolve, reuse this promise.
 			result.catch(() => cache.setVolatile(key, null));
 		}
 
 		return result.then(user => parse(this[Service], this, user));
 	}
-
 
 	/**
 	 * Resolve an entity.
@@ -656,7 +641,7 @@ class ServiceDocument extends EventEmitter {
 	 *
 	 * @returns {Promise} Promise for an Entity.
 	 */
-	resolveEntity (entityId) {
+	async resolveEntity(entityId) {
 		const key = 'entity-respository';
 		const cache = this.getDataCache();
 		const repo = cache.get(key) || {};
@@ -666,42 +651,37 @@ class ServiceDocument extends EventEmitter {
 			return Promise.resolve(repo[entityId]);
 		}
 
-		let req = repo[entityId] = this[RequestEntityResolve](entityId);
+		let req = (repo[entityId] = this[RequestEntityResolve](entityId));
 
 		req.then(
-			entity => repo[entityId] = entity,
-			()=> delete repo[entityId]);
+			entity => (repo[entityId] = entity),
+			() => delete repo[entityId]
+		);
 
 		return req;
 	}
 
-
-	entityInCache (entityId) {
+	entityInCache(entityId) {
 		const key = 'entity-respository';
 		const cache = this.getDataCache();
 		const repo = cache.get(key) || {};
 		return entityId in repo;
 	}
 
-
-	getMetadataFor (uri) {
+	async getMetadataFor(uri) {
 		const requestURI = this.getMetadataExtractorURL(uri);
-		return this.get(requestURI)
-			.then(x => parse(this, null, x));
+		return this.get(requestURI).then(x => parse(this, null, x));
 	}
 
-
-	getUserWorkspace () {
+	getUserWorkspace() {
 		return (this.Items || []).find(x => x.hasLink('ResolveSelf'));
 	}
 
-
-	getWorkspace (name) {
+	getWorkspace(name) {
 		return (this.Items || []).find(x => x.Title === name);
 	}
 
-
-	getCollection (title, workspaceName) {
+	getCollection(title, workspaceName) {
 		const workspace = workspaceName
 			? this.getWorkspace(workspaceName)
 			: this.getUserWorkspace();
@@ -711,7 +691,6 @@ class ServiceDocument extends EventEmitter {
 		return items.find(o => o.Title === title);
 	}
 
-
 	/**
 	 *
 	 * @param {string} mimeType The mimetype of what we're looking for
@@ -719,7 +698,7 @@ class ServiceDocument extends EventEmitter {
 	 * @param {array} [tryScopes] Optionally, pick a destination from contextual scopes. Treat as a stack!
 	 * @returns {Object} the collection
 	 */
-	getCollectionFor (mimeType, title, tryScopes) {
+	getCollectionFor(mimeType, title, tryScopes) {
 		let items = this.Items || [];
 		let Pages = x => x && x.rel === 'Pages';
 
@@ -731,7 +710,7 @@ class ServiceDocument extends EventEmitter {
 		//array...for iterating, reverse the array.
 		tryScopes = (tryScopes || []).slice().reverse();
 
-		for(let scope of tryScopes) {
+		for (let scope of tryScopes) {
 			let link = ((scope || {}).Links || []).find(Pages);
 			if (link /*&& link.accepts(mimeType)*/) {
 				return link;
@@ -739,7 +718,7 @@ class ServiceDocument extends EventEmitter {
 		}
 
 		for (let workspace of items) {
-			for(let collection of (workspace.Items || [])) {
+			for (let collection of workspace.Items || []) {
 				if (collection.acceptsType(mimeType)) {
 					if (!title || collection.Title === title) {
 						return collection;
@@ -751,19 +730,19 @@ class ServiceDocument extends EventEmitter {
 		return void 0;
 	}
 
-
-	getLogoutURL (succssURL) {
+	getLogoutURL(successURL) {
 		let url = this.getDataCache().get(LOGOUT_URL);
 		if (!url) {
-			logger.error('No Logout URL defined! Pulling a URL out of thin air.');
+			logger.error(
+				'No Logout URL defined! Pulling a URL out of thin air.'
+			);
 			url = '/dataserver2/logon.logout';
 		}
 
-		return URL.appendQueryParams(url, {success: succssURL});
+		return URL.appendQueryParams(url, { success: successURL });
 	}
 
-
-	setLogoutURL (url) {
+	setLogoutURL(url) {
 		if (!this[Context]) {
 			throw new Error('Client cannot set url');
 		}
@@ -771,51 +750,47 @@ class ServiceDocument extends EventEmitter {
 		this.getDataCache().set(LOGOUT_URL, url);
 	}
 
-
-	getContainerURL (ntiid, postfix) {
+	getContainerURL(ntiid, postfix) {
 		let base = this.getResolveAppUserURL();
 		let pageURI = encodeURIComponent(`Pages(${ntiid})`);
 
 		return URL.join(base, pageURI, postfix || '');
 	}
 
-
-	getContentPackagesURL (name) {
+	getContentPackagesURL(name) {
 		return (this.getCollection(name || 'Main', 'Library') || {}).href;
 	}
 
-
-	getContentBundlesURL () {
-		return (this.getCollection('VisibleContentBundles', 'ContentBundles') || {}).href;
+	getContentBundlesURL() {
+		return (
+			this.getCollection('VisibleContentBundles', 'ContentBundles') || {}
+		).href;
 	}
 
-
-	getCoursesEnrolledURL () {
+	getCoursesEnrolledURL() {
 		return (this.getCollection('EnrolledCourses', 'Courses') || {}).href;
 	}
 
-
-	getCoursesAdministeringURL () {
-		return (this.getCollection('AdministeredCourses', 'Courses') || {}).href;
+	getCoursesAdministeringURL() {
+		return (this.getCollection('AdministeredCourses', 'Courses') || {})
+			.href;
 	}
 
-
-	getCoursesCatalogURL () {
+	getCoursesCatalogURL() {
 		return (this.getCollection('AllCourses', 'Courses') || {}).href;
 	}
 
-
-	getObjectURL (ntiid, field) {
+	getObjectURL(ntiid, field) {
 		if (!ntiid) {
 			throw new Error('No NTIID specified');
 		}
 
-		const parts = isHrefId(ntiid) ? [
-			decodeHrefFrom(ntiid)
-		] : [
-			(this.getCollection('Objects', 'Global') || {}).href,
-			encodeURIComponent(ntiid || '')
-		];
+		const parts = isHrefId(ntiid)
+			? [decodeHrefFrom(ntiid)]
+			: [
+					(this.getCollection('Objects', 'Global') || {}).href,
+					encodeURIComponent(ntiid || ''),
+			  ];
 
 		if (field) {
 			parts.push('++fields++' + field);
@@ -824,16 +799,17 @@ class ServiceDocument extends EventEmitter {
 		return parts.join('/');
 	}
 
-
-	getObjectRelatedContextURL (ntiid) {
-		return [this.getObjectURL(ntiid), '@@forbidden_related_context'].join('/');
+	getObjectRelatedContextURL(ntiid) {
+		return [this.getObjectURL(ntiid), '@@forbidden_related_context'].join(
+			'/'
+		);
 	}
 
-
-	getUserSearchURL (username) {
+	getUserSearchURL(username) {
 		let l = getLink(
 			(this.getWorkspace('Global') || {}).Links || [],
-			REL_USER_SEARCH);
+			REL_USER_SEARCH
+		);
 
 		if (!l || !username || username === '') {
 			return null;
@@ -842,29 +818,28 @@ class ServiceDocument extends EventEmitter {
 		return URL.join(l, username && encodeURIComponent(username));
 	}
 
-
-	getUserUnifiedSearchURL () {
+	getUserUnifiedSearchURL() {
 		let l = getLink(
 			(this.getUserWorkspace() || {}).Links || [],
-			REL_USER_UNIFIED_SEARCH);
+			REL_USER_UNIFIED_SEARCH
+		);
 
 		return l || null;
 	}
 
-
-	getResolveAppUserURL () {
+	getResolveAppUserURL() {
 		return getLink(this.getUserWorkspace(), 'ResolveSelf');
 	}
 
-
-	getResolveUserURL (username) {
+	getResolveUserURL(username) {
 		if (isNTIID(username)) {
 			return this.getObjectURL(username);
 		}
 
 		let l = getLink(
 			(this.getWorkspace('Global') || {}).Links || [],
-			REL_USER_RESOLVE);
+			REL_USER_RESOLVE
+		);
 
 		if (!l) {
 			return null;
@@ -873,33 +848,27 @@ class ServiceDocument extends EventEmitter {
 		return URL.join(l, username && encodeURIComponent(username));
 	}
 
-
-	getBulkResolveUserURL () {
+	getBulkResolveUserURL() {
 		let l = getLink(
 			(this.getWorkspace('Global') || {}).Links || [],
-			REL_BULK_USER_RESOLVE);
+			REL_BULK_USER_RESOLVE
+		);
 
 		return l || null;
 	}
 
-
-	getMetadataExtractorURL (uri) {
+	getMetadataExtractorURL(uri) {
 		const base = '/dataserver2/URLMetaDataExtractor';
-		return uri
-			? URL.appendQueryParams(base, {url: uri})
-			: base;
+		return uri ? URL.appendQueryParams(base, { url: uri }) : base;
 	}
 
-
-	getPurchasableItemURL () {
-		return '/dataserver2/store/get_purchasables';//TODO: this is legacy...replace
+	getPurchasableItemURL() {
+		return '/dataserver2/store/get_purchasables'; //TODO: this is legacy...replace
 	}
 
-
-	getStoreActivationURL () {
-		return '/dataserver2/store/redeem_purchase_code';//TODO: this is legacy...replace
+	getStoreActivationURL() {
+		return '/dataserver2/store/redeem_purchase_code'; //TODO: this is legacy...replace
 	}
-
 
 	/**
 
@@ -907,22 +876,27 @@ class ServiceDocument extends EventEmitter {
 	 * @param  {string|Object} thing The NTIID or model to retrieve a LibraryPath for.
 	 * @returns {Promise} Resolves with library path
 	 */
-	async getContextPathFor (thing) {
+	async getContextPathFor(thing) {
 		const cache = LibraryPathCache;
 		let url = thing.getLink && thing.getLink('LibraryPath');
 
 		if (!url) {
-			const id = thing && (thing.getID && thing.getID()) || thing;
+			const id = (thing && thing.getID && thing.getID()) || thing;
 			if (typeof id !== 'string') {
-				throw new Error('Invalid Argument! Must be an id, or an object that implements getID()');
+				throw new Error(
+					'Invalid Argument! Must be an id, or an object that implements getID()'
+				);
 			}
 
-			const {href} = this.getCollection('LibraryPath', 'Global') || {};
+			const { href } = this.getCollection('LibraryPath', 'Global') || {};
 			if (!href) {
-				throw Object.assign(new Error('PathToContainerId is not available here.'), { statusCode: NOT_IMPLEMENTED });
+				throw Object.assign(
+					new Error('PathToContainerId is not available here.'),
+					{ statusCode: NOT_IMPLEMENTED }
+				);
 			}
 
-			url = URL.appendQueryParams(href, {objectId: id});
+			url = URL.appendQueryParams(href, { objectId: id });
 		}
 
 		const fetch = async () => {
@@ -936,18 +910,21 @@ class ServiceDocument extends EventEmitter {
 			// 		]
 			return Promise.all(
 				data.map(p =>
-					maybeWait(p.map(item =>
-						parse(this, parent, item)))));
+					maybeWait(p.map(item => parse(this, parent, item)))
+				)
+			);
 		};
 
 		let promise = cache.get(url);
 
 		if (!promise) {
-			cache.set(url, promise = fetch());
+			cache.set(url, (promise = fetch()));
 		}
 
 		return promise;
 	}
 }
 
-export default decorate(ServiceDocument, {with:[mixin(Pendability, InstanceCacheContainer)]});
+export default decorate(ServiceDocument, {
+	with: [mixin(Pendability, InstanceCacheContainer)],
+});
