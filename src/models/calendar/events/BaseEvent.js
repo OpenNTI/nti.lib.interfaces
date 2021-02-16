@@ -18,7 +18,28 @@ class BaseEvent extends Base {
 		'ContainerId': 			{ type: 'string' }
 	}
 
+	constructor (service, parent, data) {
+		super(service, parent, data);
+
+		this.addToPending(resolveCatalogEntry(service, this));
+	}
+
 	getUniqueIdentifier = () => this.getID();
 }
 
 export default decorate(BaseEvent, {with:[model]});
+
+async function resolveCatalogEntry(service, event) {
+	const self = event;
+	try {
+		const {CatalogEntryNTIID:id} = event;
+
+		if (!id) { return; }
+
+		const entry = await service.getObject(id);
+
+		self.CatalogEntry = entry;
+	} catch (e) {
+		//just swallow the error for now
+	}
+}
