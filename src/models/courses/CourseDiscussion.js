@@ -1,23 +1,23 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 //TODO: does this need to live somewhere else
 const DEFAULT_ICON = '/app/resources/images/elements/discussion-icon.png';
 
 class CourseDiscussion extends Base {
-	static MimeType = COMMON_PREFIX + 'courses.discussion'
+	static MimeType = COMMON_PREFIX + 'courses.discussion';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'icon': { type: 'string' },
 	}
 
-
-	getIcon () {
+	getIcon() {
 		return this.icon || DEFAULT_ICON;
 	}
 }
 
-export default decorate(CourseDiscussion, {with:[model]});
+export default decorate(CourseDiscussion, { with: [model] });

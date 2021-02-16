@@ -1,13 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class CompletionPolicy extends Base {
-	static MimeType = [
-		COMMON_PREFIX + 'completion.aggregatecompletionpolicy'
-	]
+	static MimeType = [COMMON_PREFIX + 'completion.aggregatecompletionpolicy'];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'percentage':                    { type: 'number'                                       },
@@ -15,4 +14,4 @@ class CompletionPolicy extends Base {
 	}
 }
 
-export default decorate(CompletionPolicy, {with:[model]});
+export default decorate(CompletionPolicy, { with: [model] });

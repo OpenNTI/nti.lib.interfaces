@@ -1,11 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../../../Registry';
+import { model, COMMON_PREFIX } from '../../../Registry';
 import Base from '../../../Base';
 
 class AggregatedSurveyResults extends Base {
-	static MimeType = COMMON_PREFIX + 'assessment.aggregatedsurvey'
+	static MimeType = COMMON_PREFIX + 'assessment.aggregatedsurvey';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'questions':        { type: 'model[]' },
@@ -13,15 +14,16 @@ class AggregatedSurveyResults extends Base {
 		'ContainerContext': { type: '*'       },
 	}
 
-
-	getQuestions () {
+	getQuestions() {
 		return this.questions;
 	}
 
-	getQuestion (id) {
-		return this.questions.reduce((found, q) =>
-			found || (q.getID() === id && q), null);
+	getQuestion(id) {
+		return this.questions.reduce(
+			(found, q) => found || (q.getID() === id && q),
+			null
+		);
 	}
 }
 
-export default decorate(AggregatedSurveyResults, {with:[model]});
+export default decorate(AggregatedSurveyResults, { with: [model] });

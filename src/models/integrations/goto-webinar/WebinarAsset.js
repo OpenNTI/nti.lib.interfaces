@@ -1,13 +1,14 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 import Completable from '../../../mixins/Completable';
 
 class WebinarAsset extends Base {
-	static MimeType = COMMON_PREFIX + 'webinarasset'
+	static MimeType = COMMON_PREFIX + 'webinarasset';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'description':  { type: 'string' },
@@ -18,7 +19,4 @@ class WebinarAsset extends Base {
 	}
 }
 
-export default decorate(WebinarAsset, {with:[
-	model,
-	mixin(Completable),
-]});
+export default decorate(WebinarAsset, { with: [model, mixin(Completable)] });

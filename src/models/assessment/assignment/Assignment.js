@@ -1,31 +1,28 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 import PlacementProvider from '../../../authoring/placement/providers/Assignment';
-import {
-	Service,
-	ASSESSMENT_HISTORY_LINK
-} from '../../../constants';
+import { Service, ASSESSMENT_HISTORY_LINK } from '../../../constants';
 import Publishable from '../../../mixins/Publishable';
 import Completable from '../../../mixins/Completable';
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 import SubmittableIdentity from '../mixins/SubmittableIdentity';
 import AssignmentIdentity from '../mixins/AssignmentIdentity';
-import {resolveSubmitTo} from '../utils';
+import { resolveSubmitTo } from '../utils';
 
 import AssignmentSubmission from './AssignmentSubmission';
 
-
 const ActiveSavePointPost = Symbol('ActiveSavePointPost');
 
-const isSummary = ({parts}) => parts && parts.some(x => x.IsSummary);
-const getAssociationCount = (x) => x.LessonContainerCount;
+const isSummary = ({ parts }) => parts && parts.some(x => x.IsSummary);
+const getAssociationCount = x => x.LessonContainerCount;
 const has = (x, k) => Object.prototype.hasOwnProperty.call(x, k);
 
 class Assignment extends Base {
-	static MimeType = COMMON_PREFIX + 'assessment.assignment'
+	static MimeType = COMMON_PREFIX + 'assessment.assignment';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'auto_grade':                           { type: 'boolean', name: 'isAutoGraded'                },
@@ -58,37 +55,38 @@ class Assignment extends Base {
 		// different shape... leave those warnings in the console.
 	}
 
-
-	get IsSummary () {
+	get IsSummary() {
 		return isSummary(this);
 	}
 
-
-	ensureNotSummary () {
+	ensureNotSummary() {
 		return this.IsSummary ? this.refresh() : Promise.resolve(this);
 	}
 
-	shouldAutoStart () {
+	shouldAutoStart() {
 		return !this.IsTimedAssignment;
 	}
 
-	async start () {
+	async start() {
 		if (this.hasLink('Commence')) {
 			const rawAssignment = await this.postToLink('Commence');
 			await this.refresh(rawAssignment);
 		} else if (this.CurrentMetadataAttemptItem) {
-			const rawAssignment = await this.CurrentMetadataAttemptItem.fetchLink('Assignment');
+			const rawAssignment = await this.CurrentMetadataAttemptItem.fetchLink(
+				'Assignment'
+			);
 			await this.refresh(rawAssignment);
 		}
 
 		return this;
 	}
 
+	async getLatestAttempt() {
+		const { CurrentMetadataAttemptItem: current } = this;
 
-	async getLatestAttempt () {
-		const {CurrentMetadataAttemptItem: current} = this;
-
-		if (current) { return current; }
+		if (current) {
+			return current;
+		}
 
 		try {
 			const attempts = await this.fetchLinkParsed('MetadataAttempts');
@@ -100,25 +98,22 @@ class Assignment extends Base {
 		}
 	}
 
-
 	/**
 	 * Checks to see if the NTIID is within this Assignment (Checking the QuestionSet's id and all questions id's)
 	 *
 	 * @param {string} id NTIID
 	 * @returns {boolean} true if the id was found, false otherwise.
 	 */
-	containsId (id) {
+	containsId(id) {
 		return (this.parts || []).filter(p => p && p.containsId(id)).length > 0;
 	}
 
-
-	isLocked () {
+	isLocked() {
 		// See NTI-1414, the presence of this link signafies the assignment may be structually modified.
 		return !this.hasLink('InsertPart');
 	}
 
-
-	isNonSubmit () {
+	isNonSubmit() {
 		let p = this.parts;
 
 		if (has(this, 'NoSubmit')) {
@@ -132,113 +127,110 @@ class Assignment extends Base {
 		return !p || p.length === 0 || /no_submit/.test(this.category_name);
 	}
 
-
-	canBeSubmitted () {
+	canBeSubmitted() {
 		return !this.isNonSubmit();
 	}
 
-
-	isLate (date) {
+	isLate(date) {
 		const due = this.getDueDate();
 		return date && due && date > due;
 	}
 
-	isOutsideSubmissionBuffer () {
+	isOutsideSubmissionBuffer() {
 		const now = new Date();
 		const due = this.getDueDate();
-		const {submissionBuffer} = this;
+		const { submissionBuffer } = this;
 
 		//If there is no submission buffer or due date we aren't after the submission buffer
 		if ((!submissionBuffer && submissionBuffer !== 0) || !due) {
 			return false;
 		}
 
-		const latest = new Date(due.getTime() + ((submissionBuffer || 0) * 1000));
+		const latest = new Date(due.getTime() + (submissionBuffer || 0) * 1000);
 
 		return latest < now;
 	}
 
-	get hasSubmission () {
+	get hasSubmission() {
 		return this.hasLink(ASSESSMENT_HISTORY_LINK);
 	}
 
-
-	get associationCount () {
+	get associationCount() {
 		return getAssociationCount(this);
 	}
 
-
-	getDateEditingLink () {
+	getDateEditingLink() {
 		return this.getLink('date-edit') || this.getLink('edit');
 	}
 
-
-	getAssociations () {
+	getAssociations() {
 		return this.fetchLinkParsed('Lessons');
 	}
 
-
-	getPlacementProvider (scope, accepts) {
+	getPlacementProvider(scope, accepts) {
 		return new PlacementProvider(scope, this, accepts);
 	}
 
-
-	getAssignedDate () {
+	getAssignedDate() {
 		return this.getAvailableForSubmissionBeginning();
 	}
 
-
-	getDueDate () {
+	getDueDate() {
 		return this.getAvailableForSubmissionEnding();
 	}
 
-
-	getQuestion (id) {
-		return (this.parts || []).reduce((question, part) =>
-			question || part.getQuestion(id), null);
+	getQuestion(id) {
+		return (this.parts || []).reduce(
+			(question, part) => question || part.getQuestion(id),
+			null
+		);
 	}
 
-
-	getQuestions () {
-		return (this.parts || []).reduce((list, part) =>
-			list.concat(part.getQuestions()), []);
+	getQuestions() {
+		return (this.parts || []).reduce(
+			(list, part) => list.concat(part.getQuestions()),
+			[]
+		);
 	}
 
-
-	getQuestionCount () {
-		return (this.parts || []).reduce((agg, part) =>
-			agg + part.getQuestionCount(), 0);
+	getQuestionCount() {
+		return (this.parts || []).reduce(
+			(agg, part) => agg + part.getQuestionCount(),
+			0
+		);
 	}
 
-
-	getPublishDate () {
+	getPublishDate() {
 		return this.isPublished() ? this.getAssignedDate() : null;
 	}
 
-
-	getSubmission () {
+	getSubmission() {
 		const data = {
 			assignmentId: this.getID(),
 			version: this.version,
 			parts: (this.parts || []).map(p => p.getSubmission()),
-			isPracticeSubmission: this.hasLink('PracticeSubmission')
+			isPracticeSubmission: this.hasLink('PracticeSubmission'),
 		};
 
-		const submitTo = this.getLink('PracticeSubmission') || resolveSubmitTo(this);
-		const submission = new AssignmentSubmission(this[Service], this, data, submitTo);
+		const submitTo =
+			this.getLink('PracticeSubmission') || resolveSubmitTo(this);
+		const submission = new AssignmentSubmission(
+			this[Service],
+			this,
+			data,
+			submitTo
+		);
 
 		submission.parts.forEach(s => s.reparent(submission));
 
 		return submission;
 	}
 
-
-	getVisibility () {
+	getVisibility() {
 		return this.isNonPublic ? 'ForCredit' : 'Everyone';
 	}
 
-
-	isAvailable () {
+	isAvailable() {
 		const now = new Date();
 		const available = this.getAvailableForSubmissionBeginning();
 
@@ -246,22 +238,19 @@ class Assignment extends Base {
 		return this.isPublished() && now > available;
 	}
 
-
 	/**
 	 * Interface method. Called to load the last submission (Savepoint or final submission).
 	 * Intended to be called by the assessment Store in the Mobile App when viewing an assessment.
 	 *
 	 * @returns {Promise} The history.
 	 */
-	loadPreviousSubmission () {
+	loadPreviousSubmission() {
 		if (this.CurrentMetadataAttemptItem) {
 			return this.loadSavePoint();
 		}
 
-		return this.loadHistory()
-			.catch(() => this.loadSavePoint());
+		return this.loadHistory().catch(() => this.loadSavePoint());
 	}
-
 
 	/**
 	 * Load the history directly from the Link on this object.
@@ -269,31 +258,33 @@ class Assignment extends Base {
 	 * @private
 	 * @returns {Promise} The history.
 	 */
-	loadHistory () {
+	loadHistory() {
 		return this.fetchLinkParsed(ASSESSMENT_HISTORY_LINK);
 	}
 
-
-	loadSavePoint () {
+	loadSavePoint() {
 		const getVersion = x => ((x || {}).Submission || {}).version;
-		return this.fetchLinkParsed('Savepoint')
-			.then(save =>
-				(getVersion(save) !== this.version)
-				//Drop savepoints that have missmatched versions
-					? Promise.reject(`Version Missmatch: SavePoint(${getVersion(save)}) != Assignment(${this.version})`)
-					: save
-			);
+		return this.fetchLinkParsed('Savepoint').then(save =>
+			getVersion(save) !== this.version
+				? //Drop savepoints that have missmatched versions
+				  Promise.reject(
+						`Version Missmatch: SavePoint(${getVersion(
+							save
+						)}) != Assignment(${this.version})`
+				  )
+				: save
+		);
 	}
 
-
-	postSavePoint (data, parseResponse) {
+	postSavePoint(data, parseResponse) {
 		if (this.hasLink('PracticeSubmission')) {
 			return Promise.resolve({
 				Submission: data,
-				getQuestions: () => data.getQuestions ? data.getQuestions() : [],
+				getQuestions: () =>
+					data.getQuestions ? data.getQuestions() : [],
 				isSyntheticSubmission: () => false,
 				isSubmitted: () => false,
-				isPracticeSubmission: true
+				isPracticeSubmission: true,
 			});
 		}
 
@@ -306,65 +297,65 @@ class Assignment extends Base {
 			last.abort();
 		}
 
-		let result = this[ActiveSavePointPost] = this.postToLink('Savepoint', data, parseResponse);
+		let result = (this[ActiveSavePointPost] = this.postToLink(
+			'Savepoint',
+			data,
+			parseResponse
+		));
 
-		result.catch(()=> {}).then(()=> {
-			if (result === this[ActiveSavePointPost]) {
-				delete this[ActiveSavePointPost];
-			}
-		});
+		result
+			.catch(() => {})
+			.then(() => {
+				if (result === this[ActiveSavePointPost]) {
+					delete this[ActiveSavePointPost];
+				}
+			});
 
 		return result;
 	}
 
-
-	canSetTotalPoints () {
+	canSetTotalPoints() {
 		return this.hasLink('total-points');
 	}
 
-
-	setTotalPoints (points) {
-		return this.save({'total_points': points}, void 0, 'total-points');
+	setTotalPoints(points) {
+		return this.save({ total_points: points }, void 0, 'total-points');
 	}
 
-
-	setDiscussionID (discussionId) {
-		return this.save({'discussion_ntiid': discussionId});
+	setDiscussionID(discussionId) {
+		return this.save({ discussion_ntiid: discussionId });
 	}
 
-
-	canSetAutoGrade () {
+	canSetAutoGrade() {
 		return this.hasLink('auto-grade');
 	}
 
-
-	setAutoGrade (state) {
-		return this.save({'auto_grade': state}, void 0, 'auto-grade');
+	setAutoGrade(state) {
+		return this.save({ auto_grade: state }, void 0, 'auto-grade');
 	}
 
-
-	setSubmissionBuffer (submissionBuffer) {
-		return this.save({'submission_buffer': submissionBuffer}, void 0);
+	setSubmissionBuffer(submissionBuffer) {
+		return this.save({ submission_buffer: submissionBuffer }, void 0);
 	}
 
-
-	canSetDueDate () {
+	canSetDueDate() {
 		return this.hasLink('date-edit');
 	}
 
-
-	setDueDate (date) {
-		return this.save({'available_for_submission_ending': date}, void 0, 'date-edit');
+	setDueDate(date) {
+		return this.save(
+			{ available_for_submission_ending: date },
+			void 0,
+			'date-edit'
+		);
 	}
 
-
-	canSetMaxSubmissions () {
+	canSetMaxSubmissions() {
 		return this.hasLink('max-submissions');
 	}
 
-
-	setMaxSubmissions (max) {
-		return this.save({'max_submissions': max}, void 0, 'max-submissions');
+	setMaxSubmissions(max) {
+		return this.save({ max_submissions: max }, void 0, 'max-submissions');
 	}
 
 	/**
@@ -373,40 +364,59 @@ class Assignment extends Base {
 	 * @param {boolean|Date} state Publish States: Publish - True, Unpublish - False, or Schedule - Date
 	 * @returns {Promise} Fulfills when the state is set
 	 */
-	setPublishState (state) {
+	setPublishState(state) {
 		const isDate = state instanceof Date;
 		const value = isDate ? true : !!state;
 
-		const work = (!isDate && !value)
-			? Promise.resolve()
-			: this.save({ 'available_for_submission_beginning': isDate ? state : null}, void 0, 'date-edit');
+		const work =
+			!isDate && !value
+				? Promise.resolve()
+				: this.save(
+						{
+							available_for_submission_beginning: isDate
+								? state
+								: null,
+						},
+						void 0,
+						'date-edit'
+				  );
 
 		return work.then(() => {
 			if (this.canPublish() || this.canUnpublish()) {
-				return Publishable.setPublishState.call(this, value, 'available_for_submission_beginning', 'parts', 'IsAvailable');
+				return Publishable.setPublishState.call(
+					this,
+					value,
+					'available_for_submission_beginning',
+					'parts',
+					'IsAvailable'
+				);
 			}
 		});
 	}
 
-
-	setVisibility (value) {
-		return this.save({'is_non_public': value === 'ForCredit'});
+	setVisibility(value) {
+		return this.save({ is_non_public: value === 'ForCredit' });
 	}
-
 
 	/**
 	 * DANGER: Resets all submissions on an assignment across all students.
 	 * @returns {Promise} Promise that fulfills with request code.
 	 */
-	resetAllSubmissions () {
-
+	resetAllSubmissions() {
 		return this.postToLink('Reset')
 			.then(o => this.refresh(o))
 			.then(() => this.onChange('all'));
 	}
 }
 
-export default decorate(Assignment, {with:[
-	model,
-	mixin(Completable, Publishable, SubmittableIdentity, AssignmentIdentity),
-]});
+export default decorate(Assignment, {
+	with: [
+		model,
+		mixin(
+			Completable,
+			Publishable,
+			SubmittableIdentity,
+			AssignmentIdentity
+		),
+	],
+});

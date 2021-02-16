@@ -1,14 +1,14 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
-import {mixin} from '@nti/lib-decorators';
-import {isNTIID} from '@nti/lib-ntiids';
+import { mixin } from '@nti/lib-decorators';
+import { isNTIID } from '@nti/lib-ntiids';
 
 import { Service, Parser as parse } from '../../constants';
 import Page from '../../data-sources/data-types/Page';
-import {Flaggable} from '../../mixins';
+import { Flaggable } from '../../mixins';
 import Threadable from '../../mixins/Threadable';
 import DiscussionInterface from '../../mixins/DiscussionInterface';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 
 import Highlight from './Highlight';
 
@@ -16,8 +16,9 @@ const logger = Logger.get('models:annotations:Note');
 const UpdatedDiscussionCount = Symbol('Discussion Count');
 
 class Note extends Highlight {
-	static MimeType = COMMON_PREFIX + 'note'
+	static MimeType = COMMON_PREFIX + 'note';
 
+	// prettier-ignore
 	static Fields = {
 		...Highlight.Fields,
 		'body':                   { type: '*[]'      },
@@ -31,20 +32,22 @@ class Note extends Highlight {
 		'Class':                  { type: 'string'   }
 	}
 
-	isNote = true
+	isNote = true;
 
-	get replyCount () {
+	get replyCount() {
 		// Rely on this value, placeholders will have a getter for the ReferencedByCount property.
 		return this.ReferencedByCount;
 	}
 
-	canReply (tryScopes = []) {
-		return !!(this[Service].getCollectionFor(this, null, tryScopes) || {}).href;
+	canReply(tryScopes = []) {
+		return !!(this[Service].getCollectionFor(this, null, tryScopes) || {})
+			.href;
 	}
 
-	postReply (body, tryScopes = []) {
+	postReply(body, tryScopes = []) {
 		let service = this[Service];
-		let target = (service.getCollectionFor(this, null, tryScopes) || {}).href;
+		let target = (service.getCollectionFor(this, null, tryScopes) || {})
+			.href;
 		if (!target) {
 			logger.error('Nowhere to save object: %o', this);
 		}
@@ -54,15 +57,17 @@ class Note extends Highlight {
 		}
 
 		return new Promise(save => {
-
 			let reply = new Note(service, this, {
 				Class: 'Note',
 				MimeType: Note.MimeType,
 				body,
 				ContainerId: this.ContainerId,
-				applicableRange: this.applicableRange && this.applicableRange.getData(),
+				applicableRange:
+					this.applicableRange && this.applicableRange.getData(),
 				inReplyTo: this.getID(),
-				references: (this.references || []).slice().concat(this.getID())
+				references: (this.references || [])
+					.slice()
+					.concat(this.getID()),
 			});
 
 			save(reply);
@@ -75,34 +80,38 @@ class Note extends Highlight {
 			});
 	}
 
-	isDeleted () {
+	isDeleted() {
 		return this.placeholder;
 	}
 
-	getExtraMentions () {
+	getExtraMentions() {
 		return (this.sharedWith ?? [])
 			.filter(x => isNTIID(x))
-			.map(x => ({CanAccessContent: true, User: x}));
+			.map(x => ({ CanAccessContent: true, User: x }));
 	}
 
-	canEditSharing () { return this.replyCount <= 0; }
+	canEditSharing() {
+		return this.replyCount <= 0;
+	}
 
-	canAddDiscussion () { return this.canReply() && !this.isDeleted(); }
-	getDiscussionCount () { return this.replyCount; }
-	updateDiscussionCount (discussionCount) {
+	canAddDiscussion() {
+		return this.canReply() && !this.isDeleted();
+	}
+	getDiscussionCount() {
+		return this.replyCount;
+	}
+	updateDiscussionCount(discussionCount) {
 		this.ReferencedByCount = discussionCount;
 		this.onChange();
 	}
 
-
-	async getDiscussions (params) {
+	async getDiscussions(params) {
 		const replies = await this.getReplies();
 
 		return Page.fromList(replies, params, this[Service], this);
 	}
 
-
-	async addDiscussion (data) {
+	async addDiscussion(data) {
 		let service = this[Service];
 		let href = service.getCollectionFor(this, null, [])?.href;
 
@@ -119,7 +128,7 @@ class Note extends Highlight {
 				applicableRange: this.applicableRange?.getData() ?? null,
 				inReplyTo: this.getID(),
 				references: [...(this.references || []), this.getID()],
-				...data
+				...data,
 			}),
 			this
 		);
@@ -134,7 +143,6 @@ class Note extends Highlight {
 	}
 }
 
-export default decorate(Note, {with: [
-	model,
-	mixin(Threadable, Flaggable, DiscussionInterface),
-]});
+export default decorate(Note, {
+	with: [model, mixin(Threadable, Flaggable, DiscussionInterface)],
+});

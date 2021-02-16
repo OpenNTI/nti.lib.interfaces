@@ -1,29 +1,29 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
 // import {Parser as parse} from '../../../../../constants';
-import {model, COMMON_PREFIX} from '../../../../Registry';
+import { model, COMMON_PREFIX } from '../../../../Registry';
 
 import Base from './Part';
 
 class AggregatedOrderingPart extends Base {
-	static MimeType = COMMON_PREFIX + 'assessment.aggregatedorderingpart'
+	static MimeType = COMMON_PREFIX + 'assessment.aggregatedorderingpart';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Results': { type: 'object[]' },
 	}
 
-	getResults (part) {
+	getResults(part) {
 		const ix = x => part.values.indexOf(x[0]);
 		const byValuesOrder = (a, b) => ix(a) - ix(b);
-		const {Results: results, Total: total} = this;
+		const { Results: results, Total: total } = this;
 		let mapped = [];
 
 		// console.groupCollapsed('Ordering');
 
 		for (let [labelIndex, label] of Object.entries(part.labels)) {
-
-			let mapping = {...results[labelIndex] || {}};
+			let mapping = { ...(results[labelIndex] || {}) };
 
 			for (let valueIndex of Object.keys(mapping)) {
 				let value = part.values[valueIndex];
@@ -31,15 +31,15 @@ class AggregatedOrderingPart extends Base {
 					mapping[value] = {
 						count: mapping[valueIndex],
 						total,
-						get percent () {
+						get percent() {
 							return ((this.count || 0) / total) * 100;
-						}
+						},
 					};
 				}
 				delete mapping[valueIndex];
 			}
 
-			mapped.push({labelIndex, label, matchedToValues: mapping});
+			mapped.push({ labelIndex, label, matchedToValues: mapping });
 			// console.log(label, '-> ', mapping);
 		}
 
@@ -47,13 +47,13 @@ class AggregatedOrderingPart extends Base {
 
 		// console.groupEnd('Ordering');
 		return mapped.map(item => {
-			const remap = {series: [], ...item};
-			const {matchedToValues: map} = item;
+			const remap = { series: [], ...item };
+			const { matchedToValues: map } = item;
 
 			const entries = Object.entries(map).sort(byValuesOrder);
 
 			for (let [label, value] of entries) {
-				remap.series.push({label, ...value});
+				remap.series.push({ label, ...value });
 			}
 
 			return remap;
@@ -61,4 +61,4 @@ class AggregatedOrderingPart extends Base {
 	}
 }
 
-export default decorate(AggregatedOrderingPart, {with:[model]});
+export default decorate(AggregatedOrderingPart, { with: [model] });

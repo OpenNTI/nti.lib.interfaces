@@ -12,34 +12,38 @@ const Canceled = 'canceled';
 const ChangeEvent = 'state-changed';
 
 export default class Task extends EventEmitter {
-	#StartProcess = null
-	#ActiveProcess = null
-	#State = NotStarted
+	#StartProcess = null;
+	#ActiveProcess = null;
+	#State = NotStarted;
 
-	#resolve = null
-	#reject = null
-	#cancel = null
+	#resolve = null;
+	#reject = null;
+	#cancel = null;
 
-	#canRetry = false
+	#canRetry = false;
 
-	#progressCurrent = null
-	#progressTotal = null
+	#progressCurrent = null;
+	#progressTotal = null;
 
-	#name = null
+	#name = null;
 
-	constructor (startProcess) {
+	constructor(startProcess) {
 		super();
 
-		if (!startProcess || typeof startProcess !== 'function') { throw new Error('Task must be provided a method to start a process'); }
+		if (!startProcess || typeof startProcess !== 'function') {
+			throw new Error(
+				'Task must be provided a method to start a process'
+			);
+		}
 
 		this.#StartProcess = startProcess;
 
 		this.#setup();
 	}
 
-	isTask = true
+	isTask = true;
 
-	#setState = (state) => {
+	#setState = state => {
 		this.#State = state;
 
 		if (this.setStateTimeout) {
@@ -50,9 +54,9 @@ export default class Task extends EventEmitter {
 			this.emit(ChangeEvent);
 			delete this.setStateTimeout;
 		});
-	}
+	};
 
-	addChangeListener (fn) {
+	addChangeListener(fn) {
 		this.addListener(ChangeEvent, fn);
 
 		return () => {
@@ -60,22 +64,21 @@ export default class Task extends EventEmitter {
 		};
 	}
 
-	removeChangeListener (fn) {
+	removeChangeListener(fn) {
 		this.removeListener(ChangeEvent, fn);
 	}
-
 
 	#setProgress = (current, total) => {
 		this.#progressCurrent = current;
 		this.#progressTotal = total;
 		this.emit(ChangeEvent);
-	}
+	};
 
 	#clearProgress = () => {
 		this.#progressCurrent = null;
 		this.#progressTotal = null;
 		this.emit(ChangeEvent);
-	}
+	};
 
 	#setup = () => {
 		this.#canRetry = false;
@@ -89,60 +92,115 @@ export default class Task extends EventEmitter {
 		this.#resolve.onceCalled(() => this.#setState(Resolved));
 		this.#reject.onceCalled(() => this.#setState(Rejected));
 		this.#cancel.onceCalled(() => this.#setState(Canceled));
+	};
+
+	get isStarted() {
+		return this.#State !== NotStarted;
 	}
 
-	get isStarted () { return this.#State !== NotStarted; }
-
-	get isRunning () { return this.#State === Running; }
-	get isResolved () { return this.#State === Resolved; }
-	get isRejected () { return this.#State === Rejected; }
-	
-	get isCanceling () { return this.#State === Canceling; }
-	get isCanceled () { return this.#State === Canceled; }
-
-	get isFinished () { return this.#State === Resolved || this.#State === Rejected || this.#State === Canceled; }
-
-	get canStart () { return !this.isStarted && !this.isRunning && !this.isFinished; }
-	get canRetry () { return (this.#State === Rejected || this.#State === Canceled) && this.#canRetry; }
-	get canCancel () { return this.isRunning && this.#ActiveProcess && !!this.#ActiveProcess.cancel && (!this.#ActiveProcess.canCancel || this.#ActiveProcess.canCancel()); }
-
-	get hasProgress () { return this.#progressTotal != null; }
-	get progress () {
-		if (!this.hasProgress) { return null;}
-
-		return {current: this.#progressCurrent || 0, total: this.#progressTotal};
+	get isRunning() {
+		return this.#State === Running;
+	}
+	get isResolved() {
+		return this.#State === Resolved;
+	}
+	get isRejected() {
+		return this.#State === Rejected;
 	}
 
-	get hasName () { return !!this.#name; }
-	get name () { return this.#name; }
+	get isCanceling() {
+		return this.#State === Canceling;
+	}
+	get isCanceled() {
+		return this.#State === Canceled;
+	}
 
-	setName (name) {
+	get isFinished() {
+		return (
+			this.#State === Resolved ||
+			this.#State === Rejected ||
+			this.#State === Canceled
+		);
+	}
+
+	get canStart() {
+		return !this.isStarted && !this.isRunning && !this.isFinished;
+	}
+	get canRetry() {
+		return (
+			(this.#State === Rejected || this.#State === Canceled) &&
+			this.#canRetry
+		);
+	}
+	get canCancel() {
+		return (
+			this.isRunning &&
+			this.#ActiveProcess &&
+			!!this.#ActiveProcess.cancel &&
+			(!this.#ActiveProcess.canCancel || this.#ActiveProcess.canCancel())
+		);
+	}
+
+	get hasProgress() {
+		return this.#progressTotal != null;
+	}
+	get progress() {
+		if (!this.hasProgress) {
+			return null;
+		}
+
+		return {
+			current: this.#progressCurrent || 0,
+			total: this.#progressTotal,
+		};
+	}
+
+	get hasName() {
+		return !!this.#name;
+	}
+	get name() {
+		return this.#name;
+	}
+
+	setName(name) {
 		this.#name = name;
 		this.emit(ChangeEvent);
 	}
 
-	start () {
-		if (this.isStarted) { throw new Error('Cannot start a task that has already been started'); }
-		if (this.isFinished) { throw new Error('Cannot start a task that has already finished'); }
-		if (this.isRunning) { return; }
+	start() {
+		if (this.isStarted) {
+			throw new Error(
+				'Cannot start a task that has already been started'
+			);
+		}
+		if (this.isFinished) {
+			throw new Error('Cannot start a task that has already finished');
+		}
+		if (this.isRunning) {
+			return;
+		}
 
 		const start = this.#StartProcess;
 
 		this.#canRetry = false;
 
 		this.#setState(Running);
-		
+
 		this.#ActiveProcess = start({
 			resolve: this.#resolve,
 			reject: this.#reject,
 			setProgress: this.#setProgress,
-			canRetry: () => this.#canRetry = true
+			canRetry: () => (this.#canRetry = true),
 		});
 	}
 
-	async cancel () {
-		if (!this.isRunning || !this.#ActiveProcess) { throw new Error('Cannot cancel task that is not running'); }
-		if (!this.#ActiveProcess.cancel) { throw new Error('The active process does not support cancel'); }
+	async cancel() {
+		if (!this.isRunning || !this.#ActiveProcess) {
+			throw new Error('Cannot cancel task that is not running');
+		}
+		if (!this.#ActiveProcess.cancel) {
+			throw new Error('The active process does not support cancel');
+		}
 
 		this.#clearProgress();
 		this.#setState(Canceling);
@@ -152,12 +210,19 @@ export default class Task extends EventEmitter {
 		this.#cancel();
 	}
 
-
-	retry () {
-		if (this.running) { throw new Error('Cannot retry task that is currently running'); }
-		if (this.resolved) { throw new Error('Cannot retry task that was successful'); }
-		if (this.notStarted) { throw new Error('Cannot retry task that has not been started');}
-		if (!this.canRetry) { throw new Error('Task is not able to be retried'); }
+	retry() {
+		if (this.running) {
+			throw new Error('Cannot retry task that is currently running');
+		}
+		if (this.resolved) {
+			throw new Error('Cannot retry task that was successful');
+		}
+		if (this.notStarted) {
+			throw new Error('Cannot retry task that has not been started');
+		}
+		if (!this.canRetry) {
+			throw new Error('Task is not able to be retried');
+		}
 
 		this.#setState(NotStarted);
 
@@ -165,8 +230,7 @@ export default class Task extends EventEmitter {
 		this.start();
 	}
 
-
-	then (resolve, reject) {
+	then(resolve, reject) {
 		this.#resolve.onceCalled((...args) => resolve(...args));
 		this.#reject.onceCalled((...args) => reject(...args));
 		this.#cancel.onceCalled(() => {
@@ -181,5 +245,4 @@ export default class Task extends EventEmitter {
 			this.start();
 		}
 	}
-
 }

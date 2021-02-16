@@ -1,7 +1,6 @@
-export function getAPIKey (service) {
-
+export function getAPIKey(service) {
 	return new Promise((done, reject) => {
-		const {googleapi = {}} = service.getConfig().keys || {};
+		const { googleapi = {} } = service.getConfig().keys || {};
 		const site = service.getSiteName();
 
 		let key = googleapi[site] || googleapi.default;

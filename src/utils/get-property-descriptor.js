@@ -1,3 +1,6 @@
-export default function getPropertyDescriptor (scope, property) {
-	return !scope ? null : (Object.getOwnPropertyDescriptor(scope, property) || getPropertyDescriptor(Object.getPrototypeOf(scope), property));
+export default function getPropertyDescriptor(scope, property) {
+	return !scope
+		? null
+		: Object.getOwnPropertyDescriptor(scope, property) ||
+				getPropertyDescriptor(Object.getPrototypeOf(scope), property);
 }

@@ -1,6 +1,9 @@
-export default Object.defineProperties({}, {
-	isSubmittable: {
-		writable: false,
-		value: true
+export default Object.defineProperties(
+	{},
+	{
+		isSubmittable: {
+			writable: false,
+			value: true,
+		},
 	}
-});
+);

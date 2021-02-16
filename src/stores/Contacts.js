@@ -2,13 +2,13 @@ import url from 'url';
 import EventEmitter from 'events';
 
 import Logger from '@nti/util-logger';
-import {decorate, Promises } from '@nti/lib-commons';
+import { decorate, Promises } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 
-import {Service, DELETED} from '../constants';
-import {Mixin as Pendability} from '../mixins/Pendability';
-import {parse, parseListFn} from '../models/Parser';
+import { Service, DELETED } from '../constants';
+import { Mixin as Pendability } from '../mixins/Pendability';
+import { parse, parseListFn } from '../models/Parser';
 // import getLink from '../utils/getlink';
 
 export const MIME_TYPE = 'application/vnd.nextthought.friendslist';
@@ -23,22 +23,25 @@ const ENSURE_CONTACT_GROUP = Symbol();
 
 const CONTACTS_LIST_ID = e => `mycontacts-${e.getID()}`;
 
-const ensureSlash = x => /\/$/.test(x) ? x : `${x}/`;
+const ensureSlash = x => (/\/$/.test(x) ? x : `${x}/`);
 
-function generateID (name, context) {
+function generateID(name, context) {
 	//Dataserver blows chunks if on @@ or @( at the beginning
 	//look for these things and yank them out.  This was happening
 	//when manipulating the list by the object url (say for deletion).
-	name = (name + '').replace(/@@|@\(/ig, '');
-	name = name.replace(/[^0-9A-Z\-@+._]/ig, '');
+	name = (name + '').replace(/@@|@\(/gi, '');
+	name = name.replace(/[^0-9A-Z\-@+._]/gi, '');
 	return name + '-' + context.getID() + '_' + uuid();
 }
 
-
-export function getNewListData (name, isDynamic, MimeType, context, friends = []) {
-
+export function getNewListData(
+	name,
+	isDynamic,
+	MimeType,
+	context,
+	friends = []
+) {
 	let id = generateID(name, context);
-
 
 	if (Array.isArray(name)) {
 		[name, id] = name;
@@ -49,13 +52,11 @@ export function getNewListData (name, isDynamic, MimeType, context, friends = []
 		Username: id,
 		alias: name,
 		friends,
-		IsDynamicSharing: !!isDynamic
+		IsDynamicSharing: !!isDynamic,
 	};
 }
 
-
 class Contacts extends EventEmitter {
-
 	/**
 	 * Contacts constructor
 	 *
@@ -65,14 +66,14 @@ class Contacts extends EventEmitter {
 	 *
 	 * @returns {void}
 	 */
-	constructor (service, entryPoint, context) {
+	constructor(service, entryPoint, context) {
 		super();
 		Object.assign(this, {
 			[Service]: service,
 			[DATA]: [],
 			RESERVED_GROUP_ID: CONTACTS_LIST_ID(context),
 			entryPoint,
-			context
+			context,
 		});
 
 		this.initMixins();
@@ -80,11 +81,17 @@ class Contacts extends EventEmitter {
 		this.onChange = this.onChange.bind(this);
 
 		const parseList = parseListFn(this, service);
-		this.load = uri => service.get(uri).then(o => parseList(Object.values(o.Items || [])));
-		this.get = id => service.get(url.resolve(ensureSlash(entryPoint),id)).then(o => service.getObject(o));
+		this.load = uri =>
+			service.get(uri).then(o => parseList(Object.values(o.Items || [])));
+		this.get = id =>
+			service
+				.get(url.resolve(ensureSlash(entryPoint), id))
+				.then(o => service.getObject(o));
 
 		if (process.browser) {
-			this.on('load', (_, time) => logger.debug('Load: %s %o', time, this));
+			this.on('load', (_, time) =>
+				logger.debug('Load: %s %o', time, this)
+			);
 		}
 
 		this.loading = true;
@@ -92,47 +99,60 @@ class Contacts extends EventEmitter {
 
 		const load = this.load(entryPoint)
 			.then(x => this[DATA].push(...x))
-			.then(()=> this[ENSURE_CONTACT_GROUP]())
+			.then(() => this[ENSURE_CONTACT_GROUP]())
 			.catch(er => {
-				logger.error('%s\n\tContracts Group: %o', er.stack || er.message || 'There was a problem (error message is empty)', er.ContactsGroup || (er.stack ? null : er));
+				logger.error(
+					'%s\n\tContracts Group: %o',
+					er.stack ||
+						er.message ||
+						'There was a problem (error message is empty)',
+					er.ContactsGroup || (er.stack ? null : er)
+				);
 				this.error = true;
 			})
 			.then(() => {
 				this.loading = false;
 				this.loaded = Date.now();
-				this.emit('load', this, `${(this.loaded - start)}ms`);
+				this.emit('load', this, `${this.loaded - start}ms`);
 				this.emit('change', this);
 			});
 
 		this.addToPending(load);
 	}
 
+	[ENSURE_CONTACT_GROUP]() {
+		const { RESERVED_GROUP_ID } = this;
 
-	[ENSURE_CONTACT_GROUP] () {
-		const {RESERVED_GROUP_ID} = this;
+		if (!this.getContactsList()) {
+			const ContactsGroup = getNewListData(
+				['My Contacts', RESERVED_GROUP_ID],
+				false,
+				MIME_TYPE,
+				this.context
+			);
 
-		if(!this.getContactsList()) {
-
-			const ContactsGroup = getNewListData(['My Contacts', RESERVED_GROUP_ID], false, MIME_TYPE, this.context);
-
-			return this[CREATE](ContactsGroup)
-				.catch(e => e.statusCode === 409
-					//409? ok... it was created by another process (or a previous request)...fetch it
-					? this.get(RESERVED_GROUP_ID).then(x => this[DATA].unshift(x))
-					: Promise.reject(Object.assign(e, {ContactsGroup}))
-				);
+			return this[CREATE](ContactsGroup).catch(e =>
+				e.statusCode === 409
+					? //409? ok... it was created by another process (or a previous request)...fetch it
+					  this.get(RESERVED_GROUP_ID).then(x =>
+							this[DATA].unshift(x)
+					  )
+					: Promise.reject(Object.assign(e, { ContactsGroup }))
+			);
 		}
 	}
 
-
-	[CREATE] (data) {
-		return this[Service]
-			.post(this.entryPoint, data)
+	[CREATE](data) {
+		return this[Service].post(this.entryPoint, data)
 			.then(x => parse(this[Service], null, x))
 
-			.then(x => this[DATA].find(i => i.getID() === x.getID())
-				? Promise.reject({statusCode: 409, message: 'Already contains item??'})
-				: (this[DATA].push(x) && x)
+			.then(x =>
+				this[DATA].find(i => i.getID() === x.getID())
+					? Promise.reject({
+							statusCode: 409,
+							message: 'Already contains item??',
+					  })
+					: this[DATA].push(x) && x
 			)
 
 			.then(x => x.on('change', this.onChange))
@@ -140,8 +160,7 @@ class Contacts extends EventEmitter {
 			.then(() => this.emit('change', this));
 	}
 
-
-	[Symbol.iterator] () {
+	[Symbol.iterator]() {
 		const name = x => (x && x.displayName) || '';
 		const users = {};
 
@@ -152,43 +171,43 @@ class Contacts extends EventEmitter {
 			}
 		}
 
-		const snapshot = Object.values(users).sort((a, b) => name(a).localeCompare(name(b)));
-		const {length} = snapshot;
+		const snapshot = Object.values(users).sort((a, b) =>
+			name(a).localeCompare(name(b))
+		);
+		const { length } = snapshot;
 		let index = 0;
 
 		return {
-
-			next () {
+			next() {
 				const done = index >= length;
 				const value = snapshot[index++];
 
 				return { value, done };
-			}
-
+			},
 		};
 	}
 
-
-	createList (name, friends) {
+	createList(name, friends) {
 		// unwrap full user entities to IDs.
-		const userIds = (friends || []).map( (friend) => friend.getID ? friend.getID() : friend );
-		return this[CREATE](getNewListData(name, false, MIME_TYPE, this.context, userIds));
+		const userIds = (friends || []).map(friend =>
+			friend.getID ? friend.getID() : friend
+		);
+		return this[CREATE](
+			getNewListData(name, false, MIME_TYPE, this.context, userIds)
+		);
 	}
 
-
-	getContactsList () {
-		const {RESERVED_GROUP_ID} = this;
+	getContactsList() {
+		const { RESERVED_GROUP_ID } = this;
 		return this[DATA].find(x => x.getID() === RESERVED_GROUP_ID);
 	}
 
-
-	getLists () {
-		const {RESERVED_GROUP_ID} = this;
+	getLists() {
+		const { RESERVED_GROUP_ID } = this;
 		return this[DATA].filter(x => x.getID() !== RESERVED_GROUP_ID);
 	}
 
-
-	onChange (who, what) {
+	onChange(who, what) {
 		const data = this[DATA];
 		if (what === DELETED) {
 			const index = data.findIndex(x => x.getID() === who.getID());
@@ -196,7 +215,7 @@ class Contacts extends EventEmitter {
 				return;
 			}
 
-			const item = data.splice(index, 1)[0];//remove it;
+			const item = data.splice(index, 1)[0]; //remove it;
 
 			item.removeListener('change', this.onChange);
 			logger.debug('Removed deleted list: %o', item);
@@ -205,7 +224,6 @@ class Contacts extends EventEmitter {
 		this.emit('change', this);
 	}
 
-
 	/**
 	 * Determins if the entity is in any of your Lists in the Contacts store.
 	 *
@@ -213,20 +231,22 @@ class Contacts extends EventEmitter {
 	 *
 	 * @returns {boolean} true if the store has any reference to the entity.
 	 */
-	contains (entity) {
+	contains(entity) {
 		let found = false;
 
 		for (let list of this[DATA]) {
 			found = list.contains(entity);
-			if (found) { break; }
+			if (found) {
+				break;
+			}
 		}
 
 		return found;
 	}
 
-
-	addContact (entity, toLists = []) {
-		const getList = x => typeof x === 'object' ? x : this[DATA].find(l => l.getID() === x);
+	addContact(entity, toLists = []) {
+		const getList = x =>
+			typeof x === 'object' ? x : this[DATA].find(l => l.getID() === x);
 
 		const pending = [];
 		const lists = [...toLists, this.RESERVED_GROUP_ID];
@@ -241,19 +261,18 @@ class Contacts extends EventEmitter {
 			pending.push(list);
 		}
 
-		return Promise.all(
-			pending.map(list => list.add(entity))
-		);
+		return Promise.all(pending.map(list => list.add(entity)));
 	}
 
-
-	removeContact (entity) {
+	removeContact(entity) {
 		const pending = [];
 		const lists = [];
 		const undo = () => this.addContact(entity, lists);
 
-		for(let list of this[DATA]) {
-			if (list.isGroup) { continue; }
+		for (let list of this[DATA]) {
+			if (list.isGroup) {
+				continue;
+			}
 
 			if (list.contains(entity)) {
 				pending.push(list.remove(entity));
@@ -261,27 +280,24 @@ class Contacts extends EventEmitter {
 			}
 		}
 
-		return Promise.all(pending)
-			.then(() => ({lists, undo}));
+		return Promise.all(pending).then(() => ({ lists, undo }));
 	}
 
-
-	entityMatchesQuery (entity, query) {
-		const {displayName, realname} = entity;
+	entityMatchesQuery(entity, query) {
+		const { displayName, realname } = entity;
 		query = query && new RegExp(query, 'i');
 		return !query || query.test(displayName) || query.test(realname);
 	}
 
-
-	async search (query, options) {
+	async search(query, options) {
 		const {
 			allowAnyEntityType = false,
 			allowAppUser = false,
-			allowContacts = true
+			allowContacts = true,
 		} = options || {};
 
 		const service = this[Service];
-		const {context: appUser} = this;
+		const { context: appUser } = this;
 		const parseList = parseListFn(this, service);
 		const fetch = service.getUserSearchURL(query);
 
@@ -290,21 +306,24 @@ class Contacts extends EventEmitter {
 		}
 
 		const isUser = x => x.isUser;
-		const notInContacts = user => !this.contains(user) && user.getID() !== appUser.getID();
-		const byDisplayName = (a, b) => a.displayName.localeCompare(b.displayName);
-		const resultFilter = x => (
-			(allowAnyEntityType || isUser(x))
-			&& (allowAppUser || !x.isAppUser)
-			&& (allowContacts || notInContacts(x))
-		);
-		const token = this.activeSearch = {query};
+		const notInContacts = user =>
+			!this.contains(user) && user.getID() !== appUser.getID();
+		const byDisplayName = (a, b) =>
+			a.displayName.localeCompare(b.displayName);
+		const resultFilter = x =>
+			(allowAnyEntityType || isUser(x)) &&
+			(allowAppUser || !x.isAppUser) &&
+			(allowContacts || notInContacts(x));
+		const token = (this.activeSearch = { query });
 
 		const prevReq = this[ACTIVE_SEARCH_REQUEST];
 		if (prevReq && prevReq.abort) {
 			prevReq.abort();
 		}
 
-		const req = this[ACTIVE_SEARCH_REQUEST] = Promises.buffer(300, () => service.get(fetch));
+		const req = (this[ACTIVE_SEARCH_REQUEST] = Promises.buffer(300, () =>
+			service.get(fetch)
+		));
 
 		try {
 			const data = await req;
@@ -320,8 +339,7 @@ class Contacts extends EventEmitter {
 			}
 
 			return list.filter(resultFilter).sort(byDisplayName);
-		}
-		finally {
+		} finally {
 			if (token === this.activeSearch) {
 				delete this[ACTIVE_SEARCH_REQUEST];
 			}
@@ -329,4 +347,4 @@ class Contacts extends EventEmitter {
 	}
 }
 
-export default decorate(Contacts, {with:[mixin(Pendability)]});
+export default decorate(Contacts, { with: [mixin(Pendability)] });

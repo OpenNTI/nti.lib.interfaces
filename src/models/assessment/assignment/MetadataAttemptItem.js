@@ -1,11 +1,13 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
 import Base from '../../Base';
 import { model, COMMON_PREFIX } from '../../Registry';
 
 class MetadataAttemptItem extends Base {
-	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmentattemptmetadataitem';
+	static MimeType =
+		COMMON_PREFIX + 'assessment.userscourseassignmentattemptmetadataitem';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'StartTime': 	{ type: 'date' },
@@ -13,15 +15,17 @@ class MetadataAttemptItem extends Base {
 		'Duration': 	{ type: 'any'  },
 	}
 
-	getDuration () {
-		return this.Duration && (this.Duration * 1000);
+	getDuration() {
+		return this.Duration && this.Duration * 1000;
 	}
 
-	getHistoryItem () {
-		if (!this.hasLink('HistoryItem')) { return Promise.resolve(null); }
+	getHistoryItem() {
+		if (!this.hasLink('HistoryItem')) {
+			return Promise.resolve(null);
+		}
 
 		return this.fetchLinkParsed('HistoryItem');
 	}
 }
 
-export default decorate(MetadataAttemptItem, {with:[model]});
+export default decorate(MetadataAttemptItem, { with: [model] });

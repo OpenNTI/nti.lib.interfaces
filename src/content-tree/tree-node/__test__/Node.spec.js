@@ -1,10 +1,9 @@
 /* eslint-env jest */
 import Node from '../Node';
 
-
-function createObject (name, children) {
+function createObject(name, children) {
 	const obj = {
-		name
+		name,
 	};
 
 	if (children) {
@@ -15,7 +14,7 @@ function createObject (name, children) {
 	return obj;
 }
 
-function createObjectResolver (object) {
+function createObjectResolver(object) {
 	return jest.fn(() => object);
 }
 
@@ -86,7 +85,6 @@ describe('ContentTree Node', () => {
 		});
 	});
 
-
 	describe('getChildNodes', () => {
 		test('item does NOT define getContentTreeChildrenSource', async () => {
 			const node = new Node(createObject('Item'));
@@ -106,7 +104,9 @@ describe('ContentTree Node', () => {
 
 			const children = await node.getChildNodes();
 
-			expect(object.getContentTreeChildrenSource).toHaveBeenCalledWith(parent);
+			expect(object.getContentTreeChildrenSource).toHaveBeenCalledWith(
+				parent
+			);
 
 			expect(children.length).toBe(1);
 
@@ -117,14 +117,13 @@ describe('ContentTree Node', () => {
 
 			expect(item).toBe(subObject);
 			expect(childParent).toBe(node);
-
 		});
 
 		test('item getContentTreeChildrenSource returns a list of sub items', async () => {
 			const subObjects = [
 				createObject('Sub Item 1'),
 				createObject('Sub Item 2'),
-				createObject('Sub Item 3')
+				createObject('Sub Item 3'),
 			];
 			const object = createObject('Item', subObjects);
 
@@ -135,7 +134,9 @@ describe('ContentTree Node', () => {
 
 			const children = await node.getChildNodes();
 
-			expect(object.getContentTreeChildrenSource).toHaveBeenCalledWith(parent);
+			expect(object.getContentTreeChildrenSource).toHaveBeenCalledWith(
+				parent
+			);
 
 			expect(children.length).toBe(3);
 
@@ -144,10 +145,10 @@ describe('ContentTree Node', () => {
 			}
 
 			const items = await Promise.all(
-				children.map(async (child) => await child.getItem())
+				children.map(async child => await child.getItem())
 			);
 			const parents = await Promise.all(
-				children.map(async (child) => await child.getParentNode())
+				children.map(async child => await child.getParentNode())
 			);
 
 			for (let i = 0; i < items.length; i++) {
@@ -182,7 +183,7 @@ describe('ContentTree Node', () => {
 
 			const toCheck = [
 				node.filter(() => {}),
-				node.filterChildren(() => {})
+				node.filterChildren(() => {}),
 			];
 
 			for (let check of toCheck) {
@@ -215,24 +216,24 @@ describe('ContentTree Node', () => {
 		const buildObjects = () => {
 			const notFilteredObject = createObject('SubItem', [
 				createObject(filterName),
-				createObject('SubSubItem')
+				createObject('SubSubItem'),
 			]);
 
 			const object = createObject('Item', [
 				notFilteredObject,
 				createObject(filterName, [
-					createObject('Should be filtered because of parent')
-				])
+					createObject('Should be filtered because of parent'),
+				]),
 			]);
 
 			return {
 				object,
-				notFilteredObject
+				notFilteredObject,
 			};
 		};
 
 		test('filterChildren filters only immediate children and not grandchildren', async () => {
-			const {object, notFilteredObject} = buildObjects();
+			const { object, notFilteredObject } = buildObjects();
 
 			const node = new Node(object);
 
@@ -247,11 +248,10 @@ describe('ContentTree Node', () => {
 
 			expect(filteredObject).toBe(notFilteredObject);
 			expect(filteredChildren.length).toBe(2);
-
 		});
 
 		test('filter filters children and grand children', async () => {
-			const {object, notFilteredObject} = buildObjects();
+			const { object, notFilteredObject } = buildObjects();
 
 			const node = new Node(object);
 
@@ -290,19 +290,17 @@ describe('ContentTree Node', () => {
 		test('all children of the flattened node are they in the breadth first order', async () => {
 			const object = createObject('Parent', [
 				createObject('node 1', [
-					createObject('node 1-1', [
-						createObject('node 1-1-1')
-					]),
-					createObject('node 1-2')
+					createObject('node 1-1', [createObject('node 1-1-1')]),
+					createObject('node 1-2'),
 				]),
 				createObject('node 2'),
 				createObject('node 3', [
 					createObject('node 3-1'),
 					createObject('node 3-2', [
 						createObject('node 3-2-1'),
-						createObject('node 3-2-2')
-					])
-				])
+						createObject('node 3-2-2'),
+					]),
+				]),
 			]);
 
 			const node = new Node(object);
@@ -329,12 +327,10 @@ describe('ContentTree Node', () => {
 				'node 3-1',
 				'node 3-2',
 				'node 3-2-1',
-				'node 3-2-2'
+				'node 3-2-2',
 			]);
-
 		});
 	});
-
 
 	describe('find methods (find, findChild)', () => {
 		test('throws if not given a function', () => {
@@ -360,9 +356,9 @@ describe('ContentTree Node', () => {
 		});
 
 		test('return an empty node if no node found', async () => {
-			const node = new Node(createObject('Item', [
-				createObject('SubItem')
-			]));
+			const node = new Node(
+				createObject('Item', [createObject('SubItem')])
+			);
 
 			const child = node.findChild(() => false);
 			const found = node.find(() => false);
@@ -380,12 +376,10 @@ describe('ContentTree Node', () => {
 		test('findChild finds first children that matches and ignores grandchildren', async () => {
 			const find = createObject(findName);
 			const object = createObject('Item', [
-				createObject('Child', [
-					createObject(findName)
-				]),
+				createObject('Child', [createObject(findName)]),
 				createObject('Child2'),
 				find,
-				createObject(findName)
+				createObject(findName),
 			]);
 
 			const node = new Node(object);
@@ -397,17 +391,13 @@ describe('ContentTree Node', () => {
 			expect(item).toBe(find);
 		});
 
-
 		test('find finds grandchildren', async () => {
 			const find = createObject(findName);
 			const object = createObject('Item', [
 				createObject('Child'),
 				createObject('Child', [
-					createObject('sub-child', [
-						find,
-						createObject(findName)
-					])
-				])
+					createObject('sub-child', [find, createObject(findName)]),
+				]),
 			]);
 
 			const node = new Node(object);
@@ -418,34 +408,27 @@ describe('ContentTree Node', () => {
 			expect(item).toBe(find);
 		});
 
-
 		test('find searches breadth first', async () => {
 			const find = createObject(findName);
 			const object = createObject('Item', [
-				createObject('Child', [
-					createObject(findName)
-				]),
-				find
+				createObject('Child', [createObject(findName)]),
+				find,
 			]);
 
-			const node =  new Node(object);
+			const node = new Node(object);
 
 			const found = node.find(findPredicate);
 			const item = await found.getItem();
 
 			expect(item).toBe(find);
 		});
-
 	});
 
 	describe('findSibling methods (findNextSibling, findPrevSibling)', () => {
 		const getTree = async () => {
 			const first = createObject('first-child');
 			const second = createObject('second-child');
-			const parent = new Node(createObject('parent', [
-				first,
-				second
-			]));
+			const parent = new Node(createObject('parent', [first, second]));
 
 			const children = await parent.getChildNodes();
 
@@ -453,13 +436,13 @@ describe('ContentTree Node', () => {
 				first: children[0],
 				second: children[1],
 				firstObject: first,
-				secondObject: second
+				secondObject: second,
 			};
 		};
 
 		describe('findNextSibling', () => {
-			test('returns null if last in parent\'s children', async () => {
-				const {second} = await getTree();
+			test("returns null if last in parent's children", async () => {
+				const { second } = await getTree();
 
 				const next = await second.findNextSibling();
 
@@ -467,7 +450,7 @@ describe('ContentTree Node', () => {
 			});
 
 			test('returns next sibling', async () => {
-				const {first, secondObject} = await getTree();
+				const { first, secondObject } = await getTree();
 
 				const next = await first.findNextSibling();
 				const item = await next.getItem();
@@ -477,8 +460,8 @@ describe('ContentTree Node', () => {
 		});
 
 		describe('findPrevSibling', () => {
-			test('returns null if last in parent\'s children', async () => {
-				const {first} = await getTree();
+			test("returns null if last in parent's children", async () => {
+				const { first } = await getTree();
 
 				const prev = await first.findPrevSibling();
 
@@ -486,7 +469,7 @@ describe('ContentTree Node', () => {
 			});
 
 			test('returns prev sibling', async () => {
-				const {firstObject, second} = await getTree();
+				const { firstObject, second } = await getTree();
 
 				const prev = await second.findPrevSibling();
 				const item = await prev.getItem();

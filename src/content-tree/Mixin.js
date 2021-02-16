@@ -1,7 +1,7 @@
-import {Node} from './tree-node';
+import { Node } from './tree-node';
 
 export default {
-	getContentTree () {
+	getContentTree() {
 		return new Node(this);
-	}
+	},
 };

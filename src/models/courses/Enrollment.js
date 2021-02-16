@@ -1,26 +1,24 @@
-import {decorate,forward} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate, forward } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
-import {
-	SCOPED_COURSE_INSTANCE,
-	Service,
-} from '../../constants';
-import {model, COMMON_PREFIX} from '../Registry';
+import { SCOPED_COURSE_INSTANCE, Service } from '../../constants';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 import CourseIdentity from './mixins/CourseIdentity';
 import EnrollmentIdentity from './mixins/EnrollmentIdentity';
 
 const emptyFunction = () => {};
-const EMPTY_CATALOG_ENTRY = {getAuthorLine: emptyFunction};
+const EMPTY_CATALOG_ENTRY = { getAuthorLine: emptyFunction };
 const ACKNOWLEDGE = 'AcknowledgeCompletion';
 
 class Enrollment extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseenrollment',
 		COMMON_PREFIX + 'courseware.courseinstanceenrollment',
-	]
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'CatalogEntry':           { type: 'model'   },
@@ -36,38 +34,39 @@ class Enrollment extends Base {
 	/** @private */
 	CourseInstance = null;
 
-
-	get title () {
+	get title() {
 		return this.CatalogEntry.Title;
 	}
 
-
-	get ProviderUniqueID () {
+	get ProviderUniqueID() {
 		return this.CatalogEntry.ProviderUniqueID;
 	}
 
-	get isScorm () {
-		const courseInstanceLink = this.Links && this.Links.filter(x => x.rel === 'CourseInstance')[0];
+	get isScorm() {
+		const courseInstanceLink =
+			this.Links && this.Links.filter(x => x.rel === 'CourseInstance')[0];
 
-		return courseInstanceLink && courseInstanceLink.type && courseInstanceLink.type.match(/scormcourseinstance/);
+		return (
+			courseInstanceLink &&
+			courseInstanceLink.type &&
+			courseInstanceLink.type.match(/scormcourseinstance/)
+		);
 	}
 
-	get hasCompletionAcknowledgmentRequest () {
+	get hasCompletionAcknowledgmentRequest() {
 		return this.hasLink(ACKNOWLEDGE);
 	}
 
-
-	async acknowledgeCourseCompletion () {
+	async acknowledgeCourseCompletion() {
 		await this.postToLink(ACKNOWLEDGE);
 		await this.refresh();
 	}
 
-	get isForAppUser () {
+	get isForAppUser() {
 		return this[Service].getAppUsername() === this.Username;
 	}
 
-
-	getPresentationProperties () {
+	getPresentationProperties() {
 		//Called by library view... The version in Course Instance is called on by everything else.
 		let cce = this.CatalogEntry || EMPTY_CATALOG_ENTRY;
 
@@ -78,28 +77,23 @@ class Enrollment extends Base {
 		};
 	}
 
-
-	drop () {
+	drop() {
 		return this[Service].delete(this.href);
 	}
 
-
-	getCourseID () {
+	getCourseID() {
 		return this.getLinkProperty('CourseInstance', 'ntiid');
 	}
 
-
-	getStatus () {
+	getStatus() {
 		return this.LegacyEnrollmentStatus;
 	}
 
-
-	hasCompletedItems () {
+	hasCompletedItems() {
 		return this.hasLink('CompletedItems');
 	}
 
-
-	async getCompletedItems () {
+	async getCompletedItems() {
 		try {
 			const completedItems = await this.fetchLink('CompletedItems');
 
@@ -109,8 +103,7 @@ class Enrollment extends Base {
 		}
 	}
 
-
-	async updateCourseProgress () {
+	async updateCourseProgress() {
 		try {
 			const courseProgress = await this.fetchLinkParsed('Progress');
 
@@ -126,27 +119,31 @@ class Enrollment extends Base {
 	 * @param {Instance} instance Course Instance
 	 * @returns {void}
 	 */
-	setCourseInstance (instance) {
+	setCourseInstance(instance) {
 		this.CourseInstance = instance;
 	}
 
-
-	async getScopedCourseInstance () {
+	async getScopedCourseInstance() {
 		const course = await this.fetchLinkParsed('CourseInstance');
 		course[SCOPED_COURSE_INSTANCE] = true;
 		return course;
 	}
 }
 
-export default decorate(Enrollment, {with:[
-	model,
-	mixin(
-		CourseIdentity,
-		EnrollmentIdentity,
-		forward([
-			'getEndDate',
-			'getStartDate'
-		//From:
-		], 'CatalogEntry')
-	),
-]});
+export default decorate(Enrollment, {
+	with: [
+		model,
+		mixin(
+			CourseIdentity,
+			EnrollmentIdentity,
+			forward(
+				[
+					'getEndDate',
+					'getStartDate',
+					//From:
+				],
+				'CatalogEntry'
+			)
+		),
+	],
+});

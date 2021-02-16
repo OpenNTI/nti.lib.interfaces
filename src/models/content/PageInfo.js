@@ -1,7 +1,7 @@
 import path from 'path';
 
-import {decorate,Markup, URL} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate, Markup, URL } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 import UserDataStore from '../../stores/UserData';
 import {
@@ -9,21 +9,23 @@ import {
 	REL_USER_GENERATED_DATA,
 	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
 	Service,
-	Parser as parse
+	Parser as parse,
 } from '../../constants';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 import Pages from './mixins/Pages';
 
-const NOT_FOUND = {statusCode: 404, message: 'Not Found'};
+const NOT_FOUND = { statusCode: 404, message: 'Not Found' };
 
 const UserData = Symbol('UserData');
-const ContentPackageMimeTypes = 'application/vnd.nextthought.renderablecontentpackage';
+const ContentPackageMimeTypes =
+	'application/vnd.nextthought.renderablecontentpackage';
 
 class PageInfo extends Base {
-	static MimeType = COMMON_PREFIX + 'pageinfo'
+	static MimeType = COMMON_PREFIX + 'pageinfo';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'AssessmentItems':     { type: 'model[]', defaultValue: [] },
@@ -35,32 +37,35 @@ class PageInfo extends Base {
 		'RootURL':             { type: 'string'                    }
 	}
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 
 		if (this.AssessmentItems) {
-			this.AssessmentItems = setupAssessmentItems(this.AssessmentItems, this);
+			this.AssessmentItems = setupAssessmentItems(
+				this.AssessmentItems,
+				this
+			);
 		}
 	}
 
-
-	async getContentPackage () {
+	async getContentPackage() {
 		const url = this.getLink('package');
 
-		if (!url) { throw new Error('No Link'); }
+		if (!url) {
+			throw new Error('No Link');
+		}
 
 		const raw = await this[Service].get({
 			url,
 			headers: {
-				accept: ContentPackageMimeTypes
-			}
+				accept: ContentPackageMimeTypes,
+			},
 		});
 
 		return this[parse](raw);
 	}
 
-
-	getContentRoot () {
+	getContentRoot() {
 		let url = URL.parse(this.getLink('content'));
 
 		url.pathname = path.dirname(url.pathname) + '/';
@@ -74,40 +79,37 @@ class PageInfo extends Base {
 		return url.format();
 	}
 
-
-	getContent () {
+	getContent() {
 		let root = this.getContentRoot();
 
-		return this.fetchLink('content')
-			.then(html => Markup.rebaseReferences(html, root));
+		return this.fetchLink('content').then(html =>
+			Markup.rebaseReferences(html, root)
+		);
 	}
 
-
-	getResource (url) {
+	getResource(url) {
 		return this[Service].get(url);
 	}
 
-
-	getPackageID () {
-		function bestGuess () {
+	getPackageID() {
+		function bestGuess() {
 			throw new Error('PageInfo does not declare the package ID.');
 		}
 
 		return this.ContentPackageNTIID || bestGuess(this);
 	}
 
-
-	getSharingPreferences () {
-		const {sharingPreference: pref} = this;
+	getSharingPreferences() {
+		const { sharingPreference: pref } = this;
 		return pref
-			? pref.waitForPending().then(()=> pref)
+			? pref.waitForPending().then(() => pref)
 			: Promise.resolve(void 0);
 	}
 
-
-	getAssessmentQuestion (questionId) {
-		function find (found, item) {
-			return found || (
+	getAssessmentQuestion(questionId) {
+		function find(found, item) {
+			return (
+				found ||
 				//Find in Assignments/QuestionSets
 				(item.getQuestion && item.getQuestion(questionId)) ||
 				//or find the top-level question:
@@ -117,30 +119,28 @@ class PageInfo extends Base {
 		return (this.AssessmentItems || []).reduce(find, null);
 	}
 
-
-	getUserDataLastOfType (mimeType) {
+	getUserDataLastOfType(mimeType) {
 		const link = this.getLink(REL_USER_GENERATED_DATA);
 
 		const o = {
 			accept: mimeType,
-			batchStart: 0, batchSize: 1,
+			batchStart: 0,
+			batchSize: 1,
 			sortOn: 'lastModified',
 			sortOrder: 'descending',
-			filter: 'TopLevel'
+			filter: 'TopLevel',
 		};
 
 		if (!link) {
 			return Promise.reject(NO_LINK);
 		}
 
-
 		return this.getResource(URL.appendQueryParams(link, o))
-			.then(objects=> objects.Items[0] || Promise.reject(NOT_FOUND))
+			.then(objects => objects.Items[0] || Promise.reject(NOT_FOUND))
 			.then(this[parse].bind(this));
 	}
 
-
-	getUserData () {
+	getUserData() {
 		let store = this[UserData];
 
 		if (!store) {
@@ -153,24 +153,22 @@ class PageInfo extends Base {
 			this.addToPending(store.waitForPending());
 		}
 
-		return Promise.resolve(store);//in the future, this may need to be async...
+		return Promise.resolve(store); //in the future, this may need to be async...
 	}
 
-
-	resolveContentURL (url) {
-		const {RootURL} = this;
+	resolveContentURL(url) {
+		const { RootURL } = this;
 		const root = RootURL && URL.parse(RootURL);
 
 		return Promise.resolve(root ? root.resolve(url) : url);
 	}
 
-	insertNewDiscussion (discussion) {
+	insertNewDiscussion(discussion) {
 		if (this[UserData]) {
 			this[UserData].insertItem(discussion);
 		}
 	}
 }
-
 
 // AssessmentItem Setup functions -- defined here to stay out of the way.
 
@@ -184,35 +182,34 @@ class PageInfo extends Base {
  * @param {Object} b right hand value
  * @returns {number} the comparison
  */
-function assessmentItemOrder (a, b) {
-	let order = assessmentItemOrder.order = (assessmentItemOrder.order || {
+function assessmentItemOrder(a, b) {
+	let order = (assessmentItemOrder.order = assessmentItemOrder.order || {
 		'application/vnd.nextthought.assessment.assignment': 0,
 		'application/vnd.nextthought.naquestionset': 1,
 		'application/vnd.nextthought.naquestion': 2,
 		'application/vnd.nextthought.nasurvey': 3,
-		'application/vnd.nextthought.napoll': 4
+		'application/vnd.nextthought.napoll': 4,
 	});
 
 	a = order[a.MimeType] || 5;
 	b = order[b.MimeType] || 5;
 
-	return a === b ? 0 : (a < b ? -1 : 1);
+	return a === b ? 0 : a < b ? -1 : 1;
 }
 
-
-function setupAssessmentItems (items, pageInfo) {
+function setupAssessmentItems(items, pageInfo) {
 	items = items.filter(Boolean).sort(assessmentItemOrder);
 
-	const sets = items.filter(o=> o && o.containsId);
+	const sets = items.filter(o => o && o.containsId);
 
 	//Remove questions & questionsets that are embedded within Assignments and QuestionSets...leave only top-level items.
-	return items.filter(o =>
-		!sets.reduce((found, set) =>
-			found || set.containsId(o.getID()), null)
+	return items.filter(
+		o =>
+			!sets.reduce(
+				(found, set) => found || set.containsId(o.getID()),
+				null
+			)
 	);
 }
 
-export default decorate(PageInfo, {with:[
-	model,
-	mixin(Pages),
-]});
+export default decorate(PageInfo, { with: [model, mixin(Pages)] });

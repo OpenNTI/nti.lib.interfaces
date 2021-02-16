@@ -1,5 +1,7 @@
-export default async function nodeMatches (node, predicate) {
-	if (!predicate) { return false;}
+export default async function nodeMatches(node, predicate) {
+	if (!predicate) {
+		return false;
+	}
 
 	const item = await node.getItem();
 

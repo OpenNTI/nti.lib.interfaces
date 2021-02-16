@@ -1,23 +1,23 @@
-import {ntiidEquals} from '@nti/lib-ntiids';
+import { ntiidEquals } from '@nti/lib-ntiids';
 import Logger from '@nti/util-logger';
 
-import {DELETED, Parser} from '../constants';
-import {thread, CHILDREN, PARENT} from '../utils/UserDataThreader';
+import { DELETED, Parser } from '../constants';
+import { thread, CHILDREN, PARENT } from '../utils/UserDataThreader';
 
 const logger = Logger.get('models:mixins:Threadable');
 
 export default {
 	isThreadable: true,
 
-	initMixin () {
-		this.on('change', (_, what)=> {
+	initMixin() {
+		this.on('change', (_, what) => {
 			if (what === DELETED) {
 				this.refresh({
 					NTIID: this.getID(),
 					Creator: '',
 					body: ['This message has been deleted.'],
 					phantom: void 0,
-					placeholder: true
+					placeholder: true,
 				}).then(() => this.onChange());
 
 				if (this.isLeaf() && !this.isDiscussion) {
@@ -28,7 +28,9 @@ export default {
 					if (parentRefs && parent) {
 						const ix = parentRefs.indexOf(this);
 						if (ix < 0) {
-							logger.warn('Could not find reference in parent children list');
+							logger.warn(
+								'Could not find reference in parent children list'
+							);
 							return;
 						}
 
@@ -39,7 +41,11 @@ export default {
 								const count = parent.ReferencedByCount;
 
 								delete parent.ReferencedByCount;
-								Object.defineProperty(parent, 'ReferencedByCount', {value: count - 1});
+								Object.defineProperty(
+									parent,
+									'ReferencedByCount',
+									{ value: count - 1 }
+								);
 							} catch (e) {
 								logger.warn(e.stack || e.message || e);
 							}
@@ -55,8 +61,7 @@ export default {
 		});
 	},
 
-
-	toParentPlaceHolder (threadableReply = this) {
+	toParentPlaceHolder(threadableReply = this) {
 		let result = {};
 
 		let refs = (threadableReply.references || []).slice();
@@ -71,7 +76,16 @@ export default {
 
 		//We need to bring these values up onto the current object otherwise when we save it,
 		//they will not be enumerated since they would not be "Owned"
-		let {style, applicableRange, sharedWith, selectedText, title, Class, ContainerId, MimeType} = threadableReply;
+		let {
+			style,
+			applicableRange,
+			sharedWith,
+			selectedText,
+			title,
+			Class,
+			ContainerId,
+			MimeType,
+		} = threadableReply;
 
 		Object.assign(result, {
 			ReferencedByCount: 0,
@@ -91,30 +105,32 @@ export default {
 			selectedText,
 			sharedWith,
 			style,
-			title
+			title,
 		});
 
 		result = this[Parser](result);
 
 		delete result.ReferencedByCount;
 		Object.defineProperty(result, 'ReferencedByCount', {
-			get () {
+			get() {
 				let children = this[CHILDREN];
 				if (!Array.isArray(children)) {
 					return 0;
 				}
 
-				return children.length + children.reduce((sum, x) => sum + x.ReferencedByCount, 0);
-			}
+				return (
+					children.length +
+					children.reduce((sum, x) => sum + x.ReferencedByCount, 0)
+				);
+			},
 		});
 
 		return result;
 	},
 
-
-	isLeaf () {
+	isLeaf() {
 		const impliedLeaf = !this.hasLink('replies') || !this.ReferencedByCount;
-		const leafLike = (x => (!x || !x.length && !x.then))(this[CHILDREN]);
+		const leafLike = (x => !x || (!x.length && !x.then))(this[CHILDREN]);
 
 		if (impliedLeaf && !leafLike) {
 			//wut?
@@ -123,13 +139,11 @@ export default {
 		return leafLike;
 	},
 
-
-	isReply () {
+	isReply() {
 		return this.inReplyTo != null;
 	},
 
-
-	isTopLevel () {
+	isTopLevel() {
 		let hasParent = !!this[PARENT];
 		let shouldHaveParent = this.isReply();
 
@@ -140,9 +154,8 @@ export default {
 		return !shouldHaveParent && !hasParent;
 	},
 
-
-	getReply (itemId) {
-		function find (found, item) {
+	getReply(itemId) {
+		function find(found, item) {
 			if (found) {
 				return found;
 			}
@@ -157,26 +170,29 @@ export default {
 			}
 		}
 
-		function search (list) {
+		function search(list) {
 			//perform the search:
 			const item = list.reduce(find, null);
 			//get the list of children promises. (if we have an hit, short-circuit)
-			const pendingChildren = item ? [] : list.map(x => x[CHILDREN]).filter(x => (x || {}).then);
+			const pendingChildren = item
+				? []
+				: list.map(x => x[CHILDREN]).filter(x => (x || {}).then);
 
 			//if our search didn't yield anything, and we have pending children... wait on them, and then search them.
-			if (!item &&  pendingChildren.length > 0) {
-
-				return Promise.all(pendingChildren) //These will resolve to lists... so
-				//flatten the list-of-lists to a single list.
-					.then(x => x.reduce((l, a) => l.concat(a), []))
-				//then start the search over with the new children
-					.then(get);
+			if (!item && pendingChildren.length > 0) {
+				return (
+					Promise.all(pendingChildren) //These will resolve to lists... so
+						//flatten the list-of-lists to a single list.
+						.then(x => x.reduce((l, a) => l.concat(a), []))
+						//then start the search over with the new children
+						.then(get)
+				);
 			}
 
 			return item;
 		}
 
-		function get (waitOn) {
+		function get(waitOn) {
 			//the list waitOn can contain items and/or Promises...
 			//passing it through "Promise.all" normalizes it for us.
 			//And waits for all the actual promises to resolve.
@@ -185,49 +201,52 @@ export default {
 
 		return this.getReplies()
 			.then(x => get(x))
-			.then(x => !x ? Promise.reject(`Not Found: "${itemId}"`) : x);
+			.then(x => (!x ? Promise.reject(`Not Found: "${itemId}"`) : x));
 	},
 
-
-	getRecentReplies (count = 1) {
+	getRecentReplies(count = 1) {
 		let shouldRequest = this.hasLink('replies');
-		let request = shouldRequest ?
-			this.fetchLinkParsed('replies', {
-				sortOn: 'createdTime',
-				sortOrder: 'descending',
-				batchSize: count
-			}) :
-			Promise.resolve();
+		let request = shouldRequest
+			? this.fetchLinkParsed('replies', {
+					sortOn: 'createdTime',
+					sortOrder: 'descending',
+					batchSize: count,
+			  })
+			: Promise.resolve();
 
 		// reverse to date-ascending order
 		return request.then(results => (results || []).reverse());
 	},
 
-	getReplies () {
+	getReplies() {
 		let children = this[CHILDREN];
 
 		if (this.placeholder) {
 			//If we're a placeholder, we need to aggregate the replies from our children.
 			//We want to wait on the children's getReplies, but we want to fulfill with OUR direct children.
 			if (!Array.isArray(children) && children) {
-				if (children.then) { return children; }
+				if (children.then) {
+					return children;
+				}
 
 				children = [children];
 			}
-			return Promise.all(children || [])
-				.then(c => Promise.all(  c.map(  x => x.getReplies().then(() => x)  )  ));
+			return Promise.all(children || []).then(c =>
+				Promise.all(c.map(x => x.getReplies().then(() => x)))
+			);
 		}
 
 		if (children) {
 			return Promise.resolve(children);
 		}
 
-		let shouldRequest = this.hasLink('replies') && this.ReferencedByCount > 0;
+		let shouldRequest =
+			this.hasLink('replies') && this.ReferencedByCount > 0;
 
 		//do not make a request that we know will probably fail or result in nothing.
-		let request = shouldRequest ?
-			this.fetchLinkParsed('replies') :
-			Promise.resolve();
+		let request = shouldRequest
+			? this.fetchLinkParsed('replies')
+			: Promise.resolve();
 
 		return (this[CHILDREN] = request
 			.then(x => {
@@ -257,24 +276,24 @@ export default {
 				return this[CHILDREN];
 			})
 
-			.catch(x => { //catch any error, and clear the CHILDREN key.
+			.catch(x => {
+				//catch any error, and clear the CHILDREN key.
 
 				delete this[CHILDREN];
-				return Promise.reject(x);//continue the error
-			})
-		);
+				return Promise.reject(x); //continue the error
+			}));
 	},
 
-	appendChild (newChild, doNotUpdateCount) {
+	appendChild(newChild, doNotUpdateCount) {
 		return addChild.call(this, newChild, doNotUpdateCount, 'append');
 	},
 
-	prependChild (newChild, doNotUpdateCount) {
+	prependChild(newChild, doNotUpdateCount) {
 		return addChild.call(this, newChild, doNotUpdateCount, 'prepend');
-	}
+	},
 };
 
-function addChild (newChild, doNotUpdateCount, mode = 'append') {
+function addChild(newChild, doNotUpdateCount, mode = 'append') {
 	if (!this?.isThreadable) {
 		throw new Error('Invalid call context');
 	}
@@ -287,5 +306,6 @@ function addChild (newChild, doNotUpdateCount, mode = 'append') {
 
 	let children = this[CHILDREN] || [];
 
-	this[CHILDREN] = mode === 'append' ? [...children, newChild] : [newChild, ...children];
+	this[CHILDREN] =
+		mode === 'append' ? [...children, newChild] : [newChild, ...children];
 }

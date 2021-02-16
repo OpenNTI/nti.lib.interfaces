@@ -22,13 +22,12 @@
  * @param  {Object} parent  Object of forums in the parent if there are any
  * @returns {Object}        The binned forums
  */
-export default function binDiscussions (section, parent) {
+export default function binDiscussions(section, parent) {
 	let bins = {};
 
-	function addTo (key, group) {
-
+	function addTo(key, group) {
 		let items = (group && group.Items) || [];
-		for(let item of items) {
+		for (let item of items) {
 			let bin = item.getBin();
 			if (!bins[bin]) {
 				bins[bin] = {};
@@ -36,7 +35,7 @@ export default function binDiscussions (section, parent) {
 
 			bin = bins[bin];
 			if (!bin[key]) {
-				bin[key] = {id: group.NTIID, forums: []};
+				bin[key] = { id: group.NTIID, forums: [] };
 			}
 
 			if (bin[key].id !== group.NTIID) {

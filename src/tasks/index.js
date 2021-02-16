@@ -1,6 +1,6 @@
 import Task from './Task';
 
-export function createTask (start) {
+export function createTask(start) {
 	return new Task(start);
 }
 

@@ -1,16 +1,16 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 import CatalogEntryFactory from './CatalogEntryFactory';
 
-
 const EnrollmentOptions = Symbol('EnrollmentOptions');
 
 class CourseCatalogEntry extends Base {
-	static MimeType = COMMON_PREFIX + 'courses.catalogentry'
+	static MimeType = COMMON_PREFIX + 'courses.catalogentry';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'DCCreator':                            { type: 'string[]', name: 'creators'        },
@@ -46,14 +46,14 @@ class CourseCatalogEntry extends Base {
 		'AwardsCertificate':                    { type: 'boolean'                           }
 	}
 
-	static getFactory (service) {
+	static getFactory(service) {
 		return CatalogEntryFactory.from(service);
 	}
 
-	isCourse = true
-	isCourseCatalogEntry = true
+	isCourse = true;
+	isCourseCatalogEntry = true;
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent.isEnrollment ? parent : null, data);
 
 		if (!this.ContentPackages && this.ContentPackageNTIID) {
@@ -61,58 +61,63 @@ class CourseCatalogEntry extends Base {
 		}
 	}
 
+	get isPublic() {
+		return !this.IsHidden;
+	}
 
-	get isPublic () { return !this.IsHidden; }
+	get author() {
+		return (this.creators || []).join(', ');
+	}
 
-
-	get author () { return (this.creators || []).join(', '); }
-
-
-	getPresentationProperties () {
+	getPresentationProperties() {
 		return {
 			author: this.getAuthorLine(),
 			title: this.Title,
-			label: this.ProviderUniqueID
+			label: this.ProviderUniqueID,
 		};
 	}
 
-
-	getEnrollmentOptions () {return this[EnrollmentOptions]; }
-
-
-	getAuthorLine () {
-		let taRe = (/Teaching Assistant/i),
-			instructors = this.Instructors;
-
-		let nonAssistants = (instructors || [])
-			.filter(n=>!taRe.test(n.JobTitle));
-
-		let assistants = (instructors || [])
-			.filter(n=>taRe.test(n.JobTitle));
-
-		return nonAssistants.concat(assistants).map(n=>n.Name).join(', ');
+	getEnrollmentOptions() {
+		return this[EnrollmentOptions];
 	}
 
+	getAuthorLine() {
+		let taRe = /Teaching Assistant/i,
+			instructors = this.Instructors;
 
-	getCatalogFamily () {
-		const {CatalogFamilies} = this;
+		let nonAssistants = (instructors || []).filter(
+			n => !taRe.test(n.JobTitle)
+		);
+
+		let assistants = (instructors || []).filter(n => taRe.test(n.JobTitle));
+
+		return nonAssistants
+			.concat(assistants)
+			.map(n => n.Name)
+			.join(', ');
+	}
+
+	getCatalogFamily() {
+		const { CatalogFamilies } = this;
 
 		return CatalogFamilies && CatalogFamilies.getPrimaryFamily();
 	}
 
-
-	isInFamily (id) {
+	isInFamily(id) {
 		return this.CatalogFamilies && this.CatalogFamilies.containsFamily(id);
 	}
 
+	inSameFamily(catalogEntry) {
+		const { CatalogFamilies } = this;
 
-	inSameFamily (catalogEntry) {
-		const {CatalogFamilies} = this;
+		if (!CatalogFamilies) {
+			return false;
+		}
 
-		if (!CatalogFamilies) { return false; }
-
-		return CatalogFamilies.hasIntersectionWith(catalogEntry.CatalogFamilies);
+		return CatalogFamilies.hasIntersectionWith(
+			catalogEntry.CatalogFamilies
+		);
 	}
 }
 
-export default decorate(CourseCatalogEntry, {with:[model]});
+export default decorate(CourseCatalogEntry, { with: [model] });

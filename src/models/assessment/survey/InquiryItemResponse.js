@@ -1,27 +1,27 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 
 class InquiryItemResponse extends Base {
-	static MimeType = COMMON_PREFIX + 'assessment.userscourseinquiryitemresponse'
+	static MimeType =
+		COMMON_PREFIX + 'assessment.userscourseinquiryitemresponse';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Aggregated': { type: 'model' },
 		'Submission': { type: 'model'  },
 	}
 
-
-	getQuestions () {
+	getQuestions() {
 		let submission = this.Submission;
 		return !submission ? [] : submission.getQuestions();
 	}
 
-
-	isSubmitted () {
+	isSubmitted() {
 		return !!this.Submission || this.Aggregated;
 	}
 }
 
-export default decorate(InquiryItemResponse, {with:[model]});
+export default decorate(InquiryItemResponse, { with: [model] });

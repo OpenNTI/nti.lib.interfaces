@@ -1,12 +1,13 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 
 import EnrollmentOption from './EnrollmentOption';
 
 class EnrollmentOption5Minute extends EnrollmentOption {
-	static MimeType = COMMON_PREFIX + 'courseware.fiveminuteenrollmentoption'
+	static MimeType = COMMON_PREFIX + 'courseware.fiveminuteenrollmentoption';
 
+	// prettier-ignore
 	static Fields = {
 		...EnrollmentOption.Fields,
 		'EnrollCutOffDate':      { type: 'date',                                   },
@@ -19,7 +20,7 @@ class EnrollmentOption5Minute extends EnrollmentOption {
 		'RefundCutOffDate':      { type: 'date',                                   },
 	}
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 
 		if (this.available && this.getEnrollCutOffDate() < Date.now()) {
@@ -27,8 +28,8 @@ class EnrollmentOption5Minute extends EnrollmentOption {
 		}
 	}
 
-	getEnrollCutOffDate () {} //implemented by the date Field type
-	getRefundCutOffDate () {} //implemented by the date Field type
+	getEnrollCutOffDate() {} //implemented by the date Field type
+	getRefundCutOffDate() {} //implemented by the date Field type
 }
 
-export default decorate(EnrollmentOption5Minute, {with:[model]});
+export default decorate(EnrollmentOption5Minute, { with: [model] });

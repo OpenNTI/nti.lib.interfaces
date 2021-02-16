@@ -1,15 +1,13 @@
 import Base from '../Base';
-import {
-	Service
-} from '../../constants';
+import { Service } from '../../constants';
 
 const getNodeId = node => node.getContentId();
-const buildRef = node => node && { ntiid: getNodeId(node), title: node.title, ref: node.ref };
+const buildRef = node =>
+	node && { ntiid: getNodeId(node), title: node.title, ref: node.ref };
 const suppressed = node => node && node.ref;
 
 export default class OutlineNodeBackedPageSource extends Base {
-
-	constructor (node, root) {
+	constructor(node, root) {
 		super(node[Service], node);
 
 		this.root = root;
@@ -18,11 +16,15 @@ export default class OutlineNodeBackedPageSource extends Base {
 		this.pagesInRange = root.getFlattenedList().filter(suppressed);
 	}
 
-
-	getPagesAround (pageId) {
+	getPagesAround(pageId) {
 		const nodes = this.pagesInRange;
-		const index = nodes.reduce((found, node, ix) =>
-			(typeof found !== 'number' && getNodeId(node) === pageId) ? ix : found, null);
+		const index = nodes.reduce(
+			(found, node, ix) =>
+				typeof found !== 'number' && getNodeId(node) === pageId
+					? ix
+					: found,
+			null
+		);
 
 		let next = nodes[index + 1];
 		let prev = nodes[index - 1];
@@ -31,8 +33,7 @@ export default class OutlineNodeBackedPageSource extends Base {
 			total: nodes.length,
 			index: index,
 			next: buildRef(next),
-			prev: buildRef(prev)
+			prev: buildRef(prev),
 		};
 	}
-
 }

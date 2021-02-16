@@ -3,14 +3,16 @@ import BaseDataSource from './BaseDataSource';
 const PAGES = Symbol('Pages');
 
 export default class PagedDataSource extends BaseDataSource {
-	static dataSourceType = PAGES
+	static dataSourceType = PAGES;
 
 	/**
 	 * Throw an error if load is called on a PagedDataSource
 	 *
 	 * @returns {Void} no return
 	 */
-	load () { throw new Error('Cannot call load on a PagedDataSource'); }
+	load() {
+		throw new Error('Cannot call load on a PagedDataSource');
+	}
 
 	/**
 	 * Load the page for the given ID and params
@@ -19,10 +21,12 @@ export default class PagedDataSource extends BaseDataSource {
 	 * @param  {Object}          params the params to load the page with
 	 * @returns {Promise}        		fulfills/rejects with loading the page
 	 */
-	async loadPage (pageID, params) {
+	async loadPage(pageID, params) {
 		const handler = this.getHandler(params);
 
-		const resp =  await (handler && handler.loadPage ? handler.loadPage(pageID, params) : this.requestPage(pageID, params));
+		const resp = await (handler && handler.loadPage
+			? handler.loadPage(pageID, params)
+			: this.requestPage(pageID, params));
 
 		return resp.waitForPending ? resp.waitForPending() : resp;
 	}
@@ -34,10 +38,12 @@ export default class PagedDataSource extends BaseDataSource {
 	 * @param  {Object} params params to load aroudn with
 	 * @returns {Promise}       fullfills/rejects with load around
 	 */
-	async loadAround (around, params) {
+	async loadAround(around, params) {
 		const handler = this.getHandler(params);
 
-		const resp = await (handler && handler.loadAround ? handler.loadAround(around, params) : this.requestAround(around, params));
+		const resp = await (handler && handler.loadAround
+			? handler.loadAround(around, params)
+			: this.requestAround(around, params));
 
 		return resp.waitForPending ? resp.waitForPending() : resp;
 	}
@@ -50,11 +56,11 @@ export default class PagedDataSource extends BaseDataSource {
 	 * @param  {Object}          params the params to request the page with
 	 * @returns {Promise}        		fulfills/rejects with the request for the page
 	 */
-	requestPage (pageID, params) {
+	requestPage(pageID, params) {
 		throw new Error('requestPage must be implemented by the subclass');
 	}
 
-	requestAround (around, params) {
+	requestAround(around, params) {
 		throw new Error('requestAround must be implemented by the sub class');
 	}
 }

@@ -6,9 +6,9 @@ import PagedDataSource from '../../data-sources/PagedDataSource';
 import PagedBatch from '../../data-sources/data-types/Page';
 
 export default class BundleSearchDataSource extends PagedDataSource {
-	async requestPage (page, params) {
+	async requestPage(page, params) {
 		const batchSize = params.batchSize || 10;
-		const {term, ...others} = params;
+		const { term, ...others } = params;
 
 		const rootPackage = this.parent.ContentPackages[0];
 
@@ -20,16 +20,22 @@ export default class BundleSearchDataSource extends PagedDataSource {
 			...others,
 			batchStart: page * batchSize,
 			batchSize,
-			sortOn: 'relevance'
+			sortOn: 'relevance',
 		};
 
-		const href = path.join(this.service.getUserUnifiedSearchURL(), encodeURIComponent(rootPackage.NTIID), encodeURIComponent(term));
+		const href = path.join(
+			this.service.getUserUnifiedSearchURL(),
+			encodeURIComponent(rootPackage.NTIID),
+			encodeURIComponent(term)
+		);
 
-		const contents = await this.service.get(URL.appendQueryParams(href, requestParams));
+		const contents = await this.service.get(
+			URL.appendQueryParams(href, requestParams)
+		);
 
 		return new PagedBatch(this.service, this.parent, {
 			PageSize: batchSize,
-			...contents
+			...contents,
 		});
 	}
 }

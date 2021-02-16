@@ -1,7 +1,7 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {Service} from '../../constants';
-import {model, COMMON_PREFIX} from '../Registry';
+import { Service } from '../../constants';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 const POLL_INTERVAL = 3000;
@@ -14,7 +14,7 @@ const SUCCESS = 'Success';
 const PENDING = 'Pending';
 const FAILED = 'Failed';
 
-function getIntervalTimeout (interval) {
+function getIntervalTimeout(interval) {
 	if (interval <= 5) {
 		return POLL_INTERVAL;
 	} else if (interval <= 15) {
@@ -25,64 +25,60 @@ function getIntervalTimeout (interval) {
 }
 
 class ContentPackageRenderJob extends Base {
-	static MimeType = COMMON_PREFIX + 'content.packagerenderjob'
+	static MimeType = COMMON_PREFIX + 'content.packagerenderjob';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'JobId':     { type: 'string'  },
 		'State':     { type: 'string'  },
 	}
 
-
-	getID () {
+	getID() {
 		return this.JobId;
 	}
 
-
-	get isSuccess () {
+	get isSuccess() {
 		return this.State === SUCCESS;
 	}
 
-
-	get isPending () {
+	get isPending() {
 		return this.State === PENDING;
 	}
 
-
-	get isFailed () {
+	get isFailed() {
 		return this.State === FAILED;
 	}
 
-
-	get isFinished () {
+	get isFinished() {
 		return this.isSuccess || this.isFailed;
 	}
 
-
-	startMonitor () {
+	startMonitor() {
 		const wasRunning = this.running;
 		this.running = true;
 
 		if (!wasRunning) {
 			this[ON_INTERVAL]();
 		}
-
 	}
 
-
-	stopMonitor () {
+	stopMonitor() {
 		delete this.running;
 		clearTimeout(this[POLL_TIMEOUT]);
 	}
 
-
-	[ON_INTERVAL] (interval = 0) {
-		if (!this.running) { return; }
+	[ON_INTERVAL](interval = 0) {
+		if (!this.running) {
+			return;
+		}
 
 		clearTimeout(this[POLL_TIMEOUT]);
 
 		this[POLL_TIMEOUT] = setTimeout(() => {
-			if (this[ACTIVE_POLL]) { return; }
+			if (this[ACTIVE_POLL]) {
+				return;
+			}
 
 			this[ACTIVE_POLL] = this.fetchLink('QueryRenderJob')
 				.then(newJob => {
@@ -90,18 +86,17 @@ class ContentPackageRenderJob extends Base {
 
 					delete this[ACTIVE_POLL];
 
-					this.refresh(newJob)
-						.then(() => {
-							if (changed) {
-								this.onChange();
-							}
+					this.refresh(newJob).then(() => {
+						if (changed) {
+							this.onChange();
+						}
 
-							if (!this.isFinished) {
-								this[ON_INTERVAL](interval + 1);
-							} else {
-								this[ON_FINISH]();
-							}
-						});
+						if (!this.isFinished) {
+							this[ON_INTERVAL](interval + 1);
+						} else {
+							this[ON_FINISH]();
+						}
+					});
 				})
 				.catch(() => {
 					delete this[ACTIVE_POLL];
@@ -110,17 +105,17 @@ class ContentPackageRenderJob extends Base {
 		}, getIntervalTimeout(interval));
 	}
 
-
-	[ON_FINISH] () {
+	[ON_FINISH]() {
 		const service = this[Service];
 		const parent = this.parent();
 
 		if (parent) {
-			service.getObject(parent.NTIID, {type: parent.MimeType})
-				.then((obj) => parent.refresh(obj.toJSON()))
+			service
+				.getObject(parent.NTIID, { type: parent.MimeType })
+				.then(obj => parent.refresh(obj.toJSON()))
 				.then(() => parent.onChange());
 		}
 	}
 }
 
-export default decorate(ContentPackageRenderJob, {with:[model]});
+export default decorate(ContentPackageRenderJob, { with: [model] });

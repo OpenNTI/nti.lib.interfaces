@@ -1,23 +1,25 @@
 import PagedDataSource from '../../../data-sources/PagedDataSource';
 import PagedBatch from '../../../data-sources/data-types/Page';
 
-
 export default class CourseContentByLessonDataSource extends PagedDataSource {
-	async loadOutline () {
-		const {parent, loadedOutline} = this;
+	async loadOutline() {
+		const { parent, loadedOutline } = this;
 
-		if (loadedOutline) { return loadedOutline; }
+		if (loadedOutline) {
+			return loadedOutline;
+		}
 
 		const outline = await parent.getOutline();
 		const flattened = outline.getFlattenedList();
 
-		this.loadedOutline = flattened.filter(node => node.hasLink('overview-content'));
+		this.loadedOutline = flattened.filter(node =>
+			node.hasLink('overview-content')
+		);
 
 		return this.loadedOutline;
 	}
 
-
-	async requestPage (pageID, params) {
+	async requestPage(pageID, params) {
 		const outline = await this.loadOutline();
 		const total = outline.length;
 		const node = outline[pageID - 1];
@@ -28,11 +30,15 @@ export default class CourseContentByLessonDataSource extends PagedDataSource {
 
 		const contents = await node.getContent({
 			decorateProgress: false,
-			decorateSummary: params.decorateSummary != null ? params.decorateSummary : true,
-			requiredOnly: params.requiredOnly
+			decorateSummary:
+				params.decorateSummary != null ? params.decorateSummary : true,
+			requiredOnly: params.requiredOnly,
 		});
 
-		const page = new PagedBatch(this.service, this.parent, {TotalItemCount: total, PageSize: 1});
+		const page = new PagedBatch(this.service, this.parent, {
+			TotalItemCount: total,
+			PageSize: 1,
+		});
 
 		page.Items = [contents];
 

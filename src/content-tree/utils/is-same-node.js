@@ -1,7 +1,11 @@
-export default async function isSameNode (nodeA, nodeB) {
-	if ((!nodeA && nodeB) || (nodeA && !nodeB)) { return false; }
+export default async function isSameNode(nodeA, nodeB) {
+	if ((!nodeA && nodeB) || (nodeA && !nodeB)) {
+		return false;
+	}
 
-	if (nodeA === nodeB) { return true; }
+	if (nodeA === nodeB) {
+		return true;
+	}
 
 	const itemA = await nodeA.getItem();
 	const itemB = await nodeB.getItem();

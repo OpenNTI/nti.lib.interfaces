@@ -1,5 +1,5 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 import { model, COMMON_PREFIX } from '../Registry';
 import Completable from '../../mixins/Completable';
@@ -13,8 +13,9 @@ import Base from '../Base';
 	NTIID: data.ntiid
 */
 class LTIExternalToolAsset extends Base {
-	static MimeType = COMMON_PREFIX + 'ltiexternaltoolasset'
+	static MimeType = COMMON_PREFIX + 'ltiexternaltoolasset';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		byline: 		{ type: 'string' },
@@ -25,12 +26,11 @@ class LTIExternalToolAsset extends Base {
 		'launch_url': 	{ type: 'string' },
 	};
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 	}
 
-
-	resolveIcon (bundle) {
+	resolveIcon(bundle) {
 		const { icon } = this;
 
 		if (icon) {
@@ -43,7 +43,6 @@ class LTIExternalToolAsset extends Base {
 	}
 }
 
-export default decorate(LTIExternalToolAsset, {with:[
-	model,
-	mixin(Completable),
-]});
+export default decorate(LTIExternalToolAsset, {
+	with: [model, mixin(Completable)],
+});

@@ -1,6 +1,6 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 /*
@@ -18,8 +18,9 @@ target :"tag:nextthought.com,2011-10:NTI-NTIRelatedWorkRef-global_admin_alpha1_4
 */
 
 class RelatedWorkReferencePointer extends Base {
-	static MimeType = COMMON_PREFIX + 'relatedworkrefpointer'
+	static MimeType = COMMON_PREFIX + 'relatedworkrefpointer';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Containers': { type: 'string[]' },
@@ -27,4 +28,4 @@ class RelatedWorkReferencePointer extends Base {
 	}
 }
 
-export default decorate(RelatedWorkReferencePointer, {with:[model]});
+export default decorate(RelatedWorkReferencePointer, { with: [model] });

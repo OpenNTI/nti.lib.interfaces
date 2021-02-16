@@ -1,9 +1,9 @@
-export default function resolveChildrenItems (children) {
+export default function resolveChildrenItems(children) {
 	return Promise.all(
-		children.map(async (node) => {
+		children.map(async node => {
 			const item = await node.getItem();
 
-			return {node, item};
+			return { node, item };
 		})
 	);
 }

@@ -1,7 +1,7 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
-import {getPrivate} from '../utils/private';
+import { getPrivate } from '../utils/private';
 import Paged from '../mixins/Paged';
 
 import Stream from './Stream';
@@ -9,22 +9,21 @@ import Stream from './Stream';
 //@private
 const FILTERS = {
 	forcredit: 'ForCredit',
-	open: 'Open'
+	open: 'Open',
 };
 
 const OPPOSITE_FILTER = {
 	ForCredit: 'open',
-	Open: 'forcredit'
+	Open: 'forcredit',
 };
 
 class AssignmentSummary extends Stream {
-
-	constructor (...args) {
+	constructor(...args) {
 		super(...args);
 		this.initMixins();
 	}
 
-	get parseList () {
+	get parseList() {
 		const p = getPrivate(this);
 
 		if (!p.parseListFn) {
@@ -36,16 +35,17 @@ class AssignmentSummary extends Stream {
 		return p.parseListFn;
 	}
 
-
-	applyBatch (input) {
+	applyBatch(input) {
 		const data = getPrivate(this);
 		super.applyBatch(input);
 
-		const {filter} = this.options;
-		const {EnrollmentScope, ItemCount} = input;
+		const { filter } = this.options;
+		const { EnrollmentScope, ItemCount } = input;
 
 		if (!filter && ItemCount === 0) {
-			return this.retryBatch(() => this.setFilter(OPPOSITE_FILTER[EnrollmentScope]));
+			return this.retryBatch(() =>
+				this.setFilter(OPPOSITE_FILTER[EnrollmentScope])
+			);
 		}
 
 		if (EnrollmentScope && filter !== EnrollmentScope) {
@@ -60,9 +60,12 @@ class AssignmentSummary extends Stream {
 		data.total = input.TotalItemCount;
 	}
 
-
-	get total () { return getPrivate(this).total || this.length; }
-	getTotal () { return this.total; } //expected by Paged mixin
+	get total() {
+		return getPrivate(this).total || this.length;
+	}
+	getTotal() {
+		return this.total;
+	} //expected by Paged mixin
 
 	/**
 	 * Clears the store, and reloads with a given filter.
@@ -70,19 +73,22 @@ class AssignmentSummary extends Stream {
 	 * @param {string} filter Either: 'open', 'forCredit' or null to clear the filter.
 	 * @returns {void}
 	 */
-	setFilter (filter) {
-
+	setFilter(filter) {
 		Object.assign(this.options, {
 			batchStart: 0,
-			filter: FILTERS[(filter || '').toLowerCase()]
+			filter: FILTERS[(filter || '').toLowerCase()],
 		});
 
 		delete this.next;
 		this.loadPage(1);
 	}
 
-	get filter () { return this.options.filter; }
-	getFilter () { return this.filter; }
+	get filter() {
+		return this.options.filter;
+	}
+	getFilter() {
+		return this.filter;
+	}
 }
 
-export default decorate(AssignmentSummary, {with:[mixin(Paged)]});
+export default decorate(AssignmentSummary, { with: [mixin(Paged)] });

@@ -1,13 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class EnrollmentOptionContainer extends Base {
-	static MimeType = [
-		COMMON_PREFIX + 'courseware.enrollmentoptioncontainer',
-	]
+	static MimeType = [COMMON_PREFIX + 'courseware.enrollmentoptioncontainer'];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'AvailableEnrollmentOptions': { type: 'model[]' },
@@ -16,4 +15,4 @@ class EnrollmentOptionContainer extends Base {
 	}
 }
 
-export default decorate(EnrollmentOptionContainer, {with:[model]});
+export default decorate(EnrollmentOptionContainer, { with: [model] });

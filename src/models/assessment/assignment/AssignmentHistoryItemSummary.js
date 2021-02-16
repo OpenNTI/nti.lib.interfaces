@@ -1,14 +1,15 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 
 class AssignmentHistoryItemSummary extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.assignmenthistoryitemsummary',
 		COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitemsummary',
-	]
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Grade':                 { type: 'model',  name: 'grade'         },
@@ -18,10 +19,9 @@ class AssignmentHistoryItemSummary extends Base {
 		'MetadataAttemptItem':   { type: 'model'                         }
 	}
 
-
-	get completed () {
+	get completed() {
 		return this.getSubmissionCreatedTime();
 	}
 }
 
-export default decorate(AssignmentHistoryItemSummary, {with:[model]});
+export default decorate(AssignmentHistoryItemSummary, { with: [model] });

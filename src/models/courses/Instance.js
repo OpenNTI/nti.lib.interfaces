@@ -1,22 +1,18 @@
 import Url from 'url';
 import path from 'path';
 
-import {decorate,wait} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate, wait } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
-import {
-	MEDIA_BY_OUTLINE_NODE,
-	NO_LINK,
-	Service
-} from '../../constants';
-import {Mixin as ContentTreeMixin} from '../../content-tree';
+import { MEDIA_BY_OUTLINE_NODE, NO_LINK, Service } from '../../constants';
+import { Mixin as ContentTreeMixin } from '../../content-tree';
 import HasEvaluations from '../../mixins/HasEvaluations';
 import AssessmentCollectionStudentView from '../assessment/assignment/CollectionStudentView';
 import AssessmentCollectionInstructorView from '../assessment/assignment/CollectionInstructorView';
 import Roster from '../../stores/CourseRoster';
 import MediaIndex from '../media/MediaIndex';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 import Forum from '../forums/Forum';
 
@@ -29,7 +25,7 @@ import Outline from './Outline';
 import Enrollment from './Enrollment';
 
 const logger = Logger.get('models:courses:Instance');
-const NOT_DEFINED = {reason: 'Not defined'};
+const NOT_DEFINED = { reason: 'Not defined' };
 
 const MEDIA_INDEX = Symbol('Media Index');
 
@@ -46,15 +42,16 @@ const KnownActivitySorts = [
 	'createdTime',
 	'Last Modified',
 	'ReferencedByCount',
-	'LikeCount'
+	'LikeCount',
 ];
 
 class Instance extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseinstance',
 		COMMON_PREFIX + 'courses.legacycommunitybasedcourseinstance',
-	]
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'ContentPackageBundle':              { type: 'model'                                       },
@@ -72,11 +69,11 @@ class Instance extends Base {
 		'CompletionPolicy':                  { type: 'model'                                       }
 	}
 
-	get isLegacy () {
+	get isLegacy() {
 		return /legacy/i.test(this.MimeType);
 	}
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 
 		let bundle = this.ContentPackageBundle;
@@ -87,44 +84,39 @@ class Instance extends Base {
 		this.addToPending(resolvePreferredAccess(service, this, parent));
 	}
 
-
-	get title () {
-		const {title} = this.getPresentationProperties() || {};
+	get title() {
+		const { title } = this.getPresentationProperties() || {};
 		return title;
 	}
 
-
-	get ProviderUniqueID () {
+	get ProviderUniqueID() {
 		return (this.CatalogEntry || {}).ProviderUniqueID;
 	}
 
-
-	get root () {
+	get root() {
 		//This needs to go away. fast.
 		//We're using this to prefix the RELATIVE hrefs in the Video Transcript data.
 		//We're doing something similar for Content in Questions (assets are relative coming back)
 		//All content given to the client in JSON form should have full hrefs. No Relative hrefs.
-		return this.ContentPackageBundle && this.ContentPackageBundle.packageRoot;
+		return (
+			this.ContentPackageBundle && this.ContentPackageBundle.packageRoot
+		);
 		//Furthermore this breaks as soon as we have bundles with more than one package.
 	}
 
-
-	get isAdministrative () {
-		return ((this.CatalogEntry || {})).IsAdmin || false;
+	get isAdministrative() {
+		return (this.CatalogEntry || {}).IsAdmin || false;
 	}
 
-
-	get canManageEnrollment () {
+	get canManageEnrollment() {
 		return this.hasLink('ManageRoster');
 	}
 
-
-	get canEmailEnrollees () {
+	get canEmailEnrollees() {
 		return this.hasLink('Mail');
 	}
 
-
-	delete (rel = 'delete') {
+	delete(rel = 'delete') {
 		//cleanup the potential cache
 		const cache = this[Service].getDataCache();
 		const url = this.getLink('CourseCatalogEntry');
@@ -135,30 +127,31 @@ class Instance extends Base {
 		return super.delete(rel);
 	}
 
-
-	refreshPreferredAccess () {
-		return this.fetchLinkParsed('UserCoursePreferredAccess').then(enrollment => {
-			this.PreferredAccess = enrollment;
-			return this;
-		});
+	refreshPreferredAccess() {
+		return this.fetchLinkParsed('UserCoursePreferredAccess').then(
+			enrollment => {
+				this.PreferredAccess = enrollment;
+				return this;
+			}
+		);
 	}
 
-
-	containsPackage (id) {
+	containsPackage(id) {
 		//Are course NTIIDs being passed around like packageIds? If so, this will catch it.
 		const bundle = this.ContentPackageBundle;
 		return (bundle && bundle.containsPackage(id)) || this.getID() === id;
 	}
 
-
-	getPackage (id) {
+	getPackage(id) {
 		const bundle = this.ContentPackageBundle;
 		return bundle && bundle.getPackage(id);
 	}
 
-
-	getPresentationProperties () {
-		let cce = (this.PreferredAccess && this.PreferredAccess.getPresentationProperties()) || {};
+	getPresentationProperties() {
+		let cce =
+			(this.PreferredAccess &&
+				this.PreferredAccess.getPresentationProperties()) ||
+			{};
 		let bundle = this.ContentPackageBundle;
 
 		return {
@@ -168,25 +161,19 @@ class Instance extends Base {
 		};
 	}
 
-
-	getRoster () {
+	getRoster() {
 		const link = this.getLink('CourseEnrollmentRoster');
 		if (!link) {
 			return null;
 		}
 
-		return new Roster(
-			this[Service],
-			this,
-			link,
-			{
-				batchSize: 50,
-				batchStart: 0
-			}
-		);
+		return new Roster(this[Service], this, link, {
+			batchSize: 50,
+			batchStart: 0,
+		});
 	}
 
-	async getRosterSummary () {
+	async getRosterSummary() {
 		if (!this.hasLink('RosterSummary')) {
 			return null;
 		}
@@ -194,27 +181,28 @@ class Instance extends Base {
 		return this.fetchLink('RosterSummary');
 	}
 
-	get canInvite () {
+	get canInvite() {
 		return this.hasLink('SendCourseInvitations');
 	}
 
-	async preflightInvitationsCsv (csv) {
+	async preflightInvitationsCsv(csv) {
 		const formData = new FormData();
 		formData.append('csv', csv);
 		return this.postToLink('CheckCourseInvitationsCSV', formData);
 	}
 
-	async sendInvitations (emails, message) {
-		const Items = (emails || []).map(email => ({email}));
+	async sendInvitations(emails, message) {
+		const Items = (emails || []).map(email => ({ email }));
 
 		return this.postToLink('SendCourseInvitations', {
 			Items,
 			message,
-			MimeType: 'application/vnd.nextthought.courses.usercourseinvitations'
+			MimeType:
+				'application/vnd.nextthought.courses.usercourseinvitations',
 		});
 	}
 
-	getActivity () {
+	getActivity() {
 		if (!this.hasLink('CourseRecursiveStreamByBucket')) {
 			return null;
 		}
@@ -228,25 +216,23 @@ class Instance extends Base {
 				NonEmptyBucketCount: 2,
 				BucketSize: 50,
 				//the server is expecting seconds
-				Oldest: Math.round(courseStart.getTime() / 1000)
+				Oldest: Math.round(courseStart.getTime() / 1000),
 			}),
 			this.getOutline(),
 			this.getAssignments()
 		);
 	}
 
-
-	getResources () {
+	getResources() {
 		return this.fetchLinkParsed('resources');
 	}
 
 	//Should only show assignments if there is an AssignmentsByOutlineNode link
-	shouldShowAssignments () {
+	shouldShowAssignments() {
 		return !!this.getLink('AssignmentsByOutlineNode');
 	}
 
-
-	async createAsset (data) {
+	async createAsset(data) {
 		if (!this.hasLink('assets')) {
 			throw new Error('No Assets Link');
 		}
@@ -260,22 +246,22 @@ class Instance extends Base {
 		return asset;
 	}
 
-
-	getAssets (type) {
+	getAssets(type) {
 		if (Array.isArray(type)) {
 			[type] = type;
 		}
 		return this.fetchLinkParsed('assets', type ? { accept: type } : {});
 	}
 
-
-	async getAssignments () {
+	async getAssignments() {
 		const LOADING = Symbol.for('GetAssignmentsRequest');
 		const REFRESH = Symbol.for('RefreshAssignments');
 		const service = this[Service];
 		const parent = this.parent();
-		const getLink = rel => (parent && parent.getLink && parent.getLink(rel)) || this.getLink(rel);
-		const {isAdministrative} = this;
+		const getLink = rel =>
+			(parent && parent.getLink && parent.getLink(rel)) ||
+			this.getLink(rel);
+		const { isAdministrative } = this;
 
 		if (!this.shouldShowAssignments()) {
 			throw new Error('No Assignments');
@@ -284,7 +270,9 @@ class Instance extends Base {
 		const load = async () => {
 			return Promise.all([
 				this.fetchLink('AssignmentSummaryByOutlineNode'),
-				this.fetchLink('NonAssignmentAssessmentSummaryItemsByOutlineNode')
+				this.fetchLink(
+					'NonAssignmentAssessmentSummaryItemsByOutlineNode'
+				),
 			]);
 		};
 
@@ -306,7 +294,7 @@ class Instance extends Base {
 			);
 		};
 
-		const refresh = async (collection) => {
+		const refresh = async collection => {
 			const data = await load();
 			collection.applyData(...data);
 			delete this[REFRESH];
@@ -316,7 +304,8 @@ class Instance extends Base {
 		const maybeStale = !freshLoad && this[LOADING].isResolved;
 
 		// cache the load promise so we don't re-enter the load...
-		const collection = await (this[LOADING] || (this[LOADING] = getCollection()));
+		const collection = await (this[LOADING] ||
+			(this[LOADING] = getCollection()));
 
 		if (maybeStale && !this[REFRESH]) {
 			this[REFRESH] = refresh(collection);
@@ -328,19 +317,17 @@ class Instance extends Base {
 		return collection;
 	}
 
-
-	getAllAssignments () {
-		return this.getAssignments()
-			.then(assignments => assignments.getAssignments());
+	getAllAssignments() {
+		return this.getAssignments().then(assignments =>
+			assignments.getAssignments()
+		);
 	}
 
-
-	getAssessment (ntiid) {
+	getAssessment(ntiid) {
 		return this.getAssignment(ntiid);
 	}
 
-
-	getAssignment (ntiid) {
+	getAssignment(ntiid) {
 		const service = this[Service];
 		const href = this.getLink('Assessments');
 		// href will be something like this...
@@ -353,22 +340,22 @@ class Instance extends Base {
 			return Promise.reject(NO_LINK);
 		}
 
-		const assignemntParentRef = this;//the CourseInstance,
+		const assignemntParentRef = this; //the CourseInstance,
 		//tho, probably should be the Assignemnts Collection but we may not have that...
 		//the instance caches are on the service doc so we're covered there.
 
-		const parseResult = o => service.getObject(o, {parent: assignemntParentRef});
+		const parseResult = o =>
+			service.getObject(o, { parent: assignemntParentRef });
 		const uri = Url.parse(href);
 
 		uri.pathname = path.join(uri.pathname, encodeURIComponent(ntiid));
 
 		const url = uri.format();
 
-		return service.get(url)
-			.then(parseResult);
+		return service.get(url).then(parseResult);
 	}
 
-	getAllSurveys (params) {
+	getAllSurveys(params) {
 		const service = this[Service];
 		const href = this.getLink('Inquiries');
 
@@ -378,11 +365,11 @@ class Instance extends Base {
 
 		return service.getBatch(href, {
 			accept: 'application/vnd.nextthought.nasurvey',
-			...params
+			...params,
 		});
 	}
 
-	getInquiry (ntiid) {
+	getInquiry(ntiid) {
 		const service = this[Service];
 		const href = this.getLink('CourseInquiries');
 
@@ -392,56 +379,56 @@ class Instance extends Base {
 
 		const inquiryParentRef = this;
 
-		const parseResult = o => service.getObject(o, {parent: inquiryParentRef});
+		const parseResult = o =>
+			service.getObject(o, { parent: inquiryParentRef });
 		const uri = Url.parse(href);
 
 		uri.pathname = path.join(uri.pathname, encodeURIComponent(ntiid));
 
 		const url = uri.format();
 
-		return service.get(url)
-			.then(parseResult);
+		return service.get(url).then(parseResult);
 	}
 
-
-	getAccessTokens () {
-		if(!this.hasLink('CourseAccessTokens')) {
+	getAccessTokens() {
+		if (!this.hasLink('CourseAccessTokens')) {
 			return Promise.resolve();
 		}
 
 		const service = this[Service];
 		const url = this.getLink('CourseAccessTokens');
 
-		return service.getBatch(url).then((batch) => batch && batch.Items);
+		return service.getBatch(url).then(batch => batch && batch.Items);
 	}
 
-
-	getCourseDiscussions () {
+	getCourseDiscussions() {
 		const service = this[Service];
 		const url = this.getLink('CourseDiscussions');
 		//For now make the course the parent.
 		const discussionParentRef = this;
-		const parseItem = o => service.getObject(o, {parent: discussionParentRef});
+		const parseItem = o =>
+			service.getObject(o, { parent: discussionParentRef });
 
 		if (!url) {
 			return Promise.resolve([]);
 		}
 
-		return service.get(url)
-			.then(({Items:items}) => Promise.all(items.map(parseItem)));
+		return service
+			.get(url)
+			.then(({ Items: items }) => Promise.all(items.map(parseItem)));
 	}
 
-
-	async getDiscussions (reloadBoard) {
-		function logAndResume (reason) {
+	async getDiscussions(reloadBoard) {
+		function logAndResume(reason) {
 			if (reason !== NOT_DEFINED) {
 				logger.warn('Could not load board: %o', reason);
 			}
 		}
 
-		const contents = o => o ? o.getContents() : Promise.reject(NOT_DEFINED);
+		const contents = o =>
+			o ? o.getContents() : Promise.reject(NOT_DEFINED);
 
-		if(reloadBoard) {
+		if (reloadBoard) {
 			await this.Discussions.refresh();
 			if (this.ParentDiscussions) {
 				await this.ParentDiscussions.refresh();
@@ -450,25 +437,23 @@ class Instance extends Base {
 
 		return Promise.all([
 			contents(this.Discussions).catch(logAndResume),
-			contents(this.ParentDiscussions).catch(logAndResume)
+			contents(this.ParentDiscussions).catch(logAndResume),
 		]);
 	}
 
-	getForumType () {
+	getForumType() {
 		return Forum.MimeTypes[1];
 	}
 
-	hasDiscussions () {
+	hasDiscussions() {
 		return !!(this.Discussions || this.ParentDiscussions);
 	}
 
-
-	hasCommunity () {
+	hasCommunity() {
 		return CourseCommunity.hasCommunity(this);
 	}
 
-
-	getCommunity () {
+	getCommunity() {
 		if (!this[CourseCommunityCache]) {
 			this[CourseCommunityCache] = CourseCommunity.from(this);
 		}
@@ -476,8 +461,7 @@ class Instance extends Base {
 		return this[CourseCommunityCache];
 	}
 
-
-	hasOutline () {
+	hasOutline() {
 		return this.Outline && this.Outline.hasLink('contents');
 	}
 
@@ -489,11 +473,11 @@ class Instance extends Base {
 	 * @param {boolean} [options.unpublished] - include the unpublished nodes.
 	 * @returns {Promise} fulfills with the outline, or rejects on error.
 	 */
-	getOutline (options) {
-		const legacy = (typeof options === 'boolean' && options); //backwards compatability
-		const {force, unpublished = legacy} = options || {};
+	getOutline(options) {
+		const legacy = typeof options === 'boolean' && options; //backwards compatability
+		const { force, unpublished = legacy } = options || {};
 
-		const FIVE_MINUTES = 300000;//5min in milliseconds.
+		const FIVE_MINUTES = 300000; //5min in milliseconds.
 		const key = unpublished ? OutlineCacheUnpublished : OutlineCache;
 
 		if (!this.Outline) {
@@ -502,16 +486,17 @@ class Instance extends Base {
 
 		if (!this[key] || force) {
 			//We have to wait for the CCE to load to know if its in preview mode or not.
-			this[key] = this.waitForPending().then(()=>
+			this[key] = this.waitForPending().then(() =>
 				//If we don't have an outline or the outline doesn't have a contents link
 				!this.hasOutline()
 					? Promise.reject('Preview')
-					//not preview, Load contents...
-					: this.Outline.getContent(options));
+					: //not preview, Load contents...
+					  this.Outline.getContent(options)
+			);
 		}
 
 		//Simple Promise wrapper... if the wrapped promise rejects, this will also reject.
-		const p = this[key] = Promise.resolve(this[key]);
+		const p = (this[key] = Promise.resolve(this[key]));
 
 		//Keep the promise for the life of the request,
 		//and if the normal published-only, add an additional 5 minutes.
@@ -528,20 +513,20 @@ class Instance extends Base {
 		return this[key];
 	}
 
-
 	/**
 	 * Gets an outline node by id.
 	 * @param {string} id - the outlineNode id. (ntiid)
 	 * @param {Object} [options] - options to pass to getOutline().
 	 * @returns {Promise} fulfills with outline node, or rejects if not found.
 	 */
-	getOutlineNode (id, options) {
-		return this.getOutline(options)
-			.then(outline => outline.getNode(id) || Promise.reject('Outline Node not found'));
+	getOutlineNode(id, options) {
+		return this.getOutline(options).then(
+			outline =>
+				outline.getNode(id) || Promise.reject('Outline Node not found')
+		);
 	}
 
-
-	getMediaIndex () {
+	getMediaIndex() {
 		const MAX_AGE = 3600000; //One Hour
 
 		let promise = this[MEDIA_INDEX];
@@ -549,25 +534,27 @@ class Instance extends Base {
 		if (!promise || promise.stale) {
 			const start = Date.now();
 
-			promise = this[MEDIA_INDEX] = this.fetchLink(MEDIA_BY_OUTLINE_NODE)
-				.then(x => MediaIndex.build(this[Service], this, x.ContainerOrder || [], x));
+			promise = this[MEDIA_INDEX] = this.fetchLink(
+				MEDIA_BY_OUTLINE_NODE
+			).then(x =>
+				MediaIndex.build(this[Service], this, x.ContainerOrder || [], x)
+			);
 
 			Object.defineProperty(promise, 'stale', {
 				enumerable: false,
-				get: () => (Date.now() - start) > MAX_AGE
+				get: () => Date.now() - start > MAX_AGE,
 			});
 		}
 
 		return promise;
 	}
 
-
-	getVideoIndex () {
-		if(!this.ContentPackageBundle) {
+	getVideoIndex() {
+		if (!this.ContentPackageBundle) {
 			return Promise.reject('No content bundle for this course instance');
 		}
 
-		function getForNode (node, index, output) {
+		function getForNode(node, index, output) {
 			const id = node.getContentId();
 
 			const scoped = id && index.scoped(id);
@@ -576,34 +563,33 @@ class Instance extends Base {
 				output.push(scoped);
 			}
 
-			const {contents} = node;
+			const { contents } = node;
 			if (contents && contents.length) {
-				contents.forEach(n=>getForNode(n, index, output));
+				contents.forEach(n => getForNode(n, index, output));
 			}
 		}
 
 		if (this.hasLink(MEDIA_BY_OUTLINE_NODE)) {
-			return this.getMediaIndex()
-				.then(i => i.filter(x => x && x.isVideo));
+			return this.getMediaIndex().then(i =>
+				i.filter(x => x && x.isVideo)
+			);
 		}
 
 		return Promise.all([
 			this.getOutline(),
-			this.ContentPackageBundle.getVideoIndex()
-		])
-			.then(([outline, index]) => {
-				const slices = [];
+			this.ContentPackageBundle.getVideoIndex(),
+		]).then(([outline, index]) => {
+			const slices = [];
 
-				getForNode(outline, index, slices);
+			getForNode(outline, index, slices);
 
-				return MediaIndex.combine(slices);
-			});
+			return MediaIndex.combine(slices);
+		});
 	}
 
-
-	resolveContentURL (url) {
+	resolveContentURL(url) {
 		let bundle = this.ContentPackageBundle;
-		let pkgs = ((bundle && bundle.ContentPackages) || []);//probably should search all packages...
+		let pkgs = (bundle && bundle.ContentPackages) || []; //probably should search all packages...
 		let pkg = pkgs.find(x => !x.isRenderable && x.root);
 
 		let root = pkg && Url.parse(pkg.root);
@@ -611,38 +597,35 @@ class Instance extends Base {
 		return Promise.resolve(root ? root.resolve(url) : url);
 	}
 
-
-	getDefaultShareWithValue (/*preferences*/) {
+	getDefaultShareWithValue(/*preferences*/) {
 		let parentScopes = this.ParentSharingScopes;
 
 		//see definition of defaultScope "getter"
-		let {defaultScopeId, defaultScope} = this.SharingScopes || {};
+		let { defaultScopeId, defaultScope } = this.SharingScopes || {};
 
 		if (!defaultScope && parentScopes) {
 			defaultScope = parentScopes.getScopeForId(defaultScopeId);
 		}
 
-		return Promise.resolve([ defaultScope ].filter(x => x));
+		return Promise.resolve([defaultScope].filter(x => x));
 	}
 
-
-	async getDefaultSharing () {
+	async getDefaultSharing() {
 		let parentScopes = this.ParentSharingScopes;
 
 		//see definition of defaultScope "getter"
-		let {defaultScopeId, defaultScope} = this.SharingScopes || {};
+		let { defaultScopeId, defaultScope } = this.SharingScopes || {};
 
 		if (!defaultScope && parentScopes) {
 			defaultScope = parentScopes.getScopeForId(defaultScopeId);
 		}
 
 		return {
-			scopes: [defaultScope].filter(Boolean)
+			scopes: [defaultScope].filter(Boolean),
 		};
 	}
 
-
-	getSharingSuggestions () {
+	getSharingSuggestions() {
 		const parent = this.parent();
 
 		if (parent && parent.getSharingSuggestions) {
@@ -653,7 +636,7 @@ class Instance extends Base {
 		let sectionScopes = this.SharingScopes;
 		let parentScopes = this.ParentSharingScopes;
 
-		let {defaultScope, defaultScopeId} = sectionScopes || {};
+		let { defaultScope, defaultScopeId } = sectionScopes || {};
 
 		let parentPublic = getScope(parentScopes || sectionScopes, 'Public');
 
@@ -665,7 +648,7 @@ class Instance extends Base {
 
 		if (parentPublic) {
 			let allStudents = Object.create(parentPublic, {
-				generalName: {value: 'All Students'}
+				generalName: { value: 'All Students' },
 			});
 
 			suggestions = [...suggestions, allStudents];
@@ -673,45 +656,53 @@ class Instance extends Base {
 
 		if (defaultScope && defaultScope !== parentPublic) {
 			let classmates = Object.create(defaultScope, {
-				generalName: {value: 'My Classmates'}
+				generalName: { value: 'My Classmates' },
 			});
 
 			suggestions = [...suggestions, classmates];
 		}
 
-
 		return Promise.resolve(suggestions);
 	}
 
-
-	getContentDataSource () {
+	getContentDataSource() {
 		return new ContentDataSource(this[Service], this);
 	}
 
-
-	getAllActivityDataSource () {
+	getAllActivityDataSource() {
 		const link = this.getLink('AllCourseActivity');
 
-		return link ?
-			new CourseAllActivityDataSource(this[Service], this, {sortOn: KnownActivitySorts}, {link}) :
-			null;
+		return link
+			? new CourseAllActivityDataSource(
+					this[Service],
+					this,
+					{ sortOn: KnownActivitySorts },
+					{ link }
+			  )
+			: null;
 	}
 
-	getParentActivityDataSource () {
+	getParentActivityDataSource() {
 		const link = this.getLink('ParentAllCourseActivity');
 
-		return link ?
-			new CourseAllActivityDataSource(this[Service], this, {sortOn: KnownActivitySorts}, {link}) :
-			null;
+		return link
+			? new CourseAllActivityDataSource(
+					this[Service],
+					this,
+					{ sortOn: KnownActivitySorts },
+					{ link }
+			  )
+			: null;
 	}
 
-
-	async getAvailableContentSummary () {
+	async getAvailableContentSummary() {
 		const load = async () => {
 			try {
-				const {Items} = await this.fetchLink('CourseContentLibrarySummary');
+				const { Items } = await this.fetchLink(
+					'CourseContentLibrarySummary'
+				);
 
-				return Items.reduce((acc, i) => ({...acc, [i]: true}), {});
+				return Items.reduce((acc, i) => ({ ...acc, [i]: true }), {});
 			} catch (e) {
 				return {};
 			}
@@ -726,12 +717,13 @@ class Instance extends Base {
 		return this[AvailableContentSummary];
 	}
 
-
-	async getContentTreeChildrenSource () {
-		if (!this.hasOutline()) { return []; }
+	async getContentTreeChildrenSource() {
+		if (!this.hasOutline()) {
+			return [];
+		}
 
 		try {
-			const outline = await this.Outline.getContent({force: true});
+			const outline = await this.Outline.getContent({ force: true });
 
 			return outline.contents;
 		} catch (e) {
@@ -739,37 +731,35 @@ class Instance extends Base {
 		}
 	}
 
-
-	async getLTIConfiguredTools () {
-		const configuredTools = await this.fetchLinkParsed('lti-configured-tools');
+	async getLTIConfiguredTools() {
+		const configuredTools = await this.fetchLinkParsed(
+			'lti-configured-tools'
+		);
 		return configuredTools;
 	}
 
-
-	getCatalogFamily () {
+	getCatalogFamily() {
 		return this.CatalogEntry && this.CatalogEntry.getCatalogFamily();
 	}
 
-
-	getCatalogFamilies () {
+	getCatalogFamilies() {
 		return this.fetchLinkParsed('CourseCatalogFamilies');
 	}
 }
 
-export default decorate(Instance, {with:[
-	model,
-	mixin(CourseIdentity, ContentTreeMixin, HasEvaluations),
-]});
+export default decorate(Instance, {
+	with: [model, mixin(CourseIdentity, ContentTreeMixin, HasEvaluations)],
+});
 
 //Private methods
 
-
-async function resolvePreferredAccess (service, instance, parent) {
+async function resolvePreferredAccess(service, instance, parent) {
 	const self = instance;
 	try {
-		const enrollment = (parent instanceof Enrollment)
-			? parent
-			: await self.fetchLinkParsed('UserCoursePreferredAccess');
+		const enrollment =
+			parent instanceof Enrollment
+				? parent
+				: await self.fetchLinkParsed('UserCoursePreferredAccess');
 
 		if (parent !== enrollment) {
 			// For legacy compatability

@@ -1,8 +1,8 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 import Submission from '../../../mixins/Submission';
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 
 const RELS = {
@@ -15,8 +15,9 @@ class AssignmentSubmission extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.assignmentsubmission',
 		COMMON_PREFIX + 'assessment.assignmentsubmissionpendingassessment',
-	]
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'assignmentId':                  { type: 'string'                    },
@@ -26,58 +27,66 @@ class AssignmentSubmission extends Base {
 		'isPracticeSubmission':          { type: 'boolean'                   }
 	}
 
-	constructor (service, parent, data, submitTo) {
+	constructor(service, parent, data, submitTo) {
 		super(service, parent, data);
 		this.MimeType = this.MimeType || AssignmentSubmission.MimeType;
 
 		Object.defineProperties(this, {
-			SubmissionHref: {value: submitTo},
-			SubmitsToObjectURL: {value: true}
+			SubmissionHref: { value: submitTo },
+			SubmitsToObjectURL: { value: true },
 		});
 	}
-
 
 	/**
 	 * Load the history directly from the Link on this object.
 	 *
 	 * @returns {Promise} The history.
 	 */
-	getHistory () {
+	getHistory() {
 		return this.fetchLinkParsed(RELS.ASSIGNMENT_HISTORY_ITEM);
 	}
 
-
-	getID () {
+	getID() {
 		return this.NTIID || this.assignmentId;
 	}
 
-
-	getQuestion (id) {
-		return (this.parts || []).filter(x => x).reduce((found, p) =>
-			found || p.getQuestion(id), null);
+	getQuestion(id) {
+		return (this.parts || [])
+			.filter(x => x)
+			.reduce((found, p) => found || p.getQuestion(id), null);
 	}
 
-
-	getQuestions () {
-		return (this.parts || []).filter(x => x).reduce((list, p) =>
-			list.concat(p.getQuestions()), []);
+	getQuestions() {
+		return (this.parts || [])
+			.filter(x => x)
+			.reduce((list, p) => list.concat(p.getQuestions()), []);
 	}
 
-
-	countUnansweredQuestions (assignment) {
+	countUnansweredQuestions(assignment) {
 		let parts = this.parts || [];
 
 		//Verify argument is an Assignment model
-		if (!assignment || !assignment.parts || assignment.parts.length !== parts.length) {
+		if (
+			!assignment ||
+			!assignment.parts ||
+			assignment.parts.length !== parts.length
+		) {
 			throw new Error('Invalid Argument');
 		}
 
-		return parts.filter(x => x).reduce((sum, q, i) =>
-			sum + q.countUnansweredQuestions(assignment.parts[i].question_set), 0);
+		return parts
+			.filter(x => x)
+			.reduce(
+				(sum, q, i) =>
+					sum +
+					q.countUnansweredQuestions(
+						assignment.parts[i].question_set
+					),
+				0
+			);
 	}
 
-
-	async onSuccessfulSubmission () {
+	async onSuccessfulSubmission() {
 		let p = this.parent();
 		if (!p || !p.getSubmission) {
 			return;
@@ -87,8 +96,14 @@ class AssignmentSubmission extends Base {
 		if (p.hasLink(RELS.HISTORY)) {
 			const history = await p.fetchLinkParsed(RELS.HISTORY);
 
-			if(history && history.MetadataAttemptItem && history.MetadataAttemptItem.hasLink(RELS.ASSIGNMENT)) {
-				const newAssignmentData = await history.MetadataAttemptItem.fetchLink(RELS.ASSIGNMENT);
+			if (
+				history &&
+				history.MetadataAttemptItem &&
+				history.MetadataAttemptItem.hasLink(RELS.ASSIGNMENT)
+			) {
+				const newAssignmentData = await history.MetadataAttemptItem.fetchLink(
+					RELS.ASSIGNMENT
+				);
 				await p.refresh(newAssignmentData);
 			}
 		}
@@ -98,7 +113,6 @@ class AssignmentSubmission extends Base {
 	}
 }
 
-export default decorate(AssignmentSubmission, {with: [
-	model,
-	mixin(Submission),
-]});
+export default decorate(AssignmentSubmission, {
+	with: [model, mixin(Submission)],
+});

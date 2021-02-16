@@ -1,7 +1,7 @@
-import {nodeMatches} from '../../utils';
+import { nodeMatches } from '../../utils';
 
-function buildPredicate (skip, predicate) {
-	return (item) => {
+function buildPredicate(skip, predicate) {
+	return item => {
 		const shouldSkip = skip && skip(item);
 		const matches = !predicate || predicate(item);
 
@@ -9,39 +9,55 @@ function buildPredicate (skip, predicate) {
 	};
 }
 
-async function selectFromList (nodes, predicate, ignoreChildren) {
+async function selectFromList(nodes, predicate, ignoreChildren) {
 	for (let node of nodes) {
 		const matches = await nodeMatches(node, predicate);
 
-		if (matches) { return node; }
+		if (matches) {
+			return node;
+		}
 
 		const ignore = await nodeMatches(node, ignoreChildren);
 
-		if (ignore) { continue; }
+		if (ignore) {
+			continue;
+		}
 
 		const children = await node.getChildNodes();
-		const matchingChild = children && await selectFromList(children, predicate, ignoreChildren);
+		const matchingChild =
+			children &&
+			(await selectFromList(children, predicate, ignoreChildren));
 
-		if (matchingChild) { return matchingChild; }
+		if (matchingChild) {
+			return matchingChild;
+		}
 	}
 
 	return null;
 }
 
-export async function selectDescendantMatching (node, predicate, skip, ignoreChildren) {
+export async function selectDescendantMatching(
+	node,
+	predicate,
+	skip,
+	ignoreChildren
+) {
 	const ignore = await nodeMatches(node, ignoreChildren);
 
-	if (ignore) { return null; }
+	if (ignore) {
+		return null;
+	}
 
 	const check = buildPredicate(skip, predicate);
 	const children = await node.getChildNodes();
 
-	if (!children || !children.length) { return null; }
+	if (!children || !children.length) {
+		return null;
+	}
 
 	return selectFromList(children, check, ignoreChildren);
 }
 
-
-export async function selectFirstDescendant (node, skip, ignoreChildren) {
+export async function selectFirstDescendant(node, skip, ignoreChildren) {
 	return selectDescendantMatching(node, () => true, skip, ignoreChildren);
 }

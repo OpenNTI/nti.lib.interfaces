@@ -3,8 +3,7 @@ import Base from '../Base';
 
 import MockService from './mock-service';
 
-describe ('Model: Base Class', () => {
-
+describe('Model: Base Class', () => {
 	test('Mixins are mixed in', () => {
 		expect(Base.prototype.initMixins).toBeTruthy();
 

@@ -1,14 +1,15 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class EducationalExperience extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'profile.educationalexperience',
 		COMMON_PREFIX + 'profile.educationalexperiance', //is this misspelling still used?
-	]
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'degree':      { type: 'string'                 },
@@ -19,4 +20,4 @@ class EducationalExperience extends Base {
 	}
 }
 
-export default decorate(EducationalExperience, {with:[model]});
+export default decorate(EducationalExperience, { with: [model] });

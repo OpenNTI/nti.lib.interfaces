@@ -1,12 +1,8 @@
-import {Proxy as ProxyObject} from '@nti/lib-commons';
+import { Proxy as ProxyObject } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
-import {
-	endOfISOWeek,
-	startOfISOWeek,
-} from 'date-fns';
+import { endOfISOWeek, startOfISOWeek } from 'date-fns';
 
 import Base from '../Base';
-
 
 const SOURCE = 'source';
 const ACTIVE_REQUEST = Symbol('active');
@@ -15,7 +11,6 @@ const APPLY_ACTIVITY = Symbol('protected method: applyActivity');
 const BUILD_BINS = Symbol('protected method: buildBins');
 const BINS = Symbol();
 
-
 const dateFns = {
 	end: endOfISOWeek,
 	start: startOfISOWeek,
@@ -23,21 +18,21 @@ const dateFns = {
 
 const getWeek = (date, side = 'end') => dateFns[side](date);
 const dateToTimestamp = date => Math.round(date.getTime() / 1000);
-const getWeekAsTimestamp = (date, side = 'end') => dateToTimestamp(getWeek(date, side));
+const getWeekAsTimestamp = (date, side = 'end') =>
+	dateToTimestamp(getWeek(date, side));
 
 const logger = Logger.get('models:courses:BucketedActivityStream');
 
 class Bucket extends Array {
-	constructor (start, end) {
+	constructor(start, end) {
 		super();
-		Object.assign(this, {start, end});
+		Object.assign(this, { start, end });
 	}
 }
 
 export default class BucketedActivityStream extends Base {
-
-	constructor (service, course, href, outline, assignments) {
-		super(service, course, { Links: [ { rel: SOURCE, href } ] });
+	constructor(service, course, href, outline, assignments) {
+		super(service, course, { Links: [{ rel: SOURCE, href }] });
 
 		this[BINS] = [];
 
@@ -50,21 +45,20 @@ export default class BucketedActivityStream extends Base {
 
 		this[ACTIVE_REQUEST] = Promise.all([
 			//allow outline and assignments to be anything...
-			Promise.resolve(outline).catch(()=> null),
-			Promise.resolve(assignments).catch(()=> null),
-			this.fetchLinkParsed(SOURCE, { MostRecent: weekOf })
+			Promise.resolve(outline).catch(() => null),
+			Promise.resolve(assignments).catch(() => null),
+			this.fetchLinkParsed(SOURCE, { MostRecent: weekOf }),
 		])
 			.then(data => this[BUILD_BINS](...data))
-			.then(()=> delete this[ACTIVE_REQUEST])
-			.then(()=> {
+			.then(() => delete this[ACTIVE_REQUEST])
+			.then(() => {
 				const loaded = Date.now();
-				this.emit('load', this, `${(loaded - start)}ms`);
+				this.emit('load', this, `${loaded - start}ms`);
 				this.emit('change', this);
 			});
 	}
 
-
-	nextBatch () {
+	nextBatch() {
 		const start = new Date();
 		//Notice we're not returning this promise...
 		Promise.resolve(this[ACTIVE_REQUEST])
@@ -72,53 +66,48 @@ export default class BucketedActivityStream extends Base {
 			.then(() => {
 				// Because we're simply waiting for the current (if any) request to finish, we do
 				// not need to chain/pend the new request to it (by returning its promise)
-				this[ACTIVE_REQUEST] = this.fetchLinkParsed(SOURCE, { MostRecent: this.nextPageParam })
+				this[ACTIVE_REQUEST] = this.fetchLinkParsed(SOURCE, {
+					MostRecent: this.nextPageParam,
+				})
 					.then(data => this[APPLY_ACTIVITY](data))
-					.then(()=> delete this[ACTIVE_REQUEST])
-					.then(()=> {
+					.then(() => delete this[ACTIVE_REQUEST])
+					.then(() => {
 						const loaded = Date.now();
-						this.emit('load', this, `${(loaded - start)}ms`);
+						this.emit('load', this, `${loaded - start}ms`);
 						this.emit('change', this);
 					});
 			});
 	}
 
-
-	[Symbol.iterator] () {
+	[Symbol.iterator]() {
 		let snapshot = this[BINS].filter(x => x.start > this.bucketLimiter);
-		let {length} = snapshot;
+		let { length } = snapshot;
 		let index = 0;
 
 		return {
-
-			next () {
+			next() {
 				let done = index >= length;
 				let value = snapshot[index++];
 
 				return { value, done };
-			}
-
+			},
 		};
 	}
 
-
-	map (fn) {
+	map(fn) {
 		return Array.from(this).map(fn);
 	}
 
-
-	get loading () {
+	get loading() {
 		return !!this[ACTIVE_REQUEST];
 	}
 
-
-	[ADD_ITEM_TO_BIN] (item, dateToConsider) {
-		const {[BINS]: bins} = this;
+	[ADD_ITEM_TO_BIN](item, dateToConsider) {
+		const { [BINS]: bins } = this;
 		const today = new Date();
 		const date = dateToConsider > today ? today : dateToConsider;
 		const start = getWeek(date, 'start');
 		const end = getWeek(date, 'end');
-
 
 		let bin = bins.find(x => x.start.getTime() === start.getTime());
 		if (!bin) {
@@ -134,8 +123,7 @@ export default class BucketedActivityStream extends Base {
 		bin.push(item);
 	}
 
-
-	[APPLY_ACTIVITY] (recursiveStreamByBucket) {
+	[APPLY_ACTIVITY](recursiveStreamByBucket) {
 		const date = recursiveStreamByBucket.getOldestDate(); //if there isn't an oldest date, this method returns epoch.
 
 		this.hasMore = false; //assume no more data.
@@ -155,8 +143,7 @@ export default class BucketedActivityStream extends Base {
 		}
 	}
 
-
-	[BUILD_BINS] (outline, assignmentsCollection, initialActivity) {
+	[BUILD_BINS](outline, assignmentsCollection, initialActivity) {
 		const assignmentPropertiesToProxy = [
 			'MimeType',
 			'isLate',
@@ -165,27 +152,41 @@ export default class BucketedActivityStream extends Base {
 			'getDueDate',
 			'getID',
 			'getQuestionCount',
-			'title'
+			'title',
 		];
 
 		const thisWeek = getWeek();
 
-		const relevantLessons = outline.getFlattenedList()
-			.filter(o => o.isLeaf && 'AvailableBeginning' in o && o.getAvailableBeginning() < thisWeek);
+		const relevantLessons = outline
+			.getFlattenedList()
+			.filter(
+				o =>
+					o.isLeaf &&
+					'AvailableBeginning' in o &&
+					o.getAvailableBeginning() < thisWeek
+			);
 
-		const openAssignments = assignmentsCollection.getAssignments()
-			.filter(a => !a.getAssignedDate() || (a.getAssignedDate() < thisWeek));
+		const openAssignments = assignmentsCollection
+			.getAssignments()
+			.filter(
+				a => !a.getAssignedDate() || a.getAssignedDate() < thisWeek
+			);
 
 		for (let lesson of relevantLessons) {
 			this[ADD_ITEM_TO_BIN](lesson, lesson.getAvailableBeginning());
 		}
 
 		for (let assignment of openAssignments) {
-			const outlineNodeId = assignmentsCollection.getOutlineNodeIdForAssessment(assignment);
+			const outlineNodeId = assignmentsCollection.getOutlineNodeIdForAssessment(
+				assignment
+			);
 			const outlineNode = outlineNodeId && outline.getNode(outlineNodeId);
 
-			const obj = new ProxyObject(assignment, assignmentPropertiesToProxy, { outlineNode });
-
+			const obj = new ProxyObject(
+				assignment,
+				assignmentPropertiesToProxy,
+				{ outlineNode }
+			);
 
 			this[ADD_ITEM_TO_BIN](obj, assignment.getDueDate() || thisWeek);
 		}

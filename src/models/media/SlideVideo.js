@@ -1,11 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class SlideVideo extends Base {
-	static MimeType = COMMON_PREFIX + 'ntislidevideo'
+	static MimeType = COMMON_PREFIX + 'ntislidevideo';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'byline':        { type: 'string'                      },
@@ -17,4 +18,4 @@ class SlideVideo extends Base {
 	}
 }
 
-export default decorate(SlideVideo, {with:[model]});
+export default decorate(SlideVideo, { with: [model] });

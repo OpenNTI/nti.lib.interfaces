@@ -1,6 +1,6 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 import EnrollmentOption from './EnrollmentOption';
@@ -8,20 +8,19 @@ import EnrollmentOption from './EnrollmentOption';
 const Purchasables = Symbol('Purchasables');
 
 class Collection extends Base {
-
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'DefaultPurchaseNTIID': { type: 'string'  },
 		'DefaultGiftingNTIID':  { type: 'string'  },
 		'Items':                { type: 'model[]' },
 	}
-
 }
 
-
 class EnrollmentOptionStore extends EnrollmentOption {
-	static MimeType = COMMON_PREFIX + 'courseware.storeenrollmentoption'
+	static MimeType = COMMON_PREFIX + 'courseware.storeenrollmentoption';
 
+	// prettier-ignore
 	static Fields = {
 		...EnrollmentOption.Fields,
 		'RequiresAdmission':  { type: 'boolean',  name: 'requiresAdmission'  },
@@ -29,32 +28,29 @@ class EnrollmentOptionStore extends EnrollmentOption {
 		'Purchasables':       { type: Collection, name: Purchasables         },
 	}
 
-
-	getPurchasables () {
+	getPurchasables() {
 		return this[Purchasables].Items || [];
 	}
 
-
-	getPurchasable (id = this[Purchasables].DefaultPurchaseNTIID) {
+	getPurchasable(id = this[Purchasables].DefaultPurchaseNTIID) {
 		return this.getPurchasables().find(x => x.NTIID === id);
 	}
 
-
-	getPurchasableForGifting () {
+	getPurchasableForGifting() {
 		let p = this.getPurchasable();
-		if(p && p.giftable) {
+		if (p && p.giftable) {
 			return p;
 		}
 		return null;
 	}
 
-	getPurchasableForRedeeming () {
+	getPurchasableForRedeeming() {
 		let p = this.getPurchasable();
-		if(p && p.redeemable) {
+		if (p && p.redeemable) {
 			return p;
 		}
 		return null;
 	}
 }
 
-export default decorate(EnrollmentOptionStore, {with:[model]});
+export default decorate(EnrollmentOptionStore, { with: [model] });

@@ -1,12 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class PurchasableVendorInfo extends Base {
-	static MimeType = COMMON_PREFIX + 'store.purchasablevendorinfo'
+	static MimeType = COMMON_PREFIX + 'store.purchasablevendorinfo';
 
-
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'AllowVendorUpdates': { type: 'boolean' },
@@ -19,8 +19,8 @@ class PurchasableVendorInfo extends Base {
 		'Title':              { type: 'string'  }
 	}
 
-	getEndDate () {} //implemented by the date Field type
-	getStartDate () {} //implemented by the date Field type
+	getEndDate() {} //implemented by the date Field type
+	getStartDate() {} //implemented by the date Field type
 }
 
-export default decorate(PurchasableVendorInfo, {with:[model]});
+export default decorate(PurchasableVendorInfo, { with: [model] });

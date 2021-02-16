@@ -1,11 +1,9 @@
-import {decorate,URL} from '@nti/lib-commons';
+import { decorate, URL } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
-import {
-	Service
-} from '../../constants';
+import { Service } from '../../constants';
 import MediaIndex from '../media/MediaIndex';
 import TablesOfContents from '../content/TablesOfContents';
 import ToC from '../content/XMLBasedTableOfContents';
@@ -15,12 +13,13 @@ const logger = Logger.get('models:content:Package');
 
 const VideoIndexReqest = Symbol('VideoIndexReqest');
 
-const getAssociationCount = (x) => x.LessonContainerCount;
-const names = (x, y, v) => Array.isArray(v) ? v.join(', ') : null;
+const getAssociationCount = x => x.LessonContainerCount;
+const names = (x, y, v) => (Array.isArray(v) ? v.join(', ') : null);
 
 class Package extends Base {
-	static MimeType = COMMON_PREFIX + 'contentpackage'
+	static MimeType = COMMON_PREFIX + 'contentpackage';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'DCCreator':                            { type: names,    name: 'author' },
@@ -34,13 +33,11 @@ class Package extends Base {
 		// 'background': { type: 'string',                },
 	}
 
-
-	getDefaultShareWithValue (preferences) {
+	getDefaultShareWithValue(preferences) {
 		return preferences ? preferences.value : [];
 	}
 
-
-	getPresentationProperties () {
+	getPresentationProperties() {
 		return {
 			author: this.author,
 			title: this.title,
@@ -48,29 +45,29 @@ class Package extends Base {
 		};
 	}
 
-	get associationCount () {
+	get associationCount() {
 		return getAssociationCount(this);
 	}
 
-	getPlacementProvider (scope, accepts) {
+	getPlacementProvider(scope, accepts) {
 		return new PlacementProvider(scope, this, accepts);
 	}
 
-	getAssociations () {
+	getAssociations() {
 		return this.fetchLinkParsed('Lessons');
 	}
 
-	getObjectHref () {
+	getObjectHref() {
 		return {
 			url: this[Service].getObjectURL(this.getID()),
 			headers: {
-				accept : this.MimeType
-			}
+				accept: this.MimeType,
+			},
 		};
 	}
 
-	getDefaultAssetRoot () {
-		let {root} = this;
+	getDefaultAssetRoot() {
+		let { root } = this;
 
 		if (!root) {
 			logger.warn('No root for content package: ', this);
@@ -80,39 +77,41 @@ class Package extends Base {
 		return URL.join(root, 'presentation-assets', 'webapp', 'v1');
 	}
 
-
-	getPackage (id) { return id === this.getID() ? this : null; }
-
-
-	getDiscussions () { return Promise.reject('Not Implemented'); }
-	hasDiscussions () { return false; }
-
-
-	getTablesOfContents () {//implement common expected interface
-		return this.getTableOfContents()
-			.then(table => TablesOfContents.fromIterable([table], this[Service], this));
+	getPackage(id) {
+		return id === this.getID() ? this : null;
 	}
 
+	getDiscussions() {
+		return Promise.reject('Not Implemented');
+	}
+	hasDiscussions() {
+		return false;
+	}
 
-	getTableOfContents () {
+	getTablesOfContents() {
+		//implement common expected interface
+		return this.getTableOfContents().then(table =>
+			TablesOfContents.fromIterable([table], this[Service], this)
+		);
+	}
+
+	getTableOfContents() {
 		let service = this[Service];
 		let toc = this.tableOfContents;
 		let cache = service.getDataCache();
 		let cached = cache.get(this.index);
 
 		if (!toc) {
-			const loadToc = cached ?
-				Promise.resolve(cached) :
-				service.get(this.index)
-					.then(data => cache.set(this.index, data) && data)
-					.catch(() => '<toc></toc>');
+			const loadToc = cached
+				? Promise.resolve(cached)
+				: service
+						.get(this.index)
+						.then(data => cache.set(this.index, data) && data)
+						.catch(() => '<toc></toc>');
 
 			const loadRealPage = this.getRealPageIndex();
 
-			toc = Promise.all([
-				loadToc,
-				loadRealPage
-			]).then(([o, realPage]) => {
+			toc = Promise.all([loadToc, loadRealPage]).then(([o, realPage]) => {
 				return new ToC(service, this, o, this.title, realPage);
 			});
 
@@ -122,44 +121,43 @@ class Package extends Base {
 		return toc;
 	}
 
-
-	getVideoIndex () {
+	getVideoIndex() {
 		let service = this[Service];
 		let promise = this[VideoIndexReqest];
 		let cache = service.getDataCache();
 
-		function find (toc) {
+		function find(toc) {
 			return toc.getVideoIndexRef() || Promise.reject('No Video Index');
 		}
 
-		function get (url) {
+		function get(url) {
 			let cached = cache.get(url);
 			if (cached) {
 				return cached;
 			}
 
-			return service.get(url)
-				.then(data => cache.set(url, data) && data);
+			return service.get(url).then(data => cache.set(url, data) && data);
 		}
 
-
 		if (!promise) {
-			this[VideoIndexReqest] = promise = this.getTableOfContents()
-				.then(toc =>
+			this[VideoIndexReqest] = promise = this.getTableOfContents().then(
+				toc =>
 					Promise.resolve(toc)
 						.then(find)
 						.then(path => URL.join(this.root, path))
 						.then(get)
-						.then(data => MediaIndex.build(this[Service], this, toc, data)));
+						.then(data =>
+							MediaIndex.build(this[Service], this, toc, data)
+						)
+			);
 		}
 
 		return promise;
 	}
 
-
-	async getRealPageIndex () {
+	async getRealPageIndex() {
 		const service = this[Service];
-		const {root} = this;
+		const { root } = this;
 		const link = URL.join(root, 'real_pages.json');
 
 		try {
@@ -172,4 +170,4 @@ class Package extends Base {
 	}
 }
 
-export default decorate(Package, {with:[model]});
+export default decorate(Package, { with: [model] });

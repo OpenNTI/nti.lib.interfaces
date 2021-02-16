@@ -1,8 +1,8 @@
-import {nodeMatches} from '../../utils';
+import { nodeMatches } from '../../utils';
 
 import resovleChildrenItems from './resolve-children-items';
 
-async function matches ({item, node}, predicate) {
+async function matches({ item, node }, predicate) {
 	if (typeof predicate === 'function') {
 		return predicate(item);
 	}
@@ -10,7 +10,7 @@ async function matches ({item, node}, predicate) {
 	return false;
 }
 
-async function findMatch (children, predicate) {
+async function findMatch(children, predicate) {
 	const resolved = await resovleChildrenItems(children);
 
 	for (let child of resolved) {
@@ -24,10 +24,9 @@ async function findMatch (children, predicate) {
 	return null;
 }
 
-
-async function getNextIteration (children) {
+async function getNextIteration(children) {
 	const subChildren = await Promise.all(
-		children.map(async (child) => {
+		children.map(async child => {
 			const nodes = await child.getChildNodes();
 
 			return nodes;
@@ -43,26 +42,34 @@ async function getNextIteration (children) {
 	}, []);
 }
 
-export async function find (children, predicate, recursive) {
-	if (!children || !children.length || !predicate) { return null; }
+export async function find(children, predicate, recursive) {
+	if (!children || !children.length || !predicate) {
+		return null;
+	}
 
 	const match = await findMatch(children, predicate);
 
-	if (match) { return match; }
-	if (!recursive) { return null; }
+	if (match) {
+		return match;
+	}
+	if (!recursive) {
+		return null;
+	}
 
 	const iteration = await getNextIteration(children);
 
 	return find(iteration, predicate, true);
 }
 
-export async function findParent (node, predicate) {
+export async function findParent(node, predicate) {
 	let pointer = await node.getParentNode();
 
 	while (pointer) {
 		const found = await nodeMatches(pointer, predicate);
 
-		if (found) { return pointer; }
+		if (found) {
+			return pointer;
+		}
 
 		pointer = await pointer.getParentNode();
 	}
@@ -70,10 +77,12 @@ export async function findParent (node, predicate) {
 	return null;
 }
 
-export async function findParentOrSelf (node, predicate) {
+export async function findParentOrSelf(node, predicate) {
 	const found = await nodeMatches(node, predicate);
 
-	if (found) { return node; }
+	if (found) {
+		return node;
+	}
 
 	return findParent(node, predicate);
 }

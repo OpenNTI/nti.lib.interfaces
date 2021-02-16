@@ -1,45 +1,45 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 
 import ContentPointer from './ContentPointer';
 
-const VALID_ROLES = [
-	'start',
-	'end',
-	'ancestor'
-];
+const VALID_ROLES = ['start', 'end', 'ancestor'];
 
 class DomContentPointer extends ContentPointer {
-	static MimeType = COMMON_PREFIX + 'contentrange.domcontentpointer'
+	static MimeType = COMMON_PREFIX + 'contentrange.domcontentpointer';
 
+	// prettier-ignore
 	static Fields = {
 		...ContentPointer.Fields,
 		role: { type: 'string' }
 	}
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 		this.validateRole(this.role);
 	}
 
+	getRole() {
+		return this.role;
+	}
 
-	getRole () { return this.role; }
-
-
-	validateRole (r) {
+	validateRole(r) {
 		if (!r) {
 			throw new Error('Must supply a role');
-		}
-		else if (!VALID_ROLES.includes(r)) {
-			throw new Error('Role must be of the value ' + VALID_ROLES.join(',') + ', supplied ' + r);
+		} else if (!VALID_ROLES.includes(r)) {
+			throw new Error(
+				'Role must be of the value ' +
+					VALID_ROLES.join(',') +
+					', supplied ' +
+					r
+			);
 		}
 	}
 
-
-	locateRangePointInAncestor () {
-		return {confidence: 0, node: null};
+	locateRangePointInAncestor() {
+		return { confidence: 0, node: null };
 	}
 }
 
-export default decorate(DomContentPointer, {with: [model]});
+export default decorate(DomContentPointer, { with: [model] });

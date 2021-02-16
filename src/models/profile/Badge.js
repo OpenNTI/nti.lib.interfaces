@@ -1,13 +1,13 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class Badge extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'badge',
-		COMMON_PREFIX + 'openbadges.badge'
-	]
+		COMMON_PREFIX + 'openbadges.badge',
+	];
 
 	/* "Type": "Course",
 	 * "alignment": null,
@@ -18,6 +18,7 @@ class Badge extends Base {
 	 * "name": "Power and Elegance of Computational Thinking",
 	 * "tags": [ "computer", "power" ]
 	 */
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Type':        { type: 'string'   },
@@ -31,4 +32,4 @@ class Badge extends Base {
 	}
 }
 
-export default decorate(Badge, {with:[model]});
+export default decorate(Badge, { with: [model] });

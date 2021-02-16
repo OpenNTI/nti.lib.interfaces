@@ -1,16 +1,16 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class VideoRef extends Base {
-	static MimeType = COMMON_PREFIX + 'ntivideoref'
+	static MimeType = COMMON_PREFIX + 'ntivideoref';
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 
 		console.debug('What is this?', this); //eslint-disable-line no-console
 	}
 }
 
-export default decorate(VideoRef, {with:[model]});
+export default decorate(VideoRef, { with: [model] });

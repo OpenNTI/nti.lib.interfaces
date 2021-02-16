@@ -1,13 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class AssignmentCompletionMetadata extends Base {
-	static MimeType = [
-		COMMON_PREFIX + 'assignmentcompletionmetadata',
-	]
+	static MimeType = [COMMON_PREFIX + 'assignmentcompletionmetadata'];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'AssignmentNTIID':                     { type: 'string'   },
@@ -19,13 +18,11 @@ class AssignmentCompletionMetadata extends Base {
 		'UserPointsReceived':                  { type: 'any'   },
 	}
 
-
-	getNumericUserPointsReceived () {
+	getNumericUserPointsReceived() {
 		return parseFloat(this.UserPointsReceived, 10);
 	}
 
-
-	getCompletionDate () { } //implemented by CompletionDate date field.
+	getCompletionDate() {} //implemented by CompletionDate date field.
 }
 
-export default decorate(AssignmentCompletionMetadata, {with:[model]});
+export default decorate(AssignmentCompletionMetadata, { with: [model] });

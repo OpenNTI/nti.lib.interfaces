@@ -15,12 +15,11 @@ import '../../../courses/Grade';
 import data from './AssignmentHistoryItem.json';
 
 describe('AssignmentHistoryItem Model', () => {
-
 	test('Parses', async () => {
 		const MockService = {
 			...MockServiceBase,
-			get: async () => ({Title: 'Mock Course'}),
-			getObjectRaw: async () => ({title: 'Mock Assignment'}),
+			get: async () => ({ Title: 'Mock Course' }),
+			getObjectRaw: async () => ({ title: 'Mock Assignment' }),
 		};
 
 		const logger = Logger.get('InstanceCacheable');
@@ -28,11 +27,14 @@ describe('AssignmentHistoryItem Model', () => {
 
 		const item = new AssignmentHistoryItem(MockService, null, data);
 
-		expect(logger.warn).toHaveBeenCalledWith(expect.stringMatching(/Rogue Instance/i), expect.anything(), item);
+		expect(logger.warn).toHaveBeenCalledWith(
+			expect.stringMatching(/Rogue Instance/i),
+			expect.anything(),
+			item
+		);
 		expect(item).toBeTruthy();
 		await item.waitForPending();
 
 		//TODO: assert values after "pending"
 	});
-
 });

@@ -1,13 +1,14 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 
 import DomContentPointer from './DomContentPointer';
 import ElementDomContentPointer from './ElementDomContentPointer';
 
 class TextDomContentPointer extends DomContentPointer {
-	static MimeType = COMMON_PREFIX + 'contentrange.textdomcontentpointer'
+	static MimeType = COMMON_PREFIX + 'contentrange.textdomcontentpointer';
 
+	// prettier-ignore
 	static Fields = {
 		...DomContentPointer.Fields,
 		'ancestor':   { type: 'model'   },
@@ -15,7 +16,7 @@ class TextDomContentPointer extends DomContentPointer {
 		'edgeOffset': { type: 'number'  },
 	}
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 
 		this.validateContexts(this.contexts);
@@ -23,31 +24,37 @@ class TextDomContentPointer extends DomContentPointer {
 		this.validateAncestor(this.ancestor);
 	}
 
+	getAncestor() {
+		return this.ancestor;
+	}
+	getContexts() {
+		return this.contexts;
+	}
+	getEdgeOffset() {
+		return this.edgeOffset;
+	}
 
-	getAncestor () { return this.ancestor; }
-	getContexts () { return this.contexts; }
-	getEdgeOffset () { return this.edgeOffset; }
-
-
-	primaryContext () {
+	primaryContext() {
 		if (this.getContexts().length > 0) {
 			return this.getContexts()[0];
 		}
 		return null;
 	}
 
-
-	validateAncestor (a) {
+	validateAncestor(a) {
 		if (!a || !(a instanceof DomContentPointer)) {
 			throw new Error('Ancestor must be supplied');
-		}
-		else if (a instanceof ElementDomContentPointer && a.getRole() !== 'ancestor') {
-			throw new Error('If ancestor is an ElementDomContentPointer, role must be of value ancestor');
+		} else if (
+			a instanceof ElementDomContentPointer &&
+			a.getRole() !== 'ancestor'
+		) {
+			throw new Error(
+				'If ancestor is an ElementDomContentPointer, role must be of value ancestor'
+			);
 		}
 	}
 
-
-	validateContexts (contexts) {
+	validateContexts(contexts) {
 		if (contexts == null || !Array.isArray(contexts)) {
 			throw new Error('Must supply TextContexts');
 		}
@@ -58,8 +65,7 @@ class TextDomContentPointer extends DomContentPointer {
 		}
 	}
 
-
-	validateEdgeOffset (/*o*/) {
+	validateEdgeOffset(/*o*/) {
 		/*
 		if (!o || o < 0) {
 			throw new Error('Offset must exist and be 0 or more');
@@ -67,10 +73,13 @@ class TextDomContentPointer extends DomContentPointer {
 		*/
 	}
 
-
-	locateRangePointInAncestor (AnchorLib, ancestorNode, startResult) {
-		return AnchorLib.locateRangeEdgeForAnchor(this, ancestorNode, startResult);
+	locateRangePointInAncestor(AnchorLib, ancestorNode, startResult) {
+		return AnchorLib.locateRangeEdgeForAnchor(
+			this,
+			ancestorNode,
+			startResult
+		);
 	}
 }
 
-export default decorate(TextDomContentPointer, {with: [model]});
+export default decorate(TextDomContentPointer, { with: [model] });

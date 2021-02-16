@@ -8,9 +8,8 @@ const logger = Logger.get('lib:UserDataThreader');
 
 const identity = x => x;
 const GETTERS = {
-	TranscriptSummary: x => x.RoomInfo
+	TranscriptSummary: x => x.RoomInfo,
 };
-
 
 /**
  * A filter decision function.  Filters out non-"Top Level" items.
@@ -20,15 +19,15 @@ const GETTERS = {
  *
  * @returns {boolean} Returns true if the item's references are not in the set of all ids.
  */
-export function topLevelOnly (item, ids) {
+export function topLevelOnly(item, ids) {
 	// I'm not convinced this will (in a single pass) filter out all non-top-level items.
 	// It has fixed my initial case. Must test further.
-	return item && (!item.references || item.references
-		.filter(x => ids.includes(x))
-		.length === 0
+	return (
+		item &&
+		(!item.references ||
+			item.references.filter(x => ids.includes(x)).length === 0)
 	);
 }
-
 
 /**
  * The user data comes back as a flat list. Relevant items from others, and all
@@ -44,8 +43,9 @@ export function topLevelOnly (item, ids) {
  *
  * @returns {Object[]} All the top-level user data, rootes, and placeholder roots.
  */
-export function threadThreadables (list) {
-	let A = [], B = []; //To sets. Lets call A non-threadable, and B threadable.
+export function threadThreadables(list) {
+	let A = [],
+		B = []; //To sets. Lets call A non-threadable, and B threadable.
 
 	for (let x of list) {
 		//separate the wheat from the chaff...
@@ -56,7 +56,6 @@ export function threadThreadables (list) {
 	return A.concat(thread(B));
 }
 
-
 /**
  * Given a set of Threadables, in the form of bins of arrays or just an array,
  * this will return an array of Threadable trees.
@@ -65,18 +64,16 @@ export function threadThreadables (list) {
  *
  * @returns {array} An array of Threadable trees. (Threadables that are roots to their trees)
  */
-export function thread (data) {
+export function thread(data) {
 	data = getData(data);
 	let tree = {};
 
-	if (data && data.every(x=> x.isThreadable)) {
+	if (data && data.every(x => x.isThreadable)) {
 		buildItemTree(data, tree);
 		cleanupTree(tree);
-	}
-	else {
+	} else {
 		logger.warn('Not all items in data were threadable %o', data);
 	}
-
 
 	return Object.values(tree);
 }
@@ -88,31 +85,34 @@ export function thread (data) {
  *
  * @returns {array} Objects ready to thread
  */
-function getData (data) {
+function getData(data) {
 	let isArray = Array.isArray(data);
 	let bins = !isArray && Object.keys(data);
 	let isBins = bins && bins.every(x => Array.isArray(data[x]));
 
-	return isArray ?
-		data :
-		isBins ?
-			bins.reduce((o, x) => o.concat(x), []) :
-			[data];
+	return isArray
+		? data
+		: isBins
+		? bins.reduce((o, x) => o.concat(x), [])
+		: [data];
 }
 
-
 //Exported only for tests
-export function cleanupTree (tree) {
+export function cleanupTree(tree) {
 	//take all children off the main collection... make them accessible only by following the children pointers.
 	for (let k of Object.keys(tree)) {
 		let o = tree[k] || {};
 
 		//turn children object into array
-		o[CHILDREN] = Array.isArray(o[CHILDREN]) ?
-			o[CHILDREN] :
-			typeof o[CHILDREN] === 'object' ? Object.values(o[CHILDREN]) : void 0;
+		o[CHILDREN] = Array.isArray(o[CHILDREN])
+			? o[CHILDREN]
+			: typeof o[CHILDREN] === 'object'
+			? Object.values(o[CHILDREN])
+			: void 0;
 
-		if (o[PARENT]) { delete tree[k]; }
+		if (o[PARENT]) {
+			delete tree[k];
+		}
 		if (o[CHILDREN].length === 0) {
 			delete o[CHILDREN];
 		}
@@ -121,20 +121,19 @@ export function cleanupTree (tree) {
 	prune(tree);
 }
 
-
 //Exported only for tests
-export function buildItemTree (items, tree) {
+export function buildItemTree(items, tree) {
 	let threadables = {};
 	logger.debug('Using list of objects', items);
 
 	//Flatten an preexisting relationships of list into the array ignoring duplicates.
-	function flattenNode (n, result) {
+	function flattenNode(n, result) {
 		if (!n.placeholder) {
 			result[n.getID()] = n;
 		}
 
 		if (!isEmpty(n[CHILDREN])) {
-			for(let kid of n[CHILDREN]) {
+			for (let kid of n[CHILDREN]) {
 				flattenNode(kid, result);
 			}
 		}
@@ -148,7 +147,12 @@ export function buildItemTree (items, tree) {
 
 	logger.debug('Flattened list is ', list);
 
-	logger.debug('Flattened list of size ', items.length, 'to flattened list of size', list.length);
+	logger.debug(
+		'Flattened list of size ',
+		items.length,
+		'to flattened list of size',
+		list.length
+	);
 
 	for (let r of list) {
 		if (!r.placeholder) {
@@ -156,25 +160,29 @@ export function buildItemTree (items, tree) {
 		}
 	}
 
-	list.forEach(function buildTree (r) {
+	list.forEach(function buildTree(r) {
 		let g = (GETTERS[r.Class] || identity)(r);
 		let oid = g.getID(),
 			parent = g.inReplyTo;
 
 		r[CHILDREN] = r[CHILDREN] || {};
 
-		if (!Object.prototype.hasOwnProperty.call(tree,oid)) {
+		if (!Object.prototype.hasOwnProperty.call(tree, oid)) {
 			tree[oid] = r;
 		}
 
 		if (parent) {
 			let p = tree[parent];
 			if (!p) {
-				p = (tree[parent] = threadables[parent]);
+				p = tree[parent] = threadables[parent];
 			}
 			if (!p) {
-				logger.debug('Generating placeholder for id: %o\t\tchild: %o', parent, oid);
-				p = (tree[parent] = g.toParentPlaceHolder());
+				logger.debug(
+					'Generating placeholder for id: %o\t\tchild: %o',
+					parent,
+					oid
+				);
+				p = tree[parent] = g.toParentPlaceHolder();
 				buildTree(p);
 			}
 
@@ -186,14 +194,12 @@ export function buildItemTree (items, tree) {
 	});
 }
 
-
-function prune (/*tree*/) {
+function prune(/*tree*/) {
 	//until we decide we want to prune from the root down... this is a non-desired function. (we cannot have leaf
 	// placeholders with the current threading algorithm.)
 }
 
-
-export function tearDownThreadingLinks (o) {
+export function tearDownThreadingLinks(o) {
 	delete o[PARENT];
 	delete o[CHILDREN];
 }

@@ -1,10 +1,10 @@
-import {nodeMatches} from '../../utils';
+import { nodeMatches } from '../../utils';
 
-export async function getNodes (root, skip, ignoreChildren) {
+export async function getNodes(root, skip, ignoreChildren) {
 	const skipRoot = await nodeMatches(root, skip);
 
 	let nodes = [];
-	let pointer = root.createTreeWalker(root, {skip, ignoreChildren});
+	let pointer = root.createTreeWalker(root, { skip, ignoreChildren });
 
 	if (!skipRoot) {
 		nodes.push(root);
@@ -14,7 +14,7 @@ export async function getNodes (root, skip, ignoreChildren) {
 
 	while (pointer) {
 		const pointerNode = await pointer.getCurrentNode();
-		const isEmpty = !pointerNode || await pointerNode.isEmptyNode();
+		const isEmpty = !pointerNode || (await pointerNode.isEmptyNode());
 
 		if (isEmpty) {
 			pointer = null;
@@ -27,7 +27,7 @@ export async function getNodes (root, skip, ignoreChildren) {
 	return nodes;
 }
 
-export async function getNodesBefore (root, predicate, skip, ignoreChildren) {
+export async function getNodesBefore(root, predicate, skip, ignoreChildren) {
 	const nodes = await getNodes(root, skip, ignoreChildren);
 
 	let before = [];
@@ -45,8 +45,7 @@ export async function getNodesBefore (root, predicate, skip, ignoreChildren) {
 	return [];
 }
 
-
-export async function getNodesAfter (root, predicate, skip, ignoreChildren) {
+export async function getNodesAfter(root, predicate, skip, ignoreChildren) {
 	const nodes = await getNodes(root, skip, ignoreChildren);
 
 	let after = [];
@@ -64,8 +63,7 @@ export async function getNodesAfter (root, predicate, skip, ignoreChildren) {
 	return [];
 }
 
-
-export async function getIndexOf (root, predicate, skip, ignoreChildren) {
+export async function getIndexOf(root, predicate, skip, ignoreChildren) {
 	const nodes = await getNodes(root, skip, ignoreChildren);
 
 	for (let i = 0; i < nodes.length; i++) {
@@ -79,7 +77,7 @@ export async function getIndexOf (root, predicate, skip, ignoreChildren) {
 	return -1;
 }
 
-export async function getNodeCount (root, skip, ignoreChildren) {
+export async function getNodeCount(root, skip, ignoreChildren) {
 	const nodes = await getNodes(root, skip, ignoreChildren);
 
 	return nodes.length;

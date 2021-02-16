@@ -1,11 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class ProfessionalPosition extends Base {
-	static MimeType = COMMON_PREFIX + 'profile.professionalposition'
+	static MimeType = COMMON_PREFIX + 'profile.professionalposition';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'companyName': { type: 'string', required: true },
@@ -16,4 +17,4 @@ class ProfessionalPosition extends Base {
 	}
 }
 
-export default decorate(ProfessionalPosition, {with:[model]});
+export default decorate(ProfessionalPosition, { with: [model] });

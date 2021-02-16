@@ -1,50 +1,49 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Integration from '../Integration';
 
-const DISCONNECTED_MIMETYPE = COMMON_PREFIX + 'integration.gotowebinarintegration';
-const CONNECTED_MIMETYPE = COMMON_PREFIX + 'integration.gotowebinarauthorizedintegration';
+const DISCONNECTED_MIMETYPE =
+	COMMON_PREFIX + 'integration.gotowebinarintegration';
+const CONNECTED_MIMETYPE =
+	COMMON_PREFIX + 'integration.gotowebinarauthorizedintegration';
 
 class GotoWebinar extends Integration {
-	static MimeType = [
-		DISCONNECTED_MIMETYPE,
-		CONNECTED_MIMETYPE
-	]
+	static MimeType = [DISCONNECTED_MIMETYPE, CONNECTED_MIMETYPE];
 
-
+	// prettier-ignore
 	static Fields = {
 		...Integration.Fields,
 		'webinar_realname': {type: 'string', name: 'accountName'}
 	}
 
-	name = 'goto-webinar'
+	name = 'goto-webinar';
 
-	isEnabled () {
+	isEnabled() {
 		return true;
 	}
 
-	isConnected () {
+	isConnected() {
 		return this.MimeType === CONNECTED_MIMETYPE;
 	}
 
-	canConnect () {
+	canConnect() {
 		return !this.isConnected();
 	}
 
-	canDisconnect () {
+	canDisconnect() {
 		return this.isConnected();
 	}
 
-	getConnectLink (...args) {
+	getConnectLink(...args) {
 		return this.getLink('authorize.webinar', ...args);
 	}
 
-	getAccountName () {
+	getAccountName() {
 		return this.accountName;
 	}
 
-	async disconnect () {
+	async disconnect() {
 		//If we aren't connected there's nothing to delete
 		if (!this.isConnected()) {
 			return;
@@ -57,7 +56,7 @@ class GotoWebinar extends Integration {
 		return resp;
 	}
 
-	async sync () {
+	async sync() {
 		const parent = this.parent();
 
 		try {
@@ -69,4 +68,4 @@ class GotoWebinar extends Integration {
 	}
 }
 
-export default decorate(GotoWebinar, {with:[model]});
+export default decorate(GotoWebinar, { with: [model] });

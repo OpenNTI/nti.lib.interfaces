@@ -1,11 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class Timeline extends Base {
-	static MimeType = COMMON_PREFIX + 'ntitimeline'
+	static MimeType = COMMON_PREFIX + 'ntitimeline';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'desc':             { type: 'string'  },
@@ -14,7 +15,6 @@ class Timeline extends Base {
 		'label':            { type: 'string'  },
 		'suggested-inline': { type: 'boolean' },
 	}
-
 }
 
-export default decorate(Timeline, {with:[model]});
+export default decorate(Timeline, { with: [model] });

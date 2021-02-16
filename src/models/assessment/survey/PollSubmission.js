@@ -1,19 +1,20 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import QuestionSubmission from '../QuestionSubmission';
-import {resolveSubmitTo} from '../utils';
+import { resolveSubmitTo } from '../utils';
 
 class PollSubmission extends QuestionSubmission {
-	static MimeType = COMMON_PREFIX + 'assessment.pollsubmission'
-	static COURSE_SUBMISSION_REL = 'CourseInquiries'
+	static MimeType = COMMON_PREFIX + 'assessment.pollsubmission';
+	static COURSE_SUBMISSION_REL = 'CourseInquiries';
 
+	// prettier-ignore
 	static Fields = {
 		...QuestionSubmission.Fields,
 		'pollId': { type: 'string'  },
 	}
 
-	static build (poll) {
+	static build(poll) {
 		const s = super.build(poll);
 
 		s.pollId = s.questionId;
@@ -25,30 +26,31 @@ class PollSubmission extends QuestionSubmission {
 			delete s.MimeType;
 			s.MimeType = PollSubmission.MimeType;
 			Object.defineProperties(s, {
-				SubmissionHref: {value: submitTo},
-				SubmitsToObjectURL: {value: true}
+				SubmissionHref: { value: submitTo },
+				SubmitsToObjectURL: { value: true },
 			});
 		}
 
 		return s;
 	}
 
-
-	getID () {
+	getID() {
 		return this.pollId || this.NTIID;
 	}
 
+	canReset() {
+		return !this.isSubmitted();
+	}
 
-	canReset () { return !this.isSubmitted(); }
-
-
-	canSubmit () {
+	canSubmit() {
 		const answered = p => p !== null;
 
-		if (this.isSubmitted()) { return false; }
+		if (this.isSubmitted()) {
+			return false;
+		}
 
 		return this.parts && this.parts.filter(answered).length > 0;
 	}
 }
 
-export default decorate(PollSubmission, {with:[model]});
+export default decorate(PollSubmission, { with: [model] });

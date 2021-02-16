@@ -1,14 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 
-
 class CredlyAcclaimOrganization extends Base {
-	static MimeType = [
-		COMMON_PREFIX + 'acclaim.organization'
-	]
+	static MimeType = [COMMON_PREFIX + 'acclaim.organization'];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'contact_email': {type: 'string', name: 'contactEmail'},
@@ -17,7 +15,6 @@ class CredlyAcclaimOrganization extends Base {
 		'photo_url': {type: 'string', name: 'photoURL'},
 		'website_url': {type: 'string', name: 'websiteURL'}
 	}
-
 }
 
-export default decorate(CredlyAcclaimOrganization, {with: [model]});
+export default decorate(CredlyAcclaimOrganization, { with: [model] });

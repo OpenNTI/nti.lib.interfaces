@@ -1,16 +1,15 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {Parent} from '../../constants';
-import {model, COMMON_PREFIX} from '../Registry';
+import { Parent } from '../../constants';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 const EXISTING_TRANSCRIPT = ' A Transcript already exists';
 
 class Transcript extends Base {
-	static MimeType = [
-		COMMON_PREFIX + 'ntitranscript'
-	]
+	static MimeType = [COMMON_PREFIX + 'ntitranscript'];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'lang':     {type: 'string'},
@@ -20,24 +19,27 @@ class Transcript extends Base {
 		'type':     {type: 'string'}
 	}
 
-
-	_parentHasExisting (purpose, lang) {
+	_parentHasExisting(purpose, lang) {
 		const parent = this[Parent];
 
-		return parent && parent.getTranscriptFor && parent.getTranscriptFor(purpose, lang);
+		return (
+			parent &&
+			parent.getTranscriptFor &&
+			parent.getTranscriptFor(purpose, lang)
+		);
 	}
 
 	//TODO: fill out set lang
 
+	setPurpose(purpose) {
+		if (this._parentHasExisting(purpose, this.lang)) {
+			return Promise.reject(EXISTING_TRANSCRIPT);
+		}
 
-	setPurpose (purpose) {
-		if (this._parentHasExisting(purpose, this.lang)) { return Promise.reject(EXISTING_TRANSCRIPT); }
-
-		return this.save({purpose});
+		return this.save({ purpose });
 	}
 
-
-	async setFile (file) {
+	async setFile(file) {
 		const data = new FormData();
 
 		data.append(file.name, file);
@@ -49,4 +51,4 @@ class Transcript extends Base {
 	}
 }
 
-export default decorate(Transcript, {with:[model]});
+export default decorate(Transcript, { with: [model] });

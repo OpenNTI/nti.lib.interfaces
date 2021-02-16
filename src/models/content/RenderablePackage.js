@@ -1,16 +1,17 @@
-import {decorate} from '@nti/lib-commons';
-import {ntiidEquals} from '@nti/lib-ntiids';
+import { decorate } from '@nti/lib-commons';
+import { ntiidEquals } from '@nti/lib-ntiids';
 
-import {RepresentsSameObject} from '../../constants';
-import {model, COMMON_PREFIX} from '../Registry';
+import { RepresentsSameObject } from '../../constants';
+import { model, COMMON_PREFIX } from '../Registry';
 
 import Package from './Package';
 
 const RST_TYPE = 'text/x-rst';
 
 class RenderablePackage extends Package {
-	static MimeType = COMMON_PREFIX + 'renderablecontentpackage'
+	static MimeType = COMMON_PREFIX + 'renderablecontentpackage';
 
+	// prettier-ignore
 	static Fields = {
 		...Package.Fields,
 		'description':          { type: 'string' },
@@ -21,37 +22,36 @@ class RenderablePackage extends Package {
 		'isLocked':             { type: 'boolean'}
 	}
 
-	isRenderable = true
-
+	isRenderable = true;
 
 	//no-op this for renderable packages, all the icons should
 	//be set as properties for now
-	setUpAssets () {}
+	setUpAssets() {}
 
-	[RepresentsSameObject] (o) {
-		return ntiidEquals(this.NTIID, o.NTIID, true) || ntiidEquals(this.OID, o.OID, true);
+	[RepresentsSameObject](o) {
+		return (
+			ntiidEquals(this.NTIID, o.NTIID, true) ||
+			ntiidEquals(this.OID, o.OID, true)
+		);
 	}
 
+	getRSTContents() {
+		return this.fetchLink('contents').then(contents => {
+			if (contents.contentType !== RST_TYPE) {
+				throw new Error('Unexpected content type');
+			}
 
-	getRSTContents () {
-		return this.fetchLink('contents')
-			.then((contents) => {
-				if (contents.contentType !== RST_TYPE) {
-					throw new Error('Unexpected content type');
-				}
-
-				return contents;
-			});
+			return contents;
+		});
 	}
 
-
-	setRSTContents (contents, prevVersion) {
+	setRSTContents(contents, prevVersion) {
 		return this.putToLink('contents', {
 			contentType: RST_TYPE,
 			contents,
-			version: prevVersion
+			version: prevVersion,
 		})
-			.then((updatedContentPackage) => {
+			.then(updatedContentPackage => {
 				const newContents = updatedContentPackage.contents;
 
 				delete updatedContentPackage.contents;
@@ -60,22 +60,20 @@ class RenderablePackage extends Package {
 
 				return newContents;
 			})
-			.then((newContents) => this.emit('contents-changed', newContents));
+			.then(newContents => this.emit('contents-changed', newContents));
 	}
 
-
-	publish () {
+	publish() {
 		return this.postToLink('publish')
-			.then((updatedContentPackage) => this.refresh(updatedContentPackage))
+			.then(updatedContentPackage => this.refresh(updatedContentPackage))
 			.then(() => this.onChange());
 	}
 
-
-	unpublish () {
+	unpublish() {
 		return this.postToLink('unpublish')
-			.then((updatedContentPackage) => this.refresh(updatedContentPackage))
+			.then(updatedContentPackage => this.refresh(updatedContentPackage))
 			.then(() => this.onChange());
 	}
 }
 
-export default decorate(RenderablePackage, {with:[model]});
+export default decorate(RenderablePackage, { with: [model] });

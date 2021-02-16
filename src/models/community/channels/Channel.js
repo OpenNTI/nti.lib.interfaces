@@ -1,26 +1,27 @@
 import EventEmitter from 'events';
 
-import {defineReadOnly} from '@nti/lib-commons';
+import { defineReadOnly } from '@nti/lib-commons';
 
-import {hideField} from '../../../mixins/Fields';
+import { hideField } from '../../../mixins/Fields';
 import Iterator from '../../../data-sources/Iterator';
 
 export default class CommunityChannel extends EventEmitter {
-	static fromForum (forum, section = null) {
-		const save = forum.isModifiable ?
-			async (data) => {
-				await forum.save(data);
-				return {title: forum.title, description: forum.description};
-			} :
-			null;
+	static fromForum(forum, section = null) {
+		const save = forum.isModifiable
+			? async data => {
+					await forum.save(data);
+					return {
+						title: forum.title,
+						description: forum.description,
+					};
+			  }
+			: null;
 
-		const doDelete = forum.isModifiable ?
-			() => forum.delete() :
-			null;
+		const doDelete = forum.isModifiable ? () => forum.delete() : null;
 
-		const addDiscussion = forum.canCreateTopic() ?
-			(topic) => forum.createTopic(topic) :
-			null;
+		const addDiscussion = forum.canCreateTopic()
+			? topic => forum.createTopic(topic)
+			: null;
 
 		return new CommunityChannel({
 			backer: forum,
@@ -34,24 +35,24 @@ export default class CommunityChannel extends EventEmitter {
 			reports: forum.Reports,
 			DefaultSharedToNTIIDs: forum.DefaultSharedToNTIIDs,
 			DefaultSharedToDisplayNames: forum.DefaultSharedToDisplayNames,
-			section
+			section,
 		});
 	}
 
-	#backer = null
-	#pinned = false
-	#id = null
-	#title = null
-	#description = null
-	#contentsDataSource = null
-	#save = null
-	#addDiscussion = null
-	#doDelete = null
-	#reports = null
-	#DefaultSharedToNTIIDs = null
-	#DefaultSharedToDisplayNames = null
+	#backer = null;
+	#pinned = false;
+	#id = null;
+	#title = null;
+	#description = null;
+	#contentsDataSource = null;
+	#save = null;
+	#addDiscussion = null;
+	#doDelete = null;
+	#reports = null;
+	#DefaultSharedToNTIIDs = null;
+	#DefaultSharedToDisplayNames = null;
 
-	constructor ({
+	constructor({
 		backer,
 		id,
 		title,
@@ -64,7 +65,7 @@ export default class CommunityChannel extends EventEmitter {
 		reports,
 		DefaultSharedToNTIIDs,
 		DefaultSharedToDisplayNames,
-		section
+		section,
 	}) {
 		super();
 		this.setMaxListeners(100);
@@ -87,51 +88,69 @@ export default class CommunityChannel extends EventEmitter {
 		Object.defineProperty(this, 'section', defineReadOnly(section, true));
 	}
 
-	get backer () { return this.#backer; }
+	get backer() {
+		return this.#backer;
+	}
 
-	isCommunityChannel = true
+	isCommunityChannel = true;
 
-	getID () { return this.#id; }
+	getID() {
+		return this.#id;
+	}
 
-	get pinned () { return this.#pinned; }
+	get pinned() {
+		return this.#pinned;
+	}
 
-	get title () { return this.#title; }
-	get description () { return this.#description; }
+	get title() {
+		return this.#title;
+	}
+	get description() {
+		return this.#description;
+	}
 
-	get Reports () { return this.#reports; }
+	get Reports() {
+		return this.#reports;
+	}
 
-	get contentsDataSource () { return this.#contentsDataSource; }
+	get contentsDataSource() {
+		return this.#contentsDataSource;
+	}
 
-	getIterable (params) {
+	getIterable(params) {
 		return new Iterator(this.contentsDataSource, params);
 	}
 
-	containsPost (item) {
+	containsPost(item) {
 		const itemContainer = item?.ContainerId;
 
-		if (!itemContainer) { return false; }
+		if (!itemContainer) {
+			return false;
+		}
 
-		return ([
-			this.getID(),
-			this.backer?.getID(),
-			this.backer?.NTIID
-		]).some((id) => id === itemContainer);
+		return [this.getID(), this.backer?.getID(), this.backer?.NTIID].some(
+			id => id === itemContainer
+		);
 	}
 
-	loadPinnedContents (params) {
-		const {contentsDataSource} = this;
+	loadPinnedContents(params) {
+		const { contentsDataSource } = this;
 
 		return contentsDataSource.loadPage(0, {
 			sortOn: 'CreatedTime',
 			sortOrder: 'descending',
 			filter: 'Pinned',
-			...params
+			...params,
 		});
 	}
 
-	get isModifiable () { return !!this.#save; }
-	async save (data) {
-		if (!this.isModifiable) { throw new Error('Cannot modifiy channel'); }
+	get isModifiable() {
+		return !!this.#save;
+	}
+	async save(data) {
+		if (!this.isModifiable) {
+			throw new Error('Cannot modifiy channel');
+		}
 
 		const resp = await this.#save(data);
 
@@ -148,10 +167,13 @@ export default class CommunityChannel extends EventEmitter {
 		return resp;
 	}
 
-
-	get canAddDiscussion () { return !!this.#addDiscussion; }
-	async addDiscussion (payload) {
-		if (!this.canAddDiscussion) { throw new Error('Cannot add discussions to channel'); }
+	get canAddDiscussion() {
+		return !!this.#addDiscussion;
+	}
+	async addDiscussion(payload) {
+		if (!this.canAddDiscussion) {
+			throw new Error('Cannot add discussions to channel');
+		}
 
 		const newDiscussion = await this.#addDiscussion(payload);
 
@@ -160,22 +182,24 @@ export default class CommunityChannel extends EventEmitter {
 		return newDiscussion;
 	}
 
-
-	get canDelete () { return !!this.#doDelete; }
-	async delete () {
-		if (!this.canDelete) { throw new Error('Cannot delete channel'); }
+	get canDelete() {
+		return !!this.#doDelete;
+	}
+	async delete() {
+		if (!this.canDelete) {
+			throw new Error('Cannot delete channel');
+		}
 
 		await this.#doDelete();
 		this.wasDeleted = true;
 		this.emit('deleted');
 	}
 
-
-	getDefaultSharing () {
+	getDefaultSharing() {
 		return {
 			scopes: this.#DefaultSharedToNTIIDs ?? [],
 			displayNames: this.#DefaultSharedToDisplayNames,
-			locked: true
+			locked: true,
 		};
 	}
 }

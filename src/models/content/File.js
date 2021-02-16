@@ -1,6 +1,6 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 
 import FileSystemEntity from './FileSystemEntity';
 
@@ -14,8 +14,9 @@ class File extends FileSystemEntity {
 		COMMON_PREFIX + 'contentfile',
 		COMMON_PREFIX + 'contentblobfile',
 		COMMON_PREFIX + 'courseware.contentfile',
-	]
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...FileSystemEntity.Fields,
 		'download_url': { type: 'string' },
@@ -24,25 +25,21 @@ class File extends FileSystemEntity {
 		'FileMimeType': { type: 'string' },
 	}
 
-
-	getFileMimeType () {
+	getFileMimeType() {
 		return this.FileMimeType;
 	}
 
-
-	getFileSize () {
+	getFileSize() {
 		return this.size;
 	}
 
-
-	getURL () {
+	getURL() {
 		return this.url;
 	}
 
-
-	getURLForDownload () {
+	getURLForDownload() {
 		return this['download_url'];
 	}
 }
 
-export default decorate(File, {with:[model]});
+export default decorate(File, { with: [model] });

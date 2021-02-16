@@ -1,4 +1,4 @@
-import {getMetaDataEntryPoint} from '../MetaDataResolverForWistia';
+import { getMetaDataEntryPoint } from '../MetaDataResolverForWistia';
 
 /*
  useful links:
@@ -9,35 +9,41 @@ import {getMetaDataEntryPoint} from '../MetaDataResolverForWistia';
 
 const WistiaRegex = /https?:\/\/(.+)?(wistia\.com|wi\.st)\/.*/;
 const IdRegexs = [
-	(href) => {
-		const matches = href.match(/https?:\/\/(.+)?(wistia\.com|wi\.st)\/embed\/iframe\/(.*)/);
+	href => {
+		const matches = href.match(
+			/https?:\/\/(.+)?(wistia\.com|wi\.st)\/embed\/iframe\/(.*)/
+		);
 
 		return matches[3];
-	}
+	},
 ];
 
 export default class WistiaProvider {
 	static service = 'wistia';
 
-	static handles (uri) {
+	static handles(uri) {
 		return WistiaRegex.test(uri);
 	}
 
-	static getID (href) {
+	static getID(href) {
 		for (let idRegex of IdRegexs) {
 			const id = idRegex(href);
 
-			if (id) { return id; }
+			if (id) {
+				return id;
+			}
 		}
 	}
 
-	static resolveID (service, url) {
+	static resolveID(service, url) {
 		const endpoint = getMetaDataEntryPoint(url);
 
 		return fetch(endpoint)
-			.then((resp) => {
+			.then(resp => {
 				if (!resp.ok) {
-					throw new Error(`Invalid: ${resp.statusCode}: ${resp.statusText}`);
+					throw new Error(
+						`Invalid: ${resp.statusCode}: ${resp.statusText}`
+					);
 				}
 			})
 			.then(() => {
@@ -45,7 +51,7 @@ export default class WistiaProvider {
 			});
 	}
 
-	static getCanonicalURL (uri, videoId) {
+	static getCanonicalURL(uri, videoId) {
 		const id = videoId || this.getID(uri);
 
 		return `https://fast.wistia.com/embed/iframe/${id}`;

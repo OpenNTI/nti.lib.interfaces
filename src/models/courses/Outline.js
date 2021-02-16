@@ -1,6 +1,6 @@
-import {decorate,isEmpty, updateValue} from '@nti/lib-commons';
+import { decorate, isEmpty, updateValue } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 import PageSource from './OutlineNodeBackedPageSource';
@@ -8,23 +8,22 @@ import PageSource from './OutlineNodeBackedPageSource';
 const INFLIGHT = Symbol('OutlineContents:RequestInflight');
 const MAX_DEPTH = Symbol('OutlineContents:maximum depth');
 
-function getMaxDepthFrom (n) {
+function getMaxDepthFrom(n) {
 	return (n.contents || [])
 		.map(item => getMaxDepthFrom(item) + 1)
 		.reduce((max, depth) => Math.max(max, depth), 0);
 }
 
 class Outline extends Base {
-	static MimeType = COMMON_PREFIX + 'courses.courseoutline'
+	static MimeType = COMMON_PREFIX + 'courses.courseoutline';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'ContentNTIID': { type: 'string'                      }
 	}
 
-
-	unpublished = false
-
+	unpublished = false;
 
 	/**
 	 * Fill in the Outline Contents.
@@ -34,8 +33,8 @@ class Outline extends Base {
 	 * @param {boolean} [options.unpublished] - include the unpublished nodes.
 	 * @returns {Promise} fulfills with `this` instance, or rejects on error.
 	 */
-	getContent (options) {
-		const {unpublished, force} = options || {};
+	getContent(options) {
+		const { unpublished, force } = options || {};
 
 		const changed = force || this.unpublished !== Boolean(unpublished);
 
@@ -48,8 +47,10 @@ class Outline extends Base {
 		let promise = !changed ? this[INFLIGHT] : null;
 
 		if (!promise) {
-			promise = this.fetchLinkParsed('contents', { 'omit_unpublished' : !unpublished })
-				.catch(() => [])//make errors return an empty outline
+			promise = this.fetchLinkParsed('contents', {
+				omit_unpublished: !unpublished,
+			})
+				.catch(() => []) //make errors return an empty outline
 				.then(contents => {
 					if (this[INFLIGHT] === promise) {
 						updateValue(this, 'contents', contents);
@@ -64,55 +65,56 @@ class Outline extends Base {
 		return promise;
 	}
 
-
-	get isNavigable () {
+	get isNavigable() {
 		return !isEmpty(this.href);
 	}
 
-
-	get isEmpty () {
-		return isEmpty((this.label || '').trim())
-			&& isEmpty(this.contents);
+	get isEmpty() {
+		return isEmpty((this.label || '').trim()) && isEmpty(this.contents);
 	}
 
+	get label() {
+		return '';
+	}
 
-	get label () { return ''; }
-
-
-	get maxDepth () {
-		let d = this[MAX_DEPTH] = (this[MAX_DEPTH] || getMaxDepthFrom(this.root));
+	get maxDepth() {
+		let d = (this[MAX_DEPTH] =
+			this[MAX_DEPTH] || getMaxDepthFrom(this.root));
 		return d;
 	}
 
+	get depth() {
+		return 0;
+	}
 
-	get depth () { return 0; }
+	get root() {
+		return this;
+	}
 
-
-	get root () { return this; }
-
-
-	getID () {
+	getID() {
 		return super.getID();
 	}
 
-
-	getContentId () {
+	getContentId() {
 		return this.ContentNTIID;
 	}
 
-
-	getNode (id) {
-		if (this.getContentId() === id/* || this.getID() === id*/) {
+	getNode(id) {
+		if (this.getContentId() === id /* || this.getID() === id*/) {
 			return this;
 		}
 
-		const {contents} = this;
+		const { contents } = this;
 
-		return !contents ? null : contents.reduce((item, potential) => item || potential.getNode(id), null);
+		return !contents
+			? null
+			: contents.reduce(
+					(item, potential) => item || potential.getNode(id),
+					null
+			  );
 	}
 
-
-	getPageSource () {
+	getPageSource() {
 		let cache = Symbol.for('CachedPageSource');
 		let root = this.root;
 		if (!root[cache]) {
@@ -121,13 +123,13 @@ class Outline extends Base {
 		return root[cache];
 	}
 
+	getFlattenedList() {
+		function flatten(node) {
+			const fn =
+				flatten.fnLoop ||
+				(flatten.fnLoop = (a, n) => a.concat(flatten(n)));
 
-	getFlattenedList () {
-		function flatten (node) {
-			const fn = flatten.fnLoop ||
-				(flatten.fnLoop = (a, n)=> a.concat(flatten(n)));
-
-			const {contents} = node;
+			const { contents } = node;
 
 			return [node].concat(!contents ? [] : contents.reduce(fn, []));
 		}
@@ -136,4 +138,4 @@ class Outline extends Base {
 	}
 }
 
-export default decorate(Outline, {with:[model]});
+export default decorate(Outline, { with: [model] });

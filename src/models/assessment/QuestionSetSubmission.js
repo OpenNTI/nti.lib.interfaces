@@ -1,14 +1,15 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
-import {Service} from '../../constants';
+import { Service } from '../../constants';
 import Submission from '../../mixins/Submission';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class QuestionSetSubmission extends Base {
-	static MimeType = COMMON_PREFIX + 'assessment.questionsetsubmission'
+	static MimeType = COMMON_PREFIX + 'assessment.questionsetsubmission';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'questions':                     { type: 'model[]' },
@@ -17,15 +18,16 @@ class QuestionSetSubmission extends Base {
 		'CreatorRecordedEffortDuration': { type: 'number'  },
 	}
 
-
-	static build (questionSet) {
+	static build(questionSet) {
 		const data = {
 			MimeType: QuestionSetSubmission.MimeType,
 			questionSetId: questionSet.getID(),
 			ContainerId: questionSet.containerId,
 			CreatorRecordedEffortDuration: null,
-			questions: (questionSet.questions ?? []).map(q => q.getSubmission()),
-			version: questionSet.version
+			questions: (questionSet.questions ?? []).map(q =>
+				q.getSubmission()
+			),
+			version: questionSet.version,
 		};
 
 		const s = new this(questionSet[Service], questionSet, data);
@@ -33,26 +35,35 @@ class QuestionSetSubmission extends Base {
 		return s;
 	}
 
-
-	getQuestion (id) {
-		return this.questions.reduce((found, q) => found || (q.getID() === id && q), null);
+	getQuestion(id) {
+		return this.questions.reduce(
+			(found, q) => found || (q.getID() === id && q),
+			null
+		);
 	}
 
-	getQuestions () {
+	getQuestions() {
 		return this.questions.slice();
 	}
 
-	countUnansweredQuestions (questionSet) {
-		if (!questionSet || !questionSet.questions || questionSet.questions.length !== this.questions.length) {
+	countUnansweredQuestions(questionSet) {
+		if (
+			!questionSet ||
+			!questionSet.questions ||
+			questionSet.questions.length !== this.questions.length
+		) {
 			throw new Error('Invalid Argument');
 		}
 
-		return this.questions.reduce((sum, q) =>
-			sum + (questionSet.getQuestion(q.getID()).isAnswered(q) ? 0 : 1), 0);
+		return this.questions.reduce(
+			(sum, q) =>
+				sum +
+				(questionSet.getQuestion(q.getID()).isAnswered(q) ? 0 : 1),
+			0
+		);
 	}
 }
 
-export default decorate(QuestionSetSubmission, {with:[
-	model,
-	mixin(Submission),
-]});
+export default decorate(QuestionSetSubmission, {
+	with: [model, mixin(Submission)],
+});

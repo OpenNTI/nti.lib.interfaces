@@ -1,15 +1,14 @@
 /* eslint-env jest */
-import {createMockNode} from '../../../__test__/common';
+import { createMockNode } from '../../../__test__/common';
 import resolveChildrenItems from '../resolve-children-items';
-
 
 describe('ContentTree resolveChildrenItems', () => {
 	test('gives all children and items in correct order', async () => {
 		const items = [
-			{item: '1'},
-			{item: '2'},
-			{item: '3'},
-			{item: '4'}
+			{ item: '1' },
+			{ item: '2' },
+			{ item: '3' },
+			{ item: '4' },
 		];
 		const children = items.map(item => createMockNode(item));
 

@@ -1,4 +1,4 @@
-import {Service} from '../constants';
+import { Service } from '../constants';
 
 const CAPABILITIES = {
 	canUploadAvatar: 'nti.platform.customization.avatar_upload',
@@ -15,46 +15,45 @@ const CAPABILITIES = {
 
 	canShareRedaction: false,
 
-	canSeeBlogs () {
+	canSeeBlogs() {
 		return Boolean(this[Service].getCollection('Blog'));
 	},
 
-	canRedact () {
+	canRedact() {
 		return !!this[Service].getCollectionFor(
 			'application/vnd.nextthought.redaction',
-			'Pages');
+			'Pages'
+		);
 	},
 
-	canCanvasURL () {
+	canCanvasURL() {
 		return !!this[Service].getCollectionFor(
 			'application/vnd.nextthought.canvasurlshape',
-			'Pages');
+			'Pages'
+		);
 	},
 
-	canEmbedVideo () {
+	canEmbedVideo() {
 		return !!this[Service].getCollectionFor(
 			'application/vnd.nextthought.embeddedvideo',
-			'Pages');
-	}
-
+			'Pages'
+		);
+	},
 };
-
 
 const list = Symbol('list');
 
 export default class Capabilities {
-	constructor (service, caps) {
+	constructor(service, caps) {
 		this[Service] = service;
 		this[list] = caps || [];
 
 		for (let cap of Object.keys(CAPABILITIES)) {
-
 			let test = CAPABILITIES[cap];
 
 			if (typeof test === 'string') {
 				test = this.has(test);
-			}
-			else if (test.call) {
+			} else if (test.call) {
 				test = test.call(this);
 			}
 
@@ -62,13 +61,11 @@ export default class Capabilities {
 		}
 	}
 
-
-	toJSON () {
+	toJSON() {
 		return this[list];
 	}
 
-
-	has (c) {
+	has(c) {
 		return this[list].indexOf(c) >= 0;
 	}
 }

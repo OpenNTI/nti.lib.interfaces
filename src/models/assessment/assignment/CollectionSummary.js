@@ -1,15 +1,14 @@
 import EventEmitter from 'events';
 
 import invariant from 'invariant';
-import {Paging} from '@nti/lib-commons';
+import { Paging } from '@nti/lib-commons';
 
-import {initPrivate, getPrivate} from '../../../utils/private';
-import {SortOrder} from '../../../constants';
-
+import { initPrivate, getPrivate } from '../../../utils/private';
+import { SortOrder } from '../../../constants';
 
 const PageSource = Paging.ListBackedPageSource;
 
-function clearCache (x) {
+function clearCache(x) {
 	const data = getPrivate(x);
 	if (data.cache) {
 		data.cache.forEach(i => i.removeAllListeners());
@@ -18,97 +17,99 @@ function clearCache (x) {
 }
 
 class AssignmentSummary extends EventEmitter {
-	constructor (assignment, history, username) {
+	constructor(assignment, history, username) {
 		super();
-		initPrivate(this, {assignment, history, username});
+		initPrivate(this, { assignment, history, username });
 		if (history) {
 			history.on('change', (...args) => this.emit('change', ...args));
 		}
 	}
 
-	get historyItem () {
+	get historyItem() {
 		const data = getPrivate(this);
 
-		return data.history && data.history.getMostRecentHistoryItem && data.history.getMostRecentHistoryItem();
+		return (
+			data.history &&
+			data.history.getMostRecentHistoryItem &&
+			data.history.getMostRecentHistoryItem()
+		);
 	}
 
-	get username () {
+	get username() {
 		return getPrivate(this).username;
 	}
 
-	get title () {
+	get title() {
 		return getPrivate(this).assignment.title;
 	}
 
-	get assignmentId () {
+	get assignmentId() {
 		return getPrivate(this).assignment.getID();
 	}
 
-	get assignedDate () {
+	get assignedDate() {
 		return getPrivate(this).assignment.getAssignedDate();
 	}
 
-	get dueDate () {
+	get dueDate() {
 		return getPrivate(this).assignment.getDueDate();
 	}
 
-	get passingScore () {
+	get passingScore() {
 		return getPrivate(this).assignment.passingScore;
 	}
 
-	get totalPoints () {
+	get totalPoints() {
 		return getPrivate(this).assignment.totalPoints;
 	}
 
-	get late () {
-		const {completed, dueDate} = this;
-		return !completed
-			? dueDate > Date.now()
-			: completed > dueDate;
+	get late() {
+		const { completed, dueDate } = this;
+		return !completed ? dueDate > Date.now() : completed > dueDate;
 	}
 
-	get overTime () {
-		const {assignment: a} = getPrivate(this);
+	get overTime() {
+		const { assignment: a } = getPrivate(this);
 		return a.isOverTime && a.isOverTime();
 	}
 
-	get failed () {
-		const {assignment} = getPrivate(this);
+	get failed() {
+		const { assignment } = getPrivate(this);
 		const complete = assignment?.CompletedItem;
 		return complete?.Success === false;
 	}
 
-	get completed () {
+	get completed() {
 		return this.historyItem?.getCreatedTime();
 	}
 
-	get grade () {
+	get grade() {
 		return this.historyItem?.grade;
 	}
 
-	get feedback () {
+	get feedback() {
 		return this.historyItem?.Feedback;
 	}
 
-	get feedbackCount () {
+	get feedbackCount() {
 		return this.historyItem?.feedbackCount;
 	}
 
-	get isCreatedByAppUser () {
+	get isCreatedByAppUser() {
 		return this.historyItem.isCreatedByAppUser;
 	}
 
-	getContentId () { return this.assignmentId; }
+	getContentId() {
+		return this.assignmentId;
+	}
 	// getID () { return this.assignmentId; }
 }
-
 
 /**
  * This class is used by the assignment/Collection.
  * @private
  */
 export default class AssignmentCollectionSummary extends EventEmitter {
-
 	/**
 	 * Build store.
 	 *
@@ -118,8 +119,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 	 *
 	 * @returns {void}
 	 */
-	constructor (service, parent, HistoryPromise) {
-
+	constructor(service, parent, HistoryPromise) {
 		super();
 
 		this.setMaxListeners(100);
@@ -128,7 +128,7 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 			service,
 			parent,
 			sortOn: 'title',
-			sortOrder: SortOrder.ASC
+			sortOrder: SortOrder.ASC,
 		};
 
 		initPrivate(this, data);
@@ -136,9 +136,8 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 		this.setHistory(HistoryPromise);
 	}
 
-
 	//@private
-	setHistory (HistoryPromise) {
+	setHistory(HistoryPromise) {
 		const data = getPrivate(this);
 
 		if (data.history) {
@@ -148,20 +147,23 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 
 		invariant(
 			HistoryPromise && typeof HistoryPromise.then === 'function',
-			'Must be a promise.');
+			'Must be a promise.'
+		);
 
-		HistoryPromise
-			.catch(error =>
-				(error.status === 404 || typeof error === 'string')
-					? null
-					: Promise.reject(Object.assign(new Error(error.statusText), error)))
+		HistoryPromise.catch(error =>
+			error.status === 404 || typeof error === 'string'
+				? null
+				: Promise.reject(
+						Object.assign(new Error(error.statusText), error)
+				  )
+		)
 			.then(history => {
 				// AvailableAssignmentNTIIDs
-				Object.assign(data, {history});
+				Object.assign(data, { history });
 				this.emit('load', this);
 			})
 			.catch(error => {
-				Object.assign(data, {error});
+				Object.assign(data, { error });
 				try {
 					this.emit('error', this);
 				} catch (e) {
@@ -171,18 +173,19 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 			.then(() => this.emit('change', this));
 	}
 
+	get error() {
+		return getPrivate(this).error;
+	}
+	get loading() {
+		return !getPrivate(this).history;
+	}
 
-	get error () { return getPrivate(this).error; }
-	get loading () { return !getPrivate(this).history; }
-
-
-	getPageSource (pathPrefix = '') {
+	getPageSource(pathPrefix = '') {
 		return new PageSource(this, pathPrefix);
 	}
 
-
-	setHistoryItem (assignmentId, historyItem) {
-		const {error, history} = getPrivate(this);
+	setHistoryItem(assignmentId, historyItem) {
+		const { error, history } = getPrivate(this);
 		if (error || !history) {
 			//no history means either: there is an inflight request, or there was an error.
 			//If error, drop and return.
@@ -199,15 +202,13 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 		this.emit('change', 'new-history');
 	}
 
-
-	getHistoryFor (assignmentId) {
-		const {history} = getPrivate(this);
+	getHistoryFor(assignmentId) {
+		const { history } = getPrivate(this);
 		const container = history && history.getItem(assignmentId);
 		return container;
 	}
 
-
-	fetchHistoryFor (assignmentId) {
+	fetchHistoryFor(assignmentId) {
 		const store = this;
 		return new Promise((fulfill, reject) => {
 			const finish = () => {
@@ -231,24 +232,26 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 		});
 	}
 
-
 	//@private ... use the iterator or map to access items. Or Array.from if you _need_ an array.
-	get items () {
+	get items() {
 		const data = getPrivate(this);
-		const {parent, history, sortOn, sortOrder = SortOrder.ASC} = data;
+		const { parent, history, sortOn, sortOrder = SortOrder.ASC } = data;
 
 		if (this.error || this.loading) {
 			return [];
 		}
 
 		if (!data.cache) {
-			data.cache = parent.getAssignments()
+			data.cache = parent
+				.getAssignments()
 				.filter(a => history.isRelevantFor(a.getID()))
-				.map(assignment => new AssignmentSummary(
-					assignment,
-					history.getItem(assignment.getID()),
-					history.creator
-				)
+				.map(
+					assignment =>
+						new AssignmentSummary(
+							assignment,
+							history.getItem(assignment.getID()),
+							history.creator
+						)
 				);
 
 			if (sortOn) {
@@ -259,33 +262,29 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 		return data.cache;
 	}
 
-
-	get length () {
+	get length() {
 		return this.items.length;
 	}
 
-
-	map (...args) {
+	map(...args) {
 		return this.items.map(...args);
 	}
 
-
-	[Symbol.iterator] () {
+	[Symbol.iterator]() {
 		return this.items[Symbol.iterator]();
 	}
 
-
-	setSort (sortOn, sortOrder = SortOrder.ASC) {
+	setSort(sortOn, sortOrder = SortOrder.ASC) {
 		const data = getPrivate(this);
 
 		invariant(
 			Object.values(SortOrder).includes(sortOrder),
-			'sortOrder must be one of SortOrder\'s values.'
+			"sortOrder must be one of SortOrder's values."
 		);
 
 		Object.assign(data, {
 			sortOn,
-			sortOrder
+			sortOrder,
 		});
 
 		if (!sortOn) {
@@ -297,13 +296,11 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 		this.emit('change', 'sort');
 	}
 
-
-	getSort () {
+	getSort() {
 		const data = getPrivate(this);
-		const {sortOn, sortOrder = SortOrder.ASC} = data;
-		return {sortOn, sortOrder};
+		const { sortOn, sortOrder = SortOrder.ASC } = data;
+		return { sortOn, sortOrder };
 	}
-
 }
 
 //Sort specs:
@@ -312,16 +309,18 @@ const SORT_SPECS = {
 	title: ['title', 'due'],
 	assigned: ['assigned', 'due', 'title'],
 	due: ['due', 'assigned', 'title'],
-	grade: ['completed:bool', 'grade', 'due', 'title']
+	grade: ['completed:bool', 'grade', 'due', 'title'],
 };
 
-function comparator (property, order) {
-	const spec = (SORT_SPECS[property] || [property]).map(p => comparatorFn(p, order));
+function comparator(property, order) {
+	const spec = (SORT_SPECS[property] || [property]).map(p =>
+		comparatorFn(p, order)
+	);
 
-	return (...args) => spec.reduce((r, fn) => r !== 0 ? r : fn(...args), 0);
+	return (...args) => spec.reduce((r, fn) => (r !== 0 ? r : fn(...args)), 0);
 }
 
-function comparatorFn (property, order) {
+function comparatorFn(property, order) {
 	if (Array.isArray(property)) {
 		[property, order] = property;
 	}
@@ -331,8 +330,8 @@ function comparatorFn (property, order) {
 	const GREATER_THAN = direction;
 	const SAME = 0;
 
-	function grade (x) {
-		let g = x.grade == null ? x.grade : (x.grade.value || void 0);
+	function grade(x) {
+		let g = x.grade == null ? x.grade : x.grade.value || void 0;
 		let v = parseFloat(g, 10);
 		return g && (isNaN(v) ? g : v);
 	}
@@ -345,10 +344,22 @@ function comparatorFn (property, order) {
 			const bD = +oB.dueDate;
 
 			if (!a) {
-				return b ? LESS_THAN : aD === bD ? SAME : aD < bD ? LESS_THAN : GREATER_THAN;
+				return b
+					? LESS_THAN
+					: aD === bD
+					? SAME
+					: aD < bD
+					? LESS_THAN
+					: GREATER_THAN;
 			}
 
-			return !b ? GREATER_THAN : a === b ? SAME : a < b ? LESS_THAN : GREATER_THAN;
+			return !b
+				? GREATER_THAN
+				: a === b
+				? SAME
+				: a < b
+				? LESS_THAN
+				: GREATER_THAN;
 		};
 	}
 
@@ -356,16 +367,11 @@ function comparatorFn (property, order) {
 		return (oA, oB) => {
 			const a = !!oA.completed;
 			const b = !!oB.completed;
-			return a === b
-				? SAME
-				: !a
-					? LESS_THAN
-					: GREATER_THAN;
+			return a === b ? SAME : !a ? LESS_THAN : GREATER_THAN;
 		};
 	}
 
 	if (property === 'grade') {
-
 		return (oA, oB) => {
 			const a = grade(oA);
 			const b = grade(oB);
@@ -383,7 +389,7 @@ function comparatorFn (property, order) {
 
 			if (tA === 'string' && tB === 'string') {
 				let c = -a.localeCompare(b); //Grade "string compare" inverts alphabetical order
-				return c === 0 ? SAME : (c < 0) ? LESS_THAN : GREATER_THAN;
+				return c === 0 ? SAME : c < 0 ? LESS_THAN : GREATER_THAN;
 			}
 
 			if (tA === 'string' && tB !== 'string') {
@@ -396,7 +402,6 @@ function comparatorFn (property, order) {
 
 			return a === b ? SAME : a < b ? LESS_THAN : GREATER_THAN;
 		};
-
 	}
 
 	return (oA, oB) => {
@@ -404,17 +409,19 @@ function comparatorFn (property, order) {
 		const b = oB[property];
 		const tA = typeof a;
 
-		if (a === b) { return SAME; }
-		if (!a && b) { return LESS_THAN; }
-		if (a && !b) { return GREATER_THAN; }
+		if (a === b) {
+			return SAME;
+		}
+		if (!a && b) {
+			return LESS_THAN;
+		}
+		if (a && !b) {
+			return GREATER_THAN;
+		}
 
 		if (tA === 'string') {
 			let cmp = a.localeCompare(b);
-			return cmp === 0
-				? SAME
-				: cmp < 0
-					? LESS_THAN
-					: GREATER_THAN;
+			return cmp === 0 ? SAME : cmp < 0 ? LESS_THAN : GREATER_THAN;
 		}
 
 		return a < b ? LESS_THAN : GREATER_THAN;

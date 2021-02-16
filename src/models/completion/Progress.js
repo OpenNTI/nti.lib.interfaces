@@ -1,6 +1,6 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 const HasCompleted = Symbol('Has Completed Field');
@@ -11,9 +11,10 @@ class Progress extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'progress',
 		COMMON_PREFIX + 'videoprogress',
-		COMMON_PREFIX + 'completion.progress'
-	]
+		COMMON_PREFIX + 'completion.progress',
+	];
 
+	// prettier-ignore
 	static Fields = {
 		'AbsoluteProgress':    { type: 'number'                      },
 		'Completed':           { type: 'boolean', name: HasCompleted },
@@ -23,29 +24,27 @@ class Progress extends Base {
 		'ResourceID':          { type: 'string',  name: ResourceID   },
 	}
 
+	getCompletedDate() {} //implemented by CompletedDate date field.
 
-	getCompletedDate () {} //implemented by CompletedDate date field.
-
-
-	getProgress () {
-		const {AbsoluteProgress, MaxPossibleProgress} = this;
+	getProgress() {
+		const { AbsoluteProgress, MaxPossibleProgress } = this;
 		return (AbsoluteProgress || 0) / (MaxPossibleProgress || 1);
 	}
 
-
-	hasCompleted () {
-		return this[HasCompleted] || '1.00' === (this.getProgress() || 0).toFixed(2);
+	hasCompleted() {
+		return (
+			this[HasCompleted] ||
+			'1.00' === (this.getProgress() || 0).toFixed(2)
+		);
 	}
 
-
-	hasProgress () {
+	hasProgress() {
 		return this[HasProgress];
 	}
 
-
-	getID () {
+	getID() {
 		return this[ResourceID] || super.getID();
 	}
 }
 
-export default decorate(Progress, {with:[model]});
+export default decorate(Progress, { with: [model] });

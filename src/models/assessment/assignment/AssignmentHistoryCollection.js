@@ -1,11 +1,12 @@
-import {decorate,pluck} from '@nti/lib-commons';
+import { decorate, pluck } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 
 class AssignmentHistoryCollection extends Base {
-	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistory'
+	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistory';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'lastViewed':                { type: 'date'     },
@@ -13,9 +14,8 @@ class AssignmentHistoryCollection extends Base {
 		'Items':                     { type: 'model{}'  },
 	}
 
-
-	isRelevantFor (ntiid) {
-		const {AvailableAssignmentNTIIDs: ids} = this;
+	isRelevantFor(ntiid) {
+		const { AvailableAssignmentNTIIDs: ids } = this;
 		if (!Array.isArray(ids)) {
 			return true; //backwards compat
 		}
@@ -23,39 +23,37 @@ class AssignmentHistoryCollection extends Base {
 		return ids.indexOf(ntiid) >= 0;
 	}
 
-
-	[Symbol.iterator] () {
+	[Symbol.iterator]() {
 		let snapshot = Object.values(this.Items);
-		let {length} = snapshot;
+		let { length } = snapshot;
 		let index = 0;
 
 		return {
-
-			next () {
+			next() {
 				let done = index >= length;
 				let value = snapshot[index++];
 
 				return { value, done };
-			}
-
+			},
 		};
 	}
 
-
-	map (fn) {
+	map(fn) {
 		return Array.from(this).map(fn);
 	}
 
-
-	getItem (assignmentId) {
+	getItem(assignmentId) {
 		return this.Items[assignmentId];
 	}
 
-
-	setItem (assignmentId, historyItem) {
-		const {Items: items} = this;
-		const historySubItem = historyItem && historyItem.getMostRecentHistoryItem && historyItem.getMostRecentHistoryItem();
-		const newItemAssignmentId = ((historySubItem || {}).grade || {}).AssignmentId;
+	setItem(assignmentId, historyItem) {
+		const { Items: items } = this;
+		const historySubItem =
+			historyItem &&
+			historyItem.getMostRecentHistoryItem &&
+			historyItem.getMostRecentHistoryItem();
+		const newItemAssignmentId = ((historySubItem || {}).grade || {})
+			.AssignmentId;
 
 		if (historyItem && newItemAssignmentId !== assignmentId) {
 			throw new Error('HistoryItem does not match the Assignment');
@@ -81,12 +79,11 @@ class AssignmentHistoryCollection extends Base {
 		this.onChange('data');
 	}
 
-
-	markSeen () {
+	markSeen() {
 		return this.putToLink('lastViewed', new Date().getTime() / 1000)
 			.then(o => this.refresh(pluck(o, 'NTIID', 'Links', 'lastViewed')))
 			.then(() => this.onChange('lastViewed'));
 	}
 }
 
-export default decorate(AssignmentHistoryCollection, {with:[model]});
+export default decorate(AssignmentHistoryCollection, { with: [model] });

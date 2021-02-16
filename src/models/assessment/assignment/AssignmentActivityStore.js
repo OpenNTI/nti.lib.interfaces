@@ -1,26 +1,26 @@
 import Logger from '@nti/util-logger';
 
-import {Parent, Service, NO_LINK} from '../../../constants';
+import { Parent, Service, NO_LINK } from '../../../constants';
 import getLink from '../../../utils/getlink';
 import Stream from '../../../stores/Stream';
-import {getPrivate} from '../../../utils/private';
+import { getPrivate } from '../../../utils/private';
 
 const logger = Logger.get('assignment:activity');
 
 const EVENT_MAP = {
-	'application/vnd.nextthought.assessment.userscourseassignmenthistoryitemfeedback': 'buildFeedbackEvent',
-	'application/vnd.nextthought.assessment.assignmentsubmission': 'buildSubmissionEvents'
+	'application/vnd.nextthought.assessment.userscourseassignmenthistoryitemfeedback':
+		'buildFeedbackEvent',
+	'application/vnd.nextthought.assessment.assignmentsubmission':
+		'buildSubmissionEvents',
 };
 
 export default class AssignmentActivityStore extends Stream {
-	constructor (service, owner, href, staticActivityFactory) {
-		super(service, owner, href, {batchSize: 20, batchStart: 0});
+	constructor(service, owner, href, staticActivityFactory) {
+		super(service, owner, href, { batchSize: 20, batchStart: 0 });
 		getPrivate(this).getStaticActivity = staticActivityFactory;
-
 	}
 
-
-	markSeen () {
+	markSeen() {
 		const link = getPrivate(this).lastViewed;
 		if (!link) {
 			return Promise.reject(NO_LINK);
@@ -28,12 +28,14 @@ export default class AssignmentActivityStore extends Stream {
 
 		const newViewed = new Date();
 
-		return this[Service].put(link, newViewed.getTime() / 1000)
-			.then(() => (this.lastViewed = newViewed, this.emit('change', 'lastViewed')));
+		return this[Service].put(link, newViewed.getTime() / 1000).then(
+			() => (
+				(this.lastViewed = newViewed), this.emit('change', 'lastViewed')
+			)
+		);
 	}
 
-
-	applyBatch (data) {
+	applyBatch(data) {
 		super.applyBatch(data);
 		const p = getPrivate(this);
 
@@ -49,8 +51,7 @@ export default class AssignmentActivityStore extends Stream {
 		}
 	}
 
-
-	parseList (items) {
+	parseList(items) {
 		const list = super.parseList(items);
 		const result = [];
 		//Derive!!!
@@ -75,8 +76,7 @@ export default class AssignmentActivityStore extends Stream {
 		return result;
 	}
 
-
-	get items () {
+	get items() {
 		const p = getPrivate(this);
 		if (p.needsSort) {
 			delete p.needsSort;
@@ -87,5 +87,4 @@ export default class AssignmentActivityStore extends Stream {
 		i.reverse();
 		return i;
 	}
-
 }

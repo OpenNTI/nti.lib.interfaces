@@ -1,17 +1,17 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {Service} from '../../constants';
-import {model, COMMON_PREFIX} from '../Registry';
+import { Service } from '../../constants';
+import { model, COMMON_PREFIX } from '../Registry';
 
-import FileSystemEntity, {validateSortObject} from './FileSystemEntity';
+import FileSystemEntity, { validateSortObject } from './FileSystemEntity';
 
 class Folder extends FileSystemEntity {
 	static MimeType = [
 		COMMON_PREFIX + 'contentfolder',
 		COMMON_PREFIX + 'courseware.contentfolder',
-	]
+	];
 
-	isFolder = true
+	isFolder = true;
 
 	/**
 	 * Client Side only. (used for UI optimistically faking out loads)
@@ -23,21 +23,19 @@ class Folder extends FileSystemEntity {
 	 * @param {Object|File} file The file, raw or instance.
 	 * @returns {File} swizzled object.
 	 */
-	castFile (file) {
+	castFile(file) {
 		if (file && !(file instanceof FileSystemEntity)) {
-			file = this[Service].getObject(file, {parent: this});
+			file = this[Service].getObject(file, { parent: this });
 		}
 
 		if (file && file.reparent) {
 			file.reparent(this);
 		}
 
-
 		return file;
 	}
 
-
-	search (query, sort, recursive) {
+	search(query, sort, recursive) {
 		//backwards compatibility (delete after next release)
 		if (typeof sort === 'boolean') {
 			recursive = sort;
@@ -45,11 +43,10 @@ class Folder extends FileSystemEntity {
 		}
 
 		sort = validateSortObject(sort) || {};
-		const additional = recursive ? {recursive: true, ...sort} : sort;
+		const additional = recursive ? { recursive: true, ...sort } : sort;
 
-		return this.fetchLinkParsed('search', {name: query, ...additional});
+		return this.fetchLinkParsed('search', { name: query, ...additional });
 	}
-
 }
 
-export default decorate(Folder, {with:[model]});
+export default decorate(Folder, { with: [model] });

@@ -1,46 +1,41 @@
-import {Service} from '../constants';
+import { Service } from '../constants';
 import getLink from '../utils/getlink';
-
 
 //TODO: There isn't enough here to warrent a whole heavy class. This should move to the catalog API on the app side.
 
 export default class Enrollment {
-	constructor (service) {
+	constructor(service) {
 		this.service = service;
 	}
 
-	async isEnrolled (courseId) {
+	async isEnrolled(courseId) {
 		try {
 			const course = await this.getCourse(courseId);
 			return Boolean(course.PreferredAccess);
-		}
-		catch (e) {
+		} catch (e) {
 			return false;
 		}
 	}
 
-	getCourse (courseId) {
+	getCourse(courseId) {
 		return this.service.getObject(courseId);
 	}
 
-
-	enrollOpen (catalogEntryId) {
-		const {service} = this;
+	enrollOpen(catalogEntryId) {
+		const { service } = this;
 		return service.post(service.getCoursesEnrolledURL(), {
-			NTIID: catalogEntryId
+			NTIID: catalogEntryId,
 		});
 	}
 
-
-	async dropCourse (courseId) {
+	async dropCourse(courseId) {
 		const course = await this.getCourse(courseId);
-		return (course.PreferredAccess)
+		return course.PreferredAccess
 			? course.PreferredAccess.drop()
 			: Promise.reject(new Error('Not Enrolled?'));
 	}
 
-
-	redeemGift (purchasable, courseId, accessKey) {
+	redeemGift(purchasable, courseId, accessKey) {
 		if (!purchasable) {
 			throw new Error('Purchasable is a required argument');
 		}
@@ -53,7 +48,9 @@ export default class Enrollment {
 
 		let link = getLink(purchasable, 'redeem_gift');
 		if (!link) {
-			return Promise.reject('Couldn\'t find the gift redemption link for the provided purchasable');
+			return Promise.reject(
+				"Couldn't find the gift redemption link for the provided purchasable"
+			);
 		}
 
 		return this[Service].post(link, { ntiid: courseId, code: accessKey });

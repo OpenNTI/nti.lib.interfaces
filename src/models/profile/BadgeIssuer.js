@@ -1,11 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class BadgeIssuer extends Base {
-	static MimeType = COMMON_PREFIX + 'openbadges.issuer'
+	static MimeType = COMMON_PREFIX + 'openbadges.issuer';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'description':    { type: 'string' },
@@ -17,4 +18,4 @@ class BadgeIssuer extends Base {
 	}
 }
 
-export default decorate(BadgeIssuer, {with:[model]});
+export default decorate(BadgeIssuer, { with: [model] });

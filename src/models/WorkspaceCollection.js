@@ -4,6 +4,7 @@ import Base from './Base';
 export default class WorkspaceCollection extends Base {
 	// static MimeType = COMMON_PREFIX + 'workspace.collection'
 
+	// prettier-ignore
 	static Fields = {
 		'accepts': { type: 'string[]' },
 		'href':    { type: 'string'   },
@@ -12,21 +13,24 @@ export default class WorkspaceCollection extends Base {
 		'Title':   { type: 'string'   },
 	}
 
-	static List (service, parent, items) {
+	static List(service, parent, items) {
 		if (!Array.isArray(items)) {
 			throw new TypeError('Invalid input, `items` sould be an array.');
 		}
 
-		return items.map(data => new WorkspaceCollection(service, parent, data));
+		return items.map(
+			data => new WorkspaceCollection(service, parent, data)
+		);
 	}
 
-
-	acceptsType (mime) {
+	acceptsType(mime) {
 		return this.accepts.includes(mime);
 	}
 
-	async fetch (force) {
-		if (this.Items && !force) { return this; }
+	async fetch(force) {
+		if (this.Items && !force) {
+			return this;
+		}
 
 		await this.refresh();
 

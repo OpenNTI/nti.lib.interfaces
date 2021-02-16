@@ -3,17 +3,16 @@ import { isEmpty } from '@nti/lib-commons';
 
 import * as UserDataThreader from '../UserDataThreader';
 
-describe('UserDataThreader utils', ()=> {
-
-	test('Makes public api available', ()=> {
+describe('UserDataThreader utils', () => {
+	test('Makes public api available', () => {
 		expect(UserDataThreader.thread).toBeTruthy();
 	});
 
-	describe('Parenting works as expected', ()=> {
-		test('abandons links successfully', ()=> {
+	describe('Parenting works as expected', () => {
+		test('abandons links successfully', () => {
 			let a = {
 				[UserDataThreader.PARENT]: {},
-				[UserDataThreader.CHILDREN]: []
+				[UserDataThreader.CHILDREN]: [],
 			};
 
 			expect(a[UserDataThreader.PARENT]).toBeTruthy();
@@ -25,23 +24,24 @@ describe('UserDataThreader utils', ()=> {
 		});
 	});
 
-	describe('buildItemTree', ()=> {
-
-		function createThreadable (name, placeholder) {
+	describe('buildItemTree', () => {
+		function createThreadable(name, placeholder) {
 			let n = {
 				isThreadable: true,
 				parent: {},
 				children: [],
 				placeholder,
 				Class: name,
-				getID: () => 'foo'
+				getID: () => 'foo',
 			};
 
 			return n;
 		}
 
-		test('abandons preexisting relationships', ()=> {
-			let n = createThreadable('Note'), tree = {}, results;
+		test('abandons preexisting relationships', () => {
+			let n = createThreadable('Note'),
+				tree = {},
+				results;
 
 			UserDataThreader.buildItemTree([n], tree);
 			UserDataThreader.cleanupTree(tree);
@@ -54,6 +54,5 @@ describe('UserDataThreader utils', ()=> {
 			expect(results[UserDataThreader.PARENT]).toBeUndefined();
 			expect(isEmpty(results[UserDataThreader.CHILDREN])).toBe(true);
 		});
-
 	});
 });

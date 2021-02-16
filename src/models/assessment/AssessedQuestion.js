@@ -1,33 +1,32 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 import assessed from '../../mixins/AssessedAssessmentPart';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class AssessedQuestion extends Base {
-	static MimeType = COMMON_PREFIX + 'assessment.assessedquestion'
+	static MimeType = COMMON_PREFIX + 'assessment.assessedquestion';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'parts':      { type: 'model[]' },
 		'questionId': { type: 'string'  },
 	}
 
-
-	getID () {
+	getID() {
 		return this.questionId || this.NTIID;
 	}
 
-
-	isSubmitted () {
+	isSubmitted() {
 		return true;
 	}
 
-
-	isCorrect () {
+	isCorrect() {
 		let p = this.parts || [],
-			i = p.length - 1, v;
+			i = p.length - 1,
+			v;
 
 		for (i; i >= 0; i--) {
 			v = p[i].isCorrect();
@@ -40,7 +39,4 @@ class AssessedQuestion extends Base {
 	}
 }
 
-export default decorate(AssessedQuestion, {with: [
-	model,
-	mixin(assessed)
-]});
+export default decorate(AssessedQuestion, { with: [model, mixin(assessed)] });

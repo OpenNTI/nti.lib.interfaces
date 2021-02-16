@@ -1,10 +1,10 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Part from '../Part';
 
 class SymbolicMath extends Part {
-	static MimeType = COMMON_PREFIX + 'assessment.symbolicmathpart'
+	static MimeType = COMMON_PREFIX + 'assessment.symbolicmathpart';
 }
 
-export default decorate(SymbolicMath, {with:[model]});
+export default decorate(SymbolicMath, { with: [model] });

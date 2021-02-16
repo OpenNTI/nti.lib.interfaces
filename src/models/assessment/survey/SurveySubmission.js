@@ -1,13 +1,14 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import QuestionSetSubmission from '../QuestionSetSubmission';
-import {resolveSubmitTo} from '../utils';
+import { resolveSubmitTo } from '../utils';
 
 class SurveySubmission extends QuestionSetSubmission {
-	static MimeType = COMMON_PREFIX + 'assessment.surveysubmission'
-	static COURSE_SUBMISSION_REL = 'CourseInquiries'
+	static MimeType = COMMON_PREFIX + 'assessment.surveysubmission';
+	static COURSE_SUBMISSION_REL = 'CourseInquiries';
 
+	// prettier-ignore
 	static Fields = {
 		...QuestionSetSubmission.Fields,
 		'parts':    { type: 'model[]', defaultValue: [] },
@@ -15,8 +16,7 @@ class SurveySubmission extends QuestionSetSubmission {
 		'version':  { type: 'string'                    }
 	}
 
-
-	static build (survey) {
+	static build(survey) {
 		const s = super.build(survey);
 
 		s.surveyId = s.questionSetId;
@@ -26,22 +26,22 @@ class SurveySubmission extends QuestionSetSubmission {
 		if (submitTo) {
 			delete s.MimeType;
 			s.MimeType = SurveySubmission.MimeType;
-			Object.defineProperties(s,{
+			Object.defineProperties(s, {
 				SubmissionHref: { value: submitTo },
-				SubmitsToObjectURL: { value: true }
+				SubmitsToObjectURL: { value: true },
 			});
 		}
 
 		return s;
 	}
 
+	canReset() {
+		return !this.isSubmitted();
+	}
 
-	canReset () { return !this.isSubmitted(); }
-
-
-	getID () {
+	getID() {
 		return this.surveyId || this.NTIID;
 	}
 }
 
-export default decorate(SurveySubmission, {with:[model]});
+export default decorate(SurveySubmission, { with: [model] });

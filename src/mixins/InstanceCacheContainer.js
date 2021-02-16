@@ -1,11 +1,11 @@
 const CACHE = new WeakMap();
 
-export function getCacheFor (o) { return CACHE.get(o); }
+export function getCacheFor(o) {
+	return CACHE.get(o);
+}
 
 export const Mixin = {
-
-	initMixin () {
+	initMixin() {
 		CACHE.set(this, {});
-	}
-
+	},
 };

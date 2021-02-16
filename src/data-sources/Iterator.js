@@ -1,17 +1,17 @@
 import EventEmitter from 'events';
 export default class PagedIterator extends EventEmitter {
-
 	#parts = [];
 	#loads = [];
 	#index = 0;
 	#loader = null;
 
-	constructor (dataSource, params) {
+	constructor(dataSource, params) {
 		super();
-		this.#loader = () => dataSource.loadPage?.(0, params) ?? dataSource.load(params);
+		this.#loader = () =>
+			dataSource.loadPage?.(0, params) ?? dataSource.load(params);
 	}
 
-	get hasMore () {
+	get hasMore() {
 		const p = this.#parts;
 		return this.#loads.length === 0 || p[p.length - 1]?.hasMore;
 	}
@@ -24,7 +24,7 @@ export default class PagedIterator extends EventEmitter {
 		}
 
 		const lock = [];
-		const idx = (this.#index++);
+		const idx = this.#index++;
 		this.#parts[idx] = lock;
 
 		const load = this.#loader();
@@ -47,21 +47,19 @@ export default class PagedIterator extends EventEmitter {
 				throw e;
 			}
 		}
-	}
+	};
 
-	clear () {
-		const {length} = this.#parts;
+	clear() {
+		const { length } = this.#parts;
 		this.#parts.splice(0, length);
 		this.#index = 0;
 	}
 
-
-	[Symbol.iterator] () {
+	[Symbol.iterator]() {
 		if (this.#index === 0 && this.#loads.length === 0) {
 			this.more();
 		}
 		const i = this.#parts.reduce((a, n) => [...a, ...(n || [])], []);
 		return i[Symbol.iterator]();
 	}
-
 }

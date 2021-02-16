@@ -1,4 +1,4 @@
-import {defineProtected} from '@nti/lib-commons';
+import { defineProtected } from '@nti/lib-commons';
 
 export default class QuestionSetPlacementProvider {
 	/**
@@ -6,25 +6,21 @@ export default class QuestionSetPlacementProvider {
 	 * @param {QuestionSet} item - the question set instance to place.
 	 * @param {string[]} [accepts] - optional list of mimetypes to limit the output.
 	 */
-	constructor (scope, item, accepts) {
+	constructor(scope, item, accepts) {
 		Object.defineProperties(this, {
-
 			...defineProtected({
 				scope,
 				item,
-				filter: accepts ? x => accepts.includes(x.MimeType) : null
-			})
-
+				filter: accepts ? x => accepts.includes(x.MimeType) : null,
+			}),
 		});
 	}
-
 
 	/**
 	 * @returns {Promise} Fulfills with an array of items that the given
 	 *                    "item" (QuestionSet) can be placed. Rejects on errors.
 	 */
-	getItems () {
+	getItems() {
 		return Promise.resolve([]);
 	}
-
 }

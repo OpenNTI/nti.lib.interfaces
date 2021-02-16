@@ -1,58 +1,58 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {Service} from '../../../constants';
-import {model, COMMON_PREFIX} from '../../Registry';
+import { Service } from '../../../constants';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 
 class AssignmentFeedbackContainer extends Base {
-	static MimeType = COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitemfeedbackcontainer'
+	static MimeType =
+		COMMON_PREFIX +
+		'assessment.userscourseassignmenthistoryitemfeedbackcontainer';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Items': { type: 'model[]' }
 	}
 
-
-	async addPost (body) {
+	async addPost(body) {
 		let link = this.getLink('edit');
 		if (!link) {
 			throw new Error('No Edit Link');
 		}
 
 		let payload = {
-			MimeType: 'application/vnd.nextthought.assessment.userscourseassignmenthistoryitemfeedback',
+			MimeType:
+				'application/vnd.nextthought.assessment.userscourseassignmenthistoryitemfeedback',
 			Class: 'UsersCourseAssignmentHistoryItemFeedback',
-			body: Array.isArray(body) ? body : [body]
+			body: Array.isArray(body) ? body : [body],
 		};
 
 		return this[Service].post(link, payload);
 	}
 
-
-	[Symbol.iterator] () {
+	[Symbol.iterator]() {
 		let snapshot = (this.Items || []).slice();
-		let {length} = snapshot;
+		let { length } = snapshot;
 		let index = 0;
 
 		return {
-
-			next () {
+			next() {
 				let done = index >= length;
 				let value = snapshot[index++];
 
 				return { value, done };
-			}
-
+			},
 		};
 	}
 
-	get length () {
+	get length() {
 		return (this.Items || []).length;
 	}
 
-	map (fn) {
+	map(fn) {
 		return (this.Items || []).map(fn);
 	}
 }
 
-export default decorate(AssignmentFeedbackContainer, {with:[model]});
+export default decorate(AssignmentFeedbackContainer, { with: [model] });

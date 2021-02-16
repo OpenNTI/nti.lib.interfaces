@@ -1,28 +1,29 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
 // import {Parser as parse} from '../../../../../constants';
-import {model, COMMON_PREFIX} from '../../../../Registry';
+import { model, COMMON_PREFIX } from '../../../../Registry';
 
 import Base from './Ordering';
 
 class AggregatedMatchingPart extends Base {
-	static MimeType = COMMON_PREFIX + 'assessment.aggregatedmatchingpart'
+	static MimeType = COMMON_PREFIX + 'assessment.aggregatedmatchingpart';
 
-
-	getResults (part) {
+	getResults(part) {
 		let results = super.getResults(part);
 		let pivotData = [];
 
 		for (let value of part.values) {
-
 			let series = results
 				.filter(x => value in x.matchedToValues)
-				.map(x => ({label: x.label, labelIndex: x.labelIndex, ...x.matchedToValues[value]}));
-
+				.map(x => ({
+					label: x.label,
+					labelIndex: x.labelIndex,
+					...x.matchedToValues[value],
+				}));
 
 			pivotData.push({
 				label: value,
-				series
+				series,
 			});
 		}
 
@@ -31,4 +32,4 @@ class AggregatedMatchingPart extends Base {
 	}
 }
 
-export default decorate(AggregatedMatchingPart, {with:[model]});
+export default decorate(AggregatedMatchingPart, { with: [model] });

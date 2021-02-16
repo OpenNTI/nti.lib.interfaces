@@ -1,18 +1,16 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class CourseInvitations extends Base {
-	static MimeType = [
-		COMMON_PREFIX + 'courseware.courseinvitations'
-	]
+	static MimeType = [COMMON_PREFIX + 'courseware.courseinvitations'];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Items':     { type: 'model[]' }
 	}
-
 }
 
-export default decorate(CourseInvitations, {with:[model]});
+export default decorate(CourseInvitations, { with: [model] });

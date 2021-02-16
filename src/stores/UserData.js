@@ -1,34 +1,30 @@
 import EventEmitter from 'events';
 
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
-import {mixin} from '@nti/lib-decorators';
+import { mixin } from '@nti/lib-decorators';
 
-import {Service, DELETED} from '../constants';
-import {Mixin as Pendability} from '../mixins/Pendability';
-import {parseListFn} from '../models/Parser';
-import {threadThreadables, topLevelOnly} from '../utils/UserDataThreader';
-
-
+import { Service, DELETED } from '../constants';
+import { Mixin as Pendability } from '../mixins/Pendability';
+import { parseListFn } from '../models/Parser';
+import { threadThreadables, topLevelOnly } from '../utils/UserDataThreader';
 
 const logger = Logger.get('store:UserData');
 
 const insert = Symbol();
 
-
-export function binId (i, rootId) {
+export function binId(i, rootId) {
 	let id = i.getContainerID ? i.getContainerID() : 'root';
 	return id !== rootId ? binId : 'root';
 }
 
 class UserData extends EventEmitter {
-
-	constructor (service, rootContainerId, source) {
+	constructor(service, rootContainerId, source) {
 		super();
 		Object.assign(this, {
 			[Service]: service,
 			loading: true,
-			rootId: rootContainerId
+			rootId: rootContainerId,
 		});
 
 		if (this.initMixins) {
@@ -38,21 +34,21 @@ class UserData extends EventEmitter {
 		this.onChange = this.onChange.bind(this);
 
 		let parseList = parseListFn(this, service);
-		let getBin = name => (this.Items[name] = (this.Items[name] || []));
+		let getBin = name => (this.Items[name] = this.Items[name] || []);
 
-		let pushUnique = (array, item) => array.map(x=>x.getID()).includes(item.getID()) ?
-			logger.warn('Item is not unique in dataset:', item) :
-			array.push(item);
+		let pushUnique = (array, item) =>
+			array.map(x => x.getID()).includes(item.getID())
+				? logger.warn('Item is not unique in dataset:', item)
+				: array.push(item);
 
 		let bin = (name, item) => pushUnique(getBin(name), item);
 
-
 		let start = Date.now();
-		let load = service.get(source).then(data=> {
+		let load = service.get(source).then(data => {
 			this.loading = false;
 			Object.assign(this, data);
 
-			this.Items = {root: []};
+			this.Items = { root: [] };
 
 			let list = parseList(data.Items);
 
@@ -73,46 +69,42 @@ class UserData extends EventEmitter {
 			}
 
 			this.loaded = Date.now();
-			this.emit('load', this, `${(this.loaded - start)}ms`);
+			this.emit('load', this, `${this.loaded - start}ms`);
 			this.emit('change', this);
 		});
 
 		this.addToPending(load);
 
 		if (process.browser) {
-			this.on('load', (_, time) => logger.info('Load: %s %o', time, this));
+			this.on('load', (_, time) =>
+				logger.info('Load: %s %o', time, this)
+			);
 		}
 	}
 
-
 	map = fn => Array.from(this).map(fn);
-
 
 	filter = fn => Array.from(this).filter(fn);
 
-
-	[Symbol.iterator] () {
-		let {Items = {}} = this,
+	[Symbol.iterator]() {
+		let { Items = {} } = this,
 			bins = Object.keys(Items),
-			snapshot = bins.reduce((a, b)=> a.concat(Items[b] || []), []),
+			snapshot = bins.reduce((a, b) => a.concat(Items[b] || []), []),
 			index = 0;
 
-		snapshot.sort((a, b) => b.getLastModified() - a.getLastModified());//show newest first.
+		snapshot.sort((a, b) => b.getLastModified() - a.getLastModified()); //show newest first.
 
 		return {
-
-			next () {
+			next() {
 				let done = index >= snapshot.length;
 				let value = snapshot[index++];
 
 				return { value, done };
-			}
-
+			},
 		};
 	}
 
-
-	[insert] (item) {
+	[insert](item) {
 		let bId = binId(item, this.rootId);
 		let bin = this.Items[bId];
 		if (!bin) {
@@ -131,35 +123,34 @@ class UserData extends EventEmitter {
 		this.emit('change');
 	}
 
-
-	insertItem (item) {
+	insertItem(item) {
 		return this[insert](item);
 	}
 
-
-	removeItem (target) {
+	removeItem(target) {
 		const bId = binId(target, this.rootId);
 
-		if (!this.Items[bId]) { return; }
+		if (!this.Items[bId]) {
+			return;
+		}
 
 		const targetId = target.getID();
-		this.Items[bId] = (this.Items[bId] || []).filter(item => item.getID() !== targetId);
+		this.Items[bId] = (this.Items[bId] || []).filter(
+			item => item.getID() !== targetId
+		);
 
 		this.emit('change');
 	}
 
-
-	onChange (who, what) {
+	onChange(who, what) {
 		if (what === DELETED) {
-
 			for (let bin of Object.values(this.Items)) {
-
 				let index = bin.findIndex(x => x.getID() === who.getID());
 				if (index < 0) {
 					continue;
 				}
 
-				let item = bin.splice(index, 1)[0];//remove it;
+				let item = bin.splice(index, 1)[0]; //remove it;
 
 				item.removeListener('change', this.onChange);
 				logger.debug('Removed deleted item: %o', item);
@@ -169,8 +160,7 @@ class UserData extends EventEmitter {
 		this.emit('change', this);
 	}
 
-
-	get (id) {
+	get(id) {
 		for (let i of this) {
 			if (i.getID() === id) {
 				return i;
@@ -178,26 +168,23 @@ class UserData extends EventEmitter {
 		}
 	}
 
-
-	has (id) {
+	has(id) {
 		return !!this.get(id);
 	}
 
-
-	create (data) {
+	create(data) {
 		let service = this[Service];
-		let {href} = service.getCollectionFor(data.MimeType) || {};
+		let { href } = service.getCollectionFor(data.MimeType) || {};
 
 		if (!href) {
 			return Promise.reject('No Collection to post to.');
 		}
 
-		return service.postParseResponse(href, data)
-			.then(x => {
-				this[insert](x);
-				return x;
-			});
+		return service.postParseResponse(href, data).then(x => {
+			this[insert](x);
+			return x;
+		});
 	}
 }
 
-export default decorate(UserData, {with:[mixin(Pendability)]});
+export default decorate(UserData, { with: [mixin(Pendability)] });

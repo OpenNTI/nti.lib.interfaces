@@ -9,12 +9,14 @@
 		"Creator": "demouser.001",
 		"Items": [],
 		"Last Modified": 1571086923.459919,
-		"Links": [{
-			"Class": "Link",
-			"href": "/dataserver2/users/demouser.001/Objects/tag%3Anextthought.com%2C2011-10%3Ademouser.001-OID-0xd77d%3A5573657273%3ANMGbYWTRZxD",
-			"ntiid": "tag:nextthought.com,2011-10:demouser.001-OID-0xd77d:5573657273:NMGbYWTRZxD",
-			"rel": "edit"
-		}],
+		"Links": [
+			{
+				"Class": "Link",
+				"href": "/dataserver2/users/demouser.001/Objects/tag%3Anextthought.com%2C2011-10%3Ademouser.001-OID-0xd77d%3A5573657273%3ANMGbYWTRZxD",
+				"ntiid": "tag:nextthought.com,2011-10:demouser.001-OID-0xd77d:5573657273:NMGbYWTRZxD",
+				"rel": "edit"
+			}
+		],
 		"MimeType": "application/vnd.nextthought.assessment.userscourseassignmenthistoryitemfeedbackcontainer",
 		"NTIID": "tag:nextthought.com,2011-10:demouser.001-OID-0xd77d:5573657273:NMGbYWTRZxD",
 		"OID": "tag:nextthought.com,2011-10:demouser.001-OID-0xd77d:5573657273:NMGbYWTRZxD",
@@ -32,12 +34,14 @@
 		"Creator": "instructor.001",
 		"IsExcused": false,
 		"Last Modified": 1571088357.468628,
-		"Links": [{
-			"Class": "Link",
-			"href": "/dataserver2/++etc++hostsites/alpha.dev/++etc++site/Courses/DefaultAPICopied/NTI%201000/AssignmentHistories/demouser.001/tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload/UsersCourseAssignmentHistoryItem",
-			"ntiid": "tag:nextthought.com,2011-10:demouser.001-OID-0xd77e:5573657273:NMGbYWTRZxC",
-			"rel": "AssignmentHistoryItem"
-		}],
+		"Links": [
+			{
+				"Class": "Link",
+				"href": "/dataserver2/++etc++hostsites/alpha.dev/++etc++site/Courses/DefaultAPICopied/NTI%201000/AssignmentHistories/demouser.001/tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload/UsersCourseAssignmentHistoryItem",
+				"ntiid": "tag:nextthought.com,2011-10:demouser.001-OID-0xd77e:5573657273:NMGbYWTRZxC",
+				"rel": "AssignmentHistoryItem"
+			}
+		],
 		"MimeType": "application/vnd.nextthought.grade",
 		"NTIID": "tag:nextthought.com,2011-10:system-OID-0xd77f:5573657273:NMGbYWTRZxB",
 		"OID": "tag:nextthought.com,2011-10:system-OID-0xd77f:5573657273:NMGbYWTRZxB",
@@ -47,11 +51,13 @@
 		"value": "C -"
 	},
 	"Last Modified": 1571088357.468628,
-	"Links": [{
-		"Class": "Link",
-		"href": "/dataserver2/++etc++hostsites/alpha.dev/++etc++site/Courses/DefaultAPICopied/NTI%201000/AssignmentHistories/demouser.001/tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload",
-		"rel": "HistoryItemContainer"
-	}],
+	"Links": [
+		{
+			"Class": "Link",
+			"href": "/dataserver2/++etc++hostsites/alpha.dev/++etc++site/Courses/DefaultAPICopied/NTI%201000/AssignmentHistories/demouser.001/tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload",
+			"rel": "HistoryItemContainer"
+		}
+	],
 	"MetadataAttemptItem": {
 		"Class": "UsersCourseAssignmentAttemptMetadataItem",
 		"ContainerId": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload",
@@ -60,19 +66,22 @@
 		"Duration": 36,
 		"ID": "tag:nextthought.com,2011-10:demouser.001-OID-0xd768:5573657273:NMGbYWTRZxH",
 		"Last Modified": 1571086923.507879,
-		"Links": [{
-			"Class": "Link",
-			"href": "/dataserver2/++etc++hostsites/alpha.dev/++etc++site/Courses/DefaultAPICopied/NTI%201000/AssignmentAttemptMetadata/demouser.001/tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload/UsersCourseAssignmentAttemptMetadataItem/@@Assignment",
-			"method": "GET",
-			"ntiid": "tag:nextthought.com,2011-10:system-OID-0x8ac0:5573657273:uUfNsrHyzrN",
-			"rel": "Assignment"
-		}, {
-			"Class": "Link",
-			"href": "/dataserver2/++etc++hostsites/alpha.dev/++etc++site/Courses/DefaultAPICopied/NTI%201000/AssignmentAttemptMetadata/demouser.001/tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload/UsersCourseAssignmentAttemptMetadataItem/@@HistoryItem",
-			"method": "GET",
-			"ntiid": "tag:nextthought.com,2011-10:system-OID-0x8ac0:5573657273:uUfNsrHyzrN",
-			"rel": "HistoryItem"
-		}],
+		"Links": [
+			{
+				"Class": "Link",
+				"href": "/dataserver2/++etc++hostsites/alpha.dev/++etc++site/Courses/DefaultAPICopied/NTI%201000/AssignmentAttemptMetadata/demouser.001/tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload/UsersCourseAssignmentAttemptMetadataItem/@@Assignment",
+				"method": "GET",
+				"ntiid": "tag:nextthought.com,2011-10:system-OID-0x8ac0:5573657273:uUfNsrHyzrN",
+				"rel": "Assignment"
+			},
+			{
+				"Class": "Link",
+				"href": "/dataserver2/++etc++hostsites/alpha.dev/++etc++site/Courses/DefaultAPICopied/NTI%201000/AssignmentAttemptMetadata/demouser.001/tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload/UsersCourseAssignmentAttemptMetadataItem/@@HistoryItem",
+				"method": "GET",
+				"ntiid": "tag:nextthought.com,2011-10:system-OID-0x8ac0:5573657273:uUfNsrHyzrN",
+				"rel": "HistoryItem"
+			}
+		],
 		"MimeType": "application/vnd.nextthought.assessment.userscourseassignmentattemptmetadataitem",
 		"NTIID": "tag:nextthought.com,2011-10:demouser.001-OID-0xd768:5573657273:NMGbYWTRZxH",
 		"OID": "tag:nextthought.com,2011-10:demouser.001-OID-0xd768:5573657273:NMGbYWTRZxH",
@@ -96,41 +105,47 @@
 		"OID": "tag:nextthought.com,2011-10:demouser.001-OID-0xd77a:5573657273:NMGbYWTRZxF",
 		"assignmentId": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload",
 		"containerId": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload",
-		"parts": [{
-			"Class": "QuestionSetSubmission",
-			"ContainerId": "tag:nextthought.com,2011-10:NTIAlpha-HTML-NTI1000_TestCourse.file_upload",
-			"Creator": "demouser.001",
-			"CreatorRecordedEffortDuration": 35,
-			"MimeType": "application/vnd.nextthought.assessment.questionsetsubmission",
-			"containerId": "tag:nextthought.com,2011-10:NTIAlpha-HTML-NTI1000_TestCourse.file_upload",
-			"questionSetId": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.set.qset:content_file_upload",
-			"questions": [{
-				"Class": "QuestionSubmission",
+		"parts": [
+			{
+				"Class": "QuestionSetSubmission",
 				"ContainerId": "tag:nextthought.com,2011-10:NTIAlpha-HTML-NTI1000_TestCourse.file_upload",
 				"Creator": "demouser.001",
-				"CreatorRecordedEffortDuration": null,
-				"MimeType": "application/vnd.nextthought.assessment.questionsubmission",
-				"NTIID": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.qid.content.file.upload",
+				"CreatorRecordedEffortDuration": 35,
+				"MimeType": "application/vnd.nextthought.assessment.questionsetsubmission",
 				"containerId": "tag:nextthought.com,2011-10:NTIAlpha-HTML-NTI1000_TestCourse.file_upload",
-				"parts": [{
-					"Class": "QUploadedFile",
-					"CreatedTime": 1571086923.447515,
-					"FileMimeType": "application/pdf",
-					"Last Modified": 1571086923.447515,
-					"MimeType": "application/vnd.nextthought.assessment.uploadedfile",
-					"NTIID": "tag:nextthought.com,2011-10:system-OID-0xd782:5573657273",
-					"OID": "tag:nextthought.com,2011-10:system-OID-0xd782:5573657273",
-					"contentType": "application/pdf",
-					"download_url": "/dataserver2/Objects/tag%3Anextthought.com%2C2011-10%3Asystem-OID-0xd782%3A5573657273/@@download/Winter%20Work%20Flyer.pdf",
-					"filename": "Winter Work Flyer.pdf",
-					"name": "Winter Work Flyer.pdf",
-					"size": 79422,
-					"url": "/dataserver2/Objects/tag%3Anextthought.com%2C2011-10%3Asystem-OID-0xd782%3A5573657273/@@view/Winter%20Work%20Flyer.pdf",
-					"value": "/dataserver2/Objects/tag%3Anextthought.com%2C2011-10%3Asystem-OID-0xd782%3A5573657273/@@view/Winter%20Work%20Flyer.pdf"
-				}],
-				"questionId": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.qid.content.file.upload"
-			}]
-		}]
+				"questionSetId": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.set.qset:content_file_upload",
+				"questions": [
+					{
+						"Class": "QuestionSubmission",
+						"ContainerId": "tag:nextthought.com,2011-10:NTIAlpha-HTML-NTI1000_TestCourse.file_upload",
+						"Creator": "demouser.001",
+						"CreatorRecordedEffortDuration": null,
+						"MimeType": "application/vnd.nextthought.assessment.questionsubmission",
+						"NTIID": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.qid.content.file.upload",
+						"containerId": "tag:nextthought.com,2011-10:NTIAlpha-HTML-NTI1000_TestCourse.file_upload",
+						"parts": [
+							{
+								"Class": "QUploadedFile",
+								"CreatedTime": 1571086923.447515,
+								"FileMimeType": "application/pdf",
+								"Last Modified": 1571086923.447515,
+								"MimeType": "application/vnd.nextthought.assessment.uploadedfile",
+								"NTIID": "tag:nextthought.com,2011-10:system-OID-0xd782:5573657273",
+								"OID": "tag:nextthought.com,2011-10:system-OID-0xd782:5573657273",
+								"contentType": "application/pdf",
+								"download_url": "/dataserver2/Objects/tag%3Anextthought.com%2C2011-10%3Asystem-OID-0xd782%3A5573657273/@@download/Winter%20Work%20Flyer.pdf",
+								"filename": "Winter Work Flyer.pdf",
+								"name": "Winter Work Flyer.pdf",
+								"size": 79422,
+								"url": "/dataserver2/Objects/tag%3Anextthought.com%2C2011-10%3Asystem-OID-0xd782%3A5573657273/@@view/Winter%20Work%20Flyer.pdf",
+								"value": "/dataserver2/Objects/tag%3Anextthought.com%2C2011-10%3Asystem-OID-0xd782%3A5573657273/@@view/Winter%20Work%20Flyer.pdf"
+							}
+						],
+						"questionId": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.qid.content.file.upload"
+					}
+				]
+			}
+		]
 	},
 	"SyntheticSubmission": false,
 	"href": "/dataserver2/users/demouser.001/Objects/tag%3Anextthought.com%2C2011-10%3Ademouser.001-OID-0xd77e%3A5573657273%3ANMGbYWTRZxC",
@@ -140,52 +155,60 @@
 		"CreatedTime": 1571086923.456074,
 		"CreatorRecordedEffortDuration": null,
 		"Last Modified": 1571086923.456074,
-		"Links": [{
-			"Class": "Link",
-			"href": "/dataserver2/++etc++hostsites/alpha.dev/++etc++site/Courses/DefaultAPICopied/NTI%201000/AssignmentHistories/demouser.001/tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload/UsersCourseAssignmentHistoryItem",
-			"ntiid": "tag:nextthought.com,2011-10:demouser.001-OID-0xd77e:5573657273:NMGbYWTRZxC",
-			"rel": "AssignmentHistoryItem"
-		}],
+		"Links": [
+			{
+				"Class": "Link",
+				"href": "/dataserver2/++etc++hostsites/alpha.dev/++etc++site/Courses/DefaultAPICopied/NTI%201000/AssignmentHistories/demouser.001/tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload/UsersCourseAssignmentHistoryItem",
+				"ntiid": "tag:nextthought.com,2011-10:demouser.001-OID-0xd77e:5573657273:NMGbYWTRZxC",
+				"rel": "AssignmentHistoryItem"
+			}
+		],
 		"MimeType": "application/vnd.nextthought.assessment.assignmentsubmissionpendingassessment",
 		"NTIID": "tag:nextthought.com,2011-10:system-OID-0xd77c:5573657273:NMGbYWTRZxE",
 		"OID": "tag:nextthought.com,2011-10:system-OID-0xd77c:5573657273:NMGbYWTRZxE",
 		"assignmentId": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload",
 		"containerId": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.asg.assignment:file_upload",
-		"parts": [{
-			"Class": "QuestionSetSubmission",
-			"ContainerId": "tag:nextthought.com,2011-10:NTIAlpha-HTML-NTI1000_TestCourse.file_upload",
-			"Creator": "demouser.001",
-			"CreatorRecordedEffortDuration": 35,
-			"MimeType": "application/vnd.nextthought.assessment.questionsetsubmission",
-			"containerId": "tag:nextthought.com,2011-10:NTIAlpha-HTML-NTI1000_TestCourse.file_upload",
-			"questionSetId": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.set.qset:content_file_upload",
-			"questions": [{
-				"Class": "QuestionSubmission",
+		"parts": [
+			{
+				"Class": "QuestionSetSubmission",
 				"ContainerId": "tag:nextthought.com,2011-10:NTIAlpha-HTML-NTI1000_TestCourse.file_upload",
 				"Creator": "demouser.001",
-				"CreatorRecordedEffortDuration": null,
-				"MimeType": "application/vnd.nextthought.assessment.questionsubmission",
-				"NTIID": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.qid.content.file.upload",
+				"CreatorRecordedEffortDuration": 35,
+				"MimeType": "application/vnd.nextthought.assessment.questionsetsubmission",
 				"containerId": "tag:nextthought.com,2011-10:NTIAlpha-HTML-NTI1000_TestCourse.file_upload",
-				"parts": [{
-					"Class": "QUploadedFile",
-					"CreatedTime": 1571086923.447515,
-					"FileMimeType": "application/pdf",
-					"Last Modified": 1571086923.447515,
-					"MimeType": "application/vnd.nextthought.assessment.uploadedfile",
-					"NTIID": "tag:nextthought.com,2011-10:system-OID-0xd782:5573657273",
-					"OID": "tag:nextthought.com,2011-10:system-OID-0xd782:5573657273",
-					"contentType": "application/pdf",
-					"download_url": "/dataserver2/Objects/tag%3Anextthought.com%2C2011-10%3Asystem-OID-0xd782%3A5573657273/@@download/Winter%20Work%20Flyer.pdf",
-					"filename": "Winter Work Flyer.pdf",
-					"name": "Winter Work Flyer.pdf",
-					"size": 79422,
-					"url": "/dataserver2/Objects/tag%3Anextthought.com%2C2011-10%3Asystem-OID-0xd782%3A5573657273/@@view/Winter%20Work%20Flyer.pdf",
-					"value": "/dataserver2/Objects/tag%3Anextthought.com%2C2011-10%3Asystem-OID-0xd782%3A5573657273/@@view/Winter%20Work%20Flyer.pdf"
-				}],
-				"questionId": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.qid.content.file.upload"
-			}]
-		}]
+				"questionSetId": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.set.qset:content_file_upload",
+				"questions": [
+					{
+						"Class": "QuestionSubmission",
+						"ContainerId": "tag:nextthought.com,2011-10:NTIAlpha-HTML-NTI1000_TestCourse.file_upload",
+						"Creator": "demouser.001",
+						"CreatorRecordedEffortDuration": null,
+						"MimeType": "application/vnd.nextthought.assessment.questionsubmission",
+						"NTIID": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.qid.content.file.upload",
+						"containerId": "tag:nextthought.com,2011-10:NTIAlpha-HTML-NTI1000_TestCourse.file_upload",
+						"parts": [
+							{
+								"Class": "QUploadedFile",
+								"CreatedTime": 1571086923.447515,
+								"FileMimeType": "application/pdf",
+								"Last Modified": 1571086923.447515,
+								"MimeType": "application/vnd.nextthought.assessment.uploadedfile",
+								"NTIID": "tag:nextthought.com,2011-10:system-OID-0xd782:5573657273",
+								"OID": "tag:nextthought.com,2011-10:system-OID-0xd782:5573657273",
+								"contentType": "application/pdf",
+								"download_url": "/dataserver2/Objects/tag%3Anextthought.com%2C2011-10%3Asystem-OID-0xd782%3A5573657273/@@download/Winter%20Work%20Flyer.pdf",
+								"filename": "Winter Work Flyer.pdf",
+								"name": "Winter Work Flyer.pdf",
+								"size": 79422,
+								"url": "/dataserver2/Objects/tag%3Anextthought.com%2C2011-10%3Asystem-OID-0xd782%3A5573657273/@@view/Winter%20Work%20Flyer.pdf",
+								"value": "/dataserver2/Objects/tag%3Anextthought.com%2C2011-10%3Asystem-OID-0xd782%3A5573657273/@@view/Winter%20Work%20Flyer.pdf"
+							}
+						],
+						"questionId": "tag:nextthought.com,2011-10:NTIAlpha-NAQ-NTI1000_TestCourse.naq.qid.content.file.upload"
+					}
+				]
+			}
+		]
 	},
 	"submission_count": 1
 }

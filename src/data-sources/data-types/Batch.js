@@ -1,6 +1,7 @@
 import Base from '../../models/Base';
 
 export default class Batch extends Base {
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'BatchPage':              {type: 'number'                   },
@@ -12,8 +13,7 @@ export default class Batch extends Base {
 		'FilteredTotalItemCount': {type: 'number'                   }
 	}
 
-
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 
 		this.addToPending(
@@ -23,7 +23,7 @@ export default class Batch extends Base {
 		);
 	}
 
-	[Symbol.iterator] () {
+	[Symbol.iterator]() {
 		return this.Items[Symbol.iterator]();
 	}
 }

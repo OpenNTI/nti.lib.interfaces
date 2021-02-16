@@ -8,4 +8,4 @@ class Bookmark extends Annotation {
 	static MimeType = COMMON_PREFIX + 'bookmark';
 }
 
-export default decorate(Bookmark, { with: [model]});
+export default decorate(Bookmark, { with: [model] });

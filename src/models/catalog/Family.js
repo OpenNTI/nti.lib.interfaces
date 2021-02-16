@@ -1,11 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class CatalogFamily extends Base {
-	static MimeType = COMMON_PREFIX + 'catalogfamily'
+	static MimeType = COMMON_PREFIX + 'catalogfamily';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'CatalogFamilyID':               { type: 'string' },
@@ -18,14 +19,16 @@ class CatalogFamily extends Base {
 		'EndDate':                       { type: 'date'   }
 	}
 
-	getFamilyID () { return this.CatalogFamilyID; }
+	getFamilyID() {
+		return this.CatalogFamilyID;
+	}
 
-	getPresentationProperties () {
+	getPresentationProperties() {
 		return {
 			title: this.Title,
-			label: null
+			label: null,
 		};
 	}
 }
 
-export default decorate(CatalogFamily, {with:[model]});
+export default decorate(CatalogFamily, { with: [model] });

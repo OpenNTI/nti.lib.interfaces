@@ -5,17 +5,21 @@
  * non-assignment assessment object.  We also have a reference to all the
  * assignments that we can currently see.
  */
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
-import {mixin} from '@nti/lib-decorators';
+import { mixin } from '@nti/lib-decorators';
 
-import {ASSESSMENT_HISTORY_LINK, Parser as parse, Service, Parent} from '../../../constants';
+import {
+	ASSESSMENT_HISTORY_LINK,
+	Parser as parse,
+	Service,
+	Parent,
+} from '../../../constants';
 import Base from '../../Base';
-import {initPrivate, getPrivate} from '../../../utils/private';
+import { initPrivate, getPrivate } from '../../../utils/private';
 
 import AssignmentsByX from './AssignmentsByX';
 import ActivityMixin from './AssignmentActivityMixin';
-
 
 const logger = Logger.get('assignment:Collection:Base');
 
@@ -23,28 +27,32 @@ const ORDER_BY_COMPLETION = Symbol('ORDER_BY_COMPLETION');
 const ORDER_BY_DUE_DATE = Symbol('ORDER_BY_DUE_DATE');
 const ORDER_BY_LESSON = Symbol('ORDER_BY_LESSON');
 
-function exposeOrderBySymbols (Collection) {
+function exposeOrderBySymbols(Collection) {
 	Object.assign(Collection.prototype, {
 		ORDER_BY_COMPLETION,
 		ORDER_BY_DUE_DATE,
-		ORDER_BY_LESSON
+		ORDER_BY_LESSON,
 	});
 }
 
-function find (list, id) {
-	return list.reduce((found, item) =>
-		found || (
-			(item.getID() === id || (item.containsId && item.containsId(id))) ? item : null
-		), null);
+function find(list, id) {
+	return list.reduce(
+		(found, item) =>
+			found ||
+			(item.getID() === id || (item.containsId && item.containsId(id))
+				? item
+				: null),
+		null
+	);
 }
 
-function fillMaps (oValue, o, oKey) {
-	let items = o.items = (o.items || {});
-	let update = (v, old) => oValue[oValue.indexOf(old)] = v;
+function fillMaps(oValue, o, oKey) {
+	let items = (o.items = o.items || {});
+	let update = (v, old) => (oValue[oValue.indexOf(old)] = v);
 
 	if (!Array.isArray(oValue)) {
 		oValue = [oValue];
-		update = v => o[oKey] = v;
+		update = v => (o[oKey] = v);
 	}
 
 	for (let i of oValue) {
@@ -59,25 +67,24 @@ function fillMaps (oValue, o, oKey) {
 	}
 }
 
-const isFinalGrade = a => a.isNonSubmit && a.isNonSubmit() && a.title === 'Final Grade';
+const isFinalGrade = a =>
+	a.isNonSubmit && a.isNonSubmit() && a.title === 'Final Grade';
 const omit = a => isFinalGrade(a);
 
-const toNumeric = o => o ? o.getTime() : 0;
-const normalize = o => o === 0 ? 0 : o / Math.abs(o);
+const toNumeric = o => (o ? o.getTime() : 0);
+const normalize = o => (o === 0 ? 0 : o / Math.abs(o));
 
 const sortComparatorDueDate = (a, b) => (
-	a = toNumeric(a.getDueDate()),
-	b = toNumeric(b.getDueDate()),
-	normalize(a - b));
-
+	(a = toNumeric(a.getDueDate())),
+	(b = toNumeric(b.getDueDate())),
+	normalize(a - b)
+);
 
 const sortComparatorTitle = (a, b) => (a.title || '').localeCompare(b.title);
-
 
 const GetListFrom = Symbol();
 
 class Collection extends Base {
-
 	/**
 	 * Build the Assessment Collection.
 	 *
@@ -92,25 +99,22 @@ class Collection extends Base {
 	 * @param  {string} historyLink          URL to fetch assignment histories.
 	 * @returns {void}
 	 */
-	constructor (service, parent, assignments, assessments, historyLink) {
+	constructor(service, parent, assignments, assessments, historyLink) {
 		super(service, parent, {
-			Links: [
-				{rel: ASSESSMENT_HISTORY_LINK, href: historyLink}
-			]
+			Links: [{ rel: ASSESSMENT_HISTORY_LINK, href: historyLink }],
 		});
 		initPrivate(this, {});
 		this.onChange = this.onChange.bind(this);
-		this.applyData (assignments, assessments);
+		this.applyData(assignments, assessments);
 	}
 
-
-	applyData (assignments, assessments) {
-		const parseItem = (o) => {
+	applyData(assignments, assessments) {
+		const parseItem = o => {
 			const i = Array.isArray(o) ? o : [o];
 
 			for (let ix = i.length - 1; ix >= 0; ix--) {
-				let item = i[ix] = this[parse](i[ix]);
-				if(item) {
+				let item = (i[ix] = this[parse](i[ix]));
+				if (item) {
 					if (this.onChange) {
 						item.on('change', this.onChange);
 					}
@@ -119,25 +123,26 @@ class Collection extends Base {
 
 			return Array.isArray(o) ? i : i[0];
 		};
-		const process = (k, v, o) => fillMaps(o[k] = parseItem(v), o, k);
+		const process = (k, v, o) => fillMaps((o[k] = parseItem(v)), o, k);
 		const getItems = o => o.Items || o;
 		const isIgnoredKey = RegExp.prototype.test.bind(/^href$/i);
-		const consume = (obj, dict) => Object.keys(getItems(dict))
-			.filter(x => !isIgnoredKey(x))
-			.forEach(key => process(key, getItems(dict)[key], obj));
+		const consume = (obj, dict) =>
+			Object.keys(getItems(dict))
+				.filter(x => !isIgnoredKey(x))
+				.forEach(key => process(key, getItems(dict)[key], obj));
 
 		const data = getPrivate(this);
 
-		let a =	data.visibleAssignments = {};
+		let a = (data.visibleAssignments = {});
 		consume(a, assignments);
 
-		let b = data.notAssignments = {};
+		let b = (data.notAssignments = {});
 		consume(b, assessments);
 
 		let outlineMap = {};
 		let assessmentToOutlineMap = {};
 		for (let collection of [assignments, assessments]) {
-			let {Outline: map = {}} = collection;
+			let { Outline: map = {} } = collection;
 			//The map is OutlineNodeID => [AssessmentIDs]
 			//We want the map to be complete from both assessment collections.
 			//Maintain the order, of the individual types, but because these
@@ -151,23 +156,34 @@ class Collection extends Base {
 
 				for (let assessmentId of map[nodeId]) {
 					if (assessmentToOutlineMap[assessmentId]) {
-						logger.debug('Duplicated key! (assessment referenced on multiple outlines?)\n\tassessmentId: %s\n\t\tnodeId (old): %s\n\t\tnodeId (new): %s',
+						logger.debug(
+							'Duplicated key! (assessment referenced on multiple outlines?)\n\tassessmentId: %s\n\t\tnodeId (old): %s\n\t\tnodeId (new): %s',
 							assessmentId,
 							assessmentToOutlineMap[assessmentId],
-							nodeId);
+							nodeId
+						);
 					} else {
-						logger.debug('New key:\n\tassessmentId: %s\n\t\tmappted to nodeId (new): %s',
+						logger.debug(
+							'New key:\n\tassessmentId: %s\n\t\tmappted to nodeId (new): %s',
 							assessmentId,
-							nodeId);
+							nodeId
+						);
 					}
 					assessmentToOutlineMap[assessmentId] = nodeId;
 
 					//For some reason, we sometimes get QuestionSet/Question IDs
 					//here that belong to Assignments instead of the Assignment IDs...
 					//So, we have to make sure the Assignment ID is in these lists and are mapped.
-					let assignment = find(this.getAssignments() || [], assessmentId);
+					let assignment = find(
+						this.getAssignments() || [],
+						assessmentId
+					);
 					if (assignment && assignment.getID() !== assessmentId) {
-						logger.warn('Part of an assignment was given as the assignment,\n\tpatching:\n\t\t%s\n\tto:\n\t\t%s', assessmentId, assignment.getID());
+						logger.warn(
+							'Part of an assignment was given as the assignment,\n\tpatching:\n\t\t%s\n\tto:\n\t\t%s',
+							assessmentId,
+							assignment.getID()
+						);
 						assessmentToOutlineMap[assignment.getID()] = nodeId;
 						outlineMap[nodeId].push(assignment.getID());
 					}
@@ -175,14 +191,12 @@ class Collection extends Base {
 			}
 		}
 
-
 		Object.assign(data, {
 			outlineMap,
-			assessmentToOutlineMap
+			assessmentToOutlineMap,
 		});
 
-
-		const {free, order = ORDER_BY_LESSON} = data.viewStore || {};
+		const { free, order = ORDER_BY_LESSON } = data.viewStore || {};
 
 		if (free) {
 			free();
@@ -191,30 +205,29 @@ class Collection extends Base {
 		data.viewStore = new AssignmentsByX(this, order);
 	}
 
+	onChange() {}
 
-	onChange () {}
-
-
-	getGroupedStore () {
+	getGroupedStore() {
 		return getPrivate(this).viewStore;
 	}
 
-
-	async [ORDER_BY_COMPLETION] (filter) {
+	async [ORDER_BY_COMPLETION](filter) {
 		//The return value of getAssignments is volatile, and can be manipulated without worry.
 		const all = this.getAssignments()
 			//pre-sort by title so when we group, they'll already be in order with in the groups.
 			.sort(sortComparatorTitle);
 
 		const groups = [
-			{label: 'Incomplete', items: []},
-			{label: 'Complete', items: []}
+			{ label: 'Incomplete', items: [] },
+			{ label: 'Complete', items: [] },
 		];
 
 		let [incomplete, complete] = groups;
 
 		for (let assignment of all) {
-			let group = (assignment.hasLink(ASSESSMENT_HISTORY_LINK)) ? complete : incomplete;
+			let group = assignment.hasLink(ASSESSMENT_HISTORY_LINK)
+				? complete
+				: incomplete;
 			if (!filter || filter(assignment)) {
 				group.items.push(assignment);
 			}
@@ -223,8 +236,7 @@ class Collection extends Base {
 		return groups;
 	}
 
-
-	async [ORDER_BY_DUE_DATE] (filter) {
+	async [ORDER_BY_DUE_DATE](filter) {
 		//The return value of getAssignments is volatile, and can be manipulated without worry.
 		const all = this.getAssignments()
 			//pre-sort by title so when we group, they'll already be in order with in the groups.
@@ -234,13 +246,13 @@ class Collection extends Base {
 
 		const getGroup = a => {
 			let due = a.getDueDate();
-			let key = !due ? 'no-due-date' : (new Date(due)).setHours(0, 0, 0);
+			let key = !due ? 'no-due-date' : new Date(due).setHours(0, 0, 0);
 			let sortBy = due ? new Date(key) : Number.MAX_VALUE;
 
 			groups[key] = groups[key] || {
 				sortBy,
 				label: due == null ? key : sortBy,
-				items: []
+				items: [],
 			};
 
 			return groups[key];
@@ -256,53 +268,57 @@ class Collection extends Base {
 		return Object.values(groups).sort((a, b) => a.sortBy - b.sortBy);
 	}
 
-
-	async [ORDER_BY_LESSON] (filter) {
+	async [ORDER_BY_LESSON](filter) {
 		const {
 			outlineMap,
-			visibleAssignments: {items: assignments}
+			visibleAssignments: { items: assignments },
 		} = getPrivate(this);
 
-		let ungrouped = {...assignments};
+		let ungrouped = { ...assignments };
 
 		let groups = {};
 
 		const getBinId = node => (node && node.getContentId()) || 'Unknown';
 
-		function getGroup (node, sortBy, key) {
+		function getGroup(node, sortBy, key) {
 			groups[key] = groups[key] || {
 				label: (node || {}).label || 'Unknown',
 				sortBy,
-				items: []
+				items: [],
 			};
 
 			return groups[key];
 		}
 
-		function bin (assignmentId, order, node) {
+		function bin(assignmentId, order, node) {
 			let binId = getBinId(node);
 			let assignment = assignments[assignmentId];
 
 			delete ungrouped[assignmentId];
 
-			if (assignment && !omit(assignment) && (!filter || filter(assignment))) {
+			if (
+				assignment &&
+				!omit(assignment) &&
+				(!filter || filter(assignment))
+			) {
 				let group = getGroup(node, order, binId);
 				group.items.push(assignment);
 			}
 		}
 
-
 		const ungroupedByName = (a, b) =>
 			sortComparatorTitle(ungrouped[a], ungrouped[b]);
 
-
 		const outline = await this.parent().getOutline();
-		const list = (await outline.getFlattenedList()).filter(x => x.getContentId());
+		const list = (await outline.getFlattenedList()).filter(x =>
+			x.getContentId()
+		);
 
 		list.forEach((n, index) => {
-
 			let assessments = outlineMap[n.getContentId()];
-			if (!assessments) { return; }
+			if (!assessments) {
+				return;
+			}
 
 			for (let assessmentId of assessments) {
 				bin(assessmentId, index, n);
@@ -310,8 +326,7 @@ class Collection extends Base {
 
 			const binId = getBinId(n);
 			if (groups[binId]) {
-				groups[binId].items
-					.sort(sortComparatorDueDate);
+				groups[binId].items.sort(sortComparatorDueDate);
 			}
 		});
 
@@ -321,9 +336,7 @@ class Collection extends Base {
 		}
 
 		return Object.values(groups).sort((a, b) => a.sortBy - b.sortBy);
-
 	}
-
 
 	/**
 	 * Returns filtered assignments grouped by a particular ordering.
@@ -333,14 +346,15 @@ class Collection extends Base {
 	 *
 	 * @returns {Promise} fulfills with an object with key: groups, order, and search
 	 */
-	async getAssignmentsBy (order, search) {
-		const searchFn = a => (a.title || '').toLowerCase().indexOf(search.toLowerCase()) >= 0;
+	async getAssignmentsBy(order, search) {
+		const searchFn = a =>
+			(a.title || '').toLowerCase().indexOf(search.toLowerCase()) >= 0;
 
 		try {
 			const resolveGroups = async () => ({
 				order,
 				search,
-				groups: await this[order](search && searchFn)
+				groups: await this[order](search && searchFn),
 			});
 
 			const work = resolveGroups(); //we need the promise, don't "await".
@@ -349,35 +363,30 @@ class Collection extends Base {
 			this.emit('new-filter', work, order, search);
 
 			return await work;
-
 		} catch (e) {
 			throw new Error('Bad Arguments');
 		}
 	}
 
-
-
-	getAssessmentIdsUnder (outlineNodeId) {
+	getAssessmentIdsUnder(outlineNodeId) {
 		return getPrivate(this).outlineMap[outlineNodeId];
 	}
 
-
-	getOutlineNodeIdForAssessment (thing) {
+	getOutlineNodeIdForAssessment(thing) {
 		const assessmentId = typeof thing === 'string' ? thing : thing.getID();
 		return getPrivate(this).assessmentToOutlineMap[assessmentId];
 	}
 
-
-	[GetListFrom] (dict, outlineNodeId) {
-		let {items} = dict;
-		let ids = outlineNodeId && (this.getAssessmentIdsUnder(outlineNodeId) || []);
+	[GetListFrom](dict, outlineNodeId) {
+		let { items } = dict;
+		let ids =
+			outlineNodeId && (this.getAssessmentIdsUnder(outlineNodeId) || []);
 		let nodeIdsToInclude = ids || Object.keys(items || {});
 
 		return nodeIdsToInclude
-			.reduce((agg, id) => items[id] ? agg.concat(items[id]) : agg, [])
+			.reduce((agg, id) => (items[id] ? agg.concat(items[id]) : agg), [])
 			.filter(a => !omit(a));
 	}
-
 
 	/**
 	 * Get the known visible assignments for the current user. If the outlineNodeId is
@@ -387,10 +396,12 @@ class Collection extends Base {
 	 *
 	 * @returns {array} An array of Assignments.
 	 */
-	getAssignments (outlineNodeId) {
-		return this[GetListFrom](getPrivate(this).visibleAssignments, outlineNodeId);
+	getAssignments(outlineNodeId) {
+		return this[GetListFrom](
+			getPrivate(this).visibleAssignments,
+			outlineNodeId
+		);
 	}
-
 
 	/**
 	 * Get the known visible assessments for the current user. If the outlineNodeId is
@@ -400,36 +411,40 @@ class Collection extends Base {
 	 *
 	 * @returns {array} An array of Assessments.
 	 */
-	getAssessments (outlineNodeId) {
-		return this[GetListFrom](getPrivate(this).notAssignments, outlineNodeId);
+	getAssessments(outlineNodeId) {
+		return this[GetListFrom](
+			getPrivate(this).notAssignments,
+			outlineNodeId
+		);
 	}
 
-
-	getAssessment (assessmentId) {
+	getAssessment(assessmentId) {
 		const maybe = this.getAssessments();
 
 		return maybe && find(maybe, assessmentId);
 	}
 
-
-	getAssignment (assessmentId) {
-		const {visibleAssignments: {items: map = {}}} = getPrivate(this);
+	getAssignment(assessmentId) {
+		const {
+			visibleAssignments: { items: map = {} },
+		} = getPrivate(this);
 		const findIt = x => find(Object.values(map), x);
 
 		return map[assessmentId] || findIt(assessmentId);
 	}
 
-
-	async fetchAssignment (id) {
+	async fetchAssignment(id) {
 		let assignment = this.getAssignment(id);
 		const assignmentID = assignment ? assignment.getID() : id;
 
-		const raw = await this[Service].getObjectRaw(assignmentID, null, null, {course: this[Parent].getID()});
+		const raw = await this[Service].getObjectRaw(assignmentID, null, null, {
+			course: this[Parent].getID(),
+		});
 
 		if (assignment) {
 			await assignment.refresh(raw);
 		} else {
-			assignment = await this[Service].getObject(raw, {parent: this});
+			assignment = await this[Service].getObject(raw, { parent: this });
 		}
 
 		if (!assignment.isAssignment) {
@@ -439,9 +454,8 @@ class Collection extends Base {
 		return assignment;
 	}
 
-
-	isAssignment (assessmentId) {
-		if(this.getAssignment(assessmentId)) {
+	isAssignment(assessmentId) {
+		if (this.getAssignment(assessmentId)) {
 			return true;
 		}
 
@@ -449,9 +463,10 @@ class Collection extends Base {
 		return !maybe || !find(maybe, assessmentId);
 	}
 
-
-	getFinalGradeAssignmentId () {
-		const {visibleAssignments: {items}} = getPrivate(this);
+	getFinalGradeAssignmentId() {
+		const {
+			visibleAssignments: { items },
+		} = getPrivate(this);
 		const assignments = Object.values(items);
 		const finalGrade = assignments.find(a => isFinalGrade(a));
 
@@ -459,7 +474,6 @@ class Collection extends Base {
 	}
 }
 
-export default decorate(Collection, {with:[
-	mixin(ActivityMixin),
-	exposeOrderBySymbols,
-]});
+export default decorate(Collection, {
+	with: [mixin(ActivityMixin), exposeOrderBySymbols],
+});

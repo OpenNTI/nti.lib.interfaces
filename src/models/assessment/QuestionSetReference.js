@@ -1,13 +1,14 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 import Completable from '../../mixins/Completable';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class QuestionSetReference extends Base {
-	static MimeType = COMMON_PREFIX + 'questionsetref'
+	static MimeType = COMMON_PREFIX + 'questionsetref';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Target-NTIID':   { type: 'string' },
@@ -15,17 +16,15 @@ class QuestionSetReference extends Base {
 		'label':          { type: 'string' }
 	}
 
-
-	get target () {
+	get target() {
 		return this['Target-NTIID'];
 	}
 
-	pointsToId (id) {
+	pointsToId(id) {
 		return this.target === id;
 	}
 }
 
-export default decorate(QuestionSetReference, {with:[
-	model,
-	mixin(Completable),
-]});
+export default decorate(QuestionSetReference, {
+	with: [model, mixin(Completable)],
+});

@@ -1,12 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
 import Base from '../Base';
-import {model, COMMON_PREFIX} from '../Registry';
-
+import { model, COMMON_PREFIX } from '../Registry';
 
 class PresenceInfo extends Base {
-	static MimeType = COMMON_PREFIX + 'presenceinfo'
+	static MimeType = COMMON_PREFIX + 'presenceinfo';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'username': {type: 'string'},
@@ -15,12 +15,12 @@ class PresenceInfo extends Base {
 		'status': {type: 'string'}
 	}
 
-	isOnline () {
+	isOnline() {
 		return this.type !== 'unavailable';
 	}
 
-	getName () {
-		const {show} = this;
+	getName() {
+		const { show } = this;
 
 		if (!this.isOnline()) {
 			return 'unavailable';
@@ -38,4 +38,4 @@ class PresenceInfo extends Base {
 	}
 }
 
-export default decorate(PresenceInfo, {with:[model]});
+export default decorate(PresenceInfo, { with: [model] });

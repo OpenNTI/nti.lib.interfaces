@@ -1,44 +1,44 @@
 /* eslint-env jest */
-import {createMockNode} from '../../../__test__/common';
+import { createMockNode } from '../../../__test__/common';
 import filter from '../filter';
-
 
 const FILTERED_MATCH = /filtered$/;
 
-function filterFn (item) {
+function filterFn(item) {
 	return !item.matches;
 }
 
-function createHit (name) {
+function createHit(name) {
+	return createMockNode(
+		{
+			name,
+			matches: true,
+		},
+		{
+			filtered: createMockNode({
+				name: `${name}-filtered`,
+			}),
+		}
+	);
+}
+
+function createMiss(name) {
 	return createMockNode({
 		name,
-		matches: true
-	}, {
-		filtered: createMockNode({
-			name: `${name}-filtered`
-		})
+		matches: false,
 	});
 }
 
-function createMiss (name) {
-	return createMockNode({
-		name,
-		matches: false
-	});
-}
-
-function getChildren () {
+function getChildren() {
 	return [
 		createHit('hit-1'),
 		createMiss('miss-1'),
 		createMiss('miss-2'),
 		createHit('hit-2'),
 		createHit('hit-3'),
-		createMiss('miss-3')
+		createMiss('miss-3'),
 	];
 }
-
-
 
 describe('ContentTree filter', () => {
 	describe('non-recursive', () => {

@@ -1,12 +1,12 @@
 import path from 'path';
 
 import Logger from '@nti/util-logger';
-import {isNTIID} from '@nti/lib-ntiids';
-import {wait, Tasks} from '@nti/lib-commons';
+import { isNTIID } from '@nti/lib-ntiids';
+import { wait, Tasks } from '@nti/lib-commons';
 
-import {Service} from '../../constants';
+import { Service } from '../../constants';
 
-const {Executor} = Tasks;
+const { Executor } = Tasks;
 
 const logger = Logger.get('lib:asssignment-editor:utils:OrderedContents');
 
@@ -18,24 +18,20 @@ const OPTIMISTICALLY_ADD_AT = Symbol('Optimistically Add At');
 
 const LINK_NAME = 'ordered-contents';
 
-const FIELDS = [
-	'questions',
-	'parts',
-	'Items'
-];
+const FIELDS = ['questions', 'parts', 'Items'];
 
 const QUEUES = new WeakMap();
 const MAX_CONCURRENT = 1;
 
-function defineNonEnumerableProperty (item, property, value) {
+function defineNonEnumerableProperty(item, property, value) {
 	Object.defineProperty(item, property, {
-		configurable: true,//allow the property to be reconfigured (aka deleted or redefined)
-		enumerable: false,//it defaults to false, just being explicit (for your benefit)
-		value
+		configurable: true, //allow the property to be reconfigured (aka deleted or redefined)
+		enumerable: false, //it defaults to false, just being explicit (for your benefit)
+		value,
 	});
 }
 
-function getQueueFor (obj) {
+function getQueueFor(obj) {
 	let queue = QUEUES.get(obj);
 
 	if (!queue) {
@@ -46,46 +42,44 @@ function getQueueFor (obj) {
 	return queue;
 }
 
-
-function getLinkFromObj (obj) {
-	return obj && (obj.getOrderedContentsLink ?
-		obj.getOrderedContentsLink() :
-		obj.getLink ?
-			obj.getLink(LINK_NAME) :
-			''
+function getLinkFromObj(obj) {
+	return (
+		obj &&
+		(obj.getOrderedContentsLink
+			? obj.getOrderedContentsLink()
+			: obj.getLink
+			? obj.getLink(LINK_NAME)
+			: '')
 	);
 }
 
-
-function getPostData (placeholder) {
-	return isNTIID(placeholder.NTIID) ? {NTIID: placeholder.NTIID} : placeholder.getData();
+function getPostData(placeholder) {
+	return isNTIID(placeholder.NTIID)
+		? { NTIID: placeholder.NTIID }
+		: placeholder.getData();
 }
 
-
-export function hasOrderedContents (obj) {
+export function hasOrderedContents(obj) {
 	const link = getLinkFromObj(obj);
 
 	return !!link;
 }
 
-
 export default class OrderedContents {
-	static hasOrderedContents (obj) {
+	static hasOrderedContents(obj) {
 		return hasOrderedContents(obj);
 	}
 
-	constructor (obj, service) {
+	constructor(obj, service) {
 		this.backingObject = obj;
 		this[Service] = service || obj[Service];
 	}
 
-
-	updateBackingObject (obj) {
+	updateBackingObject(obj) {
 		this.backingObject = obj;
 	}
 
-
-	get orderedContentsField () {
+	get orderedContentsField() {
 		const obj = this.backingObject;
 
 		if (obj.orderedContentsField) {
@@ -101,9 +95,8 @@ export default class OrderedContents {
 		return null;
 	}
 
-
-	get orderedContents () {
-		const {orderedContentsField} = this;
+	get orderedContents() {
+		const { orderedContentsField } = this;
 
 		if (!orderedContentsField) {
 			return [];
@@ -112,37 +105,31 @@ export default class OrderedContents {
 		return this.backingObject[orderedContentsField];
 	}
 
-
-	get length () {
+	get length() {
 		return this.orderedContents.length;
 	}
 
-
-	get link () {
+	get link() {
 		return getLinkFromObj(this.backingObject);
 	}
 
-
-	get canEdit () {
+	get canEdit() {
 		return hasOrderedContents(this.backingObject);
 	}
 
-
-	getLinkForIndex (index) {
+	getLinkForIndex(index) {
 		return this.link && path.join(this.link, 'index', index.toString(10));
 	}
 
-
-	isSameContainer (record) {
+	isSameContainer(record) {
 		const myId = this.backingObject.NTIID;
 		const theirId = record.NTIID ? record.NTIID : record;
 
 		return myId === theirId;
 	}
 
-
-	indexOf (item) {
-		let {orderedContents} = this;
+	indexOf(item) {
+		let { orderedContents } = this;
 		let NTIID = item.NTIID ? item.NTIID : item;
 
 		for (let i = 0; i < orderedContents.length; i++) {
@@ -154,9 +141,8 @@ export default class OrderedContents {
 		return -1;
 	}
 
-
-	findItem (item) {
-		let {orderedContents} = this;
+	findItem(item) {
+		let { orderedContents } = this;
 		let NTIID = item.NTIID ? item.NTIID : item;
 
 		for (let i = 0; i < orderedContents.length; i++) {
@@ -168,19 +154,22 @@ export default class OrderedContents {
 		return null;
 	}
 
-
-	[OPTIMISTICALLY_ADD_AT] (item, index, delaySave, replace) {
+	[OPTIMISTICALLY_ADD_AT](item, index, delaySave, replace) {
 		const obj = this.backingObject;
 
-		let {orderedContents, orderedContentsField} = this;
+		let { orderedContents, orderedContentsField } = this;
 		let createItem;
 
 		const replaceItem = (placeholder, replacement) => {
 			let newContents = this.orderedContents;
-			const placeholderIndex = newContents.findIndex(x => x === placeholder);
+			const placeholderIndex = newContents.findIndex(
+				x => x === placeholder
+			);
 
 			if (placeholderIndex < 0) {
-				logger.error('How did we get here?!?!?!?! Replacing a placeholder thats not in the ordered contents');
+				logger.error(
+					'How did we get here?!?!?!?! Replacing a placeholder thats not in the ordered contents'
+				);
 			} else if (replacement) {
 				newContents[placeholderIndex] = replacement;
 			} else {
@@ -206,45 +195,48 @@ export default class OrderedContents {
 
 			defineNonEnumerableProperty(placeholder, 'error', error);
 
-
 			//Fire the on change
 			obj.onChange();
 		};
 
 		if (!item.NTIID) {
-			createItem = Promise.resolve(this[Service].getObjectPlaceholder(item));
+			createItem = Promise.resolve(
+				this[Service].getObjectPlaceholder(item)
+			);
 		} else {
 			defineNonEnumerableProperty(item, 'isSaving', true);
 
 			createItem = Promise.resolve(item);
 		}
 
-		return createItem
-			.then((placeholder) => {
-				if (delaySave && placeholder.isPlaceholder) {
-					defineNonEnumerableProperty(placeholder, 'delaySaving', true);
-				}
+		return createItem.then(placeholder => {
+			if (delaySave && placeholder.isPlaceholder) {
+				defineNonEnumerableProperty(placeholder, 'delaySaving', true);
+			}
 
-				placeholder[REPLACE_WITH] = replacement => replaceItem(placeholder, replacement);
-				placeholder[SET_ERROR] = error => setErrorOn(placeholder, error);
-				placeholder[REMOVE] = () => replaceItem(placeholder);
+			placeholder[REPLACE_WITH] = replacement =>
+				replaceItem(placeholder, replacement);
+			placeholder[SET_ERROR] = error => setErrorOn(placeholder, error);
+			placeholder[REMOVE] = () => replaceItem(placeholder);
 
+			if (replace) {
+				orderedContents[index] = placeholder;
+				orderedContents = orderedContents.slice();
+			} else {
+				orderedContents = [
+					...orderedContents.slice(0, index),
+					placeholder,
+					...orderedContents.slice(index),
+				];
+			}
 
-				if (replace) {
-					orderedContents[index] = placeholder;
-					orderedContents = orderedContents.slice();
-				} else {
-					orderedContents = [...orderedContents.slice(0, index), placeholder, ...orderedContents.slice(index)];
-				}
+			obj[orderedContentsField] = orderedContents;
 
-				obj[orderedContentsField] = orderedContents;
+			obj.onChange();
 
-				obj.onChange();
-
-				return placeholder;
-			});
+			return placeholder;
+		});
 	}
-
 
 	/**
 	 * Given an item and an index, place that the item to that index in the ordered contents
@@ -255,7 +247,7 @@ export default class OrderedContents {
 	 * @param {boolean} replace replace the item at the index or insert
 	 * @returns {Promise} fulfills or rejects if the item is placed
 	 */
-	[PLACE_ITEM_AT_INDEX] (item, index, delaySave, replace) {
+	[PLACE_ITEM_AT_INDEX](item, index, delaySave, replace) {
 		const queue = getQueueFor(this.backingObject);
 		const insertLink = this.getLinkForIndex(index);
 
@@ -263,47 +255,55 @@ export default class OrderedContents {
 			return Promise.reject('No Ordered Contents Link');
 		}
 
-		const doSave = (placeholder) => {
-			return queue.queueTask(() => {
-				return this[Service][replace ? 'putParseResponse' : 'postParseResponse'](insertLink, getPostData(placeholder));
-			})
-			//Make sure we wait at least a little bit
-				.then(wait.min(wait.SHORT))
-				.then(savedItem => placeholder[REPLACE_WITH](savedItem))
-				.catch(reason => {
-					placeholder[SET_ERROR](reason);
+		const doSave = placeholder => {
+			return (
+				queue
+					.queueTask(() => {
+						return this[Service][
+							replace ? 'putParseResponse' : 'postParseResponse'
+						](insertLink, getPostData(placeholder));
+					})
+					//Make sure we wait at least a little bit
+					.then(wait.min(wait.SHORT))
+					.then(savedItem => placeholder[REPLACE_WITH](savedItem))
+					.catch(reason => {
+						placeholder[SET_ERROR](reason);
 
-					return Promise.reject(reason);
-				});
+						return Promise.reject(reason);
+					})
+			);
 		};
 
-		return this[OPTIMISTICALLY_ADD_AT](item, index, delaySave, replace)
-			.then((placeholder) => {
-				let save;
+		return this[OPTIMISTICALLY_ADD_AT](
+			item,
+			index,
+			delaySave,
+			replace
+		).then(placeholder => {
+			let save;
 
-				if (delaySave) {
-					save = new Promise((fulfill, reject) => {
-						placeholder.save = data => {
-							placeholder.mergeData(data);
+			if (delaySave) {
+				save = new Promise((fulfill, reject) => {
+					placeholder.save = data => {
+						placeholder.mergeData(data);
 
-							return doSave(placeholder)
-								.then(response => (fulfill(response), response))
-								.catch(reject);
-						};
+						return doSave(placeholder)
+							.then(response => (fulfill(response), response))
+							.catch(reject);
+					};
 
-						placeholder.remove = () => {
-							placeholder[REMOVE]();
-							fulfill();
-						};
-					});
-				} else {
-					save = doSave(placeholder);
-				}
+					placeholder.remove = () => {
+						placeholder[REMOVE]();
+						fulfill();
+					};
+				});
+			} else {
+				save = doSave(placeholder);
+			}
 
-				return save;
-			});
+			return save;
+		});
 	}
-
 
 	/**
 	 * Given an item and an index, insert it at the right place and try to save it to the server.
@@ -314,7 +314,7 @@ export default class OrderedContents {
 	 * @param {boolean} delaySave insert the placeholder, but wait to save it
 	 * @returns {Promise}      fulfills or rejects if the item is successfully added or not
 	 */
-	insertAt (item, index, delaySave) {
+	insertAt(item, index, delaySave) {
 		if (index === Infinity || index === undefined) {
 			index = this.length;
 		}
@@ -326,7 +326,6 @@ export default class OrderedContents {
 		return this[PLACE_ITEM_AT_INDEX](item, index, delaySave);
 	}
 
-
 	/**
 	 * Given an item optimistically add it to the items, and try to save it to the server.
 	 * If it's successful, replace the optimistic placeholder with the item from the server.
@@ -335,10 +334,9 @@ export default class OrderedContents {
 	 * @param {boolean} delaySave insert the placeholder, but delay saving
 	 * @returns {Promise}      fulfills or rejects if the item is successfully added or not
 	 */
-	append (item, delaySave) {
+	append(item, delaySave) {
 		return this.insertAt(item, Infinity, delaySave);
 	}
-
 
 	/**
 	 * Given an index and a replacement, replace that item at that index
@@ -349,7 +347,7 @@ export default class OrderedContents {
 	 * @param  {boolean} delaySave   insert the placeholder, but delay saving
 	 * @returns {Promise}             fulfills or rejects if the item is successfully replaced or not
 	 */
-	replaceAt (replacement, index, delaySave) {
+	replaceAt(replacement, index, delaySave) {
 		return this[PLACE_ITEM_AT_INDEX](replacement, index, delaySave, true);
 	}
 
@@ -362,12 +360,11 @@ export default class OrderedContents {
 	 * @param  {boolean} delaySave   insert the placeholder, but delay saving
 	 * @returns {Promise}             fulfills or rejects if the item is successfully replaced or not
 	 */
-	replaceItem (item, replacement, delaySave) {
+	replaceItem(item, replacement, delaySave) {
 		const index = this.indexOf(item);
 
 		return this.replaceAt(replacement, index, delaySave);
 	}
-
 
 	/**
 	 * Given an item, if its in the ordered contents mark it for deletion, and try to delete it from the server.
@@ -379,9 +376,9 @@ export default class OrderedContents {
 	 * @param  {Object} item the item to delete
 	 * @returns {Promise}     fulfills or rejects if the item is successfully deleted or not
 	 */
-	remove (item) {
+	remove(item) {
 		const obj = this.backingObject;
-		let {orderedContents, orderedContentsField, link} = this;
+		let { orderedContents, orderedContentsField, link } = this;
 		let index = this.indexOf(item);
 
 		if (!link) {
@@ -415,7 +412,9 @@ export default class OrderedContents {
 			.then(wait.min(wait.SHORT))
 			.then(() => {
 				//After its removed from the server, remove it from the ordered contents
-				orderedContents = orderedContents.filter(a => a.NTIID !== item.NTIID);
+				orderedContents = orderedContents.filter(
+					a => a.NTIID !== item.NTIID
+				);
 				obj[orderedContentsField] = orderedContents;
 				obj.onChange();
 
@@ -423,12 +422,11 @@ export default class OrderedContents {
 					this.insertAt(item, index);
 				};
 			})
-			.catch((reason) => {
+			.catch(reason => {
 				delete item.isDeleting;
 
 				//If the server fails, leave it in the ordered contents and mark it with an error
 				defineNonEnumerableProperty(item, 'isNotDeleted', true);
-
 
 				defineNonEnumerableProperty(item, 'error', reason);
 
@@ -436,9 +434,7 @@ export default class OrderedContents {
 
 				return Promise.reject(reason);
 			});
-
 	}
-
 
 	/**
 	 * Given an item, try to move it to the given index
@@ -456,11 +452,11 @@ export default class OrderedContents {
 	 * @param {boolean} delaySave wait to actually save, for now only works if adding a new item
 	 * @returns {Promise}           fulfills or rejects if the move was successful
 	 */
-	move (item, newIndex, oldIndex, oldParent, moveRoot, delaySave) {
+	move(item, newIndex, oldIndex, oldParent, moveRoot, delaySave) {
 		const obj = this.backingObject;
 		const queue = getQueueFor(obj);
 
-		let {orderedContents, orderedContentsField} = this;
+		let { orderedContents, orderedContentsField } = this;
 		let currentIndex = this.indexOf(item);
 
 		if (!moveRoot) {
@@ -487,22 +483,31 @@ export default class OrderedContents {
 		// defineNonEnumerableProperty(item, 'isSaving', true);
 
 		//Optimistically insert the record at the new index
-		orderedContents = [...orderedContents.slice(0, newIndex), item, ...orderedContents.slice(newIndex)];
+		orderedContents = [
+			...orderedContents.slice(0, newIndex),
+			item,
+			...orderedContents.slice(newIndex),
+		];
 
 		obj[orderedContentsField] = orderedContents;
 		obj.onChange();
 
-		return queue.queueTask(() => moveRoot.moveRecord(item, newIndex, oldIndex, obj, oldParent))
+		return queue
+			.queueTask(() =>
+				moveRoot.moveRecord(item, newIndex, oldIndex, obj, oldParent)
+			)
 			.then(wait.min(wait.SHORT))
-			.then((savedItem) => {
+			.then(savedItem => {
 				//update the item with the new one from the server
-				obj[orderedContentsField] = orderedContents.map((orderedItem) => {
-					return orderedItem.NTIID === savedItem.NTIID ? savedItem : orderedItem;
+				obj[orderedContentsField] = orderedContents.map(orderedItem => {
+					return orderedItem.NTIID === savedItem.NTIID
+						? savedItem
+						: orderedItem;
 				});
 
 				obj.onChange();
 			})
-			.catch((reason) => {
+			.catch(reason => {
 				// delete item.isSaving;
 
 				defineNonEnumerableProperty(item, 'isNotSaved', true);
@@ -514,7 +519,11 @@ export default class OrderedContents {
 				}
 
 				//move the item back...
-				orderedContents = [...orderedContents.slice(0, currentIndex), item, ...orderedContents.slice(currentIndex)];
+				orderedContents = [
+					...orderedContents.slice(0, currentIndex),
+					item,
+					...orderedContents.slice(currentIndex),
+				];
 
 				obj[orderedContentsField] = orderedContents;
 

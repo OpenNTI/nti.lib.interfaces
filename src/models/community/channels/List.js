@@ -2,30 +2,39 @@ import EventEmitter from 'events';
 
 import Channel from './Channel';
 
-function validateChannels (channels) {
-	if (!channels) { return true; }
-	if (!Array.isArray(channels)) { throw new Error('Channels must be an array'); }
-	if (!channels.every(c => c instanceof Channel)) { throw new Error('Channels must be an instance of the Channel class'); }
+function validateChannels(channels) {
+	if (!channels) {
+		return true;
+	}
+	if (!Array.isArray(channels)) {
+		throw new Error('Channels must be an array');
+	}
+	if (!channels.every(c => c instanceof Channel)) {
+		throw new Error('Channels must be an instance of the Channel class');
+	}
 
 	return true;
 }
 
-function sortChannels (channels) {
-	const {pinned, sortable} = channels.reduce((acc, channel) => {
-		if (channel.pinned) {
-			acc.pinned.push(channel);
-		} else {
-			acc.sortable.push(channel);
-		}
+function sortChannels(channels) {
+	const { pinned, sortable } = channels.reduce(
+		(acc, channel) => {
+			if (channel.pinned) {
+				acc.pinned.push(channel);
+			} else {
+				acc.sortable.push(channel);
+			}
 
-		return acc;
-	}, {pinned: [], sortable: []});
+			return acc;
+		},
+		{ pinned: [], sortable: [] }
+	);
 
 	return [...pinned, ...sortable];
 }
 
 export default class CommunityChannelList extends EventEmitter {
-	static async fromBoard (board, label, getDefaultForumOverride) {
+	static async fromBoard(board, label, getDefaultForumOverride) {
 		const contents = await board.getContents();
 		const channels = (contents.Items || []).reduce((acc, forum) => {
 			if (forum.IsDefaultForum && getDefaultForumOverride) {
@@ -37,36 +46,36 @@ export default class CommunityChannelList extends EventEmitter {
 			return [...acc, Channel.fromForum(forum, label)];
 		}, []);
 
-		const setOrder = board.isModifiable ?
-			async (order) => {
-				await board.save({'ordered_keys': order});
-				return board.orderedKeys;
-			} :
-			null;
+		const setOrder = board.isModifiable
+			? async order => {
+					await board.save({ ordered_keys: order });
+					return board.orderedKeys;
+			  }
+			: null;
 
-		const createChannel = board.canCreateForum() ?
-			async (data) => {
-				const forum = await board.createForum(data);
-				return Channel.fromForum(forum, label);
-			} :
-			null;
+		const createChannel = board.canCreateForum()
+			? async data => {
+					const forum = await board.createForum(data);
+					return Channel.fromForum(forum, label);
+			  }
+			: null;
 
 		return new CommunityChannelList({
 			id: board.getID(),
 			label,
 			channels,
 			createChannel,
-			setOrder
+			setOrder,
 		});
 	}
 
-	#id = null
-	#label = null
-	#channels = null
-	#createChannel = null
-	#setOrder = null
+	#id = null;
+	#label = null;
+	#channels = null;
+	#createChannel = null;
+	#setOrder = null;
 
-	constructor ({id, label, channels, createChannel, setOrder}) {
+	constructor({ id, label, channels, createChannel, setOrder }) {
 		super();
 
 		validateChannels(channels);
@@ -78,18 +87,28 @@ export default class CommunityChannelList extends EventEmitter {
 		this.#setOrder = setOrder;
 	}
 
-	getID () { return this.#id; }
+	getID() {
+		return this.#id;
+	}
 
-	[Symbol.iterator] () {
+	[Symbol.iterator]() {
 		return this.#channels[Symbol.iterator]();
 	}
 
-	get label () { return this.#label; }
-	get channels () { return this.#channels; }
+	get label() {
+		return this.#label;
+	}
+	get channels() {
+		return this.#channels;
+	}
 
-	get canCreateChannel () { return !!this.#createChannel; }
-	async createChannel (data) {
-		if (!this.canCreateChannel) { throw new Error('Cannot create a channel'); }
+	get canCreateChannel() {
+		return !!this.#createChannel;
+	}
+	async createChannel(data) {
+		if (!this.canCreateChannel) {
+			throw new Error('Cannot create a channel');
+		}
 
 		const channel = await this.#createChannel(data);
 
@@ -98,10 +117,10 @@ export default class CommunityChannelList extends EventEmitter {
 		return channel;
 	}
 
-	findChannel (predicate) {
+	findChannel(predicate) {
 		if (typeof predicate === 'string') {
 			const match = predicate;
-			predicate = (channel) => channel.getID() === match;
+			predicate = channel => channel.getID() === match;
 		}
 
 		for (let channel of this.channels) {
@@ -113,20 +132,24 @@ export default class CommunityChannelList extends EventEmitter {
 		return null;
 	}
 
-	get channelOrder () {
+	get channelOrder() {
 		return (this.channels || []).map(channel => channel.getID());
 	}
 
-	get canSetOrder () { return !!this.#setOrder; }
-	async setOrder (order) {
-		if (!this.canSetOrder) { throw new Error('Cannot set channel order'); }
+	get canSetOrder() {
+		return !!this.#setOrder;
+	}
+	async setOrder(order) {
+		if (!this.canSetOrder) {
+			throw new Error('Cannot set channel order');
+		}
 
 		const newOrder = await this.#setOrder(order);
 		const idMap = this.#channels.reduce((acc, channel) => {
-			return {...acc, [channel.getID()]: channel};
+			return { ...acc, [channel.getID()]: channel };
 		}, {});
 
-		this.#channels = newOrder.map((id) => idMap[id]);
+		this.#channels = newOrder.map(id => idMap[id]);
 
 		return newOrder;
 	}

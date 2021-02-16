@@ -1,16 +1,19 @@
-import {parse as parseUrl} from 'url';
-import {extname} from 'path';
+import { parse as parseUrl } from 'url';
+import { extname } from 'path';
 
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 import mime from 'mime-types';
-import {isNTIID} from '@nti/lib-ntiids';
+import { isNTIID } from '@nti/lib-ntiids';
 
-import {Mixin as ContentTreeMixin} from '../../content-tree';
+import { Mixin as ContentTreeMixin } from '../../content-tree';
 import Completable from '../../mixins/Completable';
 import UserDataStore from '../../stores/UserData';
-import {REL_RELEVANT_CONTAINED_USER_GENERATED_DATA, Service} from '../../constants';
-import {model, COMMON_PREFIX} from '../Registry';
+import {
+	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
+	Service,
+} from '../../constants';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 import Pages from './mixins/Pages';
@@ -44,8 +47,9 @@ const CONTENT_TYPE = 'application/vnd.nextthought.content';
 const EXTERNAL_TYPE = 'application/vnd.nextthought.externallink';
 
 class RelatedWorkReference extends Base {
-	static MimeType = COMMON_PREFIX + 'relatedworkref'
+	static MimeType = COMMON_PREFIX + 'relatedworkref';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'desc':               { type: 'string' },
@@ -61,38 +65,37 @@ class RelatedWorkReference extends Base {
 		'TargetPublishState': { type: 'string' }
 	}
 
-	static fromID (service, id) {
-		return new RelatedWorkReference(service, null, {NTIID: id});
+	static fromID(service, id) {
+		return new RelatedWorkReference(service, null, { NTIID: id });
 	}
 
-
-	constructor (service, parent, data) {
-		if (!data.Creator || (data.Creator === data.creator)) {
+	constructor(service, parent, data) {
+		if (!data.Creator || data.Creator === data.creator) {
 			data.Creator = data.creator;
 		}
 		delete data.creator;
 		super(service, parent, data);
 	}
 
-
-	get isContent () {
-		return [this.type, this.targetMimeType].some(x => x === CONTENT_TYPE)
-			|| isNTIID(this.href);
+	get isContent() {
+		return (
+			[this.type, this.targetMimeType].some(x => x === CONTENT_TYPE) ||
+			isNTIID(this.href)
+		);
 	}
 
-
-	get isExternal () {
-		return [this.type, this.targetMimeType].some(x => x === EXTERNAL_TYPE)
-			|| !isNTIID(this.href);
+	get isExternal() {
+		return (
+			[this.type, this.targetMimeType].some(x => x === EXTERNAL_TYPE) ||
+			!isNTIID(this.href)
+		);
 	}
 
-
-	get isDocument () {
+	get isDocument() {
 		return !this.isContent && !this.isExternal;
 	}
 
-
-	get isEmbeddableDocument () {
+	get isEmbeddableDocument() {
 		const types = [this.type, this.targetMimeType];
 		if (this.isExternal && types.every(x => x === EXTERNAL_TYPE)) {
 			// We don't have a MimeType to lookup...
@@ -100,37 +103,44 @@ class RelatedWorkReference extends Base {
 			return this.getFileExtentionFromHref() === 'pdf';
 		}
 
-		return !this.isDocument
-			&& types.some(x => mime.extension(x) === 'pdf');
+		return !this.isDocument && types.some(x => mime.extension(x) === 'pdf');
 	}
 
-
-	get target () {
+	get target() {
 		return this['target-NTIID'];
 	}
 
-	pointsToId (id) {
+	pointsToId(id) {
 		return this.target === id;
 	}
 
-
-	getUserData () {
+	getUserData() {
 		let store = this[UserData];
 		let service = this[Service];
 		let id = this.getID();
 
 		if (!store) {
-			store = this[UserData] = new UserDataStore(service, id,
-				service.getContainerURL(id, REL_RELEVANT_CONTAINED_USER_GENERATED_DATA));
+			store = this[UserData] = new UserDataStore(
+				service,
+				id,
+				service.getContainerURL(
+					id,
+					REL_RELEVANT_CONTAINED_USER_GENERATED_DATA
+				)
+			);
 		}
 
-		return Promise.resolve(store);//in the future, this may need to be async...
+		return Promise.resolve(store); //in the future, this may need to be async...
 	}
 
-
-	getFileExtentionFor () {
-		const ext = [this.type, this.targetMimeType].reduce((a, x) => a || mime.extension(x), null);
-		const isPlatformType = [this.type, this.targetMimeType].some(x => /nextthought/i.test(x));
+	getFileExtentionFor() {
+		const ext = [this.type, this.targetMimeType].reduce(
+			(a, x) => a || mime.extension(x),
+			null
+		);
+		const isPlatformType = [this.type, this.targetMimeType].some(x =>
+			/nextthought/i.test(x)
+		);
 
 		if (!ext && this.isExternal && isPlatformType) {
 			return 'www';
@@ -143,14 +153,14 @@ class RelatedWorkReference extends Base {
 		return ext;
 	}
 
-
-	getFileExtentionFromHref () {
-		return extname(parseUrl(this.href).pathname).replace(/\./, '').toLowerCase();
+	getFileExtentionFromHref() {
+		return extname(parseUrl(this.href).pathname)
+			.replace(/\./, '')
+			.toLowerCase();
 	}
 
-
-	resolveIcon (bundle) {
-		const {icon, isContent} = this;
+	resolveIcon(bundle) {
+		const { icon, isContent } = this;
 
 		if (icon || !isContent) {
 			return icon;
@@ -161,36 +171,36 @@ class RelatedWorkReference extends Base {
 		return p && p.icon;
 	}
 
-
-	async getContentTreeChildrenSource () {
-		if (!this.isContent && isNTIID(this.href)) { return null; }
+	async getContentTreeChildrenSource() {
+		if (!this.isContent && isNTIID(this.href)) {
+			return null;
+		}
 
 		try {
 			const course = this.parent('isCourse');
 			const pageId = this.href;
 			const page = await this[Service].getObject(pageId);
 
-			const contentPackage = course ?
-				course.getPackage(page.ContentPackageNTIID) :
-				await this[Service].getObject(page.ContentPackageNTIID);
+			const contentPackage = course
+				? course.getPackage(page.ContentPackageNTIID)
+				: await this[Service].getObject(page.ContentPackageNTIID);
 
-			if (contentPackage.isRenderable) { return null; }
+			if (contentPackage.isRenderable) {
+				return null;
+			}
 
 			const toc = await contentPackage.getTableOfContents();
 			const node = toc.getNode(page.getID());
 
-			return node
-				.flatten()
-				.filter((n) => {
-					return n && n.id !== pageId && n.isTopic() && !n.isAnchor();
-				});
+			return node.flatten().filter(n => {
+				return n && n.id !== pageId && n.isTopic() && !n.isAnchor();
+			});
 		} catch (e) {
 			return null;
 		}
 	}
 }
 
-export default decorate(RelatedWorkReference, {with:[
-	model,
-	mixin(Completable, ContentTreeMixin, Pages),
-]});
+export default decorate(RelatedWorkReference, {
+	with: [model, mixin(Completable, ContentTreeMixin, Pages)],
+});

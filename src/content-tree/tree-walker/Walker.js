@@ -1,5 +1,5 @@
-import {ERRORS} from '../Contants';
-import {deferredValue} from '../utils';
+import { ERRORS } from '../Contants';
+import { deferredValue } from '../utils';
 
 import {
 	getNodes,
@@ -10,7 +10,7 @@ import {
 	selectNext,
 	selectPrev,
 	selectDescendantMatching,
-	selectFirstDescendant
+	selectFirstDescendant,
 } from './utils';
 
 const CURRENT_NODE = Symbol('Current Node');
@@ -21,9 +21,13 @@ const SKIP = Symbol('Skip');
 const MOVE = Symbol('Move');
 
 export default class ContentTreeWalker {
-	constructor (node, root, {skip, ignoreChildren} = {}) {
+	constructor(node, root, { skip, ignoreChildren } = {}) {
 		if (!node) {
-			throw new Error(ERRORS.getMessage('Tree Walker cannot be instantiated without a node'));
+			throw new Error(
+				ERRORS.getMessage(
+					'Tree Walker cannot be instantiated without a node'
+				)
+			);
 		}
 
 		this[CURRENT_NODE] = deferredValue(node);
@@ -32,43 +36,53 @@ export default class ContentTreeWalker {
 		this[IGNORE_CHILDREN] = ignoreChildren;
 	}
 
-	async getCurrentNode () {
+	async getCurrentNode() {
 		return this[CURRENT_NODE].resolve();
 	}
 
-	async getRootNode () {
+	async getRootNode() {
 		return this[ROOT].resolve();
 	}
 
-	async getNodes () {
+	async getNodes() {
 		const root = await this.getRootNode();
 
 		return getNodes(root, this[SKIP], this[IGNORE_CHILDREN]);
 	}
 
-	async getNodeCount () {
+	async getNodeCount() {
 		const root = await this.getRootNode();
 
 		return getNodeCount(root, this[SKIP], this[IGNORE_CHILDREN]);
 	}
 
-	async getNodesBefore (predicate) {
+	async getNodesBefore(predicate) {
 		ERRORS.throwIfNotFunction(predicate);
 
 		const root = await this.getRootNode();
 
-		return getNodesBefore(root, predicate, this[SKIP], this[IGNORE_CHILDREN]);
+		return getNodesBefore(
+			root,
+			predicate,
+			this[SKIP],
+			this[IGNORE_CHILDREN]
+		);
 	}
 
-	async getNodesAfter (predicate) {
+	async getNodesAfter(predicate) {
 		ERRORS.throwIfNotFunction(predicate);
 
 		const root = await this.getRootNode();
 
-		return getNodesAfter(root, predicate, this[SKIP], this[IGNORE_CHILDREN]);
+		return getNodesAfter(
+			root,
+			predicate,
+			this[SKIP],
+			this[IGNORE_CHILDREN]
+		);
 	}
 
-	async getIndexOf (predicate) {
+	async getIndexOf(predicate) {
 		ERRORS.throwIfNotFunction(predicate);
 
 		const root = await this.getRootNode();
@@ -76,19 +90,25 @@ export default class ContentTreeWalker {
 		return getIndexOf(root, predicate, this[SKIP], this[IGNORE_CHILDREN]);
 	}
 
-
-	[MOVE] (node) {
-		return new ContentTreeWalker(node, () => this.getRootNode(), {skip: this[SKIP], ignoreChildren: this[IGNORE_CHILDREN]});
+	[MOVE](node) {
+		return new ContentTreeWalker(node, () => this.getRootNode(), {
+			skip: this[SKIP],
+			ignoreChildren: this[IGNORE_CHILDREN],
+		});
 	}
 
-
-	selectNext () {
+	selectNext() {
 		const next = async () => {
 			try {
 				const root = await this.getRootNode();
 				const node = await this.getCurrentNode();
 
-				return selectNext(node, root, this[SKIP], this[IGNORE_CHILDREN]);
+				return selectNext(
+					node,
+					root,
+					this[SKIP],
+					this[IGNORE_CHILDREN]
+				);
 			} catch (e) {
 				return null;
 			}
@@ -97,14 +117,18 @@ export default class ContentTreeWalker {
 		return this[MOVE](next);
 	}
 
-
-	selectPrev () {
+	selectPrev() {
 		const prev = async () => {
 			try {
 				const root = await this.getRootNode();
 				const node = await this.getCurrentNode();
 
-				return selectPrev(node, root, this[SKIP], this[IGNORE_CHILDREN]);
+				return selectPrev(
+					node,
+					root,
+					this[SKIP],
+					this[IGNORE_CHILDREN]
+				);
 			} catch (e) {
 				return null;
 			}
@@ -113,15 +137,19 @@ export default class ContentTreeWalker {
 		return this[MOVE](prev);
 	}
 
-
-	selectDescendantMatching (predicate) {
+	selectDescendantMatching(predicate) {
 		ERRORS.throwIfNotFunction(predicate);
 
 		const descendant = async () => {
 			try {
 				const node = await this.getCurrentNode();
 
-				return selectDescendantMatching(node, predicate, this[SKIP], this[IGNORE_CHILDREN]);
+				return selectDescendantMatching(
+					node,
+					predicate,
+					this[SKIP],
+					this[IGNORE_CHILDREN]
+				);
 			} catch (e) {
 				return null;
 			}
@@ -130,13 +158,16 @@ export default class ContentTreeWalker {
 		return this[MOVE](descendant);
 	}
 
-
-	selectFirstDescendant () {
+	selectFirstDescendant() {
 		const descendant = async () => {
 			try {
 				const node = await this.getCurrentNode();
 
-				return selectFirstDescendant(node, this[SKIP], this[IGNORE_CHILDREN]);
+				return selectFirstDescendant(
+					node,
+					this[SKIP],
+					this[IGNORE_CHILDREN]
+				);
 			} catch (e) {
 				return null;
 			}

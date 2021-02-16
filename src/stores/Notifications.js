@@ -1,32 +1,29 @@
 import EventEmitter from 'events';
 
 import Logger from '@nti/util-logger';
-import {forward, wait, URL} from '@nti/lib-commons';
+import { forward, wait, URL } from '@nti/lib-commons';
 
-import {Service, ROOT_NTIID, REL_MESSAGE_INBOX} from '../constants';
-import {parse} from '../models/Parser';
+import { Service, ROOT_NTIID, REL_MESSAGE_INBOX } from '../constants';
+import { parse } from '../models/Parser';
 import getLink from '../utils/getlink';
-
 
 let inflight;
 
 const logger = Logger.get('store:notifications');
 
 const BATCH_SIZE = 5;
-const cleanInflight = () => inflight = null;
-
+const cleanInflight = () => (inflight = null);
 
 export default class Notifications extends EventEmitter {
-
-	static load (service, reload) {
-
+	static load(service, reload) {
 		if (inflight) {
 			return inflight;
 		}
 
 		//We need some links...
-		inflight = service.getPageInfo(ROOT_NTIID)
-		//Find our url to fetch notifications from...
+		inflight = service
+			.getPageInfo(ROOT_NTIID)
+			//Find our url to fetch notifications from...
 			.then(pageInfo => {
 				const url = pageInfo.getLink(REL_MESSAGE_INBOX);
 				if (!url) {
@@ -35,7 +32,7 @@ export default class Notifications extends EventEmitter {
 
 				return URL.appendQueryParams(url, {
 					batchSize: BATCH_SIZE,
-					batchStart: 0
+					batchStart: 0,
 				});
 			})
 
@@ -49,48 +46,51 @@ export default class Notifications extends EventEmitter {
 			//Now we can build the Notifications store object.
 			.then(data => new Notifications(service, data));
 
-		inflight
-			.catch(()=>{})
-			.then(cleanInflight);
+		inflight.catch(() => {}).then(cleanInflight);
 
 		return inflight;
 	}
 
-
-	constructor (service, data) {
+	constructor(service, data) {
 		super();
 
 		this[Service] = service;
 		this.Items = [];
 
-		Object.assign(this, forward(['every', 'filter', 'forEach', 'map', 'reduce'], 'Items'));
-
+		Object.assign(
+			this,
+			forward(['every', 'filter', 'forEach', 'map', 'reduce'], 'Items')
+		);
 
 		applyData(this, data);
 
 		this.lastViewed = new Date(parseFloat(data.lastViewed || 0) * 1000);
 	}
 
+	get isBusy() {
+		return !!inflight;
+	}
 
-	get isBusy () { return !!inflight; }
+	get hasMore() {
+		return !!this.nextBatchSrc;
+	}
 
+	get length() {
+		return (this.Items || []).length;
+	}
 
-	get hasMore () { return !!this.nextBatchSrc; }
-
-
-	get length () { return (this.Items || []).length; }
-
-
-	nextBatch () {
+	nextBatch() {
 		let clean = cleanInflight;
 
 		if (!inflight) {
 			if (this.nextBatchSrc) {
-				inflight = get(this[Service], this.nextBatchSrc, true)
-					.then(data => applyData(this, data));
+				inflight = get(
+					this[Service],
+					this.nextBatchSrc,
+					true
+				).then(data => applyData(this, data));
 
 				inflight.then(clean, clean);
-
 			} else {
 				return Promise.fulfill(this);
 			}
@@ -100,24 +100,24 @@ export default class Notifications extends EventEmitter {
 	}
 }
 
-
-function applyData (scope, data) {
-
+function applyData(scope, data) {
 	scope.Items = scope.Items.concat(data.Items || []);
-	scope.nextBatchSrc = (data.TotalItemCount > scope.Items.length) && getLink(data, 'batch-next');
+	scope.nextBatchSrc =
+		data.TotalItemCount > scope.Items.length && getLink(data, 'batch-next');
 
 	return scope;
 }
 
-
-function get (service, url, ignoreCache) {
+function get(service, url, ignoreCache) {
 	let cache = service.getDataCache();
 
-	let cached = cache.get(url), result;
+	let cached = cache.get(url),
+		result;
 	if (!cached || ignoreCache) {
-		result = service.get(url)
+		result = service
+			.get(url)
 			.then(data => cache.set(url, data) && data)
-			.catch(()=>({titles: [], Items: []}));
+			.catch(() => ({ titles: [], Items: [] }));
 	} else {
 		result = Promise.resolve(cached);
 	}
@@ -125,8 +125,7 @@ function get (service, url, ignoreCache) {
 	return result.then(data => resolveUIData(service, data));
 }
 
-
-function resolveUIData (service, data) {
+function resolveUIData(service, data) {
 	let pending = [];
 
 	data.Items = data.Items.map(o => {
@@ -135,11 +134,11 @@ function resolveUIData (service, data) {
 			if (o && o.waitForPending) {
 				pending.push(o.waitForPending());
 			}
-		} catch(e) {
-			logger.warn(e.NoParser ? e.message : (e.stack || e.message || e));
+		} catch (e) {
+			logger.warn(e.NoParser ? e.message : e.stack || e.message || e);
 		}
 		return o;
 	});
 
-	return wait.on(pending).then(()=> data);
+	return wait.on(pending).then(() => data);
 }

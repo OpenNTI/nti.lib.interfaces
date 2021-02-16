@@ -1,22 +1,17 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
-import {Service, Parser as parse} from '../../constants';
+import { Service, Parser as parse } from '../../constants';
 import GetContents from '../../mixins/GetContents';
 import DiscussionInterface from '../../mixins/DiscussionInterface';
 import getLink from '../../utils/getlink';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 import { encodeIdFrom } from '../../utils/href-ntiids';
 
 import ForumContentsDataSource from './forum-contents-data-source';
 
-const KnownSorts = [
-	'createdTime',
-	'Last Modified',
-	'PostCount',
-	'LikeCount'
-];
+const KnownSorts = ['createdTime', 'Last Modified', 'PostCount', 'LikeCount'];
 
 class Forum extends Base {
 	static MimeType = [
@@ -24,10 +19,11 @@ class Forum extends Base {
 		COMMON_PREFIX + 'forums.communityforum',
 		COMMON_PREFIX + 'forums.contentforum',
 		COMMON_PREFIX + 'forums.dflforum',
-	]
+	];
 
-	static HIDE_PREFIXS = ['Open', 'In-Class']
+	static HIDE_PREFIXS = ['Open', 'In-Class'];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'ID':                          { type: 'string' }, // Local id (within the container)
@@ -43,9 +39,9 @@ class Forum extends Base {
 		'DefaultSharedToDisplayNames': { type: 'string[]'}
 	}
 
-	isForum = true
+	isForum = true;
 
-	get displayTitle () {
+	get displayTitle() {
 		for (let x of Forum.HIDE_PREFIXS) {
 			if (this.title.startsWith(x)) {
 				return this.title.replace(x, '');
@@ -55,7 +51,7 @@ class Forum extends Base {
 		return this.title;
 	}
 
-	getID () {
+	getID() {
 		if (!this.IsDefaultForum) {
 			return super.getID();
 		}
@@ -63,7 +59,7 @@ class Forum extends Base {
 		return encodeIdFrom(this.href);
 	}
 
-	getBin () {
+	getBin() {
 		const openBin = RegExp.prototype.test.bind(/open/i);
 		const forCreditBin = RegExp.prototype.test.bind(/in-class/i);
 		const title = this.title || '';
@@ -71,58 +67,59 @@ class Forum extends Base {
 		return openBin(title)
 			? 'Open'
 			: forCreditBin(title)
-				? 'ForCredit'
-				: 'Other';
+			? 'ForCredit'
+			: 'Other';
 	}
 
-	getRecentActivity (size) {
-
+	getRecentActivity(size) {
 		const params = {
 			batchStart: 0,
 			batchSize: size || 5,
 			sortOrder: 'descending',
-			sortOn: 'NewestDescendantCreatedTime'
+			sortOn: 'NewestDescendantCreatedTime',
 		};
 
 		return this.getContents(params); //.then(function(result) { return result.Items; });
 	}
 
-	canCreateTopic () {
+	canCreateTopic() {
 		return this.hasLink('add');
 	}
 
-	createTopic (data) {
+	createTopic(data) {
 		const service = this[Service];
 
 		const link = this.getLink('add');
 		if (!link) {
-			return Promise.reject('Cannot post comment. Item has no \'add\' link.');
+			return Promise.reject(
+				"Cannot post comment. Item has no 'add' link."
+			);
 		}
 
-		const {title, body, mentions, tags} = data;
+		const { title, body, mentions, tags } = data;
 
 		const payload = DiscussionInterface.getPayload({
 			MimeType: 'application/vnd.nextthought.forums.post',
 			title: title,
 			body: Array.isArray(body) ? body : [body],
 			mentions,
-			tags: tags ?? []
+			tags: tags ?? [],
 		});
 
-		return service.post(link, payload)
+		return service
+			.post(link, payload)
 			.then(o => getLink(o, 'publish'))
 			.then(uri => service.post(uri))
 			.then(obj => this[parse](obj));
-
 	}
 
-	getContentsDataSource () {
+	getContentsDataSource() {
 		return new ForumContentsDataSource(this[Service], this, {
-			sortOn: KnownSorts
+			sortOn: KnownSorts,
 		});
 	}
 
-	async edit (payload) {
+	async edit(payload) {
 		await this.putToLink('edit', payload);
 
 		const parent = this.parent();
@@ -130,7 +127,4 @@ class Forum extends Base {
 	}
 }
 
-export default decorate(Forum, {with:[
-	model,
-	mixin(GetContents),
-]});
+export default decorate(Forum, { with: [model, mixin(GetContents)] });

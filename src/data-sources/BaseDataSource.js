@@ -1,13 +1,12 @@
 /** @module BaseDataSource */
-import {Service, Parent} from '../constants';
+import { Service, Parent } from '../constants';
 
 const BASE = Symbol('Base');
 const KNOWN_PARAMS = Symbol('Known Params');
 const CONFIG = Symbol('Config');
 
-
 export default class BaseDataSource {
-	constructor (service, parent, knownParams, config) {
+	constructor(service, parent, knownParams, config) {
 		this[Service] = service;
 		this[Parent] = parent;
 
@@ -15,28 +14,36 @@ export default class BaseDataSource {
 		this[CONFIG] = config;
 	}
 
+	get service() {
+		return this[Service];
+	}
+	get parent() {
+		return this[Parent];
+	}
+	get config() {
+		return this[CONFIG];
+	}
+	get knownParams() {
+		return this[KNOWN_PARAMS];
+	}
 
-	get service () { return this[Service]; }
-	get parent () { return this[Parent]; }
-	get config () { return this[CONFIG]; }
-	get knownParams () { return this[KNOWN_PARAMS]; }
-
-	getKnownParam (param) { return (this.knownParams || {})[param]; }
-
+	getKnownParam(param) {
+		return (this.knownParams || {})[param];
+	}
 
 	/**
 	 * A indicator that it is a DataSource
 	 * @readOnly
 	 * @type {Boolean}
 	 */
-	isDataSource = true
+	isDataSource = true;
 
 	/**
 	 * A indicator of what type of DataSource
 	 * @readOnly
 	 * @type {String}
 	 */
-	dataSourceType = BASE
+	dataSourceType = BASE;
 
 	/**
 	 * Define custom DataSource instance to handle given params
@@ -51,7 +58,7 @@ export default class BaseDataSource {
 	 *
 	 * @type {Object}
 	 */
-	handlers = {}
+	handlers = {};
 
 	/**
 	 * If there is a handler defined for the given params, create it with the same arguments this dataSource was constructed with
@@ -59,10 +66,12 @@ export default class BaseDataSource {
 	 * @param  {Object} params         the params to get the handler for
 	 * @returns {BaseDataSource}        the data source to load for the params
 	 */
-	getHandler (params) {
-		const {handlers} = this;
+	getHandler(params) {
+		const { handlers } = this;
 
-		const isDataSource = handler => handler.isDataSource && handler.dataSourceType === this.dataSourceType;
+		const isDataSource = handler =>
+			handler.isDataSource &&
+			handler.dataSourceType === this.dataSourceType;
 
 		for (let key of Object.keys(params || {})) {
 			const handler = handlers[key];
@@ -80,7 +89,6 @@ export default class BaseDataSource {
 		return null;
 	}
 
-
 	/**
 	 * Load the datasource for the given params
 	 *
@@ -88,14 +96,15 @@ export default class BaseDataSource {
 	 * @param  {Object} params the params to load the data source with
 	 * @returns {Promise}       fulfills/rejects with the load of the datasource
 	 */
-	async load (params) {
+	async load(params) {
 		const handler = this.getHandler(params);
 
-		const resp = await (handler ? handler.load(params) : this.request(params));
+		const resp = await (handler
+			? handler.load(params)
+			: this.request(params));
 
 		return resp.waitForPending ? resp.waitForPending() : resp;
 	}
-
 
 	/**
 	 * Request the data from the server. Must be overriden in the subclass.
@@ -104,8 +113,7 @@ export default class BaseDataSource {
 	 * @param  {Object} params the params to request with
 	 * @returns {Batch}         a batch (or batch like) object
 	 */
-	request (params) {
+	request(params) {
 		throw new Error('request must be implemented by the subclass');
 	}
 }
-

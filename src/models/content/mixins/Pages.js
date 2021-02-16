@@ -4,10 +4,10 @@ import DiscussionInterface from '../../../mixins/DiscussionInterface';
 const DiscussionType = 'application/vnd.nextthought.note';
 
 export default {
-	async addDiscussion (data) {
+	async addDiscussion(data) {
 		const service = this[Service];
 
-		const {pagesURL, ...discussionData} = data;
+		const { pagesURL, ...discussionData } = data;
 		const href = pagesURL || service.getCollectionFor(DiscussionType)?.href;
 
 		if (!href) {
@@ -16,7 +16,7 @@ export default {
 
 		const payload = DiscussionInterface.getPayload({
 			MimeType: DiscussionType,
-			...discussionData
+			...discussionData,
 		});
 
 		const newDiscussion = await service.postParseResponse(href, payload);
@@ -24,5 +24,5 @@ export default {
 		this.insertNewDiscussion?.(newDiscussion);
 
 		return newDiscussion;
-	}
+	},
 };

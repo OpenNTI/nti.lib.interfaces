@@ -1,14 +1,15 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 
 class AssignmentHistoryItem extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.assignmenthistoryitem',
 		COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitem',
-	]
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Feedback':            { type: 'model[]'               },
@@ -19,51 +20,44 @@ class AssignmentHistoryItem extends Base {
 		'MetadataAttemptItem': { type: 'model' 				   },
 	}
 
-
-	getQuestions () {
+	getQuestions() {
 		let submission = this.pendingAssessment || this.Submission;
 		return submission ? submission.getQuestions() : [];
 	}
 
-
-	get feedbackCount () {
-		const {Feedback: list} = this;
+	get feedbackCount() {
+		const { Feedback: list } = this;
 		return (list || []).length;
 	}
 
-
-	get completed () {
-		const {Submission: s = null} = this;
+	get completed() {
+		const { Submission: s = null } = this;
 		return s && s.getCreatedTime();
 	}
 
-
-	isSubmitted () {
+	isSubmitted() {
 		return !!this.Submission;
 	}
 
-
-	isGradeExcused () {
+	isGradeExcused() {
 		let g = this.grade || false;
 		return g && g.isExcused();
 	}
 
-
-	isSyntheticSubmission () {
+	isSyntheticSubmission() {
 		return !!this.SyntheticSubmission;
 	}
 
-
-	getGradeValue () {
+	getGradeValue() {
 		let g = this.grade;
 		return g && g.value;
 	}
 
-
-	getDuration () {
-		return this.MetadataAttemptItem && this.MetadataAttemptItem.getDuration();
+	getDuration() {
+		return (
+			this.MetadataAttemptItem && this.MetadataAttemptItem.getDuration()
+		);
 	}
-
 }
 
-export default decorate(AssignmentHistoryItem, {with:[model]});
+export default decorate(AssignmentHistoryItem, { with: [model] });

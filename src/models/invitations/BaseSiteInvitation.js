@@ -1,6 +1,7 @@
 import Base from '../Base';
 
 export default class BaseSiteInvitation extends Base {
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'receiver':     { type: 'string'  },
@@ -11,5 +12,4 @@ export default class BaseSiteInvitation extends Base {
 		'message':      { type: 'string'  },
 		'expiryTime':   { type: 'date'    }
 	}
-
 }

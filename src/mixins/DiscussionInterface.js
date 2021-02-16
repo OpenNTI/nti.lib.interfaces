@@ -1,7 +1,7 @@
-import {v4 as uuid} from 'uuid';
-import {isNTIID} from '@nti/lib-ntiids';
+import { v4 as uuid } from 'uuid';
+import { isNTIID } from '@nti/lib-ntiids';
 
-import {Service} from '../constants';
+import { Service } from '../constants';
 
 const DiscussionAdded = 'discussion-added';
 const DiscussionDeleted = 'discussion-deleted';
@@ -10,48 +10,53 @@ const ResolvedMentions = Symbol('ResolvedMentions');
 
 const ParentOverride = Symbol('Parent Override');
 
-function getTitle (discussion) {
+function getTitle(discussion) {
 	const post = discussion.getPost();
 
 	return post === discussion ? discussion.title : post.getTitle();
 }
 
-function getBody (discussion) {
+function getBody(discussion) {
 	const post = discussion.getPost();
 
 	return post === discussion ? discussion.body : post.getBody();
 }
 
-function getTags (discussion) {
+function getTags(discussion) {
 	const post = discussion.getPost();
 
 	return post === discussion ? discussion.tags : post.getTags();
 }
 
-function getMentions (discussion) {
+function getMentions(discussion) {
 	const post = discussion.getPost();
 
-	if (post !== discussion) { return post.getMentions(); }
+	if (post !== discussion) {
+		return post.getMentions();
+	}
 
 	return post[ResolvedMentions];
 }
 
-
-async function resolveMentions (discussion) {
+async function resolveMentions(discussion) {
 	const post = discussion.getPost();
 
-	if (post !== discussion) { return; }
+	if (post !== discussion) {
+		return;
+	}
 
 	const service = post[Service];
 	const mentions = post.UserMentions ?? [];
 
 	const resolved = await Promise.all(
-		mentions.map(async (mention) => {
-			const User = mention.User ? await service.getObject(mention.User) : null;
+		mentions.map(async mention => {
+			const User = mention.User
+				? await service.getObject(mention.User)
+				: null;
 
 			return {
 				...mention,
-				User
+				User,
 			};
 		})
 	);
@@ -59,9 +64,8 @@ async function resolveMentions (discussion) {
 	post[ResolvedMentions] = resolved;
 }
 
-
 class DiscussionTree {
-	static forDiscussion (discussion, sort, depth) {
+	static forDiscussion(discussion, sort, depth) {
 		const tree = new DiscussionTree(discussion, sort, depth);
 
 		return tree.load();
@@ -73,43 +77,57 @@ class DiscussionTree {
 
 	#sort = null;
 
-	constructor (discussion, sort, depth = 0) {
+	constructor(discussion, sort, depth = 0) {
 		this.#node = discussion;
 		this.#sort = sort;
 		this.#depth = depth;
 	}
 
-	get node () { return this.#node; }
-	get children () { return this.#children || []; }
-	get depth () { return this.#depth; }
+	get node() {
+		return this.#node;
+	}
+	get children() {
+		return this.#children || [];
+	}
+	get depth() {
+		return this.#depth;
+	}
 
-	async load () {
+	async load() {
 		let replies = await this.#node?.getDiscussions?.();
 
 		replies = replies.Items ?? replies;
 
-		if (!replies) { return; }
+		if (!replies) {
+			return;
+		}
 
 		if (this.#sort) {
 			replies = replies.sort(this.#sort);
 		}
 
 		this.#children = await Promise.all(
-			replies.map((reply) => DiscussionTree.forDiscussion(reply, this.#sort, this.depth + 1))
+			replies.map(reply =>
+				DiscussionTree.forDiscussion(reply, this.#sort, this.depth + 1)
+			)
 		);
 
 		return this;
 	}
 
-	subscribeToUpdates (fn) {
+	subscribeToUpdates(fn) {
 		const update = () => fn(this);
 
 		const cleanUps = [
-			...this.children.map((child) => {
+			...this.children.map(child => {
 				return child.subscribeToUpdates(update);
 			}),
-			this.#node.subscribeToDiscussionAdded(async (newDiscussion) => {
-				let newTree = new DiscussionTree(newDiscussion, this.#sort, this.depth + 1);
+			this.#node.subscribeToDiscussionAdded(async newDiscussion => {
+				let newTree = new DiscussionTree(
+					newDiscussion,
+					this.#sort,
+					this.depth + 1
+				);
 
 				cleanUps.push(newTree.subscribeToUpdates(update));
 
@@ -118,13 +136,15 @@ class DiscussionTree {
 				newReplies.push(newTree);
 
 				if (this.#sort) {
-					newReplies = newReplies.sort((a, b) => this.#sort(a.node, b.node));
+					newReplies = newReplies.sort((a, b) =>
+						this.#sort(a.node, b.node)
+					);
 				}
 
 				this.#children = newReplies;
 
 				update();
-			})
+			}),
 		];
 
 		return () => {
@@ -135,13 +155,13 @@ class DiscussionTree {
 	}
 }
 
-DiscussionInterface.getPayload = (payload) => {
-	const json = {...payload, mentions: [], body: []};
+DiscussionInterface.getPayload = payload => {
+	const json = { ...payload, mentions: [], body: [] };
 
 	//For now strip out any ntiid like mentions
 	//since only users can be mentions and usernames
 	//won't be NTIID like :fingers-crossed:
-	for (let mention of (payload.mentions || [])) {
+	for (let mention of payload.mentions || []) {
 		if (!isNTIID(mention) && json.mentions.indexOf(mention) === -1) {
 			json.mentions.push(mention);
 		}
@@ -156,13 +176,13 @@ DiscussionInterface.getPayload = (payload) => {
 
 	const formData = new FormData();
 
-	for (let part of (payload.body || [])) {
+	for (let part of payload.body || []) {
 		if (typeof part === 'string') {
 			json.body.push(part);
 			continue;
 		}
 
-		const clone = {...part};
+		const clone = { ...part };
 
 		if (clone && clone.file) {
 			const name = uuid();
@@ -178,85 +198,115 @@ DiscussionInterface.getPayload = (payload) => {
 	formData.append('__json__', JSON.stringify(json));
 	return formData;
 };
-export default function DiscussionInterface (targetModelClass) {
+export default function DiscussionInterface(targetModelClass) {
 	Object.assign(targetModelClass.Fields, {
-		'title': targetModelClass.Fields.title ?? ({type: 'string'}),
-		'body': targetModelClass.Fields.body ?? ({type: '*[]'}),
+		title: targetModelClass.Fields.title ?? { type: 'string' },
+		body: targetModelClass.Fields.body ?? { type: '*[]' },
 
-		'tags': targetModelClass.Fields.tags ?? ({type: 'string[]'}),
+		tags: targetModelClass.Fields.tags ?? { type: 'string[]' },
 
-		'mentions': targetModelClass.Fields.mentions ?? ({type: 'string[]'}),
-		'UserMentions': targetModelClass.Fields.UserMentions ?? ({type: 'object[]'}),
+		mentions: targetModelClass.Fields.mentions ?? { type: 'string[]' },
+		UserMentions: targetModelClass.Fields.UserMentions ?? {
+			type: 'object[]',
+		},
 
-		'sharedWith': targetModelClass.Fields.sharedWith ?? ({type: 'string[]'})
+		sharedWith: targetModelClass.Fields.sharedWith ?? { type: 'string[]' },
 	});
 
 	return {
-		initMixin () {
+		initMixin() {
 			this.addToPending?.(resolveMentions(this));
 		},
 
 		isDiscussion: true,
-		getPost () { return this; },
-		getPostHash () {
+		getPost() {
+			return this;
+		},
+		getPostHash() {
 			const post = this.getPost();
 			const parts = [
 				post.getID(),
 				post.getLastModified(),
 				(this.getMentions() ?? []).map(x => x.User?.getID()).join(','),
-				(this.getSharedWith() ?? []).map(x => x.getID?.()).join(',')
+				(this.getSharedWith() ?? []).map(x => x.getID?.()).join(','),
 			];
 
 			return parts.join('-');
 		},
 
-		async applyChange (item) {
+		async applyChange(item) {
 			await this.refresh(item.toJSON());
 			await resolveMentions(this);
 		},
 
+		getTitle() {
+			return getTitle(this);
+		},
+		getBody() {
+			return getBody(this);
+		},
 
-		getTitle () { return getTitle(this); },
-		getBody () { return getBody(this); },
+		getTags() {
+			return getTags(this);
+		},
 
-		getTags () { return getTags(this); },
-
-		getMentions () { return getMentions(this); },
-		getMentionFor (username) {
-			if (!username) { return null; }
+		getMentions() {
+			return getMentions(this);
+		},
+		getMentionFor(username) {
+			if (!username) {
+				return null;
+			}
 			if (username.getID) {
 				username = username.getID();
 			}
 
 			const mentions = this.getMentions();
 
-			return (mentions || []).find(mention => mention?.User?.getID?.() === username);
+			return (mentions || []).find(
+				mention => mention?.User?.getID?.() === username
+			);
 		},
 
-		canEditSharing () { return null; },
-		getSharedWith () { return this.sharedWith; },
+		canEditSharing() {
+			return null;
+		},
+		getSharedWith() {
+			return this.sharedWith;
+		},
 
-		isSharedWith (entity) {
+		isSharedWith(entity) {
 			const sharedWith = this.getSharedWith();
 
-			if (typeof entity === 'string') { return sharedWith.indexOf(entity) !== -1; }
+			if (typeof entity === 'string') {
+				return sharedWith.indexOf(entity) !== -1;
+			}
 
-			return sharedWith.some((s) => {
-				if (s === entity.getID()) { return true; }
-				if (s === entity.NTIID) { return true; }
-				if (s === entity.Username) { return true; }
+			return sharedWith.some(s => {
+				if (s === entity.getID()) {
+					return true;
+				}
+				if (s === entity.NTIID) {
+					return true;
+				}
+				if (s === entity.Username) {
+					return true;
+				}
 
 				return false;
 			});
 		},
 
+		isDeleted() {
+			return false;
+		},
 
-		isDeleted () { return false; },
-
-		async updatePost (data, ...args) {
+		async updatePost(data, ...args) {
 			const post = this.getPost();
 
-			if (post !== this) { return post.updatePost(data, ...args); }
+			if (post !== this) {
+				return post.updatePost(data, ...args);
+			}
 
 			const payload = DiscussionInterface.getPayload(data);
 
@@ -268,20 +318,24 @@ export default function DiscussionInterface (targetModelClass) {
 			return result;
 		},
 
-		getParentDiscussion () {
-			if (this[ParentOverride]) { return this[ParentOverride]; }
+		getParentDiscussion() {
+			if (this[ParentOverride]) {
+				return this[ParentOverride];
+			}
 
 			const parent = this.parent(p => p.isDiscussion);
 
 			return parent?.isDiscussion ? parent : null;
 		},
 
-		overrideParentDiscussion (parent) {
+		overrideParentDiscussion(parent) {
 			this[ParentOverride] = parent;
 		},
 
-		afterDelete () { this.onPostDeleted(); },
-		onPostDeleted () {
+		afterDelete() {
+			this.onPostDeleted();
+		},
+		onPostDeleted() {
 			const parent = this.getParentDiscussion();
 
 			if (parent?.isDiscussion) {
@@ -289,19 +343,29 @@ export default function DiscussionInterface (targetModelClass) {
 			}
 		},
 
-		canAddDiscussion () { throw new Error('canAddDiscussion not implementd'); },
+		canAddDiscussion() {
+			throw new Error('canAddDiscussion not implementd');
+		},
 
-		getDiscussionCount () {	throw new Error('getDiscussionCount not implemented'); },
-		updateDiscussionCount () { throw new Error('updateDiscussionCount not implemented'); },
+		getDiscussionCount() {
+			throw new Error('getDiscussionCount not implemented');
+		},
+		updateDiscussionCount() {
+			throw new Error('updateDiscussionCount not implemented');
+		},
 
-		getDiscussions () {	throw new Error('getDiscussions not implemented');	},
+		getDiscussions() {
+			throw new Error('getDiscussions not implemented');
+		},
 
-		getDiscussionTree (sort) {
+		getDiscussionTree(sort) {
 			return DiscussionTree.forDiscussion(this, sort);
 		},
 
-		addDiscussion () { throw new Error('addDiscussion not implented'); },
-		onDiscussionAdded (discussion, silent) {
+		addDiscussion() {
+			throw new Error('addDiscussion not implented');
+		},
+		onDiscussionAdded(discussion, silent) {
 			this.updateDiscussionCount(this.getDiscussionCount() + 1);
 
 			if (!silent) {
@@ -315,7 +379,7 @@ export default function DiscussionInterface (targetModelClass) {
 			}
 		},
 
-		onDiscussionDeleted (discussion) {
+		onDiscussionDeleted(discussion) {
 			this.updateDiscussionCount(this.getDiscussionCount() - 1);
 			this.emit(DiscussionDeleted, discussion);
 
@@ -326,7 +390,7 @@ export default function DiscussionInterface (targetModelClass) {
 			}
 		},
 
-		subscribeToDiscussionAdded (fn) {
+		subscribeToDiscussionAdded(fn) {
 			this.addListener(DiscussionAdded, fn);
 
 			return () => {
@@ -334,7 +398,7 @@ export default function DiscussionInterface (targetModelClass) {
 			};
 		},
 
-		subscribeToDeleted (fn) {
+		subscribeToDeleted(fn) {
 			this.addListener(DiscussionDeleted, fn);
 
 			return () => {
@@ -342,13 +406,14 @@ export default function DiscussionInterface (targetModelClass) {
 			};
 		},
 
-		subscribeToPostChange (fn) {
+		subscribeToPostChange(fn) {
 			const post = this.getPost();
 
-			if (post === this) { return this.subscribeToChange(fn); }
+			if (post === this) {
+				return this.subscribeToChange(fn);
+			}
 
 			return post.subscribeToPostChange(fn);
 		},
-
 	};
 }

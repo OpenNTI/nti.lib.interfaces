@@ -1,6 +1,6 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Part from '../Part';
 
 class MultipleChoice extends Part {
@@ -11,10 +11,11 @@ class MultipleChoice extends Part {
 		COMMON_PREFIX + 'assessment.randomizedmultiplechoicemultipleanswerpart',
 	];
 
+	// prettier-ignore
 	static Fields = {
 		...Part.Fields,
 		'choices': { type: 'string[]', content: true },
 	}
 }
 
-export default decorate(MultipleChoice, {with:[model]});
+export default decorate(MultipleChoice, { with: [model] });

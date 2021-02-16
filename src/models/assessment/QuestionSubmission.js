@@ -1,14 +1,15 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
-import {Service} from '../../constants';
+import { Service } from '../../constants';
 import Submission from '../../mixins/Submission';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class QuestionSubmission extends Base {
-	static MimeType = COMMON_PREFIX + 'assessment.questionsubmission'
+	static MimeType = COMMON_PREFIX + 'assessment.questionsubmission';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'questionId':                    { type: 'string'  },
@@ -17,31 +18,32 @@ class QuestionSubmission extends Base {
 		'CreatorRecordedEffortDuration': { type: 'number'  },
 	}
 
-	static build (question) {
-		const {parts} = question;
+	static build(question) {
+		const { parts } = question;
 		const data = {
 			MimeType: QuestionSubmission.MimeType,
 			ContainerId: question.containerId,
 			NTIID: question.getID(),
 			questionId: question.getID(),
-			parts: parts && parts.map(p => p.getInitialValue ? p.getInitialValue() : null)
+			parts:
+				parts &&
+				parts.map(p =>
+					p.getInitialValue ? p.getInitialValue() : null
+				),
 		};
 
 		return new this(question[Service], question, data);
 	}
 
-
-	getID () {
+	getID() {
 		return this.NTIID || this.questionId;
 	}
 
-
-	getPartValue (index) {
+	getPartValue(index) {
 		return this.parts[index];
 	}
 
-
-	setPartValue (index, value) {
+	setPartValue(index, value) {
 		index = parseInt(index, 10);
 		if (index < 0 || index >= (this.parts || []).length) {
 			throw new Error('Index Out Of Bounds.');
@@ -50,8 +52,7 @@ class QuestionSubmission extends Base {
 		this.parts[index] = value;
 	}
 
-
-	addRecordedEffortTime (/*duration*/) {
+	addRecordedEffortTime(/*duration*/) {
 		// let old = this.CreatorRecordedEffortDuration || 0;
 		// this.CreatorRecordedEffortDuration = old + duration;
 
@@ -59,17 +60,17 @@ class QuestionSubmission extends Base {
 		this.CreatorRecordedEffortDuration = null;
 	}
 
-
-	canSubmit () {
+	canSubmit() {
 		const answered = p => p !== null;
 
-		if (this.isSubmitted()) { return false; }
+		if (this.isSubmitted()) {
+			return false;
+		}
 
 		return (this.parts || []).filter(answered).length > 0;
 	}
 }
 
-export default decorate(QuestionSubmission, {with: [
-	model,
-	mixin(Submission),
-]});
+export default decorate(QuestionSubmission, {
+	with: [model, mixin(Submission)],
+});

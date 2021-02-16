@@ -1,15 +1,16 @@
-import {decorate,URL} from '@nti/lib-commons';
+import { decorate, URL } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 const getRoot = x => (x ? x.root : x) || '/missing-root/';
-const findRoot = p => getRoot((p && p.parent) ? p.parent('root') : null);
+const findRoot = p => getRoot(p && p.parent ? p.parent('root') : null);
 const resolve = (s, p, path) => URL.resolve(findRoot(p), path);
 
 class Slide extends Base {
-	static MimeType = COMMON_PREFIX + 'slide'
+	static MimeType = COMMON_PREFIX + 'slide';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'slideimage':      { type: resolve,  name: 'image'     },
@@ -21,4 +22,4 @@ class Slide extends Base {
 	}
 }
 
-export default decorate(Slide, {with:[model]});
+export default decorate(Slide, { with: [model] });

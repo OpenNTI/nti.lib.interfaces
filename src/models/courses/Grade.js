@@ -1,23 +1,26 @@
-import {decorate,pluck} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate, pluck } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 import names from '../../mixins/CourseAndAssignmentNameResolving';
-import {cacheClassInstances, AfterInstanceRefresh} from '../../mixins/InstanceCacheable';
-import {initPrivate, getPrivate} from '../../utils/private';
-import {model, COMMON_PREFIX} from '../Registry';
+import {
+	cacheClassInstances,
+	AfterInstanceRefresh,
+} from '../../mixins/InstanceCacheable';
+import { initPrivate, getPrivate } from '../../utils/private';
+import { model, COMMON_PREFIX } from '../Registry';
 //
 import Base from '../Base';
 
 const ENDS_IN_LETTER_REGEX = /\s[a-fiw-]$/i;
 
-
 class Grade extends Base {
-	static AllowWildDisconntectedInstances = true
+	static AllowWildDisconntectedInstances = true;
 	static MimeType = [
 		COMMON_PREFIX + 'grade',
 		COMMON_PREFIX + 'gradebook.grade',
-	]
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'assignmentContainer': { type: 'string'  },
@@ -33,69 +36,65 @@ class Grade extends Base {
 		'CatalogEntryNTIID':   { type: 'string'  }
 	}
 
-	static deriveCacheKeyFrom (data) {
-		if(!data) {
+	static deriveCacheKeyFrom(data) {
+		if (!data) {
 			return null;
 		}
 
 		return data.AssignmentId + '--' + data.Username;
 	}
 
-
-	static isEmpty (value, letter) {
+	static isEmpty(value, letter) {
 		let v = `${value || ''} ${letter || ''}`;
 		return v.replace('-', '').trim().length === 0;
 	}
 
+	static getPossibleGradeLetters() {
+		return ['-', 'A', 'B', 'C', 'D', 'F', 'I', 'W'];
+	}
 
-	static getPossibleGradeLetters () { return [ '-', 'A', 'B', 'C', 'D', 'F', 'I', 'W' ]; }
-
-
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 		initPrivate(this);
 		processValue.call(this, data.value);
 	}
 
-
-	[AfterInstanceRefresh] (data, old) {
+	[AfterInstanceRefresh](data, old) {
 		if (data.value !== old.value) {
 			processValue.call(this, data.value);
 		}
 	}
 
-
-	toJSON () {
+	toJSON() {
 		let json = this.getData();
 		json.value = [this.value, this.letter || ''].join(' ').trim();
 		return json;
 	}
 
-
-	change (value, letter = this.letter) {
-
+	change(value, letter = this.letter) {
 		if (letter) {
 			value = [value, letter].join(' ');
 		}
 
-		return this.save({value}, () => {
+		return this.save({ value }, () => {
 			processValue.call(this, value);
 		});
 	}
 
-
-	get value () { return getPrivate(this).value; }
+	get value() {
+		return getPrivate(this).value;
+	}
 
 	//Models are supposed to be immutable, so this is mostly going to be called by super.refresh().
-	set value (v) {
+	set value(v) {
 		processValue.call(this, v);
 		this.onChange();
 	}
 
-
-
-	get letter () { return getPrivate(this).letter; }
-	set letter (l) {
+	get letter() {
+		return getPrivate(this).letter;
+	}
+	set letter(l) {
 		if (!l || l == null) {
 			l = null;
 		}
@@ -109,36 +108,31 @@ class Grade extends Base {
 		this.onChange();
 	}
 
-
-	getValue () {
+	getValue() {
 		return getPrivate(this).value;
 	}
 
-
-	getLetter () {
+	getLetter() {
 		return getPrivate(this).letter;
 	}
 
-
-	isExcused () {
+	isExcused() {
 		return this.hasLink('unexcuse') || this.IsExcused;
 	}
 
+	isExcusable() {
+		return this.hasLink('excuse') || this.hasLink('unexcuse');
+	}
 
-	isExcusable () { return this.hasLink('excuse') || this.hasLink('unexcuse'); }
-
-
-	isPredicted () {
+	isPredicted() {
 		return !!this.IsPredicted;
 	}
 
-
-	hasAutoGrade () {
+	hasAutoGrade() {
 		return this.AutoGrade != null;
 	}
 
-
-	excuseGrade () {
+	excuseGrade() {
 		const A = 'excuse';
 		const B = 'unexcuse';
 
@@ -149,7 +143,6 @@ class Grade extends Base {
 			.then(() => this.onChange('excuse'));
 	}
 
-
 	/**
 	 * looks at the values set and compares them to the ones passed
 	 * treat a letter grade value of '-' the same as no letter grade
@@ -158,8 +151,8 @@ class Grade extends Base {
 	 * @param  {char} letter the letter value of the grade
 	 * @returns {boolean}        if they are the same values
 	 */
-	equals (value, letter) {
-		const normalizeLetter = x => (!x || x === '-') ? false : x;
+	equals(value, letter) {
+		const normalizeLetter = x => (!x || x === '-' ? false : x);
 		const ltr = normalizeLetter(this.letter);
 		const val = this.value;
 
@@ -167,14 +160,11 @@ class Grade extends Base {
 	}
 }
 
-export default decorate(Grade, {with:[
-	cacheClassInstances,
-	model,
-	mixin(names),
-]});
+export default decorate(Grade, {
+	with: [cacheClassInstances, model, mixin(names)],
+});
 
-
-function processValue (value) {
+function processValue(value) {
 	if (typeof value === 'number') {
 		let n = value.toFixed(1);
 		if (n.split('.')[1] === '0') {
@@ -195,15 +185,17 @@ function processValue (value) {
 	if (this.isPredicted()) {
 		Object.assign(getPrivate(this), {
 			value: this.Correctness,
-			letter: value
+			letter: value,
 		});
-	}
-	else {
+	} else {
 		let v = value.split(' ');
 
 		Object.assign(getPrivate(this), {
-			letter: v.length > 1 && ENDS_IN_LETTER_REGEX.test(value) ? v.pop() : null,
-			value: v.join(' ')
+			letter:
+				v.length > 1 && ENDS_IN_LETTER_REGEX.test(value)
+					? v.pop()
+					: null,
+			value: v.join(' '),
 		});
 	}
 }

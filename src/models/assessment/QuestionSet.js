@@ -1,15 +1,16 @@
-import {decorate, pluck} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate, pluck } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 import Completable from '../../mixins/Completable';
 import PlacementProvider from '../../authoring/placement/providers/QuestionSet';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 import SubmittableIdentity from './mixins/SubmittableIdentity';
 import QuestionSetSubmission from './QuestionSetSubmission';
 
-const SUBMITTED_TYPE = 'application/vnd.nextthought.assessment.assessedquestionset';
+const SUBMITTED_TYPE =
+	'application/vnd.nextthought.assessment.assessedquestionset';
 
 class QuestionSet extends Base {
 	static MimeType = [
@@ -18,8 +19,9 @@ class QuestionSet extends Base {
 		COMMON_PREFIX + 'naquestionset',
 		COMMON_PREFIX + 'narandomizedquestionset',
 		COMMON_PREFIX + 'assessment.randomizedquestionset',
-	]
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'draw':                                  { type: 'number',                               },
@@ -33,45 +35,40 @@ class QuestionSet extends Base {
 		'LimitedEditingCapabilitiesSubmissions': { type: 'boolean'                               },
 	};
 
-
-	[Symbol.iterator] () {
+	[Symbol.iterator]() {
 		let snapshot = this.getQuestions();
-		let {length} = snapshot;
+		let { length } = snapshot;
 		let index = 0;
 
 		return {
-
-			next () {
+			next() {
 				let done = index >= length;
 				let value = snapshot[index++];
 
 				return { value, done };
-			}
-
+			},
 		};
 	}
 
-
-	get isAutoGradable () {
+	get isAutoGradable() {
 		for (let question of this) {
-			if (!question.isAutoGradable) { return false; }
+			if (!question.isAutoGradable) {
+				return false;
+			}
 		}
 
 		return true;
 	}
 
-
-	getAssociations () {
+	getAssociations() {
 		return this.fetchLinkParsed('Lessons');
 	}
 
-
-	getPlacementProvider (scope, accepts) {
+	getPlacementProvider(scope, accepts) {
 		return new PlacementProvider(scope, this, accepts);
 	}
 
-
-	getAutoGradableConflicts () {
+	getAutoGradableConflicts() {
 		const conflicts = [];
 		const questions = this.questions || [];
 
@@ -80,7 +77,7 @@ class QuestionSet extends Base {
 				conflicts.push({
 					index: questions.indexOf(question),
 					reason: question.getAutoGradableConflicts(),
-					question
+					question,
 				});
 			}
 		}
@@ -88,18 +85,15 @@ class QuestionSet extends Base {
 		return conflicts;
 	}
 
-
 	/**
 	 * Is the question order set to be randomized.
 	 * @property {boolean} isRandomized
 	 */
 
-
 	/**
 	 * Are the question parts set to use the Randomized Part variant?
 	 * @property {boolean} isPartTypeRandomized.
 	 */
-
 
 	/**
 	 * Checks to see if the NTIID is within this QuestionSet
@@ -107,41 +101,38 @@ class QuestionSet extends Base {
 	 * @param {string} id NTIID
 	 * @returns {boolean} true if contains the id, false otherwise.
 	 */
-	containsId (id) {
+	containsId(id) {
 		return !!this.getQuestion(id);
 	}
-
 
 	/**
 	 * Returns the max number of questions from the set to pick from.
 	 * @returns {number} max or null if unrestricted
 	 */
-	getQuestionLimit () {
+	getQuestionLimit() {
 		return this.draw;
 	}
 
-
-	getQuestion (id) {
-		return (this.questions || []).reduce((found, q) => found || (q.getID() === id && q), null);
+	getQuestion(id) {
+		return (this.questions || []).reduce(
+			(found, q) => found || (q.getID() === id && q),
+			null
+		);
 	}
 
-
-	getQuestions () {
+	getQuestions() {
 		return (this.questions || []).slice();
 	}
 
-
-	getQuestionCount () {
+	getQuestionCount() {
 		return (this.questions || []).length;
 	}
 
-
-	getSubmission () {
+	getSubmission() {
 		return QuestionSetSubmission.build(this);
 	}
 
-
-	loadPreviousSubmission () {
+	loadPreviousSubmission() {
 		let dataProvider = this.parent('getUserDataLastOfType');
 		if (!dataProvider) {
 			return Promise.reject('Nothing to do');
@@ -150,28 +141,36 @@ class QuestionSet extends Base {
 		return dataProvider.getUserDataLastOfType(SUBMITTED_TYPE);
 	}
 
-
 	/**
 	 * Toggle the Randomization state of Questions or Parts.
 	 *
 	 * @param  {boolean} parts if true toggles the parts randomization. if false (default) it will toggle the randomization of questions.
 	 * @returns {Promise} The promise of the work being done.
 	 */
-	toggleRandomized (parts) {
-		const cap = (s) => s[0].toUpperCase() + s.substr(1);
+	toggleRandomized(parts) {
+		const cap = s => s[0].toUpperCase() + s.substr(1);
 		const rel = 'randomize' + (parts ? 'PartsType' : '');
 
 		let link = this.hasLink(cap(rel)) ? cap(rel) : cap(`un${rel}`);
 		return this.postToLink(link)
-			.then(o => this.refresh(pluck(o, 'NTIID', 'Links', 'Randomized', 'RandomizedPartsType', 'draw')))
+			.then(o =>
+				this.refresh(
+					pluck(
+						o,
+						'NTIID',
+						'Links',
+						'Randomized',
+						'RandomizedPartsType',
+						'draw'
+					)
+				)
+			)
 			.then(() => this.onChange('Randomize'));
 	}
 
-
-	toggleRandomizedPartTypes () {
+	toggleRandomizedPartTypes() {
 		return this.toggleRandomized(true);
 	}
-
 
 	/**
 	 * Set the draw limit. A draw of 'None' or empty will convert the question bank back into a question set.
@@ -179,14 +178,13 @@ class QuestionSet extends Base {
 	 * @param {number|null} n The limit to set to. Use null if you want to convert back to question set.
 	 * @returns {Promise} A promise of the save is returned.
 	 */
-	setQuestionLimit (n) {
+	setQuestionLimit(n) {
 		return this.save({
-			'draw': n
+			draw: n,
 		});
 	}
 }
 
-export default decorate(QuestionSet, {with: [
-	model,
-	mixin(SubmittableIdentity, Completable),
-]});
+export default decorate(QuestionSet, {
+	with: [model, mixin(SubmittableIdentity, Completable)],
+});

@@ -1,13 +1,14 @@
 import path from 'path';
 
-import {decorate,FileType} from '@nti/lib-commons';
+import { decorate, FileType } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Part from '../Part';
 
 class File extends Part {
-	static MimeType = COMMON_PREFIX + 'assessment.filepart'
+	static MimeType = COMMON_PREFIX + 'assessment.filepart';
 
+	// prettier-ignore
 	static Fields = {
 		...Part.Fields,
 		'allowed_extensions': { type: 'string[]' },
@@ -18,15 +19,17 @@ class File extends Part {
 	fileSetDescriptor = new FileType.FileSetDescriptor(
 		this.allowed_extensions || ['*'],
 		this.allowed_mime_types || ['*/*']
-	)
+	);
 
-	validateFile (file) {
-		const r = this.reasons = [];
+	validateFile(file) {
+		const r = (this.reasons = []);
 
 		if (!this.fileSetDescriptor.matches(file)) {
 			const extension = path.extname((file || {}).name || '');
-			const parens = s => s ? `(${s})` : s;
-			const typeString = parens([extension, (file || {}).type].filter(Boolean).join(', '));
+			const parens = s => (s ? `(${s})` : s);
+			const typeString = parens(
+				[extension, (file || {}).type].filter(Boolean).join(', ')
+			);
 			r.push(`The file type ${typeString} is not allowed.`);
 		}
 
@@ -37,15 +40,14 @@ class File extends Part {
 		return r;
 	}
 
-	isFileAcceptable (file) {
+	isFileAcceptable(file) {
 		return this.validateFile(file).length === 0;
 	}
 
-	checkFileSize (size) {
+	checkFileSize(size) {
 		let max = this.max_file_size || Infinity;
 		return size < max && size > 0;
 	}
-
 }
 
-export default decorate(File, {with:[model]});
+export default decorate(File, { with: [model] });

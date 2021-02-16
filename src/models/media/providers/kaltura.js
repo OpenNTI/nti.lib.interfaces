@@ -2,7 +2,7 @@ import url from 'url';
 
 import QueryString from 'query-string';
 
-import {Service, Context} from '../../../constants';
+import { Service, Context } from '../../../constants';
 
 const NOT_FOUND = 'ENTRY_ID_NOT_FOUND';
 
@@ -16,20 +16,17 @@ const is3gp = RegExp.prototype.test.bind(/3gp/i);
 const kalturaRe = /kaltura/i;
 
 export default class KalturaProvider {
-
 	static service = 'kaltura';
 
-	static handles (uri) {
+	static handles(uri) {
 		const u = url.parse(uri);
 		return kalturaRe.test(u.protocol) || kalturaRe.test(u.host);
 	}
 
-
-	static getID (href) {
+	static getID(href) {
 		const parts = getIDParts(href);
 		return parts && Array.isArray(parts) && `${parts.join(':')}`;
 	}
-
 
 	/**
 	 * Resolves custom URLs so we can get the ID for our uses.
@@ -38,7 +35,7 @@ export default class KalturaProvider {
 	 * @param  {string} uri the url of the kaltura video.
 	 * @returns {Promise} resolves with the video id, or rejects with an error.
 	 */
-	static async resolveID (service, uri) {
+	static async resolveID(service, uri) {
 		const meta = await service.getMetadataFor(uri);
 
 		// in some instances, the contentLocation won't have the partnerId.  However,
@@ -46,7 +43,7 @@ export default class KalturaProvider {
 		// each of them and take the first valid one
 		const [metaURL] = [
 			meta.contentLocation,
-			...(meta.images || []).map(x => x.url)
+			...(meta.images || []).map(x => x.url),
 		]
 			.map(getIDParts)
 			.filter(Boolean);
@@ -56,36 +53,31 @@ export default class KalturaProvider {
 		return id || Promise.reject('Not Found');
 	}
 
-
-	static getCanonicalURL (href, videoId) {
+	static getCanonicalURL(href, videoId) {
 		const id = videoId || getURLID(getIDParts(href));
 		return `kaltura://${id}`;
 	}
 
-
-	constructor (service) {
+	constructor(service) {
 		this[Service] = service;
 	}
 
-
-	getURL (source) {
+	getURL(source) {
 		return buildURL(this[Service], source);
 	}
 
-
-	resolveEntity (source) {
+	resolveEntity(source) {
 		return fetch(this.getURL(source))
-			.then(r => r.ok ? r.json() : Promise.reject(r))
+			.then(r => (r.ok ? r.json() : Promise.reject(r)))
 			.then(result => parseResult(result));
 	}
 }
 
-
 //Private util functions
 
-
-function normalizeUrl (href) {
-	const forceTrailingSlash = x => String(x).substr(-1) === '/' ? x : `${x}/`;
+function normalizeUrl(href) {
+	const forceTrailingSlash = x =>
+		String(x).substr(-1) === '/' ? x : `${x}/`;
 
 	if (/^kaltura/i.test(href)) {
 		return forceTrailingSlash(href);
@@ -116,17 +108,13 @@ function normalizeUrl (href) {
 		const pathname = parts.pathname.split('/id/');
 		const entryId = pathname[pathname.length - 1];
 
-		if(partnerId && entryId) {
+		if (partnerId && entryId) {
 			return `kaltura://${partnerId}/${entryId}/`;
 		}
 	};
 
-	return pattern1()
-		|| pattern2(href)
-		|| pattern3()
-		|| null;
+	return pattern1() || pattern2(href) || pattern3() || null;
 }
-
 
 /**
  * ID should take the form `${partnerId}/${entryId}` for consistency
@@ -135,14 +123,14 @@ function normalizeUrl (href) {
  * @param  {string} href kaltura video href
  * @returns {string} id of the form `${partnerId}/${entryId}`
  */
-function getIDParts (href) {
+function getIDParts(href) {
 	if (Array.isArray(href) || href == null) {
 		return href;
 	}
 
 	const normalized = normalizeUrl(href);
 
-	if(!normalized) {
+	if (!normalized) {
 		return null;
 	}
 
@@ -159,32 +147,31 @@ function getIDParts (href) {
 	return [providerId, videoId];
 }
 
-
-function getURLID (href) {
+function getURLID(href) {
 	const parts = [...getIDParts(href)];
 	const hrefId = parts && Array.isArray(parts) && parts.join('/');
 	return `${hrefId}/`; //trailing / is required...
 }
 
-
-function kalturaSig (str) {
+function kalturaSig(str) {
 	let hash = 0;
-	if (str.length === 0) { return hash; }
+	if (str.length === 0) {
+		return hash;
+	}
 	for (let i = 0; i < str.length; i++) {
 		let currentChar = str.charCodeAt(i);
-		hash = ((hash << 5) - hash) + currentChar;
+		hash = (hash << 5) - hash + currentChar;
 		hash = hash & hash;
 	}
 	return hash;
 }
 
-
 /*
  * Stand alone source grabber.
  * grabbed from http://player.kaltura.com/kWidget/kWidget.getSources.js
  */
-function getParams (partnerId, entryId, context = {}) {
-	const referrer = global.document ? global.document.URL : (context.url || '');
+function getParams(partnerId, entryId, context = {}) {
+	const referrer = global.document ? global.document.URL : context.url || '';
 	const param = {
 		service: 'multirequest',
 		apiVersion: '3.1',
@@ -218,7 +205,7 @@ function getParams (partnerId, entryId, context = {}) {
 		'4:filter:objectType': 'KalturaAssetFilter',
 		'4:filter:statusEqual': 2,
 		'4:pager:pageSize': 50,
-		'4:action': 'list'
+		'4:action': 'list',
 	};
 
 	//Do not alter these three lines
@@ -229,8 +216,7 @@ function getParams (partnerId, entryId, context = {}) {
 	return param;
 }
 
-
-function parseResult (result) {
+function parseResult(result) {
 	const protocol = 'https';
 	const serviceUrl = '://cdnapisec.kaltura.com';
 
@@ -242,44 +228,56 @@ function parseResult (result) {
 
 	const assets = data.flavorAssets || [];
 
-	const baseUrl = protocol + serviceUrl + '/p/' + entryInfo.partnerId +
-			'/sp/' + entryInfo.partnerId + '00/playManifest';
+	const baseUrl =
+		protocol +
+		serviceUrl +
+		'/p/' +
+		entryInfo.partnerId +
+		'/sp/' +
+		entryInfo.partnerId +
+		'00/playManifest';
 
-	const adaptiveFlavors = assets.map(a => isHLS(a.tags) && a.id).filter(x => x);
+	const adaptiveFlavors = assets
+		.map(a => isHLS(a.tags) && a.id)
+		.filter(x => x);
 
 	const deviceSources = assets
-		.filter(asset=> asset.status === 2 && asset.width)
+		.filter(asset => asset.status === 2 && asset.width)
 		.map(asset => {
 			const source = {
 				bitrate: asset.bitrate * 8,
 				width: asset.width,
 				height: asset.height,
-				tags: asset.tags
+				tags: asset.tags,
 			};
 
 			let src = baseUrl + '/entryId/' + asset.entryId;
 
 			// Check if Apple http streaming is enabled and the tags include applembr ( single stream HLS )
-			if ( isAppleMBR(asset.tags)) {
+			if (isAppleMBR(asset.tags)) {
 				return {
 					type: 'application/vnd.apple.mpegurl',
-					src: `${src}/format/applehttp/protocol/${protocol}/a.m3u8`
+					src: `${src}/format/applehttp/protocol/${protocol}/a.m3u8`,
 				};
 			}
 
 			src += '/flavorId/' + asset.id + '/format/url/protocol/' + protocol;
 
-			if ( isMP4(asset.fileExt) || asset.containerFormat === 'isom') {
+			if (isMP4(asset.fileExt) || asset.containerFormat === 'isom') {
 				source.src = src + '/a.mp4';
 				source.type = 'video/mp4';
 			}
 
-			if ( isOGG(asset.fileExt) || isOGG(asset.containerFormat)) {
+			if (isOGG(asset.fileExt) || isOGG(asset.containerFormat)) {
 				source.src = src + '/a.ogg';
 				source.type = 'video/ogg';
 			}
 
-			if ( isWebM(asset.fileExt) || isWebM(asset.tags) || isWebM(asset.containerFormat)) {
+			if (
+				isWebM(asset.fileExt) ||
+				isWebM(asset.tags) ||
+				isWebM(asset.containerFormat)
+			) {
 				source.src = src + '/a.webm';
 				source.type = 'video/webm';
 			}
@@ -294,28 +292,37 @@ function parseResult (result) {
 		.filter(s => s.src);
 
 	// Add the flavor list adaptive style urls ( multiple flavor HLS ):
-	if ( adaptiveFlavors.length !== 0 ) {
+	if (adaptiveFlavors.length !== 0) {
 		deviceSources.push({
 			'data-flavorid': 'HLS',
 			type: 'application/vnd.apple.mpegurl',
-			src: `${baseUrl}/entryId/${entryInfo.id}/flavorIds/${adaptiveFlavors.join(',')}/format/applehttp/protocol/${protocol}/a.m3u8`
+			src: `${baseUrl}/entryId/${
+				entryInfo.id
+			}/flavorIds/${adaptiveFlavors.join(
+				','
+			)}/format/applehttp/protocol/${protocol}/a.m3u8`,
 		});
 	}
 
-
 	const w = 1280;
-	const poster =	'//www.kaltura.com/p/' + entryInfo.partnerId +
-					'/thumbnail/entry_id/' + entryInfo.id +
-					'/width/' + w + '/';
+	const poster =
+		'//www.kaltura.com/p/' +
+		entryInfo.partnerId +
+		'/thumbnail/entry_id/' +
+		entryInfo.id +
+		'/width/' +
+		w +
+		'/';
 
 	const duration = Math.ceil(entryInfo.duration) + 30;
-	const captions = captionInfo.totalCount > 0 ?
-		captionInfo['objects'].map(caption => ({
-			lang: caption.languageCode,
-			purpose: 'captions',
-			src: `${protocol}${serviceUrl}/api_v3/index.php/service/caption_captionasset/action/serveWebVTT/segmentDuration/${duration}/segmentIndex/1/captionAssetId/${caption.id}/ks/${result[0].ks}`,
-		}))
-		: [];
+	const captions =
+		captionInfo.totalCount > 0
+			? captionInfo['objects'].map(caption => ({
+					lang: caption.languageCode,
+					purpose: 'captions',
+					src: `${protocol}${serviceUrl}/api_v3/index.php/service/caption_captionasset/action/serveWebVTT/segmentDuration/${duration}/segmentIndex/1/captionAssetId/${caption.id}/ks/${result[0].ks}`,
+			  }))
+			: [];
 
 	return {
 		objectType: data.objectType,
@@ -327,17 +334,18 @@ function parseResult (result) {
 		entryId: entryInfo.id,
 		description: entryInfo.description,
 		sources: deviceSources,
-		tracks: captions
+		tracks: captions,
 	};
 }
 
-
-function buildURL (service, source) {
+function buildURL(service, source) {
 	let id = source.source;
 	id = Array.isArray(id) ? id[0] : id;
 
 	const [partnerId, entryId] = id.split(':');
-	const params = QueryString.stringify(getParams(partnerId, entryId, service && service[Context]));
+	const params = QueryString.stringify(
+		getParams(partnerId, entryId, service && service[Context])
+	);
 
 	return `https://cdnapisec.kaltura.com/api_v3/index.php?service=multirequest&${params}`;
 }

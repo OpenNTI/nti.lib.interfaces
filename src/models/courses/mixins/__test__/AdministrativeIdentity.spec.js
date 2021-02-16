@@ -2,13 +2,11 @@
 import mixin from '../AdministrativeIdentity';
 
 describe('AdministrativeIdentity Mixin', () => {
-
-	test('should define isAdministrative = true', () =>{
+	test('should define isAdministrative = true', () => {
 		expect(mixin.isAdministrative).toBe(true);
 	});
 
 	test('isAdministrative should be readonly', () => {
-		expect(() => mixin.isAdministrative = false).toThrow();
+		expect(() => (mixin.isAdministrative = false)).toThrow();
 	});
-
 });

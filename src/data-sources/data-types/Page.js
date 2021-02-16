@@ -1,9 +1,9 @@
-import {Service} from '../../constants';
+import { Service } from '../../constants';
 
 import Batch from './Batch';
 
 export default class Page extends Batch {
-	static fromList (list, params, service, parent) {
+	static fromList(list, params, service, parent) {
 		return new Page(service, parent, {
 			BatchPage: 1,
 			PageSize: list.length,
@@ -11,10 +11,11 @@ export default class Page extends Batch {
 			ItemCount: list.length,
 			TotalItemCount: list.length,
 			FilteredTotalItemCount: list.length,
-			Items: list
+			Items: list,
 		});
 	}
 
+	// prettier-ignore
 	static Fields = {
 		...Batch.Fields,
 		'PageSize':               {type: 'number'},
@@ -23,37 +24,40 @@ export default class Page extends Batch {
 		'FilteredTotalItemCount': {type: 'number'}
 	}
 
-	get TotalPageCount () {
-		const {TotalItemCount, PageSize} = this;
+	get TotalPageCount() {
+		const { TotalItemCount, PageSize } = this;
 
 		return Math.ceil(TotalItemCount / PageSize);
 	}
 
-	get hasMore () {
+	get hasMore() {
 		return this.hasLink('batch-next');
 	}
 
-	getItemCount () {
+	getItemCount() {
 		return (this.Items || []).length;
 	}
 
-	getTotalItemCount () {
-		return this.FilteredTotalItemCount != null ? this.FilteredTotalItemCount : this.TotalItemCount;
+	getTotalItemCount() {
+		return this.FilteredTotalItemCount != null
+			? this.FilteredTotalItemCount
+			: this.TotalItemCount;
 	}
 
-
-	getUnfilteredItemCount () {
+	getUnfilteredItemCount() {
 		return this.TotalItemCount;
 	}
 
-	async loadNextPage () {
-		if (!this.hasLink('batch-next')) { return null; }
+	async loadNextPage() {
+		if (!this.hasLink('batch-next')) {
+			return null;
+		}
 
 		const resp = await this.fetchLink('batch-next');
 
 		return new Page(this[Service], this, {
 			PageSize: this.PageSize,
-			...resp
+			...resp,
 		});
 	}
 }

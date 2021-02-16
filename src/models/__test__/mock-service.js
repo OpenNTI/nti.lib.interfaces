@@ -1,5 +1,5 @@
-import {Service} from '../../constants';
+import { Service } from '../../constants';
 
 export default {
-	isService: Service
+	isService: Service,
 };

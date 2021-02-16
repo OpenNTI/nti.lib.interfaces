@@ -1,13 +1,14 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 import Completable from '../../../mixins/Completable';
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 
 class AssignmentReference extends Base {
-	static MimeType = COMMON_PREFIX + 'assignmentref'
+	static MimeType = COMMON_PREFIX + 'assignmentref';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Target-NTIID':  { type: 'string' },
@@ -15,16 +16,15 @@ class AssignmentReference extends Base {
 		'title':         { type: 'string' },
 	}
 
-	get target () {
+	get target() {
 		return this['Target-NTIID'];
 	}
 
-	pointsToId (id) {
+	pointsToId(id) {
 		return this['Target-NTIID'] === id;
 	}
 }
 
-export default decorate(AssignmentReference, {with:[
-	model,
-	mixin(Completable),
-]});
+export default decorate(AssignmentReference, {
+	with: [model, mixin(Completable)],
+});

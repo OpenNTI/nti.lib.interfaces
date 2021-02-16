@@ -1,4 +1,4 @@
-import Registry, {COMMON_PREFIX} from './Registry';
+import Registry, { COMMON_PREFIX } from './Registry';
 
 export * as annotations from './annotations';
 export * as anchors from './anchors';
@@ -28,6 +28,4 @@ export { default as WorkspaceCollection } from './WorkspaceCollection';
 
 Registry.ignore('link');
 
-export {
-	COMMON_PREFIX
-};
+export { COMMON_PREFIX };

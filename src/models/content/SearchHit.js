@@ -1,6 +1,6 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class ContentUnitSearchHit extends Base {
@@ -8,9 +8,10 @@ class ContentUnitSearchHit extends Base {
 		COMMON_PREFIX + 'search.contentunitsearchhit',
 		COMMON_PREFIX + 'search.searchhit',
 		COMMON_PREFIX + 'search.ugdsearchhit',
-		COMMON_PREFIX + 'search.transcriptsearchhit'
-	]
+		COMMON_PREFIX + 'search.transcriptsearchhit',
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Class':          { type: 'string'   },
@@ -21,7 +22,7 @@ class ContentUnitSearchHit extends Base {
 		'TargetMimeType': { type: 'string'   }
 	}
 
-	isContentUnitSearchHit = true
+	isContentUnitSearchHit = true;
 }
 
-export default decorate(ContentUnitSearchHit, {with:[model]});
+export default decorate(ContentUnitSearchHit, { with: [model] });

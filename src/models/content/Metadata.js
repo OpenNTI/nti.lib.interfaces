@@ -1,11 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class Metadata extends Base {
-	static MimeType = COMMON_PREFIX + 'metadata.contentmetadata'
+	static MimeType = COMMON_PREFIX + 'metadata.contentmetadata';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'contentLocation': { type: 'string'  },
@@ -18,4 +19,4 @@ class Metadata extends Base {
 	}
 }
 
-export default decorate(Metadata, {with:[model]});
+export default decorate(Metadata, { with: [model] });

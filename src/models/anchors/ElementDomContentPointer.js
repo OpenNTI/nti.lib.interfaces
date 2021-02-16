@@ -1,26 +1,29 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 
 import DomContentPointer from './DomContentPointer';
 
 class ElementDomContentPointer extends DomContentPointer {
-	static MimeType = COMMON_PREFIX + 'contentrange.elementdomcontentpointer'
+	static MimeType = COMMON_PREFIX + 'contentrange.elementdomcontentpointer';
 
+	// prettier-ignore
 	static Fields = {
 		...DomContentPointer.Fields,
 		'elementTagName': { type: 'string' },
 		'elementId':      { type: 'string' },
 	}
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		//If we are given a dom element as input, pull the necessary parts and
 		//create a config we can use to create this.
 		if (data.node) {
 			data = {
 				elementTagName: data.node.tagName,
-				elementId: data.node.getAttribute('data-ntiid') || data.node.getAttribute('id'),
-				role: data.role
+				elementId:
+					data.node.getAttribute('data-ntiid') ||
+					data.node.getAttribute('id'),
+				role: data.role,
 			};
 		}
 
@@ -35,28 +38,32 @@ class ElementDomContentPointer extends DomContentPointer {
 		this.validateId(this.elementId);
 	}
 
+	getElementTagName() {
+		return this.elementTagName;
+	}
+	getElementId() {
+		return this.elementId;
+	}
 
-	getElementTagName () { return this.elementTagName; }
-	getElementId () { return this.elementId; }
-
-
-	validateId (id) {
+	validateId(id) {
 		if (!id) {
 			throw new Error('Must supply an Id');
 		}
 	}
 
-
-	validateTagName (n) {
+	validateTagName(n) {
 		if (!n) {
 			throw new Error('Must supply a tag name');
 		}
 	}
 
-
-	locateRangePointInAncestor (AnchorLib, ancestorNode, startResult) {
-		return AnchorLib.locateElementDomContentPointer(this, ancestorNode, startResult);
+	locateRangePointInAncestor(AnchorLib, ancestorNode, startResult) {
+		return AnchorLib.locateElementDomContentPointer(
+			this,
+			ancestorNode,
+			startResult
+		);
 	}
 }
 
-export default decorate(ElementDomContentPointer, {with: [model]});
+export default decorate(ElementDomContentPointer, { with: [model] });

@@ -1,9 +1,9 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 import Completable from '../../../mixins/Completable';
-import {createPollingTask} from '../../../tasks';
-import {model, COMMON_PREFIX} from '../../Registry';
+import { createPollingTask } from '../../../tasks';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 
 const IMPLICIT_ERROR = Symbol('Implicit Error');
@@ -17,10 +17,9 @@ const ERROR = 'error';
 const FINISHED = 'finished';
 
 class SCORMContentInfo extends Base {
-	static MimeType = [
-		COMMON_PREFIX + 'scorm.scormcontentinfo'
-	]
+	static MimeType = [COMMON_PREFIX + 'scorm.scormcontentinfo'];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'scorm_id':   { type: 'string', name: 'scormId'   },
@@ -28,42 +27,45 @@ class SCORMContentInfo extends Base {
 		'upload_job': { type: 'object', name: 'uploadJob' }
 	}
 
-	get isProcessing () {
-		const {uploadJob} = this;
+	get isProcessing() {
+		const { uploadJob } = this;
 
-		return uploadJob && (uploadJob.State === CREATED || uploadJob.State === RUNNING);
+		return (
+			uploadJob &&
+			(uploadJob.State === CREATED || uploadJob.State === RUNNING)
+		);
 	}
 
-	get isErrored () {
-		const {uploadJob} = this;
+	get isErrored() {
+		const { uploadJob } = this;
 
 		return this[IMPLICIT_ERROR] || (uploadJob && uploadJob.State === ERROR);
 	}
 
-	get isReady () {
-		const {uploadJob} = this;
+	get isReady() {
+		const { uploadJob } = this;
 
 		return !uploadJob || uploadJob.State === FINISHED;
 	}
 
-	get errorMessage () {
-		const {uploadJob} = this;
+	get errorMessage() {
+		const { uploadJob } = this;
 
 		return uploadJob && uploadJob.ErrorMessage;
 	}
 
-
-	get fileName () {
-		const {uploadJob} = this;
+	get fileName() {
+		const { uploadJob } = this;
 
 		return uploadJob && uploadJob.UploadFilename;
 	}
 
-
-	getPoll () {
+	getPoll() {
 		const poll = async (cont, done) => {
 			try {
-				const updated = await this.fetchLink('SCORMContentAsyncUploadStatusUpdate');
+				const updated = await this.fetchLink(
+					'SCORMContentAsyncUploadStatusUpdate'
+				);
 
 				await this.refresh(updated);
 				this.onChange();
@@ -84,7 +86,6 @@ class SCORMContentInfo extends Base {
 	}
 }
 
-export default decorate(SCORMContentInfo, {with:[
-	model,
-	mixin(Completable),
-]});
+export default decorate(SCORMContentInfo, {
+	with: [model, mixin(Completable)],
+});

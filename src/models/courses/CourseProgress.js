@@ -1,13 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class CourseProgress extends Base {
-	static MimeType = [
-		COMMON_PREFIX + 'completion.completioncontextprogress',
-	]
+	static MimeType = [COMMON_PREFIX + 'completion.completioncontextprogress'];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Enabled':                { type: 'boolean', name: 'enabled'   },
@@ -24,7 +23,7 @@ class CourseProgress extends Base {
 		'UnsuccessfulItemNTIIDs': { type: 'string[]'                   },
 	}
 
-	getCompletedDate () {} //implemented by CompletedDate date field.
+	getCompletedDate() {} //implemented by CompletedDate date field.
 }
 
-export default decorate(CourseProgress, {with:[model]});
+export default decorate(CourseProgress, { with: [model] });

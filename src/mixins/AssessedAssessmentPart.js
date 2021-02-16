@@ -1,7 +1,5 @@
 export default {
-
-	getAssessedRoot () {
-
+	getAssessedRoot() {
 		let p = this.parent();
 
 		if (!p || !p.getAssessedRoot) {
@@ -9,6 +7,5 @@ export default {
 		}
 
 		return p.getAssessedRoot();
-	}
-
+	},
 };

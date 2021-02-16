@@ -1,10 +1,9 @@
-import {URL} from '@nti/lib-commons';
+import { URL } from '@nti/lib-commons';
 
-import {Service, Parser as parse} from '../constants';
-
+import { Service, Parser as parse } from '../constants';
 
 export default {
-	getContents (params, parseItems = true) {
+	getContents(params, parseItems = true) {
 		let link = this.getLink('contents');
 		if (!link) {
 			return Promise.reject('No Link!?');
@@ -14,10 +13,13 @@ export default {
 			link = URL.appendQueryParams(link, params);
 		}
 
-		return this[Service].get(link)
-			.then(raw => !parseItems ? raw : ({
-				...raw,
-				Items: this[parse](raw.Items)
-			}));
-	}
+		return this[Service].get(link).then(raw =>
+			!parseItems
+				? raw
+				: {
+						...raw,
+						Items: this[parse](raw.Items),
+				  }
+		);
+	},
 };

@@ -1,13 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class SCORMCompletionMetadata extends Base {
-	static MimeType = [
-		COMMON_PREFIX + 'scormcompletionmetadata',
-	]
+	static MimeType = [COMMON_PREFIX + 'scormcompletionmetadata'];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'ScormContentInfoNTIID': { type: 'string'   },
@@ -16,8 +15,7 @@ class SCORMCompletionMetadata extends Base {
 		'Success':               { type: 'boolean'  }
 	}
 
-
-	getCompletionDate () { } //implemented by CompletionDate date field.
+	getCompletionDate() {} //implemented by CompletionDate date field.
 }
 
-export default decorate(SCORMCompletionMetadata, {with:[model]});
+export default decorate(SCORMCompletionMetadata, { with: [model] });

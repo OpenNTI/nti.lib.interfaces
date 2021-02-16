@@ -1,6 +1,6 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import BaseIntegration from '../Integration';
 
 const ConnectRel = 'enable';
@@ -9,50 +9,49 @@ const ConnectMimeType = 'application/vnd.nextthought.site.acclaimintegration';
 const DisconnectRel = 'disconnect';
 
 class CredlyAcclaimIntegration extends BaseIntegration {
-	static MimeType = [
-		COMMON_PREFIX + 'site.acclaimintegration'
-	]
+	static MimeType = [COMMON_PREFIX + 'site.acclaimintegration'];
 
+	// prettier-ignore
 	static Fields = {
 		...BaseIntegration.Fields,
 		'authorization_token': {type: 'string', name: 'authorizationToken'},
 		'organization': {type: 'model'}
 	}
 
-	name = 'credly-acclaim'
-	isCredilyAcclaimIntegration = true
+	name = 'credly-acclaim';
+	isCredilyAcclaimIntegration = true;
 
-	isEnabled () {
+	isEnabled() {
 		return this.canConnect() || this.canDisconnect();
 	}
 
-	isConnected () {
+	isConnected() {
 		return Boolean(this.organization);
 	}
 
-	canConnect () {
+	canConnect() {
 		return this.hasLink(ConnectRel);
 	}
 
-	canDisconnect () {
+	canDisconnect() {
 		return this.hasLink(DisconnectRel);
 	}
 
-	async connect (authToken) {
+	async connect(authToken) {
 		await this.postToLink(ConnectRel, {
 			mimetype: ConnectMimeType,
-			'authorization_token': authToken
+			authorization_token: authToken,
 		});
 
 		await this.sync();
 	}
 
-	async disconnect () {
+	async disconnect() {
 		await this.deleteLink(DisconnectRel);
 		await this.sync();
 	}
 
-	async sync () {
+	async sync() {
 		const parent = this.parent();
 
 		try {
@@ -64,4 +63,4 @@ class CredlyAcclaimIntegration extends BaseIntegration {
 	}
 }
 
-export default decorate(CredlyAcclaimIntegration, {with: [model]});
+export default decorate(CredlyAcclaimIntegration, { with: [model] });

@@ -1,18 +1,21 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
-import {Mixin as HasContent, SetupContentProperties} from '../../mixins/HasContent';
-import {model, COMMON_PREFIX} from '../Registry';
+import {
+	Mixin as HasContent,
+	SetupContentProperties,
+} from '../../mixins/HasContent';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 //Rules:
 // Show Hints from start if they are present. If more than one, increment which one you see every time your show.
 // Show Solutions if the part is answered & incorrect (as apposed to correct or 'unknown'), and there are solutions
 
-
 class Part extends Base {
-	static MimeType = COMMON_PREFIX + 'assessment.part'
+	static MimeType = COMMON_PREFIX + 'assessment.part';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'answerLabel': { type: 'string', content: true },
@@ -25,44 +28,41 @@ class Part extends Base {
 		'wordbank':    { type: 'model[]'               },
 	}
 
-
-
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 		this.MimeType = (this.MimeType || '').replace(/nongradable/i, '');
 	}
 
-
-	getQuestionId () {
+	getQuestionId() {
 		return this.parent().getID();
 	}
 
-
-	getPartIndex () {
+	getPartIndex() {
 		let p = this.parent() || {};
 		let items = p.parts || [];
 		return items.indexOf(this);
 	}
 
-
-	isAnswered (partValue) {
+	isAnswered(partValue) {
 		return partValue != null;
 	}
 
-
-	getVideos () {
+	getVideos() {
 		if (!global.DOMParser) {
 			return [];
 		}
 
 		let out = [],
-			dom = new global.DOMParser().parseFromString(this.content, 'text/xml'),//Safari???
+			dom = new global.DOMParser().parseFromString(
+				this.content,
+				'text/xml'
+			), //Safari???
 			nodes = dom.querySelectorAll('object.naqvideo');
 
-		for(let i of nodes) {
+		for (let i of nodes) {
 			let o = {};
 
-			for(let p of i.getElementsByTagName('param')) {
+			for (let p of i.getElementsByTagName('param')) {
 				o[p.getAttribute('name')] = p.getAttribute('value');
 			}
 
@@ -72,26 +72,29 @@ class Part extends Base {
 		return out;
 	}
 
-
-	getWordBankEntry (wid) {
+	getWordBankEntry(wid) {
 		let p = this.parent() || {};
-		let wordbanks = [this.wordbank, p.wordbank].filter(x=>x);
+		let wordbanks = [this.wordbank, p.wordbank].filter(x => x);
 
-		return wordbanks.reduce((found, x)=>found || x && x.getEntry(wid), null);
+		return wordbanks.reduce(
+			(found, x) => found || (x && x.getEntry(wid)),
+			null
+		);
 	}
 
-
-	updateFromAssessed (assessedPart) {
+	updateFromAssessed(assessedPart) {
 		if (!assessedPart) {
 			throw new Error('[Assessment Fillin]: Invalid Argument');
 		}
 
-		if (assessedPart.getQuestionId() !== this.getQuestionId() ||
-			assessedPart.getPartIndex() !== this.getPartIndex()) {
+		if (
+			assessedPart.getQuestionId() !== this.getQuestionId() ||
+			assessedPart.getPartIndex() !== this.getPartIndex()
+		) {
 			throw new Error('[Assessment Fillin]: Miss-Matched Question/Part');
 		}
 
-		for(let p of ['hints', 'solutions']) {
+		for (let p of ['hints', 'solutions']) {
 			//Only update this[p] if its blank, or assessedPart[p] is truthy
 			// (do not blank out this[p] if its set and assessedPart[p] is not.)
 			if (!this[p] || assessedPart[p]) {
@@ -106,7 +109,4 @@ class Part extends Base {
 	}
 }
 
-export default decorate(Part, {with: [
-	model,
-	mixin(HasContent),
-]});
+export default decorate(Part, { with: [model, mixin(HasContent)] });

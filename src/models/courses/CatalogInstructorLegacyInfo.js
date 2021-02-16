@@ -1,11 +1,13 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class CatalogInstructorLegacyInfo extends Base {
-	static MimeType = COMMON_PREFIX + 'courses.coursecataloginstructorlegacyinfo'
+	static MimeType =
+		COMMON_PREFIX + 'courses.coursecataloginstructorlegacyinfo';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'JobTitle':     { type: 'string' },
@@ -17,4 +19,4 @@ class CatalogInstructorLegacyInfo extends Base {
 	}
 }
 
-export default decorate(CatalogInstructorLegacyInfo, {with:[model]});
+export default decorate(CatalogInstructorLegacyInfo, { with: [model] });

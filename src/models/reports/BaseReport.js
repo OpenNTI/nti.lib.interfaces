@@ -1,11 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class BaseReport extends Base {
-	static MimeType = COMMON_PREFIX + 'reports.basereport'
+	static MimeType = COMMON_PREFIX + 'reports.basereport';
 
+	// prettier-ignore
 	static Fields = {
 		'description':     {type: 'string'},
 		'title':           {type: 'string'},
@@ -16,4 +17,4 @@ class BaseReport extends Base {
 	}
 }
 
-export default decorate(BaseReport, {with:[model]});
+export default decorate(BaseReport, { with: [model] });

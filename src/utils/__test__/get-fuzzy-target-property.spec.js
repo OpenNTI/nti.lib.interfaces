@@ -1,11 +1,10 @@
 /* eslint-env jest */
 import getFuzzyTargetProperty from '../get-fuzzy-target-property';
 
-
 describe('getFuzzyTargetProperty', () => {
 	test('matches Target-NTIID', () => {
 		const obj = {
-			'Target-NTIID': 'test-id'
+			'Target-NTIID': 'test-id',
 		};
 
 		expect(getFuzzyTargetProperty(obj)).toEqual('Target-NTIID');
@@ -13,7 +12,7 @@ describe('getFuzzyTargetProperty', () => {
 
 	test('matches target-NTIID', () => {
 		const obj = {
-			'target-NTIID': 'test'
+			'target-NTIID': 'test',
 		};
 
 		expect(getFuzzyTargetProperty(obj)).toEqual('target-NTIID');
@@ -21,7 +20,7 @@ describe('getFuzzyTargetProperty', () => {
 
 	test('matches NTIID', () => {
 		const obj = {
-			NTIID: 'test'
+			NTIID: 'test',
 		};
 
 		expect(getFuzzyTargetProperty(obj)).toEqual('NTIID');
@@ -29,17 +28,16 @@ describe('getFuzzyTargetProperty', () => {
 
 	test('matches ntiid', () => {
 		const obj = {
-			ntiid: 'test'
+			ntiid: 'test',
 		};
-
 
 		expect(getFuzzyTargetProperty(obj)).toEqual('ntiid');
 	});
 
 	test('Prefers Target-NTIID over NTIID', () => {
 		const obj = {
-			'NTIID': 'test-ntiid',
-			'Target-NTIID': 'test-target-ntiid'
+			NTIID: 'test-ntiid',
+			'Target-NTIID': 'test-target-ntiid',
 		};
 
 		expect(getFuzzyTargetProperty(obj)).toEqual('Target-NTIID');

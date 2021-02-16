@@ -7,10 +7,7 @@ describe('call-once-monitor tests', () => {
 		const arg1 = 'test1';
 		const arg2 = 'test2';
 
-		const monitors = [
-			jest.fn(),
-			jest.fn()
-		];
+		const monitors = [jest.fn(), jest.fn()];
 
 		for (let monitor of monitors) {
 			method.onceCalled(monitor);

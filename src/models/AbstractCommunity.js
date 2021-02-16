@@ -8,7 +8,7 @@ export default class AbstractCommunity extends EventEmitter {
 	#channelListPromise = null;
 	#channelList = [];
 
-	[Symbol.iterator] () {
+	[Symbol.iterator]() {
 		this.getChannelList();
 		const list = this.#channelList;
 		if (Array.isArray(list)) {
@@ -17,20 +17,22 @@ export default class AbstractCommunity extends EventEmitter {
 		return list[Symbol.iterator]();
 	}
 
-	get hasCompoundList () {
+	get hasCompoundList() {
 		const list = this.#channelList;
 		return Array.isArray(list) && list.length > 1;
 	}
 
-	onChange () {
+	onChange() {
 		this.emit('change');
 	}
 
-	async [ResolveChannelList] () {
-		throw new Error('Implement async [AbstractCommunity.ResolveChannelList] () {}');
+	async [ResolveChannelList]() {
+		throw new Error(
+			'Implement async [AbstractCommunity.ResolveChannelList] () {}'
+		);
 	}
 
-	async getChannelList () {
+	async getChannelList() {
 		if (!this.#channelListPromise) {
 			this.#channelListPromise = (async () => {
 				const list = await this[ResolveChannelList]();
@@ -42,11 +44,9 @@ export default class AbstractCommunity extends EventEmitter {
 
 		return this.#channelListPromise;
 	}
-
 }
 
-
-function* iterate (input) {
+function* iterate(input) {
 	if (!input || !input[Symbol.iterator]) {
 		yield input;
 		return;
@@ -60,7 +60,6 @@ function* iterate (input) {
 			continue;
 		}
 
-		yield * iterate(current.value);
-
-	} while(!current.done);
+		yield* iterate(current.value);
+	} while (!current.done);
 }

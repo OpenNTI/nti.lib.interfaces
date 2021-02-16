@@ -1,4 +1,4 @@
-export default function encodeFormData (data) {
+export default function encodeFormData(data) {
 	try {
 		return modern(data);
 	} catch (e) {
@@ -6,7 +6,7 @@ export default function encodeFormData (data) {
 	}
 }
 
-function modern (data) {
+function modern(data) {
 	const f = new FormData();
 	//Really do not want to add the node "form-data" polyfill...
 	//form submissions should only happen on the client side.
@@ -16,9 +16,8 @@ function modern (data) {
 	return f;
 }
 
-
 // Node doesn't have FormData
-function legacy (data) {
+function legacy(data) {
 	let out = [];
 
 	for (let key of Object.keys(data)) {

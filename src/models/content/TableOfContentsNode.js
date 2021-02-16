@@ -1,15 +1,14 @@
 const DATA = Symbol('data');
 
-import {String as StringUtils} from '@nti/lib-commons';
+import { String as StringUtils } from '@nti/lib-commons';
 
-const flat = (a, n)=> a.concat(n.flatten());
+const flat = (a, n) => a.concat(n.flatten());
 
 const anchor = RegExp.prototype.test.bind(/#/i);
 const topic = RegExp.prototype.test.bind(/^(topic|toc)$/i);
 
 export default class XMLBasedTableOfContentsNode {
-
-	constructor (toc, data, parent) {
+	constructor(toc, data, parent) {
 		this[DATA] = data;
 		this.parent = parent;
 		this.toc = toc;
@@ -17,63 +16,73 @@ export default class XMLBasedTableOfContentsNode {
 			//FIXME: We should be using the depth of the tree instead of relying on an ATTRIBUTE of a topic...
 			this.level = parseInt(this.get('levelnum'), 10);
 		} catch (e) {
-			console.warn('This node does not have a valid `levelnum` attribute: %o', data); //eslint-disable-line no-console
+			//eslint-disable-next-line no-console
+			console.warn(
+				'This node does not have a valid `levelnum` attribute: %o',
+				data
+			);
 			this.level = -1;
 		}
 	}
 
-
-
-	[Symbol.iterator] () {
-		let {children} = this,
-			{length} = children,
+	[Symbol.iterator]() {
+		let { children } = this,
+			{ length } = children,
 			index = 0;
 
 		return {
-
-			next () {
+			next() {
 				let done = index >= length,
 					value = children[index++];
 
 				return { value, done };
-			}
-
+			},
 		};
 	}
 
-	isTableOfContentsNode = true
+	isTableOfContentsNode = true;
 
-	get children () {
-		return this[DATA].getchildren().map(n => new XMLBasedTableOfContentsNode(this.toc, n, this));
+	get children() {
+		return this[DATA].getchildren().map(
+			n => new XMLBasedTableOfContentsNode(this.toc, n, this)
+		);
 	}
 
-	get id () { return this.getID(); }
-	get idx () { return this[DATA]._id; }
-	get length () { return this[DATA].getchildren().length; }
-	get tag () { return this[DATA].tag; }
-	get title () { return this.get('label'); }
-	get type () { return this.get('level'); }
+	get id() {
+		return this.getID();
+	}
+	get idx() {
+		return this[DATA]._id;
+	}
+	get length() {
+		return this[DATA].getchildren().length;
+	}
+	get tag() {
+		return this[DATA].tag;
+	}
+	get title() {
+		return this.get('label');
+	}
+	get type() {
+		return this.get('level');
+	}
 
-
-
-	find (...args) {
+	find(...args) {
 		let n = this[DATA].find(...args);
 		return n && new XMLBasedTableOfContentsNode(this.toc, n);
 	}
 
+	getAttribute(...a) {
+		return this.get(...a);
+	}
 
-	getAttribute (...a) { return this.get(...a); }
-
-
-	get (attr) {
+	get(attr) {
 		return this[DATA].get(attr);
 	}
 
-
-	getID () {
+	getID() {
 		return this.get('ntiid') || console.warn('No ntiid', this); //eslint-disable-line no-console
 	}
-
 
 	// filter (filter) {
 	// 	if (!filter || typeof filter !== 'function') {
@@ -88,43 +97,40 @@ export default class XMLBasedTableOfContentsNode {
 	// 	return this;
 	// }
 
-
 	//TODO: remove this
-	getAchorTarget = this.getAnchorTarget
+	getAchorTarget = this.getAnchorTarget;
 
-	getAnchorTarget () {
+	getAnchorTarget() {
 		let href = this.get('href');
 		return href.split(/#/)[1];
 	}
 
-
-	getMatchExp (substring) {
+	getMatchExp(substring) {
 		return new RegExp(`(${StringUtils.escapeForRegExp(substring)})`, 'igm');
 	}
 
-
-	isAnchor () {
+	isAnchor() {
 		return anchor(this.get('href'));
 	}
 
-	isTopic () {
+	isTopic() {
 		return topic(this.tag);
 	}
 
-	isBeyondLevel () {
+	isBeyondLevel() {
 		return this.level > this.toc.MAX_LEVEL;
 	}
 
-	matches (substring, deep = true) {
-		let {title} = this;
+	matches(substring, deep = true) {
+		let { title } = this;
 		let re = this.getMatchExp(substring);
 
-		let aDescendantMatches = () => this.children.some(n => n.matches(substring));
+		let aDescendantMatches = () =>
+			this.children.some(n => n.matches(substring));
 		return re.test(title) || (deep && aDescendantMatches());
 	}
 
-
-	flatten () {
+	flatten() {
 		return [this].concat(this.children.reduce(flat, []));
 	}
 }

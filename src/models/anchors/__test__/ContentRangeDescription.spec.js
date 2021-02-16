@@ -4,8 +4,7 @@ import MockService from '../../__test__/mock-service';
 
 describe('ContentRangeDescription Tests', () => {
 	describe('locator tests', () => {
-
-		function createCRD () {
+		function createCRD() {
 			return new ContentRangeDescription(MockService, null, {});
 		}
 
@@ -20,8 +19,7 @@ describe('ContentRangeDescription Tests', () => {
 			expect(d.locator()).toBeUndefined();
 		});
 
-
-		test('Doesn\'t externalize', () => {
+		test("Doesn't externalize", () => {
 			let d = createCRD();
 			d.attachLocator('foo');
 
@@ -30,11 +28,9 @@ describe('ContentRangeDescription Tests', () => {
 			expect(o[Symbol.for('locator')]).toBeUndefined();
 		});
 
-
 		test('is empty', () => {
 			let d = createCRD();
 			expect(d.isEmpty).toBeTruthy();
 		});
-
 	});
 });

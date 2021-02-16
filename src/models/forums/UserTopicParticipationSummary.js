@@ -1,11 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class UserTopicParticipationSummary extends Base {
-	static MimeType = COMMON_PREFIX + 'forums.usertopicparticipationsummary'
+	static MimeType = COMMON_PREFIX + 'forums.usertopicparticipationsummary';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Contexts':              { type: 'model[]'                    },
@@ -13,7 +14,6 @@ class UserTopicParticipationSummary extends Base {
 		'ReplyToCount':          { type: 'number', name: 'replies'    },
 		'TopLevelCount':         { type: 'number', name: 'comments'   },
 	}
-
 }
 
-export default decorate(UserTopicParticipationSummary, {with:[model]});
+export default decorate(UserTopicParticipationSummary, { with: [model] });

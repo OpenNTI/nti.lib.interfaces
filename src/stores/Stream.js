@@ -1,17 +1,17 @@
 import EventEmitter from 'events';
 
 import invariant from 'invariant';
-import {mixin, URL} from '@nti/lib-commons';
+import { mixin, URL } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
-import {Service, Parent, DELETED, SortOrder} from '../constants';
-import {Mixin as Pendability} from '../mixins/Pendability';
+import { Service, Parent, DELETED, SortOrder } from '../constants';
+import { Mixin as Pendability } from '../mixins/Pendability';
 import getLink from '../utils/getlink';
-import {parseListFn} from '../models/Parser';
-import {initPrivate, getPrivate} from '../utils/private';
+import { parseListFn } from '../models/Parser';
+import { initPrivate, getPrivate } from '../utils/private';
 
 class RetryBatch extends Error {
-	constructor (fn = () => {}) {
+	constructor(fn = () => {}) {
 		super('Retrying Batch');
 		this.retry = fn;
 	}
@@ -19,7 +19,10 @@ class RetryBatch extends Error {
 
 const logger = Logger.get('store:Stream');
 
-const load = (scope, url) => scope[Service].get(url).then(o => (scope.applyBatch(o), scope.parseList(o.Items || [])));
+const load = (scope, url) =>
+	scope[Service].get(url).then(
+		o => (scope.applyBatch(o), scope.parseList(o.Items || []))
+	);
 
 export default class Stream extends EventEmitter {
 	/**
@@ -32,7 +35,7 @@ export default class Stream extends EventEmitter {
 	 * @param {function} collator	Optional collator function that returns an array, given an array in its first argument.
 	 * @returns {void}
 	 */
-	constructor (service, owner, href, options = {}, collator = null) {
+	constructor(service, owner, href, options = {}, collator = null) {
 		super();
 		Object.assign(this, {
 			[Service]: service,
@@ -41,41 +44,43 @@ export default class Stream extends EventEmitter {
 			options,
 			collator,
 			continuous: true,
-			onChange: this.onChange.bind(this)
+			onChange: this.onChange.bind(this),
 		});
 
-		initPrivate(this, {data: []});
+		initPrivate(this, { data: [] });
 
 		mixin(this, Pendability);
 
 		if (process.browser) {
-			this.on('load', (_, time) => logger.debug('Load: %s %o', time, this));
+			this.on('load', (_, time) =>
+				logger.debug('Load: %s %o', time, this)
+			);
 		}
 
 		if (href.then) {
 			this.addToPending(
 				href.then(
-					x => this.href = x,
-					()=> Object.assign(this, {error: true, href: null})
-				));
+					x => (this.href = x),
+					() => Object.assign(this, { error: true, href: null })
+				)
+			);
 		}
 
 		this.nextBatch();
 	}
 
+	applyBatch(data) {
+		const batchUnderflowed = o => !o || o.length < this.options.batchSize;
 
-	applyBatch (data) {
-		const batchUnderflowed = o => !o || (o.length < this.options.batchSize);
-
-		this.next = !batchUnderflowed(data.Items) && getLink(data, 'batch-next');
+		this.next =
+			!batchUnderflowed(data.Items) && getLink(data, 'batch-next');
 
 		this.prev = getLink(data, 'batch-prev');
 
 		logger.debug('Stream has more? ', !!this.next);
 	}
 
-
-	get parseList () {
+	get parseList() {
 		const p = getPrivate(this);
 
 		if (!p.parseListFn) {
@@ -86,16 +91,15 @@ export default class Stream extends EventEmitter {
 		return p.parseListFn;
 	}
 
-
-	onChange (who, what) {
-		const {data} = getPrivate(this);
+	onChange(who, what) {
+		const { data } = getPrivate(this);
 		if (what === DELETED) {
 			let index = data.findIndex(x => x.getID() === who.getID());
 			if (index < 0) {
 				return;
 			}
 
-			let item = data.splice(index, 1)[0];//remove it;
+			let item = data.splice(index, 1)[0]; //remove it;
 
 			item.removeListener('change', this.onChange);
 			logger.debug('Removed deleted item: %o', item);
@@ -104,20 +108,19 @@ export default class Stream extends EventEmitter {
 		this.emit('change', this);
 	}
 
-
-	setSort (sortOn, sortOrder = SortOrder.ASC) {
-		const {options: op} = this;
+	setSort(sortOn, sortOrder = SortOrder.ASC) {
+		const { options: op } = this;
 
 		invariant(
 			Object.values(SortOrder).includes(sortOrder),
-			'sortOrder must be one of SortOrder\'s values.'
+			"sortOrder must be one of SortOrder's values."
 		);
 
 		Object.assign(op, {
 			sortOn,
 			sortOrder,
 
-			batchStart: 0 //reset to begining
+			batchStart: 0, //reset to begining
 		});
 
 		if (!sortOn) {
@@ -132,32 +135,43 @@ export default class Stream extends EventEmitter {
 		this.nextBatch();
 	}
 
-
-	getSort () {
-		const {sortOn, sortOrder} = this.options;
+	getSort() {
+		const { sortOn, sortOrder } = this.options;
 		return { sortOn, sortOrder };
 	}
 
-	get error () { return getPrivate(this).error; }
-	get loaded () { return getPrivate(this).loaded; }
-	get loading () { return getPrivate(this).loading; }
-	get dirty () { return getPrivate(this).dirty; }
-	set dirty (dirty) { if (dirty) { getPrivate(this).dirty = true; } }
+	get error() {
+		return getPrivate(this).error;
+	}
+	get loaded() {
+		return getPrivate(this).loaded;
+	}
+	get loading() {
+		return getPrivate(this).loading;
+	}
+	get dirty() {
+		return getPrivate(this).dirty;
+	}
+	set dirty(dirty) {
+		if (dirty) {
+			getPrivate(this).dirty = true;
+		}
+	}
 
 	/**
 	 * Returns true if there is more to load from the stream. (show a load more button)
 	 *
 	 * @returns {boolean} True, if there is more, False, otherwise.
 	 */
-	get more () { return !!this.next; }
-
-
-	retryBatch (fn) {
-		throw new RetryBatch (fn);
+	get more() {
+		return !!this.next;
 	}
 
+	retryBatch(fn) {
+		throw new RetryBatch(fn);
+	}
 
-	nextBatch (prev = false) {
+	nextBatch(prev = false) {
 		const store = getPrivate(this);
 
 		if (store.loading) {
@@ -183,76 +197,79 @@ export default class Stream extends EventEmitter {
 
 			start = Date.now();
 
-			const getHref = (ref, params = {}) => ref && URL.appendQueryParams(ref, params);
+			const getHref = (ref, params = {}) =>
+				ref && URL.appendQueryParams(ref, params);
 
-			let next = (prev ? this.prev : this.next) || getHref(this.href, this.options);
-
-
+			let next =
+				(prev ? this.prev : this.next) ||
+				getHref(this.href, this.options);
 
 			let loads = load(this, next)
-				.then(v => store.data = this.continuous ? store.data.concat(v) : v)
+				.then(
+					v =>
+						(store.data = this.continuous
+							? store.data.concat(v)
+							: v)
+				)
 				.catch(er => {
-					if (er instanceof RetryBatch) { return er; }
+					if (er instanceof RetryBatch) {
+						return er;
+					}
 
 					logger.error(er);
 					store.error = true;
 					store.dirty = true;
 				})
-				.then((token) => {
+				.then(token => {
 					store.loading = false;
-					
+
 					if (token instanceof RetryBatch) {
-						return token.retry(); 
+						return token.retry();
 					}
-					
+
 					store.loaded = Date.now();
 					store.dirty = store.dirty || false;
-					this.emit('load', this, `${(store.loaded - start)}ms`);
+					this.emit('load', this, `${store.loaded - start}ms`);
 					this.emit('change', this);
 				});
 
 			this.addToPending(loads);
 
-			return loads.then(()=> this);
+			return loads.then(() => this);
 		});
 	}
 
 	//@private ... use the iterator or map to access items. Or Array.from if you _need_ an array.
-	get items () {
-		const {collator} = this;
-		const {data} = getPrivate(this);
+	get items() {
+		const { collator } = this;
+		const { data } = getPrivate(this);
 
 		return collator ? collator(data) : data;
 	}
 
-
-	get length () {
+	get length() {
 		return this.items.length;
 	}
 
-
-	find (fn) {
+	find(fn) {
 		return this.items.find(fn);
 	}
 
-
-	map (...args) {
+	map(...args) {
 		return this.items.map(...args);
 	}
 
-
-	[Symbol.iterator] () {
+	[Symbol.iterator]() {
 		return this.items[Symbol.iterator]();
 	}
 
-
 	//Meant for posts to activity so we don't have to reload... do not abuse.
-	insert (item) {
+	insert(item) {
 		if (this.prev) {
 			//Not on the first page... so just drop.
 			return;
 		}
-		const {data} = getPrivate(this);
+		const { data } = getPrivate(this);
 		data.unshift(item);
 		item.on('change', this.onChange);
 		this.emit('change');

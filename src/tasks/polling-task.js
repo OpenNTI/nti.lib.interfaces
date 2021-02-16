@@ -1,34 +1,35 @@
 import Task from './Task';
 
-export default function createPollTask (poll, interval, stepOff = 0) {
-	if (!poll || typeof poll !== 'function') { throw new Error('No poll'); }
-	
-	return new Task (
-		(task) => {
-			const resolve = (...args) => task.resolve(...args);
-			const reject = (...args) => task.reject(...args);
+export default function createPollTask(poll, interval, stepOff = 0) {
+	if (!poll || typeof poll !== 'function') {
+		throw new Error('No poll');
+	}
 
-			let stopped = false;
-			let iterations = 0;
+	return new Task(task => {
+		const resolve = (...args) => task.resolve(...args);
+		const reject = (...args) => task.reject(...args);
 
-			const doPoll = () => {
-				setTimeout(() => {
-					if (stopped) { return; }
+		let stopped = false;
+		let iterations = 0;
 
-					iterations += 1;
-
-					poll(doPoll, resolve, reject);
-
-				}, interval + (stepOff * iterations));
-			};
-
-			doPoll();
-
-			return {
-				cancel: () => {
-					stopped = true;
+		const doPoll = () => {
+			setTimeout(() => {
+				if (stopped) {
+					return;
 				}
-			};
-		}
-	);
+
+				iterations += 1;
+
+				poll(doPoll, resolve, reject);
+			}, interval + stepOff * iterations);
+		};
+
+		doPoll();
+
+		return {
+			cancel: () => {
+				stopped = true;
+			},
+		};
+	});
 }

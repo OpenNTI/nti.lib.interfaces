@@ -1,14 +1,15 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 import Completable from '../../../mixins/Completable';
-import {ASSESSMENT_HISTORY_LINK} from '../../../constants';
-import {model, COMMON_PREFIX} from '../../Registry';
+import { ASSESSMENT_HISTORY_LINK } from '../../../constants';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 
 class SurveyReference extends Base {
-	static MimeType = COMMON_PREFIX + 'surveyref'
+	static MimeType = COMMON_PREFIX + 'surveyref';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'isClosed':                              { type: 'boolean' },
@@ -22,33 +23,29 @@ class SurveyReference extends Base {
 		'TargetPublishState':                    { type: 'string'  }
 	}
 
-
-	get isSubmitted () {
+	get isSubmitted() {
 		return this.hasLink(ASSESSMENT_HISTORY_LINK);
 	}
 
-	getQuestionCount () {
+	getQuestionCount() {
 		return this['question-count'] || 0;
 	}
 
-	get target () {
+	get target() {
 		return this['Target-NTIID'];
 	}
 
-	isTargetPublished () {
+	isTargetPublished() {
 		return this.TargetPublishState === 'DefaultPublished';
 	}
 
-	getTargetAssignedDate () {
+	getTargetAssignedDate() {
 		return this.getTargetAvailableForSubmissionBeginning();
 	}
 
-	getTargetDueDate () {
+	getTargetDueDate() {
 		return this.getTargetAvailableForSubmissionEnding();
 	}
 }
 
-export default decorate(SurveyReference, {with: [
-	model,
-	mixin(Completable),
-]});
+export default decorate(SurveyReference, { with: [model, mixin(Completable)] });

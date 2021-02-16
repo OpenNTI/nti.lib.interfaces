@@ -1,6 +1,9 @@
 /* eslint-env jest */
 
-export function createMockNode (item, {filtered, flattened, find, findChild, children, next, prev, parent} = {}) {
+export function createMockNode(
+	item,
+	{ filtered, flattened, find, findChild, children, next, prev, parent } = {}
+) {
 	const mock = {
 		isEmptyNode: async () => !item,
 		getItem: async () => item,
@@ -11,7 +14,7 @@ export function createMockNode (item, {filtered, flattened, find, findChild, chi
 		findChild: () => findChild,
 		getChildNodes: async () => children,
 		findNextSibling: () => next,
-		findPrevSibling: () => prev
+		findPrevSibling: () => prev,
 	};
 
 	jest.spyOn(mock, 'getItem');

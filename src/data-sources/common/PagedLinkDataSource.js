@@ -1,36 +1,39 @@
-import {URL} from '@nti/lib-commons';
+import { URL } from '@nti/lib-commons';
 
 import PagedDataSource from '../PagedDataSource';
 import PageBatch from '../data-types/Page';
 
 export default class PageLinkDataSource extends PagedDataSource {
-	static forLink (service, parent, link, knownParams) {
-		return new PageLinkDataSource(service, parent, knownParams, {link});
+	static forLink(service, parent, link, knownParams) {
+		return new PageLinkDataSource(service, parent, knownParams, { link });
 	}
 
-	get link () {
+	get link() {
 		return (this.config || {}).link;
 	}
 
-	async requestPage (pageId, params) {
-		const {link} = this;
+	async requestPage(pageId, params) {
+		const { link } = this;
 
-		if (!link) { throw new Error('No link provided.'); }
+		if (!link) {
+			throw new Error('No link provided.');
+		}
 
 		const requestParams = {
-			...params
+			...params,
 		};
 
 		if (requestParams.batchSize != null) {
 			requestParams.batchStart = pageId * requestParams.batchSize;
 		}
 
-		const contents = await this.service.get(URL.appendQueryParams(link, requestParams));
-
+		const contents = await this.service.get(
+			URL.appendQueryParams(link, requestParams)
+		);
 
 		return new PageBatch(this.service, this.parent, {
 			PageSize: requestParams.batchSize,
-			...contents
+			...contents,
 		});
 	}
 }

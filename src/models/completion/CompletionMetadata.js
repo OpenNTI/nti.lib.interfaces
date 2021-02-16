@@ -1,13 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class CompletionMetadata extends Base {
-	static MimeType = [
-		COMMON_PREFIX + 'completion.completionmetadata',
-	]
+	static MimeType = [COMMON_PREFIX + 'completion.completionmetadata'];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'FailCount':     { type: 'number'  },
@@ -15,7 +14,6 @@ class CompletionMetadata extends Base {
 		'ItemCount':     { type: 'number'  },
 		'Items':  		 { type: 'model[]' }
 	}
-
 }
 
-export default decorate(CompletionMetadata, {with:[model]});
+export default decorate(CompletionMetadata, { with: [model] });

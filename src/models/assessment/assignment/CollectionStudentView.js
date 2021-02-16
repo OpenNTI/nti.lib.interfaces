@@ -1,7 +1,7 @@
 import Logger from '@nti/util-logger';
 
-import {Service, ASSESSMENT_HISTORY_LINK} from '../../../constants';
-import {getPrivate} from '../../../utils/private';
+import { Service, ASSESSMENT_HISTORY_LINK } from '../../../constants';
+import { getPrivate } from '../../../utils/private';
 
 import Base from './Collection';
 import CollectionSummary from './CollectionSummary';
@@ -10,7 +10,6 @@ import HistoryCollection from './AssignmentHistoryCollection';
 const logger = Logger.get('assignment:Collection:Student');
 
 export default class CollectionStudentView extends Base {
-
 	/**
 	 * Build the Assessment Collection.
 	 *
@@ -25,34 +24,35 @@ export default class CollectionStudentView extends Base {
 	 * @param  {string} historyLink          URL to fetch assignment histories.
 	 * @returns {void}
 	 */
-	constructor (service, parent, assignments, assessments, historyLink) {
+	constructor(service, parent, assignments, assessments, historyLink) {
 		super(service, parent, assignments, assessments, historyLink);
 	}
 
-
-	onChange (e) {
+	onChange(e) {
 		super.onChange(e);
 		const data = getPrivate(this);
 		delete data.summary;
 	}
 
-
-	getHistoryItem (assignmentId) {
+	getHistoryItem(assignmentId) {
 		return this.getStudentSummary().fetchHistoryFor(assignmentId);
 	}
 
-
-	getStudentSummary () {
+	getStudentSummary() {
 		const data = getPrivate(this);
 
 		if (!data.summary) {
-			data.summary = new CollectionSummary(this[Service], this, getHistoryFrom(this));
+			data.summary = new CollectionSummary(
+				this[Service],
+				this,
+				getHistoryFrom(this)
+			);
 		}
 
 		return data.summary;
 	}
 
-	getStudentSummaryWithHistory () {
+	getStudentSummaryWithHistory() {
 		const summary = this.getStudentSummary();
 
 		return new Promise((fulfill, reject) => {
@@ -71,29 +71,37 @@ export default class CollectionStudentView extends Base {
 		});
 	}
 
-	getActivity () {
-		return getHistoryFrom(this)
-			.then(history =>
-				Object.assign(this.getAssignments()
-					.reduce((events, a) => events.concat(
-						this.deriveEvents(a,
-							history.getItem(a.getID()),
-							history.getLastViewed()
-						)), [])
+	getActivity() {
+		return getHistoryFrom(this).then(history =>
+			Object.assign(
+				this.getAssignments()
+					.reduce(
+						(events, a) =>
+							events.concat(
+								this.deriveEvents(
+									a,
+									history.getItem(a.getID()),
+									history.getLastViewed()
+								)
+							),
+						[]
+					)
 					.filter(x => x.date)
 					.sort((a, b) => b.date - a.date),
 				{
-					markSeen: () => history.markSeen()
-				})
-			);
-
+					markSeen: () => history.markSeen(),
+				}
+			)
+		);
 	}
 }
 
-
-function getHistoryFrom (inst) {
+function getHistoryFrom(inst) {
 	logger.debug('Loading assignment history for %s...', inst.parent().title);
-	return inst.fetchLinkParsed(ASSESSMENT_HISTORY_LINK)
-		.then(x => x instanceof HistoryCollection ? x : Promise.reject('Wrong Type'))
+	return inst
+		.fetchLinkParsed(ASSESSMENT_HISTORY_LINK)
+		.then(x =>
+			x instanceof HistoryCollection ? x : Promise.reject('Wrong Type')
+		)
 		.catch(() => Promise.reject('No History'));
 }

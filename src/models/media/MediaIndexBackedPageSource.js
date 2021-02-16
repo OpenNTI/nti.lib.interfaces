@@ -1,34 +1,37 @@
-import {encodeForURI as encodeNTIIDForURI} from '@nti/lib-ntiids';
+import { encodeForURI as encodeNTIIDForURI } from '@nti/lib-ntiids';
 
-import {Parent, Service} from '../../constants';
+import { Parent, Service } from '../../constants';
 import Base from '../Base';
 
+const getNodeId = node =>
+	node && (node.getContentId ? node.getContentId() : node.getID());
 
-const getNodeId = node => node && (node.getContentId ? node.getContentId() : node.getID());
-
-function buildRef (node) {
+function buildRef(node) {
 	const id = node && getNodeId(node);
-	return id && {
-		ntiid: id,
-		title: node.title,
-		ref: encodeNTIIDForURI(id)
-	};
+	return (
+		id && {
+			ntiid: id,
+			title: node.title,
+			ref: encodeNTIIDForURI(id),
+		}
+	);
 }
 
 //FIXME: Does this need to extend Base??
 export default class MediaIndexBackedPageSource extends Base {
-
-	constructor (index) {
+	constructor(index) {
 		super(index[Service], index);
 	}
 
-
-	getPagesAround (pageId) {
+	getPagesAround(pageId) {
 		let nodes = this[Parent];
 		let index = nodes.reduce(
-			(found, node, ix) => (typeof found !== 'number' && getNodeId(node) === pageId) ? ix : found,
-			null);
-
+			(found, node, ix) =>
+				typeof found !== 'number' && getNodeId(node) === pageId
+					? ix
+					: found,
+			null
+		);
 
 		let next = nodes.getAt(index + 1);
 		let prev = nodes.getAt(index - 1);
@@ -37,13 +40,12 @@ export default class MediaIndexBackedPageSource extends Base {
 			total: nodes.length,
 			index: index,
 			next: buildRef(next),
-			prev: buildRef(prev)
+			prev: buildRef(prev),
 		};
 	}
 
-
-	scoped (containerId) {
+	scoped(containerId) {
 		let subset = this[Parent].scoped(containerId);
-		return new this.constructor (subset);
+		return new this.constructor(subset);
 	}
 }

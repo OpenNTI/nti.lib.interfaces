@@ -1,16 +1,18 @@
 /* eslint-env jest */
-import {createMockNode} from '../../../__test__/common';
+import { createMockNode } from '../../../__test__/common';
 import flatten from '../flatten';
 
-
-function create (name, flattened) {
-	return createMockNode({
-		name
-	}, {
-		flattened: flattened ?
-			createMockNode({name}, {children: flattened}) :
-			createMockNode({name})
-	});
+function create(name, flattened) {
+	return createMockNode(
+		{
+			name,
+		},
+		{
+			flattened: flattened
+				? createMockNode({ name }, { children: flattened })
+				: createMockNode({ name }),
+		}
+	);
 }
 
 describe('ContentTree flatten', () => {
@@ -25,12 +27,12 @@ describe('ContentTree flatten', () => {
 	});
 
 	describe('one level deep', () => {
-		const getChildren = () => ([
+		const getChildren = () => [
 			create('1'),
 			create('2'),
 			create('3'),
-			create('4')
-		]);
+			create('4'),
+		];
 
 		test('keeps all nodes', async () => {
 			const flat = await flatten(getChildren());
@@ -42,7 +44,7 @@ describe('ContentTree flatten', () => {
 			const flat = await flatten(getChildren());
 
 			const items = await Promise.all(
-				flat.map(async (item) => await item.getItem())
+				flat.map(async item => await item.getItem())
 			);
 
 			expect(items[0].name).toBe('1');
@@ -62,22 +64,13 @@ describe('ContentTree flatten', () => {
 		});
 	});
 
-
 	describe('multiple levels deep', () => {
-		const getChildren = () => ([
-			create('1', [
-				create('1-1'),
-				create('1-2'),
-				create('1-3')
-			]),
+		const getChildren = () => [
+			create('1', [create('1-1'), create('1-2'), create('1-3')]),
 			create('2'),
-			create('3', [
-				create('3-1'),
-				create('3-2'),
-				create('3-3')
-			]),
-			create('4')
-		]);
+			create('3', [create('3-1'), create('3-2'), create('3-3')]),
+			create('4'),
+		];
 
 		test('keeps all nodes', async () => {
 			const flat = await flatten(getChildren());
@@ -89,7 +82,7 @@ describe('ContentTree flatten', () => {
 			const flat = await flatten(getChildren());
 
 			const items = await Promise.all(
-				flat.map(async (item) => await item.getItem())
+				flat.map(async item => await item.getItem())
 			);
 
 			expect(items[0].name).toBe('1');

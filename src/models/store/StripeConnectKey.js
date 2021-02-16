@@ -1,14 +1,15 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class StripeConnectKey extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'store.stripeconnectkey',
-		COMMON_PREFIX + 'store.persistentstripeconnectkey'
-	]
+		COMMON_PREFIX + 'store.persistentstripeconnectkey',
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Alias':        { type: 'string'  },
@@ -18,4 +19,4 @@ class StripeConnectKey extends Base {
 	}
 }
 
-export default decorate(StripeConnectKey, {with:[model]});
+export default decorate(StripeConnectKey, { with: [model] });

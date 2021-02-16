@@ -2,8 +2,7 @@ const GLOBAL_PROPERTY_NAME = '%%app-data%%';
 const CONTEXT_PROPERTY_NAME = Symbol.for(GLOBAL_PROPERTY_NAME);
 
 export default class DataCache {
-
-	constructor () {
+	constructor() {
 		this.data = {};
 		if (process.browser) {
 			this.data = global[GLOBAL_PROPERTY_NAME] || {};
@@ -11,9 +10,8 @@ export default class DataCache {
 		}
 	}
 
-
-	get (key, defaultValue, volatile) {
-		let {data} = this;
+	get(key, defaultValue, volatile) {
+		let { data } = this;
 		if (key == null) {
 			throw new Error('null key error');
 		}
@@ -25,20 +23,19 @@ export default class DataCache {
 		return data[key];
 	}
 
-
-	set (key, value) {
+	set(key, value) {
 		if (key == null) {
 			throw new Error('null key error');
 		}
 
-		let {data} = this;
+		let { data } = this;
 		if (typeof key === 'object') {
 			let o = key;
 			for (let i of Object.keys(o)) {
 				this.set(i, o[i]);
 			}
 		} else {
-			delete data[key];//make sure to reset its configuration
+			delete data[key]; //make sure to reset its configuration
 
 			const str = JSON.stringify(value);
 			if (str && value != null) {
@@ -49,7 +46,6 @@ export default class DataCache {
 
 		return this;
 	}
-
 
 	/**
 	 * Sets a "volatile" value into the cache. The value will be ignored when the
@@ -62,7 +58,7 @@ export default class DataCache {
 	 *                  ignored.
 	 * @returns {DataCache} this. (allows chaining)
 	 */
-	setVolatile (key, value) {
+	setVolatile(key, value) {
 		if (typeof key === 'object') {
 			let o = key;
 			for (let i of Object.keys(o)) {
@@ -73,22 +69,25 @@ export default class DataCache {
 				enumerable: false,
 				writable: true,
 				configurable: true,
-				value: value
+				value: value,
 			});
 		}
 
 		return this;
 	}
 
-
-	serialize () {
-		return '\n<script type="text/javascript">\n' +
-				'window["' + GLOBAL_PROPERTY_NAME + '"] = ' + JSON.stringify(this.data) +
-				';\n</script>\n';
+	serialize() {
+		return (
+			'\n<script type="text/javascript">\n' +
+			'window["' +
+			GLOBAL_PROPERTY_NAME +
+			'"] = ' +
+			JSON.stringify(this.data) +
+			';\n</script>\n'
+		);
 	}
 
-
-	static getForContext (context) {
+	static getForContext(context) {
 		let cache;
 		if (context) {
 			cache = context[CONTEXT_PROPERTY_NAME];
@@ -97,7 +96,9 @@ export default class DataCache {
 			}
 		} else {
 			if (!process.browser) {
-				throw new Error('There must be an active context passed if we are called on the server');
+				throw new Error(
+					'There must be an active context passed if we are called on the server'
+				);
 			}
 
 			cache = this.clientInstance;

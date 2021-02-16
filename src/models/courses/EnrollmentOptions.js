@@ -1,49 +1,44 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class EnrollmentOptions extends Base {
-	static MimeType = COMMON_PREFIX + 'courseware.enrollmentoptions'
+	static MimeType = COMMON_PREFIX + 'courseware.enrollmentoptions';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Items': { type: 'model{}' },
 	};
 
-
-	[Symbol.iterator] () {
-		let {Items} = this,
+	[Symbol.iterator]() {
+		let { Items } = this,
 			keys = Object.keys(Items),
-			{length} = keys,
+			{ length } = keys,
 			index = 0;
 
 		return {
-
-			next () {
+			next() {
 				let done = index >= length,
 					value = Items[keys[index++]];
 
 				return { value, done };
-			}
-
+			},
 		};
 	}
 
-
-	getEnrollmentOptionForOpen () {
+	getEnrollmentOptionForOpen() {
 		return this.Items.OpenEnrollment;
 	}
 
-
-	getEnrollmentOptionForPurchase () {
+	getEnrollmentOptionForPurchase() {
 		return this.Items.StoreEnrollment;
 	}
 
-
-	getEnrollmentOptionForFiveMinute () {
+	getEnrollmentOptionForFiveMinute() {
 		return this.Items.FiveminuteEnrollment;
 	}
 }
 
-export default decorate(EnrollmentOptions, {with:[model]});
+export default decorate(EnrollmentOptions, { with: [model] });

@@ -1,116 +1,135 @@
 import AbstractCommunity from '../AbstractCommunity';
-import {Channels} from '../community';
+import { Channels } from '../community';
 
 const ContentsCache = new Map();
 
-export default
-class CourseCommunity extends AbstractCommunity {
-	static hasCommunity (course) {
+export default class CourseCommunity extends AbstractCommunity {
+	static hasCommunity(course) {
 		return course.Discussions || course.ParentDiscussions;
 	}
 
-	static from (course) {
-		if (!course.Discussions && !course.ParentDiscussions) { return null; }
+	static from(course) {
+		if (!course.Discussions && !course.ParentDiscussions) {
+			return null;
+		}
 
 		return new CourseCommunity(course);
 	}
 
-	#course = null
-	#board = null
-	#parentBoard = null
+	#course = null;
+	#board = null;
+	#parentBoard = null;
 
-	constructor (course) {
+	constructor(course) {
 		super();
 
 		this.#course = course;
 
 		this.#board = course.Discussions || course.ParentDiscussions;
-		this.#parentBoard = course.Discussions ? course.ParentDiscussions : null;
+		this.#parentBoard = course.Discussions
+			? course.ParentDiscussions
+			: null;
 	}
 
-	isCommunity = true
-	noAvatar = true
-	hasMembers = false
-	autoSubscribable = false
+	isCommunity = true;
+	noAvatar = true;
+	hasMembers = false;
+	autoSubscribable = false;
 
-	getID () { return this.#course.getID(); }
-
-	get isCourseCommunity () {
-		return true;
-	}
-
-	get courseId () {
+	getID() {
 		return this.#course.getID();
 	}
 
-	get displayName () {
+	get isCourseCommunity() {
+		return true;
+	}
+
+	get courseId() {
+		return this.#course.getID();
+	}
+
+	get displayName() {
 		return this.#board.title;
 	}
 
-
-	get about () {
+	get about() {
 		return this.#board.description;
 	}
 
-	get isModifiable () {
+	get isModifiable() {
 		return this.#board.hasLink('edit');
 	}
 
-	canEdit () {
+	canEdit() {
 		return this.isModifiable;
 	}
 
-	async save (data) {
+	async save(data) {
 		const payload = {};
 
-		if (Object.hasOwnProperty.call(data, 'displayName')) {payload.title = data.displayName; }
-		if (Object.hasOwnProperty.call(data, 'about')) {payload.description = data.about || ''; }
+		if (Object.hasOwnProperty.call(data, 'displayName')) {
+			payload.title = data.displayName;
+		}
+		if (Object.hasOwnProperty.call(data, 'about')) {
+			payload.description = data.about || '';
+		}
 
 		try {
 			await this.#board.save(payload);
 			this.onChange();
 		} catch (e) {
-			if (e.field === 'title') { e.field = 'displayName'; }
+			if (e.field === 'title') {
+				e.field = 'displayName';
+			}
 
 			throw e;
 		}
 	}
 
-
-	async [AbstractCommunity.ResolveChannelList] () {
+	async [AbstractCommunity.ResolveChannelList]() {
 		try {
 			const showParent = await shouldShowParentBoard(this.#parentBoard);
 
 			if (showParent) {
-
 				return Promise.all([
-					getChannelListFromBoard(this.#parentBoard, getAllParentActivityInfo(this.#course), 'Public'), //gross, but we can't localize this string easily right now
-					getChannelListFromBoard(this.#board, getAllActivityInfo(this.#course), this.#course.ProviderUniqueID)
+					getChannelListFromBoard(
+						this.#parentBoard,
+						getAllParentActivityInfo(this.#course),
+						'Public'
+					), //gross, but we can't localize this string easily right now
+					getChannelListFromBoard(
+						this.#board,
+						getAllActivityInfo(this.#course),
+						this.#course.ProviderUniqueID
+					),
 				]);
 			}
 
-			return getChannelListFromBoard(this.#board, getAllActivityInfo(this.#course));
+			return getChannelListFromBoard(
+				this.#board,
+				getAllActivityInfo(this.#course)
+			);
 		} finally {
 			cleanup(this.#parentBoard);
 			cleanup(this.#board);
 		}
 	}
 
-	async getDefaultSharing () {
+	async getDefaultSharing() {
 		const sharing = await this.#course.getDefaultSharing();
 
 		return {
 			scopes: sharing?.scopes ?? [],
-			locked: true
+			locked: true,
 		};
 	}
 }
 
-function cleanup (board) {
+function cleanup(board) {
 	ContentsCache.delete(board);
 }
 
-function getBoardContents (board) {
+function getBoardContents(board) {
 	if (!ContentsCache.has(board)) {
 		ContentsCache.set(board, board.getContents());
 	}
@@ -118,24 +137,24 @@ function getBoardContents (board) {
 	return ContentsCache.get(board);
 }
 
-function getAllParentActivityInfo (course) {
+function getAllParentActivityInfo(course) {
 	return {
 		dataSource: course.getParentActivityDataSource(),
-		title: course.getLinkProperty('ParentAllCourseActivity', 'title')
+		title: course.getLinkProperty('ParentAllCourseActivity', 'title'),
 	};
 }
 
-function getAllActivityInfo (course) {
+function getAllActivityInfo(course) {
 	return {
 		dataSource: course.getAllActivityDataSource(),
-		title: course.getLinkProperty('AllCourseActivity', 'title')
+		title: course.getLinkProperty('AllCourseActivity', 'title'),
 	};
 }
 
-function buildAllActivityChannel (forum, activityInfo) {
-	const addDiscussion = forum.canCreateTopic() ?
-		(topic) => forum.createTopic(topic) :
-		null;
+function buildAllActivityChannel(forum, activityInfo) {
+	const addDiscussion = forum.canCreateTopic()
+		? topic => forum.createTopic(topic)
+		: null;
 
 	const channel = new Channels.Channel({
 		backer: forum,
@@ -146,7 +165,7 @@ function buildAllActivityChannel (forum, activityInfo) {
 		pinned: true,
 		addDiscussion,
 		DefaultSharedToNTIIDs: forum.DefaultSharedToNTIIDs,
-		DefaultSharedToDisplayNames: forum.DefaultSharedToDisplayNames
+		DefaultSharedToDisplayNames: forum.DefaultSharedToDisplayNames,
 	});
 
 	return channel;
@@ -165,12 +184,16 @@ function buildAllActivityChannel (forum, activityInfo) {
  * @param  {Board} parentBoard the ParentDiscussions of the course
  * @returns {boolean}             [description]
  */
-async function shouldShowParentBoard (parentBoard) {
-	if (!parentBoard) { return false; }
-	if (parentBoard.ForumCount > 1) { return true; }
+async function shouldShowParentBoard(parentBoard) {
+	if (!parentBoard) {
+		return false;
+	}
+	if (parentBoard.ForumCount > 1) {
+		return true;
+	}
 
 	try {
-		const {Items} = await getBoardContents(parentBoard);
+		const { Items } = await getBoardContents(parentBoard);
 		const defaultForum = Items && Items[0];
 
 		return defaultForum && defaultForum.TopicCount > 0;
@@ -179,11 +202,9 @@ async function shouldShowParentBoard (parentBoard) {
 	}
 }
 
-async function getChannelListFromBoard (board, activityDataSource, label) {
-	const channelList = await Channels.List.fromBoard(
-		board,
-		label,
-		(forum) => buildAllActivityChannel(forum, activityDataSource)
+async function getChannelListFromBoard(board, activityDataSource, label) {
+	const channelList = await Channels.List.fromBoard(board, label, forum =>
+		buildAllActivityChannel(forum, activityDataSource)
 	);
 
 	return channelList;

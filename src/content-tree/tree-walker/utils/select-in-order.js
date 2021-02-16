@@ -1,14 +1,15 @@
-import {isSameNode, nodeMatches} from '../../utils';
+import { isSameNode, nodeMatches } from '../../utils';
 
-async function findFirstDescendant (node) {
+async function findFirstDescendant(node) {
 	const children = await node.getChildNodes();
 
 	return children && children.length ? children[0] : null;
 }
 
-async function findLastDescendant (node) {
+async function findLastDescendant(node) {
 	const children = await node.getChildNodes();
-	const lastChild = children && children.length ? children[children.length - 1] : null;
+	const lastChild =
+		children && children.length ? children[children.length - 1] : null;
 
 	if (!lastChild) {
 		return null;
@@ -19,14 +20,14 @@ async function findLastDescendant (node) {
 	return lastChildsDescendant || lastChild;
 }
 
-async function getParent (node) {
+async function getParent(node) {
 	const parent = await node.getParentNode();
-	const empty = !parent || await parent.isEmptyNode();
+	const empty = !parent || (await parent.isEmptyNode());
 
 	return empty ? null : parent;
 }
 
-async function getParentNextSibling (node, root) {
+async function getParentNextSibling(node, root) {
 	let pointer = await node.getParentNode();
 
 	while (pointer) {
@@ -48,21 +49,21 @@ async function getParentNextSibling (node, root) {
 	return null;
 }
 
-async function getNextSibling (node) {
+async function getNextSibling(node) {
 	const sibling = node.findNextSibling();
-	const empty = !sibling || await sibling.isEmptyNode();
+	const empty = !sibling || (await sibling.isEmptyNode());
 
 	return empty ? null : sibling;
 }
 
-async function getPrevSibling (node) {
+async function getPrevSibling(node) {
 	const sibling = node.findPrevSibling();
-	const empty = !sibling || await sibling.isEmptyNode();
+	const empty = !sibling || (await sibling.isEmptyNode());
 
 	return empty ? null : sibling;
 }
 
-export async function selectNext (node, root, skip, ignoreChildren) {
+export async function selectNext(node, root, skip, ignoreChildren) {
 	let pointer = node;
 
 	while (pointer) {
@@ -79,7 +80,7 @@ export async function selectNext (node, root, skip, ignoreChildren) {
 			return pointer;
 		}
 
-		const descendant = !ignored && await findFirstDescendant(pointer);
+		const descendant = !ignored && (await findFirstDescendant(pointer));
 
 		if (descendant) {
 			pointer = descendant;
@@ -94,7 +95,7 @@ export async function selectNext (node, root, skip, ignoreChildren) {
 		}
 
 		const parent = await getParent(pointer);
-		const parentIsRoot = parent && await isSameNode(parent, root);
+		const parentIsRoot = parent && (await isSameNode(parent, root));
 
 		if (parentIsRoot) {
 			return null;
@@ -113,10 +114,12 @@ export async function selectNext (node, root, skip, ignoreChildren) {
 	return null;
 }
 
-export async function selectPrev (node, root, skip, ignoreChildren) {
+export async function selectPrev(node, root, skip, ignoreChildren) {
 	const isStartingRoot = await isSameNode(node, root);
 
-	if (isStartingRoot) { return null; }
+	if (isStartingRoot) {
+		return null;
+	}
 
 	let pointer = node;
 
@@ -126,7 +129,9 @@ export async function selectPrev (node, root, skip, ignoreChildren) {
 		if (isRoot) {
 			const skipRoot = await nodeMatches(pointer, skip);
 
-			if (skipRoot) { return null; }
+			if (skipRoot) {
+				return null;
+			}
 
 			return pointer;
 		}
@@ -138,9 +143,9 @@ export async function selectPrev (node, root, skip, ignoreChildren) {
 		}
 
 		const sibling = await getPrevSibling(pointer);
-		const ignored = sibling && await nodeMatches(sibling, ignoreChildren);
-		const descendant = !ignored && sibling && await findLastDescendant(sibling);
-
+		const ignored = sibling && (await nodeMatches(sibling, ignoreChildren));
+		const descendant =
+			!ignored && sibling && (await findLastDescendant(sibling));
 
 		if (descendant) {
 			pointer = descendant;

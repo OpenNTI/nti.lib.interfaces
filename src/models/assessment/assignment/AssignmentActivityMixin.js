@@ -3,12 +3,14 @@ import Logger from '@nti/util-logger';
 const logger = Logger.get('assignments:Activity');
 
 export default {
-
-	getEventConfig (type, target, date, lastSeen) {
+	getEventConfig(type, target, date, lastSeen) {
 		if (typeof target === 'string') {
 			target = this.getAssignment(target);
 			if (!target) {
-				logger.error('Dropping event, no assignment found in the map for: %o', target);
+				logger.error(
+					'Dropping event, no assignment found in the map for: %o',
+					target
+				);
 				return null;
 			}
 		}
@@ -19,54 +21,61 @@ export default {
 			ntiid: target && target.getID(),
 			title: target && target.title,
 			type,
-			date
+			date,
 		};
 	},
 
-
-	buildFeedbackEvent (f, lastViewed) {
-		const {creator, SubmissionCreator: student} = f;
+	buildFeedbackEvent(f, lastViewed) {
+		const { creator, SubmissionCreator: student } = f;
 		const user = student;
 
-		return {user, feedbackAuthor: creator, ...this.getEventConfig(
-			f.isCreatedByAppUser
-				? (creator === student
-					? 'you-feedback'
-					: 'you-feedback-theirs'
-				)
-				: 'they-feedback',
-			f.AssignmentId,
-			f.getCreatedTime(),
-			lastViewed
-		)};
+		return {
+			user,
+			feedbackAuthor: creator,
+			...this.getEventConfig(
+				f.isCreatedByAppUser
+					? creator === student
+						? 'you-feedback'
+						: 'you-feedback-theirs'
+					: 'they-feedback',
+				f.AssignmentId,
+				f.getCreatedTime(),
+				lastViewed
+			),
+		};
 	},
 
-
-	buildSubmissionEvents (s, lastViewed) {
-		const {creator: user} = s;
+	buildSubmissionEvents(s, lastViewed) {
+		const { creator: user } = s;
 		const assignment = this.getAssignment(s.assignmentId);
 		if (!assignment) {
-			logger.warn('Dropping events for submission, no assignment found in the map for: %o', s);
+			logger.warn(
+				'Dropping events for submission, no assignment found in the map for: %o',
+				s
+			);
 			return [];
 		}
 
-		const out = this.deriveEvents(assignment, {Submission: s}, lastViewed);
+		const out = this.deriveEvents(
+			assignment,
+			{ Submission: s },
+			lastViewed
+		);
 		return out
 			.filter(x => !/new|late/.test(x.type))
-			.map(e => Object.assign(e, {user, type: `user-${e.type}`}));
+			.map(e => Object.assign(e, { user, type: `user-${e.type}` }));
 	},
 
-
-	deriveEvents (assignment, container, lastViewed) {
+	deriveEvents(assignment, container, lastViewed) {
 		let now = new Date();
 
 		let historyItem = container;
 
-		if(container && container.getMostRecentHistoryItem) {
+		if (container && container.getMostRecentHistoryItem) {
 			historyItem = container.getMostRecentHistoryItem();
 		}
 
-		const {Submission, Feedback, grade} = historyItem || {};
+		const { Submission, Feedback, grade } = historyItem || {};
 
 		let dateCompleted = Submission && Submission.getCreatedTime();
 
@@ -76,10 +85,11 @@ export default {
 
 		let events = [];
 
-		const getConfig = (type, date) => this.getEventConfig(type, assignment, date, lastViewed);
+		const getConfig = (type, date) =>
+			this.getEventConfig(type, assignment, date, lastViewed);
 
 		if (Feedback) {
-			for(let f of Feedback) {
+			for (let f of Feedback) {
 				events.push(this.buildFeedbackEvent(f, lastViewed));
 			}
 		}
@@ -87,27 +97,35 @@ export default {
 		const EVENT_SPECS = [
 			{
 				type: 'grade-received',
-				checkRequirements: ()=> grade && grade.value,
-				getEventSpec: ()=> getConfig('grade-received', grade.getLastModified())
+				checkRequirements: () => grade && grade.value,
+				getEventSpec: () =>
+					getConfig('grade-received', grade.getLastModified()),
 			},
 
 			{
 				type: 'new-assignment',
-				checkRequirements: ()=> dateOpens < now,
-				getEventSpec: ()=> getConfig('new-assignment', dateOpens)
+				checkRequirements: () => dateOpens < now,
+				getEventSpec: () => getConfig('new-assignment', dateOpens),
 			},
 
 			{
 				type: 'late-assignment',
-				checkRequirements: ()=> dateDue < now && (!dateCompleted || dateCompleted > dateDue) && hasParts,
-				getEventSpec: ()=> getConfig('late-assignment', dateDue)
+				checkRequirements: () =>
+					dateDue < now &&
+					(!dateCompleted || dateCompleted > dateDue) &&
+					hasParts,
+				getEventSpec: () => getConfig('late-assignment', dateDue),
 			},
 
 			{
 				type: 'submitted-assignment',
-				checkRequirements: ()=> dateCompleted && Submission && (Submission.parts || []).length > 0,
-				getEventSpec: ()=> getConfig('submitted-assignment', dateCompleted)
-			}
+				checkRequirements: () =>
+					dateCompleted &&
+					Submission &&
+					(Submission.parts || []).length > 0,
+				getEventSpec: () =>
+					getConfig('submitted-assignment', dateCompleted),
+			},
 		];
 
 		for (let spec of EVENT_SPECS) {
@@ -117,5 +135,5 @@ export default {
 		}
 
 		return events;
-	}
+	},
 };

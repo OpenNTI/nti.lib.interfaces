@@ -8,13 +8,13 @@ describe('getPropertyDescriptor', () => {
 	});
 
 	test('finds parent property', () => {
-		const o = Object.create({test: 'foo'});
+		const o = Object.create({ test: 'foo' });
 		expect(Object.getOwnPropertyDescriptor(o, 'test')).toBeFalsy();
 		expect(getPropertyDescriptor(o, 'test')).toBeTruthy();
 	});
 
 	test('handles missing property', () => {
-		const o = Object.create({test: 'foo'});
+		const o = Object.create({ test: 'foo' });
 		expect(() => getPropertyDescriptor(o, 'missing')).not.toThrow();
 		expect(getPropertyDescriptor(o, 'missing')).toBeFalsy();
 	});

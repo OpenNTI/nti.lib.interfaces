@@ -1,13 +1,13 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {thread} from '../../utils/UserDataThreader';
-import {model, COMMON_PREFIX} from '../Registry';
+import { thread } from '../../utils/UserDataThreader';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
-
 class Transcript extends Base {
-	static MimeType = COMMON_PREFIX + 'transcript'
+	static MimeType = COMMON_PREFIX + 'transcript';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Messages':     { type: 'model[]',  name: 'messages'     },
@@ -15,35 +15,33 @@ class Transcript extends Base {
 		'Contributors': { type: 'string[]', name: 'contributors' },
 	}
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 
 		if (this.messages) {
-			this.messages = thread(this.Messages)
-				.sort((a, b) => a.getCreatedTime() - b.getCreatedTime());
+			this.messages = thread(this.Messages).sort(
+				(a, b) => a.getCreatedTime() - b.getCreatedTime()
+			);
 		}
 	}
 
-	get startTime () {
+	get startTime() {
 		return this.RoomInfo.getCreatedTime();
 	}
 
-
-	get messageCount () {
+	get messageCount() {
 		return this.RoomInfo.messageCount;
 	}
 
-
-	get originator () {
+	get originator() {
 		let ri = this.RoomInfo;
 		return (ri || this).creator;
 	}
 
-
-	get contributorsWithoutOriginator () {
-		let {contributors, originator} = this;
-		return contributors.filter( x => x !== originator);
+	get contributorsWithoutOriginator() {
+		let { contributors, originator } = this;
+		return contributors.filter(x => x !== originator);
 	}
 }
 
-export default decorate(Transcript, {with:[model]});
+export default decorate(Transcript, { with: [model] });

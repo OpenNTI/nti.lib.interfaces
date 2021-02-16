@@ -1,6 +1,6 @@
 /* eslint-env jest */
 import '../index';
-import Registry, {COMMON_PREFIX} from '../Registry';
+import Registry, { COMMON_PREFIX } from '../Registry';
 
 const KNOWN = [
 	'__base__',
@@ -292,9 +292,7 @@ const KNOWN = [
 ];
 
 describe('Builtin Models', () => {
-
 	test('Validate Builtin models are resolvable', () => {
-
 		for (let type of KNOWN) {
 			const a = Registry.lookup(type); //short-hand
 			const b = Registry.lookup(COMMON_PREFIX + type); //absolute
@@ -302,7 +300,5 @@ describe('Builtin Models', () => {
 			expect(a).toBe(b);
 			expect(a || b).toBeTruthy();
 		}
-
 	});
-
 });

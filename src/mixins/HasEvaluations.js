@@ -2,7 +2,7 @@ const PollTpl = {
 	Class: 'Poll',
 	MimeType: 'application/vnd.nextthought.napoll',
 	content: '',
-	parts: []
+	parts: [],
 };
 
 export default {
@@ -10,11 +10,11 @@ export default {
 
 	getEvaluationsRel: () => 'CourseEvaluations',
 
-	createPoll (data = {}) {
+	createPoll(data = {}) {
 		return this.postToLink(
 			this.getEvaluationsRel(),
-			{...PollTpl, ...data},
+			{ ...PollTpl, ...data },
 			true
 		);
-	}
+	},
 };

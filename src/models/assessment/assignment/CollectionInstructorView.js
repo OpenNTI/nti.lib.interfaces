@@ -5,26 +5,31 @@ import path from 'path';
 
 import AssignmentSummary from '../../../stores/AssignmentSummary';
 import GradeBookSummary from '../../../stores/GradeBookSummary';
-import {Service, ASSESSMENT_HISTORY_LINK, NO_LINK} from '../../../constants';
-import {getPrivate} from '../../../utils/private';
+import { Service, ASSESSMENT_HISTORY_LINK, NO_LINK } from '../../../constants';
+import { getPrivate } from '../../../utils/private';
 
 import Base from './Collection';
 import CollectionSummary from './CollectionSummary';
 import ActivityStore from './AssignmentActivityStore';
 
-
 // const logger = Logger.get('assignment:Collection:Instructor');
 
-const keyForUser = userId => userId != null ? `${ASSESSMENT_HISTORY_LINK}:${userId}` : ASSESSMENT_HISTORY_LINK;
+const keyForUser = userId =>
+	userId != null
+		? `${ASSESSMENT_HISTORY_LINK}:${userId}`
+		: ASSESSMENT_HISTORY_LINK;
 const ASSESSMENT_HISTORY_LINK_PREFIX = new RegExp('^' + keyForUser(''));
 
 const forUser = (ref, userId) => (
-	ref = Url.parse(ref),
-	ref.pathname = path.join(path.dirname(ref.pathname), encodeURIComponent(userId)),
-	ref.format());
+	(ref = Url.parse(ref)),
+	(ref.pathname = path.join(
+		path.dirname(ref.pathname),
+		encodeURIComponent(userId)
+	)),
+	ref.format()
+);
 
 export default class CollectionInstructorView extends Base {
-
 	/**
 	 * Build the Assessment Collection.
 	 *
@@ -41,17 +46,22 @@ export default class CollectionInstructorView extends Base {
 	 *                                       and "GradeBookByAssignment"
 	 * @returns {void}
 	 */
-	constructor (service, parent, assignments, assessments, historyLink, gradebook) {
+	constructor(
+		service,
+		parent,
+		assignments,
+		assessments,
+		historyLink,
+		gradebook
+	) {
 		super(service, parent, assignments, assessments, historyLink);
-		Object.assign(this, {gradebook});
+		Object.assign(this, { gradebook });
 	}
 
-
-	getLink (rel, ...rest) {
+	getLink(rel, ...rest) {
 		let link = super.getLink(rel, ...rest);
 
 		if (!link && ASSESSMENT_HISTORY_LINK_PREFIX.test(rel)) {
-
 			let userId = rel.replace(ASSESSMENT_HISTORY_LINK_PREFIX, '');
 
 			return forUser(super.getLink(ASSESSMENT_HISTORY_LINK), userId);
@@ -60,44 +70,42 @@ export default class CollectionInstructorView extends Base {
 		return link;
 	}
 
-
-	getAssignmentSummary (assignmentId, createIfDoesNotExist = true) {
+	getAssignmentSummary(assignmentId, createIfDoesNotExist = true) {
 		const data = getPrivate(this);
 
 		data.assignmentSummary = data.assignmentSummary || {};
 
 		if (!data.assignmentSummary[assignmentId] && createIfDoesNotExist) {
 			const assignment = this.getAssignment(assignmentId);
-			const link = assignment && assignment.getLink('GradeBookByAssignment');
+			const link =
+				assignment && assignment.getLink('GradeBookByAssignment');
 
-			data.assignmentSummary[assignmentId] = link && new AssignmentSummary(
-				this[Service],
-				this,
-				link
-			);
+			data.assignmentSummary[assignmentId] =
+				link && new AssignmentSummary(this[Service], this, link);
 		}
 
 		return data.assignmentSummary[assignmentId];
 	}
 
-
-	getStudentSummary (studentUserId, createIfDoesNotExist = true) {
+	getStudentSummary(studentUserId, createIfDoesNotExist = true) {
 		const data = getPrivate(this);
 
 		data.studentSummaries = data.studentSummaries || {};
 
 		if (!data.studentSummaries[studentUserId] && createIfDoesNotExist) {
-
 			let history = this.fetchLinkParsed(keyForUser(studentUserId));
 
-			data.studentSummaries[studentUserId] = new CollectionSummary(this[Service], this, history);
+			data.studentSummaries[studentUserId] = new CollectionSummary(
+				this[Service],
+				this,
+				history
+			);
 		}
 
 		return data.studentSummaries[studentUserId];
 	}
 
-
-	getSummary () {
+	getSummary() {
 		const data = getPrivate(this);
 
 		if (!data.summary) {
@@ -106,38 +114,42 @@ export default class CollectionInstructorView extends Base {
 				this,
 				this.gradebook.getLink('GradeBookSummary')
 			);
-		}
-		else if(data.summary.dirty) {
+		} else if (data.summary.dirty) {
 			data.summary.reloadPage();
 		}
 
 		return data.summary;
 	}
 
-
-	markSummaryDirty () {
+	markSummaryDirty() {
 		const data = getPrivate(this);
 		if (data.summary) {
 			data.summary.dirty = true;
 		}
 	}
 
-
-	getHistoryItem (assignmentId, studentUserId) {
+	getHistoryItem(assignmentId, studentUserId) {
 		if (!this.getAssignment(assignmentId)) {
 			return Promise.reject('Assignment Not Found.');
 		}
-		return this.getStudentSummary(studentUserId).fetchHistoryFor(assignmentId);
+		return this.getStudentSummary(studentUserId).fetchHistoryFor(
+			assignmentId
+		);
 	}
 
-
-	getActivity () {
+	getActivity() {
 		const p = getPrivate(this);
 		if (!p.activityStore) {
-
-			const baseActivity = (lastViewed) => this.getAssignments()
-				.reduce((events, a) => events.concat(this.deriveEvents(a, null, lastViewed)), [])
-				.filter(x => x.date);
+			const baseActivity = lastViewed =>
+				this.getAssignments()
+					.reduce(
+						(events, a) =>
+							events.concat(
+								this.deriveEvents(a, null, lastViewed)
+							),
+						[]
+					)
+					.filter(x => x.date);
 
 			//parent(CourseInstance) -> CourseActivity
 			const href = this.parent().getLink('CourseActivity');
@@ -145,22 +157,30 @@ export default class CollectionInstructorView extends Base {
 				return Promise.reject(NO_LINK);
 			}
 
-			p.activityStore = new ActivityStore(this[Service], this, href, baseActivity);
+			p.activityStore = new ActivityStore(
+				this[Service],
+				this,
+				href,
+				baseActivity
+			);
 		}
 
 		return Promise.resolve(p.activityStore);
 	}
 
-
-	setGrade (gradeOrAssignmentId, Username, value, letter) {
+	setGrade(gradeOrAssignmentId, Username, value, letter) {
 		//const data = getPrivate(this);
-		const getGrade = thing => typeof thing === 'object' ? thing : {
-			AssignmentId: thing, Username,
-			href: this.gradebook.getLink('SetGrade'),
-			IsExcused: false,
-			MimeType: 'application/vnd.nextthought.grade',
-			value: `${value} ${letter || '-'}`
-		};
+		const getGrade = thing =>
+			typeof thing === 'object'
+				? thing
+				: {
+						AssignmentId: thing,
+						Username,
+						href: this.gradebook.getLink('SetGrade'),
+						IsExcused: false,
+						MimeType: 'application/vnd.nextthought.grade',
+						value: `${value} ${letter || '-'}`,
+				  };
 
 		const grade = getGrade(gradeOrAssignmentId);
 
@@ -173,10 +193,12 @@ export default class CollectionInstructorView extends Base {
 
 		//new grade
 		return this[Service].post(grade.href, grade)
-			.then(o => o && this[Service].getObject(o, {parent: this}))
+			.then(o => o && this[Service].getObject(o, { parent: this }))
 			.then(historyItem => {
-				if (!historyItem) { return; }
-				const {AssignmentId: assignmentId} = grade;
+				if (!historyItem) {
+					return;
+				}
+				const { AssignmentId: assignmentId } = grade;
 
 				const as = this.getAssignmentSummary(assignmentId, false);
 				if (as) {
@@ -197,23 +219,20 @@ export default class CollectionInstructorView extends Base {
 			});
 	}
 
-
-	resetAssignment (assignmentId, username) {
+	resetAssignment(assignmentId, username) {
 		if (!assignmentId || !username) {
 			throw new Error('Invalid Arguments');
 		}
 
 		return this.getHistoryItem(assignmentId, username)
 			.then(history => {
-				if(history.hasLink('Reset')) {
+				if (history.hasLink('Reset')) {
 					return history.postToLink('Reset');
-				}
-				else {
+				} else {
 					return Promise.reject('No reset link on history container');
 				}
 			})
 			.then(() => {
-
 				const as = this.getAssignmentSummary(assignmentId, false);
 				if (as) {
 					const record = as.find(x => x.username === username);

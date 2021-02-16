@@ -1,4 +1,4 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
 import { model } from '../../Registry';
 import Base from '../../Base';
@@ -6,6 +6,7 @@ import Base from '../../Base';
 class BaseEvent extends Base {
 	static MimeType = '__base-event__';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'start_time': 			{ type: 'date', name: 'startTime' },
@@ -18,7 +19,7 @@ class BaseEvent extends Base {
 		'ContainerId': 			{ type: 'string' }
 	}
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 
 		this.addToPending(resolveCatalogEntry(service, this));
@@ -27,14 +28,16 @@ class BaseEvent extends Base {
 	getUniqueIdentifier = () => this.getID();
 }
 
-export default decorate(BaseEvent, {with:[model]});
+export default decorate(BaseEvent, { with: [model] });
 
 async function resolveCatalogEntry(service, event) {
 	const self = event;
 	try {
-		const {CatalogEntryNTIID:id} = event;
+		const { CatalogEntryNTIID: id } = event;
 
-		if (!id) { return; }
+		if (!id) {
+			return;
+		}
 
 		const entry = await service.getObject(id);
 

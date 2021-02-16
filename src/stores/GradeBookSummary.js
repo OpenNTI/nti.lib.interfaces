@@ -1,8 +1,8 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
-import {getPrivate} from '../utils/private';
+import { getPrivate } from '../utils/private';
 import Paged from '../mixins/Paged';
 
 import Stream from './Stream';
@@ -13,18 +13,21 @@ const logger = Logger.get('store:GradeBookSummary');
 const FILTERS = {
 	forcredit: 'ForCredit',
 	open: 'Open',
-	all: 'All'
+	all: 'All',
 };
 
 const CATEGORIES = {
 	actionable: 'actionable',
 	overdue: 'overdue',
-	ungraded: 'ungraded'
+	ungraded: 'ungraded',
 };
 
-
-function setFilter (instance, scope = instance.scopeFilter, category = instance.categoryFilter) {
-	const {options} = instance;
+function setFilter(
+	instance,
+	scope = instance.scopeFilter,
+	category = instance.categoryFilter
+) {
+	const { options } = instance;
 
 	options.filter = [scope, category].filter(x => x).join(',');
 
@@ -37,14 +40,12 @@ function setFilter (instance, scope = instance.scopeFilter, category = instance.
 }
 
 class GradeBookSummary extends Stream {
-
-	constructor (service, owner, href, options, ...args) {
+	constructor(service, owner, href, options, ...args) {
 		super(service, owner, href, options, ...args);
 		this.initMixins();
 	}
 
-
-	get parseList () {
+	get parseList() {
 		const p = getPrivate(this);
 
 		if (!p.parseListFn) {
@@ -56,26 +57,28 @@ class GradeBookSummary extends Stream {
 		return p.parseListFn;
 	}
 
-
-	applyBatch (input) {
+	applyBatch(input) {
 		const data = getPrivate(this);
 		super.applyBatch(input);
 
-		const {EnrollmentScope, AvailableFinalGrade, ItemCount} = input;
+		const { EnrollmentScope, AvailableFinalGrade, ItemCount } = input;
 		// AvailableFinalGrade: true
 		// EnrollmentScope: "ForCredit"
 		// BatchPage: 1
 		// ItemCount: 1
 		// TotalItemCount: 1
-		const {scopeFilter, categoryFilter} = this;
+		const { scopeFilter, categoryFilter } = this;
 
 		if (!scopeFilter && !categoryFilter && ItemCount === 0) {
 			return this.retryBatch(() => this.setScopeFilter('All'));
 		}
 
 		if (EnrollmentScope && data.scopeFilter !== EnrollmentScope) {
-			if (data.scopeFilter) { //don't warn if not initialized
-				logger.warn('EnrollmentScope resolved to a different value than requested.');
+			if (data.scopeFilter) {
+				//don't warn if not initialized
+				logger.warn(
+					'EnrollmentScope resolved to a different value than requested.'
+				);
 			}
 
 			data.scopeFilter = EnrollmentScope;
@@ -83,17 +86,19 @@ class GradeBookSummary extends Stream {
 
 		data.hasFinalGrade = Boolean(AvailableFinalGrade);
 
-
 		data.total = input.TotalItemCount;
 	}
 
+	get total() {
+		return getPrivate(this).total || this.length;
+	}
+	getTotal() {
+		return this.total;
+	} //expected by Paged mixin
 
-	get total () { return getPrivate(this).total || this.length; }
-	getTotal () { return this.total; } //expected by Paged mixin
-
-
-	get hasFinalGrade () { return getPrivate(this).hasFinalGrade; }
-
+	get hasFinalGrade() {
+		return getPrivate(this).hasFinalGrade;
+	}
 
 	/**
 	 * Clears the store, and reloads with a given scope.
@@ -101,7 +106,7 @@ class GradeBookSummary extends Stream {
 	 * @param {string} scope Either: 'Open' or 'ForCredit'.
 	 * @returns {void}
 	 */
-	setScopeFilter (scope) {
+	setScopeFilter(scope) {
 		const data = getPrivate(this);
 		const value = FILTERS[(scope || '').toLowerCase()];
 		if (!value) {
@@ -111,22 +116,24 @@ class GradeBookSummary extends Stream {
 		setFilter(this);
 	}
 
-
 	/**
 	 * Clears the store, and reloads with a given category.
 	 *
 	 * @param {string} value Either: 'actionable', 'overdue', 'ungraded' or null to clear the filter.
 	 * @returns {void}
 	 */
-	setCategoryFilter (value) {
+	setCategoryFilter(value) {
 		const data = getPrivate(this);
 		data.categoryFilter = CATEGORIES[(value || '').toLowerCase()];
 		setFilter(this);
 	}
 
-
-	get scopeFilter () { return getPrivate(this).scopeFilter; }
-	get categoryFilter () { return getPrivate(this).categoryFilter; }
+	get scopeFilter() {
+		return getPrivate(this).scopeFilter;
+	}
+	get categoryFilter() {
+		return getPrivate(this).categoryFilter;
+	}
 }
 
-export default decorate(GradeBookSummary, {with:[mixin(Paged)]});
+export default decorate(GradeBookSummary, { with: [mixin(Paged)] });

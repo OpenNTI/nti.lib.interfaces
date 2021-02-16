@@ -1,9 +1,9 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 import Threadable from '../../mixins/Threadable';
 import DiscussionInterface from '../../mixins/DiscussionInterface';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 
 import Post from './Post';
 
@@ -13,8 +13,9 @@ class Comment extends Post {
 		COMMON_PREFIX + 'forums.generalforumcomment',
 		COMMON_PREFIX + 'forums.contentforumcomment',
 		COMMON_PREFIX + 'forums.personalblogcomment',
-	]
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Post.Fields,
 		'ContainerId':       { type: 'string'   },
@@ -29,28 +30,32 @@ class Comment extends Post {
 
 	isComment = true;
 
-	get isBlogComment () {
+	get isBlogComment() {
 		return this.MimeType === COMMON_PREFIX + 'forums.personalblogcomment';
 	}
 
-	get isTopicComment () {
+	get isTopicComment() {
 		return !this.isBlogComment;
 	}
 
-	getSharedWith () { return []; }
+	getSharedWith() {
+		return [];
+	}
 
-	isDeleted () { return this.Deleted;	}
+	isDeleted() {
+		return this.Deleted;
+	}
 
-	afterDelete () {
+	afterDelete() {
 		this.Deleted = true;
 		this.onPostDeleted();
 	}
 
-	isTopLevel () {
+	isTopLevel() {
 		return false;
 	}
 
-	getFlatReplies () {
+	getFlatReplies() {
 		const link = this.getLink('replies');
 		if (!link) {
 			return Promise.resolve([]);
@@ -58,7 +63,7 @@ class Comment extends Post {
 
 		const params = {
 			sortOn: 'CreatedTime',
-			sortOrder: 'ascending'
+			sortOrder: 'ascending',
 		};
 
 		return this.fetchLinkParsed('replies', params);
@@ -66,21 +71,23 @@ class Comment extends Post {
 
 	#getParentTopic = () => {
 		return this.parent(p => p.isTopic);
-	}
+	};
 
-	canAddDiscussion () {
+	canAddDiscussion() {
 		const topic = this.#getParentTopic();
 
 		return topic.canAddDiscussion();
 	}
 
-	getDiscussionCount () { return this.ReferencedByCount; }
-	updateDiscussionCount (updated) {
+	getDiscussionCount() {
+		return this.ReferencedByCount;
+	}
+	updateDiscussionCount(updated) {
 		this.ReferencedByCount = updated;
 		this.onChange();
 	}
 
-	async getDiscussions () {
+	async getDiscussions() {
 		const replies = await this.getReplies();
 
 		for (let reply of replies) {
@@ -90,9 +97,12 @@ class Comment extends Post {
 		return replies;
 	}
 
-	async addDiscussion (data) {
+	async addDiscussion(data) {
 		const topic = this.#getParentTopic();
-		const discussion = await topic.addDiscussion({...data, inReplyTo: this}, true);
+		const discussion = await topic.addDiscussion(
+			{ ...data, inReplyTo: this },
+			true
+		);
 
 		discussion.overrideParentDiscussion(this);
 		this.onDiscussionAdded(discussion);
@@ -101,7 +111,6 @@ class Comment extends Post {
 	}
 }
 
-export default decorate(Comment, {with:[
-	model,
-	mixin(Threadable, DiscussionInterface),
-]});
+export default decorate(Comment, {
+	with: [model, mixin(Threadable, DiscussionInterface)],
+});

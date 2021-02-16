@@ -1,11 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
 import Base from '../Base';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 
 class RosterRecord extends Base {
-	static MimeType = COMMON_PREFIX + 'courses.rosterenrollmentsummary'
+	static MimeType = COMMON_PREFIX + 'courses.rosterenrollmentsummary';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'CourseProgress':         { type: 'model', name: 'courseProgress'    },
@@ -16,15 +17,13 @@ class RosterRecord extends Base {
 		'UserProfile':            { type: 'model', name: 'user'              },
 	}
 
-
-	constructor (service, data) {
+	constructor(service, data) {
 		super(service, null, data);
 	}
 
-
-	toString () {
+	toString() {
 		return `${this.username}: ${this.user.displayName} (${this.user.displayType}) - enrolled: ${this.enrollmentStatus}`;
 	}
 }
 
-export default decorate(RosterRecord, {with:[model]});
+export default decorate(RosterRecord, { with: [model] });

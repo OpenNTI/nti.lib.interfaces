@@ -1,9 +1,9 @@
-import {decorate} from '@nti/lib-commons';
-import {parseNTIID, isNTIID} from '@nti/lib-ntiids';
+import { decorate } from '@nti/lib-commons';
+import { parseNTIID, isNTIID } from '@nti/lib-ntiids';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
-import {Service} from '../../constants';
+import { Service } from '../../constants';
 
 const RESOLVE_TARGET = Symbol('Target');
 const RESOLVED_TARGET_NTIID = Symbol('Resolved Target NTIID');
@@ -19,9 +19,10 @@ const RESOLVED_TARGET_NTIID = Symbol('Resolved Target NTIID');
 class DiscussionReference extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'discussion',
-		COMMON_PREFIX + 'discussionref'
-	]
+		COMMON_PREFIX + 'discussionref',
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'icon':         { type: 'string' },
@@ -30,24 +31,24 @@ class DiscussionReference extends Base {
 		'Target-NTIID': { type: 'string' },
 	}
 
-
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 
 		this.addToPending(this.resolveTarget());
 	}
 
-
-	get target () {
+	get target() {
 		return this[RESOLVED_TARGET_NTIID] || this['Target-NTIID'];
 	}
 
-	pointsToId (id) {
+	pointsToId(id) {
 		return this.target === id;
 	}
 
-	async resolveTarget (course) {
-		if (this[RESOLVE_TARGET]) { return this[RESOLVE_TARGET]; }
+	async resolveTarget(course) {
+		if (this[RESOLVE_TARGET]) {
+			return this[RESOLVE_TARGET];
+		}
 
 		try {
 			this[RESOLVE_TARGET] = resolveTarget(this, course);
@@ -63,15 +64,13 @@ class DiscussionReference extends Base {
 	}
 }
 
-export default decorate(DiscussionReference, {with:[model]});
+export default decorate(DiscussionReference, { with: [model] });
 
-
-function hasValidTargetNTIID (ref) {
+function hasValidTargetNTIID(ref) {
 	return ref['Target-NTIID'] && isNTIID(ref['Target-NTIID']);
 }
 
-
-async function resolveTarget (ref, course) {
+async function resolveTarget(ref, course) {
 	try {
 		return await resolveTargetNTIID(ref, course);
 	} catch (e) {
@@ -79,25 +78,25 @@ async function resolveTarget (ref, course) {
 	}
 }
 
-
-async function resolveTargetNTIID (ref, course) {
+async function resolveTargetNTIID(ref, course) {
 	if (!hasValidTargetNTIID(ref)) {
 		throw new Error('Invalid Target NTIID');
 	}
 
 	const service = ref[Service];
-	const target = await service.getObject(maybeFixNTIID(ref['Target-NTIID'], course));
+	const target = await service.getObject(
+		maybeFixNTIID(ref['Target-NTIID'], course)
+	);
 
 	return target;
 }
 
-
-async function resolveNTIID (ref, courseOverride) {
+async function resolveNTIID(ref, courseOverride) {
 	const service = ref[Service];
 	const course = courseOverride || ref.parent('isCourse');
 	const ntiids = ref.NTIID ? ref.NTIID.split(' ') : [];
 
-	async function resolve (index) {
+	async function resolve(index) {
 		const id = ntiids[index];
 
 		if (!id) {
@@ -133,12 +132,14 @@ async function resolveNTIID (ref, courseOverride) {
  * as course roulette but that is already a problem right?
  */
 const SPECIAL_ID_REGEX = /^Topic:EnrolledCourse(Section|Root)$/;
-function maybeFixNTIID (ntiid, course) {
+function maybeFixNTIID(ntiid, course) {
 	const parts = parseNTIID(ntiid);
 	const catalogEntry = course && course.CatalogEntry;
 
 	if (catalogEntry && parts && SPECIAL_ID_REGEX.test(parts.specific.type)) {
-		parts.specific.$$provider = (catalogEntry.ProviderUniqueID || '').replace(/[\W-]/g, '_');
+		parts.specific.$$provider = (
+			catalogEntry.ProviderUniqueID || ''
+		).replace(/[\W-]/g, '_');
 	}
 
 	return parts.toString();

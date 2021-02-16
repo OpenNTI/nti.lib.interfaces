@@ -1,13 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
 import { model, COMMON_PREFIX } from '../../Registry';
 import Instance from '../Instance';
 
 class ScormInstance extends Instance {
-	static MimeType = [
-		COMMON_PREFIX + 'courses.scormcourseinstance',
-	]
+	static MimeType = [COMMON_PREFIX + 'courses.scormcourseinstance'];
 
+	// prettier-ignore
 	static Fields = {
 		...Instance.Fields,
 		Metadata: { type: 'model' }
@@ -15,9 +14,9 @@ class ScormInstance extends Instance {
 
 	isScormInstance = true;
 
-	getScormCourse () {
+	getScormCourse() {
 		return this.Metadata.getLink('LaunchSCORM');
 	}
 }
 
-export default decorate(ScormInstance, {with:[model]});
+export default decorate(ScormInstance, { with: [model] });

@@ -1,14 +1,15 @@
-import {decorate, pluck} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate, pluck } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
-import {NO_LINK} from '../../constants';
+import { NO_LINK } from '../../constants';
 import Threadable from '../../mixins/Threadable';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class MessageInfo extends Base {
-	static MimeType = COMMON_PREFIX + 'messageinfo'
+	static MimeType = COMMON_PREFIX + 'messageinfo';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'ContainerId': { type: 'string' },
@@ -21,12 +22,12 @@ class MessageInfo extends Base {
 		'sharedWith':  { type: 'string[]' },
 	}
 
-	flag () {
-		let link = this.hasLink('flag') ?
-			'flag' :
-			this.hasLink('flag.metoo') ?
-				'flag.metoo' :
-				null;
+	flag() {
+		let link = this.hasLink('flag')
+			? 'flag'
+			: this.hasLink('flag.metoo')
+			? 'flag.metoo'
+			: null;
 
 		if (!link) {
 			return Promise.reject(NO_LINK);
@@ -38,7 +39,4 @@ class MessageInfo extends Base {
 	}
 }
 
-export default decorate(MessageInfo, {with: [
-	model,
-	mixin(Threadable),
-]});
+export default decorate(MessageInfo, { with: [model, mixin(Threadable)] });

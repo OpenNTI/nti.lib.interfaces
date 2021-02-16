@@ -1,12 +1,13 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
 import { model, COMMON_PREFIX } from '../../Registry';
 
 import BaseEvent from './BaseEvent';
 
 class AssignmentCalendarEvent extends BaseEvent {
-	static MimeType = `${COMMON_PREFIX}assessment.assignmentcalendarevent`
+	static MimeType = `${COMMON_PREFIX}assessment.assignmentcalendarevent`;
 
+	// prettier-ignore
 	static Fields = {
 		...BaseEvent.Fields,
 		'total_points':       { type: 'number', name: 'totalPoints' },
@@ -16,11 +17,11 @@ class AssignmentCalendarEvent extends BaseEvent {
 		'CatalogEntryNTIID':  { type: 'string'  }
 	}
 
-	get dueDate () {
+	get dueDate() {
 		return this.getStartTime();
 	}
 
 	getUniqueIdentifier = () => this.AssignmentNTIID + this.CatalogEntryNTIID;
 }
 
-export default decorate(AssignmentCalendarEvent, {with:[model]});
+export default decorate(AssignmentCalendarEvent, { with: [model] });

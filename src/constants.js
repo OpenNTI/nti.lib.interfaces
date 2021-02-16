@@ -26,11 +26,11 @@ export const REQUEST_ERROR_EVENT = 'global-request-error-notification';
 
 export const MODEL_INSTANCE_CACHE_KEY = '%%model.instances%%';
 
-
 export const REL_MESSAGE_INBOX = 'RUGDByOthersThatIMightBeInterestedIn';
 export const REL_RECURSIVE_STREAM = 'RecursiveStream';
 export const REL_RECURSIVE_USER_GENERATED_DATA = 'RecursiveUserGeneratedData';
-export const REL_RELEVANT_CONTAINED_USER_GENERATED_DATA = 'RelevantContainedUserGeneratedData';
+export const REL_RELEVANT_CONTAINED_USER_GENERATED_DATA =
+	'RelevantContainedUserGeneratedData';
 export const REL_RELEVANT_USER_GENERATED_DATA = 'RelevantUserGeneratedData';
 export const REL_USER_GENERATED_DATA = 'UserGeneratedData';
 export const REL_USER_SEARCH = 'UserSearch';
@@ -55,5 +55,7 @@ export const SortOrder = {
 	ASC: 'ascending',
 	DESC: 'descending',
 
-	reverse (dir) { return dir === SortOrder.ASC ? SortOrder.DESC : SortOrder.ASC; }
+	reverse(dir) {
+		return dir === SortOrder.ASC ? SortOrder.DESC : SortOrder.ASC;
+	},
 };

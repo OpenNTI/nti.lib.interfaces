@@ -1,6 +1,6 @@
 import Logger from '@nti/util-logger';
 
-import {IsModel} from '../constants';
+import { IsModel } from '../constants';
 
 const logger = Logger.get('models:Registry');
 
@@ -9,59 +9,61 @@ export const MAP = Symbol('Model Map');
 
 export const COMMON_PREFIX = 'application/vnd.nextthought.';
 
-export const trimCommonPrefix = x => x && x.replace(/^application\/vnd.nextthought./, '').toLowerCase();
+export const trimCommonPrefix = x =>
+	x && x.replace(/^application\/vnd.nextthought./, '').toLowerCase();
 
-const IGNORED = {parse: x => x};
-
+const IGNORED = { parse: x => x };
 
 export default class Registry {
-
-
-	static alias (...args) {
+	static alias(...args) {
 		return this.getInstance().alias(...args);
 	}
 
-
-	static lookup (...args) {
+	static lookup(...args) {
 		return this.getInstance().lookup(...args);
 	}
 
-
-	static register (...args) {
+	static register(...args) {
 		return this.getInstance().register(...args);
 	}
 
-
-	static ignore (type) {
+	static ignore(type) {
 		return this.getInstance().alias('ignored', type);
 	}
 
-
-	static getInstance () {
+	static getInstance() {
 		const x = Symbol.for('Instance');
 		return this[x] || (this[x] = new Registry());
 	}
 
-
-	constructor () {
-		const m = this[MAP] = new Map();
+	constructor() {
+		const m = (this[MAP] = new Map());
 		m.set('ignored', IGNORED);
 	}
 
-
-	register (o) {
+	register(o) {
 		const has = (x, k) => Object.prototype.hasOwnProperty.call(x, k);
 
-		if (!o || !o.MimeType || !has(o,'MimeType') || typeof o !== 'function') {
-			throw new TypeError(`Illegial Argument: Model class expected:
+		if (
+			!o ||
+			!o.MimeType ||
+			!has(o, 'MimeType') ||
+			typeof o !== 'function'
+		) {
+			throw new TypeError(
+				`Illegial Argument: Model class expected:
 				Has Argument: ${!!o}
 				Has MimeType: ${o && !!o.MimeType}
-				Is Own MimeType: ${o && has(o,'MimeType')}: ${o.MimeType} (${o.name})
+				Is Own MimeType: ${o && has(o, 'MimeType')}: ${o.MimeType} (${o.name})
 				Is Class: ${typeof o === 'function'}
-				`.replace(/\t+/g, '\t'));
+				`.replace(/\t+/g, '\t')
+			);
 		}
 
-		const MimeTypes = (Array.isArray(o.MimeType) ? o.MimeType : [o.MimeType]).filter(Boolean);
+		const MimeTypes = (Array.isArray(o.MimeType)
+			? o.MimeType
+			: [o.MimeType]
+		).filter(Boolean);
 		const [MimeType] = MimeTypes;
 
 		delete o.MimeType;
@@ -73,14 +75,14 @@ export default class Registry {
 				configurable: true,
 				enumerable: true,
 				writable: true,
-				value: MimeType
+				value: MimeType,
 			},
 			MimeTypes: {
 				configurable: true,
 				enumerable: true,
 				writable: true,
-				value: MimeTypes
-			}
+				value: MimeTypes,
+			},
 		});
 
 		o.prototype[IsModel] = true;
@@ -89,7 +91,12 @@ export default class Registry {
 
 		for (let type of types) {
 			if (this[MAP].has(type)) {
-				logger.warn('Overriding Type!! %s with %o was %o', type, o, this[MAP].get(type));
+				logger.warn(
+					'Overriding Type!! %s with %o was %o',
+					type,
+					o,
+					this[MAP].get(type)
+				);
 			}
 
 			logger.debug('Registering %s to %o (%d)', type, o, this[MAP].size);
@@ -99,19 +106,22 @@ export default class Registry {
 		return o;
 	}
 
-
-	alias (existingType, alias) {
+	alias(existingType, alias) {
 		const map = this[MAP];
 		if (typeof existingType !== 'string' || typeof alias !== 'string') {
 			throw new TypeError('aliases and types must be strings');
 		}
 
 		if (existingType === alias) {
-			throw new TypeError('Cannot create an alias that is self-referencing.');
+			throw new TypeError(
+				'Cannot create an alias that is self-referencing.'
+			);
 		}
 
 		if (!map.has(existingType)) {
-			throw new TypeError(`Cannot alias a non-existing type (${existingType})`);
+			throw new TypeError(
+				`Cannot alias a non-existing type (${existingType})`
+			);
 		}
 
 		if (map.has(alias)) {
@@ -119,15 +129,19 @@ export default class Registry {
 				throw new TypeError('Cannot alias over an existing type.');
 			}
 
-			logger.warn('Overriding Type!! %s with %o was %o', alias, existingType, map.get(alias));
+			logger.warn(
+				'Overriding Type!! %s with %o was %o',
+				alias,
+				existingType,
+				map.get(alias)
+			);
 		}
 
 		logger.debug('Registering alias %s to %s', alias, existingType);
 		map.set(trimCommonPrefix(alias), trimCommonPrefix(existingType));
 	}
 
-
-	lookup (type) {
+	lookup(type) {
 		let m = this[MAP].get(trimCommonPrefix(type));
 		logger.debug('Lookup: %s, %o', type, m);
 
@@ -135,8 +149,13 @@ export default class Registry {
 
 		//follow aliases:
 		while (typeof m === 'string') {
-			if (seen.includes(m)) { //break cycles.
-				logger.debug('Alias Loop Detected... already seen: %s\n\t=?> %s', seen.join('\n\t=> '), m);
+			if (seen.includes(m)) {
+				//break cycles.
+				logger.debug(
+					'Alias Loop Detected... already seen: %s\n\t=?> %s',
+					seen.join('\n\t=> '),
+					m
+				);
 				m = void m; //set m to undefined (void)
 			} else {
 				const alias = m;
@@ -150,8 +169,7 @@ export default class Registry {
 	}
 }
 
-
 //Decorator...auto register
-export function model (target) {
+export function model(target) {
 	Registry.register(target);
 }

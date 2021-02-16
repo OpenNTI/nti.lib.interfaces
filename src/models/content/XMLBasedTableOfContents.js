@@ -8,11 +8,11 @@ import Node from './TableOfContentsNode';
 // Probably shouldn't extend Base...
 // TODO: Remove Base as a super...
 export default class XMLBasedTableOfContents extends Base {
-
-	constructor (service, parent, data, title, realPageIndex) {
+	constructor(service, parent, data, title, realPageIndex) {
 		super(service, parent, null);
 
-		let {numbering, toc = {}} = (parent || {}).PresentationProperties || {};
+		let { numbering, toc = {} } =
+			(parent || {}).PresentationProperties || {};
 
 		let xml = XML.parse(data);
 
@@ -22,29 +22,27 @@ export default class XMLBasedTableOfContents extends Base {
 			title,
 			xml,
 			realPageIndex,
-			root: new Node(this, xml.getroot(), this)
+			root: new Node(this, xml.getroot(), this),
 		});
 	}
 
-
-	find (query) {
+	find(query) {
 		let n = this.xml.find(query);
 		return n && new Node(this, n);
 	}
 
-
-	getVideoIndexRef () {
-		let ref = this.xml.find('.//reference[@type="application/vnd.nextthought.videoindex"]');
+	getVideoIndexRef() {
+		let ref = this.xml.find(
+			'.//reference[@type="application/vnd.nextthought.videoindex"]'
+		);
 		return ref && ref.get('href');
 	}
 
-
-	getNode (id) {
-		let {root, xml} = this;
+	getNode(id) {
+		let { root, xml } = this;
 		let node = root;
 
 		if (root.id !== id) {
-
 			let list = xml.findall('.//*[@ntiid="' + id + '"]') || [];
 
 			if (list.length > 1) {
@@ -58,8 +56,7 @@ export default class XMLBasedTableOfContents extends Base {
 		return node;
 	}
 
-
-	getXMLNode (id) {
+	getXMLNode(id) {
 		const nodes = this.flatten();
 
 		for (let node of nodes) {
@@ -71,14 +68,12 @@ export default class XMLBasedTableOfContents extends Base {
 		return null;
 	}
 
-
-	indexOf (id) {
+	indexOf(id) {
 		let node = this.getNode(id);
 		return (node && node.idx) || -1;
 	}
 
-
-	getPageSource (rootId) {
+	getPageSource(rootId) {
 		try {
 			return new PageSource(this, rootId);
 		} catch (e) {
@@ -86,46 +81,59 @@ export default class XMLBasedTableOfContents extends Base {
 		}
 	}
 
-
-	[Symbol.iterator] () {
-		let {children} = this,
-			{length} = children,
+	[Symbol.iterator]() {
+		let { children } = this,
+			{ length } = children,
 			index = 0;
 
 		return {
-
-			next () {
+			next() {
 				let done = index >= length,
 					value = children[index++];
 
 				return { value, done };
-			}
-
+			},
 		};
 	}
 
+	get children() {
+		return this.root.children;
+	}
+	get id() {
+		return this.getID();
+	}
+	get length() {
+		return this.root.length;
+	}
+	get tag() {
+		return this.root.tag;
+	}
 
-	get children () { return this.root.children; }
-	get id () { return this.getID(); }
-	get length () { return this.root.length; }
-	get tag () { return this.root.tag; }
+	get(attr) {
+		return this.root.get(attr);
+	}
 
+	getAttribute(...a) {
+		return this.get(...a);
+	}
 
-	get (attr) { return this.root.get(attr); }
-
-	getAttribute (...a) { return this.get(...a); }
-
-	getID () { return this.get('ntiid'); }
+	getID() {
+		return this.get('ntiid');
+	}
 
 	// filter (...args) {
 	// 	let filtered = this.root.filter(...args);
 	// 	return new FilteredTableOfContents(filtered);
 	// }
 
-	flatten () { return this.root.flatten(); }
+	flatten() {
+		return this.root.flatten();
+	}
 
-	getRealPage (pageNumber) {
-		if (!pageNumber || !this.realPageIndex) { return null; }
+	getRealPage(pageNumber) {
+		if (!pageNumber || !this.realPageIndex) {
+			return null;
+		}
 
 		const page = (this.realPageIndex['real-pages'] || {})[pageNumber];
 		const NTIID = page && page.NTIID;
@@ -134,7 +142,7 @@ export default class XMLBasedTableOfContents extends Base {
 		return {
 			page: pageNumber,
 			NTIID,
-			NavNTIID
+			NavNTIID,
 		};
 	}
 
@@ -147,10 +155,8 @@ export default class XMLBasedTableOfContents extends Base {
 	 * @param  {string} page page number to look for
 	 * @returns {Object}      the page number and NTIID
 	 */
-	getRealPages (page) {
-		const realPages = [
-			this.getRealPage(page)
-		];
+	getRealPages(page) {
+		const realPages = [this.getRealPage(page)];
 
 		return realPages.filter(x => !!x);
 	}

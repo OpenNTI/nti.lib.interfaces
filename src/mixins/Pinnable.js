@@ -1,18 +1,18 @@
-export default function PinnableApplyer (targetModelClass) {
+export default function PinnableApplyer(targetModelClass) {
 	Object.assign(targetModelClass.Fields, {
-		'Pinned': {type: 'boolean'}
+		Pinned: { type: 'boolean' },
 	});
 
 	return {
-		get isPinned () {
+		get isPinned() {
 			return this.Pinned;
 		},
 
-		get isPinnable () {
+		get isPinnable() {
 			return this.hasLink('pin') || this.hasLink('unpin');
 		},
 
-		async pin () {
+		async pin() {
 			const resp = await this.postToLink('pin');
 			await this.refresh(resp);
 
@@ -20,7 +20,7 @@ export default function PinnableApplyer (targetModelClass) {
 			this.emit('pinned');
 		},
 
-		async unpin () {
+		async unpin() {
 			const resp = await this.postToLink('unpin');
 			await this.refresh(resp);
 
@@ -28,8 +28,8 @@ export default function PinnableApplyer (targetModelClass) {
 			this.emit('unpinned');
 		},
 
-		togglePinned () {
+		togglePinned() {
 			return this.isPinned ? this.unpin() : this.pin();
-		}
+		},
 	};
 }

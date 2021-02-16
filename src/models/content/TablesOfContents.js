@@ -4,57 +4,60 @@ const TABLES = Symbol('tables');
 // Probably shouldn't extend Base...
 // TODO: Remove Base as a super...
 export default class TablesOfContents extends Base {
-
-	static fromIterable (iterable, service, parent) {
+	static fromIterable(iterable, service, parent) {
 		let result = [];
 
-		for(let v of iterable) {
+		for (let v of iterable) {
 			result.push(v);
 		}
 
 		return new TablesOfContents(service, parent, result);
 	}
 
-	constructor (service, parent, tables) {
+	constructor(service, parent, tables) {
 		super(service, parent);
 		this[TABLES] = tables;
 	}
 
-
-	[Symbol.iterator] () {
+	[Symbol.iterator]() {
 		let tables = this[TABLES],
-			{length} = tables,
+			{ length } = tables,
 			index = 0;
 
 		return {
-			next () {
+			next() {
 				let done = index >= length,
 					value = tables[index++];
 
 				return { value, done };
-			}
+			},
 		};
 	}
 
+	get length() {
+		return this[TABLES].length;
+	}
 
-	get length () { return this[TABLES].length; }
-
-
-	getAt (idx) {
+	getAt(idx) {
 		return this[TABLES][idx];
 	}
 
-
-	getNode (id) {
+	getNode(id) {
 		return this[TABLES].reduce(
-			(found, toc)=> found || toc.getNode(id),
-			null);
+			(found, toc) => found || toc.getNode(id),
+			null
+		);
 	}
 
+	filter(...args) {
+		return this[TABLES].filter(...args);
+	}
 
-	filter (...args) { return this[TABLES].filter(...args); }
+	map(...args) {
+		return this[TABLES].map(...args);
+	}
 
-	map (...args) { return this[TABLES].map(...args); }
-
-	reduce (...args) { return this[TABLES].reduce(...args); }
+	reduce(...args) {
+		return this[TABLES].reduce(...args);
+	}
 }

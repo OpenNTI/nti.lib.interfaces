@@ -6,9 +6,11 @@ const OfflineEvent = '__offline-event';
 export default class OnlineStatus extends EventEmitter {
 	#online = true;
 
-	get isOnline () { return this.#online; }
+	get isOnline() {
+		return this.#online;
+	}
 
-	hadNetworkError () {
+	hadNetworkError() {
 		const wasOnline = this.#online;
 
 		this.#online = false;
@@ -18,7 +20,7 @@ export default class OnlineStatus extends EventEmitter {
 		}
 	}
 
-	hadNetworkSuccess () {
+	hadNetworkSuccess() {
 		const wasOnline = this.#online;
 
 		this.#online = true;
@@ -28,8 +30,7 @@ export default class OnlineStatus extends EventEmitter {
 		}
 	}
 
-
-	subscribeToChange (fn) {
+	subscribeToChange(fn) {
 		const callback = () => void setTimeout(fn, 0, this.isOnline);
 
 		this.addListener(OnlineEvent, callback);

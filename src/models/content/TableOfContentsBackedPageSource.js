@@ -1,22 +1,23 @@
-import {encodeForURI as encodeNTIIDForURI} from '@nti/lib-ntiids';
+import { encodeForURI as encodeNTIIDForURI } from '@nti/lib-ntiids';
 
 import Base from '../Base';
 
 const Service = Symbol.for('Service');
 
-
-function buildRef (node/*, root*/) {
-	return node && {
-		ntiid: node.get('ntiid'),
-		title: node.get('label'),
-		ref: encodeNTIIDForURI(node.get('ntiid'))
-	};
+function buildRef(node /*, root*/) {
+	return (
+		node && {
+			ntiid: node.get('ntiid'),
+			title: node.get('label'),
+			ref: encodeNTIIDForURI(node.get('ntiid')),
+		}
+	);
 }
 
 // Probably shouldn't extend Base...
 // TODO: Remove Base as a super...
 export default class TableOfContentsBackedPageSource extends Base {
-	constructor (ToC, root) {
+	constructor(ToC, root) {
 		super(ToC[Service], ToC);
 
 		if (!root) {
@@ -32,10 +33,9 @@ export default class TableOfContentsBackedPageSource extends Base {
 		this.pagesInRange = this.pages.filter(suppressed);
 	}
 
-
-	getPagesAround (pageId) {
+	getPagesAround(pageId) {
 		let query = './/*[@ntiid="' + pageId + '"]';
-		let {root} = this;
+		let { root } = this;
 
 		let node = root.find(query) || (root.get('ntiid') === pageId && root);
 		let nodes = this.pagesInRange;
@@ -48,17 +48,15 @@ export default class TableOfContentsBackedPageSource extends Base {
 			total: nodes.length,
 			index: index,
 			next: buildRef(next, root),
-			prev: buildRef(prev, root)
+			prev: buildRef(prev, root),
 		};
 	}
 
-
-	contains (node) {
+	contains(node) {
 		return this.find(node) >= 0;
 	}
 
-
-	find (node) {
+	find(node) {
 		let nodes = this.pagesInRange;
 		let nodeId = node && (typeof node === 'string' ? node : node.id);
 		let matcher = n => n.id === nodeId;
@@ -71,12 +69,13 @@ export default class TableOfContentsBackedPageSource extends Base {
 				return -1;
 			}
 
-			do { node = this.pages[index--]; } while(node && !suppressed(node));
+			do {
+				node = this.pages[index--];
+			} while (node && !suppressed(node));
 
 			if (node) {
 				nodeId = node.id;
 				index = nodes.findIndex(matcher);
-
 			} else {
 				index = -1;
 			}
@@ -84,11 +83,8 @@ export default class TableOfContentsBackedPageSource extends Base {
 
 		return index;
 	}
-
 }
 
-
-
-function suppressed (node) {
+function suppressed(node) {
 	return node && node.isTopic() && !node.isAnchor();
 }

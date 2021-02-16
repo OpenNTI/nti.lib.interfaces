@@ -1,10 +1,14 @@
-export default function callOnceMonitor (name) {
+export default function callOnceMonitor(name) {
 	let called = false;
 	let value = null;
 	let monitors = [];
 
 	const fn = (...args) => {
-		if (called) { throw new Error(`Cannot call ${name || ' this method'} more than once.`); }
+		if (called) {
+			throw new Error(
+				`Cannot call ${name || ' this method'} more than once.`
+			);
+		}
 
 		value = args;
 		called = true;
@@ -16,9 +20,13 @@ export default function callOnceMonitor (name) {
 		monitors = null;
 	};
 
-	fn.onceCalled = (monitor) => {
-		if (!monitor || typeof monitor !== 'function') { throw new TypeError('Cannot call \'onceCalled\' without a function argument'); }
-		
+	fn.onceCalled = monitor => {
+		if (!monitor || typeof monitor !== 'function') {
+			throw new TypeError(
+				"Cannot call 'onceCalled' without a function argument"
+			);
+		}
+
 		if (called) {
 			monitor(...value);
 		} else {

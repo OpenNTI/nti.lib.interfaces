@@ -1,9 +1,9 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 import PlacementProvider from '../../authoring/placement/providers/Question';
-import {Mixin as HasContent} from '../../mixins/HasContent';
-import {model, COMMON_PREFIX} from '../Registry';
+import { Mixin as HasContent } from '../../mixins/HasContent';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 import QuestionIdentity from './mixins/QuestionIdentity';
@@ -20,8 +20,9 @@ class Question extends Base {
 		COMMON_PREFIX + 'naquestion',
 		COMMON_PREFIX + 'naquestionfillintheblankwordbank',
 		COMMON_PREFIX + 'assessment.fillintheblankwithwordbankquestion',
-	]
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'content':                  { type: 'string',  content: true    },
@@ -33,67 +34,59 @@ class Question extends Base {
 		'IsAvailable':              { type: 'boolean'                   },
 	};
 
-
-	[Symbol.iterator] () {
+	[Symbol.iterator]() {
 		let snapshot = this.parts.slice();
-		let {length} = snapshot;
+		let { length } = snapshot;
 		let index = 0;
 
 		return {
-
-			next () {
+			next() {
 				let done = index >= length;
 				let value = snapshot[index++];
 
 				return { value, done };
-			}
-
+			},
 		};
 	}
 
-
-
-	get individual () {
+	get individual() {
 		let result = this[Individual];
-		if (!Object.prototype.hasOwnProperty.call(this,Individual)) {
-			result = !this.parent({test: p=>p instanceof QuestionSet});
+		if (!Object.prototype.hasOwnProperty.call(this, Individual)) {
+			result = !this.parent({ test: p => p instanceof QuestionSet });
 			this[Individual] = result; //stop computing
 		}
 		return result;
 	}
 
-
-	get isAutoGradable () {
+	get isAutoGradable() {
 		for (let part of this) {
-			if (!part.AutoGradable) { return false; }
+			if (!part.AutoGradable) {
+				return false;
+			}
 		}
 
 		return true;
 	}
 
-
-	get associationCount () {
+	get associationCount() {
 		return this.AssessmentContainerCount;
 	}
 
-
-	getAssociations () {
+	getAssociations() {
 		return this.fetchLinkParsed('Assessments');
 	}
 
-
-	getPlacementProvider (scope, accepts) {
+	getPlacementProvider(scope, accepts) {
 		return new PlacementProvider(scope, this, accepts);
 	}
 
-
-	getAutoGradableConflicts () {
+	getAutoGradableConflicts() {
 		const conflicts = [];
 		for (let part of this.parts) {
 			if (!part.AutoGradable) {
 				conflicts.push({
 					index: this.parts.indexOf(part),
-					part
+					part,
 				});
 			}
 		}
@@ -101,29 +94,25 @@ class Question extends Base {
 		return conflicts;
 	}
 
-
-	getPart (index) {
+	getPart(index) {
 		return (this.parts || [])[index];
 	}
 
-
-	getVideos () {
+	getVideos() {
 		//Eeewww...
 		let all = Part.prototype.getVideos.call(this);
 
-		for(let p of this.parts) {
+		for (let p of this.parts) {
 			all.push.apply(all, p.getVideos());
 		}
 		return all;
 	}
 
-
-	getSubmission () {
+	getSubmission() {
 		return QuestionSubmission.build(this);
 	}
 
-
-	loadPreviousSubmission () {
+	loadPreviousSubmission() {
 		// let dataProvider = this.parent('getUserDataLastOfType');
 		// if (!dataProvider) {
 		// 	return Promise.reject('Nothing to do');
@@ -133,18 +122,18 @@ class Question extends Base {
 		return Promise.reject('Individual Question history not implemented');
 	}
 
-
-	isAnswered (questionSubmission) {
+	isAnswered(questionSubmission) {
 		let items = this.parts || [];
 		let expect = items.length;
-		let {parts} = questionSubmission;
+		let { parts } = questionSubmission;
 
-		return items.filter((p, i)=> p && p.isAnswered && p.isAnswered(parts[i])).length === expect;
+		return (
+			items.filter((p, i) => p && p.isAnswered && p.isAnswered(parts[i]))
+				.length === expect
+		);
 	}
-
 }
 
-export default decorate(Question, {with: [
-	model,
-	mixin(HasContent, SubmittableIdentity, QuestionIdentity),
-]});
+export default decorate(Question, {
+	with: [model, mixin(HasContent, SubmittableIdentity, QuestionIdentity)],
+});

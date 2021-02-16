@@ -1,9 +1,8 @@
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 import Base from './Base';
 
-
-function MarkerFactory (obj) {
+function MarkerFactory(obj) {
 	const markers = {};
 
 	const unmark = (...names) => names.forEach(name => delete markers[name]);
@@ -25,17 +24,18 @@ function MarkerFactory (obj) {
 			configurable: true, //allow these properties to be deleted?
 			enumerable: false,
 			get: () => markers[name],
-			set: (value) => {
-				if (value) { unmark(...clears); }
+			set: value => {
+				if (value) {
+					unmark(...clears);
+				}
 				mark(name, value);
-			}
+			},
 		});
 	};
 }
 
-
 export default class Placeholder extends Base {
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, {}); //bypass field declaration checks for Placeholders
 		Object.assign(this, data);
 		this.keys = new Set(Object.keys(data));
@@ -44,25 +44,25 @@ export default class Placeholder extends Base {
 
 		Object.defineProperties(this, {
 			isPlaceholder: {
-				value: true
+				value: true,
 			},
 			NTIID: {
-				value: uuid()
+				value: uuid(),
 			},
 			BLACK_LIST_OVERRIDE: {
-				value: {Class: true}
-			}
+				value: { Class: true },
+			},
 		});
 
 		makeMarker('isSaving');
 		makeMarker('error', 'isSaving');
 	}
 
-	getData () {
+	getData() {
 		const data = {};
 
 		for (let key of this.keys) {
-			if(this[key] !== undefined) {
+			if (this[key] !== undefined) {
 				data[key] = this[key];
 			}
 		}
@@ -70,7 +70,7 @@ export default class Placeholder extends Base {
 		return data;
 	}
 
-	mergeData (data) {
+	mergeData(data) {
 		const newKeys = Object.keys(data);
 
 		for (let key of newKeys) {

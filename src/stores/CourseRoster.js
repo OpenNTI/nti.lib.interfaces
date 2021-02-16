@@ -1,7 +1,7 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
-import {Service} from '../constants';
+import { Service } from '../constants';
 import Base from '../models/Base';
 import Paged from '../mixins/Paged';
 
@@ -10,12 +10,12 @@ import Stream from './Stream';
 //@private
 const FILTERS = {
 	forcredit: 'LegacyEnrollmentStatusForCredit',
-	open: 'LegacyEnrollmentStatusOpen'
+	open: 'LegacyEnrollmentStatusOpen',
 };
-
 
 //@private
 class RosterRecord extends Base {
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'LegacyEnrollmentStatus': { type: 'string', name: 'enrollmentStatus' },
@@ -24,29 +24,26 @@ class RosterRecord extends Base {
 		'UserProfile':            { type: 'model', name: 'user'              },
 	}
 
-
-	constructor (service, data) {
+	constructor(service, data) {
 		super(service, null, data);
 	}
 
-
-	toString () {
+	toString() {
 		return `${this.username}: ${this.user.displayName} (${this.user.displayType}) - enrolled: ${this.enrollmentStatus}`;
 	}
 }
 
 class CourseRosterStream extends Stream {
-
-	constructor (...args) {
+	constructor(...args) {
 		super(...args);
 		this.initMixins();
 	}
 
-
-	parseList (items) {
-		return items.map(x => x && new RosterRecord(this[Service], x)).filter(x => x);
+	parseList(items) {
+		return items
+			.map(x => x && new RosterRecord(this[Service], x))
+			.filter(x => x);
 	}
-
 
 	/**
 	 * Clears the store, and reloads with a given filter.
@@ -54,11 +51,10 @@ class CourseRosterStream extends Stream {
 	 * @param {string} filter Either: 'open', 'forCredit' or null to clear the filter.
 	 * @returns {void}
 	 */
-	setFilter (filter) {
-
+	setFilter(filter) {
 		Object.assign(this.options, {
 			batchStart: 0,
-			filter: FILTERS[(filter || '').toLowerCase()]
+			filter: FILTERS[(filter || '').toLowerCase()],
 		});
 
 		delete this.next;
@@ -66,4 +62,4 @@ class CourseRosterStream extends Stream {
 	}
 }
 
-export default decorate(CourseRosterStream, {with:[mixin(Paged)]});
+export default decorate(CourseRosterStream, { with: [mixin(Paged)] });

@@ -1,13 +1,14 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 
 import ContentRangeDescription from './ContentRangeDescription';
 import DomContentPointer from './DomContentPointer';
 
 class DomContentRangeDescription extends ContentRangeDescription {
-	static MimeType = COMMON_PREFIX + 'contentrange.domcontentrangedescription'
+	static MimeType = COMMON_PREFIX + 'contentrange.domcontentrangedescription';
 
+	// prettier-ignore
 	static Fields = {
 		...ContentRangeDescription.Fields,
 		'ancestor': { type: 'model' },
@@ -15,34 +16,41 @@ class DomContentRangeDescription extends ContentRangeDescription {
 		'start':    { type: 'model' },
 	}
 
-	isDomContentRangeDescription = true
-	isEmpty = false
+	isDomContentRangeDescription = true;
+	isEmpty = false;
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 
-		const {start, end, ancestor} = this;
+		const { start, end, ancestor } = this;
 
 		//make sure contents are acceptable
-		if (!start || !end || !ancestor ||
+		if (
+			!start ||
+			!end ||
+			!ancestor ||
 			!this.isDomContentPointer(start) ||
 			!this.isDomContentPointer(end) ||
-			!this.isDomContentPointer(ancestor))
-		{
+			!this.isDomContentPointer(ancestor)
+		) {
 			// console.error('Invalid contents', arguments);
 			throw new Error('Invalid contents');
 		}
 	}
 
+	getStart() {
+		return this.start;
+	}
+	getEnd() {
+		return this.end;
+	}
+	getAncestor() {
+		return this.ancestor;
+	}
 
-	getStart () { return this.start; }
-	getEnd () { return this.end; }
-	getAncestor () { return this.ancestor; }
-
-
-	isDomContentPointer (o) {
-		return (o && o instanceof DomContentPointer);
+	isDomContentPointer(o) {
+		return o && o instanceof DomContentPointer;
 	}
 }
 
-export default decorate(DomContentRangeDescription, {with: [model]});
+export default decorate(DomContentRangeDescription, { with: [model] });

@@ -19,17 +19,25 @@ export * as parts from './parts';
 export * as assignment from './assignment';
 export * as survey from './survey';
 
-
 Registry.ignore('assessment.questionbank');
 Registry.ignore('assessment.questionmap');
 
-Registry.alias('assessment.solution', 'assessment.fillintheblankshortanswersolution');
-Registry.alias('assessment.solution', 'assessment.fillintheblankwithwordbanksolution');
+Registry.alias(
+	'assessment.solution',
+	'assessment.fillintheblankshortanswersolution'
+);
+Registry.alias(
+	'assessment.solution',
+	'assessment.fillintheblankwithwordbanksolution'
+);
 Registry.alias('assessment.solution', 'assessment.freeresponsesolution');
 Registry.alias('assessment.solution', 'assessment.latexsymbolicmathsolution');
 Registry.alias('assessment.solution', 'assessment.matchingsolution');
 Registry.alias('assessment.solution', 'assessment.mathsolution');
-Registry.alias('assessment.solution', 'assessment.multiplechoicemultipleanswersolution');
+Registry.alias(
+	'assessment.solution',
+	'assessment.multiplechoicemultipleanswersolution'
+);
 Registry.alias('assessment.solution', 'assessment.multiplechoicesolution');
 Registry.alias('assessment.solution', 'assessment.numericmathsolution');
 Registry.alias('assessment.solution', 'assessment.orderingsolution');

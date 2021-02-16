@@ -1,4 +1,4 @@
-const awaitSafely = async (p) => {
+const awaitSafely = async p => {
 	try {
 		await p;
 	} catch (e) {
@@ -6,26 +6,25 @@ const awaitSafely = async (p) => {
 	}
 };
 
-
 export default {
-	get isFlagged () {
+	get isFlagged() {
 		return this.hasLink('flag.metoo');
 	},
 
-	get isFlaggable () {
+	get isFlaggable() {
 		return this.hasLink('flag') || this.hasLink('flag.metoo');
 	},
 
-	async flag () {
+	async flag() {
 		await awaitSafely(this.flagging || Promise.resolve());
 
-		const worker = this.flagging = this.isFlagged ?
-			this.postToLink('flag.metoo') :
-			this.postToLink('flag');
+		const worker = (this.flagging = this.isFlagged
+			? this.postToLink('flag.metoo')
+			: this.postToLink('flag'));
 
 		const resp = await worker;
 
 		this.refresh(resp);
 		this.onChange('isFlagged');
-	}
+	},
 };

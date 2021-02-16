@@ -1,13 +1,14 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 
 import ContentRangeDescription from './ContentRangeDescription';
 import TimeContentPointer from './TimeContentPointer';
 
 class TimeRangeDescription extends ContentRangeDescription {
-	static MimeType = COMMON_PREFIX + 'contentrange.timerangedescription'
+	static MimeType = COMMON_PREFIX + 'contentrange.timerangedescription';
 
+	// prettier-ignore
 	static Fields = {
 		...ContentRangeDescription.Fields,
 		'seriesId': { type: 'string' },
@@ -15,10 +16,10 @@ class TimeRangeDescription extends ContentRangeDescription {
 		'end':      { type: 'model'  },
 	}
 
-	isTimeRange = true
-	isEmpty = false
+	isTimeRange = true;
+	isEmpty = false;
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 
 		if (!this.isTimeContentPointer(this.start)) {
@@ -26,15 +27,19 @@ class TimeRangeDescription extends ContentRangeDescription {
 		}
 	}
 
+	getSeriesId() {
+		return this.seriesId;
+	}
+	getStart() {
+		return this.start;
+	}
+	getEnd() {
+		return this.end;
+	}
 
-	getSeriesId () { return this.seriesId; }
-	getStart () { return this.start; }
-	getEnd () { return this.end; }
-
-
-	isTimeContentPointer (o) {
+	isTimeContentPointer(o) {
 		return Boolean(o && o instanceof TimeContentPointer);
 	}
 }
 
-export default decorate(TimeRangeDescription, {with: [model]});
+export default decorate(TimeRangeDescription, { with: [model] });

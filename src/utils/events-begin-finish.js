@@ -7,8 +7,9 @@ import { EVENT_BEGIN, EVENT_FINISH } from '../constants';
  * @param  {*} action - Any value to identify what is beginning.
  * @returns {void}
  */
-export const begin = (emitter, action) => (emitter.emit(EVENT_BEGIN, action), void 0);
-
+export const begin = (emitter, action) => (
+	emitter.emit(EVENT_BEGIN, action), void 0
+);
 
 /**
  * Fire a EVENT_FINISH on the emitter.
@@ -20,8 +21,9 @@ export const begin = (emitter, action) => (emitter.emit(EVENT_BEGIN, action), vo
  * @returns {void|Promise} If error is supplied, will return a rejected Promise (rejected with the error) - so that
  * we can use this as a catch callback, and not swallow the rejection.
  */
-export const finish = (emitter, action, data, e) => (emitter.emit(EVENT_FINISH, action, data, e), e ? Promise.reject(e) : void e);
-
+export const finish = (emitter, action, data, e) => (
+	emitter.emit(EVENT_FINISH, action, data, e), e ? Promise.reject(e) : void e
+);
 
 /**
  * Utility to make success and rejection callbacks for 'finish'.
@@ -32,6 +34,6 @@ export const finish = (emitter, action, data, e) => (emitter.emit(EVENT_FINISH, 
  * @returns {arrau} Two callbacks to be applied/spread on a Promise@then()
  */
 export const finishers = (emitter, action, data) => [
-	(response) => finish(emitter, action, {response, ...data}),
-	(e) => finish(emitter, action, data, e)
+	response => finish(emitter, action, { response, ...data }),
+	e => finish(emitter, action, data, e),
 ];

@@ -1,6 +1,6 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 import MetaDataResolver from './MetaDataResolver';
@@ -14,8 +14,9 @@ class MediaSource extends Base {
 		COMMON_PREFIX + 'ntivideosource',
 		COMMON_PREFIX + 'videosource',
 		COMMON_PREFIX + 'mediasource',
-	]
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'dataset':   { type: 'object' }, //From a parsed DomObject
@@ -31,69 +32,67 @@ class MediaSource extends Base {
 		'duration':  { type: 'number' }
 	}
 
-	static from (service, uri) {
+	static from(service, uri) {
 		/* async */
 		return MediaSourceFactory.from(service, uri);
 	}
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 		this.meta = {};
 	}
 
-
-	get hasResolverFailure () {
+	get hasResolverFailure() {
 		return !!this.meta.failure;
 	}
 
-
-	getResolver () {
-		return this[resolver] || (
-			this[resolver] = MetaDataResolver.from(this)
-				.then(meta => this.meta = meta)
+	getResolver() {
+		return (
+			this[resolver] ||
+			(this[resolver] = MetaDataResolver.from(this).then(
+				meta => (this.meta = meta)
+			))
 		);
 	}
 
-
-	resolveCanAccess () {
-		return this[resolveCanAccess] || (
-			this[resolveCanAccess] = MetaDataResolver.resolveCanAccess(this)
+	resolveCanAccess() {
+		return (
+			this[resolveCanAccess] ||
+			(this[resolveCanAccess] = MetaDataResolver.resolveCanAccess(this))
 		);
 	}
 
-
-	doesExist () {
+	doesExist() {
 		return this.getResolver();
 	}
 
-
-	getProperty (prop) {
-		return this.meta[prop] ?
-			Promise.resolve(this.meta[prop]) :
-			this.getResolver()
-				.then(()=>this.meta[prop]);
+	getProperty(prop) {
+		return this.meta[prop]
+			? Promise.resolve(this.meta[prop])
+			: this.getResolver().then(() => this.meta[prop]);
 	}
 
-
-	getPoster () {
+	getPoster() {
 		return this.getProperty('poster');
 	}
 
-
-	getThumbnail () {
-		return this.getProperty('thumbnail')
-			.then(() => this.meta.thumbnail || this.thumbnail || this.meta.poster || this.poster);
+	getThumbnail() {
+		return this.getProperty('thumbnail').then(
+			() =>
+				this.meta.thumbnail ||
+				this.thumbnail ||
+				this.meta.poster ||
+				this.poster
+		);
 	}
 
-
-	getTitle () {
+	getTitle() {
 		return this.getProperty('title');
 	}
 
-
-	getDuration () {
+	getDuration() {
 		return this.getProperty('duration');
 	}
 }
 
-export default decorate(MediaSource, {with:[model]});
+export default decorate(MediaSource, { with: [model] });

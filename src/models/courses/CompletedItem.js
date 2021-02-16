@@ -1,14 +1,13 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 import CompletionMetadata from '../completion/CompletionMetadata';
 
 class CompletedItem extends Base {
-	static MimeType = [
-		COMMON_PREFIX + 'completion.completeditem',
-	]
+	static MimeType = [COMMON_PREFIX + 'completion.completeditem'];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'CompletedDate':       { type: 'date'                       },
@@ -16,7 +15,7 @@ class CompletedItem extends Base {
 		'CompletionMetadata':  { type: CompletionMetadata           }
 	}
 
-	getCompletedDate () { } //implemented by CompletedDate date field.
+	getCompletedDate() {} //implemented by CompletedDate date field.
 }
 
-export default decorate(CompletedItem, {with:[model]});
+export default decorate(CompletedItem, { with: [model] });

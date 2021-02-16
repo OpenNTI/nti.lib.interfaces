@@ -1,35 +1,32 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
 import { Service, DELETED } from '../../constants';
 import Stream from '../../stores/Stream';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 
 import FriendsList from './FriendsList';
 
 class DynamicFriendsList extends FriendsList {
-	static MimeType = COMMON_PREFIX + 'dynamicfriendslist'
+	static MimeType = COMMON_PREFIX + 'dynamicfriendslist';
 
+	// prettier-ignore
 	static Fields = {
 		...FriendsList.Fields,
 		'IsDynamicSharing': { type: 'boolean', required: true, requiredValue: true },
 	}
 
-	isGroup = true
+	isGroup = true;
 
-
-
-	get displayType () {
+	get displayType() {
 		return 'Group';
 	}
 
-
-	get isMember () {
+	get isMember() {
 		return this.hasLink('my_membership');
 	}
 
-
-	leave () {
-		let {Links} = this;
+	leave() {
+		let { Links } = this;
 		return this[Service].delete(this.getLink('my_membership'))
 			.then(() => {
 				//remove the link so we do not look like we are a member.
@@ -42,71 +39,67 @@ class DynamicFriendsList extends FriendsList {
 			.then(() => this.onChange('membership'));
 	}
 
-
-	add () {
+	add() {
 		return Promise.reject('Cannot add members to DFL');
 	}
 
-
-	remove () {
+	remove() {
 		return Promise.reject('Cannot remove members from DFL');
 	}
 
+	getActivity() {
+		let service = this[Service],
+			store,
+			href;
 
-	getActivity () {
-		let service = this[Service], store, href;
-
-		let linkPromise = this.getDiscussionBoardContents().then(x => {
-			//the default forum:
-			let forum = x.Items.find(item => (item.title === 'Forum')) || x.Items[0];
-
-			return forum || Promise.reject('Source Not Found.');
-		})
-
-		//Once a forum is picked, assign the href...
+		let linkPromise = this.getDiscussionBoardContents()
 			.then(x => {
-				href = x.getLink('add');//this sets the href for our "postToActivity" augmented method.
+				//the default forum:
+				let forum =
+					x.Items.find(item => item.title === 'Forum') || x.Items[0];
+
+				return forum || Promise.reject('Source Not Found.');
+			})
+
+			//Once a forum is picked, assign the href...
+			.then(x => {
+				href = x.getLink('add'); //this sets the href for our "postToActivity" augmented method.
 
 				//return the value to be the Stream Store's data source.
 				return this.getLink('Activity');
 			});
 
+		store = new Stream(service, this, linkPromise, {
+			sortOn: 'createdTime',
+			sortOrder: 'descending',
+			batchStart: 0,
+			batchSize: 10,
+		});
 
-		store = new Stream(
-			service,
-			this,
-			linkPromise,
-			{
-				sortOn: 'createdTime',
-				sortOrder: 'descending',
-				batchStart: 0,
-				batchSize: 10
-			}
-		);
-
-		linkPromise.then(()=> {
+		linkPromise.then(() => {
 			if (!href) {
 				store.postToActivity = void 0;
 				return;
 			}
 
 			Object.assign(store, {
-
-				postToActivity (body, title = '-') {
+				postToActivity(body, title = '-') {
 					if (!href) {
 						return Promise.reject('No forum to post to.');
 					}
 
-					return service.postParseResponse(href, {
-						MimeType: 'application/vnd.nextthought.forums.headlinepost',
-						title,
-						body
-					})
-						.then(topic => topic.postToLink('publish')
-							.then(()=> topic))
+					return service
+						.postParseResponse(href, {
+							MimeType:
+								'application/vnd.nextthought.forums.headlinepost',
+							title,
+							body,
+						})
+						.then(topic =>
+							topic.postToLink('publish').then(() => topic)
+						)
 						.then(x => this.insert(x));
-				}
-
+				},
 			});
 
 			store.emit('change');
@@ -115,15 +108,13 @@ class DynamicFriendsList extends FriendsList {
 		return store;
 	}
 
-
-	getDiscussionBoard () {
+	getDiscussionBoard() {
 		return this.fetchLinkParsed('DiscussionBoard');
 	}
 
-
-	getDiscussionBoardContents () {
+	getDiscussionBoardContents() {
 		return this.getDiscussionBoard().then(x => x.getContents());
 	}
 }
 
-export default decorate(DynamicFriendsList, {with:[model]});
+export default decorate(DynamicFriendsList, { with: [model] });

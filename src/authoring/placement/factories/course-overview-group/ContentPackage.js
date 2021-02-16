@@ -1,12 +1,13 @@
 import OrderedContents from '../../../ordered-contents';
 
 const ContentPackageMimeType = 'application/vnd.nextthought.contentpackage';
-const RenderableContentPackageMimeType = 'application/vnd.nextthought.renderablecontentpackage';
+const RenderableContentPackageMimeType =
+	'application/vnd.nextthought.renderablecontentpackage';
 
 const RefMimeType = 'application/vnd.nextthought.relatedworkref';
 const TargetMimeType = 'application/vnd.nextthought.content';
 
-function getDataForItem (item) {
+function getDataForItem(item) {
 	return {
 		MimeType: RefMimeType,
 		label: item.title,
@@ -16,17 +17,17 @@ function getDataForItem (item) {
 		icon: null,
 		description: '',
 		byline: '',
-		target: item.NTIID
+		target: item.NTIID,
 	};
 }
 
 export default {
 	handles: [ContentPackageMimeType, RenderableContentPackageMimeType],
 
-	placeItemIn (item, container) {
+	placeItemIn(item, container) {
 		const orderedContents = new OrderedContents(container);
 		const data = getDataForItem(item);
 
 		return orderedContents.append(data);
-	}
+	},
 };

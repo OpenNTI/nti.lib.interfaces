@@ -1,10 +1,10 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 // import Editable from '../../mixins/Editable'; //Base already mixes in Editable
 import Likable from '../../mixins/Likable';
 import DiscussionInterface from '../../mixins/DiscussionInterface';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class Post extends Base {
@@ -15,8 +15,9 @@ class Post extends Base {
 		COMMON_PREFIX + 'forums.dflheadlinepost',
 		COMMON_PREFIX + 'forums.headlinepost',
 		COMMON_PREFIX + 'forums.personalblogentrypost',
-	]
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'body':       { type: '*[]'     },
@@ -24,12 +25,11 @@ class Post extends Base {
 		'Deleted':    { type: 'boolean' }
 	}
 
-	getRawSharedWith () {
+	getRawSharedWith() {
 		return this.parent().getRawSharedWith();
 	}
 }
 
-export default decorate(Post, {with:[
-	model,
-	mixin(Likable, DiscussionInterface)
-]});
+export default decorate(Post, {
+	with: [model, mixin(Likable, DiscussionInterface)],
+});

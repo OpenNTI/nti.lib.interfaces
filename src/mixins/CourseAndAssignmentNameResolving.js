@@ -2,12 +2,11 @@
  * This is for Objects within an assignment history item.
  */
 
-import {Service} from '../constants';
+import { Service } from '../constants';
 import getLink from '../utils/getlink';
 
 export default {
-
-	initMixin () {
+	initMixin() {
 		const service = this[Service];
 
 		const resolveAssignmentTitle = async () => {
@@ -21,20 +20,25 @@ export default {
 			this.AssignmentName = assignment.title;
 		};
 
-
 		const resolveCatalogItem = async () => {
 			let catalogEntryUrl = this.CatalogEntryNTIID;
 
 			if (!catalogEntryUrl) {
-				const courseInstanceUrl = (this.getLink('AssignmentHistoryItem') || this.href || '')
-					.replace(/\/AssignmentHistories.*/, '');
+				const courseInstanceUrl = (
+					this.getLink('AssignmentHistoryItem') ||
+					this.href ||
+					''
+				).replace(/\/AssignmentHistories.*/, '');
 
 				if (!courseInstanceUrl) {
 					throw new Error('No Course URL');
 				}
 
 				const courseInstanceData = await service.get(courseInstanceUrl);
-				catalogEntryUrl = getLink(courseInstanceData, 'CourseCatalogEntry');
+				catalogEntryUrl = getLink(
+					courseInstanceData,
+					'CourseCatalogEntry'
+				);
 			}
 
 			if (!catalogEntryUrl) {
@@ -48,17 +52,17 @@ export default {
 			this.CatalogEntry = catalogEntry;
 		};
 
+		this.addToPending(
+			(async () => {
+				//Wait on the two async operations (a and b), then fire a change
+				// event so views know values changed.
+				await Promise.all([
+					resolveAssignmentTitle(),
+					resolveCatalogItem(),
+				]);
 
-		this.addToPending((async () => {
-			//Wait on the two async operations (a and b), then fire a change
-			// event so views know values changed.
-			await Promise.all([
-				resolveAssignmentTitle(),
-				resolveCatalogItem(),
-			]);
-
-			this.emit('change');
-		})());
-	}
-
+				this.emit('change');
+			})()
+		);
+	},
 };

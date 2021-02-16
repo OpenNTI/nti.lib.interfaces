@@ -1,16 +1,16 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
-
 
 class RoomInfo extends Base {
 	static MimeType = [
 		COMMON_PREFIX + '_meeting',
 		COMMON_PREFIX + 'meeting',
-		COMMON_PREFIX + 'roominfo'
-	]
+		COMMON_PREFIX + 'roominfo',
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Active':       { type: 'boolean',  name: 'isActive'     },
@@ -21,4 +21,4 @@ class RoomInfo extends Base {
 	}
 }
 
-export default decorate(RoomInfo, {with:[model]});
+export default decorate(RoomInfo, { with: [model] });

@@ -1,27 +1,32 @@
 /* eslint-env jest */
-import {createMockNode} from '../../../__test__/common';
-import {selectNext, selectPrev} from '../select-in-order';
+import { createMockNode } from '../../../__test__/common';
+import { selectNext, selectPrev } from '../select-in-order';
 
-function create (name, parent, children, next, prev) {
-	return createMockNode({name}, {parent, children, next, prev});
+function create(name, parent, children, next, prev) {
+	return createMockNode({ name }, { parent, children, next, prev });
 }
 
-function createSkipped (name, parent, children, next, prev) {
-	return createMockNode({name, skip: true}, {parent, children, next, prev});
+function createSkipped(name, parent, children, next, prev) {
+	return createMockNode(
+		{ name, skip: true },
+		{ parent, children, next, prev }
+	);
 }
 
-function createIgnored (name, parent, children, next, prev) {
-	return createMockNode({name, ignored: true}, {parent, children, next, prev});
+function createIgnored(name, parent, children, next, prev) {
+	return createMockNode(
+		{ name, ignored: true },
+		{ parent, children, next, prev }
+	);
 }
 
-function skip (item) {
+function skip(item) {
 	return item.skip;
 }
 
-function ignore (item) {
+function ignore(item) {
 	return item.ignored;
 }
-
 
 describe('select-in-order', () => {
 	describe('selectNext', () => {
@@ -36,9 +41,7 @@ describe('select-in-order', () => {
 		test('returns first child if not skipped', async () => {
 			const root = create('root');
 			const target = create('target');
-			const node = create('node', root, [
-				target
-			]);
+			const node = create('node', root, [target]);
 
 			const next = await selectNext(node, root, skip, ignore);
 
@@ -49,9 +52,7 @@ describe('select-in-order', () => {
 			const root = create('root');
 			const target = create('target');
 			const node = create('node', root, [
-				createSkipped('skip', null, [
-					target
-				])
+				createSkipped('skip', null, [target]),
 			]);
 
 			const next = await selectNext(node, root, skip, ignore);
@@ -62,9 +63,7 @@ describe('select-in-order', () => {
 		test('does NOT look at children of ignoreChildren nodes', async () => {
 			const root = create('root');
 			const target = create('target');
-			const node = createIgnored('node', root, [
-				create('child')
-			], target);
+			const node = createIgnored('node', root, [create('child')], target);
 
 			const next = await selectNext(node, root, skip, ignore);
 
@@ -114,12 +113,14 @@ describe('select-in-order', () => {
 		test('returns last child of previous sibling', async () => {
 			const root = create('root');
 			const target = create('target');
-			const node = create('node', root, null, null,
+			const node = create(
+				'node',
+				root,
+				null,
+				null,
 				create('sibling', null, [
 					create('red-herring'),
-					create('sub-parent', null, [
-						target
-					])
+					create('sub-parent', null, [target]),
 				])
 			);
 
@@ -131,9 +132,13 @@ describe('select-in-order', () => {
 		test('returns last child that is not skipped of the previous sibling', async () => {
 			const root = create('root');
 			const target = create('target');
-			const node = create('node', root, null, null,
+			const node = create(
+				'node',
+				root,
+				null,
+				null,
 				create('sibling', null, [
-					createSkipped('skipped', null, null, null, target)
+					createSkipped('skipped', null, null, null, target),
 				])
 			);
 
@@ -155,7 +160,7 @@ describe('select-in-order', () => {
 		test('returns prev sibling if its children are ignores', async () => {
 			const root = create('root');
 			const target = createIgnored('target', null, [
-				create('red-herring')
+				create('red-herring'),
 			]);
 			const node = create('node', root, null, null, target);
 

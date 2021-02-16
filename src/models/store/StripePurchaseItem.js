@@ -1,13 +1,14 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 const Items = Symbol('Items');
 
 class StripePurchaseItem extends Base {
-	static MimeType = COMMON_PREFIX + 'store.stripepurchaseitem'
+	static MimeType = COMMON_PREFIX + 'store.stripepurchaseitem';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'Coupon':   { type: 'string',  name: 'coupon'   },
@@ -16,4 +17,4 @@ class StripePurchaseItem extends Base {
 	}
 }
 
-export default decorate(StripePurchaseItem, {with:[model]});
+export default decorate(StripePurchaseItem, { with: [model] });

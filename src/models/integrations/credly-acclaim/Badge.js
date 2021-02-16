@@ -1,11 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry';
 import Base from '../../Base';
 
 class CredlyAcclaimBadge extends Base {
 	static MimeType = COMMON_PREFIX + 'acclaim.badge';
 
+	// prettier-ignore
 	static Fields = {
 		'InvalidOrganization': {type: 'boolean'},
 		'allow_duplicate_badges': {type: 'boolean'},
@@ -22,7 +23,9 @@ class CredlyAcclaimBadge extends Base {
 		'visibility': {type: 'string'}
 	}
 
-	getID () { return this.templateID; }
+	getID() {
+		return this.templateID;
+	}
 }
 
-export default decorate(CredlyAcclaimBadge, {with: [model]});
+export default decorate(CredlyAcclaimBadge, { with: [model] });

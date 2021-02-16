@@ -1,11 +1,12 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class PurchaseAttempt extends Base {
-	static MimeType = COMMON_PREFIX + 'store.purchaseattempt'
+	static MimeType = COMMON_PREFIX + 'store.purchaseattempt';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'ChargeID':       { type: 'string', name: 'chargeId'       },
@@ -25,9 +26,9 @@ class PurchaseAttempt extends Base {
 		'TransactionID':  { type: 'string', name: 'transactionID'  },
 	}
 
-	getDeliveryDate () {} //implemented by the date Field type
-	getEndTime () {} //implemented by the date Field type
-	getStartTime () {} //implemented by the date Field type
+	getDeliveryDate() {} //implemented by the date Field type
+	getEndTime() {} //implemented by the date Field type
+	getStartTime() {} //implemented by the date Field type
 }
 
-export default decorate(PurchaseAttempt, {with:[model]});
+export default decorate(PurchaseAttempt, { with: [model] });

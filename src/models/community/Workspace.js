@@ -1,64 +1,82 @@
 import Workspace from '../Workspace';
-import {Service} from '../../constants';
-import {parseListFn} from '../Parser';
+import { Service } from '../../constants';
+import { parseListFn } from '../Parser';
 import Community from '../entities/Community';
 
 const CommunitiesCache = Symbol('CommunitiesCache');
 
 export default class CommunitiesWorkspace extends Workspace {
-	get AllCommunities () {
+	get AllCommunities() {
 		return this.getCollection('AllCommunities');
 	}
 
-	get Communities () {
+	get Communities() {
 		return this.getCollection('Communities');
 	}
 
-	get AdminCommunities () {
+	get AdminCommunities() {
 		return this.getCollection('AdministeredCommunities');
 	}
 
-	fetch (url) {
-		if (!this.url) { return this.load(true); } 
+	fetch(url) {
+		if (!this.url) {
+			return this.load(true);
+		}
 
-		return this[Service].get(url)
-			.then(o => parseListFn(Object.values(o.Items || [])));
+		return this[Service].get(url).then(o =>
+			parseListFn(Object.values(o.Items || []))
+		);
 	}
 
-	load (force) {
+	load(force) {
 		const doLoad = async () => {
-			const {Communities, AdminCommunities} = this;
-			const {Items: communities} = Communities ? await Communities.fetch(true) : {};
-			const {Items: adminCommunities} = AdminCommunities ? await AdminCommunities.fetch(true) : {};
-			
-			if (!communities && !adminCommunities) { return null; }
+			const { Communities, AdminCommunities } = this;
+			const { Items: communities } = Communities
+				? await Communities.fetch(true)
+				: {};
+			const { Items: adminCommunities } = AdminCommunities
+				? await AdminCommunities.fetch(true)
+				: {};
 
-			const {ordered} = [...(communities || []), ...(adminCommunities || [])]
-				.reduce((acc, community) => {
+			if (!communities && !adminCommunities) {
+				return null;
+			}
+
+			const { ordered } = [
+				...(communities || []),
+				...(adminCommunities || []),
+			].reduce(
+				(acc, community) => {
 					if (!acc.seen.has(community.getID())) {
 						acc.ordered.push(community);
 					}
 
 					acc.seen.add(community.getID());
 					return acc;
-				}, {ordered: [], seen: new Set()});
+				},
+				{ ordered: [], seen: new Set() }
+			);
 
 			return ordered;
 		};
 
-		this[CommunitiesCache] = !this[CommunitiesCache] || force ? doLoad() : this[CommunitiesCache];
+		this[CommunitiesCache] =
+			!this[CommunitiesCache] || force
+				? doLoad()
+				: this[CommunitiesCache];
 
 		return this[CommunitiesCache];
 	}
 
-
-	canCreateCommunity () {
-		return this.AllCommunities && this.AllCommunities.acceptsType(Community.MimeType);
+	canCreateCommunity() {
+		return (
+			this.AllCommunities &&
+			this.AllCommunities.acceptsType(Community.MimeType)
+		);
 	}
 
-
-	async createCommunity (data) {
-		const payload = {...data};
+	async createCommunity(data) {
+		const payload = { ...data };
 
 		if (data.displayName) {
 			payload.alias = data.displayName;
@@ -66,13 +84,19 @@ export default class CommunitiesWorkspace extends Workspace {
 		}
 
 		try {
-			const community = await this.AllCommunities.postToLink('self', payload, true);
+			const community = await this.AllCommunities.postToLink(
+				'self',
+				payload,
+				true
+			);
 
 			delete this[CommunitiesCache];
 
 			return community;
 		} catch (e) {
-			if (e.field === 'alias') { e.field === 'displayName'; }
+			if (e.field === 'alias') {
+				e.field === 'displayName';
+			}
 			throw e;
 		}
 	}

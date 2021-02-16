@@ -1,21 +1,22 @@
-import {decorate} from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 
 import ContentPointer from './ContentPointer';
 
 const VALID_ROLES = ['start', 'end'];
 
 class TimeContentPointer extends ContentPointer {
-	static MimeType = COMMON_PREFIX + 'contentrange.timecontentpointer'
+	static MimeType = COMMON_PREFIX + 'contentrange.timecontentpointer';
 
+	// prettier-ignore
 	static Fields = {
 		...ContentPointer.Fields,
 		'seconds': { type: 'number' },
 		'role':    { type: 'string' }
 	}
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 
 		//Ugh. The first implementation, prior to exposing to end-users, used seconds.
@@ -29,9 +30,12 @@ class TimeContentPointer extends ContentPointer {
 		this.validateRole(this.role);
 	}
 
-	getRole () { return this.role; }
-	getSeconds () { return this.seconds; }
-
+	getRole() {
+		return this.role;
+	}
+	getSeconds() {
+		return this.seconds;
+	}
 
 	/**
 	 * Translates the seconds value back into milliseconds.
@@ -42,18 +46,22 @@ class TimeContentPointer extends ContentPointer {
 	 *
 	 * @returns {number} milliseconds
 	 */
-	['translate:seconds'] () {
+	['translate:seconds']() {
 		return Math.floor(this.seconds * 1000);
 	}
 
-	validateRole (r) {
+	validateRole(r) {
 		if (!r) {
 			throw new Error('Must supply a role');
-		}
-		else if (!VALID_ROLES.includes(r)) {
-			throw new Error('Role must be of the value ' + VALID_ROLES.join(',') + ', supplied ' + r);
+		} else if (!VALID_ROLES.includes(r)) {
+			throw new Error(
+				'Role must be of the value ' +
+					VALID_ROLES.join(',') +
+					', supplied ' +
+					r
+			);
 		}
 	}
 }
 
-export default decorate(TimeContentPointer, {with:[model]});
+export default decorate(TimeContentPointer, { with: [model] });

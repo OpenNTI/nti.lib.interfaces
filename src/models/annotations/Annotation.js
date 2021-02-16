@@ -1,12 +1,12 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
-import {Service} from '../../constants';
+import { Service } from '../../constants';
 import Likable from '../../mixins/Likable';
 import Base from '../Base';
 
 class Annotation extends Base {
-
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'AutoTags':               { type: '*'        },
@@ -21,20 +21,18 @@ class Annotation extends Base {
 		'tags':                   { type: 'string[]' },
 	}
 
-	constructor (service, parent, data) {
+	constructor(service, parent, data) {
 		super(service, parent, data);
 	}
 
-
-	getContainerID () {
+	getContainerID() {
 		return this.ContainerId;
 	}
 
-
-	getContextData () {
+	getContextData() {
 		// return this[Service].get('/mobile/api/ugd/context-data/' + encodeURIComponent(this.getID()));
 		return this[Service].getObject(this.getContainerID());
 	}
 }
 
-export default decorate(Annotation, {with:[mixin(Likable)]});
+export default decorate(Annotation, { with: [mixin(Likable)] });

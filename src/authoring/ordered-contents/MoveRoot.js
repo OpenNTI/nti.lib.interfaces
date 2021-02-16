@@ -1,25 +1,23 @@
-import {Service} from '../../constants';
+import { Service } from '../../constants';
 
 import OrderedContents from './WrapperUtil';
 
 const ONMOVE = Symbol('on-move');
 
-function getIdForMove (obj) {
+function getIdForMove(obj) {
 	return obj.NTIID ? obj.NTIID : obj;
 }
 
 export default class MoveRoot {
-	constructor (containerModel, moveRel) {
+	constructor(containerModel, moveRel) {
 		this.backingObj = containerModel;
 		this[Service] = containerModel[Service];
 		this.moveLink = containerModel.getLink(moveRel);
 	}
 
-
-	get canMove () {
+	get canMove() {
 		return !!this.moveLink;
 	}
-
 
 	/**
 	 * Move a record from one parent to another at an index
@@ -31,14 +29,14 @@ export default class MoveRoot {
 	 * @param  {Object|string} originalParent the record or NTIID to move from
 	 * @returns {Promise}                fulfills with the record that was moved
 	 */
-	moveRecord (record, index, originalIndex, newParent, originalParent) {
+	moveRecord(record, index, originalIndex, newParent, originalParent) {
 		const link = this.moveLink;
 		let move;
 
 		let data = {
 			ObjectNTIID: getIdForMove(record),
 			ParentNTIID: getIdForMove(newParent),
-			OldParentNTIID: getIdForMove(originalParent)
+			OldParentNTIID: getIdForMove(originalParent),
 		};
 
 		index = index || 0;
@@ -53,19 +51,21 @@ export default class MoveRoot {
 			move = Promise.reject('No new parent to move to');
 		} else if (!originalParent) {
 			move = Promise.reject('No old parent to move from');
-		} else if (data.ParentNTIID === data.OldParentNTIID && index === originalIndex) {
+		} else if (
+			data.ParentNTIID === data.OldParentNTIID &&
+			index === originalIndex
+		) {
 			move = Promise.resolve(record);
 		} else {
-			move = this[Service].post(link, data)
-				.then((resp) => {
-					return this[ONMOVE](record, newParent, originalParent, resp);
-				});
+			move = this[Service].post(link, data).then(resp => {
+				return this[ONMOVE](record, newParent, originalParent, resp);
+			});
 		}
 
 		return move;
 	}
 
-	[ONMOVE] (record, newParent, originalParent) {
+	[ONMOVE](record, newParent, originalParent) {
 		if (originalParent.refresh) {
 			originalParent.refresh();
 		}
@@ -79,13 +79,14 @@ export default class MoveRoot {
 			update = Promise.reslove();
 		}
 
-		return update
-			.then((parent) => {
-				if (!parent) { return record; }
+		return update.then(parent => {
+			if (!parent) {
+				return record;
+			}
 
-				let orderedContents = new OrderedContents(parent);
+			let orderedContents = new OrderedContents(parent);
 
-				return orderedContents.findItem(record);
-			});
+			return orderedContents.findItem(record);
+		});
 	}
 }

@@ -1,14 +1,14 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
-import {Service} from '../../constants';
+import { Service } from '../../constants';
 import Page from '../../data-sources/data-types/Page';
 import GetContents from '../../mixins/GetContents';
 import Likable from '../../mixins/Likable';
 import Pinnable from '../../mixins/Pinnable';
 import Flaggable from '../../mixins/Flaggable';
 import DiscussionInterface from '../../mixins/DiscussionInterface';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class Topic extends Base {
@@ -20,8 +20,9 @@ class Topic extends Base {
 		COMMON_PREFIX + 'forums.dflheadlinetopic',
 		COMMON_PREFIX + 'forums.dfltopic',
 		COMMON_PREFIX + 'forums.headlinetopic',
-	]
+	];
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'ContainerId':                    { type: 'string' },
@@ -37,65 +38,76 @@ class Topic extends Base {
 		'Reports':                        { type: 'model[]'}
 	}
 
+	isTopic = true;
 
-	isTopic = true
+	canEditSharing() {
+		return false;
+	}
+	getSharedWith() {
+		return this.ContainerDefaultSharedToNTIIDs;
+	}
 
-	canEditSharing () { return false; }
-	getSharedWith () { return this.ContainerDefaultSharedToNTIIDs; }
-
-	isTopLevel () {
+	isTopLevel() {
 		return true;
 	}
 
-	getPost () {
+	getPost() {
 		return this.headline;
 	}
 
-	canAddComment () {
+	canAddComment() {
 		return this.hasLink('add');
 	}
 
-	addComment (comment, inReplyTo) {
+	addComment(comment, inReplyTo) {
 		const link = this.getLink('add');
 		if (!link) {
-			return Promise.reject('Cannot post comment. Item has no \'add\' link.');
+			return Promise.reject(
+				"Cannot post comment. Item has no 'add' link."
+			);
 		}
 
 		const payload = {
 			MimeType: 'application/vnd.nextthought.forums.post',
 			tags: [],
-			body: Array.isArray(comment) ? comment : [comment]
+			body: Array.isArray(comment) ? comment : [comment],
 		};
 
 		if (inReplyTo) {
 			Object.assign(payload, {
 				// inReplyTo: typeof inReplyTo === 'object' ? inReplyTo.NTIID : inReplyTo,
 				inReplyTo: inReplyTo.NTIID,
-				references: [...(inReplyTo.references || []), inReplyTo.NTIID]
+				references: [...(inReplyTo.references || []), inReplyTo.NTIID],
 			});
 		}
 
-		return this.postToLink('add', payload);// Parse response?
+		return this.postToLink('add', payload); // Parse response?
 	}
 
-
-	loadUserSummary (user) {
-		const params = user ? {user} : {};
+	loadUserSummary(user) {
+		const params = user ? { user } : {};
 
 		return this.fetchLinkParsed('UserTopicParticipationSummary', params);
 	}
 
-	canAddDiscussion () { return this.hasLink('add'); }
+	canAddDiscussion() {
+		return this.hasLink('add');
+	}
 
-	getDiscussionCount () {	return this.PostCount; }
-	updateDiscussionCount (updated) {
+	getDiscussionCount() {
+		return this.PostCount;
+	}
+	updateDiscussionCount(updated) {
 		this.PostCount = updated;
 		this.onChange();
 	}
 
-	async getDiscussions (params) {
-		const raw = await this.fetchLink('contents', {...params, filter: 'TopLevel'});
-		
+	async getDiscussions(params) {
+		const raw = await this.fetchLink('contents', {
+			...params,
+			filter: 'TopLevel',
+		});
+
 		if (params.batchSize) {
 			raw.PageSize = params.batchSize;
 		}
@@ -109,23 +121,29 @@ class Topic extends Base {
 		return page.waitForPending();
 	}
 
-	async addDiscussion (data, forComment) {
-		if (!this.hasLink('add')) { throw new Error('Cannot add discussion'); }
+	async addDiscussion(data, forComment) {
+		if (!this.hasLink('add')) {
+			throw new Error('Cannot add discussion');
+		}
 
-		const {inReplyTo, ...otherData} = data;
+		const { inReplyTo, ...otherData } = data;
 		const payload = {
 			MimeType: 'application/vnd.nextthought.forums.post',
-			...otherData
+			...otherData,
 		};
 
 		if (inReplyTo) {
 			Object.assign(payload, {
 				inReplyTo: inReplyTo.NTIID,
-				references: [...(inReplyTo.references || []), inReplyTo.NTIID]
+				references: [...(inReplyTo.references || []), inReplyTo.NTIID],
 			});
 		}
 
-		const discussion = await this.postToLink('add', DiscussionInterface.getPayload(payload), true);
+		const discussion = await this.postToLink(
+			'add',
+			DiscussionInterface.getPayload(payload),
+			true
+		);
 
 		if (!forComment) {
 			discussion.overrideParentDiscussion(this);
@@ -136,7 +154,9 @@ class Topic extends Base {
 	}
 }
 
-export default decorate(Topic, {with:[
-	model,
-	mixin(GetContents, Likable, Pinnable, Flaggable, DiscussionInterface),
-]});
+export default decorate(Topic, {
+	with: [
+		model,
+		mixin(GetContents, Likable, Pinnable, Flaggable, DiscussionInterface),
+	],
+});

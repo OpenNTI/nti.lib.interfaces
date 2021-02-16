@@ -1,13 +1,14 @@
-import {decorate} from '@nti/lib-commons';
-import {mixin} from '@nti/lib-decorators';
+import { decorate } from '@nti/lib-commons';
+import { mixin } from '@nti/lib-decorators';
 
 import assessed from '../../mixins/AssessedAssessmentPart';
-import {model, COMMON_PREFIX} from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry';
 import Base from '../Base';
 
 class AssessedPart extends Base {
-	static MimeType = COMMON_PREFIX + 'assessment.assessedpart'
+	static MimeType = COMMON_PREFIX + 'assessment.assessedpart';
 
+	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
 		'assessedValue':     { type: 'number'  },
@@ -16,24 +17,21 @@ class AssessedPart extends Base {
 		'explanation':       { type: 'string'  }
 	}
 
-
-	getQuestionId () {
+	getQuestionId() {
 		return this.parent().getID();
 	}
 
-
-	getPartIndex () {
+	getPartIndex() {
 		let p = this.parent() || {};
 		let items = p.parts || [];
 		return items.indexOf(this);
 	}
 
-
-	isCorrect () {
+	isCorrect() {
 		let a = this.assessedValue;
 		//true, false, or null (if the assessedValue is not a number, return null)
 		return typeof a === 'number' ? a === 1 : null;
 	}
 }
 
-export default decorate(AssessedPart, {with:[model, mixin(assessed)]});
+export default decorate(AssessedPart, { with: [model, mixin(assessed)] });

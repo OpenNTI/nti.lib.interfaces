@@ -1,6 +1,9 @@
-export default Object.defineProperties({}, {
-	isAssignment: {
-		writable: false,
-		value: true
+export default Object.defineProperties(
+	{},
+	{
+		isAssignment: {
+			writable: false,
+			value: true,
+		},
 	}
-});
+);
