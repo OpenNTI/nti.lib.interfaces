@@ -486,8 +486,7 @@ export default class DataServerInterface extends EventEmitter {
 			}
 		);
 		const data = cache.get(SERVICE_DATA_CACHE_KEY);
-		const promise = //Do we have the data to build an instance? (are we're not freshing...)
-		(data && !refreshing
+		const promise = (data && !refreshing //Do we have the data to build an instance? (are we're not freshing...)
 			? // Yes...
 			  Promise.resolve(new Service(data, this, context))
 			: //No... okay... get the data, but first we have to perform a ping/handshake...
