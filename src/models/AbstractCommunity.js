@@ -1,5 +1,7 @@
 import EventEmitter from 'events';
 
+import { Iterable } from '@nti/lib-commons';
+
 const ResolveChannelList = Symbol('Resolve Channel List Method');
 
 export default class AbstractCommunity extends EventEmitter {
@@ -12,7 +14,7 @@ export default class AbstractCommunity extends EventEmitter {
 		this.getChannelList();
 		const list = this.#channelList;
 		if (Array.isArray(list)) {
-			return iterate(list);
+			return Iterable.chain(list);
 		}
 		return list[Symbol.iterator]();
 	}
@@ -44,22 +46,4 @@ export default class AbstractCommunity extends EventEmitter {
 
 		return this.#channelListPromise;
 	}
-}
-
-function* iterate(input) {
-	if (!input || !input[Symbol.iterator]) {
-		yield input;
-		return;
-	}
-
-	const it = input[Symbol.iterator]();
-	let current;
-	do {
-		current = it.next();
-		if (current.done) {
-			continue;
-		}
-
-		yield* iterate(current.value);
-	} while (!current.done);
 }
