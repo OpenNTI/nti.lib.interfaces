@@ -206,9 +206,8 @@ async function resolveDiscussions(bundle) {
 	}
 
 	try {
-		const discussions = await bundle.fetchLinkParsed('DiscussionBoard');
-
-		bundle.Discussions = discussions; //eslint-disable-line
+		// eslint-disable-next-line require-atomic-updates
+		bundle.Discussions = await bundle.fetchLinkParsed('DiscussionBoard');
 	} catch (e) {
 		//swallow
 	}
