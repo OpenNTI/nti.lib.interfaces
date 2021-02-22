@@ -16,7 +16,9 @@ function decode(fields, key) {
 	return field.key || key;
 }
 
-export default {
+const Serializing = Symbol('Serializing');
+
+const JSONValue = {
 	toJSON() {
 		return this.getData();
 	},
@@ -24,50 +26,69 @@ export default {
 	getData() {
 		let d = {};
 
-		const get = v => {
-			if (Array.isArray(v)) {
-				v = v.map(x => get(x));
-			} else if (v && isFunction(v.getData)) {
-				v = v.getData();
-			} else if (v && isFunction(v.toJSON)) {
-				v = v.toJSON();
+		try {
+			const { Fields = {} } = this.constructor;
+			//Sets dedupe values...
+			const keys = new Set([
+				...Object.keys(Fields),
+				...Object.keys(this).map(k => decode(Fields, k)),
+			]);
+
+			this[Serializing] = true;
+
+			for (let k of keys) {
+				const v = readValueFor(this, k);
+
+				if (
+					v !== void undefined &&
+					!isBlackListed(this, k) &&
+					!isFunction(v)
+				) {
+					let translator = `translate:${k}`;
+
+					d[k] =
+						this[translator] && isFunction(this[translator])
+							? this[translator](v)
+							: get(v);
+				}
 			}
-			return v;
-		};
-
-		function isBlackListed(scope, k) {
-			let overrides = scope.BLACK_LIST_OVERRIDE;
-			if (overrides && overrides[k]) {
-				return false;
-			}
-
-			return BLACK_LISTED[k];
-		}
-
-		const { Fields = {} } = this.constructor;
-		//Sets dedupe values...
-		const keys = new Set([
-			...Object.keys(Fields),
-			...Object.keys(this).map(k => decode(Fields, k)),
-		]);
-
-		for (let k of keys) {
-			const v = readValueFor(this, k);
-
-			if (
-				v !== void undefined &&
-				!isBlackListed(this, k) &&
-				!isFunction(v)
-			) {
-				let translator = `translate:${k}`;
-
-				d[k] =
-					this[translator] && isFunction(this[translator])
-						? this[translator](v)
-						: get(v);
-			}
+		} finally {
+			delete this[Serializing];
 		}
 
 		return d;
 	},
 };
+
+function get(v) {
+	if (Array.isArray(v)) {
+		return v.map(get);
+	}
+
+	if (v[Serializing]) {
+		// eslint-disable-next-line no-console
+		console.warn('Data Cycle Detected');
+		return void 0;
+	}
+
+	if (v?.constructor === Object && v.getData !== JSONValue.getData) {
+		v = { ...v, ...JSONValue };
+	}
+
+	return isFunction(v?.getData)
+		? v.getData()
+		: isFunction(v?.toJSON)
+		? v.toJSON()
+		: v;
+}
+
+function isBlackListed(scope, k) {
+	let overrides = scope.BLACK_LIST_OVERRIDE;
+	if (overrides && overrides[k]) {
+		return false;
+	}
+
+	return BLACK_LISTED[k];
+}
+
+export default JSONValue;
