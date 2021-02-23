@@ -4,6 +4,7 @@ import { mixin } from '@nti/lib-decorators';
 import Completable from '../../mixins/Completable';
 import UserDataStore from '../../stores/UserData';
 import {
+	NO_LINK,
 	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
 	Service,
 } from '../../constants';
@@ -154,7 +155,7 @@ class Video extends Base {
 		const link = this.getLink('transcript');
 
 		if (!link) {
-			return Promise.reject('No Link');
+			throw new Error(NO_LINK);
 		}
 
 		const formData = new FormData();

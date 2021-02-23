@@ -327,7 +327,7 @@ class Instance extends Base {
 		return this.getAssignment(ntiid);
 	}
 
-	getAssignment(ntiid) {
+	async getAssignment(ntiid) {
 		const service = this[Service];
 		const href = this.getLink('Assessments');
 		// href will be something like this...
@@ -337,7 +337,7 @@ class Instance extends Base {
 		//		/dataserver2/%2B%2Betc...site/Courses/Alpha/NTI%201000/@@Assessments/<ntiid>
 
 		if (!href) {
-			return Promise.reject(NO_LINK);
+			throw new Error(NO_LINK);
 		}
 
 		const assignemntParentRef = this; //the CourseInstance,
@@ -369,12 +369,12 @@ class Instance extends Base {
 		});
 	}
 
-	getInquiry(ntiid) {
+	async getInquiry(ntiid) {
 		const service = this[Service];
 		const href = this.getLink('CourseInquiries');
 
 		if (!href) {
-			return Promise.reject(NO_LINK);
+			throw new Error(NO_LINK);
 		}
 
 		const inquiryParentRef = this;

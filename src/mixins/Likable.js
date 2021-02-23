@@ -27,7 +27,7 @@ export default {
 			.then(() => this.onChange('favorite'));
 	},
 
-	flag() {
+	async flag() {
 		let link = this.hasLink('flag')
 			? 'flag'
 			: this.hasLink('flag.metoo')
@@ -35,7 +35,7 @@ export default {
 			: null;
 
 		if (!link) {
-			return Promise.reject(NO_LINK);
+			throw new Error(NO_LINK);
 		}
 
 		return this.postToLink(link)

@@ -48,10 +48,10 @@ export default {
 		return this.requestLink(rel, 'put', data, void 0, parseResponse);
 	},
 
-	requestLink(rel, method, data, params, parseResponse) {
+	async requestLink(rel, method, data, params, parseResponse) {
 		const link = this.getLink(rel, params);
 		if (!link) {
-			return Promise.reject(NO_LINK);
+			throw new Error(NO_LINK);
 		}
 
 		let result = /^mock/i.test(link)

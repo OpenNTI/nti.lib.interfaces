@@ -478,13 +478,6 @@ export default class DataServerInterface extends EventEmitter {
 			return Promise.resolve(cached);
 		}
 
-		const NO_LINK = Object.assign(
-			//captures the initial call site.
-			new Error('No continue link. Cannot fetch service document.'),
-			{
-				NoContineLink: true,
-			}
-		);
 		const data = cache.get(SERVICE_DATA_CACHE_KEY);
 		const promise = (data && !refreshing //Do we have the data to build an instance? (are we're not freshing...)
 			? // Yes...
@@ -497,7 +490,17 @@ export default class DataServerInterface extends EventEmitter {
 						result =>
 							result.getLink(CONTINUE) ||
 							result.getLink(CONTINUE_ANONYMOUSLY) ||
-							Promise.reject(NO_LINK)
+							Promise.reject(
+								Object.assign(
+									//captures the initial call site.
+									new Error(
+										'No continue link. Cannot fetch service document.'
+									),
+									{
+										NoContinueLink: true,
+									}
+								)
+							)
 					)
 
 					// With the url, we can finally load...

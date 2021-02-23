@@ -20,10 +20,10 @@ export default class AssignmentActivityStore extends Stream {
 		getPrivate(this).getStaticActivity = staticActivityFactory;
 	}
 
-	markSeen() {
+	async markSeen() {
 		const link = getPrivate(this).lastViewed;
 		if (!link) {
-			return Promise.reject(NO_LINK);
+			throw new Error(NO_LINK);
 		}
 
 		const newViewed = new Date();

@@ -2,6 +2,7 @@ import { URL } from '@nti/lib-commons';
 
 import PagedDataSource from '../../data-sources/PagedDataSource';
 import PagedBatch from '../../data-sources/data-types/Page';
+import { NO_LINK } from '../../constants';
 
 export default class ActivityStreamDataSource extends PagedDataSource {
 	async requestPage(pageID, { batchSize = 10, ...params }) {
@@ -14,7 +15,7 @@ export default class ActivityStreamDataSource extends PagedDataSource {
 		const link = this.parent.getLink('Activity');
 
 		if (!link) {
-			return Promise.reject('No Link');
+			throw new Error(NO_LINK);
 		}
 
 		const activity = await this.service.get(

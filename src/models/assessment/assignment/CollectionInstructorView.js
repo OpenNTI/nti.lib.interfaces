@@ -137,7 +137,7 @@ export default class CollectionInstructorView extends Base {
 		);
 	}
 
-	getActivity() {
+	async getActivity() {
 		const p = getPrivate(this);
 		if (!p.activityStore) {
 			const baseActivity = lastViewed =>
@@ -154,7 +154,7 @@ export default class CollectionInstructorView extends Base {
 			//parent(CourseInstance) -> CourseActivity
 			const href = this.parent().getLink('CourseActivity');
 			if (!href) {
-				return Promise.reject(NO_LINK);
+				throw NO_LINK;
 			}
 
 			p.activityStore = new ActivityStore(
@@ -165,7 +165,7 @@ export default class CollectionInstructorView extends Base {
 			);
 		}
 
-		return Promise.resolve(p.activityStore);
+		return p.activityStore;
 	}
 
 	setGrade(gradeOrAssignmentId, Username, value, letter) {

@@ -1,12 +1,12 @@
 import { URL } from '@nti/lib-commons';
 
-import { Service, Parser as parse } from '../constants';
+import { NO_LINK, Service, Parser as parse } from '../constants';
 
 export default {
-	getContents(params, parseItems = true) {
+	async getContents(params, parseItems = true) {
 		let link = this.getLink('contents');
 		if (!link) {
-			return Promise.reject('No Link!?');
+			throw new Error(NO_LINK);
 		}
 
 		if (typeof params === 'object') {

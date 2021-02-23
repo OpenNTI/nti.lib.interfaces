@@ -64,7 +64,7 @@ export default class FileSystemEntity extends Base {
 	clear() {
 		return this.postToLink('clear').catch(er =>
 			Promise.reject(
-				er !== NO_LINK
+				er.message !== NO_LINK
 					? er
 					: Object.assign(
 							new Error(
@@ -82,7 +82,7 @@ export default class FileSystemEntity extends Base {
 	delete() {
 		return this.requestLink('delete', 'delete').catch(er =>
 			Promise.reject(
-				er !== NO_LINK
+				er.message !== NO_LINK
 					? er
 					: Object.assign(
 							new Error(
@@ -111,7 +111,7 @@ export default class FileSystemEntity extends Base {
 			.then(() => this.onChange(keys))
 			.catch(er =>
 				Promise.reject(
-					er !== NO_LINK
+					er.message !== NO_LINK
 						? er
 						: Object.assign(
 								new Error(
@@ -141,7 +141,7 @@ export default class FileSystemEntity extends Base {
 			.then(() => this.onChange(keys))
 			.catch(er =>
 				Promise.reject(
-					er !== NO_LINK
+					er.message !== NO_LINK
 						? er
 						: Object.assign(
 								new Error(
@@ -159,7 +159,7 @@ export default class FileSystemEntity extends Base {
 	mkdir() {
 		return this.postToLink('mkdir', {}, true).catch(er =>
 			Promise.reject(
-				er !== NO_LINK
+				er.message !== NO_LINK
 					? er
 					: Object.assign(
 							new Error(

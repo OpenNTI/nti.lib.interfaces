@@ -22,7 +22,7 @@ class MessageInfo extends Base {
 		'sharedWith':  { type: 'string[]' },
 	}
 
-	flag() {
+	async flag() {
 		let link = this.hasLink('flag')
 			? 'flag'
 			: this.hasLink('flag.metoo')
@@ -30,7 +30,7 @@ class MessageInfo extends Base {
 			: null;
 
 		if (!link) {
-			return Promise.reject(NO_LINK);
+			throw new Error(NO_LINK);
 		}
 
 		return this.postToLink(link)

@@ -52,7 +52,7 @@ class PageInfo extends Base {
 		const url = this.getLink('package');
 
 		if (!url) {
-			throw new Error('No Link');
+			throw new Error(NO_LINK);
 		}
 
 		const raw = await this[Service].get({
@@ -119,7 +119,7 @@ class PageInfo extends Base {
 		return (this.AssessmentItems || []).reduce(find, null);
 	}
 
-	getUserDataLastOfType(mimeType) {
+	async getUserDataLastOfType(mimeType) {
 		const link = this.getLink(REL_USER_GENERATED_DATA);
 
 		const o = {
@@ -132,7 +132,7 @@ class PageInfo extends Base {
 		};
 
 		if (!link) {
-			return Promise.reject(NO_LINK);
+			throw new Error(NO_LINK);
 		}
 
 		return this.getResource(URL.appendQueryParams(link, o))

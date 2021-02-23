@@ -2,6 +2,7 @@ import { URL } from '@nti/lib-commons';
 
 import PagedDataSource from '../../data-sources/PagedDataSource';
 import PagedBatch from '../../data-sources/data-types/Page';
+import { NO_LINK } from '../../constants';
 
 export default class BundleStreamDataSource extends PagedDataSource {
 	loadRootPage() {
@@ -37,7 +38,7 @@ export default class BundleStreamDataSource extends PagedDataSource {
 		const link = rootPage.getLink('RecursiveUserGeneratedData');
 
 		if (!link) {
-			return Promise.reject('No Link');
+			throw new Error(NO_LINK);
 		}
 
 		const contents = await this.service.get(
