@@ -65,7 +65,7 @@ function get(v) {
 		return v.map(get);
 	}
 
-	if (v[Serializing]) {
+	if (v?.[Serializing]) {
 		// eslint-disable-next-line no-console
 		console.warn('Data Cycle Detected');
 		return void 0;
