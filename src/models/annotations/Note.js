@@ -36,7 +36,7 @@ class Note extends Highlight {
 
 	get replyCount() {
 		// Rely on this value, placeholders will have a getter for the ReferencedByCount property.
-		return this.ReferencedByCount;
+		return this.ReferencedByCount || 0;
 	}
 
 	canReply(tryScopes = []) {
