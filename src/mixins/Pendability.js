@@ -1,6 +1,5 @@
 import { wait } from '@nti/lib-commons';
 
-const noop = () => {};
 const PRIVATE_PENDING = new WeakMap();
 const getPending = p => PRIVATE_PENDING.get(p) || [];
 const setPending = (p, list) => (PRIVATE_PENDING.set(p, list), list);
@@ -35,8 +34,7 @@ export const Mixin = {
 			} else if (p.then) {
 				list.push(p);
 
-				p.catch(noop) //prevent failures from interupting our cleanup
-					.then(remove(p));
+				p.finally(remove(p));
 			} else if (Array.isArray(p)) {
 				this.addToPending(...p);
 			} else {

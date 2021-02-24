@@ -363,7 +363,7 @@ export default class DataServerInterface extends EventEmitter {
 			const isConflict = response.status === 409;
 
 			if (isConflict) {
-				error.confirm = (config = {}) => {
+				error.confirm = async (config = {}) => {
 					const { rel = 'confirm', data: conflictData } = config;
 					const link = getLink(json, rel, true);
 					const { method, href } = link;
@@ -371,7 +371,9 @@ export default class DataServerInterface extends EventEmitter {
 						method === 'GET' ? null : conflictData || data;
 
 					if (!href) {
-						return Promise.reject(error);
+						throw new Error(
+							`No Link for rel "${rel}" in response challenge`
+						);
 					}
 
 					return this[Request](
