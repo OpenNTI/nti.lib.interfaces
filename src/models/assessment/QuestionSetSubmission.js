@@ -31,7 +31,7 @@ class QuestionSetSubmission extends Base {
 		};
 
 		const s = new this(questionSet[Service], questionSet, data);
-		s.questions.forEach(q => q.reparent(s));
+		s.questions?.forEach(q => q.reparent(s));
 		return s;
 	}
 
@@ -47,19 +47,17 @@ class QuestionSetSubmission extends Base {
 	}
 
 	countUnansweredQuestions(questionSet) {
-		if (
-			!questionSet ||
-			!questionSet.questions ||
-			questionSet.questions.length !== this.questions.length
-		) {
+		if (questionSet?.questions?.length !== this.questions?.length) {
 			throw new Error('Invalid Argument');
 		}
 
-		return this.questions.reduce(
-			(sum, q) =>
-				sum +
-				(questionSet.getQuestion(q.getID()).isAnswered(q) ? 0 : 1),
-			0
+		return (
+			this.questions?.reduce(
+				(sum, q) =>
+					sum +
+					(questionSet.getQuestion(q.getID()).isAnswered(q) ? 0 : 1),
+				0
+			) ?? 0
 		);
 	}
 }
