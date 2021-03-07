@@ -20,6 +20,7 @@ describe('AssignmentHistoryItem Model', () => {
 			...MockServiceBase,
 			get: async () => ({ Title: 'Mock Course' }),
 			getObjectRaw: async () => ({ title: 'Mock Assignment' }),
+			getObject: async () => ({ title: 'Mock Assignment' }),
 		};
 
 		const logger = Logger.get('InstanceCacheable');
