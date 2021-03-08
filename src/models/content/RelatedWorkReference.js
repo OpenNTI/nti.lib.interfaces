@@ -1,9 +1,10 @@
 import { parse as parseUrl } from 'url';
 import { extname } from 'path';
 
+import mime from 'mime-types';
+
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
-import mime from 'mime-types';
 import { isNTIID } from '@nti/lib-ntiids';
 
 import { Mixin as ContentTreeMixin } from '../../content-tree';

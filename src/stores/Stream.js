@@ -1,6 +1,7 @@
 import EventEmitter from 'events';
 
 import invariant from 'invariant';
+
 import { mixin, URL } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 

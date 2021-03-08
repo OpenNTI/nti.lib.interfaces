@@ -1,6 +1,7 @@
 import EventEmitter from 'events';
 
 import invariant from 'invariant';
+
 import { Paging } from '@nti/lib-commons';
 
 import { initPrivate, getPrivate } from '../../../utils/private';

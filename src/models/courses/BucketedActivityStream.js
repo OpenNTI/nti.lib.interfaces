@@ -1,6 +1,7 @@
+import { endOfISOWeek, startOfISOWeek } from 'date-fns';
+
 import { Proxy as ProxyObject } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
-import { endOfISOWeek, startOfISOWeek } from 'date-fns';
 
 import Base from '../Base';
 

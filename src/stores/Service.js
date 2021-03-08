@@ -1,10 +1,11 @@
 import EventEmitter from 'events';
 
+import LRU from 'lru-cache';
+
 import Logger from '@nti/util-logger';
 import { mixin } from '@nti/lib-decorators';
 import { isNTIID } from '@nti/lib-ntiids';
 import { decorate, URL, wait } from '@nti/lib-commons';
-import LRU from 'lru-cache';
 
 import { parse } from '../models/Parser';
 import { Workspace } from '../models';

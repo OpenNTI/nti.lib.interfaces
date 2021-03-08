@@ -1,10 +1,11 @@
 import url from 'url';
 import EventEmitter from 'events';
 
+import { v4 as uuid } from 'uuid';
+
 import Logger from '@nti/util-logger';
 import { decorate, Promises } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
-import { v4 as uuid } from 'uuid';
 
 import { Service, DELETED } from '../constants';
 import { Mixin as Pendability } from '../mixins/Pendability';
