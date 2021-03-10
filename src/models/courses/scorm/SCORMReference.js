@@ -16,6 +16,13 @@ class SCORMReference extends Base {
 		'ScormContentInfo': {type: 'model' }
 	}
 
+	get CompletedItem () { return this.ScormContentInfo?.CompletedItem; }
+	set CompletedItem (item) {
+		if (this.ScormContentInfo) {
+			this.ScormContentInfo.CompletedItem = item;
+		}
+	}
+
 	isCompletable(...args) {
 		return this.ScormContentInfo
 			? this.ScormContentInfo.isCompletable(...args)
