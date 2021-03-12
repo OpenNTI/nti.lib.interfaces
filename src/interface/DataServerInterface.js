@@ -347,11 +347,11 @@ export default class DataServerInterface extends EventEmitter {
 			return response;
 		}
 
-		const error = Object.assign(new Error(response.statusText), {
+		const error = {
 			Message: response.statusText,
 			response,
 			statusCode: response.status,
-		});
+		};
 
 		try {
 			const json = await response.json();
@@ -419,16 +419,14 @@ export default class DataServerInterface extends EventEmitter {
 				}
 			}
 
-			throw error;
+			throw Object.assign(new Error(response.statusText), error);
 		} catch (reason) {
 			//Let the world know there was a request failure...and let them potentially display/act on it
 			if (!reason.skip) {
 				this.emit(REQUEST_ERROR_EVENT, error);
 			}
 
-			// If this is our skip object, pass it on. Otherwise,
-			// its an unknown error and just reject with the error above.
-			throw reason.skip ? reason : error;
+			throw reason;
 		}
 	}
 
