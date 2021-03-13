@@ -380,10 +380,8 @@ class ServiceDocument extends EventEmitter {
 
 	async getObjectRaw(ntiid, field, type, params) {
 		if (!isNTIID(ntiid)) {
-			return Promise.reject(
-				new Error(
-					`Invalid Argument: Not an NTIID: ${JSON.stringify(ntiid)}`
-				)
+			throw new Error(
+				`Invalid Argument: Not an NTIID: ${JSON.stringify(ntiid)}`
 			);
 		}
 

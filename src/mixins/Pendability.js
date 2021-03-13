@@ -45,7 +45,7 @@ export const Mixin = {
 		return this; //allow chain
 	},
 
-	waitForPending(timeout) {
+	async waitForPending(timeout) {
 		return wait.on(getPending(this), timeout).then(() => this);
 	},
 };

@@ -2,6 +2,8 @@
  * This is for Objects within an assignment history item.
  */
 
+import { isNTIID } from '@nti/lib-ntiids';
+
 import { Service } from '../constants';
 import getLink from '../utils/getlink';
 
@@ -45,7 +47,9 @@ export default {
 				throw new Error('No Catalog Entry URL');
 			}
 
-			const catalogEntry = await service.getObject(catalogEntryUrl);
+			const call = _ => service[isNTIID(_) ? 'getObject' : 'get'](_);
+
+			const catalogEntry = await call(catalogEntryUrl);
 
 			//Okay, the scary part is over! just grab what we need and run.
 			this.CourseName = catalogEntry.Title;
@@ -56,9 +60,15 @@ export default {
 			(async () => {
 				//Wait on the two async operations (a and b), then fire a change
 				// event so views know values changed.
-				await Promise.all([
+				await Promise.allSettled([
 					resolveAssignmentTitle(),
-					resolveCatalogItem(),
+					resolveCatalogItem().catch(reason => {
+						// eslint-disable-next-line no-console
+						console.warn(
+							`Could not resolve catalog item. This object will not have CourseName and CatalogEntry keys.\nReason: %o`,
+							reason.message || reason
+						);
+					}),
 				]);
 
 				this.emit('change');
