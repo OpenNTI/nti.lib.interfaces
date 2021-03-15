@@ -81,8 +81,8 @@ class Package extends Base {
 		return id === this.getID() ? this : null;
 	}
 
-	getDiscussions() {
-		return Promise.reject('Not Implemented');
+	async getDiscussions() {
+		throw new Error('Not Implemented');
 	}
 	hasDiscussions() {
 		return false;
@@ -96,6 +96,10 @@ class Package extends Base {
 	}
 
 	getTableOfContents() {
+		if (!this.index) {
+			return;
+		}
+
 		let service = this[Service];
 		let toc = this.tableOfContents;
 		let cache = service.getDataCache();
