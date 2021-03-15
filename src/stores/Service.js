@@ -109,7 +109,7 @@ class ServiceDocument extends EventEmitter {
 	}
 
 	async assignData(json, { silent = false } = {}) {
-		const { [Context]: context, [Server]: server } = this;
+		const config = this.getConfig();
 		const { CapabilityList: caps = [], Items: items, ...data } = json;
 		Object.assign(this, data, { appUsername: null });
 
@@ -132,29 +132,13 @@ class ServiceDocument extends EventEmitter {
 
 		if (this.getAppUsername()) {
 			let finish;
-			this.addToPending(
-				new Promise(x => {
-					finish = x;
-				})
-			);
+			this.addToPending(new Promise(x => (finish = x)));
 
 			try {
-				const u = await this.getAppUser();
-
-				//Not all apps that use this library are a Platform App... for those apps that do not need contacts,
-				//skip loading them.
-				if (server.config.SKIP_FRIENDSLISTS) {
-					logger.log('Skipping/Ignoring FriendsLists');
-					return;
-				}
-
-				const { href } =
-					this.getCollection('FriendsLists', this.getAppUsername()) ||
-					{};
-
-				if (href) {
-					this[Contacts] = new ContactsStore(this, href, u);
-					await this[Contacts].waitForPending();
+				// Pre-load the app user
+				await this.getAppUser();
+				if (!this.isServerSide && config.preFetchContacts) {
+					await this.getContacts()?.waitForPending();
 				}
 			} catch (e) {
 				logger.log(e.stack || e.message || e);
@@ -166,8 +150,10 @@ class ServiceDocument extends EventEmitter {
 			delete this[Contacts];
 		}
 
-		if (context) {
-			attachPendingQueue(context).addToPending(this.waitForPending());
+		if (this.isServerSide) {
+			attachPendingQueue(this[Context]).addToPending(
+				this.waitForPending()
+			);
 		}
 
 		if (!silent) {
@@ -199,6 +185,18 @@ class ServiceDocument extends EventEmitter {
 	}
 
 	getContacts() {
+		if (!this[Contacts]) {
+			const { href } =
+				this.getCollection('FriendsLists', this.getAppUsername()) || {};
+
+			if (href) {
+				this[Contacts] = new ContactsStore(
+					this,
+					href,
+					this.getAppUserSync()
+				);
+			}
+		}
 		return this[Contacts];
 	}
 
