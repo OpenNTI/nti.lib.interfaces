@@ -95,9 +95,9 @@ class Package extends Base {
 		);
 	}
 
-	getTableOfContents() {
+	async getTableOfContents() {
 		if (!this.index) {
-			return;
+			return [];
 		}
 
 		let service = this[Service];
