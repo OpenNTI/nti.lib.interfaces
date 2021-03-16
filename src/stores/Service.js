@@ -452,11 +452,7 @@ class ServiceDocument extends EventEmitter {
 		return this.get(url)
 			.catch(() => null)
 			.then(o => {
-				// if (o && o.Items) {
-				// 	o.Items = parse(this, this, o.Items);
-				// }
-
-				return !o || !o.Items || !o.Items.length ? null : o;
+				return !o?.Items?.length ? null : o;
 			});
 	}
 
@@ -491,9 +487,10 @@ class ServiceDocument extends EventEmitter {
 	}
 
 	async getObjects(ntiids, parent) {
-		return this.getObjectsRaw(ntiids).then(o =>
-			parse(this, parent || this, o)
-		);
+		const data = await this.getObjectsRaw(ntiids);
+		const models = parse(this, parent || this, data);
+		await maybeWait(models);
+		return models;
 	}
 
 	async getPurchasables(ids) {
@@ -507,9 +504,9 @@ class ServiceDocument extends EventEmitter {
 			url = URL.appendQueryParams(url, { purchasables: ids });
 		}
 
-		return this.get(url).then(collection =>
-			parse(this, null, collection.Items)
-		);
+		const collection = parse(this, null, (await this.get(url)).Items);
+		await maybeWait(collection);
+		return collection;
 	}
 
 	getAppUsername() {
@@ -555,7 +552,7 @@ class ServiceDocument extends EventEmitter {
 			}
 
 			const data = await this.get({ url });
-			const user = await parse(this, this, data);
+			const user = await maybeWait(parse(this, this, data));
 
 			this[AppUser] = user;
 
@@ -623,7 +620,9 @@ class ServiceDocument extends EventEmitter {
 			result.catch(() => cache.setVolatile(key, null));
 		}
 
-		return result.then(user => parse(this[Service], this, user));
+		const user = parse(this[Service], this, await result);
+		await maybeWait(user);
+		return user;
 	}
 
 	/**
@@ -662,7 +661,9 @@ class ServiceDocument extends EventEmitter {
 
 	async getMetadataFor(uri) {
 		const requestURI = this.getMetadataExtractorURL(uri);
-		return this.get(requestURI).then(x => parse(this, null, x));
+		const data = parse(this, null, await this.get(requestURI));
+		await maybeWait(data);
+		return data;
 	}
 
 	getUserWorkspace() {
