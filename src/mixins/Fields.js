@@ -171,7 +171,7 @@ export default function FieldsApplier(target) {
 			}
 
 			const o = raw && doParse(this, raw);
-			if (o && o.addToPending) {
+			if (o?.addToPending) {
 				this.addToPending(o);
 			}
 

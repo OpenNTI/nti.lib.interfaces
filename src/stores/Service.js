@@ -304,25 +304,22 @@ class ServiceDocument extends EventEmitter {
 		return this.getServer().delete(url, data, this[Context]);
 	}
 
-	async postParseResponse(url, data, parent = this) {
-		return this.post(url, data).then(x => {
-			try {
-				return parse(this, parent, x);
-			} catch (e) {
-				return x;
-			}
-		});
+	async requestParseResponse(method, url, data, parent = this) {
+		const x = await this[method](url, data);
+		try {
+			const model = parse(this, parent, x);
+			await maybeWait(model);
+			return model;
+		} catch (e) {
+			return x;
+		}
 	}
 
-	async putParseResponse(url, data, parent = this) {
-		return this.put(url, data).then(x => {
-			try {
-				return parse(this, parent, x);
-			} catch (e) {
-				return x;
-			}
-		});
-	}
+	postParseResponse = async (url, data, parent = this) =>
+		this.requestParseResponse('post', url, data, parent);
+
+	putParseResponse = async (url, data, parent = this) =>
+		this.requestParseResponse('put', url, data, parent);
 
 	hasCookie(cookie) {
 		let c = this[Context];
@@ -477,24 +474,16 @@ class ServiceDocument extends EventEmitter {
 	async getObject(ntiid, options) {
 		const { field, params, parent, type } = options || {};
 
-		const resolve =
+		const data =
 			typeof ntiid === 'object'
-				? Promise.resolve(ntiid)
-				: this.getObjectRaw(ntiid, field, type, params);
+				? ntiid
+				: await this.getObjectRaw(ntiid, field, type, params);
 
-		return resolve
-			.then(o => parse(this, parent || this, o))
-			.then(model =>
-				Array.isArray(model)
-					? Promise.all(
-							model.map(m =>
-								m && m.waitForPending ? m.waitForPending() : m
-							)
-					  )
-					: model && model.waitForPending
-					? model.waitForPending()
-					: model
-			);
+		const model = parse(this, parent || this, data);
+
+		await maybeWait(model);
+
+		return model;
 	}
 
 	getObjectPlaceholder(obj) {

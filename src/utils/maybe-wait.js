@@ -3,5 +3,5 @@ export default function maybeWait(x) {
 		return Promise.all(x.map(maybeWait));
 	}
 
-	return x && x.waitForPending ? x.waitForPending() : x;
+	return x?.waitForPending?.() || x;
 }
