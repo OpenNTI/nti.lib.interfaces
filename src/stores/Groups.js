@@ -2,6 +2,7 @@ import Logger from '@nti/util-logger';
 
 import { Service, DELETED } from '../constants';
 import { parse } from '../models/Parser';
+import maybeWait from '../utils/maybe-wait';
 
 import { getNewListData } from './Contacts';
 import EntityStore from './EntityStore';
@@ -28,7 +29,7 @@ export default class Groups extends EntityStore {
 
 	[CREATE](data) {
 		return this[Service].post(this.entryPoint, data)
-			.then(x => parse(this[Service], null, x))
+			.then(x => maybeWait(parse(this[Service], null, x)))
 
 			.then(x =>
 				this['get:Data']().find(i => i.getID() === x.getID())

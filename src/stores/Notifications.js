@@ -131,7 +131,7 @@ function resolveUIData(service, data) {
 	data.Items = data.Items.map(o => {
 		try {
 			o = parse(service, null, o);
-			if (o && o.waitForPending) {
+			if (o?.waitForPending) {
 				pending.push(o.waitForPending());
 			}
 		} catch (e) {
