@@ -36,6 +36,8 @@ class OutlineNode extends Outline {
 		'DCTitle':              { type: 'string'                    },
 		'AvailableBeginning':   { type: 'date'                      },
 		'AvailableEnding':      { type: 'date'                      },
+		'LessonOverviewNTIID':  { type: 'string'                    },
+		'PublicationState':     { type: '*'                         },
 		'ntiid':                { type: 'string'                    },
 		'title':                { type: 'string'                    }
 	}
