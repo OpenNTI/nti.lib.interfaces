@@ -60,6 +60,7 @@ class Bundle extends Base {
 
 	async getContentPackages () {
 		if (!this.#contentPackages) {
+			//placeholder for when we actually have to load the content packages
 			this.#contentPackages = await Promise.resolve(this.PrivateContentPackages);
 
 			const onChange = (...args) => this.onChange(...args);
