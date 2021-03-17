@@ -1,4 +1,4 @@
-import { decorate, URL, forward } from '@nti/lib-commons';
+import { decorate, URL } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
@@ -29,7 +29,7 @@ class Bundle extends Base {
 	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
-		'ContentPackages':                      { type: 'model[]', defaultValue: [] },
+		'ContentPackages':                      { type: 'model[]', defaultValue: [], name: 'PrivateContentPackages' },
 		'Discussions':                          { type: 'model'                     },
 		'DCCreator':                            { type: names,     name: 'author'   },
 		'byline':                               { type: 'string'                    },
@@ -41,18 +41,35 @@ class Bundle extends Base {
 		'PublicationState':                     { type: 'string'                    }
 	}
 
+	#contentPackages = null;
+
 	isBundle = true;
 
 	constructor(service, parent, data) {
 		super(service, parent, data);
 
-		const onChange = (...args) => this.onChange(...args);
+		this.addToPending(resolveDiscussions(this));
+	}
 
-		for (let p of this.ContentPackages) {
-			p.on('change', onChange);
+	async refreshContentPackages () {
+		await this.refresh();
+
+		this.#contentPackages = null;
+		return this.getContentPackages();
+	}
+
+	async getContentPackages () {
+		if (!this.#contentPackages) {
+			this.#contentPackages = await Promise.resolve(this.PrivateContentPackages);
+
+			const onChange = (...args) => this.onChange(...args);
+
+			for (let p of this.#contentPackages) {
+				p.on('change', onChange);
+			}
 		}
 
-		this.addToPending(resolveDiscussions(this));
+		return this.#contentPackages;
 	}
 
 	get packageRoot() {
@@ -83,10 +100,12 @@ class Bundle extends Base {
 		);
 	}
 
-	containsPackage(id) {
+	async containsPackage(id) {
+		const packages = await this.getContentPackages();
+
 		let found = false;
 
-		for (let pkg of this.ContentPackages) {
+		for (let pkg of packages) {
 			if (pkg.getID() === id) {
 				found = true;
 				break;
@@ -97,8 +116,10 @@ class Bundle extends Base {
 		return found || this.getID() === id;
 	}
 
-	getPackage(id) {
-		for (let pkg of this.ContentPackages) {
+	async getPackage(id) {
+		const packages = await this.getContentPackages();
+
+		for (let pkg of packages) {
 			if (pkg.getID() === id || pkg.OID === id) {
 				return pkg;
 			}
@@ -167,9 +188,11 @@ class Bundle extends Base {
 		return this.hasLink('DiscussionBoard');
 	}
 
-	getTablesOfContents() {
+	async getTablesOfContents() {
+		const packages = await this.getContentPackages();
+
 		return Promise.all(
-			this.ContentPackages.map(p => p.getTableOfContents())
+			packages.map(p => p.getTableOfContents())
 		).then(tables =>
 			TablesOfContents.fromIterable(tables, this[Service], this)
 		);
@@ -217,10 +240,6 @@ export default decorate(Bundle, {
 	with: [
 		model,
 		mixin(
-			forward(
-				['every', 'filter', 'forEach', 'map', 'reduce'],
-				'ContentPackages'
-			),
 			Publishable
 		),
 	],
