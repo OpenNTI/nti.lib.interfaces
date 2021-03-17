@@ -160,12 +160,7 @@ export default class BucketedActivityStream extends Base {
 
 		const relevantLessons = outline
 			.getFlattenedList()
-			.filter(
-				o =>
-					o.isLeaf &&
-					'AvailableBeginning' in o &&
-					o.getAvailableBeginning() < thisWeek
-			);
+			.filter(o => o.isLeaf && o.getAvailableBeginning?.() < thisWeek);
 
 		const openAssignments = assignmentsCollection
 			.getAssignments()
