@@ -39,7 +39,10 @@ class AssignmentFeedback extends Base {
 
 		this.body = body;
 
-		return this[Service].put(link, this.getData());
+		return this[Service].put(link, {
+			// its important to use getData so that our transformers run and clean/prepare the data to send.
+			body: this.getData().body,
+		});
 	}
 }
 
