@@ -183,7 +183,7 @@ class RelatedWorkReference extends Base {
 			const page = await this[Service].getObject(pageId);
 
 			const contentPackage = course
-				? course.getPackage(page.ContentPackageNTIID)
+				? await course.getPackage(page.ContentPackageNTIID)
 				: await this[Service].getObject(page.ContentPackageNTIID);
 
 			if (contentPackage.isRenderable) {
