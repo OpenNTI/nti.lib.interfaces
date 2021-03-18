@@ -245,12 +245,19 @@ class Assignment extends Base {
 	 *
 	 * @returns {Promise} The history.
 	 */
-	loadPreviousSubmission() {
+	async loadPreviousSubmission() {
 		if (this.CurrentMetadataAttemptItem) {
 			return this.loadSavePoint();
 		}
 
-		return this.loadHistory().catch(() => this.loadSavePoint());
+		try {
+			// you have to await async statements for catch() to work...
+			// otherwise the exception makes it to the caller, and they
+			// will need to try/await/catch.
+			return await this.loadHistory();
+		} catch {
+			return this.loadSavePoint();
+		}
 	}
 
 	/**
@@ -259,58 +266,68 @@ class Assignment extends Base {
 	 * @private
 	 * @returns {Promise} The history.
 	 */
-	loadHistory() {
+	async loadHistory() {
 		return this.fetchLinkParsed(ASSESSMENT_HISTORY_LINK);
 	}
 
-	loadSavePoint() {
+	async loadSavePoint() {
 		const getVersion = x => ((x || {}).Submission || {}).version;
-		return this.fetchLinkParsed('Savepoint').then(save =>
-			getVersion(save) !== this.version
-				? //Drop savepoints that have missmatched versions
-				  Promise.reject(
-						`Version Missmatch: SavePoint(${getVersion(
-							save
-						)}) != Assignment(${this.version})`
-				  )
-				: save
-		);
+
+		try {
+			const save = await this.fetchLinkParsed('Savepoint');
+
+			if (getVersion(save) !== this.version) {
+				//Drop savepoints that have mismatched versions
+				throw new Error(
+					`Version Missmatch: SavePoint(${getVersion(
+						save
+					)}) != Assignment(${this.version})`
+				);
+			}
+
+			return save;
+		} catch (e) {
+			if (/No Link/.test(e.message)) {
+				throw new Error('There is no save point');
+			}
+			throw e;
+		}
 	}
 
-	postSavePoint(data, parseResponse) {
+	async postSavePoint(data, parseResponse) {
 		if (this.hasLink('PracticeSubmission')) {
-			return Promise.resolve({
+			return {
 				Submission: data,
 				getQuestions: () =>
 					data.getQuestions ? data.getQuestions() : [],
 				isSyntheticSubmission: () => false,
 				isSubmitted: () => false,
 				isPracticeSubmission: true,
-			});
+			};
 		}
 
 		if (!this.hasLink('Savepoint')) {
-			return Promise.resolve({});
+			return {};
 		}
 
-		let last = this[ActiveSavePointPost];
-		if (last && last.abort) {
+		const last = this[ActiveSavePointPost];
+		if (last?.abort) {
 			last.abort();
 		}
 
-		let result = (this[ActiveSavePointPost] = this.postToLink(
+		const result = (this[ActiveSavePointPost] = this.postToLink(
 			'Savepoint',
 			data,
 			parseResponse
 		));
 
-		result
-			.catch(() => {})
-			.then(() => {
-				if (result === this[ActiveSavePointPost]) {
-					delete this[ActiveSavePointPost];
-				}
-			});
+		try {
+			await result;
+		} finally {
+			if (result === this[ActiveSavePointPost]) {
+				delete this[ActiveSavePointPost];
+			}
+		}
 
 		return result;
 	}
