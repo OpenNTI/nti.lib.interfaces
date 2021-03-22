@@ -1,5 +1,6 @@
 /* eslint-env jest */
-import diff from 'jest-diff'; //eslint-disable-line
+import diff from 'jest-diff';
+
 import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
@@ -338,10 +339,11 @@ describe('Fields Mixin', () => {
 
 		jest.spyOn(logger, 'error').mockImplementation(() => {});
 		jest.spyOn(logger, 'debug').mockImplementation(() => {});
+		jest.spyOn(logger, 'trace').mockImplementation(() => {});
 		const f = new Foo({ foo: 'bar', bax: 'ignored' });
 		expect(f.bax).toBe('bar');
 		expect(() => f.foo).not.toThrow();
-		expect(logger.debug).toHaveBeenCalledWith(
+		expect(logger.trace).toHaveBeenCalledWith(
 			expect.stringMatching(
 				/declares a field "%s" but it shadows another./
 			),
