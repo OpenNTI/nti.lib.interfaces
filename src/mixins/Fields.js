@@ -67,7 +67,7 @@ export default function FieldsApplier(target) {
 			for (let overlapping of Object.keys(data).filter(x =>
 				FieldRenames.includes(x)
 			)) {
-				logger.debug(
+				logger.trace?.(
 					'Model "%s" declares a field "%s" but it shadows another. data: %o',
 					getTypeName(this),
 					overlapping,
@@ -76,7 +76,7 @@ export default function FieldsApplier(target) {
 			}
 
 			for (let missing of MissingFields) {
-				logger.debug(
+				logger.trace?.(
 					'Model "%s" declares a field "%s" but it is not present in data: %o',
 					getTypeName(this),
 					missing,
@@ -216,17 +216,20 @@ export default function FieldsApplier(target) {
 
 			if (this[INFLIGHT]) {
 				if (newRaw) {
-					logger.debug(
-						'Waiting to refresh until previous refresh %o',
+					logger.trace?.(
+						'Waiting to refresh until previous refresh %O',
 						this
 					);
 					return this[INFLIGHT].then(() => this.refresh(newRaw));
 				}
 
-				logger.debug('Ignoring duplicate request to refresh. %o', this);
+				logger.trace?.(
+					'Ignoring duplicate request to refresh. %O',
+					this
+				);
 				return this[INFLIGHT];
 			}
-			logger.debug('Refresh %o', this);
+			logger.debug('Refresh %O', this);
 
 			//TODO: in the case that we are getting the full object from the server
 			//we should look at the keys we currently have and the keys on the incoming
@@ -710,7 +713,7 @@ function applyField(scope, fieldName, valueIn, declared, defaultValue) {
 					scope[fieldName] = value;
 				}
 			} catch (e) {
-				logger.debug(e.stack || e.message || e);
+				logger.stack?.(e);
 			}
 			return;
 		}

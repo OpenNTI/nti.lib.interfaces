@@ -203,8 +203,8 @@ export default class DataServerInterface extends EventEmitter {
 		}
 
 		const result = new Promise((fulfillRequest, rejectRequest) => {
-			logger.debug('REQUEST %d (send) -> %s %s', id, init.method, url);
-			// logger.debug('REQUEST %d HEADERS: %s %s:\n%o', id, init.method, url, init.headers);
+			logger.trace('REQUEST %d (send) -> %s %s', id, init.method, url);
+			// logger.trace('REQUEST %d HEADERS: %s %s:\n%o', id, init.method, url, init.headers);
 
 			if (context) {
 				if (context.dead) {
@@ -335,7 +335,7 @@ export default class DataServerInterface extends EventEmitter {
 	}
 
 	async __checkRequestStatus(id, url, init, data, start, context, response) {
-		logger.debug(
+		logger.trace(
 			'REQUEST %d (recv) <- %s %s %s %dms',
 			id,
 			init.method,
