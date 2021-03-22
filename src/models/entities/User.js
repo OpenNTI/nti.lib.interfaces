@@ -42,6 +42,7 @@ class User extends Entity {
 		'positions':          { type: 'model[]'   },
 		'education':          { type: 'model[]'   },
 		'lastLoginTime':      { type: 'date'      },
+		'affiliation':        { type: '*'         },
 		'backgroundURL':      { type: 'string'    },
 		'location':           { type: 'string'    },
 		'home_page':          { type: 'string'    },
