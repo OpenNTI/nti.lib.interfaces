@@ -37,7 +37,7 @@
     "iso8601-duration": "^1.1.1",
     "lru-cache": "^6.0.0",
     "mime-types": "^2.1.0",
-    "query-string": "^6.1.0",
+    "query-string": "^7.0.0",
     "uuid": "^8.3.0",
     "esm": "^3.2.25"
   },
