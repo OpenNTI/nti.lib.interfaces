@@ -864,6 +864,27 @@ class ServiceDocument extends EventEmitter {
 		return '/dataserver2/store/redeem_purchase_code'; //TODO: this is legacy...replace
 	}
 
+	getSupportLinks() {
+		//userObject.getLink('content.permanent_general_privacy_page')
+		const link = x => getLink(this.#pong, x);
+		return {
+			about: link('about') || 'http://nextthought.com',
+			privacyPolicy:
+				link('privacy-policy') ||
+				link('content.permanent_general_privacy_page'),
+			termsOfService:
+				link('terms-of-service') || link('content.permanent_tos_page'),
+			support: link('support') || link('support-email'),
+			supportContact: link('support-email') || 'support@nextthought.com',
+			get internalSupport() {
+				return /(mailto:)?support@nextthought\.com$/.test(
+					this.supportContact
+				);
+			},
+			help: link('help') || 'https://help.nextthought.com',
+		};
+	}
+
 	/**
 
 	 * @method getContextPathFor
