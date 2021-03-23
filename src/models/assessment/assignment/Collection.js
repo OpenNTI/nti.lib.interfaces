@@ -16,7 +16,7 @@ import {
 	Parent,
 } from '../../../constants';
 import Base from '../../Base';
-import { initPrivate, getPrivate } from '../../../utils/private';
+import { getPrivate } from '../../../utils/private';
 
 import AssignmentsByX from './AssignmentsByX';
 import ActivityMixin from './AssignmentActivityMixin';
@@ -103,7 +103,7 @@ class Collection extends Base {
 		super(service, parent, {
 			Links: [{ rel: ASSESSMENT_HISTORY_LINK, href: historyLink }],
 		});
-		initPrivate(this, {});
+
 		this.onChange = this.onChange.bind(this);
 		this.applyData(assignments, assessments);
 	}
