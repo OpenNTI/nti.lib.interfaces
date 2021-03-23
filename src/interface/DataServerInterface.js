@@ -478,6 +478,10 @@ export default class DataServerInterface extends EventEmitter {
 			return Promise.resolve(cached);
 		}
 
+		if (!context) {
+			context = Service.ClientContext;
+		}
+
 		const data = cache.get(SERVICE_DATA_CACHE_KEY);
 		const promise = (data && !refreshing //Do we have the data to build an instance? (are we're not freshing...)
 			? // Yes...
@@ -574,14 +578,18 @@ export default class DataServerInterface extends EventEmitter {
 		});
 	}
 
-	async ping(username, context) {
-		username = username || context?.cookies?.username;
-
+	async getPong(context) {
 		const pong = context?.pong || (await this.get('logon.ping', context));
-
 		if (context) {
 			context.pong = pong;
 		}
+		return pong;
+	}
+
+	async ping(username, context) {
+		username = username || context?.cookies?.username;
+
+		const pong = await this.getPong(context);
 
 		if (!getLink(pong, HANDSHAKE)) {
 			return Promise.reject('No handshake present');
