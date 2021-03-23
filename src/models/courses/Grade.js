@@ -6,7 +6,7 @@ import {
 	cacheClassInstances,
 	AfterInstanceRefresh,
 } from '../../mixins/InstanceCacheable';
-import { initPrivate, getPrivate } from '../../utils/private';
+import { getPrivate } from '../../utils/private';
 import { model, COMMON_PREFIX } from '../Registry';
 //
 import Base from '../Base';
@@ -55,7 +55,6 @@ class Grade extends Base {
 
 	constructor(service, parent, data) {
 		super(service, parent, data);
-		initPrivate(this);
 		processValue.call(this, data.value);
 	}
 
