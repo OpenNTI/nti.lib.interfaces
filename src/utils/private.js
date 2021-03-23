@@ -12,5 +12,5 @@ export const getPrivate = x => {
 	if (!PRIVATE.has(x)) {
 		initPrivate(x);
 	}
-	PRIVATE.get(x);
+	return PRIVATE.get(x);
 };
