@@ -40,8 +40,6 @@ const ENROLLMENT = Symbol('enrollment');
 
 const NOT_IMPLEMENTED = 501; //HTTP 501 means not implemented
 
-const LOGOUT_URL = '%%logout-url%%';
-
 const AppUser = Symbol('LoggedInUser');
 const Contacts = Symbol('Contacts');
 // const Communities = Symbol('Communities');
@@ -69,6 +67,10 @@ function hideCurrentProperties(o) {
 }
 
 class ServiceDocument extends EventEmitter {
+	static ClientContext = {};
+
+	#pong = null;
+
 	constructor(json, server, context) {
 		super();
 
@@ -79,11 +81,16 @@ class ServiceDocument extends EventEmitter {
 		this.isService = Service;
 		this[Service] = this; //So the parser can access it
 		this[Server] = server;
-		this[Context] = context;
+		this[Context] =
+			context === ServiceDocument.ClientContext ? void context : context;
 
 		if (this.initMixins) {
 			this.initMixins(json);
 		}
+
+		server
+			.getPong(this[Context] || ServiceDocument.ClientContext)
+			.then(pong => (this.#pong = pong));
 
 		this.assignData(json, { silent: true });
 	}
@@ -726,7 +733,7 @@ class ServiceDocument extends EventEmitter {
 	}
 
 	getLogoutURL(successURL) {
-		let url = this.getDataCache().get(LOGOUT_URL);
+		let url = getLink(this.#pong, 'logon.logout');
 		if (!url) {
 			logger.error(
 				'No Logout URL defined! Pulling a URL out of thin air.'
@@ -735,14 +742,6 @@ class ServiceDocument extends EventEmitter {
 		}
 
 		return URL.appendQueryParams(url, { success: successURL });
-	}
-
-	setLogoutURL(url) {
-		if (!this[Context]) {
-			throw new Error('Client cannot set url');
-		}
-
-		this.getDataCache().set(LOGOUT_URL, url);
 	}
 
 	getContainerURL(ntiid, postfix) {
