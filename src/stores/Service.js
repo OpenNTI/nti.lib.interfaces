@@ -275,7 +275,7 @@ class ServiceDocument extends EventEmitter {
 			transform = options;
 		}
 
-		if (!/^(get|post|put|delete)/.test(method)) {
+		if (!/^(get|post|put|delete|head)$/.test(method)) {
 			throw new Error('Invalid HTTP Method');
 		}
 
