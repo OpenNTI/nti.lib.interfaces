@@ -50,9 +50,10 @@ class Bundle extends Base {
 		this.addToPending(resolveDiscussions(this));
 	}
 
-	async refreshContentPackages () {
+	async refreshContentPackages() {
 		await this.refresh();
 
+		await this.#contentPackages;
 		this.#contentPackages = null;
 		return this.getContentPackages();
 	}
