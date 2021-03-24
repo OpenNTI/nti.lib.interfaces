@@ -58,9 +58,10 @@ class Bundle extends Base {
 		return this.getContentPackages();
 	}
 
-	async getContentPackages () {
+	async getContentPackages() {
 		if (!this.#contentPackages) {
-			this.#contentPackages = await resolvePackages(this);
+			this.#contentPackages = resolvePackages(this);
+			this.#contentPackages = await this.#contentPackages;
 
 			const onChange = (...args) => this.onChange(...args);
 
