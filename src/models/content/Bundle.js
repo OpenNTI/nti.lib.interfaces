@@ -29,7 +29,6 @@ class Bundle extends Base {
 	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
-		'ContentPackages':                      { type: 'model[]', defaultValue: [], name: 'PrivateContentPackages' },
 		'Discussions':                          { type: 'model'                     },
 		'DCCreator':                            { type: names,     name: 'author'   },
 		'byline':                               { type: 'string'                    },
