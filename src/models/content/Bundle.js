@@ -60,8 +60,7 @@ class Bundle extends Base {
 
 	async getContentPackages () {
 		if (!this.#contentPackages) {
-			//placeholder for when we actually have to load the content packages
-			this.#contentPackages = await Promise.resolve(this.PrivateContentPackages);
+			this.#contentPackages = await resolvePackages(this);
 
 			const onChange = (...args) => this.onChange(...args);
 
@@ -234,6 +233,16 @@ async function resolveDiscussions(bundle) {
 		bundle.Discussions = await bundle.fetchLinkParsed('DiscussionBoard');
 	} catch (e) {
 		//swallow
+	}
+}
+
+async function resolvePackages(bundle) {
+	try {
+		const contents = await bundle.fetchLinkParsed('contents');
+
+		return contents;
+	} catch (e) {
+		return [];
 	}
 }
 
