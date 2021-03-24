@@ -209,6 +209,15 @@ class Video extends Base {
 
 		return updatedTranscript;
 	}
+
+	toString() {
+		return [
+			'Video: ' + this.getID(),
+			'(',
+			this.sources.map(x => x.toString()).join(', '),
+			')',
+		].join('');
+	}
 }
 
 export default decorate(Video, { with: [model, mixin(Completable, Pages)] });

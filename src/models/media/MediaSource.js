@@ -93,6 +93,10 @@ class MediaSource extends Base {
 	getDuration() {
 		return this.getProperty('duration');
 	}
+
+	toString() {
+		return [this.service, this.source].join(': ');
+	}
 }
 
 export default decorate(MediaSource, { with: [model] });
