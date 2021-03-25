@@ -868,20 +868,28 @@ class ServiceDocument extends EventEmitter {
 		//userObject.getLink('content.permanent_general_privacy_page')
 		const link = x => getLink(this.#pong, x);
 		return {
-			about: link('about') || 'http://nextthought.com',
+			about: link('content.about-site') || 'http://nextthought.com',
+
 			privacyPolicy:
-				link('privacy-policy') ||
-				link('content.permanent_general_privacy_page'),
+				link('privacy-policy') || //placeholder "future override"
+				link('content.permanent_general_privacy_page') ||
+				link('content.direct_privacy_link'),
+
 			termsOfService:
-				link('terms-of-service') || link('content.permanent_tos_page'),
-			support: link('support') || link('support-email'),
+				link('terms-of-service') || //placeholder "future override"
+				link('content.permanent_tos_page') ||
+				link('content.direct_tos_link'),
+
+			help: link('content.help-site') || 'https://help.nextthought.com',
+
+			support: link('content.support-site') || link('support-email'),
 			supportContact: link('support-email') || 'support@nextthought.com',
+
 			get internalSupport() {
 				return /(mailto:)?support@nextthought\.com$/.test(
 					this.supportContact
 				);
 			},
-			help: link('help') || 'https://help.nextthought.com',
 		};
 	}
 
