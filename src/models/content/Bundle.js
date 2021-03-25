@@ -1,4 +1,4 @@
-import { decorate, URL } from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
@@ -135,26 +135,6 @@ class Bundle extends Base {
 			title: this.title,
 			label: this.label,
 		};
-	}
-
-	getDefaultAssetRoot() {
-		const root = [this, ...this.ContentPackages].reduce(
-			(agg, o) => agg || o.root,
-			null
-		);
-
-		if (!root) {
-			if (this.ContentPackages.length > 0) {
-				logger.warn(
-					'No root for bundle: %s %o',
-					this.getID(),
-					this.ContentPackages.map(o => o.getID())
-				);
-			}
-			return '';
-		}
-
-		return URL.join(root, 'presentation-assets', 'webapp', 'v1');
 	}
 
 	hasCommunity() {
