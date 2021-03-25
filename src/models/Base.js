@@ -25,6 +25,7 @@ class Base extends EventEmitter {
 
 	// prettier-ignore
 	static Fields = {
+		'Class':                  { type: 'string'                  },
 		'Creator':                { type: 'string', name: 'creator' },
 		'CreatedTime':            { type: 'date'                    },
 		'Last Modified':          { type: 'date'                    },
