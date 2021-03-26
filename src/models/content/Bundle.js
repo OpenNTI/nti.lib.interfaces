@@ -74,23 +74,7 @@ class Bundle extends Base {
 	}
 
 	get packageRoot() {
-		let root = null;
-		let { ContentPackages: pks } = this;
-		let { length } = pks;
-
-		if (length > 1) {
-			logger.warn(
-				'Ambiguous content root. By the time we see this, I hope we ' +
-					'have absolute paths for content references! Ex: transcripts' +
-					' in videos, images in question content, etc'
-			);
-		}
-
-		for (let i = 0; i < length && !root; i++) {
-			root = pks[i].root;
-		}
-
-		return root;
+		throw new Error('packageRoot is depricated, unless you really need it than we can add it back');
 	}
 
 	isPublished() {
