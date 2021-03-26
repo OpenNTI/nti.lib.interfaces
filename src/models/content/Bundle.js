@@ -1,6 +1,5 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
-import Logger from '@nti/util-logger';
 
 import { Service } from '../../constants';
 import TablesOfContents from '../content/TablesOfContents';
@@ -14,7 +13,6 @@ import BundleCommunity from './BundleCommunity';
 import BundleStreamDataSource from './BundleStreamDataSource.js';
 import BundleSearchDataSource from './BundleSearchDataSource.js';
 
-const logger = Logger.get('models:content:Bundle');
 const BundleCommunityCache = Symbol('Bundle Community Cache');
 
 const names = (x, y, v) => (Array.isArray(v) ? v.join(', ') : null);
@@ -74,7 +72,9 @@ class Bundle extends Base {
 	}
 
 	get packageRoot() {
-		throw new Error('packageRoot is depricated, unless you really need it than we can add it back');
+		throw new Error(
+			'packageRoot is depricated, unless you really need it than we can add it back'
+		);
 	}
 
 	isPublished() {
