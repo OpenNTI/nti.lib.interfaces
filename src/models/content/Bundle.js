@@ -73,7 +73,7 @@ class Bundle extends Base {
 
 	get packageRoot() {
 		throw new Error(
-			'packageRoot is depricated, unless you really need it than we can add it back'
+			'packageRoot is deprecated, unless you really need it than we can add it back'
 		);
 	}
 
