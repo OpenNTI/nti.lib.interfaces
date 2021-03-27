@@ -93,17 +93,6 @@ class Instance extends Base {
 		return (this.CatalogEntry || {}).ProviderUniqueID;
 	}
 
-	get root() {
-		//This needs to go away. fast.
-		//We're using this to prefix the RELATIVE hrefs in the Video Transcript data.
-		//We're doing something similar for Content in Questions (assets are relative coming back)
-		//All content given to the client in JSON form should have full hrefs. No Relative hrefs.
-		return (
-			this.ContentPackageBundle && this.ContentPackageBundle.packageRoot
-		);
-		//Furthermore this breaks as soon as we have bundles with more than one package.
-	}
-
 	get isAdministrative() {
 		return (this.CatalogEntry || {}).IsAdmin || false;
 	}
