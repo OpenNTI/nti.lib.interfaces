@@ -186,7 +186,7 @@ class RelatedWorkReference extends Base {
 				? await course.getPackage(page.ContentPackageNTIID)
 				: await this[Service].getObject(page.ContentPackageNTIID);
 
-			if (contentPackage.isRenderable) {
+			if (!contentPackage || contentPackage.isRenderable) {
 				return null;
 			}
 
