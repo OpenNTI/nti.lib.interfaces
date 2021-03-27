@@ -77,7 +77,7 @@ class Package extends Base {
 		return URL.join(root, 'presentation-assets', 'webapp', 'v1');
 	}
 
-	getPackage(id) {
+	async getPackage(id) {
 		return id === this.getID() ? this : null;
 	}
 

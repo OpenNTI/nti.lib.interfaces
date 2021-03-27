@@ -142,9 +142,8 @@ class Instance extends Base {
 		return (bundle && bundle.containsPackage(id)) || this.getID() === id;
 	}
 
-	getPackage(id) {
-		const bundle = this.ContentPackageBundle;
-		return bundle && bundle.getPackage(id);
+	async getPackage(id) {
+		return this.ContentPackageBundle?.getPackage(id);
 	}
 
 	getPresentationProperties() {
