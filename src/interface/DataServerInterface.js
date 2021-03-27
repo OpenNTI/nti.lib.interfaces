@@ -6,7 +6,6 @@ import { FileType, URL } from '@nti/lib-commons';
 
 import DataCache from '../utils/datacache';
 import parseBody from '../utils/attempt-json-parse';
-import getContentType from '../utils/get-content-type-header';
 import getLink, { getLinks } from '../utils/getlink';
 import encodeFormData from '../utils/encode-form-data';
 import OnlineStatus from '../utils/OnlineStatus.js';
@@ -283,18 +282,18 @@ export default class DataServerInterface extends EventEmitter {
 					//or it may just return whatever it wants.  If we send
 					//Accept we check the Content-Type to see if that is what
 					//we get back.  If it's not, we reject.
-					if (mime) {
-						const contentType = getContentType(headers);
-						if (!mime.is(contentType)) {
-							return Promise.reject(
-								'Requested with an explicit accept value of ' +
-									mime +
-									' but got ' +
-									contentType +
-									'.  Rejecting.'
-							);
-						}
-					}
+					// if (mime) {
+					// 	const contentType = getContentType(headers);
+					// 	if (!mime.is(contentType)) {
+					// 		return Promise.reject(
+					// 			'Requested with an explicit accept value of ' +
+					// 				mime +
+					// 				' but got ' +
+					// 				contentType +
+					// 				'.  Rejecting.'
+					// 		);
+					// 	}
+					// }
 
 					return body;
 				})
