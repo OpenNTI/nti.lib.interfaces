@@ -138,8 +138,10 @@ class Instance extends Base {
 
 	containsPackage(id) {
 		//Are course NTIIDs being passed around like packageIds? If so, this will catch it.
-		const bundle = this.ContentPackageBundle;
-		return (bundle && bundle.containsPackage(id)) || this.getID() === id;
+		return (
+			this.ContentPackageBundle?.containsPackage(id) ||
+			this.getID() === id
+		);
 	}
 
 	async getPackage(id) {
@@ -147,15 +149,12 @@ class Instance extends Base {
 	}
 
 	getPresentationProperties() {
-		let cce =
-			(this.PreferredAccess &&
-				this.PreferredAccess.getPresentationProperties()) ||
-			{};
-		let bundle = this.ContentPackageBundle;
+		const cce = this.PreferredAccess?.getPresentationProperties() || {};
+		const bundle = this.ContentPackageBundle;
 
 		return {
-			author: cce.author || (bundle && bundle.author),
-			title: cce.title || (bundle && bundle.title),
+			author: cce.author || bundle?.author,
+			title: cce.title || bundle?.title,
 			label: cce.label,
 		};
 	}
@@ -588,7 +587,7 @@ class Instance extends Base {
 
 	resolveContentURL(url) {
 		let bundle = this.ContentPackageBundle;
-		let pkgs = (bundle && bundle.ContentPackages) || []; //probably should search all packages...
+		let pkgs = bundle?.ContentPackages || []; //probably should search all packages...
 		let pkg = pkgs.find(x => !x.isRenderable && x.root);
 
 		let root = pkg && Url.parse(pkg.root);
