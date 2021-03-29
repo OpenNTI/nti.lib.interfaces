@@ -1,6 +1,8 @@
 /*globals BUILD_PACKAGE_NAME, BUILD_PACKAGE_VERSION*/
 import EventEmitter from 'events';
 
+import { Base64 } from 'js-base64';
+
 import Logger from '@nti/util-logger';
 import { FileType, URL } from '@nti/lib-commons';
 
@@ -27,8 +29,6 @@ const SERVICE_DATA_CACHE_KEY = 'service-doc';
 const SERVICE_INST_CACHE_KEY = 'service-doc-instance';
 
 const logger = Logger.get('DataServerInterface');
-
-const { btoa } = global;
 
 const Request = Symbol('Request Adaptor');
 const onlineStatus = Symbol('Online Status');
@@ -551,7 +551,7 @@ export default class DataServerInterface extends EventEmitter {
 		}
 
 		const auth = password
-			? 'Basic ' + btoa(username + ':' + password)
+			? 'Basic ' + Base64.encode(username + ':' + password)
 			: undefined;
 		const options = {
 			url: url,

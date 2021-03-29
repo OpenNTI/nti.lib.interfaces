@@ -1,20 +1,16 @@
+import { Base64 } from 'js-base64';
+
 import { parseNTIID } from '@nti/lib-ntiids';
 
 //NOTE: this utility exists in lib-ntiids and needs to be imported from there
 
 const COMMON_PREFIX = 'tag:nextthought.com,2011-10:';
-const { atob, btoa } = global;
 
 export const SPECIFIC_TYPE = '__nti_object_href';
 
 export function encodeIdFrom(href) {
-	try {
-		const id = encodeURIComponent(btoa(href));
-		return `${COMMON_PREFIX}${SPECIFIC_TYPE}-${id}`;
-	} catch (e) {
-		console.error('Missing polyfill for btoa'); //eslint-disable-line no-console
-		throw e;
-	}
+	const id = encodeURIComponent(Base64.encode(href));
+	return `${COMMON_PREFIX}${SPECIFIC_TYPE}-${id}`;
 }
 
 export function isHrefId(id) {
@@ -29,10 +25,5 @@ export function decodeHrefFrom(id) {
 	}
 
 	const { typeSpecific } = data;
-	try {
-		return atob(decodeURIComponent(typeSpecific));
-	} catch (e) {
-		console.error('Missing polyfill for atob'); //eslint-disable-line no-console
-		throw e;
-	}
+	return Base64.decode(decodeURIComponent(typeSpecific));
 }
