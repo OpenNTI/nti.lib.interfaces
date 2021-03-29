@@ -30,7 +30,7 @@ export default class MediaIndex {
 		function prefix(o) {
 			o.src = URL.resolve(root || '', o.src);
 			o.srcjsonp = o.srcjsonp
-				? URL.resolve(root, o.srcjsonp)
+				? URL.resolve(root || '', o.srcjsonp)
 				: o.srcjsonp;
 			return o;
 		}
