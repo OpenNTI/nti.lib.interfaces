@@ -1,3 +1,3 @@
-// import CourseContentDataSource from './CourseContentDataSource';
+// import CourseContentDataSource from './CourseContentDataSource.js';
 // export default CourseContentDataSource;
-export { default as default } from './CourseContentDataSource';
+export { default as default } from './CourseContentDataSource.js';

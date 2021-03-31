@@ -1,5 +1,5 @@
 /** @module BaseDataSource */
-import { Service, Parent } from '../constants';
+import { Service, Parent } from '../constants.js';
 
 const BASE = Symbol('Base');
 const KNOWN_PARAMS = Symbol('Known Params');

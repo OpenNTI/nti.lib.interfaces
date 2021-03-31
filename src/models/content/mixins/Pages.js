@@ -1,5 +1,5 @@
-import { Service } from '../../../constants';
-import DiscussionInterface from '../../../mixins/DiscussionInterface';
+import { Service } from '../../../constants.js';
+import DiscussionInterface from '../../../mixins/DiscussionInterface.js';
 
 const DiscussionType = 'application/vnd.nextthought.note';
 

@@ -1,8 +1,8 @@
 import { decorate, pluck } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import Entity from './Entity';
+import Entity from './Entity.js';
 
 const getID = e => (typeof e === 'object' ? e.getID() : e);
 

@@ -1,10 +1,10 @@
 import { URL } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
-import getLinkImpl from '../utils/getlink';
-import maybeWait from '../utils/maybe-wait';
-import { Parser, Service, NO_LINK } from '../constants';
-import { createUploadTask } from '../tasks';
+import getLinkImpl from '../utils/get-link.js';
+import maybeWait from '../utils/maybe-wait.js';
+import { Parser, Service, NO_LINK } from '../constants.js';
+import { createUploadTask } from '../tasks/index.js';
 
 const logger = Logger.get('mixins:HasLinks');
 

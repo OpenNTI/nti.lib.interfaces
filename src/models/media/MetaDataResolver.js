@@ -1,9 +1,9 @@
-import { Service } from '../../constants';
+import { Service } from '../../constants.js';
 
-import Vimeo from './MetaDataResolverForVimeo';
-import YouTube from './MetaDataResolverForYouTube';
-import Kaltura from './MetaDataResolverForKaltura';
-import Wistia from './MetaDataResolverForWistia';
+import Vimeo from './MetaDataResolverForVimeo.js';
+import YouTube from './MetaDataResolverForYouTube.js';
+import Kaltura from './MetaDataResolverForKaltura.js';
+import Wistia from './MetaDataResolverForWistia.js';
 
 const services = {
 	vimeo: Vimeo,

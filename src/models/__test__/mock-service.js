@@ -1,4 +1,4 @@
-import { Service } from '../../constants';
+import { Service } from '../../constants.js';
 
 export default {
 	isService: Service,

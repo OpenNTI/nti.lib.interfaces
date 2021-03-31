@@ -1,8 +1,8 @@
-import kaltura from './kaltura';
-import vimeo from './vimeo';
-import youtube from './youtube';
-import wistia from './wistia';
-import { ensureProtocol } from './utils';
+import kaltura from './kaltura.js';
+import vimeo from './vimeo.js';
+import youtube from './youtube.js';
+import wistia from './wistia.js';
+import { ensureProtocol } from './utils.js';
 
 const providers = [kaltura, vimeo, youtube, wistia];
 

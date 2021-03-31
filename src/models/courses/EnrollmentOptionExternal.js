@@ -1,8 +1,8 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import EnrollmentOption from './EnrollmentOption';
+import EnrollmentOption from './EnrollmentOption.js';
 
 class EnrollmentOptionExternal extends EnrollmentOption {
 	static MimeType = [

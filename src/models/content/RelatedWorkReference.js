@@ -7,17 +7,17 @@ import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 import { isNTIID } from '@nti/lib-ntiids';
 
-import { Mixin as ContentTreeMixin } from '../../content-tree';
-import Completable from '../../mixins/Completable';
-import UserDataStore from '../../stores/UserData';
+import { Mixin as ContentTreeMixin } from '../../content-tree/index.js';
+import Completable from '../../mixins/Completable.js';
+import UserDataStore from '../../stores/UserData.js';
 import {
 	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
 	Service,
-} from '../../constants';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+} from '../../constants.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
-import Pages from './mixins/Pages';
+import Pages from './mixins/Pages.js';
 
 const UserData = Symbol('UserData');
 

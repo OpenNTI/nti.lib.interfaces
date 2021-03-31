@@ -7,21 +7,21 @@ import { mixin } from '@nti/lib-decorators';
 import { isNTIID } from '@nti/lib-ntiids';
 import { decorate, URL, wait } from '@nti/lib-commons';
 
-import { parse } from '../models/Parser';
-import { Workspace } from '../models';
-import Capabilities from '../models/Capabilities';
-import CommunitiesWorkspace from '../models/community/Workspace';
-import AbstractPlaceholder from '../models/AbstractPlaceholder';
-import Batch from '../data-sources/data-types/Batch';
+import { parse } from '../models/Parser.js';
+import { Workspace } from '../models/index.js';
+import Capabilities from '../models/Capabilities.js';
+import CommunitiesWorkspace from '../models/community/Workspace.js';
+import AbstractPlaceholder from '../models/AbstractPlaceholder.js';
+import Batch from '../data-sources/data-types/Batch.js';
 import {
 	Mixin as Pendability,
 	attach as attachPendingQueue,
-} from '../mixins/Pendability';
-import { Mixin as InstanceCacheContainer } from '../mixins/InstanceCacheContainer';
-import DataCache from '../utils/datacache';
-import getLink from '../utils/getlink';
-import maybeWait from '../utils/maybe-wait';
-import { isHrefId, decodeHrefFrom } from '../utils/href-ntiids';
+} from '../mixins/Pendability.js';
+import { Mixin as InstanceCacheContainer } from '../mixins/InstanceCacheContainer.js';
+import DataCache from '../utils/data-cache.js';
+import getLink from '../utils/get-link.js';
+import maybeWait from '../utils/maybe-wait.js';
+import { isHrefId, decodeHrefFrom } from '../utils/href-ntiids.js';
 import {
 	REL_USER_SEARCH,
 	REL_USER_UNIFIED_SEARCH,
@@ -30,11 +30,11 @@ import {
 	Context,
 	Server,
 	Service,
-} from '../constants';
+} from '../constants.js';
 
-import ContactsStore from './Contacts';
-import GroupsStore from './Groups';
-import Enrollment from './Enrollment';
+import ContactsStore from './Contacts.js';
+import GroupsStore from './Groups.js';
+import Enrollment from './Enrollment.js';
 
 const ENROLLMENT = Symbol('enrollment');
 

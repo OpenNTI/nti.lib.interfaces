@@ -1,4 +1,4 @@
-import { createHandlers } from './createHandlers';
+import { createHandlers } from './createHandlers.js';
 
 const registry = [];
 

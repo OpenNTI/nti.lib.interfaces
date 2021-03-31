@@ -1,7 +1,7 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../../Registry';
-import Base from '../../Base';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Base from '../../Base.js';
 
 class SCORMCourseMetadata extends Base {
 	static MimeType = [COMMON_PREFIX + 'courseware_scorm.scormcoursemetadata'];

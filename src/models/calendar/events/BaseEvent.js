@@ -1,7 +1,7 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model } from '../../Registry';
-import Base from '../../Base';
+import { model } from '../../Registry.js';
+import Base from '../../Base.js';
 
 class BaseEvent extends Base {
 	static MimeType = '__base-event__';

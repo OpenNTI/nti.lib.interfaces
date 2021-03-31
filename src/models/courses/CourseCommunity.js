@@ -1,5 +1,5 @@
-import AbstractCommunity from '../AbstractCommunity';
-import { Channels } from '../community';
+import AbstractCommunity from '../AbstractCommunity.js';
+import { Channels } from '../community/index.js';
 
 const ContentsCache = new Map();
 

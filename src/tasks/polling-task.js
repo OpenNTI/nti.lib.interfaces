@@ -1,4 +1,4 @@
-import Task from './Task';
+import Task from './Task.js';
 
 export default function createPollTask(poll, interval, stepOff = 0) {
 	if (!poll || typeof poll !== 'function') {

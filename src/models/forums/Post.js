@@ -2,10 +2,10 @@ import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
 // import Editable from '../../mixins/Editable'; //Base already mixes in Editable
-import Likable from '../../mixins/Likable';
-import DiscussionInterface from '../../mixins/DiscussionInterface';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import Likable from '../../mixins/Likable.js';
+import DiscussionInterface from '../../mixins/DiscussionInterface.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
 class Post extends Base {
 	static MimeType = [

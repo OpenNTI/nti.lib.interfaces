@@ -1,8 +1,8 @@
 import Logger from '@nti/util-logger';
 
-import { MODEL_INSTANCE_CACHE_KEY } from '../constants';
+import { MODEL_INSTANCE_CACHE_KEY } from '../constants.js';
 
-import Registry from './Registry';
+import Registry from './Registry.js';
 
 const logger = Logger.get('models:Parser');
 

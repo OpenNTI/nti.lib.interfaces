@@ -1,1 +1,1 @@
-export * as Channels from './channels';
+export * as Channels from './channels/index.js';

@@ -1,5 +1,5 @@
-export { default as FreeResponse } from './FreeResponse';
-export { default as Matching } from './Matching';
-export { default as ModeledContent } from './ModeledContent';
-export { default as MultipleChoice } from './MultipleChoice';
-export { default as Ordering } from './Ordering';
+export { default as FreeResponse } from './FreeResponse.js';
+export { default as Matching } from './Matching.js';
+export { default as ModeledContent } from './ModeledContent.js';
+export { default as MultipleChoice } from './MultipleChoice.js';
+export { default as Ordering } from './Ordering.js';

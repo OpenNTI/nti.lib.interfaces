@@ -1,10 +1,10 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { model, COMMON_PREFIX } from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import AdministrativeIdentity from './mixins/AdministrativeIdentity';
-import Enrollment from './Enrollment';
+import AdministrativeIdentity from './mixins/AdministrativeIdentity.js';
+import Enrollment from './Enrollment.js';
 
 class InstanceAdministrativeRole extends Enrollment {
 	static MimeType =

@@ -1,11 +1,11 @@
 import { decorate } from '@nti/lib-commons';
 
-import Achievements from '../../stores/Achievements';
-import Stream from '../../stores/Stream';
-import { Service, TOS_NOT_ACCEPTED } from '../../constants';
-import { model, COMMON_PREFIX } from '../Registry';
+import Achievements from '../../stores/Achievements.js';
+import Stream from '../../stores/Stream.js';
+import { Service, TOS_NOT_ACCEPTED } from '../../constants.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import Entity from './Entity';
+import Entity from './Entity.js';
 
 const LOAD_PROFILE_CACHE = Symbol('Load Profile Cache');
 

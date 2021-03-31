@@ -1,15 +1,15 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { Service, Parser as parse } from '../../constants';
-import GetContents from '../../mixins/GetContents';
-import DiscussionInterface from '../../mixins/DiscussionInterface';
-import getLink from '../../utils/getlink';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
-import { encodeIdFrom } from '../../utils/href-ntiids';
+import { Service, Parser as parse } from '../../constants.js';
+import GetContents from '../../mixins/GetContents.js';
+import DiscussionInterface from '../../mixins/DiscussionInterface.js';
+import getLink from '../../utils/get-link.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
+import { encodeIdFrom } from '../../utils/href-ntiids.js';
 
-import ForumContentsDataSource from './forum-contents-data-source';
+import ForumContentsDataSource from './forum-contents-data-source/index.js';
 
 const KnownSorts = ['createdTime', 'Last Modified', 'PostCount', 'LikeCount'];
 

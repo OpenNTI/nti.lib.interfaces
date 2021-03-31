@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import getFuzzyTargetProperty from '../get-fuzzy-target-property';
+import getFuzzyTargetProperty from '../get-fuzzy-target-property.js';
 
 describe('getFuzzyTargetProperty', () => {
 	test('matches Target-NTIID', () => {

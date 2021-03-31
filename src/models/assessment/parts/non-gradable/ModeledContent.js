@@ -1,7 +1,7 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../../../Registry';
-import ModeledContent from '../ModeledContent';
+import { model, COMMON_PREFIX } from '../../../Registry.js';
+import ModeledContent from '../ModeledContent.js';
 
 class NonGradableModeledContent extends ModeledContent {
 	static MimeType =

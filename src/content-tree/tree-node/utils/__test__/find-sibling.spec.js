@@ -1,6 +1,6 @@
 /* eslint-env jest */
-import { createMockNode } from '../../../__test__/common';
-import { findNextSibling, findPrevSibling } from '../find-sibling';
+import { createMockNode } from '../../../__test__/common.js';
+import { findNextSibling, findPrevSibling } from '../find-sibling.js';
 
 describe('ContentTree findSiblings', () => {
 	describe('findNextSibling', () => {

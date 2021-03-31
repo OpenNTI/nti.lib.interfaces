@@ -1,8 +1,8 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../../Registry';
-import QuestionSubmission from '../QuestionSubmission';
-import { resolveSubmitTo } from '../utils';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import QuestionSubmission from '../QuestionSubmission.js';
+import { resolveSubmitTo } from '../utils.js';
 
 class PollSubmission extends QuestionSubmission {
 	static MimeType = COMMON_PREFIX + 'assessment.pollsubmission';

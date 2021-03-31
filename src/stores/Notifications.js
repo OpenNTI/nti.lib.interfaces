@@ -3,9 +3,9 @@ import EventEmitter from 'events';
 import Logger from '@nti/util-logger';
 import { forward, wait, URL } from '@nti/lib-commons';
 
-import { Service, ROOT_NTIID, REL_MESSAGE_INBOX } from '../constants';
-import { parse } from '../models/Parser';
-import getLink from '../utils/getlink';
+import { Service, ROOT_NTIID, REL_MESSAGE_INBOX } from '../constants.js';
+import { parse } from '../models/Parser.js';
+import getLink from '../utils/get-link.js';
 
 let inflight;
 

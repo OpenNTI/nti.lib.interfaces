@@ -1,10 +1,10 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
-import MetaDataResolver from './MetaDataResolver';
-import MediaSourceFactory from './MediaSourceFactory';
+import MetaDataResolver from './MetaDataResolver.js';
+import MediaSourceFactory from './MediaSourceFactory.js';
 
 const resolver = Symbol('Resolver');
 const resolveCanAccess = Symbol('Resolve Can Access');

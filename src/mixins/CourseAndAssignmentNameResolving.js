@@ -4,8 +4,8 @@
 
 import { isNTIID } from '@nti/lib-ntiids';
 
-import { Service } from '../constants';
-import getLink from '../utils/getlink';
+import { Service } from '../constants.js';
+import getLink from '../utils/get-link.js';
 
 export default {
 	initMixin() {

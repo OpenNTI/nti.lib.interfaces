@@ -2,7 +2,7 @@
 /* eslint-env jest */
 import Logger from '@nti/util-logger';
 
-import Registry, { MAP } from '../Registry';
+import Registry, { MAP } from '../Registry.js';
 
 const logger = Logger.get('models:Registry');
 

@@ -2,10 +2,10 @@ import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
-import { getPrivate } from '../utils/private';
-import Paged from '../mixins/Paged';
+import { getPrivate } from '../utils/private.js';
+import Paged from '../mixins/Paged.js';
 
-import Stream from './Stream';
+import Stream from './Stream.js';
 
 const logger = Logger.get('store:GradeBookSummary');
 

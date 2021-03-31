@@ -1,4 +1,4 @@
-import { Service } from '../constants';
+import { Service } from '../constants.js';
 
 export default class FiveMinuteInterface {
 	static fromService(service) {

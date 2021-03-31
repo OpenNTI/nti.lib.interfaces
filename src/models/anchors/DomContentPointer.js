@@ -1,8 +1,8 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import ContentPointer from './ContentPointer';
+import ContentPointer from './ContentPointer.js';
 
 const VALID_ROLES = ['start', 'end', 'ancestor'];
 

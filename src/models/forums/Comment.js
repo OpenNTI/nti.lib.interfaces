@@ -1,11 +1,11 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import Threadable from '../../mixins/Threadable';
-import DiscussionInterface from '../../mixins/DiscussionInterface';
-import { model, COMMON_PREFIX } from '../Registry';
+import Threadable from '../../mixins/Threadable.js';
+import DiscussionInterface from '../../mixins/DiscussionInterface.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import Post from './Post';
+import Post from './Post.js';
 
 class Comment extends Post {
 	static MimeType = [

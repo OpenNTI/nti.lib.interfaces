@@ -1,16 +1,16 @@
 /* eslint-env jest */
 import Logger from '@nti/util-logger';
 
-import MockServiceBase from '../../../__test__/mock-service';
-import AssignmentHistoryItem from '../AssignmentHistoryItem';
+import MockServiceBase from '../../../__test__/mock-service.js';
+import AssignmentHistoryItem from '../AssignmentHistoryItem.js';
 // Since the AssignmentHistoryItem is a composite model, we import dependent models:
-import '../AssignmentFeedbackContainer';
-import '../AssignmentHistoryItemContainer';
-import '../MetadataAttemptItem';
-import '../AssignmentSubmission';
-import '../../QuestionSetSubmission';
-import '../../QuestionSubmission';
-import '../../../courses/Grade';
+import '../AssignmentFeedbackContainer.js';
+import '../AssignmentHistoryItemContainer.js';
+import '../MetadataAttemptItem.js';
+import '../AssignmentSubmission.js';
+import '../../QuestionSetSubmission.js';
+import '../../QuestionSubmission.js';
+import '../../../courses/Grade.js';
 
 import data from './AssignmentHistoryItem.json';
 

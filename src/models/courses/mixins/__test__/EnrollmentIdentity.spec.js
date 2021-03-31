@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import mixin from '../EnrollmentIdentity';
+import mixin from '../EnrollmentIdentity.js';
 
 describe('EnrollmentIdentity Mixin', () => {
 	test('should define isEnrollment = true', () => {

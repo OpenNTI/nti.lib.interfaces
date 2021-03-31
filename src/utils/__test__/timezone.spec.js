@@ -7,7 +7,7 @@ import {
 	getTimezoneFromCookie,
 	getTimezoneFromEnvironment,
 	getTimezone,
-} from '../timezone';
+} from '../timezone.js';
 
 const logger = Logger.get('interfaces:utils:timezone');
 

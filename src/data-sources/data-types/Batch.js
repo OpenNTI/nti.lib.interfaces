@@ -1,4 +1,4 @@
-import Base from '../../models/Base';
+import Base from '../../models/Base.js';
 
 export default class Batch extends Base {
 	// prettier-ignore

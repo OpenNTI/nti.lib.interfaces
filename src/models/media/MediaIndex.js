@@ -1,12 +1,12 @@
 import { isEmpty, URL } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
-import { Service, Parent } from '../../constants';
-import { parse } from '../Parser';
+import { Service, Parent } from '../../constants.js';
+import { parse } from '../Parser.js';
 
-import PageSourceModel from './MediaIndexBackedPageSource';
-import MediaSource from './MediaSource';
-import Transcript from './Transcript';
+import PageSourceModel from './MediaIndexBackedPageSource.js';
+import MediaSource from './MediaSource.js';
+import Transcript from './Transcript.js';
 
 const logger = Logger.get('lib:models:MediaIndex');
 

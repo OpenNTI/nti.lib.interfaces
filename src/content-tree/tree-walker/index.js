@@ -1,1 +1,1 @@
-export { default as Walker } from './Walker';
+export { default as Walker } from './Walker.js';

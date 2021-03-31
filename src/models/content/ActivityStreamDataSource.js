@@ -1,8 +1,8 @@
 import { URL } from '@nti/lib-commons';
 
-import PagedDataSource from '../../data-sources/PagedDataSource';
-import PagedBatch from '../../data-sources/data-types/Page';
-import { NO_LINK } from '../../constants';
+import PagedDataSource from '../../data-sources/PagedDataSource.js';
+import PagedBatch from '../../data-sources/data-types/Page.js';
+import { NO_LINK } from '../../constants.js';
 
 export default class ActivityStreamDataSource extends PagedDataSource {
 	async requestPage(pageID, { batchSize = 10, ...params }) {

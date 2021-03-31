@@ -1,13 +1,13 @@
 import { decorate, URL } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
-import { Service } from '../../constants';
-import MediaIndex from '../media/MediaIndex';
-import TablesOfContents from '../content/TablesOfContents';
-import ToC from '../content/XMLBasedTableOfContents';
-import PlacementProvider from '../../authoring/placement/providers/ContentPackage';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
+import { Service } from '../../constants.js';
+import MediaIndex from '../media/MediaIndex.js';
+import TablesOfContents from '../content/TablesOfContents.js';
+import ToC from '../content/XMLBasedTableOfContents.js';
+import PlacementProvider from '../../authoring/placement/providers/ContentPackage.js';
 
 const logger = Logger.get('models:content:Package');
 

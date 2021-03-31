@@ -1,9 +1,9 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import ContentRangeDescription from './ContentRangeDescription';
-import TimeContentPointer from './TimeContentPointer';
+import ContentRangeDescription from './ContentRangeDescription.js';
+import TimeContentPointer from './TimeContentPointer.js';
 
 class TimeRangeDescription extends ContentRangeDescription {
 	static MimeType = COMMON_PREFIX + 'contentrange.timerangedescription';

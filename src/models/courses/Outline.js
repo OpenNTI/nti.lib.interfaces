@@ -1,9 +1,9 @@
 import { decorate, isEmpty, updateValue } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
-import PageSource from './OutlineNodeBackedPageSource';
+import PageSource from './OutlineNodeBackedPageSource.js';
 
 const INFLIGHT = Symbol('OutlineContents:RequestInflight');
 const MAX_DEPTH = Symbol('OutlineContents:maximum depth');

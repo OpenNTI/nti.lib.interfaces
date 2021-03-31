@@ -1,10 +1,10 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import Completable from '../../../mixins/Completable';
-import { ASSESSMENT_HISTORY_LINK } from '../../../constants';
-import { model, COMMON_PREFIX } from '../../Registry';
-import Base from '../../Base';
+import Completable from '../../../mixins/Completable.js';
+import { ASSESSMENT_HISTORY_LINK } from '../../../constants.js';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Base from '../../Base.js';
 
 class SurveyReference extends Base {
 	static MimeType = COMMON_PREFIX + 'surveyref';

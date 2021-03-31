@@ -1,7 +1,7 @@
 import { decorate } from '@nti/lib-commons';
 
-import Base from '../Base';
-import { model, COMMON_PREFIX } from '../Registry';
+import Base from '../Base.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
 class RosterRecord extends Base {
 	static MimeType = COMMON_PREFIX + 'courses.rosterenrollmentsummary';

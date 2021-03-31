@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import filter from '../filter-non-required-items';
+import filter from '../filter-non-required-items.js';
 
 function buildItem(required, items, label) {
 	return {

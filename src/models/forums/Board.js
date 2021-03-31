@@ -1,9 +1,9 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import GetContents from '../../mixins/GetContents';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import GetContents from '../../mixins/GetContents.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
 class Board extends Base {
 	static MimeType = [

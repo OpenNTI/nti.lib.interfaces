@@ -1,9 +1,9 @@
 import XML from 'elementtree';
 
-import Base from '../Base';
+import Base from '../Base.js';
 
-import PageSource from './TableOfContentsBackedPageSource';
-import Node from './TableOfContentsNode';
+import PageSource from './TableOfContentsBackedPageSource.js';
+import Node from './TableOfContentsNode.js';
 
 // Probably shouldn't extend Base...
 // TODO: Remove Base as a super...

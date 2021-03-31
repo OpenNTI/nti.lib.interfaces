@@ -1,12 +1,12 @@
 import { decorate } from '@nti/lib-commons';
 
-import Stream from '../../stores/Stream';
-import { Service } from '../../constants';
-import { model, COMMON_PREFIX } from '../Registry';
-import { Channels } from '../community';
-import PagedLinkDataSource from '../../data-sources/common/PagedLinkDataSource';
+import Stream from '../../stores/Stream.js';
+import { Service } from '../../constants.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import { Channels } from '../community/index.js';
+import PagedLinkDataSource from '../../data-sources/common/PagedLinkDataSource.js';
 
-import Entity from './Entity';
+import Entity from './Entity.js';
 
 const ResolveChannelList = Symbol('Resolve Channel List');
 

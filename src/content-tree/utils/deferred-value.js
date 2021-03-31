@@ -1,6 +1,6 @@
 const isDeferredValue = Symbol('Is Value Resolver');
 
-export default function deferredValue(value) {
+export function deferredValue(value) {
 	if (value && value[isDeferredValue]) {
 		return value;
 	}

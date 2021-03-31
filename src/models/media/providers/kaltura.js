@@ -2,7 +2,7 @@ import url from 'url';
 
 import QueryString from 'query-string';
 
-import { Service, Context } from '../../../constants';
+import { Service, Context } from '../../../constants.js';
 
 const NOT_FOUND = 'ENTRY_ID_NOT_FOUND';
 

@@ -2,9 +2,14 @@ import Logger from '@nti/util-logger';
 import { Parsing, Array as ArrayUtils } from '@nti/lib-commons';
 import { ntiidEquals } from '@nti/lib-ntiids';
 
-import { getPropertyDescriptor } from '../utils';
-import { Parser, RepresentsSameObject, Service, IsModel } from '../constants';
-import { parse } from '../models/Parser';
+import { getPropertyDescriptor } from '../utils/get-property-descriptor.js';
+import {
+	Parser,
+	RepresentsSameObject,
+	Service,
+	IsModel,
+} from '../constants.js';
+import { parse } from '../models/Parser.js';
 
 export const IsFieldSet = Symbol('Is FieldSet');
 export const FieldSet = { [IsFieldSet]: true };

@@ -1,9 +1,9 @@
 import { Parsing } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
-import { Service } from '../constants';
+import { Service } from '../constants.js';
 
-import { getCacheFor } from './InstanceCacheContainer';
+import { getCacheFor } from './InstanceCacheContainer.js';
 
 //A model can implement a getter with this symbol that will return a boolean. (True if the model wants to be rereshed)
 //If the new data has a newer Modified time, it will always be refreshed.
@@ -42,7 +42,7 @@ export function parseOrRefresh(service, parent, data) {
 	let inst = map[id];
 	if (!inst || !id) {
 		let allowNewInstance =
-			Boolean(cache) || Cls.AllowWildDisconntectedInstances;
+			Boolean(cache) || Cls.AllowWildDisconnectedInstances;
 		if (!cache) {
 			logger.warn(
 				'Rogue Instance! %o This parent does not desend from an InstanceCacheContainer: %o',

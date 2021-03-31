@@ -1,7 +1,7 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../../Registry';
-import Part from '../Part';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Part from '../Part.js';
 
 const isShortAnswer = RegExp.prototype.test.bind(/ShortAnswer/i);
 const hasInputs = RegExp.prototype.test.bind(/<input/i);

@@ -1,13 +1,13 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin /*, readonly*/ } from '@nti/lib-decorators';
 
-import UserDataStore from '../../stores/UserData';
+import UserDataStore from '../../stores/UserData.js';
 import {
 	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
 	Service,
-} from '../../constants';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+} from '../../constants.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
 const UserData = Symbol('UserData');
 

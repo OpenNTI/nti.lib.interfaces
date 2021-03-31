@@ -1,6 +1,6 @@
 /* eslint-env jest */
-import Grade from '../Grade';
-import MockServiceBase from '../../__test__/mock-service';
+import Grade from '../Grade.js';
+import MockServiceBase from '../../__test__/mock-service.js';
 
 import data from './grade.json';
 

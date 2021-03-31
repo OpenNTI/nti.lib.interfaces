@@ -4,10 +4,10 @@ import { decorate } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 import { mixin } from '@nti/lib-decorators';
 
-import { Service, DELETED } from '../constants';
-import { Mixin as Pendability } from '../mixins/Pendability';
-import { parseListFn } from '../models/Parser';
-import { threadThreadables, topLevelOnly } from '../utils/UserDataThreader';
+import { Service, DELETED } from '../constants.js';
+import { Mixin as Pendability } from '../mixins/Pendability.js';
+import { parseListFn } from '../models/Parser.js';
+import { threadThreadables, topLevelOnly } from '../utils/UserDataThreader.js';
 
 const logger = Logger.get('store:UserData');
 

@@ -1,4 +1,4 @@
-import { isSameNode, nodeMatches } from '../../utils';
+import { isSameNode, nodeMatches } from '../../utils/index.js';
 
 async function findFirstDescendant(node) {
 	const children = await node.getChildNodes();

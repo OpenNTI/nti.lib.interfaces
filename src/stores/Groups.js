@@ -1,11 +1,11 @@
 import Logger from '@nti/util-logger';
 
-import { Service, DELETED } from '../constants';
-import { parse } from '../models/Parser';
-import maybeWait from '../utils/maybe-wait';
+import { Service, DELETED } from '../constants.js';
+import { parse } from '../models/Parser.js';
+import maybeWait from '../utils/maybe-wait.js';
 
-import { getNewListData } from './Contacts';
-import EntityStore from './EntityStore';
+import { getNewListData } from './Contacts.js';
+import EntityStore from './EntityStore.js';
 
 export const MIME_TYPE = 'application/vnd.nextthought.dynamicfriendslist';
 

@@ -1,3 +1,3 @@
-export { default as CalendarEventRef } from './CalendarEventRef';
-export { default as CourseCalendar } from './CourseCalendar';
-export * from './events';
+export { default as CalendarEventRef } from './CalendarEventRef.js';
+export { default as CourseCalendar } from './CourseCalendar.js';
+export * from './events/index.js';

@@ -3,14 +3,18 @@ import path from 'path';
 
 // import Logger from '@nti/util-logger';
 
-import AssignmentSummary from '../../../stores/AssignmentSummary';
-import GradeBookSummary from '../../../stores/GradeBookSummary';
-import { Service, ASSESSMENT_HISTORY_LINK, NO_LINK } from '../../../constants';
-import { getPrivate } from '../../../utils/private';
+import AssignmentSummary from '../../../stores/AssignmentSummary.js';
+import GradeBookSummary from '../../../stores/GradeBookSummary.js';
+import {
+	Service,
+	ASSESSMENT_HISTORY_LINK,
+	NO_LINK,
+} from '../../../constants.js';
+import { getPrivate } from '../../../utils/private.js';
 
-import Base from './Collection';
-import CollectionSummary from './CollectionSummary';
-import ActivityStore from './AssignmentActivityStore';
+import Base from './Collection.js';
+import CollectionSummary from './CollectionSummary.js';
+import ActivityStore from './AssignmentActivityStore.js';
 
 // const logger = Logger.get('assignment:Collection:Instructor');
 

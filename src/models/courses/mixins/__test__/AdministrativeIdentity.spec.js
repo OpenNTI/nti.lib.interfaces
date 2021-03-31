@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import mixin from '../AdministrativeIdentity';
+import mixin from '../AdministrativeIdentity.js';
 
 describe('AdministrativeIdentity Mixin', () => {
 	test('should define isAdministrative = true', () => {

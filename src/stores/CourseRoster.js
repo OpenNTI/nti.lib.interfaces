@@ -1,11 +1,11 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { Service } from '../constants';
-import Base from '../models/Base';
-import Paged from '../mixins/Paged';
+import { Service } from '../constants.js';
+import Base from '../models/Base.js';
+import Paged from '../mixins/Paged.js';
 
-import Stream from './Stream';
+import Stream from './Stream.js';
 
 //@private
 const FILTERS = {

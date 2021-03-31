@@ -9,7 +9,7 @@ async function flattenChild(child) {
 	return [child, ...children];
 }
 
-export default async function flatten(children) {
+export async function flatten(children) {
 	if (!children || !children.length) {
 		return children;
 	}

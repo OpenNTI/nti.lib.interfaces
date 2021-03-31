@@ -4,10 +4,10 @@ import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
-import { Service } from '../constants';
-import { Mixin as Pendability } from '../mixins/Pendability';
-// import getLink from '../utils/getlink';
-import { parseListFn } from '../models/Parser';
+import { Service } from '../constants.js';
+import { Mixin as Pendability } from '../mixins/Pendability.js';
+// import getLink from '../utils/get-link.js';
+import { parseListFn } from '../models/Parser.js';
 
 const logger = Logger.get('store:EntityStore');
 const DATA = Symbol();

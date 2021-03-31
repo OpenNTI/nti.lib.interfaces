@@ -1,7 +1,7 @@
 /* eslint-env jest */
-import PurchaseAttempt from '../PurchaseAttempt';
-import MockService from '../../__test__/mock-service';
-import '../../index'; //load all the models
+import PurchaseAttempt from '../PurchaseAttempt.js';
+import MockService from '../../__test__/mock-service.js';
+import '../../index.js'; //load all the models
 
 const data = {
 	ChargeID: null,

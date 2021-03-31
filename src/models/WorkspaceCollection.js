@@ -1,5 +1,5 @@
-// import {model, COMMON_PREFIX} from './Registry';
-import Base from './Base';
+// import {model, COMMON_PREFIX} from './Registry.js';
+import Base from './Base.js';
 
 export default class WorkspaceCollection extends Base {
 	// static MimeType = COMMON_PREFIX + 'workspace.collection'

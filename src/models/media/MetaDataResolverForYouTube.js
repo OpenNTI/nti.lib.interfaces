@@ -4,7 +4,7 @@ import path from 'path';
 import QueryString from 'query-string';
 import { parse, toSeconds } from 'iso8601-duration';
 
-import { getAPIKey } from '../../utils/GoogleAPI';
+import { getAPIKey } from '../../utils/GoogleAPI.js';
 
 const API = 'https://www.googleapis.com/youtube/v3/videos?';
 const FAIL_POSTER = 'http://img.youtube.com/vi/{0}/hqdefault.jpg';

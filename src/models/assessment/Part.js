@@ -4,9 +4,9 @@ import { mixin } from '@nti/lib-decorators';
 import {
 	Mixin as HasContent,
 	SetupContentProperties,
-} from '../../mixins/HasContent';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+} from '../../mixins/HasContent.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
 //Rules:
 // Show Hints from start if they are present. If more than one, increment which one you see every time your show.

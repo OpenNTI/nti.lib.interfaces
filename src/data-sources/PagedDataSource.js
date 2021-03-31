@@ -1,4 +1,4 @@
-import BaseDataSource from './BaseDataSource';
+import BaseDataSource from './BaseDataSource.js';
 
 const PAGES = Symbol('Pages');
 

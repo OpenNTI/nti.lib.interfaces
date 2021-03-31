@@ -1,15 +1,15 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { Service } from '../../constants';
-import TablesOfContents from '../content/TablesOfContents';
-import MediaIndex from '../media/MediaIndex';
-import { Publishable } from '../../mixins';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
-import Forum from '../forums/Forum';
+import { Service } from '../../constants.js';
+import TablesOfContents from '../content/TablesOfContents.js';
+import MediaIndex from '../media/MediaIndex.js';
+import Publishable from '../../mixins/Publishable.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
+import Forum from '../forums/Forum.js';
 
-import BundleCommunity from './BundleCommunity';
+import BundleCommunity from './BundleCommunity.js';
 import BundleStreamDataSource from './BundleStreamDataSource.js';
 import BundleSearchDataSource from './BundleSearchDataSource.js';
 

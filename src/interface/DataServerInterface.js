@@ -1,25 +1,26 @@
 /*globals BUILD_PACKAGE_NAME, BUILD_PACKAGE_VERSION*/
 import EventEmitter from 'events';
 
-import { Base64 } from 'js-base64';
+import { Base64 } from 'js-base64/base64.mjs';
 
 import Logger from '@nti/util-logger';
 import { FileType, URL } from '@nti/lib-commons';
 
-import DataCache from '../utils/datacache';
-import parseBody from '../utils/attempt-json-parse';
-import getLink, { getLinks } from '../utils/getlink';
-import encodeFormData from '../utils/encode-form-data';
+import DataCache from '../utils/data-cache.js';
+import parseBody from '../utils/attempt-json-parse.js';
+import getLink, { getLinks } from '../utils/get-link.js';
+import encodeFormData from '../utils/encode-form-data.js';
 import OnlineStatus from '../utils/OnlineStatus.js';
-import toObject from '../utils/to-object';
-import { getTimezone } from '../utils/timezone';
-import { attach as attachPendingQueue } from '../mixins/Pendability';
-import Service from '../stores/Service';
+import toObject from '../utils/to-object.js';
+import { getTimezone } from '../utils/timezone.js';
+import { attach as attachPendingQueue } from '../mixins/Pendability.js';
+import Service from '../stores/Service.js';
 import {
 	REQUEST_CONFLICT_EVENT,
 	REQUEST_ERROR_EVENT,
 	TOS_NOT_ACCEPTED,
-} from '../constants';
+	ServiceStash,
+} from '../constants.js';
 
 const CONTINUE = 'logon.continue';
 const CONTINUE_ANONYMOUSLY = 'logon.continue-anonymously';
@@ -465,7 +466,7 @@ export default class DataServerInterface extends EventEmitter {
 		);
 	}
 
-	getServiceDocument(context, options) {
+	async getServiceDocument(context, options) {
 		const { refreshing } = options || {};
 		const cache = DataCache.getForContext(context);
 		const cached = cache.get(SERVICE_INST_CACHE_KEY);
@@ -528,12 +529,17 @@ export default class DataServerInterface extends EventEmitter {
 			// Wait for all the tasks that got spun up when we parsed the data...
 			.then(doc => doc.waitForPending()); // waitForPending resolves with itself ("doc" in this case)
 
-		//once we have an instance, stuff it in the cache so we don't keep building it.
-		promise.then(set, () => {}); //This forked promise needs to handle the rejection (the noop).
-
 		//until the promise resolves, cache the promise itself. (Promise.resolve()
 		//when given a promise, will resolve when the passed promise resolves)
 		set(promise);
+
+		//once we have an instance, stuff it in the cache so we don't keep building it.
+		const service = await promise;
+		set(service);
+
+		if (context) {
+			context[ServiceStash] = service;
+		}
 
 		//Return a promise that will fulfill with the instance...
 		return promise;

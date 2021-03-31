@@ -1,4 +1,4 @@
-import { getHandlers } from './registry';
+import { getHandlers } from './registry.js';
 
 const refresh = item => item.refresh().then(() => item.onChange());
 

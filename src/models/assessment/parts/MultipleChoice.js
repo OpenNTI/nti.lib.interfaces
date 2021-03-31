@@ -1,7 +1,7 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../../Registry';
-import Part from '../Part';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Part from '../Part.js';
 
 class MultipleChoice extends Part {
 	static MimeType = [

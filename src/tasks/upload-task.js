@@ -1,5 +1,5 @@
 /* eslint-env browser */
-import Task from './Task';
+import Task from './Task.js';
 
 function jsonMessage(str) {
 	try {

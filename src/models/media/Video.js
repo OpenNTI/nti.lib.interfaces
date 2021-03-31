@@ -1,17 +1,17 @@
 import { decorate, isEmpty } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import Completable from '../../mixins/Completable';
-import UserDataStore from '../../stores/UserData';
+import Completable from '../../mixins/Completable.js';
+import UserDataStore from '../../stores/UserData.js';
 import {
 	NO_LINK,
 	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
 	Service,
-} from '../../constants';
-import getLink from '../../utils/getlink';
-import { model, COMMON_PREFIX } from '../Registry';
-import Pages from '../content/mixins/Pages';
-import Base from '../Base';
+} from '../../constants.js';
+import getLink from '../../utils/get-link.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Pages from '../content/mixins/Pages.js';
+import Base from '../Base.js';
 
 const UserData = Symbol('UserData');
 

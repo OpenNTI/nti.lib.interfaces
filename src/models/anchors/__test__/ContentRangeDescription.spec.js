@@ -1,6 +1,6 @@
 /* eslint-env jest */
-import ContentRangeDescription from '../ContentRangeDescription';
-import MockService from '../../__test__/mock-service';
+import ContentRangeDescription from '../ContentRangeDescription.js';
+import MockService from '../../__test__/mock-service.js';
 
 describe('ContentRangeDescription Tests', () => {
 	describe('locator tests', () => {

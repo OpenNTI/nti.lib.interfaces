@@ -8,7 +8,7 @@ function getCompletedDate(item, items) {
 	);
 }
 
-export default function Applyer(targetModelClass) {
+export default function Applier(targetModelClass) {
 	Object.assign(targetModelClass.Fields, {
 		CompletedItem: { type: 'model' },
 		CompletionRequired: { type: 'boolean' },

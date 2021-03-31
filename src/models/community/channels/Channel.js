@@ -2,8 +2,8 @@ import EventEmitter from 'events';
 
 import { defineReadOnly } from '@nti/lib-commons';
 
-import { hideField } from '../../../mixins/Fields';
-import Iterator from '../../../data-sources/Iterator';
+import { hideField } from '../../../mixins/Fields.js';
+import Iterator from '../../../data-sources/Iterator.js';
 
 export default class CommunityChannel extends EventEmitter {
 	static fromForum(forum, section = null) {

@@ -1,7 +1,7 @@
 /* eslint-env jest */
-import Base from '../Base';
+import Base from '../Base.js';
 
-import MockService from './mock-service';
+import MockService from './mock-service.js';
 
 describe('Model: Base Class', () => {
 	test('Mixins are mixed in', () => {

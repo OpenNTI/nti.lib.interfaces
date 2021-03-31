@@ -1,4 +1,4 @@
-import { Service, Parser as parse } from '../constants';
+import { Service, Parser as parse } from '../constants.js';
 
 const Submitted = Symbol('Submitted');
 

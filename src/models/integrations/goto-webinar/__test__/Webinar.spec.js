@@ -1,7 +1,7 @@
 /* eslint-env jest */
-import Webinar from '../Webinar';
-import WebinarSession from '../WebinarSession';
-import MockService from '../../../__test__/mock-service';
+import Webinar from '../Webinar.js';
+import WebinarSession from '../WebinarSession.js';
+import MockService from '../../../__test__/mock-service.js';
 
 const buildWebinar = function (sessionTimes) {
 	let webinar = new Webinar(MockService);

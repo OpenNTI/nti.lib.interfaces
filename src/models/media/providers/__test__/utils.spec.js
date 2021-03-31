@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import { getVideo } from '../utils';
+import { getVideo } from '../utils.js';
 
 test('getVideoID', () => {
 	expect(getVideo('//vimeo.com/11111111')).toMatchInlineSnapshot(`

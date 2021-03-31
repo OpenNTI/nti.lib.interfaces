@@ -1,10 +1,10 @@
 import { decorate } from '@nti/lib-commons';
 
-import { Service, DELETED } from '../../constants';
-import Stream from '../../stores/Stream';
-import { model, COMMON_PREFIX } from '../Registry';
+import { Service, DELETED } from '../../constants.js';
+import Stream from '../../stores/Stream.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import FriendsList from './FriendsList';
+import FriendsList from './FriendsList.js';
 
 class DynamicFriendsList extends FriendsList {
 	static MimeType = COMMON_PREFIX + 'dynamicfriendslist';

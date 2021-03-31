@@ -1,5 +1,5 @@
-import Base from '../Base';
-import { Service } from '../../constants';
+import Base from '../Base.js';
+import { Service } from '../../constants.js';
 
 const getNodeId = node => node.getContentId();
 const buildRef = node =>

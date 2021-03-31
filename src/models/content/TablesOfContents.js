@@ -1,4 +1,4 @@
-import Base from '../Base';
+import Base from '../Base.js';
 
 const TABLES = Symbol('tables');
 // Probably shouldn't extend Base...

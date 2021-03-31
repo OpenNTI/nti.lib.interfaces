@@ -9,16 +9,16 @@ import {
 	Summary,
 	Parser as parse,
 	SCOPED_COURSE_INSTANCE,
-} from '../../constants';
-import { Mixin as ContentTreeMixin } from '../../content-tree';
-import Publishable from '../../mixins/Publishable';
-import ContentConstraints from '../../mixins/ContentConstraints';
-import { model, COMMON_PREFIX } from '../Registry';
-import filterNonRequiredItems from '../../utils/filter-non-required-items';
-import getFuzzyTargetProperty from '../../utils/get-fuzzy-target-property';
+} from '../../constants.js';
+import { Mixin as ContentTreeMixin } from '../../content-tree/index.js';
+import Publishable from '../../mixins/Publishable.js';
+import ContentConstraints from '../../mixins/ContentConstraints.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import filterNonRequiredItems from '../../utils/filter-non-required-items.js';
+import getFuzzyTargetProperty from '../../utils/get-fuzzy-target-property.js';
 
-import Outline from './Outline';
-import fallbackOverview from './_fallbacks.OverviewFromToC';
+import Outline from './Outline.js';
+import fallbackOverview from './_fallbacks.OverviewFromToC.js';
 
 const logger = Logger.get('models:courses:OutlineNode');
 

@@ -1,10 +1,10 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { Service } from '../../constants';
-import Submission from '../../mixins/Submission';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import { Service } from '../../constants.js';
+import Submission from '../../mixins/Submission.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
 class QuestionSetSubmission extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.questionsetsubmission';

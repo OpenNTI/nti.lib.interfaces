@@ -1,8 +1,8 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import Folder from './Folder';
+import Folder from './Folder.js';
 
 class Root extends Folder {
 	static MimeType = [

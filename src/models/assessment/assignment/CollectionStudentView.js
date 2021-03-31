@@ -1,11 +1,11 @@
 import Logger from '@nti/util-logger';
 
-import { Service, ASSESSMENT_HISTORY_LINK } from '../../../constants';
-import { getPrivate } from '../../../utils/private';
+import { Service, ASSESSMENT_HISTORY_LINK } from '../../../constants.js';
+import { getPrivate } from '../../../utils/private.js';
 
-import Base from './Collection';
-import CollectionSummary from './CollectionSummary';
-import HistoryCollection from './AssignmentHistoryCollection';
+import Base from './Collection.js';
+import CollectionSummary from './CollectionSummary.js';
+import HistoryCollection from './AssignmentHistoryCollection.js';
 
 const logger = Logger.get('assignment:Collection:Student');
 

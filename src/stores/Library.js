@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import Logger from '@nti/util-logger';
 import { URL, defineProtected } from '@nti/lib-commons';
 
-import getLink from '../utils/getlink';
+import getLink from '../utils/get-link.js';
 
 const logger = Logger.get('store:Library');
 const getInstances = service =>

@@ -1,6 +1,6 @@
 import Logger from '@nti/util-logger';
 
-import { IsModel } from '../constants';
+import { IsModel } from '../constants.js';
 
 const logger = Logger.get('models:Registry');
 

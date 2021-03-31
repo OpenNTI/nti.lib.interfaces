@@ -1,9 +1,9 @@
 import { decorate } from '@nti/lib-commons';
 import { parseNTIID, isNTIID } from '@nti/lib-ntiids';
 
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
-import { Service } from '../../constants';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
+import { Service } from '../../constants.js';
 
 const RESOLVE_TARGET = Symbol('Target');
 const RESOLVED_TARGET_NTIID = Symbol('Resolved Target NTIID');

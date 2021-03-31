@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import Task from '../Task';
+import Task from '../Task.js';
 
 describe('Task tests', () => {
 	beforeEach(() => {

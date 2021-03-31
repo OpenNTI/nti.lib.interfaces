@@ -1,12 +1,12 @@
 import { decorate, forward } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { SCOPED_COURSE_INSTANCE, Service } from '../../constants';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import { SCOPED_COURSE_INSTANCE, Service } from '../../constants.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
-import CourseIdentity from './mixins/CourseIdentity';
-import EnrollmentIdentity from './mixins/EnrollmentIdentity';
+import CourseIdentity from './mixins/CourseIdentity.js';
+import EnrollmentIdentity from './mixins/EnrollmentIdentity.js';
 
 const emptyFunction = () => {};
 const EMPTY_CATALOG_ENTRY = { getAuthorLine: emptyFunction };

@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import mixin from '../CourseIdentity';
+import mixin from '../CourseIdentity.js';
 
 describe('CourseIdentity Mixin', () => {
 	test('should define isCourse = true', () => {

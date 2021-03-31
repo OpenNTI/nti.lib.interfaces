@@ -1,7 +1,7 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../../Registry';
-import Base from '../../Base';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Base from '../../Base.js';
 
 class SCORMReference extends Base {
 	static MimeType = [COMMON_PREFIX + 'scormcontentref'];
@@ -16,8 +16,10 @@ class SCORMReference extends Base {
 		'ScormContentInfo': {type: 'model' }
 	}
 
-	get CompletedItem () { return this.ScormContentInfo?.CompletedItem; }
-	set CompletedItem (item) {
+	get CompletedItem() {
+		return this.ScormContentInfo?.CompletedItem;
+	}
+	set CompletedItem(item) {
 		if (this.ScormContentInfo) {
 			this.ScormContentInfo.CompletedItem = item;
 		}

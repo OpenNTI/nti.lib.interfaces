@@ -1,4 +1,4 @@
-export default async function isSameNode(nodeA, nodeB) {
+export async function isSameNode(nodeA, nodeB) {
 	if ((!nodeA && nodeB) || (nodeA && !nodeB)) {
 		return false;
 	}

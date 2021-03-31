@@ -1,8 +1,8 @@
 import { decorate } from '@nti/lib-commons';
 
-import { Parser as parse } from '../../../constants';
-import { model, COMMON_PREFIX } from '../../Registry';
-import Base from '../../Base';
+import { Parser as parse } from '../../../constants.js';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Base from '../../Base.js';
 
 const BY_MOST_RECENT = (a, b) => b.MostRecentTimestamp - a.MostRecentTimestamp;
 const sorted = (_, stream, data) =>

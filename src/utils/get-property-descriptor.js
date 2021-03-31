@@ -1,4 +1,4 @@
-export default function getPropertyDescriptor(scope, property) {
+export function getPropertyDescriptor(scope, property) {
 	return !scope
 		? null
 		: Object.getOwnPropertyDescriptor(scope, property) ||

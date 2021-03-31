@@ -1,6 +1,6 @@
-import resolveChildrenItems from './resolve-children-items';
+import { resolveChildrenItems } from './resolve-children-items.js';
 
-export default async function filter(children, filterFn, recursive) {
+export async function filter(children, filterFn, recursive) {
 	if (!children || !children.length) {
 		return children;
 	}

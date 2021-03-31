@@ -1,6 +1,6 @@
 import { defineProtected } from '@nti/lib-commons';
 
-import { placeItemIn, removeItemFrom } from '../factories';
+import { placeItemIn, removeItemFrom } from '../factories/index.js';
 
 const ContentNodeMimeType =
 	'application/vnd.nextthought.courses.courseoutlinecontentnode';

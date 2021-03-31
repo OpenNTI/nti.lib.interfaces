@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 
-import callOnce from './utils/call-once-monitor';
+import callOnce from './utils/call-once-monitor.js';
 
 const NotStarted = 'not-started';
 const Running = 'running';

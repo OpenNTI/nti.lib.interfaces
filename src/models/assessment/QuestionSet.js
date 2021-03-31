@@ -1,13 +1,13 @@
 import { decorate, pluck } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import Completable from '../../mixins/Completable';
-import PlacementProvider from '../../authoring/placement/providers/QuestionSet';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import Completable from '../../mixins/Completable.js';
+import PlacementProvider from '../../authoring/placement/providers/QuestionSet.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
-import SubmittableIdentity from './mixins/SubmittableIdentity';
-import QuestionSetSubmission from './QuestionSetSubmission';
+import SubmittableIdentity from './mixins/SubmittableIdentity.js';
+import QuestionSetSubmission from './QuestionSetSubmission.js';
 
 const SUBMITTED_TYPE =
 	'application/vnd.nextthought.assessment.assessedquestionset';

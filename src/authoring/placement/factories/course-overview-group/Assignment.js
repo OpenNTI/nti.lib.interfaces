@@ -1,4 +1,4 @@
-import OrderedContents from '../../../ordered-contents';
+import OrderedContents from '../../../ordered-contents/index.js';
 
 const AssignmentMimeType = 'application/vnd.nextthought.assessment.assignment';
 const TimedAssignmentMimeType =

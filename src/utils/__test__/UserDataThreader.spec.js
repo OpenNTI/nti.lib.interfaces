@@ -1,7 +1,7 @@
 /* eslint-env jest */
 import { isEmpty } from '@nti/lib-commons';
 
-import * as UserDataThreader from '../UserDataThreader';
+import * as UserDataThreader from '../UserDataThreader.js';
 
 describe('UserDataThreader utils', () => {
 	test('Makes public api available', () => {

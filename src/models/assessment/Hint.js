@@ -1,9 +1,9 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { Mixin as HasContent } from '../../mixins/HasContent';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import { Mixin as HasContent } from '../../mixins/HasContent.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
 class Hint extends Base {
 	static MimeType = [

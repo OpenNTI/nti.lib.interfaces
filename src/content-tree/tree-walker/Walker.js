@@ -1,5 +1,5 @@
-import { ERRORS } from '../Contants';
-import { deferredValue } from '../utils';
+import { ERRORS } from '../constants.js';
+import { deferredValue } from '../utils/index.js';
 
 import {
 	getNodes,
@@ -11,7 +11,7 @@ import {
 	selectPrev,
 	selectDescendantMatching,
 	selectFirstDescendant,
-} from './utils';
+} from './utils/index.js';
 
 const CURRENT_NODE = Symbol('Current Node');
 const ROOT = Symbol('Root Node');

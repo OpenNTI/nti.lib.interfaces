@@ -1,6 +1,6 @@
-import { Service } from '../../constants';
+import { Service } from '../../constants.js';
 
-import Batch from './Batch';
+import Batch from './Batch.js';
 
 export default class Page extends Batch {
 	static fromList(list, params, service, parent) {

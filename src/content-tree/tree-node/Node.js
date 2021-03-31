@@ -1,8 +1,8 @@
 import { Array as arr } from '@nti/lib-commons';
 
-import { Walker as TreeWalker } from '../tree-walker';
-import { ERRORS } from '../Contants';
-import { deferredValue } from '../utils';
+import { Walker as TreeWalker } from '../tree-walker/index.js';
+import { ERRORS } from '../constants.js';
+import { deferredValue } from '../utils/index.js';
 
 import {
 	filter,
@@ -12,7 +12,7 @@ import {
 	findParent,
 	findParentOrSelf,
 	flatten,
-} from './utils';
+} from './utils/index.js';
 
 const ITEM = Symbol('Item');
 const PARENT = Symbol('Parent');

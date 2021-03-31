@@ -1,9 +1,9 @@
 import { decorate } from '@nti/lib-commons';
 
-import { Parent, Service } from '../constants';
+import { Parent, Service } from '../constants.js';
 
-import { model, COMMON_PREFIX } from './Registry';
-import Base from './Base';
+import { model, COMMON_PREFIX } from './Registry.js';
+import Base from './Base.js';
 
 class Change extends Base {
 	static MimeType = COMMON_PREFIX + 'change';

@@ -1,9 +1,9 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { model, COMMON_PREFIX } from '../Registry';
-import Completable from '../../mixins/Completable';
-import Base from '../Base';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Completable from '../../mixins/Completable.js';
+import Base from '../Base.js';
 
 /*
 	description: data.description,

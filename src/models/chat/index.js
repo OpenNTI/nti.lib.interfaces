@@ -1,4 +1,4 @@
-export { default as MessageInfo } from './MessageInfo';
-export { default as RoomInfo } from './RoomInfo';
-export { default as Transcript } from './Transcript';
-export { default as TranscriptSummary } from './TranscriptSummary';
+export { default as MessageInfo } from './MessageInfo.js';
+export { default as RoomInfo } from './RoomInfo.js';
+export { default as Transcript } from './Transcript.js';
+export { default as TranscriptSummary } from './TranscriptSummary.js';

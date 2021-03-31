@@ -1,9 +1,9 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { Mixin as ContentTreeMixin } from '../../../content-tree';
-import { model, COMMON_PREFIX } from '../../Registry';
-import Base from '../../Base';
+import { Mixin as ContentTreeMixin } from '../../../content-tree/index.js';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Base from '../../Base.js';
 
 class LessonOverview extends Base {
 	static MimeType = COMMON_PREFIX + 'ntilessonoverview';

@@ -1,7 +1,7 @@
 import { URL } from '@nti/lib-commons';
 
-import PagedDataSource from '../../../data-sources/PagedDataSource';
-import PagedBatch from '../../../data-sources/data-types/Page';
+import PagedDataSource from '../../../data-sources/PagedDataSource.js';
+import PagedBatch from '../../../data-sources/data-types/Page.js';
 
 export default class CourseAllActivityDataSource extends PagedDataSource {
 	async requestPage(pageId, params) {

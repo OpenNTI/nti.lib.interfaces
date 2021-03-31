@@ -1,5 +1,5 @@
-import { Service } from '../constants';
-import getLink from '../utils/getlink';
+import { Service } from '../constants.js';
+import getLink from '../utils/get-link.js';
 
 //TODO: There isn't enough here to warrent a whole heavy class. This should move to the catalog API on the app side.
 

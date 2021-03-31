@@ -1,10 +1,10 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import Completable from '../../../mixins/Completable';
-import { createPollingTask } from '../../../tasks';
-import { model, COMMON_PREFIX } from '../../Registry';
-import Base from '../../Base';
+import Completable from '../../../mixins/Completable.js';
+import { createPollingTask } from '../../../tasks/index.js';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Base from '../../Base.js';
 
 const IMPLICIT_ERROR = Symbol('Implicit Error');
 

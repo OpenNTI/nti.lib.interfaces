@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import getPropertyDescriptor from '../get-property-descriptor';
+import { getPropertyDescriptor } from '../get-property-descriptor.js';
 
 describe('getPropertyDescriptor', () => {
 	const obj = { test: 1234 };

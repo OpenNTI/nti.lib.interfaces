@@ -5,11 +5,11 @@ import {
 	ASSESSMENT_HISTORY_LINK,
 	SURVEY_AGGREGATED_LINK,
 	SURVEY_REPORT_LINK,
-} from '../../../constants';
-import { model, COMMON_PREFIX } from '../../Registry';
-import Question from '../Question';
+} from '../../../constants.js';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Question from '../Question.js';
 
-import PollSubmission from './PollSubmission';
+import PollSubmission from './PollSubmission.js';
 
 class Poll extends Question {
 	static MimeType = COMMON_PREFIX + 'napoll';

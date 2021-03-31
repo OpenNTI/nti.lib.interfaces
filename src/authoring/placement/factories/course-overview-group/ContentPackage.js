@@ -1,4 +1,4 @@
-import OrderedContents from '../../../ordered-contents';
+import OrderedContents from '../../../ordered-contents/index.js';
 
 const ContentPackageMimeType = 'application/vnd.nextthought.contentpackage';
 const RenderableContentPackageMimeType =

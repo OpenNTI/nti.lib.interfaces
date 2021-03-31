@@ -1,9 +1,9 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import assessed from '../../mixins/AssessedAssessmentPart';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import assessed from '../../mixins/AssessedAssessmentPart.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
 class AssessedQuestionSet extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.assessedquestionset';

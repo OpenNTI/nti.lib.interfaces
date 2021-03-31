@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import deferredValue from '../deferred-value';
+import { deferredValue } from '../deferred-value.js';
 
 describe('ContentTree deferredValue', () => {
 	test('Resolving a non-function value, echoes the value', async () => {

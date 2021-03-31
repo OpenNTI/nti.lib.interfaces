@@ -7,10 +7,10 @@ import Logger from '@nti/util-logger';
 import { decorate, Promises } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { Service, DELETED } from '../constants';
-import { Mixin as Pendability } from '../mixins/Pendability';
-import { parse, parseListFn } from '../models/Parser';
-// import getLink from '../utils/getlink';
+import { Service, DELETED } from '../constants.js';
+import { Mixin as Pendability } from '../mixins/Pendability.js';
+import { parse, parseListFn } from '../models/Parser.js';
+// import getLink from '../utils/get-link.js';
 
 export const MIME_TYPE = 'application/vnd.nextthought.friendslist';
 

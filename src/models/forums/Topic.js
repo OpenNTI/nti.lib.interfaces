@@ -1,15 +1,15 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { Service } from '../../constants';
-import Page from '../../data-sources/data-types/Page';
-import GetContents from '../../mixins/GetContents';
-import Likable from '../../mixins/Likable';
-import Pinnable from '../../mixins/Pinnable';
-import Flaggable from '../../mixins/Flaggable';
-import DiscussionInterface from '../../mixins/DiscussionInterface';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import { Service } from '../../constants.js';
+import Page from '../../data-sources/data-types/Page.js';
+import GetContents from '../../mixins/GetContents.js';
+import Likable from '../../mixins/Likable.js';
+import Pinnable from '../../mixins/Pinnable.js';
+import Flaggable from '../../mixins/Flaggable.js';
+import DiscussionInterface from '../../mixins/DiscussionInterface.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
 class Topic extends Base {
 	static MimeType = [

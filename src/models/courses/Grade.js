@@ -1,20 +1,20 @@
 import { decorate, pluck } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import names from '../../mixins/CourseAndAssignmentNameResolving';
+import names from '../../mixins/CourseAndAssignmentNameResolving.js';
 import {
 	cacheClassInstances,
 	AfterInstanceRefresh,
-} from '../../mixins/InstanceCacheable';
-import { getPrivate } from '../../utils/private';
-import { model, COMMON_PREFIX } from '../Registry';
+} from '../../mixins/InstanceCacheable.js';
+import { getPrivate } from '../../utils/private.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
 //
-import Base from '../Base';
+import Base from '../Base.js';
 
 const ENDS_IN_LETTER_REGEX = /\s[a-fiw-]$/i;
 
 class Grade extends Base {
-	static AllowWildDisconntectedInstances = true;
+	static AllowWildDisconnectedInstances = true;
 	static MimeType = [
 		COMMON_PREFIX + 'grade',
 		COMMON_PREFIX + 'gradebook.grade',

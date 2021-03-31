@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 
-import Channel from './Channel';
+import Channel from './Channel.js';
 
 function validateChannels(channels) {
 	if (!channels) {

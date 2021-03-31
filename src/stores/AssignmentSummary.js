@@ -1,10 +1,10 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { getPrivate } from '../utils/private';
-import Paged from '../mixins/Paged';
+import { getPrivate } from '../utils/private.js';
+import Paged from '../mixins/Paged.js';
 
-import Stream from './Stream';
+import Stream from './Stream.js';
 
 //@private
 const FILTERS = {

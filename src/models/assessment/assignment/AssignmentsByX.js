@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 
 import { Paging } from '@nti/lib-commons';
 
-import { initPrivate, getPrivate } from '../../../utils/private';
+import { initPrivate, getPrivate } from '../../../utils/private.js';
 
 const PageSource = Paging.ListBackedPageSource;
 

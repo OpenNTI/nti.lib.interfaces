@@ -1,7 +1,7 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../../Registry';
-import Integration from '../Integration';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Integration from '../Integration.js';
 
 const DISCONNECTED_MIMETYPE =
 	COMMON_PREFIX + 'integration.gotowebinarintegration';

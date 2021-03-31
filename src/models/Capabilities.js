@@ -1,4 +1,4 @@
-import { Service } from '../constants';
+import { Service } from '../constants.js';
 
 const CAPABILITIES = {
 	canUploadAvatar: 'nti.platform.customization.avatar_upload',

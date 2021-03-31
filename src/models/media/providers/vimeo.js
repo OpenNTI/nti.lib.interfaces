@@ -1,6 +1,6 @@
 import url from 'url';
 
-import { getMetaDataEntryPoint } from '../MetaDataResolverForVimeo';
+import { getMetaDataEntryPoint } from '../MetaDataResolverForVimeo.js';
 
 const vimeoRe = /vimeo/i;
 const VIMEO_URL_PARTS = /(?:https?:)?\/\/(?:(?:www|player)\.)?vimeo.com\/(?:(?:channels|video)\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?|#)/i;

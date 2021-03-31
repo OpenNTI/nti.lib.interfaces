@@ -1,17 +1,17 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import PlacementProvider from '../../../authoring/placement/providers/Assignment';
-import { Service, ASSESSMENT_HISTORY_LINK } from '../../../constants';
-import Publishable from '../../../mixins/Publishable';
-import Completable from '../../../mixins/Completable';
-import { model, COMMON_PREFIX } from '../../Registry';
-import Base from '../../Base';
-import SubmittableIdentity from '../mixins/SubmittableIdentity';
-import AssignmentIdentity from '../mixins/AssignmentIdentity';
-import { resolveSubmitTo } from '../utils';
+import PlacementProvider from '../../../authoring/placement/providers/Assignment.js';
+import { Service, ASSESSMENT_HISTORY_LINK } from '../../../constants.js';
+import Publishable from '../../../mixins/Publishable.js';
+import Completable from '../../../mixins/Completable.js';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Base from '../../Base.js';
+import SubmittableIdentity from '../mixins/SubmittableIdentity.js';
+import AssignmentIdentity from '../mixins/AssignmentIdentity.js';
+import { resolveSubmitTo } from '../utils.js';
 
-import AssignmentSubmission from './AssignmentSubmission';
+import AssignmentSubmission from './AssignmentSubmission.js';
 
 const ActiveSavePointPost = Symbol('ActiveSavePointPost');
 

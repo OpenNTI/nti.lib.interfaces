@@ -1,4 +1,4 @@
-import { readValueFor } from './Fields';
+import { readValueFor } from './Fields.js';
 
 const isFunction = f => typeof f === 'function';
 

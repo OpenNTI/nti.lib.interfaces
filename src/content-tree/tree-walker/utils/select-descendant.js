@@ -1,4 +1,4 @@
-import { nodeMatches } from '../../utils';
+import { nodeMatches } from '../../utils/index.js';
 
 function buildPredicate(skip, predicate) {
 	return item => {

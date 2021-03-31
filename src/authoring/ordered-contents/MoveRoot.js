@@ -1,6 +1,6 @@
-import { Service } from '../../constants';
+import { Service } from '../../constants.js';
 
-import OrderedContents from './WrapperUtil';
+import OrderedContents from './WrapperUtil.js';
 
 const ONMOVE = Symbol('on-move');
 

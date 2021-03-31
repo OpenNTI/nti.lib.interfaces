@@ -1,7 +1,7 @@
 import { URL } from '@nti/lib-commons';
 
-import PagedDataSource from '../PagedDataSource';
-import PageBatch from '../data-types/Page';
+import PagedDataSource from '../PagedDataSource.js';
+import PageBatch from '../data-types/Page.js';
 
 export default class PageLinkDataSource extends PagedDataSource {
 	static forLink(service, parent, link, knownParams) {

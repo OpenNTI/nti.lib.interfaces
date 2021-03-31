@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import Vimeo from '../vimeo';
+import Vimeo from '../vimeo.js';
 
 const ID = '11111111';
 const ALBUM_ID = '2222222';

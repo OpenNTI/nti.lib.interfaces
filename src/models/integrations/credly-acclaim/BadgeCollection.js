@@ -1,7 +1,7 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../../Registry';
-import Batch from '../../../data-sources/data-types/Batch';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Batch from '../../../data-sources/data-types/Batch.js';
 
 class CredlyAcclaimBadgeCollection extends Batch {
 	static MimeType = [

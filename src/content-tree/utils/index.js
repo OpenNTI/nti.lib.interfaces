@@ -1,3 +1,3 @@
-export { default as deferredValue } from './deferred-value';
-export { default as isSameNode } from './is-same-node';
-export { default as nodeMatches } from './node-matches';
+export * from './deferred-value.js';
+export * from './is-same-node.js';
+export * from './node-matches.js';

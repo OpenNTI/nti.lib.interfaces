@@ -4,8 +4,9 @@
   "author": "nextthought",
   "license": "UNLICENSED",
   "description": "Provides an interface for interacting with the dataserver via javascript.",
-  "main": ".index.js",
+  "main": "src/index.js",
   "module": "src/index.js",
+  "type": "module",
   "files": [
     ".index.js",
     "src"
@@ -38,8 +39,7 @@
     "lru-cache": "^6.0.0",
     "mime-types": "^2.1.0",
     "query-string": "^7.0.0",
-    "uuid": "^8.3.0",
-    "esm": "^3.2.25"
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "@nti/lib-scripts": "^2.0.0"

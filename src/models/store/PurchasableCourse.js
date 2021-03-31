@@ -1,8 +1,8 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import Purchasable from './Purchasable';
+import Purchasable from './Purchasable.js';
 
 class PurchasableCourse extends Purchasable {
 	static MimeType = COMMON_PREFIX + 'store.purchasablecourse';

@@ -1,4 +1,4 @@
-import { nodeMatches } from '../../utils';
+import { nodeMatches } from '../../utils/index.js';
 
 export async function getNodes(root, skip, ignoreChildren) {
 	const skipRoot = await nodeMatches(root, skip);

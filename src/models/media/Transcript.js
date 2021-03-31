@@ -1,8 +1,8 @@
 import { decorate } from '@nti/lib-commons';
 
-import { Parent } from '../../constants';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import { Parent } from '../../constants.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
 const EXISTING_TRANSCRIPT = ' A Transcript already exists';
 

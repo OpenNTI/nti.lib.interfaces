@@ -1,7 +1,7 @@
-import Interface from './interface/DataServerInterface';
-import cache from './utils/datacache';
-import Registry from './models/Registry';
-import * as Models from './models';
+import Interface from './interface/DataServerInterface.js';
+import cache from './utils/data-cache.js';
+import Registry from './models/Registry.js';
+import * as Models from './models/index.js';
 
 //Main Entry Point:
 export default function setup(config) {
@@ -13,15 +13,15 @@ export default function setup(config) {
 	};
 }
 
-export { default as Library } from './stores/Library';
-export { default as Notifications } from './stores/Notifications';
-export { default as FiveMinuteEnrollmentInterface } from './interface/FiveMinuteInterface';
+export { default as Library } from './stores/Library.js';
+export { default as Notifications } from './stores/Notifications.js';
+export { default as FiveMinuteEnrollmentInterface } from './interface/FiveMinuteInterface.js';
 
-export * from './constants';
-export * as Authoring from './authoring';
-export * as Mixins from './mixins';
-export * as UserDataThreader from './utils/UserDataThreader';
-export * as Tasks from './tasks';
+export * from './constants.js';
+export * as Authoring from './authoring/index.js';
+export * as Mixins from './mixins/index.js';
+export * as UserDataThreader from './utils/UserDataThreader.js';
+export * as Tasks from './tasks/index.js';
 
 export { Models };
 export function getModel(...args) {
@@ -30,4 +30,4 @@ export function getModel(...args) {
 export function registerModel(o) {
 	return Registry.register(o);
 }
-export { default as getLink } from './utils/getlink';
+export { default as getLink } from './utils/get-link.js';

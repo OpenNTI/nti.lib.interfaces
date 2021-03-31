@@ -1,8 +1,8 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import TimeContentPointer from './TimeContentPointer';
+import TimeContentPointer from './TimeContentPointer.js';
 
 class TranscriptContentPointer extends TimeContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.transcriptcontentpointer';

@@ -1,9 +1,9 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import ContentRangeDescription from './ContentRangeDescription';
-import DomContentPointer from './DomContentPointer';
+import ContentRangeDescription from './ContentRangeDescription.js';
+import DomContentPointer from './DomContentPointer.js';
 
 class DomContentRangeDescription extends ContentRangeDescription {
 	static MimeType = COMMON_PREFIX + 'contentrange.domcontentrangedescription';

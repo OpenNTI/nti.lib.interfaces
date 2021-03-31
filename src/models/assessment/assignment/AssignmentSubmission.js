@@ -1,9 +1,9 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import Submission from '../../../mixins/Submission';
-import { model, COMMON_PREFIX } from '../../Registry';
-import Base from '../../Base';
+import Submission from '../../../mixins/Submission.js';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Base from '../../Base.js';
 
 const RELS = {
 	ASSIGNMENT: 'Assignment',

@@ -1,7 +1,7 @@
-import Workspace from '../Workspace';
-import { Service } from '../../constants';
-import { parseListFn } from '../Parser';
-import Community from '../entities/Community';
+import Workspace from '../Workspace.js';
+import { Service } from '../../constants.js';
+import { parseListFn } from '../Parser.js';
+import Community from '../entities/Community.js';
 
 const CommunitiesCache = Symbol('CommunitiesCache');
 

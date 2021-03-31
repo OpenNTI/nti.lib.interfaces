@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import WrapperUtil from '../WrapperUtil';
+import WrapperUtil from '../WrapperUtil.js';
 
 function makeLabel(id) {
 	return `Label ${id}`;

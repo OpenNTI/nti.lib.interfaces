@@ -14,12 +14,12 @@ import {
 	Parser as parse,
 	Service,
 	Parent,
-} from '../../../constants';
-import Base from '../../Base';
-import { getPrivate } from '../../../utils/private';
+} from '../../../constants.js';
+import Base from '../../Base.js';
+import { getPrivate } from '../../../utils/private.js';
 
-import AssignmentsByX from './AssignmentsByX';
-import ActivityMixin from './AssignmentActivityMixin';
+import AssignmentsByX from './AssignmentsByX.js';
+import ActivityMixin from './AssignmentActivityMixin.js';
 
 const logger = Logger.get('assignment:Collection:Base');
 

@@ -1,2 +1,2 @@
-export { default as BaseReport } from './BaseReport';
-export { default as InstructorReport } from './InstructorReport';
+export { default as BaseReport } from './BaseReport.js';
+export { default as InstructorReport } from './InstructorReport.js';

@@ -1,8 +1,8 @@
 import { decorate } from '@nti/lib-commons';
 
-import { Service } from '../../constants';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import { Service } from '../../constants.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
 const POLL_INTERVAL = 3000;
 const POLL_TIMEOUT = Symbol('Poll Timeout');

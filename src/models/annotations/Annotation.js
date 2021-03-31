@@ -1,9 +1,9 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { Service } from '../../constants';
-import Likable from '../../mixins/Likable';
-import Base from '../Base';
+import { Service } from '../../constants.js';
+import Likable from '../../mixins/Likable.js';
+import Base from '../Base.js';
 
 class Annotation extends Base {
 	// prettier-ignore

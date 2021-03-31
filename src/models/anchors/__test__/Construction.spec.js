@@ -1,10 +1,10 @@
 /* eslint-env jest */
-import DomContentPointer from '../DomContentPointer';
-import ElementDomContentPointer from '../ElementDomContentPointer';
-import TextDomContentPointer from '../TextDomContentPointer';
-import DomContentRangeDescription from '../DomContentRangeDescription';
-import TextContext from '../TextContext';
-import MockService from '../../__test__/mock-service';
+import DomContentPointer from '../DomContentPointer.js';
+import ElementDomContentPointer from '../ElementDomContentPointer.js';
+import TextDomContentPointer from '../TextDomContentPointer.js';
+import DomContentRangeDescription from '../DomContentRangeDescription.js';
+import TextContext from '../TextContext.js';
+import MockService from '../../__test__/mock-service.js';
 
 const make = (C, o) => new C(MockService, null, o);
 

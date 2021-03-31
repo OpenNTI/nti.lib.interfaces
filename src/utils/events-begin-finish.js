@@ -1,4 +1,4 @@
-import { EVENT_BEGIN, EVENT_FINISH } from '../constants';
+import { EVENT_BEGIN, EVENT_FINISH } from '../constants.js';
 
 /**
  * Fire a EVENT_BEGIN on the emitter.

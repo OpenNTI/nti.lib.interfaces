@@ -1,10 +1,10 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { Service } from '../../../constants';
-import names from '../../../mixins/CourseAndAssignmentNameResolving';
-import { model, COMMON_PREFIX } from '../../Registry';
-import Base from '../../Base';
+import { Service } from '../../../constants.js';
+import names from '../../../mixins/CourseAndAssignmentNameResolving.js';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Base from '../../Base.js';
 
 class AssignmentFeedback extends Base {
 	static MimeType =

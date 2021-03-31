@@ -1,4 +1,4 @@
-import { KalturaProvider } from './providers';
+import { KalturaProvider } from './providers/index.js';
 
 const INSTANCES = new WeakMap();
 

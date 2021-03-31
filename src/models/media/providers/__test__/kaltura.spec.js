@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import Kaltura from '../kaltura';
+import Kaltura from '../kaltura.js';
 
 const PARTNER_ID = '555';
 const ID = '4321';

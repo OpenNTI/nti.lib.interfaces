@@ -1,7 +1,7 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
 //TODO: does this need to live somewhere else
 const DEFAULT_ICON = '/app/resources/images/elements/discussion-icon.png';

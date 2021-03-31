@@ -1,8 +1,8 @@
-import { register } from '../registry';
-import { createScopedHandlers } from '../createHandlers';
+import { register } from '../registry.js';
+import { createScopedHandlers } from '../createHandlers.js';
 
-import Question from './Question';
-import QuestionSet from './QuestionSet';
+import Question from './Question.js';
+import QuestionSet from './QuestionSet.js';
 
 const AssignmentType = 'application/vnd.nextthought.assessment.assignment';
 const TimedAssignmentType =

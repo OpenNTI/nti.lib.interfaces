@@ -1,9 +1,9 @@
 import { decorate } from '@nti/lib-commons';
 import { isNTIID } from '@nti/lib-ntiids';
 
-import { model, COMMON_PREFIX } from '../Registry';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import Topic from './Topic';
+import Topic from './Topic.js';
 
 class BlogEntry extends Topic {
 	static MimeType = COMMON_PREFIX + 'forums.personalblogentry';

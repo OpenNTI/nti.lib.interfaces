@@ -1,4 +1,4 @@
-import { getVideo } from './utils';
+import { getVideo } from './utils.js';
 
 const YOU_TUBE = 'https://www.youtube.com';
 

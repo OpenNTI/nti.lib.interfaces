@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import Node from '../Node';
+import Node from '../Node.js';
 
 function createObject(name, children) {
 	const obj = {

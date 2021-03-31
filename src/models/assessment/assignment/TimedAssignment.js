@@ -1,9 +1,9 @@
 import { decorate } from '@nti/lib-commons';
 
-import { Service } from '../../../constants';
-import { model, COMMON_PREFIX } from '../../Registry';
+import { Service } from '../../../constants.js';
+import { model, COMMON_PREFIX } from '../../Registry.js';
 
-import Assignment from './Assignment';
+import Assignment from './Assignment.js';
 
 const secondsToMilliseconds = s => s * 1000;
 

@@ -1,10 +1,10 @@
 import { decorate, pluck } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { NO_LINK } from '../../constants';
-import Threadable from '../../mixins/Threadable';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import { NO_LINK } from '../../constants.js';
+import Threadable from '../../mixins/Threadable.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
 class MessageInfo extends Base {
 	static MimeType = COMMON_PREFIX + 'messageinfo';

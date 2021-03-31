@@ -1,6 +1,6 @@
 import { pluck } from '@nti/lib-commons';
 
-import { NO_LINK } from '../constants';
+import { NO_LINK } from '../constants.js';
 
 export default {
 	like() {

@@ -3,14 +3,14 @@ import Logger from '@nti/util-logger';
 import { mixin } from '@nti/lib-decorators';
 import { isNTIID } from '@nti/lib-ntiids';
 
-import { Service, Parser as parse } from '../../constants';
-import Page from '../../data-sources/data-types/Page';
-import { Flaggable } from '../../mixins';
-import Threadable from '../../mixins/Threadable';
-import DiscussionInterface from '../../mixins/DiscussionInterface';
-import { model, COMMON_PREFIX } from '../Registry';
+import { Service, Parser as parse } from '../../constants.js';
+import Page from '../../data-sources/data-types/Page.js';
+import Flaggable from '../../mixins/Flaggable.js';
+import Threadable from '../../mixins/Threadable.js';
+import DiscussionInterface from '../../mixins/DiscussionInterface.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import Highlight from './Highlight';
+import Highlight from './Highlight.js';
 
 const logger = Logger.get('models:annotations:Note');
 const UpdatedDiscussionCount = Symbol('Discussion Count');

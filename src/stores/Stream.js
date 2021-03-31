@@ -5,11 +5,11 @@ import invariant from 'invariant';
 import { mixin, URL } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
-import { Service, Parent, DELETED, SortOrder } from '../constants';
-import { Mixin as Pendability } from '../mixins/Pendability';
-import getLink from '../utils/getlink';
-import { parseListFn } from '../models/Parser';
-import { initPrivate, getPrivate } from '../utils/private';
+import { Service, Parent, DELETED, SortOrder } from '../constants.js';
+import { Mixin as Pendability } from '../mixins/Pendability.js';
+import getLink from '../utils/get-link.js';
+import { parseListFn } from '../models/Parser.js';
+import { initPrivate, getPrivate } from '../utils/private.js';
 
 class RetryBatch extends Error {
 	constructor(fn = () => {}) {

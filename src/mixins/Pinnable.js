@@ -1,4 +1,4 @@
-export default function PinnableApplyer(targetModelClass) {
+export default function PinnableApplier(targetModelClass) {
 	Object.assign(targetModelClass.Fields, {
 		Pinned: { type: 'boolean' },
 	});

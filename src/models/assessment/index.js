@@ -1,23 +1,23 @@
-import Registry from '../Registry';
+import Registry from '../Registry.js';
 
-export { default as AssessedPart } from './AssessedPart';
-export { default as AssessedQuestion } from './AssessedQuestion';
-export { default as AssessedQuestionSet } from './AssessedQuestionSet';
-export { default as Hint } from './Hint';
-export { default as Part } from './Part';
-export { default as Question } from './Question';
-export { default as QuestionSet } from './QuestionSet';
-export { default as QuestionSetReference } from './QuestionSetReference';
-export { default as QuestionSetSubmission } from './QuestionSetSubmission';
-export { default as QuestionSubmission } from './QuestionSubmission';
-export { default as Response } from './Response';
-export { default as Solution } from './Solution';
-export { default as WordBank } from './WordBank';
-export { default as WordEntry } from './WordEntry';
+export { default as AssessedPart } from './AssessedPart.js';
+export { default as AssessedQuestion } from './AssessedQuestion.js';
+export { default as AssessedQuestionSet } from './AssessedQuestionSet.js';
+export { default as Hint } from './Hint.js';
+export { default as Part } from './Part.js';
+export { default as Question } from './Question.js';
+export { default as QuestionSet } from './QuestionSet.js';
+export { default as QuestionSetReference } from './QuestionSetReference.js';
+export { default as QuestionSetSubmission } from './QuestionSetSubmission.js';
+export { default as QuestionSubmission } from './QuestionSubmission.js';
+export { default as Response } from './Response.js';
+export { default as Solution } from './Solution.js';
+export { default as WordBank } from './WordBank.js';
+export { default as WordEntry } from './WordEntry.js';
 
-export * as parts from './parts';
-export * as assignment from './assignment';
-export * as survey from './survey';
+export * as parts from './parts/index.js';
+export * as assignment from './assignment/index.js';
+export * as survey from './survey/index.js';
 
 Registry.ignore('assessment.questionbank');
 Registry.ignore('assessment.questionmap');

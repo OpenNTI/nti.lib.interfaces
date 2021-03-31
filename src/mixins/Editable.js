@@ -1,5 +1,5 @@
-import { Service, DELETED, SAVE } from '../constants';
-import { begin, finishers } from '../utils/events-begin-finish';
+import { Service, DELETED, SAVE } from '../constants.js';
+import { begin, finishers } from '../utils/events-begin-finish.js';
 
 const after = (task, call) => task.catch(() => {}).then(() => call());
 

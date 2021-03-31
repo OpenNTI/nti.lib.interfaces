@@ -1,6 +1,6 @@
-import { nodeMatches } from '../../utils';
+import { nodeMatches } from '../../utils/node-matches.js';
 
-import resovleChildrenItems from './resolve-children-items';
+import { resolveChildrenItems } from './resolve-children-items.js';
 
 async function matches({ item, node }, predicate) {
 	if (typeof predicate === 'function') {
@@ -11,7 +11,7 @@ async function matches({ item, node }, predicate) {
 }
 
 async function findMatch(children, predicate) {
-	const resolved = await resovleChildrenItems(children);
+	const resolved = await resolveChildrenItems(children);
 
 	for (let child of resolved) {
 		const match = await matches(child, predicate);

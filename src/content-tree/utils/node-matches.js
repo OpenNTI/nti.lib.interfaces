@@ -1,4 +1,4 @@
-export default async function nodeMatches(node, predicate) {
+export async function nodeMatches(node, predicate) {
 	if (!predicate) {
 		return false;
 	}

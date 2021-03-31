@@ -1,16 +1,16 @@
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import PlacementProvider from '../../authoring/placement/providers/Question';
-import { Mixin as HasContent } from '../../mixins/HasContent';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import PlacementProvider from '../../authoring/placement/providers/Question.js';
+import { Mixin as HasContent } from '../../mixins/HasContent.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
-import QuestionIdentity from './mixins/QuestionIdentity';
-import SubmittableIdentity from './mixins/SubmittableIdentity';
-import Part from './Part';
-import QuestionSet from './QuestionSet';
-import QuestionSubmission from './QuestionSubmission';
+import QuestionIdentity from './mixins/QuestionIdentity.js';
+import SubmittableIdentity from './mixins/SubmittableIdentity.js';
+import Part from './Part.js';
+import QuestionSet from './QuestionSet.js';
+import QuestionSubmission from './QuestionSubmission.js';
 
 const Individual = Symbol('Individual');
 

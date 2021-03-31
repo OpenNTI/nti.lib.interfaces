@@ -1,8 +1,8 @@
 import { decorate } from '@nti/lib-commons';
 
-import { thread } from '../../utils/UserDataThreader';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+import { thread } from '../../utils/UserDataThreader.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
 class Transcript extends Base {
 	static MimeType = COMMON_PREFIX + 'transcript';

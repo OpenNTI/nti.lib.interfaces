@@ -1,7 +1,7 @@
 import { encodeForURI as encodeNTIIDForURI } from '@nti/lib-ntiids';
 
-import { Parent, Service } from '../../constants';
-import Base from '../Base';
+import { Parent, Service } from '../../constants.js';
+import Base from '../Base.js';
 
 const getNodeId = node =>
 	node && (node.getContentId ? node.getContentId() : node.getID());

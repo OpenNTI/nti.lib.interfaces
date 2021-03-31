@@ -3,18 +3,18 @@ import path from 'path';
 import { decorate, Markup, URL } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import UserDataStore from '../../stores/UserData';
+import UserDataStore from '../../stores/UserData.js';
 import {
 	NO_LINK,
 	REL_USER_GENERATED_DATA,
 	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
 	Service,
 	Parser as parse,
-} from '../../constants';
-import { model, COMMON_PREFIX } from '../Registry';
-import Base from '../Base';
+} from '../../constants.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
+import Base from '../Base.js';
 
-import Pages from './mixins/Pages';
+import Pages from './mixins/Pages.js';
 
 const NOT_FOUND = { statusCode: 404, message: 'Not Found' };
 

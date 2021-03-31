@@ -4,8 +4,8 @@ import invariant from 'invariant';
 
 import { Paging } from '@nti/lib-commons';
 
-import { initPrivate, getPrivate } from '../../../utils/private';
-import { SortOrder } from '../../../constants';
+import { initPrivate, getPrivate } from '../../../utils/private.js';
+import { SortOrder } from '../../../constants.js';
 
 const PageSource = Paging.ListBackedPageSource;
 

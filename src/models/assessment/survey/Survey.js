@@ -5,14 +5,14 @@ import {
 	ASSESSMENT_HISTORY_LINK,
 	SURVEY_AGGREGATED_LINK,
 	SURVEY_REPORT_LINK,
-} from '../../../constants';
-import { model, COMMON_PREFIX } from '../../Registry';
-import Publishable from '../../../mixins/Publishable';
-import Completable from '../../../mixins/Completable';
-import Pages from '../../content/mixins/Pages';
-import QuestionSet from '../QuestionSet';
+} from '../../../constants.js';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Publishable from '../../../mixins/Publishable.js';
+import Completable from '../../../mixins/Completable.js';
+import Pages from '../../content/mixins/Pages.js';
+import QuestionSet from '../QuestionSet.js';
 
-import SurveySubmission from './SurveySubmission';
+import SurveySubmission from './SurveySubmission.js';
 
 const AGGREGATED = Symbol(SURVEY_AGGREGATED_LINK);
 

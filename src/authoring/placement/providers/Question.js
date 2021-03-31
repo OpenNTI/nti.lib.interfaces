@@ -1,6 +1,6 @@
 import { defineProtected } from '@nti/lib-commons';
 
-import { placeItemIn, removeItemFrom } from '../factories';
+import { placeItemIn, removeItemFrom } from '../factories/index.js';
 
 const AssignmentType = 'application/vnd.nextthought.assessment.assignment';
 

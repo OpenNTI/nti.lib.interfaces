@@ -1,4 +1,4 @@
-import { getMetaDataEntryPoint } from '../MetaDataResolverForWistia';
+import { getMetaDataEntryPoint } from '../MetaDataResolverForWistia.js';
 
 /*
  useful links:

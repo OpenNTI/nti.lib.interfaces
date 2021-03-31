@@ -4,7 +4,7 @@ import Logger from '@nti/util-logger';
 import { isNTIID } from '@nti/lib-ntiids';
 import { wait, Tasks } from '@nti/lib-commons';
 
-import { Service } from '../../constants';
+import { Service } from '../../constants.js';
 
 const { Executor } = Tasks;
 

@@ -1,5 +1,5 @@
-import MediaSource from './MediaSource';
-import { resolveProvider } from './providers';
+import MediaSource from './MediaSource.js';
+import { resolveProvider } from './providers/index.js';
 
 export default class MediaSourceFactory {
 	static async from(service, uri) {

@@ -1,6 +1,6 @@
 import { URL } from '@nti/lib-commons';
 
-import { NO_LINK, Service, Parser as parse } from '../constants';
+import { NO_LINK, Service, Parser as parse } from '../constants.js';
 
 export default {
 	async getContents(params, parseItems = true) {

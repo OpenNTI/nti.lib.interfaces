@@ -1,8 +1,8 @@
 import { decorate } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../../Registry';
+import { model, COMMON_PREFIX } from '../../Registry.js';
 
-import BaseEvent from './BaseEvent';
+import BaseEvent from './BaseEvent.js';
 
 class WebinarCalendarEvent extends BaseEvent {
 	static MimeType = `${COMMON_PREFIX}webinar.webinarcalendarevent`;

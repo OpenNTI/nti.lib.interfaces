@@ -2,8 +2,8 @@ import path from 'path';
 
 import { decorate, FileType } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../../Registry';
-import Part from '../Part';
+import { model, COMMON_PREFIX } from '../../Registry.js';
+import Part from '../Part.js';
 
 class File extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.filepart';

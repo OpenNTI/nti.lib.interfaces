@@ -1,9 +1,9 @@
 import Logger from '@nti/util-logger';
 
-import { Parent, Service, NO_LINK } from '../../../constants';
-import getLink from '../../../utils/getlink';
-import Stream from '../../../stores/Stream';
-import { getPrivate } from '../../../utils/private';
+import { Parent, Service, NO_LINK } from '../../../constants.js';
+import getLink from '../../../utils/get-link.js';
+import Stream from '../../../stores/Stream.js';
+import { getPrivate } from '../../../utils/private.js';
 
 const logger = Logger.get('assignment:activity');
 

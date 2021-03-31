@@ -1,6 +1,6 @@
-import Note from '../Note';
-import MockService from '../../__test__/mock-service';
-import { Service } from '../../../constants';
+import Note from '../Note.js';
+import MockService from '../../__test__/mock-service.js';
+import { Service } from '../../../constants.js';
 // eslint-disable-next-line
 import { ContentRangeDescription } from '../../anchors'; // This is imported for the registry to be able to parse the model in the notes
 

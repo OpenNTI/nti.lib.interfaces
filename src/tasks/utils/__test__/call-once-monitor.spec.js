@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import callOnceMonitor from '../call-once-monitor';
+import callOnceMonitor from '../call-once-monitor.js';
 
 describe('call-once-monitor tests', () => {
 	test('calls monitors when the function is called, with the arguments the function was called with', () => {

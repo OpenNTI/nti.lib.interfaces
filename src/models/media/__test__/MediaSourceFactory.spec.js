@@ -1,8 +1,8 @@
 /* eslint-env jest */
-import MediaSource from '../MediaSource';
-import MediaSourceFactory from '../MediaSourceFactory';
-import { getMetaDataEntryPoint } from '../providers/vimeo';
-import MockService from '../../__test__/mock-service';
+import MediaSource from '../MediaSource.js';
+import MediaSourceFactory from '../MediaSourceFactory.js';
+import { getMetaDataEntryPoint } from '../providers/vimeo.js';
+import MockService from '../../__test__/mock-service.js';
 
 describe('MediaSourceFactory tests', () => {
 	const FAKE_SERVICE = MockService;

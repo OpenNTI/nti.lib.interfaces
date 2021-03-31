@@ -4,9 +4,9 @@ import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
-import { Service } from '../constants';
-import { Mixin as Pendability } from '../mixins/Pendability';
-import { parseListFn } from '../models/Parser';
+import { Service } from '../constants.js';
+import { Mixin as Pendability } from '../mixins/Pendability.js';
+import { parseListFn } from '../models/Parser.js';
 
 const logger = Logger.get('store:Achievements');
 

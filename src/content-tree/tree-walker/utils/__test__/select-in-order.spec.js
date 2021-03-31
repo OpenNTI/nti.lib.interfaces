@@ -1,6 +1,6 @@
 /* eslint-env jest */
-import { createMockNode } from '../../../__test__/common';
-import { selectNext, selectPrev } from '../select-in-order';
+import { createMockNode } from '../../../__test__/common.js';
+import { selectNext, selectPrev } from '../select-in-order.js';
 
 function create(name, parent, children, next, prev) {
 	return createMockNode({ name }, { parent, children, next, prev });

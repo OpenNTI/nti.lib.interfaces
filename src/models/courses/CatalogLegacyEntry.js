@@ -1,9 +1,9 @@
 import { decorate } from '@nti/lib-commons';
 
-import { encodeIdFrom } from '../../utils/href-ntiids';
-import { model, COMMON_PREFIX } from '../Registry';
+import { encodeIdFrom } from '../../utils/href-ntiids.js';
+import { model, COMMON_PREFIX } from '../Registry.js';
 
-import CatalogEntry from './CatalogEntry';
+import CatalogEntry from './CatalogEntry.js';
 
 class CourseCatalogLegacyEntry extends CatalogEntry {
 	static MimeType = [

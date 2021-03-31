@@ -1,4 +1,4 @@
-import { isSameNode } from '../../utils';
+import { isSameNode } from '../../utils/is-same-node.js';
 
 async function getIndex(children, node) {
 	for (let i = 0; i < children.length; i++) {

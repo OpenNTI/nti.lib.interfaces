@@ -4,14 +4,14 @@ import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
-import JSONValue from '../mixins/JSONValue';
-import { Mixin as Pendability } from '../mixins/Pendability';
-import Editable from '../mixins/Editable';
-import Fields, { hideField } from '../mixins/Fields';
-import HasLinks from '../mixins/HasLinks';
-import { Parent, Service } from '../constants';
+import JSONValue from '../mixins/JSONValue.js';
+import { Mixin as Pendability } from '../mixins/Pendability.js';
+import Editable from '../mixins/Editable.js';
+import Fields, { hideField } from '../mixins/Fields.js';
+import HasLinks from '../mixins/HasLinks.js';
+import { Parent, Service } from '../constants.js';
 
-import Registry, { model } from './Registry';
+import Registry, { model } from './Registry.js';
 
 const logger = Logger.get('models:Base');
 

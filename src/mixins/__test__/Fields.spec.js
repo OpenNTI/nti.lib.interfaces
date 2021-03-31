@@ -4,7 +4,7 @@ import diff from 'jest-diff';
 import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
-import Fields, { clone } from '../Fields';
+import Fields, { clone } from '../Fields.js';
 
 const logger = Logger.get('mixins:Fields');
 

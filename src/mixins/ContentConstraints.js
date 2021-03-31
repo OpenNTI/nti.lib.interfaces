@@ -1,4 +1,4 @@
-export default function Applyer(targetModelClass) {
+export default function Applier(targetModelClass) {
 	Object.assign(targetModelClass.Fields, {
 		PublicationConstraints: { type: 'model' },
 	});
