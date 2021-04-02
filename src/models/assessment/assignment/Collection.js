@@ -67,8 +67,7 @@ function fillMaps(oValue, o, oKey) {
 	}
 }
 
-const isFinalGrade = a =>
-	a.isNonSubmit && a.isNonSubmit() && a.title === 'Final Grade';
+const isFinalGrade = a => a.isNonSubmit?.() && a.title === 'Final Grade';
 const omit = a => isFinalGrade(a);
 
 const toNumeric = o => (o ? o.getTime() : 0);
@@ -274,7 +273,7 @@ class Collection extends Base {
 			visibleAssignments: { items: assignments },
 		} = getPrivate(this);
 
-		let ungrouped = { ...assignments };
+		let unGrouped = { ...assignments };
 
 		let groups = {};
 
@@ -294,7 +293,7 @@ class Collection extends Base {
 			let binId = getBinId(node);
 			let assignment = assignments[assignmentId];
 
-			delete ungrouped[assignmentId];
+			delete unGrouped[assignmentId];
 
 			if (
 				assignment &&
@@ -306,8 +305,8 @@ class Collection extends Base {
 			}
 		}
 
-		const ungroupedByName = (a, b) =>
-			sortComparatorTitle(ungrouped[a], ungrouped[b]);
+		const unGroupedByName = (a, b) =>
+			sortComparatorTitle(unGrouped[a], unGrouped[b]);
 
 		const outline = await this.parent().getOutline();
 		const list = (await outline.getFlattenedList()).filter(x =>
@@ -330,8 +329,8 @@ class Collection extends Base {
 			}
 		});
 
-		//show the ungrouped (the inner-bin order is lost here...resort by name)
-		for (let assignmentId of Object.keys(ungrouped).sort(ungroupedByName)) {
+		//show the unGrouped (the inner-bin order is lost here...resort by name)
+		for (let assignmentId of Object.keys(unGrouped).sort(unGroupedByName)) {
 			bin(assignmentId, Number.MAX_VALUE);
 		}
 
@@ -390,7 +389,7 @@ class Collection extends Base {
 
 	/**
 	 * Get the known visible assignments for the current user. If the outlineNodeId is
-	 * ommitted then ALL the assignments are returned.
+	 * omitted then ALL the assignments are returned.
 	 *
 	 * @param {string} outlineNodeId Optional. The outlineNode NTIID you wish to scope to.
 	 *
@@ -405,7 +404,7 @@ class Collection extends Base {
 
 	/**
 	 * Get the known visible assessments for the current user. If the outlineNodeId is
-	 * ommitted then ALL the assessments are returned.
+	 * omitted then ALL the assessments are returned.
 	 *
 	 * @param {string} outlineNodeId Optional. The outlineNode NTIID you wish to scope to.
 	 *
@@ -470,7 +469,7 @@ class Collection extends Base {
 		const assignments = Object.values(items);
 		const finalGrade = assignments.find(a => isFinalGrade(a));
 
-		return finalGrade ? finalGrade.getID() : void 0;
+		return finalGrade?.getID();
 	}
 }
 
