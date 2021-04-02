@@ -143,7 +143,7 @@ export default class Registry {
 
 	lookup(type) {
 		let m = this[MAP].get(trimCommonPrefix(type));
-		logger.debug('Lookup: %s, %o', type, m);
+		logger.trace('Lookup: %s, %o', type, m);
 
 		const seen = [type];
 
