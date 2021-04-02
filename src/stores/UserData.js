@@ -77,7 +77,7 @@ class UserData extends EventEmitter {
 
 		if (process.browser) {
 			this.on('load', (_, time) =>
-				logger.info('Load: %s %o', time, this)
+				logger.debug('Load: %s %o', time, this)
 			);
 		}
 	}
