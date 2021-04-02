@@ -48,12 +48,8 @@ class AssignmentHistoryCollection extends Base {
 
 	setItem(assignmentId, historyItem) {
 		const { Items: items } = this;
-		const historySubItem =
-			historyItem &&
-			historyItem.getMostRecentHistoryItem &&
-			historyItem.getMostRecentHistoryItem();
-		const newItemAssignmentId = ((historySubItem || {}).grade || {})
-			.AssignmentId;
+		const historySubItem = historyItem?.getMostRecentHistoryItem?.();
+		const newItemAssignmentId = historySubItem?.grade?.AssignmentId;
 
 		if (historyItem && newItemAssignmentId !== assignmentId) {
 			throw new Error('HistoryItem does not match the Assignment');

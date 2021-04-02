@@ -29,11 +29,7 @@ class AssignmentSummary extends EventEmitter {
 	get historyItem() {
 		const data = getPrivate(this);
 
-		return (
-			data.history &&
-			data.history.getMostRecentHistoryItem &&
-			data.history.getMostRecentHistoryItem()
-		);
+		return data.history?.getMostRecentHistoryItem?.();
 	}
 
 	get username() {

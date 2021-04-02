@@ -71,7 +71,7 @@ export default {
 
 		let historyItem = container;
 
-		if (container && container.getMostRecentHistoryItem) {
+		if (container?.getMostRecentHistoryItem) {
 			historyItem = container.getMostRecentHistoryItem();
 		}
 

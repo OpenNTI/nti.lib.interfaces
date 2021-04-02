@@ -14,7 +14,7 @@ class AssignmentHistoryItemContainer extends Base {
 	}
 
 	getMostRecentHistoryItem() {
-		return this.Items && this.Items[this.Items.length - 1];
+		return this.Items?.[this.Items.length - 1];
 	}
 }
 
