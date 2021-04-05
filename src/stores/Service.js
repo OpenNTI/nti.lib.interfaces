@@ -36,6 +36,7 @@ import {
 import ContactsStore from './Contacts.js';
 import GroupsStore from './Groups.js';
 import Enrollment from './Enrollment.js';
+import UserPreferences from './UserPreferences.js';
 
 const ENROLLMENT = Symbol('enrollment');
 
@@ -47,6 +48,7 @@ const Contacts = Symbol('Contacts');
 const Groups = Symbol('Groups');
 const Lists = Symbol('Lists');
 const RequestEntityResolve = Symbol('RequestEntityResolve');
+const USER_PREFERENCES = Symbol('UserPreferences');
 
 const logger = Logger.get('Service');
 
@@ -351,6 +353,13 @@ class ServiceDocument extends EventEmitter {
 			this[ENROLLMENT] = new Enrollment(this);
 		}
 		return this[ENROLLMENT];
+	}
+
+	getUserPreferences() {
+		if (!this[USER_PREFERENCES]) {
+			this[USER_PREFERENCES] = new UserPreferences(this);
+		}
+		return this[USER_PREFERENCES];
 	}
 
 	/**
