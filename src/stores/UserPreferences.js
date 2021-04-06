@@ -12,17 +12,14 @@ class UserPreferences extends EventEmitter {
 		this.service = service;
 	}
 
-	#librarySort = {};
+	#data = {};
 
-	getLibrarySort(collectionName) {
-		return this.#librarySort[collectionName];
+	get(key) {
+		return this.#data[key];
 	}
 
-	setLibrarySort(collectionName, sortOn, sortDirection = 'ascending') {
-		this.#librarySort[collectionName] = {
-			sortOn,
-			sortDirection,
-		};
+	set(key, value) {
+		this.#data[key] = value;
 	}
 }
 
