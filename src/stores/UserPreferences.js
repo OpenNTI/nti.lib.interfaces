@@ -3,7 +3,6 @@ import EventEmitter from 'events';
 import { decorate } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
-import { Mixin as InstanceCacheContainer } from '../mixins/InstanceCacheContainer.js';
 import { Mixin as Pendability } from '../mixins/Pendability.js';
 
 class UserPreferences extends EventEmitter {
@@ -24,5 +23,5 @@ class UserPreferences extends EventEmitter {
 }
 
 export default decorate(UserPreferences, {
-	with: [mixin(Pendability, InstanceCacheContainer)],
+	with: [mixin(Pendability)],
 });
