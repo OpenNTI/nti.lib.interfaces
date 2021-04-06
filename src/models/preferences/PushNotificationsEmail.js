@@ -4,7 +4,7 @@ import { model, COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 class PreferencePushNotifications extends Base {
-	static MimeType = COMMON_PREFIX + 'preference.pushnotifications';
+	static MimeType = COMMON_PREFIX + 'preference.pushnotifications.email';
 
 	// prettier-ignore
 	static Fields = {
