@@ -16,6 +16,7 @@ export * as forums from './forums/index.js';
 export * as integrations from './integrations/index.js';
 export * as invitations from './invitations/index.js';
 export * as media from './media/index.js';
+export * as preferences from './preferences/index.js';
 export * as profile from './profile/index.js';
 export * as reports from './reports/index.js';
 export * as store from './store/index.js';
