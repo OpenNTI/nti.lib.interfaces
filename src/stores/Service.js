@@ -13,6 +13,7 @@ import Capabilities from '../models/Capabilities.js';
 import CommunitiesWorkspace from '../models/community/Workspace.js';
 import AbstractPlaceholder from '../models/AbstractPlaceholder.js';
 import Batch from '../data-sources/data-types/Batch.js';
+import PageInfo from '../models/content/PageInfo.js';
 import {
 	Mixin as Pendability,
 	attach as attachPendingQueue,
@@ -371,11 +372,17 @@ class ServiceDocument extends EventEmitter {
 			);
 		}
 
-		return this.getObject(ntiid, {
+		const subject = await this.getObject(ntiid, {
 			params,
 			parent: parent || this,
 			type: mime,
 		});
+
+		if (!(subject instanceof PageInfo)) {
+			throw new Error('Invalid PageInfo');
+		}
+
+		return subject;
 	}
 
 	async getObjectAtURL(url, ntiid) {
