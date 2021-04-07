@@ -8,6 +8,7 @@ import Publishable from '../../mixins/Publishable.js';
 import { model, COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 import Forum from '../forums/Forum.js';
+import Batch from '../../data-sources/data-types/Batch.js';
 
 import BundleCommunity from './BundleCommunity.js';
 import BundleStreamDataSource from './BundleStreamDataSource.js';
@@ -203,11 +204,10 @@ async function resolveDiscussions(bundle) {
 
 async function resolvePackages(bundle) {
 	try {
-		//the server is defaulting to a batchSize of 20, but we need to load all of them upfront
-		//so for now just set a high enough limit that we'll get all of them (99% of the time)
-		const contents = await bundle.fetchLinkParsed('contents', {batchSize: 10000});
+		const contents = await Batch.from(bundle, bundle.fetchLink('contents'));
 
-		return contents;
+		//We need to load all of them upfront,so pull all pages in
+		return [...(await contents.loadAll())];
 	} catch (e) {
 		return [];
 	}
