@@ -203,7 +203,9 @@ async function resolveDiscussions(bundle) {
 
 async function resolvePackages(bundle) {
 	try {
-		const contents = await bundle.fetchLinkParsed('contents');
+		//the server is defaulting to a batchSize of 20, but we need to load all of them upfront
+		//so for now just set a high enough limit that we'll get all of them (99% of the time)
+		const contents = await bundle.fetchLinkParsed('contents', {batchSize: 10000});
 
 		return contents;
 	} catch (e) {
