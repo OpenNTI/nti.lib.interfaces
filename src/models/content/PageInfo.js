@@ -76,7 +76,7 @@ class PageInfo extends Base {
 		url.query = null;
 		url.search = null;
 
-		return url.format();
+		return url.toString();
 	}
 
 	getContent() {
