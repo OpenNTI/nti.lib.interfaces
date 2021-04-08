@@ -33,10 +33,19 @@ export default class Batch extends Base {
 	}
 
 	async loadAll() {
-		while (this.hasLink('batch-next')) {
-			const batch = await Batch.from(this, this.fetchLink('batch-next'));
-			this.Links = batch.Links;
-			this.Items.push(...batch.Items);
+		const next = 'batch-next';
+
+		while (this.hasLink(next)) {
+			const batch = await Batch.from(this, this.fetchLink(next));
+			this.Links = [
+				...this.Links.filter(x => x.rel !== next),
+				...batch.Links.filter(x => x.rel === next),
+			];
+
+			for (const item of batch.Items) {
+				item.reparent(this);
+				this.Items.push(item);
+			}
 		}
 
 		return this;
