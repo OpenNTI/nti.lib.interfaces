@@ -1,5 +1,3 @@
-import path from 'path';
-
 import { decorate, Markup, URL } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
@@ -66,17 +64,7 @@ class PageInfo extends Base {
 	}
 
 	getContentRoot() {
-		let url = URL.parse(this.getLink('content'));
-
-		url.pathname = path.dirname(url.pathname) + '/';
-
-		// images and other resources will be resolved relative
-		// to this url; ensure there's no hash or query string.
-		url.hash = null;
-		url.query = null;
-		url.search = null;
-
-		return url.toString();
+		return URL.resolve(this.getLink('content'), '.');
 	}
 
 	getContent() {
