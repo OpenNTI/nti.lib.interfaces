@@ -4,23 +4,26 @@ import PagedDataSource from '../../data-sources/PagedDataSource.js';
 import PagedBatch from '../../data-sources/data-types/Page.js';
 import { NO_LINK } from '../../constants.js';
 
+async function loadRootPage (parent, service) {
+	const contentPackages = await parent.getContentPackages();
+	const rootPageNTIID = contentPackages[0].NTIID;
+
+	return this.service.getPageInfo(
+		rootPageNTIID,
+		null,
+		null,
+		null,
+		parent
+	);
+}
+
 export default class BundleStreamDataSource extends PagedDataSource {
 	loadRootPage() {
-		const { parent, cachedLoadRootPage } = this;
+		const { parent, service } = this;
 
-		if (cachedLoadRootPage) {
-			return cachedLoadRootPage;
+		if (!this.cachedLoadRootPage) {
+			this.cachedLoadRootPage = loadRootPage(parent, service);
 		}
-
-		const rootPageNTIID = parent.ContentPackages[0].NTIID;
-
-		this.cachedLoadRootPage = this.service.getPageInfo(
-			rootPageNTIID,
-			null,
-			null,
-			null,
-			parent
-		);
 
 		return this.cachedLoadRootPage;
 	}
