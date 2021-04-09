@@ -8,7 +8,7 @@ async function loadRootPage (parent, service) {
 	const contentPackages = await parent.getContentPackages();
 	const rootPageNTIID = contentPackages[0].NTIID;
 
-	return this.service.getPageInfo(
+	return service.getPageInfo(
 		rootPageNTIID,
 		null,
 		null,
