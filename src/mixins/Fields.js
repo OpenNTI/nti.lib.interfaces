@@ -390,7 +390,7 @@ function applyFieldStrategy(
 		}
 	} catch (e) {
 		const reason = e.stack || e.message || e;
-		logger.error(
+		logger.trace(
 			'An error occurred parsing %s on %s because: %s',
 			key,
 			ModelName,
