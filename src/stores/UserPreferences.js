@@ -9,6 +9,17 @@ class UserPreferences extends EventEmitter {
 	constructor(service) {
 		super();
 		this.service = service;
+
+		this.addToPending(
+			(async () => {
+				const user = encodeURIComponent(service.getAppUsername());
+				const data = await service.get(
+					`users/${user}/++preferences++/`
+				);
+
+				this.preferences = await service.getObject(data); //parse
+			})()
+		);
 	}
 
 	#data = {};
