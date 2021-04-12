@@ -1,4 +1,5 @@
 import Logger from '@nti/util-logger';
+import { FileType } from '@nti/lib-commons';
 
 import { IsModel } from '../constants.js';
 
@@ -10,7 +11,10 @@ export const MAP = Symbol('Model Map');
 export const COMMON_PREFIX = 'application/vnd.nextthought.';
 
 export const trimCommonPrefix = x =>
-	x && x.replace(/^application\/vnd.nextthought./, '').toLowerCase();
+	x &&
+	x
+		.replace(/(^application\/vnd\.nextthought\.)|(\+json$)/g, '')
+		.toLowerCase();
 
 const IGNORED = { parse: x => x };
 
@@ -69,6 +73,12 @@ export default class Registry {
 		delete o.MimeType;
 		delete o.MimeTypes;
 
+		Object.defineProperties(o.prototype, {
+			MimeTypes: {
+				value: [...MimeTypes, ...(o.prototype?.MimeTypes || [])],
+			},
+		});
+
 		Object.defineProperties(o, {
 			//force MimeType to be a scalar value instead of a list...
 			MimeType: {
@@ -82,6 +92,9 @@ export default class Registry {
 				enumerable: true,
 				writable: true,
 				value: MimeTypes,
+			},
+			representsMimeType: {
+				value: representsMimeType,
 			},
 		});
 
@@ -172,4 +185,14 @@ export default class Registry {
 //Decorator...auto register
 export function model(target) {
 	Registry.register(target);
+}
+
+function representsMimeType(comparedType) {
+	if (!(comparedType instanceof FileType.MimeComparator)) {
+		comparedType = new FileType.MimeComparator(comparedType);
+	}
+
+	return this.prototype.MimeTypes.some(
+		x => comparedType.is(x) || comparedType.is(x + '+json')
+	);
 }
