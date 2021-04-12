@@ -69,15 +69,21 @@ export default class Registry {
 			: [o.MimeType]
 		).filter(Boolean);
 		const [MimeType] = MimeTypes;
+		const BaseTypes = o.prototype.MimeTypes || [];
 
 		delete o.MimeType;
 		delete o.MimeTypes;
 
-		Object.defineProperties(o.prototype, {
-			MimeTypes: {
-				value: [...MimeTypes, ...(o.prototype?.MimeTypes || [])],
-			},
-		});
+		try {
+			delete o.prototype.MimeTypes;
+			Object.defineProperties(o.prototype, {
+				MimeTypes: {
+					value: [...MimeTypes, ...BaseTypes],
+				},
+			});
+		} catch (e) {
+			logger.warn('Could not record MimeTypes heritage on %s', MimeType);
+		}
 
 		Object.defineProperties(o, {
 			//force MimeType to be a scalar value instead of a list...

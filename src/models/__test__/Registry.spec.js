@@ -14,6 +14,10 @@ describe('Model Registry', () => {
 		static MimeType = 'application/vnd.nextthought.bar';
 	}
 
+	beforeAll(() => {
+		jest.spyOn(logger, 'warn').mockImplementation(jest.fn);
+	});
+
 	describe('Static API', () => {
 		test('register', () => {
 			expect(Registry.register).toEqual(expect.any(Function));
