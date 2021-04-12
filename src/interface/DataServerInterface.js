@@ -13,6 +13,8 @@ import encodeFormData from '../utils/encode-form-data.js';
 import OnlineStatus from '../utils/OnlineStatus.js';
 import toObject from '../utils/to-object.js';
 import { getTimezone } from '../utils/timezone.js';
+import getContentType from '../utils/get-content-type-header.js';
+import Registry from '../models/Registry.js';
 import { attach as attachPendingQueue } from '../mixins/Pendability.js';
 import Service from '../stores/Service.js';
 import {
@@ -283,18 +285,23 @@ export default class DataServerInterface extends EventEmitter {
 					//or it may just return whatever it wants.  If we send
 					//Accept we check the Content-Type to see if that is what
 					//we get back.  If it's not, we reject.
-					// if (mime) {
-					// 	const contentType = getContentType(headers);
-					// 	if (!mime.is(contentType)) {
-					// 		return Promise.reject(
-					// 			'Requested with an explicit accept value of ' +
-					// 				mime +
-					// 				' but got ' +
-					// 				contentType +
-					// 				'.  Rejecting.'
-					// 		);
-					// 	}
-					// }
+					if (mime) {
+						const contentType = getContentType(headers);
+						const lookupResults = Registry.lookup(contentType);
+						const match = lookupResults
+							? lookupResults?.representsMimeType(mime)
+							: mime.is(contentType);
+
+						if (!match) {
+							return Promise.reject(
+								'Requested with an explicit accept value of ' +
+									mime +
+									' but got ' +
+									contentType +
+									'.  Rejecting.'
+							);
+						}
+					}
 
 					return body;
 				})
