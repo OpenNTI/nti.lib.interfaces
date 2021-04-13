@@ -14,7 +14,7 @@ export default class AbstractCommunity extends EventEmitter {
 		this.getChannelList();
 		const list = this.#channelList;
 		if (Array.isArray(list)) {
-			return Iterable.chain(list);
+			return Iterable.chain(...list);
 		}
 		return list[Symbol.iterator]();
 	}
