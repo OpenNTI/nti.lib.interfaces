@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 
-import { decorate } from '@nti/lib-commons';
+import { decorate, ObjectUtils } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
 import { Mixin as Pendability } from '../mixins/Pendability.js';
@@ -17,20 +17,21 @@ class UserPreferences extends EventEmitter {
 					`users/${user}/++preferences++/`
 				);
 
-				this.preferences = await service.getObject(data); //parse
+				this.#data = await service.getObject(data); //parse
+				this.emit('change');
 			})()
 		);
 	}
 
-	#data = {};
+	#data = null;
 
 	get(key) {
-		return this.#data[key];
+		return ObjectUtils.get(this.#data, key);
 	}
 
 	set(key, value) {
 		if (value !== this.get(key)) {
-			this.#data[key] = value;
+			ObjectUtils.set(this.#data, key, value);
 			this.emit('change', { [key]: value });
 		}
 	}
