@@ -29,7 +29,10 @@ class UserPreferences extends EventEmitter {
 	}
 
 	set(key, value) {
-		this.#data[key] = value;
+		if (value !== this.get(key)) {
+			this.#data[key] = value;
+			this.emit('change', { [key]: value });
+		}
 	}
 }
 
