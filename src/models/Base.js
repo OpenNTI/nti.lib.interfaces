@@ -11,7 +11,7 @@ import Fields, { hideField } from '../mixins/Fields.js';
 import HasLinks from '../mixins/HasLinks.js';
 import { Parent, Service } from '../constants.js';
 
-import Registry, { model } from './Registry.js';
+import Registry, { COMMON_PREFIX, model } from './Registry.js';
 
 const logger = Logger.get('models:Base');
 
@@ -21,7 +21,7 @@ const PHANTOM = Symbol.for('Phantom');
 const is = Symbol('isTest');
 
 class Base extends EventEmitter {
-	static MimeType = '__base__';
+	static MimeType = COMMON_PREFIX + '__base__';
 
 	// prettier-ignore
 	static Fields = {
