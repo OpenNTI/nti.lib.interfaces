@@ -147,6 +147,8 @@ class ServiceDocument extends EventEmitter {
 			try {
 				// Pre-load the app user
 				await this.getAppUser();
+				// update caps once we have the user (some are derived from user data)
+				this.capabilities = new Capabilities(this, caps);
 				if (!this.isServerSide && config.preFetchContacts) {
 					await this.getContacts()?.waitForPending();
 				}
@@ -883,6 +885,8 @@ class ServiceDocument extends EventEmitter {
 	getSupportLinks() {
 		//userObject.getLink('content.permanent_general_privacy_page')
 		const link = x => getLink(this.#pong, x);
+		const ensureProtocol = x =>
+			!x || /^(mailto|https?):/i.test(x) ? x : `mailto:${x}`;
 		return {
 			about: link('content.about-site') || 'http://nextthought.com',
 
@@ -898,7 +902,9 @@ class ServiceDocument extends EventEmitter {
 
 			help: link('content.help-site') || 'https://help.nextthought.com',
 
-			support: link('content.support-site') || link('support-email'),
+			support: ensureProtocol(
+				link('content.support-site') || link('support-email')
+			),
 			supportContact: link('support-email') || 'support@nextthought.com',
 
 			get internalSupport() {

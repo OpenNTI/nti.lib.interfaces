@@ -16,27 +16,34 @@ const CAPABILITIES = {
 	canShareRedaction: false,
 
 	canSeeBlogs() {
-		return Boolean(this[Service].getCollection('Blog'));
+		return Boolean(this[Service]?.getCollection('Blog'));
 	},
 
 	canRedact() {
-		return !!this[Service].getCollectionFor(
+		return !!this[Service]?.getCollectionFor(
 			'application/vnd.nextthought.redaction',
 			'Pages'
 		);
 	},
 
 	canCanvasURL() {
-		return !!this[Service].getCollectionFor(
+		return !!this[Service]?.getCollectionFor(
 			'application/vnd.nextthought.canvasurlshape',
 			'Pages'
 		);
 	},
 
 	canEmbedVideo() {
-		return !!this[Service].getCollectionFor(
+		return !!this[Service]?.getCollectionFor(
 			'application/vnd.nextthought.embeddedvideo',
 			'Pages'
+		);
+	},
+
+	canImpersonate() {
+		return (
+			this[Service]?.getAppUserSync().getLink('logon.nti.impersonate') &&
+			/@nextthought\.com$/.test(this[Service]?.getAppUsername())
 		);
 	},
 };
