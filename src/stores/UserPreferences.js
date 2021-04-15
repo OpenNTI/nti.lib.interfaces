@@ -18,6 +18,7 @@ class UserPreferences extends EventEmitter {
 				);
 
 				this.#data = await service.getObject(data); //parse
+				this.#data.on('change', this.emit.bind(this, 'change'));
 				this.emit('change');
 			})()
 		);
@@ -32,6 +33,7 @@ class UserPreferences extends EventEmitter {
 	set(key, value) {
 		if (value !== this.get(key)) {
 			ObjectUtils.set(this.#data, key, value);
+			// This may not be needed (now that we emit change on model change events)
 			this.emit('change', { [key]: value });
 		}
 	}
