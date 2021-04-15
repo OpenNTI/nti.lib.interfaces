@@ -738,7 +738,7 @@ function applyField(scope, fieldName, valueIn, declared, defaultValue) {
 	const setter = makeFieldsFn(x => {
 		// console.trace('setting %s to', fieldName, x);
 		value = x;
-		scope.emit('change', [fieldName]);
+		scope.onChange(fieldName);
 	});
 	const getter = makeFieldsFn(() => value);
 	const warningGetter = makeFieldsFn(
