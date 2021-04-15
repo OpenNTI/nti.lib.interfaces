@@ -41,10 +41,14 @@ const CAPABILITIES = {
 	},
 
 	canImpersonate() {
-		return (
-			this[Service]?.getAppUserSync().getLink('logon.nti.impersonate') &&
-			/@nextthought\.com$/.test(this[Service]?.getAppUsername())
-		);
+		try {
+			return (
+				/@nextthought\.com$/.test(this[Service].getAppUsername()) &&
+				this[Service].getAppUserSync().getLink('logon.nti.impersonate')
+			);
+		} catch {
+			return false;
+		}
 	},
 };
 
