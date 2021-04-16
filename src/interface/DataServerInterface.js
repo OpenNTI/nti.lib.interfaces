@@ -98,7 +98,7 @@ export default class DataServerInterface extends EventEmitter {
 	/**
 	 * Add/Set header values to be sent with all requests.
 	 *
-	 * @method setDefaultHeaders
+	 * @function setDefaultHeaders
 	 * @param  {Object}          headers A simple object with Keys/Value pairs for header/value pairs.
 	 * @returns {void}
 	 */
@@ -116,7 +116,7 @@ export default class DataServerInterface extends EventEmitter {
 	 *   web browser. Do not use this directly. Only use the interface methods NOT
 	 *   prefixed with underscores.
 	 *
-	 * @param {object/string} [options] - Request options or URL.
+	 * @param {object|string} [options] - Request options or URL.
 	 * @param {string} [options.url] - The dataserver resource we wish to make the request for, or an absolute url.
 	 * @param {string} [options.method] - defaults to GET, and POST if `form` is set.
 	 * @param {Object} [options.data] - A dictionary of form values to send with the request.
