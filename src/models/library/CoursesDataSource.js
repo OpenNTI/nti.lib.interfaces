@@ -7,10 +7,12 @@ const defaultOptions = {
 };
 
 const sortOptions = [
-	FAVORITES,
-	'createdTime',
+	'availability',
 	'provideruniqueid',
+	// 'instructor',
 	'lastSeenTime',
+	'createdTime',
+	// 'lastActivityTime',
 	'title',
 ];
 
