@@ -84,6 +84,9 @@ export default class DataServerInterface extends EventEmitter {
 
 	#webSocketClient = null;
 
+	/**
+	 * @returns {WebSocketClient}
+	 */
 	getWebSocketClient() {
 		if (!this.#webSocketClient) {
 			this.#webSocketClient = new WebSocketClient(this);
