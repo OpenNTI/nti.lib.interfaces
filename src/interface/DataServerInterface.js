@@ -17,6 +17,7 @@ import getContentType from '../utils/get-content-type-header.js';
 import Registry from '../models/Registry.js';
 import { attach as attachPendingQueue } from '../mixins/Pendability.js';
 import Service from '../stores/Service.js';
+import WebSocketClient from '../stores/WebSocketClient.js';
 import {
 	REQUEST_CONFLICT_EVENT,
 	REQUEST_ERROR_EVENT,
@@ -79,6 +80,15 @@ export default class DataServerInterface extends EventEmitter {
 				e.stack || e.message || e
 			);
 		}
+	}
+
+	#webSocketClient = null;
+
+	getWebSocketClient() {
+		if (!this.#webSocketClient) {
+			this.#webSocketClient = new WebSocketClient(this);
+		}
+		return this.#webSocketClient;
 	}
 
 	get OnlineStatus() {
