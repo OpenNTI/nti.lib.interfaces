@@ -141,6 +141,7 @@ describe('Annotations: Notes', () => {
 	test('NTI-6782: postReply', async () => {
 		let mockService = {
 			isService: Service,
+			emit() {},
 			getCollectionFor: () => ({
 				href:
 					'/dataserver2/++etc++hostsites/alpha.dev/++etc++site/Courses/DefaultAPICreated/reactjs/SubInstances/section%20001/Pages',
