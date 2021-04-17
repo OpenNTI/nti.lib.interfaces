@@ -155,9 +155,15 @@ export class ChatClient extends EventEmitter {
 		this.emit('disconnect');
 	}
 
+	/**
+	 * This should only be called by the socket event emitter.
+	 *
+	 * @private
+	 * @param {Object.<string,Object>} message
+	 */
 	async onPresenceChange(message) {
 		for (const [username, rawPresence] of Object.entries(message)) {
-			const presence = this.parse(rawPresence);
+			const presence = this.parse({ ...rawPresence, source: 'socket' });
 
 			this.setPresence(username, presence);
 		}
