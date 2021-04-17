@@ -59,12 +59,20 @@ class Base extends EventEmitter {
 		}
 	}
 
+	clone() {
+		return new this.constructor(this[Service], this[Parent], this.toJSON());
+	}
+
 	dispatch(...args) {
 		this[Service].dispatch(...args);
 	}
 
 	get isCreatedByAppUser() {
-		return this[Service].getAppUsername() === this.creator;
+		return this.isAppUser(this.creator);
+	}
+
+	isAppUser(name) {
+		return this[Service].getAppUsername() === name;
 	}
 
 	getCreatedTime() {} //implemented by Date Fields
@@ -148,7 +156,7 @@ class Base extends EventEmitter {
 	 * If two argumetns are given, then it will look for the first parent that has that attribute and matches the
 	 * attibuteValue test.
 	 *
-	 * @param {array} query The arguments:
+	 * @param {Array} query The arguments:
 	 *                      {string} query[0] attribute - The name of a property/attribute name.
 	 *                      {string|RegExp} query[1] attributeValue - The (optional) value or value tester
 	 *
@@ -175,7 +183,7 @@ class Base extends EventEmitter {
 	 *
 	 * @see #up()
 	 *
-	 * @param {array} query The arguments:
+	 * @param {Array} query The arguments:
 	 *                      {string} query[0] attribute - The name of a property/attribute name.
 	 *                      {string|RegExp} query[1] attributeValue - The (optional) value or value tester
 	 *

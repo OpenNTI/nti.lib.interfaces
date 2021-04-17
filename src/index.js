@@ -15,6 +15,7 @@ export default function setup(config) {
 
 export { default as Library } from './stores/Library.js';
 export { default as Notifications } from './stores/Notifications.js';
+export { default as UserPresence } from './stores/UserPresence.js';
 export { default as FiveMinuteEnrollmentInterface } from './interface/FiveMinuteInterface.js';
 
 export * from './constants.js';

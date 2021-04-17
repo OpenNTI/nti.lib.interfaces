@@ -33,10 +33,13 @@ import {
 	Service,
 } from '../constants.js';
 
+import { ChatClient } from './ChatClient.js';
 import ContactsStore from './Contacts.js';
 import GroupsStore from './Groups.js';
 import Enrollment from './Enrollment.js';
 import UserPreferences from './UserPreferences.js';
+
+/** @typedef {import('../interface/DataServerInterface.js').default} DataServerInterface */
 
 const ENROLLMENT = Symbol('enrollment');
 
@@ -72,6 +75,7 @@ function hideCurrentProperties(o) {
 class ServiceDocument extends EventEmitter {
 	static ClientContext = {};
 
+	#chatClient = null;
 	#pong = null;
 
 	constructor(json, server, context) {
@@ -188,12 +192,20 @@ class ServiceDocument extends EventEmitter {
 		return this.getConfig().siteName || this[Context]?.pong?.Site;
 	}
 
+	/** @returns {DataServerInterface} */
 	getServer() {
 		return this[Server];
 	}
 
 	getDataCache() {
 		return DataCache.getForContext(this[Context]);
+	}
+
+	getChatClient() {
+		if (!this.#chatClient) {
+			this.#chatClient = new ChatClient(this);
+		}
+		return this.#chatClient;
 	}
 
 	getContacts() {
@@ -606,6 +618,7 @@ class ServiceDocument extends EventEmitter {
 	/**
 	 * Do not use this method for general purpose resolving the user,
 	 * use the async method.
+	 *
 	 * @returns {User} A user model
 	 */
 	getAppUserSync() {
@@ -715,7 +728,7 @@ class ServiceDocument extends EventEmitter {
 	 *
 	 * @param {string} mimeType The mimetype of what we're looking for
 	 * @param {string} [title] Optionally, restrict by title
-	 * @param {array} [tryScopes] Optionally, pick a destination from contextual scopes. Treat as a stack!
+	 * @param {Array} [tryScopes] Optionally, pick a destination from contextual scopes. Treat as a stack!
 	 * @returns {Object} the collection
 	 */
 	getCollectionFor(mimeType, title, tryScopes) {
