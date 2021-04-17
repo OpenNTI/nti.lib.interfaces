@@ -5,19 +5,31 @@ import EventEmitter from 'events';
 import { chain, wait, ObjectUtils } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
+/** @typedef {import('../interface/DataServerInterface.js').default} DataServerInterface */
+/** @typedef {() => void} Action */
+/** @typedef {(...x: any[]) => void} Handler */
+/** @typedef {(eventName: string, handler: Handler) => void} RegisterHandler */
+/** @typedef {{ emit: (name: string, data: any, callback: Handler) => void; onPacket: Handler; on: RegisterHandler; removeAllListeners: Action; disconnect: Action; disconnectSync: Action }} SocketIO_Port */
+/** @typedef {{ scope: any; [key: string]: string | Handler }} HandlerMapping */
+
 const logger = Logger.get('websocket');
 const SOCKET_IO_SRC = '/socket.io/static/socket.io.js';
 const SESSION_ID = 'sessionId'.toLowerCase();
 
 export default class WebSocketClient extends EventEmitter {
 	//#region set up
+
+	/** @type {DataServerInterface} */
 	#server = null;
+
+	/** @type {SocketIO_Port} */
 	#socket = null;
 
 	#disconnectStats = {
 		count: 0,
 	};
 
+	/** @param {DataServerInterface} server */
 	constructor(server) {
 		super();
 
@@ -77,10 +89,14 @@ export default class WebSocketClient extends EventEmitter {
 		}
 	}
 
-	register(control) {
+	/**
+	 * @param {HandlerMapping} control
+	 * @returns {void}
+	 */
+	register({ scope = this, ...control }) {
 		for (let [eventName, handler] of Object.entries(control)) {
 			if (typeof handler === 'string') {
-				handler = this[handler]?.bind(this);
+				handler = scope[handler]?.bind(scope);
 			}
 
 			if (handler) {
@@ -89,15 +105,20 @@ export default class WebSocketClient extends EventEmitter {
 		}
 	}
 
-	addListener(eventName, ...args) {
+	/**
+	 * @param {string} eventName
+	 * @param  {Handler} handler
+	 * @returns {void}
+	 */
+	addListener(eventName, handler) {
 		const socket = this.#socket;
 
 		// if socket is present ensure to listen to this event and reflect it here.
 		if (!(eventName in (socket?.$events || { eventName }))) {
-			socket?.on(eventName, (...args2) => this.emit(eventName, ...args2));
+			socket?.on(eventName, (...args) => this.emit(eventName, ...args));
 		}
 
-		return super.addListener(eventName, ...args);
+		return super.addListener(eventName, handler);
 	}
 
 	async setup() {
@@ -145,6 +166,10 @@ export default class WebSocketClient extends EventEmitter {
 		this.emit('socket-available');
 	}
 
+	/**
+	 * @param {() => void} callback
+	 * @returns {void}
+	 */
 	onSocketAvailable(callback) {
 		if (this.#socket) {
 			return void callback();
@@ -152,18 +177,24 @@ export default class WebSocketClient extends EventEmitter {
 		this.once('socket-available', () => callback());
 	}
 
-	send(...args) {
+	/**
+	 * @param {string} event
+	 * @param {*} data
+	 * @param {() => void} callback
+	 * @param  {...any} extra
+	 * @returns {void}
+	 */
+	send(event, data, callback, ...extra) {
 		const socket = this.#socket;
 
 		try {
-			socket?.emit(...args);
+			socket?.emit(event, data, callback, ...extra);
 		} catch (e) {
 			logger.stack(e);
 		}
 
 		if (!socket) {
 			logger.trace('dropping emit, socket is down');
-			const [, , callback] = args;
 			callback?.call();
 		}
 	}
