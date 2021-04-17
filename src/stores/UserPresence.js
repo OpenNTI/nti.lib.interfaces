@@ -24,9 +24,6 @@ export class UserPresence extends EventEmitter {
 		this.setMaxListeners(0);
 	}
 
-	/** @deprecated Use setPresence instead*/
-	setPresenceFor = this.setPresence;
-
 	/**
 	 * Updates the presence info for the given user.
 	 *
