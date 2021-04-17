@@ -20,6 +20,8 @@ const CONTENT_VISIBILITY_MAP = { OU: 'OUID' };
 const PHANTOM = Symbol.for('Phantom');
 const is = Symbol('isTest');
 
+/** @typedef {Base} Model */
+
 class Base extends EventEmitter {
 	static MimeType = COMMON_PREFIX + '__base__';
 
@@ -37,6 +39,12 @@ class Base extends EventEmitter {
 		'href':                   { type: 'string'                  }
 	}
 
+	/**
+	 *
+	 * @param {import('../stores/Service.js').default} service
+	 * @param {?Base} parent
+	 * @param {*} data
+	 */
 	constructor(service, parent, data) {
 		super();
 
