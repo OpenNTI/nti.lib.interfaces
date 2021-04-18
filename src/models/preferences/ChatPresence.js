@@ -1,4 +1,4 @@
-import { decorate } from '@nti/lib-commons';
+import { decorate, URL as URLUtils } from '@nti/lib-commons';
 
 import { model, COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
@@ -13,6 +13,11 @@ class PreferenceChatPresence extends Base {
 		'Available': { type: 'model' },
         'Away':      { type: 'model' },
         'DND':       { type: 'model' },
+	}
+
+	get href() {
+		const p = this.parent();
+		return URLUtils.join(p.href, p.findField(this));
 	}
 }
 
