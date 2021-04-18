@@ -122,7 +122,7 @@ export class ChatClient extends EventEmitter {
 	}
 
 	setPresence(username, presence) {
-		UserPresence.getPresence(username, presence);
+		UserPresence.setPresence(username, presence);
 	}
 
 	async enterRoom(occupants, options, callback) {

@@ -12,6 +12,7 @@ class PresenceInfo extends Base {
 		}
 
 		return new PresenceInfo(service, null, {
+			MimeType: PresenceInfo.MimeType,
 			username: service.getAppUsername(),
 			type,
 			show,
