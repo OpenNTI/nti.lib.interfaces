@@ -62,7 +62,7 @@ export class ChatClient extends EventEmitter {
 		logger.trace('created a new connection');
 		const preferences = this.#service.getUserPreferences();
 
-		const presence = await preferences.get('ChatPresence.Active');
+		const presence = await preferences.fetch('ChatPresence.Active');
 
 		this.changePresence(
 			presence?.type ?? 'available',
@@ -80,7 +80,7 @@ export class ChatClient extends EventEmitter {
 			status
 		);
 
-		socket.send('chat_setPresence', newPresence.asJSON(), callback || noop);
+		socket.send('chat_setPresence', newPresence.toJSON(), callback || noop);
 	}
 
 	getPresence(username) {

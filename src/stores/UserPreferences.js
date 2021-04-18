@@ -26,8 +26,12 @@ class UserPreferences extends EventEmitter {
 
 	#data = null;
 
-	async get(key) {
+	async fetch(key) {
 		await this.waitForPending();
+		return this.get(key);
+	}
+
+	get(key) {
 		return ObjectUtils.get(this.#data, key);
 	}
 
