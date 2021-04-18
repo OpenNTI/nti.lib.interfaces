@@ -2,7 +2,7 @@
 /* global io */
 import EventEmitter from 'events';
 
-import { chain, wait, ObjectUtils } from '@nti/lib-commons';
+import { wait, ObjectUtils } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 /** @typedef {import('../interface/DataServerInterface.js').default} DataServerInterface */
@@ -128,35 +128,35 @@ export default class WebSocketClient extends EventEmitter {
 			location.href
 		).toString();
 
-		const {
-			Transport: { prototype: pt },
-		} = io;
+		// const {
+		// 	Transport: { prototype: pt },
+		// } = io;
 
-		if (pt.onHeartbeat && !pt.onHeartbeat.chained) {
-			pt.onHeartbeat = chain(pt.onHeartbeat, () => {
-				this.lastHeartbeat = new Date();
-				logger.trace(
-					'Received heartbeat from server',
-					this.lastHeartbeat
-				);
-			});
-		}
+		// if (pt.onHeartbeat && !pt.onHeartbeat.chained) {
+		// 	pt.onHeartbeat = chain(pt.onHeartbeat, () => {
+		// 		this.lastHeartbeat = new Date();
+		// 		logger.trace(
+		// 			'Received heartbeat from server',
+		// 			this.lastHeartbeat
+		// 		);
+		// 	});
+		// }
 
 		const socket = (this.#socket = io.connect(api, {
 			'reconnection delay': getConfig('socketReconnectDelay', 2000),
 		}));
 
-		if (!socket.emit.chained) {
-			socket.emit = chain(socket.emit, (...args) => {
-				logger.trace('socket.emit: %O', args);
-			});
+		// if (!socket.emit.chained) {
+		// 	socket.emit = chain(socket.emit, (...args) => {
+		// 		logger.trace('socket.emit: %O', args);
+		// 	});
 
-			socket.onPacket = chain(socket.onPacket, (...args) => {
-				if (args[0].type !== 'noop') {
-					logger.trace('socket.onPacket: args: %O', args);
-				}
-			});
-		}
+		// 	socket.onPacket = chain(socket.onPacket, (...args) => {
+		// 		if (args[0].type !== 'noop') {
+		// 			logger.trace('socket.onPacket: args: %O', args);
+		// 		}
+		// 	});
+		// }
 
 		// iterate our registered events and add them to the socket.
 		for (const eventName of Object.keys(this._events)) {
