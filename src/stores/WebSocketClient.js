@@ -2,7 +2,7 @@
 /* global io */
 import EventEmitter from 'events';
 
-import { wait, ObjectUtils } from '@nti/lib-commons';
+import { chain, wait, ObjectUtils } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 /** @typedef {import('../interface/DataServerInterface.js').default} DataServerInterface */
@@ -114,7 +114,8 @@ export default class WebSocketClient extends EventEmitter {
 		const socket = this.#socket;
 
 		// if socket is present ensure to listen to this event and reflect it here.
-		if (!(eventName in (socket?.$events || { eventName }))) {
+		if (socket && !(eventName in socket.$events || {})) {
+			logger.trace('Registering event %s', eventName);
 			socket?.on(eventName, (...args) => this.emit(eventName, ...args));
 		}
 
@@ -125,38 +126,25 @@ export default class WebSocketClient extends EventEmitter {
 		await waitForSocketIO();
 		const api = '';
 
-		// const {
-		// 	Transport: { prototype: pt },
-		// } = io;
-
-		// if (pt.onHeartbeat && !pt.onHeartbeat.chained) {
-		// 	pt.onHeartbeat = chain(pt.onHeartbeat, () => {
-		// 		this.lastHeartbeat = new Date();
-		// 		logger.trace(
-		// 			'Received heartbeat from server',
-		// 			this.lastHeartbeat
-		// 		);
-		// 	});
-		// }
-
 		const socket = (this.#socket = io.connect(api, {
 			'reconnection delay': getConfig('socketReconnectDelay', 2000),
 		}));
 
-		// if (!socket.emit.chained) {
-		// 	socket.emit = chain(socket.emit, (...args) => {
-		// 		logger.trace('socket.emit: %O', args);
-		// 	});
+		if (!socket.emit.chained) {
+			socket.emit = chain(socket.emit, (...args) => {
+				logger.trace('socket.emit: %O', args);
+			});
 
-		// 	socket.onPacket = chain(socket.onPacket, (...args) => {
-		// 		if (args[0].type !== 'noop') {
-		// 			logger.trace('socket.onPacket: args: %O', args);
-		// 		}
-		// 	});
-		// }
+			socket.onPacket = chain(socket.onPacket, (...args) => {
+				if (args[0].type !== 'noop') {
+					logger.trace('socket.onPacket: args: %O', args);
+				}
+			});
+		}
 
 		// iterate our registered events and add them to the socket.
 		for (const eventName of Object.keys(this._events)) {
+			logger.trace('Registering event %s', eventName);
 			socket.on(eventName, (...args) => this.emit(eventName, ...args));
 		}
 
@@ -276,17 +264,19 @@ async function waitForSocketIO() {
 }
 
 function wrapHandler(handler, name) {
-	return function (...args) {
-		try {
-			handler(...args);
-		} catch (e) {
-			logger.error(
-				'Caught an uncaught exception when taking action on %s',
-				name
-			);
-			logger.stack(e);
-		}
-	};
+	return (...args) =>
+		//prevent the promise from reaching socket.io
+		void (async () => {
+			try {
+				await handler(...args);
+			} catch (e) {
+				logger.error(
+					'Caught an uncaught exception when taking action on %s',
+					name
+				);
+				logger.stack(e);
+			}
+		})();
 }
 
 // I don't want to import/tie web-client to lib-interfaces just for this

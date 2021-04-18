@@ -190,24 +190,31 @@ export class ChatClient extends EventEmitter {
 	 * @param {Object.<string,Object>} message
 	 */
 	async onPresenceChange(message) {
+		logger.trace('Updated presence info', message);
 		for (const [username, rawPresence] of Object.entries(message)) {
-			const presence = this.parse({ ...rawPresence, source: 'socket' });
+			const presence = await this.parse({
+				...rawPresence,
+				source: 'socket',
+			});
 
 			this.setPresence(username, presence);
 		}
 	}
 
 	async onExitedRoom(roomInfo) {
+		logger.trace('Chat room exited', roomInfo);
 		roomInfo = await this.parse(roomInfo);
 		this.emit('exited-room', roomInfo);
 	}
 
 	async onEnteredRoom(roomInfo) {
+		logger.trace('Chat room entered', roomInfo);
 		roomInfo = await this.parse(roomInfo);
 		this.emit('entered-room', roomInfo);
 	}
 
 	async onRoomMembershipChanged(roomInfo) {
+		logger.trace('Chat room membership changed', roomInfo);
 		roomInfo = await this.parse(roomInfo);
 		this.emit('room-membership-changed', roomInfo);
 	}
