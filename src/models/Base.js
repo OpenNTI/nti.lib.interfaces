@@ -7,7 +7,7 @@ import Logger from '@nti/util-logger';
 import JSONValue from '../mixins/JSONValue.js';
 import { Mixin as Pendability } from '../mixins/Pendability.js';
 import Editable from '../mixins/Editable.js';
-import Fields, { hideField } from '../mixins/Fields.js';
+import Fields, { readValueFor, hideField } from '../mixins/Fields.js';
 import HasLinks from '../mixins/HasLinks.js';
 import { Parent, Service } from '../constants.js';
 
@@ -119,13 +119,18 @@ class Base extends EventEmitter {
 		return this.OID;
 	}
 
-	onChange(who) {
-		this.emit('change', this, who);
+	onChange(...who) {
+		this.emit('change', this, ...who);
 
-		this[Service].emit(`${this.getEventPrefix()}-change`, this, who);
+		this[Service].emit(`${this.getEventPrefix()}-change`, this, ...who);
 
 		if (this.parent(x => x.constructor.ChangeBubbles)) {
-			this.parent()?.onChange?.(who);
+			const p = this.parent();
+			const key = Object.keys(p || {}).find(
+				x => readValueFor(p, x) === this
+			);
+
+			p?.onChange?.(key, ...who);
 		}
 	}
 
