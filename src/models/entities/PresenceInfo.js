@@ -34,7 +34,9 @@ class PresenceInfo extends Base {
 		'source':   { type: 'string' },
 	}
 
-	isPresenceInfo = true;
+	get isPresenceInfo() {
+		return true;
+	}
 
 	get isForAppUser() {
 		return this.isAppUser(this.username);
