@@ -123,10 +123,7 @@ export default class WebSocketClient extends EventEmitter {
 
 	async setup() {
 		await waitForSocketIO();
-		const api = new URL(
-			this.#server.config.server,
-			location.href
-		).toString();
+		const api = '';
 
 		// const {
 		// 	Transport: { prototype: pt },
