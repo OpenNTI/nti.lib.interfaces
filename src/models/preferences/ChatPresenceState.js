@@ -1,10 +1,7 @@
-import { decorate, buffer } from '@nti/lib-commons';
+import { decorate } from '@nti/lib-commons';
 
-import UserPresence from '../../stores/UserPresence.js';
 import { model, COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
-import { Service } from '../../constants.js';
-import PresenceInfo from '../entities/PresenceInfo.js';
 
 class PreferenceChatPresenceState extends Base {
 	static MimeType = [
@@ -22,23 +19,9 @@ class PreferenceChatPresenceState extends Base {
 		'type':   { type: 'string' },
 	}
 
-	constructor(service, parent, data) {
-		super(service, parent, data);
-		this.on('change', this.updatePresence);
+	'translate:show'(show) {
+		return show === 'offline' ? '' : show;
 	}
-
-	updatePresence = buffer(100, () => {
-		if (!/active$/i.test(this.MimeType)) {
-			return;
-		}
-
-		const service = this[Service];
-
-		UserPresence.setPresence(
-			service.getAppUsername(),
-			PresenceInfo.from(service, this.type, this.show, this.status)
-		);
-	});
 }
 
 export default decorate(PreferenceChatPresenceState, { with: [model] });

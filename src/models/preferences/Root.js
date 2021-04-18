@@ -1,4 +1,4 @@
-import { decorate } from '@nti/lib-commons';
+import { buffer, decorate } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import { model, COMMON_PREFIX } from '../Registry.js';
@@ -25,7 +25,7 @@ class PreferenceRoot extends Base {
 	}
 
 	#maybeSave = (_, bucket, ...args) => {
-		logger.info(bucket, args);
+		// logger.info(bucket, args);
 
 		/** @type {{buffer: number; changes: Set<string>}} */
 		const stash = this.#maybeSave;
@@ -42,8 +42,7 @@ class PreferenceRoot extends Base {
 
 		changes.add(bucket);
 
-		clearTimeout(stash.buffer);
-		stash.buffer = setTimeout(async () => {
+		buffer.inline(stash, 1000, async () => {
 			logger.debug('preferences changed. saving');
 			try {
 				const localChanges = (stash.saving = [...changes]);
@@ -67,7 +66,7 @@ class PreferenceRoot extends Base {
 			} finally {
 				stash.saving = null;
 			}
-		}, 1000);
+		});
 	};
 }
 

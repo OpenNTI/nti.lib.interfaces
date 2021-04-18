@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 
-import { Array as ArrayUtils } from '@nti/lib-commons';
+import { Array as ArrayUtils, buffer } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import PresenceInfo from '../models/entities/PresenceInfo.js';
@@ -10,6 +10,7 @@ import UserPresence from './UserPresence.js';
 /** @typedef {import('../interface/DataServerInterface.js').default} DataServerInterface */
 /** @typedef {import('./Service.js').default} ServiceDocument */
 /** @typedef {import('./WebSocketClient.js').default} WebSocketClient */
+/** @typedef {import('../models/preferences/ChatPresenceState.js').default} ChatPresenceState */
 
 const logger = Logger.get('chat-client');
 const noop = () => {};
@@ -22,6 +23,8 @@ export class ChatClient extends EventEmitter {
 	#server = null;
 	/** @type {WebSocketClient} */
 	#socket = null;
+	/** @type {UserPresence} */
+	#preferences = null;
 
 	availableForChat = true;
 
@@ -32,10 +35,13 @@ export class ChatClient extends EventEmitter {
 		super();
 
 		const server = service.getServer();
+		this.#preferences = service.getUserPreferences();
 		this.#service = service;
 		this.#server = server;
 		const socket = (this.#socket = server.getWebSocketClient());
 		this.parse = async x => service.getObject(x);
+
+		this.#preferences.on('change', this.onUserPreferenceChange);
 
 		socket.register(
 			wrap({
@@ -58,29 +64,51 @@ export class ChatClient extends EventEmitter {
 		});
 	}
 
-	onNewSocketConnection = async () => {
-		logger.trace('created a new connection');
-		const preferences = this.#service.getUserPreferences();
-
-		const presence = await preferences.fetch('ChatPresence.Active');
-
-		this.changePresence(
-			presence?.type ?? 'available',
-			presence?.show,
-			presence?.status
-		);
+	onUserPreferenceChange = (root, section, scope) => {
+		const key = [section, scope].join('.');
+		if (key === 'ChatPresence.Active') {
+			buffer.inline(this.onUserPreferenceChange, 100, () => {
+				const presence = this.#preferences.get(key);
+				this.setPresenceFromPreference(presence);
+			});
+		}
 	};
 
-	changePresence(type, show = null, status = null, callback = noop) {
-		const socket = this.#socket;
-		const newPresence = PresenceInfo.from(
+	onNewSocketConnection = async () => {
+		logger.trace('created a new connection');
+
+		const presence = await this.#preferences.fetch('ChatPresence.Active');
+
+		this.setPresenceFromPreference(presence);
+	};
+
+	/**
+	 * @private
+	 * @param {ChatPresenceState} presencePreference
+	 */
+	setPresenceFromPreference(presencePreference) {
+		const presenceInfo = PresenceInfo.from(
 			this.#service,
-			type,
-			show,
-			status
+			presencePreference?.type ?? 'available',
+			presencePreference?.show,
+			presencePreference?.status
 		);
 
-		socket.send('chat_setPresence', newPresence.toJSON(), callback || noop);
+		UserPresence.setPresence(presenceInfo.username, presenceInfo);
+
+		this.changePresence(presenceInfo);
+	}
+
+	changePresence(
+		presenceInfo = PresenceInfo.from(this.#service, 'unavailable'),
+		callback = noop
+	) {
+		const socket = this.#socket;
+		socket.send(
+			'chat_setPresence',
+			presenceInfo.toJSON(),
+			callback || noop
+		);
 	}
 
 	getPresence(username) {
