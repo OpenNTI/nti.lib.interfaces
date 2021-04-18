@@ -343,6 +343,10 @@ export default function FieldsApplier(target) {
 
 			return this;
 		},
+
+		findField(value) {
+			return Object.keys(this).find(x => readValueFor(this, x) === value);
+		},
 	};
 }
 
