@@ -49,7 +49,7 @@ export default {
 			this.putToLink(rel, data)
 		)
 			.then(o => this.refresh(o).then(() => o))
-			.then(o => (onAfterRefresh(this, o), o))
+			.then(o => (onAfterRefresh?.(this, o), o))
 			.then(...finishers(this, SAVE))
 			.then(() => this.onChange()));
 
@@ -111,7 +111,7 @@ export default {
 					this.refresh(o).then(() => o)
 				)
 			)
-			.then(o => (onAfterRefresh(this, o), o))
+			.then(o => (onAfterRefresh?.(this, o), o))
 			.then(...finishers(this, SAVE, { fields: values }))
 			.then(() => this.onChange(keys)));
 
@@ -145,6 +145,7 @@ export default {
 
 /**
  * Make sure the fields we are saving are keys on the object we refresh with
+ *
  * @param  {Object} o          the object we are going to update with
  * @param  {string} savingKeys the keys we tried to save
  * @returns {Object}            the object to update with including all the saved keys
