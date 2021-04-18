@@ -740,9 +740,11 @@ function applyField(scope, fieldName, valueIn, declared, defaultValue) {
 	delete scope[fieldName];
 
 	const setter = makeFieldsFn(x => {
+		scope[`beforeSet:${fieldName}`]?.(x);
 		// console.trace('setting %s to', fieldName, x);
 		value = x;
 		scope.onChange(fieldName);
+		scope[`afterSet:${fieldName}`]?.(x);
 	});
 	const getter = makeFieldsFn(() => value);
 	const warningGetter = makeFieldsFn(

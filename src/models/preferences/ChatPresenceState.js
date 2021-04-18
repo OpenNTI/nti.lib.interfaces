@@ -22,6 +22,23 @@ class PreferenceChatPresenceState extends Base {
 	'translate:show'(show) {
 		return show === 'offline' ? '' : show;
 	}
+
+	'beforeSet:status'(v) {
+		if (this.isActive) {
+			const { Active } = this.parent();
+			Active.status = v;
+		}
+	}
+
+	get isActive() {
+		const { Active } = this.parent();
+		return (
+			this !== Active &&
+			Active.show === this.show &&
+			Active.status === this.status &&
+			Active.type === this.type
+		);
+	}
 }
 
 export default decorate(PreferenceChatPresenceState, { with: [model] });
