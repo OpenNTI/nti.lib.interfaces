@@ -122,7 +122,7 @@ class Base extends EventEmitter {
 	onChange(...who) {
 		this.emit('change', this, ...who);
 
-		this[Service].emit(`${this.getEventPrefix()}-change`, this, ...who);
+		this[Service]?.emit(`${this.getEventPrefix()}-change`, this, ...who);
 
 		if (this.parent(x => x.constructor.ChangeBubbles)) {
 			const p = this.parent();
