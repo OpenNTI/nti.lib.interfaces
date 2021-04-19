@@ -1,4 +1,4 @@
-import { decorate } from '@nti/lib-commons';
+import { decorate, isEmpty } from '@nti/lib-commons';
 
 import Base from '../Base.js';
 import { model, COMMON_PREFIX } from '../Registry.js';
@@ -35,12 +35,20 @@ class PresenceInfo extends Base {
 		'source':   { type: 'string' },
 	}
 
+	get name() {
+		return this.getName();
+	}
+
 	get isPresenceInfo() {
 		return true;
 	}
 
 	get isForAppUser() {
 		return this.isAppUser(this.username);
+	}
+
+	toString() {
+		return this.isOnline() ? 'Online' : 'Offline';
 	}
 
 	isOnline() {
@@ -63,6 +71,28 @@ class PresenceInfo extends Base {
 		}
 
 		return show;
+	}
+
+	getDisplayText() {
+		const nameToDisplay = {
+			dnd: 'Do not disturb',
+			away: 'Away',
+			available: 'Available',
+			unavailable: '',
+			invisible: 'Invisible',
+		};
+
+		const { status } = this;
+
+		if (!this.isOnline()) {
+			return '';
+		}
+
+		if (!isEmpty(status) && status !== 'null') {
+			return status;
+		}
+
+		return nameToDisplay[this.getName()];
 	}
 }
 
