@@ -3,7 +3,7 @@ import { decorate, URL as URLUtils } from '@nti/lib-commons';
 import { model, COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class PreferenceChatPresence extends Base {
+class PreferencesChatPresence extends Base {
 	static MimeType = COMMON_PREFIX + 'preference.chatpresence';
 
 	// prettier-ignore
@@ -21,4 +21,4 @@ class PreferenceChatPresence extends Base {
 	}
 }
 
-export default decorate(PreferenceChatPresence, { with: [model] });
+export default decorate(PreferencesChatPresence, { with: [model] });

@@ -3,7 +3,7 @@ import { decorate } from '@nti/lib-commons';
 import { model, COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class PreferenceGradeBook extends Base {
+class PreferencesGradeBook extends Base {
 	static MimeType = COMMON_PREFIX + 'preference.gradebook';
 
 	// prettier-ignore
@@ -13,4 +13,4 @@ class PreferenceGradeBook extends Base {
 	}
 }
 
-export default decorate(PreferenceGradeBook, { with: [model] });
+export default decorate(PreferencesGradeBook, { with: [model] });

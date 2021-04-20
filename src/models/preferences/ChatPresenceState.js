@@ -3,7 +3,7 @@ import { decorate } from '@nti/lib-commons';
 import { model, COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class PreferenceChatPresenceState extends Base {
+class PreferencesChatPresenceState extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'preference.chatpresence.active',
 		COMMON_PREFIX + 'preference.chatpresence.available',
@@ -41,4 +41,4 @@ class PreferenceChatPresenceState extends Base {
 	}
 }
 
-export default decorate(PreferenceChatPresenceState, { with: [model] });
+export default decorate(PreferencesChatPresenceState, { with: [model] });
