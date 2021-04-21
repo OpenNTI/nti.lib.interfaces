@@ -111,15 +111,20 @@ export default class WebSocketClient extends EventEmitter {
 	 * @returns {void}
 	 */
 	addListener(eventName, handler) {
-		const socket = this.#socket;
-
-		// if socket is present ensure to listen to this event and reflect it here.
-		if (socket && !(eventName in socket.$events || {})) {
-			logger.trace('Registering event %s', eventName);
-			socket?.on(eventName, (...args) => this.emit(eventName, ...args));
-		}
-
+		this.setupForwarding(eventName);
 		return super.addListener(eventName, handler);
+	}
+
+	setupForwarding(eventName) {
+		const socket = this.#socket;
+		// if socket is present ensure to listen to this event and reflect it here.
+		if (socket && !(eventName in (socket.$events || {}))) {
+			logger.trace('Registering event %s', eventName);
+			socket?.on(eventName, (...args) => {
+				logger.trace('Emitting event %s', eventName);
+				return this.emit(eventName, ...args);
+			});
+		}
 	}
 
 	async setup() {
@@ -144,8 +149,7 @@ export default class WebSocketClient extends EventEmitter {
 
 		// iterate our registered events and add them to the socket.
 		for (const eventName of Object.keys(this._events)) {
-			logger.trace('Registering event %s', eventName);
-			socket.on(eventName, (...args) => this.emit(eventName, ...args));
+			this.setupForwarding(eventName);
 		}
 
 		this.emit('socket-available');
