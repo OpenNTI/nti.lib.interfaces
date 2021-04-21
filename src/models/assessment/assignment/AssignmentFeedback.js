@@ -13,9 +13,10 @@ class AssignmentFeedback extends Base {
 	// prettier-ignore
 	static Fields = {
 		...Base.Fields,
-		'AssignmentId': { type: 'string'   },
-		'body':         { type: '*[]'      },
-		'title':        { type: 'string'   }
+		'AssignmentId':      { type: 'string' },
+		'body':              { type: '*[]'    },
+		'title':             { type: 'string' },
+		'SubmissionCreator': { type: 'string' }
 	}
 
 	constructor(service, parent, data) {
