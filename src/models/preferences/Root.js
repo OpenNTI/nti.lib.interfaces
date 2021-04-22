@@ -16,6 +16,7 @@ class PreferenceRoot extends Base {
 		'ChatPresence':      { type: 'model' },
 		'Gradebook':         { type: 'model' },
 		'PushNotifications': { type: 'model' },
+		'Sort':              { type: 'model' },
 		'WebApp':            { type: 'model' },
 	}
 

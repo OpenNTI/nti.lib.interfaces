@@ -1,16 +1,17 @@
 import { decorate } from '@nti/lib-commons';
 
 import { model, COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
 
-class PreferencesGradeBook extends Base {
+import Preference from './Preference.js';
+
+class GradeBook extends Preference {
 	static MimeType = COMMON_PREFIX + 'preference.gradebook';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...Preference.Fields,
 		'hide_avatars': { type: 'boolean' },
 	}
 }
 
-export default decorate(PreferencesGradeBook, { with: [model] });
+export default decorate(GradeBook, { with: [model] });

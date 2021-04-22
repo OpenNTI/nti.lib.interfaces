@@ -1,9 +1,10 @@
 import { decorate } from '@nti/lib-commons';
 
 import { model, COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
 
-class PreferencesChatPresenceState extends Base {
+import Preference from './Preference.js';
+
+class ChatPresenceState extends Preference {
 	static MimeType = [
 		COMMON_PREFIX + 'preference.chatpresence.active',
 		COMMON_PREFIX + 'preference.chatpresence.available',
@@ -13,7 +14,7 @@ class PreferencesChatPresenceState extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...Preference.Fields,
 		'show':   { type: 'string' },
 		'status': { type: 'string' },
 		'type':   { type: 'string' },
@@ -41,4 +42,4 @@ class PreferencesChatPresenceState extends Base {
 	}
 }
 
-export default decorate(PreferencesChatPresenceState, { with: [model] });
+export default decorate(ChatPresenceState, { with: [model] });
