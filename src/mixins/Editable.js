@@ -3,7 +3,7 @@ import { begin, finishers } from '../utils/events-begin-finish.js';
 
 const after = (task, call) => task.catch(() => {}).then(() => call());
 
-export default {
+const Editable = {
 	async delete(rel = 'edit') {
 		const link = this.getLink(rel);
 
@@ -136,7 +136,7 @@ export default {
 	 * Checks if this is modifiable
 	 *
 	 * @deprecated
-	 * @returns {bool} isModifiable
+	 * @returns {boolean} isModifiable
 	 */
 	canEdit() {
 		return this.isModifiable;
@@ -159,3 +159,5 @@ function ensureSavingKeysOn(o, savingKeys) {
 
 	return o;
 }
+
+export default Editable;

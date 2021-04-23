@@ -188,7 +188,12 @@ export default class Registry {
 	}
 }
 
-//Decorator...auto register
+/**
+ * Decorator...auto register
+ *
+ * @param {{MimeType: string|string[]}} target The object to register as a model.
+ * @returns {void}
+ */
 export function model(target) {
 	Registry.register(target);
 }

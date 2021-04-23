@@ -47,6 +47,11 @@ const isArrayType = _t.bind(/\[]$/);
 // const isDictionaryType = _t.bind(/\{}$/);
 // const isCollectionType = x => isArrayType(x) || isDictionaryType(x);
 
+/**
+ * @template T
+ * @param {T} target
+ * @returns {T & ReturnType<FieldsApplier>}
+ */
 export default function FieldsApplier(target) {
 	return {
 		__toRaw() {
