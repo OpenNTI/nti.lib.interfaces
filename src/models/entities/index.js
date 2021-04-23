@@ -4,3 +4,4 @@ export { default as FriendsList } from './FriendsList.js';
 export { default as PresenceInfo } from './PresenceInfo.js';
 export { default as SuggestedContacts } from './SuggestedContacts.js';
 export { default as User } from './User.js';
+export { default as Entity } from './Entity.js';
