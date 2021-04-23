@@ -24,6 +24,10 @@ export class UserPresence extends EventEmitter {
 		this.setMaxListeners(0);
 	}
 
+	[Symbol.iterator]() {
+		return Object.values(this.#presence)[Symbol.iterator]();
+	}
+
 	/**
 	 * Updates the presence info for the given user.
 	 *
