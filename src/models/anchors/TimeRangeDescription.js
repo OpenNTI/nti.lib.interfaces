@@ -42,4 +42,4 @@ class TimeRangeDescription extends ContentRangeDescription {
 	}
 }
 
-export default decorate(TimeRangeDescription, { with: [model] });
+export default decorate(TimeRangeDescription, [model]);

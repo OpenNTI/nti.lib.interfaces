@@ -61,4 +61,4 @@ class AggregatedOrderingPart extends Base {
 	}
 }
 
-export default decorate(AggregatedOrderingPart, { with: [model] });
+export default decorate(AggregatedOrderingPart, [model]);

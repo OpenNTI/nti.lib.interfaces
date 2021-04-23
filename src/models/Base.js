@@ -20,8 +20,6 @@ const CONTENT_VISIBILITY_MAP = { OU: 'OUID' };
 const PHANTOM = Symbol.for('Phantom');
 const is = Symbol('isTest');
 
-/** @typedef {Base} Model */
-
 class Base extends EventEmitter {
 	static MimeType = COMMON_PREFIX + '__base__';
 
@@ -274,6 +272,10 @@ class Base extends EventEmitter {
 	}
 }
 
-export default decorate(Base, {
-	with: [model, mixin(HasLinks, JSONValue, Editable, Pendability, Fields)],
-});
+/** @typedef {Base & HasLinks & JSONValue & Editable & Pendability & import('../mixins/Fields').FieldInterface<Base>} Model */
+
+/** @type {Model} (default) */
+export default decorate(Base, [
+	model,
+	mixin(HasLinks, JSONValue, Editable, Pendability, Fields),
+]);

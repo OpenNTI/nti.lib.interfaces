@@ -18,4 +18,4 @@ class MetadataAttemptItemContainer extends Base {
 	}
 }
 
-export default decorate(MetadataAttemptItemContainer, { with: [model] });
+export default decorate(MetadataAttemptItemContainer, [model]);

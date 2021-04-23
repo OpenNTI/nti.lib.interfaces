@@ -109,4 +109,4 @@ class Part extends Base {
 	}
 }
 
-export default decorate(Part, { with: [model, mixin(HasContent)] });
+export default decorate(Part, [model, mixin(HasContent)]);

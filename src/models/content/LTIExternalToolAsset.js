@@ -43,6 +43,4 @@ class LTIExternalToolAsset extends Base {
 	}
 }
 
-export default decorate(LTIExternalToolAsset, {
-	with: [model, mixin(Completable)],
-});
+export default decorate(LTIExternalToolAsset, [model, mixin(Completable)]);

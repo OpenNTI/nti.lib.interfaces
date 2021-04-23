@@ -91,4 +91,4 @@ class AssignmentSummary extends Stream {
 	}
 }
 
-export default decorate(AssignmentSummary, { with: [mixin(Paged)] });
+export default decorate(AssignmentSummary, [mixin(Paged)]);

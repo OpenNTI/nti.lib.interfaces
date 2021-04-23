@@ -25,4 +25,4 @@ class ContentUnitSearchHit extends Base {
 	isContentUnitSearchHit = true;
 }
 
-export default decorate(ContentUnitSearchHit, { with: [model] });
+export default decorate(ContentUnitSearchHit, [model]);

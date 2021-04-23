@@ -19,4 +19,4 @@ class SuggestedContacts extends Base {
 	}
 }
 
-export default decorate(SuggestedContacts, { with: [model] });
+export default decorate(SuggestedContacts, [model]);

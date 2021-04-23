@@ -22,4 +22,4 @@ class Ordering extends Part {
 	}
 }
 
-export default decorate(Ordering, { with: [model] });
+export default decorate(Ordering, [model]);

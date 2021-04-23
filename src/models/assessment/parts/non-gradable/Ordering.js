@@ -8,4 +8,4 @@ class NonGradableOrdering extends Ordering {
 	isNonGradable = true;
 }
 
-export default decorate(NonGradableOrdering, { with: [model] });
+export default decorate(NonGradableOrdering, [model]);

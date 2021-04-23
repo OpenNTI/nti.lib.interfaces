@@ -136,4 +136,4 @@ class GradeBookSummary extends Stream {
 	}
 }
 
-export default decorate(GradeBookSummary, { with: [mixin(Paged)] });
+export default decorate(GradeBookSummary, [mixin(Paged)]);

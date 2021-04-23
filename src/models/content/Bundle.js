@@ -213,6 +213,4 @@ async function resolvePackages(bundle) {
 	}
 }
 
-export default decorate(Bundle, {
-	with: [model, mixin(Publishable)],
-});
+export default decorate(Bundle, [model, mixin(Publishable)]);

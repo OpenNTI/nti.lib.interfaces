@@ -117,4 +117,4 @@ class DynamicFriendsList extends FriendsList {
 	}
 }
 
-export default decorate(DynamicFriendsList, { with: [model] });
+export default decorate(DynamicFriendsList, [model]);

@@ -44,6 +44,4 @@ class UserPreferences extends EventEmitter {
 	}
 }
 
-export default decorate(UserPreferences, {
-	with: [mixin(Pendability)],
-});
+export default decorate(UserPreferences, [mixin(Pendability)]);

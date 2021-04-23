@@ -47,6 +47,4 @@ class Poll extends Question {
 	}
 }
 
-export default decorate(Poll, {
-	with: [model, mixin({ /*@readonly*/ isPoll: true })],
-});
+export default decorate(Poll, [model, mixin({ /*@readonly*/ isPoll: true })]);

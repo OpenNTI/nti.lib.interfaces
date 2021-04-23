@@ -187,4 +187,4 @@ class UserData extends EventEmitter {
 	}
 }
 
-export default decorate(UserData, { with: [mixin(Pendability)] });
+export default decorate(UserData, [mixin(Pendability)]);

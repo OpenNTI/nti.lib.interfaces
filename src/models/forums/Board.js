@@ -35,4 +35,4 @@ class Board extends Base {
 	}
 }
 
-export default decorate(Board, { with: [model, mixin(GetContents)] });
+export default decorate(Board, [model, mixin(GetContents)]);

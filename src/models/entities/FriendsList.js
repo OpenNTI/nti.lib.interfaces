@@ -186,4 +186,4 @@ class FriendsList extends Entity {
 	}
 }
 
-export default decorate(FriendsList, { with: [model] });
+export default decorate(FriendsList, [model]);

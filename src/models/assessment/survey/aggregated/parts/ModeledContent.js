@@ -13,4 +13,4 @@ class AggregatedModeledContentPart extends Base {
 	}
 }
 
-export default decorate(AggregatedModeledContentPart, { with: [model] });
+export default decorate(AggregatedModeledContentPart, [model]);

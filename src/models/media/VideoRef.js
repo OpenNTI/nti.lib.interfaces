@@ -13,4 +13,4 @@ class VideoRef extends Base {
 	}
 }
 
-export default decorate(VideoRef, { with: [model] });
+export default decorate(VideoRef, [model]);

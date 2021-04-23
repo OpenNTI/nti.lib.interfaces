@@ -26,4 +26,4 @@ class Matching extends Part {
 	}
 }
 
-export default decorate(Matching, { with: [model] });
+export default decorate(Matching, [model]);

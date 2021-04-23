@@ -28,4 +28,4 @@ class RelatedWorkReferencePointer extends Base {
 	}
 }
 
-export default decorate(RelatedWorkReferencePointer, { with: [model] });
+export default decorate(RelatedWorkReferencePointer, [model]);

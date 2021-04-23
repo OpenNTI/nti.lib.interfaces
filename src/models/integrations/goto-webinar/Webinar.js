@@ -99,4 +99,4 @@ class Webinar extends Base {
 	}
 }
 
-export default decorate(Webinar, { with: [model] });
+export default decorate(Webinar, [model]);

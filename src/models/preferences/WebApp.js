@@ -15,4 +15,4 @@ class WebApp extends Preference {
 	}
 }
 
-export default decorate(WebApp, { with: [model] });
+export default decorate(WebApp, [model]);

@@ -46,4 +46,4 @@ class SharingScopes extends Base {
 	}
 }
 
-export default decorate(SharingScopes, { with: [model] });
+export default decorate(SharingScopes, [model]);

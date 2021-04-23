@@ -42,4 +42,4 @@ class ChatPresenceState extends Preference {
 	}
 }
 
-export default decorate(ChatPresenceState, { with: [model] });
+export default decorate(ChatPresenceState, [model]);

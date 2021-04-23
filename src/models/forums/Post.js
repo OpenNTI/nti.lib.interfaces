@@ -30,6 +30,4 @@ class Post extends Base {
 	}
 }
 
-export default decorate(Post, {
-	with: [model, mixin(Likable, DiscussionInterface)],
-});
+export default decorate(Post, [model, mixin(Likable, DiscussionInterface)]);

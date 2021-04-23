@@ -8,4 +8,4 @@ class PurchasableCourseChoiceBundle extends Purchasable {
 	static MimeType = COMMON_PREFIX + 'store.purchasablecoursechoicebundle';
 }
 
-export default decorate(PurchasableCourseChoiceBundle, { with: [model] });
+export default decorate(PurchasableCourseChoiceBundle, [model]);

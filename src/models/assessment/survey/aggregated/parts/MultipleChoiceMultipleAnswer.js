@@ -10,6 +10,4 @@ class AggregatedMultipleChoiceMultipleAnswerPart extends Base {
 		COMMON_PREFIX + 'assessment.aggregatedmultiplechoicemultipleanswerpart';
 }
 
-export default decorate(AggregatedMultipleChoiceMultipleAnswerPart, {
-	with: [model],
-});
+export default decorate(AggregatedMultipleChoiceMultipleAnswerPart, [model]);

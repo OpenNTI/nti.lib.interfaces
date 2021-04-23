@@ -26,4 +26,4 @@ class TranscriptContentPointer extends TimeContentPointer {
 	}
 }
 
-export default decorate(TranscriptContentPointer, { with: [model] });
+export default decorate(TranscriptContentPointer, [model]);

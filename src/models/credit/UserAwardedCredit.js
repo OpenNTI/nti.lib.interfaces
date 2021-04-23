@@ -8,4 +8,4 @@ class UserAwardedCredit extends BaseCredit {
 	static MimeType = [COMMON_PREFIX + 'credit.userawardedcredit'];
 }
 
-export default decorate(UserAwardedCredit, { with: [model] });
+export default decorate(UserAwardedCredit, [model]);

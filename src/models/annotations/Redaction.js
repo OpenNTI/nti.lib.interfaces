@@ -8,4 +8,4 @@ class Redaction extends Highlight {
 	static MimeType = COMMON_PREFIX + 'redaction';
 }
 
-export default decorate(Redaction, { with: [model] });
+export default decorate(Redaction, [model]);

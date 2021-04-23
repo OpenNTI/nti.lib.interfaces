@@ -12,4 +12,4 @@ class TranscriptSummary extends Transcript {
 	}
 }
 
-export default decorate(TranscriptSummary, { with: [model] });
+export default decorate(TranscriptSummary, [model]);

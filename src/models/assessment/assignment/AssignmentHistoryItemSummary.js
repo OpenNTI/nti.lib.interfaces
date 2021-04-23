@@ -24,4 +24,4 @@ class AssignmentHistoryItemSummary extends Base {
 	}
 }
 
-export default decorate(AssignmentHistoryItemSummary, { with: [model] });
+export default decorate(AssignmentHistoryItemSummary, [model]);

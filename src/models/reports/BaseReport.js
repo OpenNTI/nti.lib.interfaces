@@ -17,4 +17,4 @@ class BaseReport extends Base {
 	}
 }
 
-export default decorate(BaseReport, { with: [model] });
+export default decorate(BaseReport, [model]);

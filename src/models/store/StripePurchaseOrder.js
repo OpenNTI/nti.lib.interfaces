@@ -8,4 +8,4 @@ class StripePurchaseOrder extends StripePurchaseItem {
 	static MimeType = COMMON_PREFIX + 'store.stripepurchaseorder';
 }
 
-export default decorate(StripePurchaseOrder, { with: [model] });
+export default decorate(StripePurchaseOrder, [model]);

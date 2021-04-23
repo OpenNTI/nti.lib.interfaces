@@ -13,4 +13,4 @@ class Solution extends Base {
 	};
 }
 
-export default decorate(Solution, { with: [model] });
+export default decorate(Solution, [model]);

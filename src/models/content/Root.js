@@ -14,4 +14,4 @@ class Root extends Folder {
 	isRoot = true;
 }
 
-export default decorate(Root, { with: [model] });
+export default decorate(Root, [model]);

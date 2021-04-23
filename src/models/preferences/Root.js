@@ -71,4 +71,4 @@ class PreferenceRoot extends Base {
 	};
 }
 
-export default decorate(PreferenceRoot, { with: [model] });
+export default decorate(PreferenceRoot, [model]);

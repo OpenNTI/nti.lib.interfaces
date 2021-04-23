@@ -8,4 +8,4 @@ class NonGradableFreeResponse extends FreeResponse {
 	isNonGradable = true;
 }
 
-export default decorate(NonGradableFreeResponse, { with: [model] });
+export default decorate(NonGradableFreeResponse, [model]);

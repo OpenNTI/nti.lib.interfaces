@@ -57,4 +57,4 @@ class FillInTheBlank extends Part {
 	}
 }
 
-export default decorate(FillInTheBlank, { with: [model] });
+export default decorate(FillInTheBlank, [model]);

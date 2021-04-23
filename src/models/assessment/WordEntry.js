@@ -14,4 +14,4 @@ class WordEntry extends Base {
 	};
 }
 
-export default decorate(WordEntry, { with: [model] });
+export default decorate(WordEntry, [model]);

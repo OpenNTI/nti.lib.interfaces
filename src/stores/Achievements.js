@@ -73,4 +73,4 @@ class Achievements extends EventEmitter {
 	}
 }
 
-export default decorate(Achievements, { with: [mixin(Pendability)] });
+export default decorate(Achievements, [mixin(Pendability)]);

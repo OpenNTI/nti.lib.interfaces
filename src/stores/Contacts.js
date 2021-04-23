@@ -348,4 +348,4 @@ class Contacts extends EventEmitter {
 	}
 }
 
-export default decorate(Contacts, { with: [mixin(Pendability)] });
+export default decorate(Contacts, [mixin(Pendability)]);

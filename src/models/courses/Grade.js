@@ -159,9 +159,7 @@ class Grade extends Base {
 	}
 }
 
-export default decorate(Grade, {
-	with: [cacheClassInstances, model, mixin(names)],
-});
+export default decorate(Grade, [cacheClassInstances, model, mixin(names)]);
 
 function processValue(value) {
 	if (typeof value === 'number') {

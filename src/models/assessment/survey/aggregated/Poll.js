@@ -19,4 +19,4 @@ class AggregatedPoll extends Base {
 	}
 }
 
-export default decorate(AggregatedPoll, { with: [model] });
+export default decorate(AggregatedPoll, [model]);

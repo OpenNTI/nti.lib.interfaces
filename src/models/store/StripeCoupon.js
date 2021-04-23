@@ -25,4 +25,4 @@ class StripeCoupon extends Base {
 	}
 }
 
-export default decorate(StripeCoupon, { with: [model] });
+export default decorate(StripeCoupon, [model]);

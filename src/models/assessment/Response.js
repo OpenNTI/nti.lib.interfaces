@@ -11,4 +11,4 @@ class Response extends Base {
 	];
 }
 
-export default decorate(Response, { with: [model] });
+export default decorate(Response, [model]);

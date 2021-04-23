@@ -32,4 +32,4 @@ class EnrollmentOption5Minute extends EnrollmentOption {
 	getRefundCutOffDate() {} //implemented by the date Field type
 }
 
-export default decorate(EnrollmentOption5Minute, { with: [model] });
+export default decorate(EnrollmentOption5Minute, [model]);

@@ -42,4 +42,4 @@ class File extends FileSystemEntity {
 	}
 }
 
-export default decorate(File, { with: [model] });
+export default decorate(File, [model]);

@@ -16,4 +16,4 @@ class UserBundleRecord extends Base {
 	}
 }
 
-export default decorate(UserBundleRecord, { with: [model] });
+export default decorate(UserBundleRecord, [model]);

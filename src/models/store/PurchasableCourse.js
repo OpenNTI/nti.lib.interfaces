@@ -14,4 +14,4 @@ class PurchasableCourse extends Purchasable {
 	}
 }
 
-export default decorate(PurchasableCourse, { with: [model] });
+export default decorate(PurchasableCourse, [model]);

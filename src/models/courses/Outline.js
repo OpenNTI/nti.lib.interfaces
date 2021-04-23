@@ -138,4 +138,4 @@ class Outline extends Base {
 	}
 }
 
-export default decorate(Outline, { with: [model] });
+export default decorate(Outline, [model]);

@@ -18,4 +18,4 @@ class EnrollmentOption extends Base {
 	}
 }
 
-export default decorate(EnrollmentOption, { with: [model] });
+export default decorate(EnrollmentOption, [model]);

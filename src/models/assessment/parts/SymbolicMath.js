@@ -7,4 +7,4 @@ class SymbolicMath extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.symbolicmathpart';
 }
 
-export default decorate(SymbolicMath, { with: [model] });
+export default decorate(SymbolicMath, [model]);

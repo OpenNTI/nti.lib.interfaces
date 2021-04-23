@@ -28,4 +28,4 @@ class SavePointItem extends Base {
 	}
 }
 
-export default decorate(SavePointItem, { with: [model] });
+export default decorate(SavePointItem, [model]);

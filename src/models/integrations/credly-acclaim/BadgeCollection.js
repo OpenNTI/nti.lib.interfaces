@@ -20,4 +20,4 @@ class CredlyAcclaimBadgeCollection extends Batch {
 	}
 }
 
-export default decorate(CredlyAcclaimBadgeCollection, { with: [model] });
+export default decorate(CredlyAcclaimBadgeCollection, [model]);

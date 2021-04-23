@@ -25,6 +25,4 @@ class AssignmentReference extends Base {
 	}
 }
 
-export default decorate(AssignmentReference, {
-	with: [model, mixin(Completable)],
-});
+export default decorate(AssignmentReference, [model, mixin(Completable)]);

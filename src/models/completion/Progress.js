@@ -47,4 +47,4 @@ class Progress extends Base {
 	}
 }
 
-export default decorate(Progress, { with: [model] });
+export default decorate(Progress, [model]);

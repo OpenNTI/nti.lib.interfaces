@@ -33,4 +33,4 @@ class SharingPagePreference extends Base {
 	}
 }
 
-export default decorate(SharingPagePreference, { with: [model] });
+export default decorate(SharingPagePreference, [model]);

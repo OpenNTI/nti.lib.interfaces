@@ -17,4 +17,4 @@ class Timeline extends Base {
 	}
 }
 
-export default decorate(Timeline, { with: [model] });
+export default decorate(Timeline, [model]);

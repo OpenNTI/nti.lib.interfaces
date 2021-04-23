@@ -13,4 +13,4 @@ class AggregatedFreeResponsePart extends Base {
 	}
 }
 
-export default decorate(AggregatedFreeResponsePart, { with: [model] });
+export default decorate(AggregatedFreeResponsePart, [model]);

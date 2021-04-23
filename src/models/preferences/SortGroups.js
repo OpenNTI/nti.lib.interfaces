@@ -16,4 +16,4 @@ class SortGroups extends Preference {
 	}
 }
 
-export default decorate(SortGroups, { with: [model] });
+export default decorate(SortGroups, [model]);

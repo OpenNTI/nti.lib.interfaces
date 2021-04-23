@@ -274,4 +274,4 @@ class User extends Entity {
 	}
 }
 
-export default decorate(User, { with: [model] });
+export default decorate(User, [model]);

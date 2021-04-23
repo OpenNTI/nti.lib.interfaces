@@ -17,4 +17,4 @@ class ProfessionalPosition extends Base {
 	}
 }
 
-export default decorate(ProfessionalPosition, { with: [model] });
+export default decorate(ProfessionalPosition, [model]);

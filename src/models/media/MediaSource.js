@@ -99,4 +99,4 @@ class MediaSource extends Base {
 	}
 }
 
-export default decorate(MediaSource, { with: [model] });
+export default decorate(MediaSource, [model]);

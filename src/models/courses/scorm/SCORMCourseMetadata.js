@@ -13,4 +13,4 @@ class SCORMCourseMetadata extends Base {
 	}
 }
 
-export default decorate(SCORMCourseMetadata, { with: [model] });
+export default decorate(SCORMCourseMetadata, [model]);

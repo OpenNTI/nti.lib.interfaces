@@ -22,4 +22,4 @@ class Slide extends Base {
 	}
 }
 
-export default decorate(Slide, { with: [model] });
+export default decorate(Slide, [model]);

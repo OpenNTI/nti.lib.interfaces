@@ -127,4 +127,4 @@ class Forum extends Base {
 	}
 }
 
-export default decorate(Forum, { with: [model, mixin(GetContents)] });
+export default decorate(Forum, [model, mixin(GetContents)]);

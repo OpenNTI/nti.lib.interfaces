@@ -23,4 +23,4 @@ class AssignmentMetadataItem extends Base {
 	}
 }
 
-export default decorate(AssignmentMetadataItem, { with: [model] });
+export default decorate(AssignmentMetadataItem, [model]);

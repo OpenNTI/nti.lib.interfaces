@@ -17,4 +17,4 @@ class WebinarSession extends Base {
 	getEndTime() {} //implemented by endTime date field.
 }
 
-export default decorate(WebinarSession, { with: [model] });
+export default decorate(WebinarSession, [model]);

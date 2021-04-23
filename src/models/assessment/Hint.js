@@ -19,4 +19,4 @@ class Hint extends Base {
 	}
 }
 
-export default decorate(Hint, { with: [model, mixin(HasContent)] });
+export default decorate(Hint, [model, mixin(HasContent)]);

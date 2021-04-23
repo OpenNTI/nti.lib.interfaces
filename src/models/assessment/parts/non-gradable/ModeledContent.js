@@ -9,4 +9,4 @@ class NonGradableModeledContent extends ModeledContent {
 	isNonGradable = true;
 }
 
-export default decorate(NonGradableModeledContent, { with: [model] });
+export default decorate(NonGradableModeledContent, [model]);

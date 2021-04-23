@@ -8,4 +8,4 @@ class NonGradableMatching extends Matching {
 	isNonGradable = true;
 }
 
-export default decorate(NonGradableMatching, { with: [model] });
+export default decorate(NonGradableMatching, [model]);

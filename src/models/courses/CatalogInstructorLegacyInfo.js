@@ -19,4 +19,4 @@ class CatalogInstructorLegacyInfo extends Base {
 	}
 }
 
-export default decorate(CatalogInstructorLegacyInfo, { with: [model] });
+export default decorate(CatalogInstructorLegacyInfo, [model]);

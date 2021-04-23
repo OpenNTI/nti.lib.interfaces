@@ -7,4 +7,4 @@ class GoogleSSOIntegration extends BaseIntegration {
 	static MimeType = [COMMON_PREFIX + 'integration.googlessointegration'];
 }
 
-export default decorate(GoogleSSOIntegration, { with: [model] });
+export default decorate(GoogleSSOIntegration, [model]);

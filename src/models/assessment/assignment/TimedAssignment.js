@@ -67,4 +67,4 @@ class TimedAssignment extends Assignment {
 	}
 }
 
-export default decorate(TimedAssignment, { with: [model] });
+export default decorate(TimedAssignment, [model]);

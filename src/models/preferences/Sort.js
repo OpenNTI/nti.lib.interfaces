@@ -19,4 +19,4 @@ class Sort extends Preference {
 	}
 }
 
-export default decorate(Sort, { with: [model] });
+export default decorate(Sort, [model]);

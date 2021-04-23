@@ -30,4 +30,4 @@ class InquiryItem extends Base {
 	}
 }
 
-export default decorate(InquiryItem, { with: [model] });
+export default decorate(InquiryItem, [model]);

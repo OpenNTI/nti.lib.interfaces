@@ -130,20 +130,18 @@ class Enrollment extends Base {
 	}
 }
 
-export default decorate(Enrollment, {
-	with: [
-		model,
-		mixin(
-			CourseIdentity,
-			EnrollmentIdentity,
-			forward(
-				[
-					'getEndDate',
-					'getStartDate',
-					//From:
-				],
-				'CatalogEntry'
-			)
-		),
-	],
-});
+export default decorate(Enrollment, [
+	model,
+	mixin(
+		CourseIdentity,
+		EnrollmentIdentity,
+		forward(
+			[
+				'getEndDate',
+				'getStartDate',
+				//From:
+			],
+			'CatalogEntry'
+		)
+	),
+]);

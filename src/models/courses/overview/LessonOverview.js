@@ -30,6 +30,4 @@ class LessonOverview extends Base {
 	}
 }
 
-export default decorate(LessonOverview, {
-	with: [model, mixin(ContentTreeMixin)],
-});
+export default decorate(LessonOverview, [model, mixin(ContentTreeMixin)]);

@@ -102,6 +102,7 @@ function buildSuggestionsFrom(scopes, sectionName = 'My Course') {
 	return items;
 }
 
-export default decorate(InstanceAdministrativeRole, {
-	with: [model, mixin(AdministrativeIdentity)],
-});
+export default decorate(InstanceAdministrativeRole, [
+	model,
+	mixin(AdministrativeIdentity),
+]);

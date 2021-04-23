@@ -7,4 +7,4 @@ class FreeResponse extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.freeresponsepart';
 }
 
-export default decorate(FreeResponse, { with: [model] });
+export default decorate(FreeResponse, [model]);

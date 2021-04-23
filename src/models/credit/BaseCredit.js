@@ -21,4 +21,4 @@ class BaseCredit extends Base {
 	getAwardedDate() {} //implemented by awarded_date date field.
 }
 
-export default decorate(BaseCredit, { with: [model] });
+export default decorate(BaseCredit, [model]);

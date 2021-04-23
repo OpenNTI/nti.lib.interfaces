@@ -13,4 +13,4 @@ class SiteInvitation extends BaseSiteInvitation {
 	}
 }
 
-export default decorate(SiteInvitation, { with: [model] });
+export default decorate(SiteInvitation, [model]);

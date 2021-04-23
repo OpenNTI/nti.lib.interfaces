@@ -31,4 +31,4 @@ class CatalogFamily extends Base {
 	}
 }
 
-export default decorate(CatalogFamily, { with: [model] });
+export default decorate(CatalogFamily, [model]);

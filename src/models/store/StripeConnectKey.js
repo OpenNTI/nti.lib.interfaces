@@ -19,4 +19,4 @@ class StripeConnectKey extends Base {
 	}
 }
 
-export default decorate(StripeConnectKey, { with: [model] });
+export default decorate(StripeConnectKey, [model]);

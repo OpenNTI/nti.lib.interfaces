@@ -14,4 +14,4 @@ class CompletionPolicy extends Base {
 	}
 }
 
-export default decorate(CompletionPolicy, { with: [model] });
+export default decorate(CompletionPolicy, [model]);

@@ -49,4 +49,4 @@ class RecursiveStreamBucket extends Base {
 	}
 }
 
-export default decorate(RecursiveStreamBucket, { with: [model] });
+export default decorate(RecursiveStreamBucket, [model]);

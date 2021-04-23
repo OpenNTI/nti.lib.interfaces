@@ -242,9 +242,10 @@ class OutlineNode extends Outline {
 	}
 }
 
-export default decorate(OutlineNode, {
-	with: [model, mixin(Publishable, ContentTreeMixin, ContentConstraints)],
-});
+export default decorate(OutlineNode, [
+	model,
+	mixin(Publishable, ContentTreeMixin, ContentConstraints),
+]);
 
 function applyProgress([content, progress]) {
 	if (!content || !progress) {

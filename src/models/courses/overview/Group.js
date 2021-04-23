@@ -27,6 +27,4 @@ class OverviewGroup extends Base {
 	}
 }
 
-export default decorate(OverviewGroup, {
-	with: [model, mixin(ContentTreeMixin)],
-});
+export default decorate(OverviewGroup, [model, mixin(ContentTreeMixin)]);

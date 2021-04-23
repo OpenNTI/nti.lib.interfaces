@@ -120,4 +120,4 @@ class CourseCatalogEntry extends Base {
 	}
 }
 
-export default decorate(CourseCatalogEntry, { with: [model] });
+export default decorate(CourseCatalogEntry, [model]);

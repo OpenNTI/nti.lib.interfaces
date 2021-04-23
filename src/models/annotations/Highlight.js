@@ -14,4 +14,4 @@ class Highlight extends Annotation {
 	}
 }
 
-export default decorate(Highlight, { with: [model] });
+export default decorate(Highlight, [model]);

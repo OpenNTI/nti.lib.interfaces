@@ -19,4 +19,4 @@ class Workspace extends Base {
 	}
 }
 
-export default decorate(Workspace, { with: [model] });
+export default decorate(Workspace, [model]);

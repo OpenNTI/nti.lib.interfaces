@@ -174,4 +174,4 @@ class Package extends Base {
 	}
 }
 
-export default decorate(Package, { with: [model] });
+export default decorate(Package, [model]);

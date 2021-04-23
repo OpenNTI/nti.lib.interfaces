@@ -14,4 +14,4 @@ class CreditDefinition extends Base {
 	}
 }
 
-export default decorate(CreditDefinition, { with: [model] });
+export default decorate(CreditDefinition, [model]);

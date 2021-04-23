@@ -44,4 +44,4 @@ class Transcript extends Base {
 	}
 }
 
-export default decorate(Transcript, { with: [model] });
+export default decorate(Transcript, [model]);

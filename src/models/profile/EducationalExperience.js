@@ -20,4 +20,4 @@ class EducationalExperience extends Base {
 	}
 }
 
-export default decorate(EducationalExperience, { with: [model] });
+export default decorate(EducationalExperience, [model]);

@@ -18,4 +18,4 @@ class AssignmentHistoryItemContainer extends Base {
 	}
 }
 
-export default decorate(AssignmentHistoryItemContainer, { with: [model] });
+export default decorate(AssignmentHistoryItemContainer, [model]);

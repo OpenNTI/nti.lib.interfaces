@@ -55,4 +55,4 @@ class AssignmentFeedbackContainer extends Base {
 	}
 }
 
-export default decorate(AssignmentFeedbackContainer, { with: [model] });
+export default decorate(AssignmentFeedbackContainer, [model]);

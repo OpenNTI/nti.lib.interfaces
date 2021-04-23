@@ -15,4 +15,4 @@ class PushNotifications extends Preference {
 	}
 }
 
-export default decorate(PushNotifications, { with: [model] });
+export default decorate(PushNotifications, [model]);

@@ -418,6 +418,7 @@ class Assignment extends Base {
 
 	/**
 	 * DANGER: Resets all submissions on an assignment across all students.
+	 *
 	 * @returns {Promise} Promise that fulfills with request code.
 	 */
 	resetAllSubmissions() {
@@ -427,14 +428,7 @@ class Assignment extends Base {
 	}
 }
 
-export default decorate(Assignment, {
-	with: [
-		model,
-		mixin(
-			Completable,
-			Publishable,
-			SubmittableIdentity,
-			AssignmentIdentity
-		),
-	],
-});
+export default decorate(Assignment, [
+	model,
+	mixin(Completable, Publishable, SubmittableIdentity, AssignmentIdentity),
+]);

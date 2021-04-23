@@ -18,4 +18,4 @@ class SCORMCompletionMetadata extends Base {
 	getCompletionDate() {} //implemented by CompletionDate date field.
 }
 
-export default decorate(SCORMCompletionMetadata, { with: [model] });
+export default decorate(SCORMCompletionMetadata, [model]);

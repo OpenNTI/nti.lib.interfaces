@@ -50,4 +50,4 @@ class File extends Part {
 	}
 }
 
-export default decorate(File, { with: [model] });
+export default decorate(File, [model]);

@@ -28,7 +28,7 @@ class BaseEvent extends Base {
 	getUniqueIdentifier = () => this.getID();
 }
 
-export default decorate(BaseEvent, { with: [model] });
+export default decorate(BaseEvent, [model]);
 
 async function resolveCatalogEntry(service, event) {
 	const self = event;

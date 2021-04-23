@@ -23,4 +23,4 @@ class PurchasableVendorInfo extends Base {
 	getStartDate() {} //implemented by the date Field type
 }
 
-export default decorate(PurchasableVendorInfo, { with: [model] });
+export default decorate(PurchasableVendorInfo, [model]);

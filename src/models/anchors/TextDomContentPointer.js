@@ -82,4 +82,4 @@ class TextDomContentPointer extends DomContentPointer {
 	}
 }
 
-export default decorate(TextDomContentPointer, { with: [model] });
+export default decorate(TextDomContentPointer, [model]);

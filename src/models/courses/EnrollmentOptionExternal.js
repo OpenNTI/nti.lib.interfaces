@@ -17,4 +17,4 @@ class EnrollmentOptionExternal extends EnrollmentOption {
 	}
 }
 
-export default decorate(EnrollmentOptionExternal, { with: [model] });
+export default decorate(EnrollmentOptionExternal, [model]);

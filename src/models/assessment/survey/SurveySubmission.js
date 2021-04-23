@@ -44,4 +44,4 @@ class SurveySubmission extends QuestionSetSubmission {
 	}
 }
 
-export default decorate(SurveySubmission, { with: [model] });
+export default decorate(SurveySubmission, [model]);

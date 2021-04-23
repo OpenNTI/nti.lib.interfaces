@@ -16,4 +16,4 @@ class CourseCatalogLegacyEntry extends CatalogEntry {
 	}
 }
 
-export default decorate(CourseCatalogLegacyEntry, { with: [model] });
+export default decorate(CourseCatalogLegacyEntry, [model]);

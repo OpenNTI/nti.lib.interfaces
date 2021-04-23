@@ -32,4 +32,4 @@ class Badge extends Base {
 	}
 }
 
-export default decorate(Badge, { with: [model] });
+export default decorate(Badge, [model]);

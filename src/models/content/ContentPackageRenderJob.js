@@ -118,4 +118,4 @@ class ContentPackageRenderJob extends Base {
 	}
 }
 
-export default decorate(ContentPackageRenderJob, { with: [model] });
+export default decorate(ContentPackageRenderJob, [model]);

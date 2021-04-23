@@ -200,4 +200,4 @@ function setupAssessmentItems(items, pageInfo) {
 	);
 }
 
-export default decorate(PageInfo, { with: [model, mixin(Pages)] });
+export default decorate(PageInfo, [model, mixin(Pages)]);

@@ -26,4 +26,4 @@ class AggregatedSurveyResults extends Base {
 	}
 }
 
-export default decorate(AggregatedSurveyResults, { with: [model] });
+export default decorate(AggregatedSurveyResults, [model]);

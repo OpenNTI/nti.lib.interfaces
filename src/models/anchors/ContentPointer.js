@@ -14,4 +14,4 @@ class ContentPointer extends Base {
 	}
 }
 
-export default decorate(ContentPointer, { with: [model] });
+export default decorate(ContentPointer, [model]);

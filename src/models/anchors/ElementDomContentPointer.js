@@ -66,4 +66,4 @@ class ElementDomContentPointer extends DomContentPointer {
 	}
 }
 
-export default decorate(ElementDomContentPointer, { with: [model] });
+export default decorate(ElementDomContentPointer, [model]);

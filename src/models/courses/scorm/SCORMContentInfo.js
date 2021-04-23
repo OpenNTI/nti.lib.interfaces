@@ -86,6 +86,4 @@ class SCORMContentInfo extends Base {
 	}
 }
 
-export default decorate(SCORMContentInfo, {
-	with: [model, mixin(Completable)],
-});
+export default decorate(SCORMContentInfo, [model, mixin(Completable)]);

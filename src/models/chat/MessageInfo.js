@@ -39,4 +39,4 @@ class MessageInfo extends Base {
 	}
 }
 
-export default decorate(MessageInfo, { with: [model, mixin(Threadable)] });
+export default decorate(MessageInfo, [model, mixin(Threadable)]);

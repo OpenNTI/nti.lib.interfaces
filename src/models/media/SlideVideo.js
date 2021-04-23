@@ -18,4 +18,4 @@ class SlideVideo extends Base {
 	}
 }
 
-export default decorate(SlideVideo, { with: [model] });
+export default decorate(SlideVideo, [model]);

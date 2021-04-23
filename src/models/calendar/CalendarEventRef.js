@@ -22,4 +22,4 @@ class CalendarEventRef extends Base {
 	}
 }
 
-export default decorate(CalendarEventRef, { with: [model] });
+export default decorate(CalendarEventRef, [model]);

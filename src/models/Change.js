@@ -33,4 +33,4 @@ class Change extends Base {
 	}
 }
 
-export default decorate(Change, { with: [model] });
+export default decorate(Change, [model]);

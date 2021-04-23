@@ -15,4 +15,4 @@ class Blog extends Board {
 	}
 }
 
-export default decorate(Blog, { with: [model] });
+export default decorate(Blog, [model]);

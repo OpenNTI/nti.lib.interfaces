@@ -53,4 +53,4 @@ class DomContentRangeDescription extends ContentRangeDescription {
 	}
 }
 
-export default decorate(DomContentRangeDescription, { with: [model] });
+export default decorate(DomContentRangeDescription, [model]);

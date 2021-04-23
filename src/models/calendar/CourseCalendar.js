@@ -14,4 +14,4 @@ class CourseCalendar extends Base {
 	}
 }
 
-export default decorate(CourseCalendar, { with: [model] });
+export default decorate(CourseCalendar, [model]);

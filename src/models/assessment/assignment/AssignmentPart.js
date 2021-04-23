@@ -43,4 +43,4 @@ class AssignmentPart extends Base {
 	}
 }
 
-export default decorate(AssignmentPart, { with: [model] });
+export default decorate(AssignmentPart, [model]);

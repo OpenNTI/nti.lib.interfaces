@@ -55,4 +55,4 @@ class StripeIntegration extends Base {
 	}
 }
 
-export default decorate(StripeIntegration, { with: [model] });
+export default decorate(StripeIntegration, [model]);

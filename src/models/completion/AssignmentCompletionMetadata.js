@@ -25,4 +25,4 @@ class AssignmentCompletionMetadata extends Base {
 	getCompletionDate() {} //implemented by CompletionDate date field.
 }
 
-export default decorate(AssignmentCompletionMetadata, { with: [model] });
+export default decorate(AssignmentCompletionMetadata, [model]);

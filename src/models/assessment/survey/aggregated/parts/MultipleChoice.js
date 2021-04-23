@@ -33,4 +33,4 @@ class AggregatedMultipleChoicePart extends Base {
 	}
 }
 
-export default decorate(AggregatedMultipleChoicePart, { with: [model] });
+export default decorate(AggregatedMultipleChoicePart, [model]);

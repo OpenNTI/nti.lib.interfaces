@@ -13,4 +13,4 @@ class SiteAdminInvitation extends BaseSiteInvitation {
 	}
 }
 
-export default decorate(SiteAdminInvitation, { with: [model] });
+export default decorate(SiteAdminInvitation, [model]);

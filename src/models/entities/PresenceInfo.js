@@ -96,4 +96,4 @@ class PresenceInfo extends Base {
 	}
 }
 
-export default decorate(PresenceInfo, { with: [model] });
+export default decorate(PresenceInfo, [model]);

@@ -25,6 +25,4 @@ class QuestionSetReference extends Base {
 	}
 }
 
-export default decorate(QuestionSetReference, {
-	with: [model, mixin(Completable)],
-});
+export default decorate(QuestionSetReference, [model, mixin(Completable)]);

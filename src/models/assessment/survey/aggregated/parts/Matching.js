@@ -32,4 +32,4 @@ class AggregatedMatchingPart extends Base {
 	}
 }
 
-export default decorate(AggregatedMatchingPart, { with: [model] });
+export default decorate(AggregatedMatchingPart, [model]);

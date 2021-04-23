@@ -202,6 +202,7 @@ class RelatedWorkReference extends Base {
 	}
 }
 
-export default decorate(RelatedWorkReference, {
-	with: [model, mixin(Completable, ContentTreeMixin, Pages)],
-});
+export default decorate(RelatedWorkReference, [
+	model,
+	mixin(Completable, ContentTreeMixin, Pages),
+]);

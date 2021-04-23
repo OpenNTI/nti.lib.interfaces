@@ -53,4 +53,4 @@ class PollSubmission extends QuestionSubmission {
 	}
 }
 
-export default decorate(PollSubmission, { with: [model] });
+export default decorate(PollSubmission, [model]);

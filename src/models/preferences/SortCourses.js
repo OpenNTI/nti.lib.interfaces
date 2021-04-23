@@ -16,4 +16,4 @@ class SortCourses extends Preference {
 	}
 }
 
-export default decorate(SortCourses, { with: [model] });
+export default decorate(SortCourses, [model]);

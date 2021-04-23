@@ -16,6 +16,4 @@ class Part extends Base {
 	}
 }
 
-export default decorate(Part, {
-	with: [mixin({ /*@readonly*/ isAggregated: true })],
-});
+export default decorate(Part, [mixin({ /*@readonly*/ isAggregated: true })]);

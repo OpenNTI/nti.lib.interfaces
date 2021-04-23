@@ -19,4 +19,4 @@ class WebinarAsset extends Base {
 	}
 }
 
-export default decorate(WebinarAsset, { with: [model, mixin(Completable)] });
+export default decorate(WebinarAsset, [model, mixin(Completable)]);

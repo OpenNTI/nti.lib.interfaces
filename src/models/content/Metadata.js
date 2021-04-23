@@ -19,4 +19,4 @@ class Metadata extends Base {
 	}
 }
 
-export default decorate(Metadata, { with: [model] });
+export default decorate(Metadata, [model]);

@@ -307,4 +307,4 @@ class Community extends Entity {
 	}
 }
 
-export default decorate(Community, { with: [model] });
+export default decorate(Community, [model]);

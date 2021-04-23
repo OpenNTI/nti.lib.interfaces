@@ -143,6 +143,7 @@ class Note extends Highlight {
 	}
 }
 
-export default decorate(Note, {
-	with: [model, mixin(Threadable, Flaggable, DiscussionInterface)],
-});
+export default decorate(Note, [
+	model,
+	mixin(Threadable, Flaggable, DiscussionInterface),
+]);

@@ -17,4 +17,4 @@ class CredlyAcclaimOrganization extends Base {
 	}
 }
 
-export default decorate(CredlyAcclaimOrganization, { with: [model] });
+export default decorate(CredlyAcclaimOrganization, [model]);

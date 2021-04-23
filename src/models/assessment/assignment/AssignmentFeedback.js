@@ -47,4 +47,4 @@ class AssignmentFeedback extends Base {
 	}
 }
 
-export default decorate(AssignmentFeedback, { with: [model, mixin(names)] });
+export default decorate(AssignmentFeedback, [model, mixin(names)]);

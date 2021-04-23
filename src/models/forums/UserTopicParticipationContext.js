@@ -14,4 +14,4 @@ class UserTopicParticipationContext extends Base {
 	}
 }
 
-export default decorate(UserTopicParticipationContext, { with: [model] });
+export default decorate(UserTopicParticipationContext, [model]);

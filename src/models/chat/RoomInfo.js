@@ -91,4 +91,4 @@ class RoomInfo extends Base {
 	}
 }
 
-export default decorate(RoomInfo, { with: [model] });
+export default decorate(RoomInfo, [model]);

@@ -8,4 +8,4 @@ class TranscriptRangeDescription extends TimeRangeDescription {
 	static MimeType = COMMON_PREFIX + 'contentrange.transcriptrangedescription';
 }
 
-export default decorate(TranscriptRangeDescription, { with: [model] });
+export default decorate(TranscriptRangeDescription, [model]);

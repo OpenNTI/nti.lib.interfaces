@@ -20,4 +20,4 @@ class WordBank extends Base {
 		);
 	}
 }
-export default decorate(WordBank, { with: [model] });
+export default decorate(WordBank, [model]);

@@ -17,4 +17,4 @@ class ImageMetadata extends Base {
 	// - safeimage
 }
 
-export default decorate(ImageMetadata, { with: [model] });
+export default decorate(ImageMetadata, [model]);

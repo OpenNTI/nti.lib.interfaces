@@ -63,4 +63,4 @@ class CredlyAcclaimIntegration extends BaseIntegration {
 	}
 }
 
-export default decorate(CredlyAcclaimIntegration, { with: [model] });
+export default decorate(CredlyAcclaimIntegration, [model]);

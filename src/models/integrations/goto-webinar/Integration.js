@@ -68,4 +68,4 @@ class GotoWebinar extends Integration {
 	}
 }
 
-export default decorate(GotoWebinar, { with: [model] });
+export default decorate(GotoWebinar, [model]);

@@ -16,4 +16,4 @@ class UserTopicParticipationSummary extends Base {
 	}
 }
 
-export default decorate(UserTopicParticipationSummary, { with: [model] });
+export default decorate(UserTopicParticipationSummary, [model]);

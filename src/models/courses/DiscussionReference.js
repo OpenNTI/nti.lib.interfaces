@@ -64,7 +64,7 @@ class DiscussionReference extends Base {
 	}
 }
 
-export default decorate(DiscussionReference, { with: [model] });
+export default decorate(DiscussionReference, [model]);
 
 function hasValidTargetNTIID(ref) {
 	return ref['Target-NTIID'] && isNTIID(ref['Target-NTIID']);

@@ -13,4 +13,4 @@ class CourseInvitations extends Base {
 	}
 }
 
-export default decorate(CourseInvitations, { with: [model] });
+export default decorate(CourseInvitations, [model]);

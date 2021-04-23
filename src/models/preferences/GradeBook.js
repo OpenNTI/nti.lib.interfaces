@@ -14,4 +14,4 @@ class GradeBook extends Preference {
 	}
 }
 
-export default decorate(GradeBook, { with: [model] });
+export default decorate(GradeBook, [model]);

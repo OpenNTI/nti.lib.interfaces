@@ -20,4 +20,4 @@ class OutlineNodeProgress extends Base {
 	}
 }
 
-export default decorate(OutlineNodeProgress, { with: [model] });
+export default decorate(OutlineNodeProgress, [model]);

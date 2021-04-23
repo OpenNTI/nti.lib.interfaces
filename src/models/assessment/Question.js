@@ -134,6 +134,7 @@ class Question extends Base {
 	}
 }
 
-export default decorate(Question, {
-	with: [model, mixin(HasContent, SubmittableIdentity, QuestionIdentity)],
-});
+export default decorate(Question, [
+	model,
+	mixin(HasContent, SubmittableIdentity, QuestionIdentity),
+]);

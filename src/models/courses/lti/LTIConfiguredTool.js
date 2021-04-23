@@ -18,4 +18,4 @@ class LTIConfiguredTool extends Base {
 	}
 }
 
-export default decorate(LTIConfiguredTool, { with: [model] });
+export default decorate(LTIConfiguredTool, [model]);

@@ -19,4 +19,4 @@ class ScormInstance extends Instance {
 	}
 }
 
-export default decorate(ScormInstance, { with: [model] });
+export default decorate(ScormInstance, [model]);

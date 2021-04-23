@@ -20,4 +20,4 @@ class CourseDiscussion extends Base {
 	}
 }
 
-export default decorate(CourseDiscussion, { with: [model] });
+export default decorate(CourseDiscussion, [model]);

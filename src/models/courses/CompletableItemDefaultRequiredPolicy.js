@@ -13,6 +13,4 @@ class CompletableItemDefaultRequiredPolicy extends Base {
 	}
 }
 
-export default decorate(CompletableItemDefaultRequiredPolicy, {
-	with: [model],
-});
+export default decorate(CompletableItemDefaultRequiredPolicy, [model]);

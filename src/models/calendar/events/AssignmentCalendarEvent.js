@@ -24,4 +24,4 @@ class AssignmentCalendarEvent extends BaseEvent {
 	getUniqueIdentifier = () => this.AssignmentNTIID + this.CatalogEntryNTIID;
 }
 
-export default decorate(AssignmentCalendarEvent, { with: [model] });
+export default decorate(AssignmentCalendarEvent, [model]);

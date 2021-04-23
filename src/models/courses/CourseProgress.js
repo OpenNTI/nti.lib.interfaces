@@ -26,4 +26,4 @@ class CourseProgress extends Base {
 	getCompletedDate() {} //implemented by CompletedDate date field.
 }
 
-export default decorate(CourseProgress, { with: [model] });
+export default decorate(CourseProgress, [model]);

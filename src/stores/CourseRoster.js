@@ -62,4 +62,4 @@ class CourseRosterStream extends Stream {
 	}
 }
 
-export default decorate(CourseRosterStream, { with: [mixin(Paged)] });
+export default decorate(CourseRosterStream, [mixin(Paged)]);

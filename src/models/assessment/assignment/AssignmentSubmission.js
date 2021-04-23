@@ -113,6 +113,4 @@ class AssignmentSubmission extends Base {
 	}
 }
 
-export default decorate(AssignmentSubmission, {
-	with: [model, mixin(Submission)],
-});
+export default decorate(AssignmentSubmission, [model, mixin(Submission)]);

@@ -21,4 +21,4 @@ class DiscussionAssignment extends Assignment {
 	}
 }
 
-export default decorate(DiscussionAssignment, { with: [model] });
+export default decorate(DiscussionAssignment, [model]);

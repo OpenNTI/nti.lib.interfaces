@@ -20,4 +20,4 @@ class AssignmentCompletionConstraint extends Base {
 	}
 }
 
-export default decorate(AssignmentCompletionConstraint, { with: [model] });
+export default decorate(AssignmentCompletionConstraint, [model]);

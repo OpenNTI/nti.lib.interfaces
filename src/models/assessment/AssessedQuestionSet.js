@@ -53,6 +53,4 @@ class AssessedQuestionSet extends Base {
 	}
 }
 
-export default decorate(AssessedQuestionSet, {
-	with: [model, mixin(assessed)],
-});
+export default decorate(AssessedQuestionSet, [model, mixin(assessed)]);

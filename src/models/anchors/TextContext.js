@@ -47,4 +47,4 @@ class TextContext extends Base {
 	}
 }
 
-export default decorate(TextContext, { with: [model] });
+export default decorate(TextContext, [model]);

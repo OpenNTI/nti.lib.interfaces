@@ -7,4 +7,4 @@ class NumericMath extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.numericmathpart';
 }
 
-export default decorate(NumericMath, { with: [model] });
+export default decorate(NumericMath, [model]);

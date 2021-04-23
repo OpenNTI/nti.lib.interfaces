@@ -7,4 +7,4 @@ class Math extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.mathpart';
 }
 
-export default decorate(Math, { with: [model] });
+export default decorate(Math, [model]);

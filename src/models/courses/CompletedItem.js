@@ -18,4 +18,4 @@ class CompletedItem extends Base {
 	getCompletedDate() {} //implemented by CompletedDate date field.
 }
 
-export default decorate(CompletedItem, { with: [model] });
+export default decorate(CompletedItem, [model]);

@@ -87,11 +87,13 @@ class QuestionSet extends Base {
 
 	/**
 	 * Is the question order set to be randomized.
+	 *
 	 * @property {boolean} isRandomized
 	 */
 
 	/**
 	 * Are the question parts set to use the Randomized Part variant?
+	 *
 	 * @property {boolean} isPartTypeRandomized.
 	 */
 
@@ -107,6 +109,7 @@ class QuestionSet extends Base {
 
 	/**
 	 * Returns the max number of questions from the set to pick from.
+	 *
 	 * @returns {number} max or null if unrestricted
 	 */
 	getQuestionLimit() {
@@ -175,6 +178,7 @@ class QuestionSet extends Base {
 	/**
 	 * Set the draw limit. A draw of 'None' or empty will convert the question bank back into a question set.
 	 * A limit with an acutal value will convert to a question bank.
+	 *
 	 * @param {number|null} n The limit to set to. Use null if you want to convert back to question set.
 	 * @returns {Promise} A promise of the save is returned.
 	 */
@@ -185,6 +189,7 @@ class QuestionSet extends Base {
 	}
 }
 
-export default decorate(QuestionSet, {
-	with: [model, mixin(SubmittableIdentity, Completable)],
-});
+export default decorate(QuestionSet, [
+	model,
+	mixin(SubmittableIdentity, Completable),
+]);

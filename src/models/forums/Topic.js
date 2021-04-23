@@ -154,9 +154,7 @@ class Topic extends Base {
 	}
 }
 
-export default decorate(Topic, {
-	with: [
-		model,
-		mixin(GetContents, Likable, Pinnable, Flaggable, DiscussionInterface),
-	],
-});
+export default decorate(Topic, [
+	model,
+	mixin(GetContents, Likable, Pinnable, Flaggable, DiscussionInterface),
+]);

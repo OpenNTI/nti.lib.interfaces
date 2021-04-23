@@ -7,4 +7,4 @@ class GradeBookShell extends Base {
 	static MimeType = COMMON_PREFIX + 'gradebookshell';
 }
 
-export default decorate(GradeBookShell, { with: [model] });
+export default decorate(GradeBookShell, [model]);

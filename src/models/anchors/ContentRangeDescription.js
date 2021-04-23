@@ -30,4 +30,4 @@ class ContentRangeDescription extends Base {
 	}
 }
 
-export default decorate(ContentRangeDescription, { with: [model] });
+export default decorate(ContentRangeDescription, [model]);

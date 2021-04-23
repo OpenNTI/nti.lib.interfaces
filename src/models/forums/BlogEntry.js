@@ -81,4 +81,4 @@ class BlogEntry extends Topic {
 	}
 }
 
-export default decorate(BlogEntry, { with: [model] });
+export default decorate(BlogEntry, [model]);

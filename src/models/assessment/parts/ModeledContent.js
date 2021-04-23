@@ -7,4 +7,4 @@ class ModeledContent extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.modeledcontentpart';
 }
 
-export default decorate(ModeledContent, { with: [model] });
+export default decorate(ModeledContent, [model]);

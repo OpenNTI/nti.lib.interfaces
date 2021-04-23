@@ -57,4 +57,4 @@ class SCORMReference extends Base {
 	}
 }
 
-export default decorate(SCORMReference, { with: [model] });
+export default decorate(SCORMReference, [model]);

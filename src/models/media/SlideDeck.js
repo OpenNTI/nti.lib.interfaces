@@ -45,6 +45,7 @@ class SlideDeck extends Base {
 	}
 }
 
-export default decorate(SlideDeck, {
-	with: [model, mixin({ /*@readonly*/ isSlideDeck: true })],
-});
+export default decorate(SlideDeck, [
+	model,
+	mixin({ /*@readonly*/ isSlideDeck: true }),
+]);

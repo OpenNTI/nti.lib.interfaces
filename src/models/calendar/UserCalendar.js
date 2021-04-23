@@ -12,4 +12,4 @@ class UserCalendar extends Base {
 	}
 }
 
-export default decorate(UserCalendar, { with: [model] });
+export default decorate(UserCalendar, [model]);

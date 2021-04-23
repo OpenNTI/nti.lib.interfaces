@@ -20,4 +20,4 @@ class GoogleAPIKey extends Base {
 	}
 }
 
-export default decorate(GoogleAPIKey, { with: [model] });
+export default decorate(GoogleAPIKey, [model]);

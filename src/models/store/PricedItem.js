@@ -17,4 +17,4 @@ class PricedItem extends Base {
 	}
 }
 
-export default decorate(PricedItem, { with: [model] });
+export default decorate(PricedItem, [model]);

@@ -8,4 +8,4 @@ class InstructorReport extends Base {
 	static MimeType = COMMON_PREFIX + 'courseware_reports.instructorreport';
 }
 
-export default decorate(InstructorReport, { with: [model] });
+export default decorate(InstructorReport, [model]);

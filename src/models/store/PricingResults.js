@@ -16,4 +16,4 @@ class PricingResults extends Base {
 	}
 }
 
-export default decorate(PricingResults, { with: [model] });
+export default decorate(PricingResults, [model]);

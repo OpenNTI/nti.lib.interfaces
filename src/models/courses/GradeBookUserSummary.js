@@ -44,4 +44,4 @@ class GradeBookUserSummary extends Base {
 	}
 }
 
-export default decorate(GradeBookUserSummary, { with: [model] });
+export default decorate(GradeBookUserSummary, [model]);

@@ -18,4 +18,4 @@ class GiftPurchaseAttempt extends PurchaseAttempt {
 	}
 }
 
-export default decorate(GiftPurchaseAttempt, { with: [model] });
+export default decorate(GiftPurchaseAttempt, [model]);

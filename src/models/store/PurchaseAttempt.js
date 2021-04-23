@@ -31,4 +31,4 @@ class PurchaseAttempt extends Base {
 	getStartTime() {} //implemented by the date Field type
 }
 
-export default decorate(PurchaseAttempt, { with: [model] });
+export default decorate(PurchaseAttempt, [model]);

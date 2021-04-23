@@ -90,4 +90,4 @@ class EntityStore extends EventEmitter {
 	}
 }
 
-export default decorate(EntityStore, { with: [mixin(Pendability)] });
+export default decorate(EntityStore, [mixin(Pendability)]);

@@ -21,4 +21,4 @@ class StripePricedPurchasable extends Base {
 	}
 }
 
-export default decorate(StripePricedPurchasable, { with: [model] });
+export default decorate(StripePricedPurchasable, [model]);

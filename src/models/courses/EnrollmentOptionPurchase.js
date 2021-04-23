@@ -53,4 +53,4 @@ class EnrollmentOptionStore extends EnrollmentOption {
 	}
 }
 
-export default decorate(EnrollmentOptionStore, { with: [model] });
+export default decorate(EnrollmentOptionStore, [model]);

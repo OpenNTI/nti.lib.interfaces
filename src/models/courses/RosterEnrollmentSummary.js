@@ -26,4 +26,4 @@ class RosterRecord extends Base {
 	}
 }
 
-export default decorate(RosterRecord, { with: [model] });
+export default decorate(RosterRecord, [model]);

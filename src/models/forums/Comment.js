@@ -111,6 +111,7 @@ class Comment extends Post {
 	}
 }
 
-export default decorate(Comment, {
-	with: [model, mixin(Threadable, DiscussionInterface)],
-});
+export default decorate(Comment, [
+	model,
+	mixin(Threadable, DiscussionInterface),
+]);

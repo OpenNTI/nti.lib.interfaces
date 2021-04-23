@@ -17,4 +17,4 @@ class WebinarCalendarEvent extends BaseEvent {
 	};
 }
 
-export default decorate(WebinarCalendarEvent, { with: [model] });
+export default decorate(WebinarCalendarEvent, [model]);

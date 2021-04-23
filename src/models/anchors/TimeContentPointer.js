@@ -64,4 +64,4 @@ class TimeContentPointer extends ContentPointer {
 	}
 }
 
-export default decorate(TimeContentPointer, { with: [model] });
+export default decorate(TimeContentPointer, [model]);

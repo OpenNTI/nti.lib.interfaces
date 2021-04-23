@@ -220,4 +220,4 @@ class Video extends Base {
 	}
 }
 
-export default decorate(Video, { with: [model, mixin(Completable, Pages)] });
+export default decorate(Video, [model, mixin(Completable, Pages)]);

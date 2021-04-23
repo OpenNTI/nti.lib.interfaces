@@ -49,4 +49,4 @@ class Folder extends FileSystemEntity {
 	}
 }
 
-export default decorate(Folder, { with: [model] });
+export default decorate(Folder, [model]);

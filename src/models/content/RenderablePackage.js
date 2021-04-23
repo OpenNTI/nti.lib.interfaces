@@ -76,4 +76,4 @@ class RenderablePackage extends Package {
 	}
 }
 
-export default decorate(RenderablePackage, { with: [model] });
+export default decorate(RenderablePackage, [model]);

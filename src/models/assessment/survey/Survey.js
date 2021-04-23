@@ -148,6 +148,7 @@ class Survey extends QuestionSet {
 	}
 }
 
-export default decorate(Survey, {
-	with: [model, mixin(Completable, Publishable, Pages)],
-});
+export default decorate(Survey, [
+	model,
+	mixin(Completable, Publishable, Pages),
+]);

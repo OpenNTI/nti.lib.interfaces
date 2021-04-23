@@ -473,6 +473,7 @@ class Collection extends Base {
 	}
 }
 
-export default decorate(Collection, {
-	with: [mixin(ActivityMixin), exposeOrderBySymbols],
-});
+export default decorate(Collection, [
+	mixin(ActivityMixin),
+	exposeOrderBySymbols,
+]);

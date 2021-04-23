@@ -13,4 +13,4 @@ class SearchFragment extends Base {
 	}
 }
 
-export default decorate(SearchFragment, { with: [model] });
+export default decorate(SearchFragment, [model]);

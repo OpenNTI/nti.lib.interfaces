@@ -35,4 +35,4 @@ class Annotation extends Base {
 	}
 }
 
-export default decorate(Annotation, { with: [mixin(Likable)] });
+export default decorate(Annotation, [mixin(Likable)]);

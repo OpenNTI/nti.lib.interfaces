@@ -734,9 +734,10 @@ class Instance extends Base {
 	}
 }
 
-export default decorate(Instance, {
-	with: [model, mixin(CourseIdentity, ContentTreeMixin, HasEvaluations)],
-});
+export default decorate(Instance, [
+	model,
+	mixin(CourseIdentity, ContentTreeMixin, HasEvaluations),
+]);
 
 //Private methods
 

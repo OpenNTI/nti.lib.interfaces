@@ -48,4 +48,4 @@ class SurveyReference extends Base {
 	}
 }
 
-export default decorate(SurveyReference, { with: [model, mixin(Completable)] });
+export default decorate(SurveyReference, [model, mixin(Completable)]);

@@ -24,4 +24,4 @@ class InquiryItemResponse extends Base {
 	}
 }
 
-export default decorate(InquiryItemResponse, { with: [model] });
+export default decorate(InquiryItemResponse, [model]);

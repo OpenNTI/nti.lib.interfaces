@@ -18,4 +18,4 @@ class MultipleChoice extends Part {
 	}
 }
 
-export default decorate(MultipleChoice, { with: [model] });
+export default decorate(MultipleChoice, [model]);

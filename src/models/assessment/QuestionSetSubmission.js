@@ -62,6 +62,4 @@ class QuestionSetSubmission extends Base {
 	}
 }
 
-export default decorate(QuestionSetSubmission, {
-	with: [model, mixin(Submission)],
-});
+export default decorate(QuestionSetSubmission, [model, mixin(Submission)]);

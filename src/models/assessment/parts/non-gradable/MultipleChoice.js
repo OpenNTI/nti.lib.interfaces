@@ -13,4 +13,4 @@ class NonGradableMultipleChoice extends MultipleChoice {
 	isNonGradable = true;
 }
 
-export default decorate(NonGradableMultipleChoice, { with: [model] });
+export default decorate(NonGradableMultipleChoice, [model]);

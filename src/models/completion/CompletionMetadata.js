@@ -16,4 +16,4 @@ class CompletionMetadata extends Base {
 	}
 }
 
-export default decorate(CompletionMetadata, { with: [model] });
+export default decorate(CompletionMetadata, [model]);

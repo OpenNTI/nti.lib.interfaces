@@ -21,4 +21,4 @@ class AnalyticsSession extends Base {
 	getSessionEndTime() {} //implemented by SessionEndTime date field.
 }
 
-export default decorate(AnalyticsSession, { with: [model] });
+export default decorate(AnalyticsSession, [model]);

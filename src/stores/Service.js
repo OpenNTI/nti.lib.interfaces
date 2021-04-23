@@ -983,6 +983,6 @@ class ServiceDocument extends EventEmitter {
 	}
 }
 
-export default decorate(ServiceDocument, {
-	with: [mixin(Pendability, InstanceCacheContainer)],
-});
+export default decorate(ServiceDocument, [
+	mixin(Pendability, InstanceCacheContainer),
+]);

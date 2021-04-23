@@ -28,4 +28,4 @@ class CredlyAcclaimBadge extends Base {
 	}
 }
 
-export default decorate(CredlyAcclaimBadge, { with: [model] });
+export default decorate(CredlyAcclaimBadge, [model]);

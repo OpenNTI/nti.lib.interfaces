@@ -33,4 +33,4 @@ class Purchasable extends Base {
 	}
 }
 
-export default decorate(Purchasable, { with: [model] });
+export default decorate(Purchasable, [model]);

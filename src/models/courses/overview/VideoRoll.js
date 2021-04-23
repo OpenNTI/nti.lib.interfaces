@@ -19,4 +19,4 @@ class VideoRoll extends Base {
 	}
 }
 
-export default decorate(VideoRoll, { with: [model, mixin(ContentTreeMixin)] });
+export default decorate(VideoRoll, [model, mixin(ContentTreeMixin)]);

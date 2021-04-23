@@ -7,4 +7,4 @@ class PollReference extends Base {
 	static MimeType = COMMON_PREFIX + 'pollref';
 }
 
-export default decorate(PollReference, { with: [model] });
+export default decorate(PollReference, [model]);
