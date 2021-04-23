@@ -49,8 +49,17 @@ const isArrayType = _t.bind(/\[]$/);
 
 /**
  * @template T
+ * @typedef {{
+ * 	__toRaw:() => any;
+ *  getObjectHref: () => string;
+ *  refresh: (x: any?) => Promise<T>;
+ * }} FieldInterface
+ */
+
+/**
+ * @template T
  * @param {T} target
- * @returns {T & ReturnType<FieldsApplier>}
+ * @returns {T & FieldInterface<T>}
  */
 export default function FieldsApplier(target) {
 	return {
