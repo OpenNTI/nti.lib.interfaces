@@ -8,7 +8,7 @@ class WordBank extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'entries': { type: 'model[]' },
 		'unique':  { type: 'boolean' }
 	};

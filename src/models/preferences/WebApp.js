@@ -9,7 +9,7 @@ class WebApp extends Preference {
 
 	// prettier-ignore
 	static Fields = {
-		...Preference.Fields,
+		...super.Fields,
 		'preferFlashVideo': { type: 'boolean' },
         'useHighContrast':  { type: 'boolean' },
 	}

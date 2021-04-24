@@ -8,7 +8,7 @@ class UserTopicParticipationSummary extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Contexts':              { type: 'model[]'                    },
 		'NestedChildReplyCount': { type: 'number', name: 'repliesTo'  },
 		'ReplyToCount':          { type: 'number', name: 'replies'    },

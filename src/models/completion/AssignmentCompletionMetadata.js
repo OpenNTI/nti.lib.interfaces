@@ -8,7 +8,7 @@ class AssignmentCompletionMetadata extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'AssignmentNTIID':                     { type: 'string'   },
 		'AssignmentTitle':                     { type: 'string'   },
 		'CompletionDate':                      { type: 'date'     },

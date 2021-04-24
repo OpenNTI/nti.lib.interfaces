@@ -7,7 +7,7 @@ import Base from '../Base.js';
 export default class Entity extends Base {
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'about':            { type: 'string' },
 		'alias':            { type: 'string' },
 		'avatarURL':        { type: 'string' },

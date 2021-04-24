@@ -9,7 +9,7 @@ class EnrollmentOption5Minute extends EnrollmentOption {
 
 	// prettier-ignore
 	static Fields = {
-		...EnrollmentOption.Fields,
+		...super.Fields,
 		'EnrollCutOffDate':      { type: 'date',                                   },
 		'RequiresAdmission':     { type: 'boolean', name: 'requiresAdmission'      },
 		'AllowVendorUpdates':    { type: 'boolean', name: 'allowVendorUpdates'     },

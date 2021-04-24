@@ -9,7 +9,7 @@ class ContentRangeDescription extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Class': { type: 'string' }
 	}
 

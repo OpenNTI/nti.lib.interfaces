@@ -9,7 +9,7 @@ class PurchasableCourse extends Purchasable {
 
 	// prettier-ignore
 	static Fields = {
-		...Purchasable.Fields,
+		...super.Fields,
 		'ID': { type: 'string' }
 	}
 }

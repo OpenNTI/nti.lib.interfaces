@@ -13,7 +13,7 @@ class GotoWebinar extends Integration {
 
 	// prettier-ignore
 	static Fields = {
-		...Integration.Fields,
+		...super.Fields,
 		'webinar_realname': {type: 'string', name: 'accountName'}
 	}
 

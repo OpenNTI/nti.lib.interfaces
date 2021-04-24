@@ -64,7 +64,7 @@ class PresenceInfo extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'username': { type: 'string' },
 		'type':     { type: 'string' },
 		'show':     { type: 'string' },

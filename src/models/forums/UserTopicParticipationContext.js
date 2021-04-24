@@ -8,7 +8,7 @@ class UserTopicParticipationContext extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Context':       { type: 'model' },
 		'ParentContext': { type: 'model' },
 	}

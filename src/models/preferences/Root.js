@@ -12,7 +12,7 @@ export default class PreferenceRoot extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'ChatPresence':      { type: 'model' },
 		'Gradebook':         { type: 'model' },
 		'PushNotifications': { type: 'model' },

@@ -10,7 +10,7 @@ class Change extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Item': { type: 'model' }
 	}
 

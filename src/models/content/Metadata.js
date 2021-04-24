@@ -8,7 +8,7 @@ class Metadata extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'contentLocation': { type: 'string'  },
 		'contentMimeType': { type: 'string'  },
 		'description':     { type: 'string'  },

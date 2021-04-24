@@ -9,7 +9,7 @@ class ElementDomContentPointer extends DomContentPointer {
 
 	// prettier-ignore
 	static Fields = {
-		...DomContentPointer.Fields,
+		...super.Fields,
 		'elementTagName': { type: 'string' },
 		'elementId':      { type: 'string' },
 	}

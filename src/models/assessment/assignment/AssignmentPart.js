@@ -8,7 +8,7 @@ class AssignmentPart extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'question_set':  { type: 'model'   },
 		'QuestionSetId': { type: 'string'  },
 		'IsSummary':     { type: 'boolean' }

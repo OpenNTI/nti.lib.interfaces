@@ -8,7 +8,7 @@ class UserBundleRecord extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Bundle':       { type: 'model'  },
 		'User':         { type: 'model'  },
 		'LastSeenTime': { type: 'date'   },

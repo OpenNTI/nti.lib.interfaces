@@ -8,7 +8,7 @@ class SCORMCourseMetadata extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'scorm_id': { type: 'string', name: 'scormId' }
 	}
 }

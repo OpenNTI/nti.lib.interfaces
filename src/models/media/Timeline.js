@@ -8,7 +8,7 @@ class Timeline extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'desc':             { type: 'string'  },
 		'description':      { type: 'string'  },
 		'icon':             { type: 'string'  },

@@ -11,7 +11,7 @@ class SavePointItem extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Submission': { type: 'model' }
 	}
 

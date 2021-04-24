@@ -10,7 +10,7 @@ class TimeRangeDescription extends ContentRangeDescription {
 
 	// prettier-ignore
 	static Fields = {
-		...ContentRangeDescription.Fields,
+		...super.Fields,
 		'seriesId': { type: 'string' },
 		'start':    { type: 'model'  },
 		'end':      { type: 'model'  },

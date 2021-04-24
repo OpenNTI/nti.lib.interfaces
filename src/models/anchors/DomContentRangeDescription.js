@@ -10,7 +10,7 @@ class DomContentRangeDescription extends ContentRangeDescription {
 
 	// prettier-ignore
 	static Fields = {
-		...ContentRangeDescription.Fields,
+		...super.Fields,
 		'ancestor': { type: 'model' },
 		'end':      { type: 'model' },
 		'start':    { type: 'model' },

@@ -8,7 +8,7 @@ class UserCalendar extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 	}
 }
 

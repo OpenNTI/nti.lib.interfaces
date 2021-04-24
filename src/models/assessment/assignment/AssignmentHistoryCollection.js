@@ -8,7 +8,7 @@ class AssignmentHistoryCollection extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'lastViewed':                { type: 'date'     },
 		'AvailableAssignmentNTIIDs': { type: 'string[]' },
 		'Items':                     { type: 'model{}'  },

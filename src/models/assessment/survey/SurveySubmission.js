@@ -10,7 +10,7 @@ class SurveySubmission extends QuestionSetSubmission {
 
 	// prettier-ignore
 	static Fields = {
-		...QuestionSetSubmission.Fields,
+		...super.Fields,
 		'parts':    { type: 'model[]', defaultValue: [] },
 		'surveyId': { type: 'string'                    },
 		'version':  { type: 'string'                    }

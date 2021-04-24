@@ -13,7 +13,7 @@ class CredlyAcclaimIntegration extends BaseIntegration {
 
 	// prettier-ignore
 	static Fields = {
-		...BaseIntegration.Fields,
+		...super.Fields,
 		'authorization_token': {type: 'string', name: 'authorizationToken'},
 		'organization': {type: 'model'}
 	}

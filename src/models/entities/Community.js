@@ -26,7 +26,7 @@ class Community extends Entity {
 
 	// prettier-ignore
 	static Fields = {
-		...Entity.Fields,
+		...super.Fields,
 		'RemoteIsMember': {type: 'boolean'},
 		'NumberOfMembers': {type: 'number'},
 		'auto_subscribe': {type: 'object'}

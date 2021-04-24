@@ -8,7 +8,7 @@ class CompletionPolicy extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'percentage':                    { type: 'number'                                       },
 		'offers_completion_certificate': { type: 'boolean', name: 'offersCompletionCertificate' }
 	}

@@ -8,7 +8,7 @@ class SCORMCompletionMetadata extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'ScormContentInfoNTIID': { type: 'string'   },
 		'ScormContentInfoTitle': { type: 'string'   },
 		'CompletionDate':        { type: 'date'     },

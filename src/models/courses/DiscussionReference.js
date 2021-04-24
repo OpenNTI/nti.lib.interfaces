@@ -24,7 +24,7 @@ class DiscussionReference extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'icon':         { type: 'string' },
 		'label':        { type: 'string' },
 		'title':        { type: 'string' },

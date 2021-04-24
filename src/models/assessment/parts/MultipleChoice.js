@@ -13,7 +13,7 @@ class MultipleChoice extends Part {
 
 	// prettier-ignore
 	static Fields = {
-		...Part.Fields,
+		...super.Fields,
 		'choices': { type: 'string[]', content: true },
 	}
 }

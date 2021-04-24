@@ -11,7 +11,7 @@ class Transcript extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'lang':     {type: 'string'},
 		'purpose':  {type: 'string'},
 		'src':      {type: 'string'},

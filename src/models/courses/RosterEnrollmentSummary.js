@@ -8,7 +8,7 @@ class RosterRecord extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'CourseProgress':         { type: 'model', name: 'courseProgress'    },
 		'LegacyEnrollmentStatus': { type: 'string', name: 'enrollmentStatus' },
 		'RealEnrollmentStatus':   { type: '*', name: 'status'                },

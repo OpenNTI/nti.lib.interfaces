@@ -8,7 +8,7 @@ class GoogleAPIKey extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		appid: { type: 'string', name: 'AppId' },
 		key:   { type: 'string', name: 'DevKey' }
 	}

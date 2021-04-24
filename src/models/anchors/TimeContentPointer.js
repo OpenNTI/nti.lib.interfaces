@@ -11,7 +11,7 @@ class TimeContentPointer extends ContentPointer {
 
 	// prettier-ignore
 	static Fields = {
-		...ContentPointer.Fields,
+		...super.Fields,
 		'seconds': { type: 'number' },
 		'role':    { type: 'string' }
 	}

@@ -10,7 +10,7 @@ class StripePurchaseItem extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Coupon':   { type: 'string',  name: 'coupon'   },
 		'Items':    { type: 'model[]', name: Items      },
 		'Quantity': { type: 'number',  name: 'quantity' },

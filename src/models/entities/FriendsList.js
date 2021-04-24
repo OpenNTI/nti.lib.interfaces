@@ -11,7 +11,7 @@ class FriendsList extends Entity {
 
 	// prettier-ignore
 	static Fields = {
-		...Entity.Fields,
+		...super.Fields,
 		'friends': { type: 'model[]' },
 	}
 

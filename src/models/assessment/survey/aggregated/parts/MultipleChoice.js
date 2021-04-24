@@ -10,7 +10,7 @@ class AggregatedMultipleChoicePart extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Results': { type: '*' },   // can be a map of values
 	}
 

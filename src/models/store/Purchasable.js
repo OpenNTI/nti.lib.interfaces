@@ -10,7 +10,7 @@ class Purchasable extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Author':           { type: 'string',  name: 'author'         },
 		'Activated':        { type: 'boolean', name: 'activated'      },
 		'Amount':           { type: 'number',  name: 'amount'         },

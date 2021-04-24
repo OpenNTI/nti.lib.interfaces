@@ -18,7 +18,7 @@ class MediaSource extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'dataset':   { type: 'object' }, //From a parsed DomObject
 		'href':      { type: 'string' },
 		'poster':    { type: 'string' }, //From a parsed DomObject

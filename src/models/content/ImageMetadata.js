@@ -7,7 +7,7 @@ class ImageMetadata extends Base {
 	static MimeType = COMMON_PREFIX + 'metadata.imagemetadata';
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'height': { type: 'number' },
 		'url':    { type: 'string' },
 		'width':  { type: 'number' },

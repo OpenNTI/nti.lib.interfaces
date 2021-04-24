@@ -10,7 +10,7 @@ class TextDomContentPointer extends DomContentPointer {
 
 	// prettier-ignore
 	static Fields = {
-		...DomContentPointer.Fields,
+		...super.Fields,
 		'ancestor':   { type: 'model'   },
 		'contexts':   { type: 'model[]' },
 		'edgeOffset': { type: 'number'  },

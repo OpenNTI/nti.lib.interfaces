@@ -14,7 +14,7 @@ class RecursiveStreamByBucket extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Items':            { type: sorted,   defaultValue: [] },
 		'TotalBucketCount': { type: 'number',                  },
 	};

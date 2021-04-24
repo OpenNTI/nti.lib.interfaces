@@ -8,7 +8,7 @@ class StripeCoupon extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'AmountOff':      { type: 'number', name: 'amountOff'     },
 		'Currency':       { type: 'string', name: 'currency'      },
 		'Duration':       { type: 'string?', name: 'duration'      },

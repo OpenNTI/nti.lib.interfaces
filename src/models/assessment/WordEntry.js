@@ -8,7 +8,7 @@ class WordEntry extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'wid':     { type: 'string' },
 		'content': { type: 'string' }
 	};

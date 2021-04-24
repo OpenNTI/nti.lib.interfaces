@@ -16,7 +16,7 @@ export default class AssignmentSubmission extends Submission(Base) {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'assignmentId':                  { type: 'string'                    },
 		'parts':                         { type: 'model[]', defaultValue: [] },
 		'CreatorRecordedEffortDuration': { type: 'number'                    },

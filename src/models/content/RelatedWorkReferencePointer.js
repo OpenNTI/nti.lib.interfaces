@@ -22,7 +22,7 @@ class RelatedWorkReferencePointer extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Containers': { type: 'string[]' },
 		'target':     { type: 'string'   },
 	}

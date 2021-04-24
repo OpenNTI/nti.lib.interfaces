@@ -10,7 +10,7 @@ const Purchasables = Symbol('Purchasables');
 class Collection extends Base {
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'DefaultPurchaseNTIID': { type: 'string'  },
 		'DefaultGiftingNTIID':  { type: 'string'  },
 		'Items':                { type: 'model[]' },
@@ -22,7 +22,7 @@ class EnrollmentOptionStore extends EnrollmentOption {
 
 	// prettier-ignore
 	static Fields = {
-		...EnrollmentOption.Fields,
+		...super.Fields,
 		'RequiresAdmission':  { type: 'boolean',  name: 'requiresAdmission'  },
 		'AllowVendorUpdates': { type: 'boolean',  name: 'allowVendorUpdates' },
 		'Purchasables':       { type: Collection, name: Purchasables         },

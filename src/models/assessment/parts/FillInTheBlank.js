@@ -20,7 +20,7 @@ class FillInTheBlank extends Part {
 
 	// prettier-ignore
 	static Fields = {
-		...Part.Fields,
+		...super.Fields,
 		'input':   { type: 'string', content: true },
 	}
 

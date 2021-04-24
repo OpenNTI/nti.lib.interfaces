@@ -11,7 +11,7 @@ class AssignmentHistoryItem extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Feedback':            { type: 'model[]'               },
 		'Grade':               { type: 'model',  name: 'grade' },
 		'Submission':          { type: 'model'                 },

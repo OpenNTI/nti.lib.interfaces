@@ -8,7 +8,7 @@ class CredlyAcclaimOrganization extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'contact_email': {type: 'string', name: 'contactEmail'},
 		'name': {type: 'string'},
 		'organization_id': {type: 'string', name: 'organizationId'},

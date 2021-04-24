@@ -10,7 +10,7 @@ class OverviewGroup extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Items':       { type: 'model[]' },
 		'accentColor': { type: 'string' },
 		'title':       { type: 'string' }

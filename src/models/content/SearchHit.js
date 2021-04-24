@@ -13,7 +13,7 @@ class ContentUnitSearchHit extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Class':          { type: 'string'   },
 		'Containers':     { type: 'string[]' },
 		'ContainerTitle': { type: 'string'   },

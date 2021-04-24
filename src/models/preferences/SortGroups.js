@@ -9,7 +9,7 @@ class SortGroups extends Preference {
 
 	// prettier-ignore
 	static Fields = {
-		...Preference.Fields,
+		...super.Fields,
 		'courses':     { type: 'model' },
 		'communities': { type: 'model' },
 		'books':       { type: 'model' },

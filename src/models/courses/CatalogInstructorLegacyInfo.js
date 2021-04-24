@@ -9,7 +9,7 @@ class CatalogInstructorLegacyInfo extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'JobTitle':     { type: 'string' },
 		'Name':         { type: 'string' },
 		'Suffix':       { type: 'string' },

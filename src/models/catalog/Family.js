@@ -8,7 +8,7 @@ class CatalogFamily extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'CatalogFamilyID':               { type: 'string' },
 		'Description':                   { type: 'string' },
 		'Title':                         { type: 'string' },

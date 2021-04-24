@@ -11,7 +11,7 @@ class GradeBookUserSummary extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Alias':                   { type: 'string', name: 'displayName' },
 		'HistoryItemSummary':      { type: 'model'                       },
 		'OverdueAssignmentCount':  { type: 'number?', name: 'overdue'    },

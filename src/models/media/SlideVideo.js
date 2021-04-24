@@ -8,7 +8,7 @@ class SlideVideo extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'byline':        { type: 'string'                      },
 		'DCDescription': { type: 'string', name: 'description' },
 		'DCTitle':       { type: 'string', name: 'title'       },

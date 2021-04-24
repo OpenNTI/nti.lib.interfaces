@@ -10,7 +10,7 @@ class LessonOverview extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Items': { type: 'model[]' },
 		'title': { type: 'string'  }
 	}

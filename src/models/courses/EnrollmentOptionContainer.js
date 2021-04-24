@@ -8,7 +8,7 @@ class EnrollmentOptionContainer extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'AvailableEnrollmentOptions': { type: 'model[]' },
 		'Items':                      { type: 'model[]' },
 		'ItemCount':                  { type: 'number'  }

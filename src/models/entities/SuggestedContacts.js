@@ -8,7 +8,7 @@ class SuggestedContacts extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'ItemCount': { type: 'number' },
 	}
 

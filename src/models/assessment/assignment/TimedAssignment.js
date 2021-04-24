@@ -12,7 +12,7 @@ class TimedAssignment extends Assignment {
 
 	// prettier-ignore
 	static Fields = {
-		...Assignment.Fields,
+		...super.Fields,
 		'IsTimedAssignment':  { type: 'boolean' },
 		'MaximumTimeAllowed': { type: 'number'  },
 		'Metadata':           { type: 'object'  },

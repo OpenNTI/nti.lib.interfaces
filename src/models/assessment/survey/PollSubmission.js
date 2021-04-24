@@ -10,7 +10,7 @@ class PollSubmission extends QuestionSubmission {
 
 	// prettier-ignore
 	static Fields = {
-		...QuestionSubmission.Fields,
+		...super.Fields,
 		'pollId': { type: 'string'  },
 	}
 

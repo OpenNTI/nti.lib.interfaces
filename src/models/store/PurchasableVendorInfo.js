@@ -8,7 +8,7 @@ class PurchasableVendorInfo extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'AllowVendorUpdates': { type: 'boolean' },
 		'CRN':                { type: '*'       },
 		'Duration':           { type: 'string'  },

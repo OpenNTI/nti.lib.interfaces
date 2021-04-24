@@ -6,7 +6,7 @@ import Base from '../../../../Base.js';
 class Part extends Base {
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Results': { type: 'object[]' },
 		'Total':   { type: 'number' },
 	}

@@ -9,7 +9,7 @@ class AssignmentCalendarEvent extends BaseEvent {
 
 	// prettier-ignore
 	static Fields = {
-		...BaseEvent.Fields,
+		...super.Fields,
 		'total_points':       { type: 'number', name: 'totalPoints' },
 		'MaximumTimeAllowed': { type: 'number'  },
 		'IsTimedAssignment':  { type: 'boolean' },

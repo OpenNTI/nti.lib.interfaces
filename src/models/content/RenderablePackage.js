@@ -13,7 +13,7 @@ class RenderablePackage extends Package {
 
 	// prettier-ignore
 	static Fields = {
-		...Package.Fields,
+		...super.Fields,
 		'description':          { type: 'string' },
 		'LatestRenderJob':      { type: 'model'  },
 		'LessonContainerCount': { type: 'number' },

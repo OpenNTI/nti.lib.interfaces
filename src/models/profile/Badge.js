@@ -20,7 +20,7 @@ class Badge extends Base {
 	 */
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Type':        { type: 'string'   },
 		'alignment':   { type: '*'        },
 		'criteria':    { type: 'string'   },

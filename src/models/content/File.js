@@ -18,7 +18,7 @@ class File extends FileSystemEntity {
 
 	// prettier-ignore
 	static Fields = {
-		...FileSystemEntity.Fields,
+		...super.Fields,
 		'download_url': { type: 'string' },
 		'size':         { type: 'number' },
 		'url':          { type: 'string' },

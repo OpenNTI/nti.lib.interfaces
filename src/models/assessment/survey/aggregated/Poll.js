@@ -8,7 +8,7 @@ class AggregatedPoll extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'parts':            { type: 'model[]' },
 		'pollId':           { type: 'string'  },
 		'ContainerContext': { type: '*'       },

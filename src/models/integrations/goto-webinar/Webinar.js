@@ -8,7 +8,7 @@ class Webinar extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'description':         { type: 'string'  },
 		'inSession':           { type: 'boolean' },
 		'numberOfRegistrants': { type: 'number'  },

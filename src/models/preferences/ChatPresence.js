@@ -9,7 +9,7 @@ class ChatPresence extends Preference {
 
 	// prettier-ignore
 	static Fields = {
-		...Preference.Fields,
+		...super.Fields,
 		'Active':    { type: 'model' },
 		'Available': { type: 'model' },
         'Away':      { type: 'model' },

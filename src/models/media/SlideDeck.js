@@ -18,7 +18,7 @@ class SlideDeck extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'byline': { type: 'string'  },
 		'title':  { type: 'string'  },
 		'Slides': { type: 'model[]' },

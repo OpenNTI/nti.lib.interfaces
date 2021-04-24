@@ -8,7 +8,7 @@ class ScormInstance extends Instance {
 
 	// prettier-ignore
 	static Fields = {
-		...Instance.Fields,
+		...super.Fields,
 		Metadata: { type: 'model' }
 	}
 

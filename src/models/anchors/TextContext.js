@@ -9,7 +9,7 @@ class TextContext extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'contextOffset': { type: 'number' },
 		'contextText':   { type: 'string' },
 	}

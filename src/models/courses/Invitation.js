@@ -11,7 +11,7 @@ class CourseInvitation extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Code':        { type: 'string' },
 		'Description': { type: 'string' }
 	}

@@ -8,7 +8,7 @@ class Matching extends Part {
 
 	// prettier-ignore
 	static Fields = {
-		...Part.Fields,
+		...super.Fields,
 		'values': { type: 'string[]', content: true },
 		'labels': { type: 'string[]', content: true },
 	}

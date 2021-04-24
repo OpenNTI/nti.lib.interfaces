@@ -8,7 +8,7 @@ class CalendarEventRef extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'CalendarEvent':        { type: 'model'  },
 		'Target-NTIID':         { type: 'string'}
 	}

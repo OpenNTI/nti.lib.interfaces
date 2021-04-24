@@ -8,7 +8,7 @@ class CompletableItemDefaultRequiredPolicy extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'mime_types': { type: 'string[]', name: 'mimeTypes' }
 	}
 }

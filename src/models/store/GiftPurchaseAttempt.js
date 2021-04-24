@@ -9,7 +9,7 @@ class GiftPurchaseAttempt extends PurchaseAttempt {
 
 	// prettier-ignore
 	static Fields = {
-		...PurchaseAttempt.Fields,
+		...super.Fields,
 		'Receiver':     { type: 'string', name: 'receiver'     },
 		'ReceiverName': { type: 'string', name: 'receiverName' },
 		'Sender':       { type: 'string', name: 'sender'       },

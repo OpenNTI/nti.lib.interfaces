@@ -8,7 +8,7 @@ class ProfessionalPosition extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'companyName': { type: 'string', required: true },
 		'description': { type: 'string'                 },
 		'endYear':     { type: 'number'                 },

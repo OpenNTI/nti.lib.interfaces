@@ -11,7 +11,7 @@ class SharingScopes extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'DefaultSharingScopeNTIID': { type: 'string'  },
 		'Items':                    { type: 'model{}' },
 	}

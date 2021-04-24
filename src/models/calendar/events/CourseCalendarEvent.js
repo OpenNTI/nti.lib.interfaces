@@ -9,7 +9,7 @@ class CourseCalendarEvent extends BaseEvent {
 
 	// prettier-ignore
 	static Fields = {
-		...BaseEvent.Fields,
+		...super.Fields,
 	}
 }
 

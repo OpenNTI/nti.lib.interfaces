@@ -8,7 +8,7 @@ class SCORMReference extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'title':            { type: 'string' },
 		'description':      { type: 'string' },
 		'icon':             { type: 'string' },

@@ -8,7 +8,7 @@ class BadgeIssuer extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'description':    { type: 'string' },
 		'email':          { type: 'string' },
 		'image':          { type: 'string' },

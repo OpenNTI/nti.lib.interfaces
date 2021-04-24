@@ -25,7 +25,7 @@ class PageInfo extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'AssessmentItems':     { type: 'model[]', defaultValue: [] },
 		'ContentPackageNTIID': { type: 'string'                    },
 		'label':               { type: 'string'                    },

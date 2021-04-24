@@ -9,7 +9,7 @@ class CompletedItem extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'CompletedDate':       { type: 'date'                       },
 		'Success':         	   { type: 'boolean'                    },
 		'CompletionMetadata':  { type: CompletionMetadata           }

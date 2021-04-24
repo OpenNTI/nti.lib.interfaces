@@ -12,7 +12,7 @@ class RecursiveStreamBucket extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'BatchItemCount':      { type: 'number'                  },
 		'BatchPage':           { type: 'number'                  },
 		'ItemCount':           { type: 'number'                  },

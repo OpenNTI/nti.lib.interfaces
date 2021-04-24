@@ -29,7 +29,7 @@ class ContentPackageRenderJob extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'JobId':     { type: 'string'  },
 		'State':     { type: 'string'  },
 	}

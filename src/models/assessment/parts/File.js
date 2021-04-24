@@ -10,7 +10,7 @@ class File extends Part {
 
 	// prettier-ignore
 	static Fields = {
-		...Part.Fields,
+		...super.Fields,
 		'allowed_extensions': { type: 'string[]' },
 		'allowed_mime_types': { type: 'string[]' },
 		'max_file_size':      { type: 'number'   },

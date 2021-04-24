@@ -21,7 +21,7 @@ class Package extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'DCCreator':                            { type: names,    name: 'author' },
 		'title':                                { type: 'string',                },
 		'index':                                { type: 'string',                },

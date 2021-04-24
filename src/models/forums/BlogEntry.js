@@ -10,7 +10,7 @@ class BlogEntry extends Topic {
 
 	// prettier-ignore
 	static Fields = {
-		...Topic.Fields,
+		...super.Fields,
 		'sharedWith': { type: 'string[]' },
 		'tags':       { type: 'string[]' },
 	}

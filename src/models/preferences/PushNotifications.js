@@ -9,7 +9,7 @@ class PushNotifications extends Preference {
 
 	// prettier-ignore
 	static Fields = {
-		...Preference.Fields,
+		...super.Fields,
 		'Email':                       { type: 'model'   },
         'send_me_push_notifications':  { type: 'boolean' },
 	}

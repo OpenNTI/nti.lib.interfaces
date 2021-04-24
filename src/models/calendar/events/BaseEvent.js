@@ -8,7 +8,7 @@ class BaseEvent extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'start_time': 			{ type: 'date', name: 'startTime' },
 		'end_time': 			{ type: 'date', name: 'endTime' },
 		'description': 			{ type: 'string' },

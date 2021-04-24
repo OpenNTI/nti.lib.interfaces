@@ -11,7 +11,7 @@ class StripeConnectKey extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Alias':        { type: 'string'  },
 		'LiveMode':     { type: 'boolean' },
 		'PublicKey':    { type: 'string'  },

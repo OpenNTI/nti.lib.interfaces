@@ -12,7 +12,7 @@ class CourseCatalogEntry extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'DCCreator':                            { type: 'string[]', name: 'creators'        },
 		'ContentPackages':                      { type: 'string[]'                          },
 		'ContentPackageNTIID':                  { type: 'string'                            },

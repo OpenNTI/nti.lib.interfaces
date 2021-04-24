@@ -8,7 +8,7 @@ class Solution extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'value':                    { type: '*' }	// solution values can be various types
 	};
 }

@@ -8,7 +8,7 @@ class BaseCredit extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'amount':            { type: 'number'                          },
 		'title':             { type: 'string'                          },
 		'description':       { type: 'string'                          },

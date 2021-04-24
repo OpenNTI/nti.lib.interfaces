@@ -14,7 +14,7 @@ class RoomInfo extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Active':       { type: 'boolean',  name: 'isActive'     },
 		'MessageCount': { type: 'number',   name: 'messageCount' },
 		'Moderated':    { type: 'boolean',  name: 'isModerated'  },

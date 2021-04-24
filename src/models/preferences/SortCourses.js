@@ -9,7 +9,7 @@ class SortCourses extends Preference {
 
 	// prettier-ignore
 	static Fields = {
-		...Preference.Fields,
+		...super.Fields,
 		'administered':  { type: 'model'  },
 		'sortOn':        { type: 'string' },
 		'sortOrder':     { type: 'string' },

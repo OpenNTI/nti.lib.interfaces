@@ -14,7 +14,7 @@ class ChatPresenceState extends Preference {
 
 	// prettier-ignore
 	static Fields = {
-		...Preference.Fields,
+		...super.Fields,
 		'show':   { type: 'string' },
 		'status': { type: 'string' },
 		'type':   { type: 'string' },

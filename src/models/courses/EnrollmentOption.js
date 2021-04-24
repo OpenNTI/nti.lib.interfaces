@@ -11,7 +11,7 @@ class EnrollmentOption extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Enabled':     { type: 'boolean', name: 'enabled'   },
 		'IsAvailable': { type: 'boolean', name: 'available' },
 		'IsEnrolled':  { type: 'boolean', name: 'enrolled'  },

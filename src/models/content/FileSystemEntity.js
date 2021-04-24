@@ -21,7 +21,7 @@ import { NO_LINK } from '../../constants.js';
 export default class FileSystemEntity extends Base {
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'filename': { type: 'string' },
 		'name':     { type: 'string' },
 		'path':     { type: 'string' },

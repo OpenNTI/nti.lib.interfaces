@@ -9,7 +9,7 @@ class Transcript extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Messages':     { type: 'model[]',  name: 'messages'     },
 		'RoomInfo':     { type: 'model'                          },
 		'Contributors': { type: 'string[]', name: 'contributors' },

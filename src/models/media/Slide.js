@@ -12,7 +12,7 @@ class Slide extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'slideimage':      { type: resolve,  name: 'image'     },
 		'slidedeckid':     { type: 'string', name: 'deckId'    },
 		'slidevideoid':    { type: 'string', name: 'videoId'   },

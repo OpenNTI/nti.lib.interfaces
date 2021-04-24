@@ -8,7 +8,7 @@ class CompletionMetadata extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'FailCount':     { type: 'number'  },
 		'SuccessCount':  { type: 'number'  },
 		'ItemCount':     { type: 'number'  },

@@ -9,7 +9,7 @@ class PushNotificationsEmail extends Preference {
 
 	// prettier-ignore
 	static Fields = {
-		...Preference.Fields,
+		...super.Fields,
 		'email_a_summary_of_interesting_changes': { type: 'boolean' },
 		'immediate_threadable_reply':             { type: 'boolean' },
 		'notify_on_mention':                      { type: 'boolean' },

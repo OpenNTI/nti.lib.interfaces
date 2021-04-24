@@ -8,7 +8,7 @@ class AggregatedSurveyResults extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'questions':        { type: 'model[]' },
 		'surveyId':         { type: 'string'  },
 		'ContainerContext': { type: '*'       },

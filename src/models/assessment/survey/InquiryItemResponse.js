@@ -9,7 +9,7 @@ class InquiryItemResponse extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Aggregated': { type: 'model' },
 		'Submission': { type: 'model'  },
 	}

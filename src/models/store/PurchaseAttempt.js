@@ -8,7 +8,7 @@ class PurchaseAttempt extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'ChargeID':       { type: 'string', name: 'chargeId'       },
 		'Description':    { type: 'string', name: 'description'    },
 		'DeliveryDate':   { type: 'date'                           },

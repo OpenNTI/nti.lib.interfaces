@@ -8,7 +8,7 @@ class CourseCalendar extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'title':       	{ type: 'string' },
 		'CatalogEntry': { type: 'model'  }
 	}

@@ -11,7 +11,7 @@ class DomContentPointer extends ContentPointer {
 
 	// prettier-ignore
 	static Fields = {
-		...ContentPointer.Fields,
+		...super.Fields,
 		role: { type: 'string' }
 	}
 

@@ -11,7 +11,7 @@ class EducationalExperience extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'degree':      { type: 'string'                 },
 		'description': { type: 'string'                 },
 		'endYear':     { type: 'number'                 },

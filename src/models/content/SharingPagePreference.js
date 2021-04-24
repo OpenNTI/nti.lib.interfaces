@@ -9,7 +9,7 @@ class SharingPagePreference extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Provenance': { type: 'string', name: 'provenance' },
 		'State':      { type: 'string', name: 'state'      },
 		'sharedWith': { type: '*[]',    name: 'value'      },

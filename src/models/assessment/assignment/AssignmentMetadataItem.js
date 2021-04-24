@@ -9,7 +9,7 @@ class AssignmentMetadataItem extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Duration':          { type: 'number', name: 'duration' }, //seconds
 		'StartTime':         { type: 'date'                     },
 		'CatalogEntryNTIID': { type: 'string'                   },

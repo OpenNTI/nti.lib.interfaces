@@ -11,7 +11,7 @@ class DynamicFriendsList extends FriendsList {
 
 	// prettier-ignore
 	static Fields = {
-		...FriendsList.Fields,
+		...super.Fields,
 		'IsDynamicSharing': { type: 'boolean', required: true, requiredValue: true },
 	}
 

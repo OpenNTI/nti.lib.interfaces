@@ -8,7 +8,7 @@ class AnalyticsSession extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'SessionStartTime':     { type: 'date' },
 		'SessionEndTime':       { type: 'date' },
 		'GeographicalLocation': { type: 'object' },

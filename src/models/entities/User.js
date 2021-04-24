@@ -34,7 +34,7 @@ class User extends Entity {
 
 	// prettier-ignore
 	static Fields = {
-		...Entity.Fields,
+		...super.Fields,
 		//Do not define "cleaned" fields (see cleanData)
 		'Connections':        { type: '*'         },
 		'DynamicMemberships': { type: 'model[]'   },

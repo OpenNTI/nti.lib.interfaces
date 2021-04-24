@@ -9,7 +9,7 @@ class GradeBook extends Preference {
 
 	// prettier-ignore
 	static Fields = {
-		...Preference.Fields,
+		...super.Fields,
 		'hide_avatars': { type: 'boolean' },
 	}
 }

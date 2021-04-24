@@ -8,7 +8,7 @@ class Ordering extends Part {
 
 	// prettier-ignore
 	static Fields = {
-		...Part.Fields,
+		...super.Fields,
 		'labels': { type: 'string[]', content: true },
 		'values': { type: 'string[]', content: true },
 	}

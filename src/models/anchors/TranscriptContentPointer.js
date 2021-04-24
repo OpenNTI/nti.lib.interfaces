@@ -9,7 +9,7 @@ class TranscriptContentPointer extends TimeContentPointer {
 
 	// prettier-ignore
 	static Fields = {
-		...TimeContentPointer.Fields,
+		...super.Fields,
 		'cueid':   { type: 'string' },
 		'pointer': { type: 'model'  },
 	}

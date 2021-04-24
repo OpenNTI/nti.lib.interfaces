@@ -8,7 +8,7 @@ class PricingResults extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Currency':                   { type: 'string',  name: 'currency' },
 		'Items':                      { type: 'model[]'                   },
 		'TotalPurchasePrice':         { type: 'number'                    },

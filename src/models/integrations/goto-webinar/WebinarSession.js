@@ -8,7 +8,7 @@ class WebinarSession extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'startTime': { type: 'date' },
 		'endTime':   { type: 'date' }
 	}

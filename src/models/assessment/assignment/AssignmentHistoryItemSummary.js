@@ -11,7 +11,7 @@ class AssignmentHistoryItemSummary extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Grade':                 { type: 'model',  name: 'grade'         },
 		'FeedbackCount':         { type: 'number', name: 'feedbackCount' },
 		'Metadata':              { type: 'model'                         },

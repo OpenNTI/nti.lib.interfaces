@@ -9,7 +9,7 @@ class MetadataAttemptItem extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'StartTime': 	{ type: 'date' },
 		'SubmitTime': 	{ type: 'date' },
 		'Duration': 	{ type: 'any'  },

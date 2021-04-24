@@ -10,7 +10,7 @@ class AggregatedOrderingPart extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Results': { type: 'object[]' },
 	}
 

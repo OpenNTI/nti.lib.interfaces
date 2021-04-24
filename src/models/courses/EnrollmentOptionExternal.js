@@ -12,7 +12,7 @@ class EnrollmentOptionExternal extends EnrollmentOption {
 
 	// prettier-ignore
 	static Fields = {
-		...EnrollmentOption.Fields,
+		...super.Fields,
 		'enrollment_url':  { type: 'string', name: 'enrollmentURL' }
 	}
 }

@@ -8,7 +8,7 @@ export default class QuestionSetSubmission extends Submission(Base) {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'questions':                     { type: 'model[]' },
 		'questionSetId':                 { type: 'string'  },
 		'ContainerId':                   { type: 'string'  },

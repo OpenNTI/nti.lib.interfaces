@@ -19,7 +19,7 @@ class Outline extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'ContentNTIID': { type: 'string'                      }
 	}
 
