@@ -1,23 +1,20 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import {
 	Mixin as HasContent,
 	SetupContentProperties,
 } from '../../mixins/HasContent.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 //Rules:
 // Show Hints from start if they are present. If more than one, increment which one you see every time your show.
 // Show Solutions if the part is answered & incorrect (as apposed to correct or 'unknown'), and there are solutions
 
-class Part extends Base {
+export default class Part extends HasContent(Base) {
 	static MimeType = COMMON_PREFIX + 'assessment.part';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'answerLabel': { type: 'string', content: true },
 		'content':     { type: 'string', content: true },
 		'explanation': { type: 'string', content: true },
@@ -109,4 +106,4 @@ class Part extends Base {
 	}
 }
 
-export default decorate(Part, [model, mixin(HasContent)]);
+Registry.register(Part);

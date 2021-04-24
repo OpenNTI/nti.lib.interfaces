@@ -1,9 +1,6 @@
-export default Object.defineProperties(
-	{},
-	{
-		isSubmittable: {
-			writable: false,
-			value: true,
-		},
-	}
-);
+export default Target =>
+	class SubmittableIdentity extends Target {
+		get isSubmittable() {
+			return true;
+		}
+	};

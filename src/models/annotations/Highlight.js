@@ -1,17 +1,15 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Annotation from './Annotation.js';
 
-class Highlight extends Annotation {
+export default class Highlight extends Annotation {
 	static MimeType = COMMON_PREFIX + 'highlight';
 
 	// prettier-ignore
 	static Fields = {
-		...Annotation.Fields,
+		...super.Fields,
 		'selectedText': { type: 'string' },
 	}
 }
 
-export default decorate(Highlight, [model]);
+Registry.register(Highlight);

@@ -1,8 +1,6 @@
 import EventEmitter from 'events';
 
-import { decorate } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
-import { mixin } from '@nti/lib-decorators';
 
 import { Service, DELETED } from '../constants.js';
 import { Mixin as Pendability } from '../mixins/Pendability.js';
@@ -18,7 +16,7 @@ export function binId(i, rootId) {
 	return id !== rootId ? binId : 'root';
 }
 
-class UserData extends EventEmitter {
+export default class UserData extends Pendability(EventEmitter) {
 	constructor(service, rootContainerId, source) {
 		super();
 		Object.assign(this, {
@@ -27,9 +25,7 @@ class UserData extends EventEmitter {
 			rootId: rootContainerId,
 		});
 
-		if (this.initMixins) {
-			this.initMixins();
-		}
+		this.initMixins?.();
 
 		this.onChange = this.onChange.bind(this);
 
@@ -186,5 +182,3 @@ class UserData extends EventEmitter {
 		});
 	}
 }
-
-export default decorate(UserData, [mixin(Pendability)]);

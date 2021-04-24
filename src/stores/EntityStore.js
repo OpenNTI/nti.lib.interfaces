@@ -1,7 +1,5 @@
 import EventEmitter from 'events';
 
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
 import { Service } from '../constants.js';
@@ -12,7 +10,7 @@ import { parseListFn } from '../models/Parser.js';
 const logger = Logger.get('store:EntityStore');
 const DATA = Symbol();
 
-class EntityStore extends EventEmitter {
+export default class EntityStore extends Pendability(EventEmitter) {
 	/**
 	 * constructor
 	 *
@@ -89,5 +87,3 @@ class EntityStore extends EventEmitter {
 		};
 	}
 }
-
-export default decorate(EntityStore, [mixin(Pendability)]);

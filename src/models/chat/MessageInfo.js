@@ -1,17 +1,16 @@
-import { decorate, pluck } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
+import { pluck } from '@nti/lib-commons';
 
 import { NO_LINK } from '../../constants.js';
 import Threadable from '../../mixins/Threadable.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class MessageInfo extends Base {
+export default class MessageInfo extends Threadable(Base) {
 	static MimeType = COMMON_PREFIX + 'messageinfo';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'ContainerId': { type: 'string' },
 		'ID':          { type: 'string' },
 		'Status':      { type: 'string' },
@@ -39,4 +38,4 @@ class MessageInfo extends Base {
 	}
 }
 
-export default decorate(MessageInfo, [model, mixin(Threadable)]);
+Registry.register(MessageInfo);

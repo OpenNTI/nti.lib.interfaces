@@ -1,9 +1,6 @@
-export default Object.defineProperties(
-	{},
-	{
-		isQuestion: {
-			writable: false,
-			value: true,
-		},
-	}
-);
+export default Target =>
+	class QuestionIdentity extends Target {
+		get isQuestion() {
+			return true;
+		}
+	};

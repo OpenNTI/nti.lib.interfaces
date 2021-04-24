@@ -156,7 +156,7 @@ class DiscussionTree {
 	}
 }
 
-DiscussionInterface.getPayload = payload => {
+export const getPayload = payload => {
 	const json = { ...payload, mentions: [], body: [] };
 
 	//For now strip out any ntiid like mentions
@@ -199,30 +199,31 @@ DiscussionInterface.getPayload = payload => {
 	formData.append('__json__', JSON.stringify(json));
 	return formData;
 };
-export default function DiscussionInterface(targetModelClass) {
-	Object.assign(targetModelClass.Fields, {
-		title: targetModelClass.Fields.title ?? { type: 'string' },
-		body: targetModelClass.Fields.body ?? { type: '*[]' },
+const Mixin = Target =>
+	class DiscussionInterface extends Target {
+		static Fields = {
+			...super.Fields,
+			title: super.Fields.title ?? { type: 'string' },
+			body: super.Fields.body ?? { type: '*[]' },
+			tags: super.Fields.tags ?? { type: 'string[]' },
+			mentions: super.Fields.mentions ?? { type: 'string[]' },
+			UserMentions: super.Fields.UserMentions ?? {
+				type: 'object[]',
+			},
+			sharedWith: super.Fields.sharedWith ?? { type: 'string[]' },
+		};
 
-		tags: targetModelClass.Fields.tags ?? { type: 'string[]' },
-
-		mentions: targetModelClass.Fields.mentions ?? { type: 'string[]' },
-		UserMentions: targetModelClass.Fields.UserMentions ?? {
-			type: 'object[]',
-		},
-
-		sharedWith: targetModelClass.Fields.sharedWith ?? { type: 'string[]' },
-	});
-
-	return {
-		initMixin() {
+		constructor(...args) {
+			super(...args);
 			this.addToPending?.(resolveMentions(this));
-		},
+		}
 
-		isDiscussion: true,
+		isDiscussion = true;
+
 		getPost() {
 			return this;
-		},
+		}
+
 		getPostHash() {
 			const post = this.getPost();
 			const parts = [
@@ -233,27 +234,29 @@ export default function DiscussionInterface(targetModelClass) {
 			];
 
 			return parts.join('-');
-		},
+		}
 
 		async applyChange(item) {
 			await this.refresh(item.toJSON());
 			await resolveMentions(this);
-		},
+		}
 
 		getTitle() {
 			return getTitle(this);
-		},
+		}
+
 		getBody() {
 			return getBody(this);
-		},
+		}
 
 		getTags() {
 			return getTags(this);
-		},
+		}
 
 		getMentions() {
 			return getMentions(this);
-		},
+		}
+
 		getMentionFor(username) {
 			if (!username) {
 				return null;
@@ -267,14 +270,15 @@ export default function DiscussionInterface(targetModelClass) {
 			return (mentions || []).find(
 				mention => mention?.User?.getID?.() === username
 			);
-		},
+		}
 
 		canEditSharing() {
 			return null;
-		},
+		}
+
 		getSharedWith() {
 			return this.sharedWith;
-		},
+		}
 
 		isSharedWith(entity) {
 			const sharedWith = this.getSharedWith();
@@ -296,11 +300,11 @@ export default function DiscussionInterface(targetModelClass) {
 
 				return false;
 			});
-		},
+		}
 
 		isDeleted() {
 			return false;
-		},
+		}
 
 		async updatePost(data, ...args) {
 			const post = this.getPost();
@@ -317,7 +321,7 @@ export default function DiscussionInterface(targetModelClass) {
 			this.onChange();
 
 			return result;
-		},
+		}
 
 		getParentDiscussion() {
 			if (this[ParentOverride]) {
@@ -327,45 +331,48 @@ export default function DiscussionInterface(targetModelClass) {
 			const parent = this.parent(p => p.isDiscussion);
 
 			return parent?.isDiscussion ? parent : null;
-		},
+		}
 
 		overrideParentDiscussion(parent) {
 			this[ParentOverride] = parent;
-		},
+		}
 
 		afterDelete() {
 			this.onPostDeleted();
-		},
+		}
+
 		onPostDeleted() {
 			const parent = this.getParentDiscussion();
 
 			if (parent?.isDiscussion) {
 				parent.onDiscussionDeleted(this.getPost());
 			}
-		},
+		}
 
 		canAddDiscussion() {
 			throw new Error('canAddDiscussion not implementd');
-		},
+		}
 
 		getDiscussionCount() {
 			throw new Error('getDiscussionCount not implemented');
-		},
+		}
+
 		updateDiscussionCount() {
 			throw new Error('updateDiscussionCount not implemented');
-		},
+		}
 
 		getDiscussions() {
 			throw new Error('getDiscussions not implemented');
-		},
+		}
 
 		getDiscussionTree(sort) {
 			return DiscussionTree.forDiscussion(this, sort);
-		},
+		}
 
 		addDiscussion() {
 			throw new Error('addDiscussion not implented');
-		},
+		}
+
 		onDiscussionAdded(discussion, silent) {
 			this.updateDiscussionCount(this.getDiscussionCount() + 1);
 
@@ -378,7 +385,7 @@ export default function DiscussionInterface(targetModelClass) {
 			if (parent?.isDiscussion) {
 				parent.onDiscussionAdded(discussion, true);
 			}
-		},
+		}
 
 		onDiscussionDeleted(discussion) {
 			this.updateDiscussionCount(this.getDiscussionCount() - 1);
@@ -389,7 +396,7 @@ export default function DiscussionInterface(targetModelClass) {
 			if (parent?.isDiscussion) {
 				parent.onDiscussionDeleted(discussion);
 			}
-		},
+		}
 
 		subscribeToDiscussionAdded(fn) {
 			this.addListener(DiscussionAdded, fn);
@@ -397,7 +404,7 @@ export default function DiscussionInterface(targetModelClass) {
 			return () => {
 				this.removeListener(DiscussionAdded, fn);
 			};
-		},
+		}
 
 		subscribeToDeleted(fn) {
 			this.addListener(DiscussionDeleted, fn);
@@ -405,7 +412,7 @@ export default function DiscussionInterface(targetModelClass) {
 			return () => {
 				this.removeListener(DiscussionDeleted, fn);
 			};
-		},
+		}
 
 		subscribeToPostChange(fn) {
 			const post = this.getPost();
@@ -415,6 +422,8 @@ export default function DiscussionInterface(targetModelClass) {
 			}
 
 			return post.subscribeToPostChange(fn);
-		},
+		}
 	};
-}
+
+Mixin.getPayload = getPayload;
+export default Mixin;

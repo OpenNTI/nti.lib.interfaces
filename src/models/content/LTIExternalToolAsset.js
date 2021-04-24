@@ -1,7 +1,4 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Completable from '../../mixins/Completable.js';
 import Base from '../Base.js';
 
@@ -12,12 +9,12 @@ import Base from '../Base.js';
 	ConfiguredTool: data.ConfiguredTool,
 	NTIID: data.ntiid
 */
-class LTIExternalToolAsset extends Base {
+export default class LTIExternalToolAsset extends Completable(Base) {
 	static MimeType = COMMON_PREFIX + 'ltiexternaltoolasset';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		byline: 		{ type: 'string' },
 		description: 	{ type: 'string' },
 		icon: 			{ type: 'string' },
@@ -43,4 +40,4 @@ class LTIExternalToolAsset extends Base {
 	}
 }
 
-export default decorate(LTIExternalToolAsset, [model, mixin(Completable)]);
+Registry.register(LTIExternalToolAsset);

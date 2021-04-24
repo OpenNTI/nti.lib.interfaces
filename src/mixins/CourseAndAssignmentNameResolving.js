@@ -7,72 +7,80 @@ import { isNTIID } from '@nti/lib-ntiids';
 import { Service } from '../constants.js';
 import getLink from '../utils/get-link.js';
 
-export default {
-	initMixin() {
-		const service = this[Service];
+export default Target =>
+	class extends Target {
+		constructor(...args) {
+			super(...args);
 
-		const resolveAssignmentTitle = async () => {
-			//If this model has an assignment parent model instance,
-			let assignment = this.parent('MimeType', /assessment.assignment$/i);
-			if (!assignment) {
-				//Otherwise, load the assignment object
-				assignment = await service.getObjectRaw(this.AssignmentId);
-			}
-			//then... Pluck the assignment object title...
-			this.AssignmentName = assignment.title;
-		};
+			const service = this[Service];
 
-		const resolveCatalogItem = async () => {
-			let catalogEntryUrl = this.CatalogEntryNTIID;
+			const resolveAssignmentTitle = async () => {
+				//If this model has an assignment parent model instance,
+				let assignment = this.parent(
+					'MimeType',
+					/assessment.assignment$/i
+				);
+				if (!assignment) {
+					//Otherwise, load the assignment object
+					assignment = await service.getObjectRaw(this.AssignmentId);
+				}
+				//then... Pluck the assignment object title...
+				this.AssignmentName = assignment.title;
+			};
 
-			if (!catalogEntryUrl) {
-				const courseInstanceUrl = (
-					this.getLink('AssignmentHistoryItem') ||
-					this.href ||
-					''
-				).replace(/\/AssignmentHistories.*/, '');
+			const resolveCatalogItem = async () => {
+				let catalogEntryUrl = this.CatalogEntryNTIID;
 
-				if (!courseInstanceUrl) {
-					throw new Error('No Course URL');
+				if (!catalogEntryUrl) {
+					const courseInstanceUrl = (
+						this.getLink('AssignmentHistoryItem') ||
+						this.href ||
+						''
+					).replace(/\/AssignmentHistories.*/, '');
+
+					if (!courseInstanceUrl) {
+						throw new Error('No Course URL');
+					}
+
+					const courseInstanceData = await service.get(
+						courseInstanceUrl
+					);
+					catalogEntryUrl = getLink(
+						courseInstanceData,
+						'CourseCatalogEntry'
+					);
 				}
 
-				const courseInstanceData = await service.get(courseInstanceUrl);
-				catalogEntryUrl = getLink(
-					courseInstanceData,
-					'CourseCatalogEntry'
-				);
-			}
+				if (!catalogEntryUrl) {
+					throw new Error('No Catalog Entry URL');
+				}
 
-			if (!catalogEntryUrl) {
-				throw new Error('No Catalog Entry URL');
-			}
+				const call = _ => service[isNTIID(_) ? 'getObject' : 'get'](_);
 
-			const call = _ => service[isNTIID(_) ? 'getObject' : 'get'](_);
+				const catalogEntry = await call(catalogEntryUrl);
 
-			const catalogEntry = await call(catalogEntryUrl);
+				//Okay, the scary part is over! just grab what we need and run.
+				this.CourseName = catalogEntry.Title;
+				this.CatalogEntry = catalogEntry;
+			};
 
-			//Okay, the scary part is over! just grab what we need and run.
-			this.CourseName = catalogEntry.Title;
-			this.CatalogEntry = catalogEntry;
-		};
+			this.addToPending(
+				(async () => {
+					//Wait on the two async operations (a and b), then fire a change
+					// event so views know values changed.
+					await Promise.allSettled([
+						resolveAssignmentTitle(),
+						resolveCatalogItem().catch(reason => {
+							// eslint-disable-next-line no-console
+							console.warn(
+								`Could not resolve catalog item. This object will not have CourseName and CatalogEntry keys.\nReason: %o`,
+								reason.message || reason
+							);
+						}),
+					]);
 
-		this.addToPending(
-			(async () => {
-				//Wait on the two async operations (a and b), then fire a change
-				// event so views know values changed.
-				await Promise.allSettled([
-					resolveAssignmentTitle(),
-					resolveCatalogItem().catch(reason => {
-						// eslint-disable-next-line no-console
-						console.warn(
-							`Could not resolve catalog item. This object will not have CourseName and CatalogEntry keys.\nReason: %o`,
-							reason.message || reason
-						);
-					}),
-				]);
-
-				this.emit('change');
-			})()
-		);
-	},
-};
+					this.emit('change');
+				})()
+			);
+		}
+	};

@@ -1,18 +1,17 @@
 import Url from 'url';
 import path from 'path';
 
-import { decorate, wait } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
+import { wait } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import { MEDIA_BY_OUTLINE_NODE, NO_LINK, Service } from '../../constants.js';
-import { Mixin as ContentTreeMixin } from '../../content-tree/index.js';
+import { Mixin as ContentTree } from '../../content-tree/index.js';
 import HasEvaluations from '../../mixins/HasEvaluations.js';
 import AssessmentCollectionStudentView from '../assessment/assignment/CollectionStudentView.js';
 import AssessmentCollectionInstructorView from '../assessment/assignment/CollectionInstructorView.js';
 import Roster from '../../stores/CourseRoster.js';
 import MediaIndex from '../media/MediaIndex.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 import Forum from '../forums/Forum.js';
 
@@ -45,7 +44,9 @@ const KnownActivitySorts = [
 	'LikeCount',
 ];
 
-class Instance extends Base {
+export default class Instance extends ContentTree(
+	HasEvaluations(CourseIdentity(Base))
+) {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseinstance',
 		COMMON_PREFIX + 'courses.legacycommunitybasedcourseinstance',
@@ -53,7 +54,7 @@ class Instance extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'ContentPackageBundle':              { type: 'model'                                       },
 		'Discussions':                       { type: 'model'                                       },
 		'GradeBook':                         { type: 'model'                                       },
@@ -748,10 +749,7 @@ class Instance extends Base {
 	}
 }
 
-export default decorate(Instance, [
-	model,
-	mixin(CourseIdentity, ContentTreeMixin, HasEvaluations),
-]);
+Registry.register(Instance);
 
 //Private methods
 

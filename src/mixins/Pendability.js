@@ -4,63 +4,66 @@ const PRIVATE_PENDING = new WeakMap();
 const getPending = p => PRIVATE_PENDING.get(p) || [];
 const setPending = (p, list) => (PRIVATE_PENDING.set(p, list), list);
 
-export const Mixin = {
-	getPending() {
-		return getPending(this);
-	},
+export const Mixin = Base =>
+	class extends Base {
+		getPending() {
+			return getPending(this);
+		}
 
-	addToPending(...pending) {
-		let list = getPending(this);
-		setPending(this, list); //ensure (for request contexts that don't get the constructor call)
+		addToPending(...pending) {
+			let list = getPending(this);
+			setPending(this, list); //ensure (for request contexts that don't get the constructor call)
 
-		function remove(p) {
-			return () => {
-				//remember JavaScript is not multi-threaded,
-				// this action is effectively atomic... if that ever changes (it won't), this is not thread safe ;)
-				let i = list.indexOf(p);
-				if (i >= 0) {
-					list.splice(i, 1); //remove promise from the array
+			function remove(p) {
+				return () => {
+					//remember JavaScript is not multi-threaded,
+					// this action is effectively atomic... if that ever changes (it won't), this is not thread safe ;)
+					let i = list.indexOf(p);
+					if (i >= 0) {
+						list.splice(i, 1); //remove promise from the array
+					}
+				};
+			}
+
+			for (let p of pending) {
+				if (!p) {
+					continue;
 				}
-			};
-		}
 
-		for (let p of pending) {
-			if (!p) {
-				continue;
+				if (p.addToPending) {
+					this.addToPending(...getPending(p));
+				} else if (p.then) {
+					list.push(p);
+
+					p.finally(remove(p));
+				} else if (Array.isArray(p)) {
+					this.addToPending(...p);
+				} else {
+					console.warn('Unexpected object in the pending queue: ', p); //eslint-disable-line no-console
+				}
 			}
 
-			if (p.addToPending) {
-				this.addToPending(...getPending(p));
-			} else if (p.then) {
-				list.push(p);
-
-				p.finally(remove(p));
-			} else if (Array.isArray(p)) {
-				this.addToPending(...p);
-			} else {
-				console.warn('Unexpected object in the pending queue: ', p); //eslint-disable-line no-console
-			}
+			return this; //allow chain
 		}
 
-		return this; //allow chain
-	},
+		async waitForPending(timeout) {
+			return wait.on(getPending(this), timeout).then(() => this);
+		}
+	};
 
-	async waitForPending(timeout) {
-		return wait.on(getPending(this), timeout).then(() => this);
-	},
-};
+const Prototype = Mixin(class {}).prototype;
 
 export function attach(context) {
 	setPending(context, getPending(context));
 
-	for (let method of Object.keys(Mixin)) {
+	for (let method of Object.getOwnPropertyNames(Prototype)) {
 		if (method === 'constructor') {
 			continue;
 		}
 
 		if (!context[method]) {
 			context[method] = function (...pending) {
-				return Mixin[method].apply(context, pending);
+				return Prototype[method].apply(context, pending);
 			};
 		}
 	}

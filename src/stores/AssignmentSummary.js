@@ -1,6 +1,3 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import { getPrivate } from '../utils/private.js';
 import Paged from '../mixins/Paged.js';
 
@@ -17,12 +14,7 @@ const OPPOSITE_FILTER = {
 	Open: 'forcredit',
 };
 
-class AssignmentSummary extends Stream {
-	constructor(...args) {
-		super(...args);
-		this.initMixins();
-	}
-
+export default class AssignmentSummary extends Paged(Stream) {
 	get parseList() {
 		const p = getPrivate(this);
 
@@ -90,5 +82,3 @@ class AssignmentSummary extends Stream {
 		return this.filter;
 	}
 }
-
-export default decorate(AssignmentSummary, [mixin(Paged)]);

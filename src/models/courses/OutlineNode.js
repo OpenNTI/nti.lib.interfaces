@@ -1,7 +1,5 @@
 import url from 'url';
 
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
 import { encodeForURI, isNTIID } from '@nti/lib-ntiids';
 import Logger from '@nti/util-logger';
 
@@ -10,10 +8,10 @@ import {
 	Parser as parse,
 	SCOPED_COURSE_INSTANCE,
 } from '../../constants.js';
-import { Mixin as ContentTreeMixin } from '../../content-tree/index.js';
+import { Mixin as ContentTree } from '../../content-tree/index.js';
 import Publishable from '../../mixins/Publishable.js';
 import ContentConstraints from '../../mixins/ContentConstraints.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import filterNonRequiredItems from '../../utils/filter-non-required-items.js';
 import getFuzzyTargetProperty from '../../utils/get-fuzzy-target-property.js';
 
@@ -22,7 +20,9 @@ import fallbackOverview from './_fallbacks.OverviewFromToC.js';
 
 const logger = Logger.get('models:courses:OutlineNode');
 
-class OutlineNode extends Outline {
+export default class OutlineNode extends Publishable(
+	ContentTree(ContentConstraints(Outline))
+) {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseoutlinenode',
 		COMMON_PREFIX + 'courses.courseoutlinecontentnode',
@@ -31,7 +31,7 @@ class OutlineNode extends Outline {
 
 	// prettier-ignore
 	static Fields = {
-		...Outline.Fields,
+		...super.Fields,
 		'contents':             { type: 'model[]', defaultValue: [] },
 		'DCTitle':              { type: 'string'                    },
 		'AvailableBeginning':   { type: 'date'                      },
@@ -102,7 +102,7 @@ class OutlineNode extends Outline {
 	 * Get the overview contents of this node.
 	 * If no progress is required, pass an object with decorateProgress set to false to prevent decorating it.
 	 *
-	 * @method getContent
+	 * @function getContent
 	 * @param  {Object} [params] optional parameters
 	 * @param  {boolean} [params.requiredOnly] limit the items to only the required ones
 	 * @param {boolean} [params.decorateProgress] if false do not decorate the progress on the items
@@ -242,10 +242,7 @@ class OutlineNode extends Outline {
 	}
 }
 
-export default decorate(OutlineNode, [
-	model,
-	mixin(Publishable, ContentTreeMixin, ContentConstraints),
-]);
+Registry.register(OutlineNode);
 
 function applyProgress([content, progress]) {
 	if (!content || !progress) {
@@ -324,7 +321,7 @@ async function applyContentsOverlayWithUserCompletionStats(
 /**
  * Recursively remove assignments & references that are not included in the assignments collection
  *
- * @method filterMissingAssignments
+ * @function filterMissingAssignments
  * @param  {Collection}             assignments The Assignments Collection instance.
  * @param  {Object}                 item        The raw data for the overview contents of this outline node.
  * @returns {Object} The item but without assignments that cannot be resolved.
@@ -363,7 +360,7 @@ function filterMissingAssignments(assignments, item) {
 /**
  * Recursively fix items with relative href paths.
  *
- * @method fixRelativePaths
+ * @function fixRelativePaths
  * @param  {Object}         item The content to fix.
  * @param  {string}         root The content root url to resolve against.
  * @returns {Object} Returns the item given. (potentially modified)

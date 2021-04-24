@@ -1,13 +1,9 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import Threadable from '../../mixins/Threadable.js';
-import DiscussionInterface from '../../mixins/DiscussionInterface.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Post from './Post.js';
 
-class Comment extends Post {
+export default class Comment extends Threadable(Post) {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.comment',
 		COMMON_PREFIX + 'forums.generalforumcomment',
@@ -17,7 +13,7 @@ class Comment extends Post {
 
 	// prettier-ignore
 	static Fields = {
-		...Post.Fields,
+		...super.Fields,
 		'ContainerId':       { type: 'string'   },
 		'ContainerTitle':    { type: 'string'   },
 		'ContainerMimeType': { type: 'string'   },
@@ -111,7 +107,4 @@ class Comment extends Post {
 	}
 }
 
-export default decorate(Comment, [
-	model,
-	mixin(Threadable, DiscussionInterface),
-]);
+Registry.register(Comment);

@@ -1,6 +1,3 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import { Service } from '../../constants.js';
 import Page from '../../data-sources/data-types/Page.js';
 import GetContents from '../../mixins/GetContents.js';
@@ -8,10 +5,12 @@ import Likable from '../../mixins/Likable.js';
 import Pinnable from '../../mixins/Pinnable.js';
 import Flaggable from '../../mixins/Flaggable.js';
 import DiscussionInterface from '../../mixins/DiscussionInterface.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class Topic extends Base {
+export default class Topic extends DiscussionInterface(
+	GetContents(Pinnable(Likable(Flaggable(Base))))
+) {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.topic',
 		COMMON_PREFIX + 'forums.communityheadlinetopic',
@@ -24,7 +23,7 @@ class Topic extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'ContainerId':                    { type: 'string' },
 		'ContainerTitle':                 { type: 'string' },
 		'ContainerDefaultSharedToNTIIDs': {type: 'string[]'},
@@ -154,7 +153,4 @@ class Topic extends Base {
 	}
 }
 
-export default decorate(Topic, [
-	model,
-	mixin(GetContents, Likable, Pinnable, Flaggable, DiscussionInterface),
-]);
+Registry.register(Topic);

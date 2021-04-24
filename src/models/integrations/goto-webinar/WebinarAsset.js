@@ -1,16 +1,13 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 import Completable from '../../../mixins/Completable.js';
 
-class WebinarAsset extends Base {
+export default class WebinarAsset extends Completable(Base) {
 	static MimeType = COMMON_PREFIX + 'webinarasset';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'description':  { type: 'string' },
 		'title':        { type: 'string' },
 		'webinar':      { type: 'model'  },
@@ -19,4 +16,4 @@ class WebinarAsset extends Base {
 	}
 }
 
-export default decorate(WebinarAsset, [model, mixin(Completable)]);
+Registry.register(WebinarAsset);

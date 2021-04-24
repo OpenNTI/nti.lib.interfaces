@@ -1,12 +1,9 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import { Service } from '../../constants.js';
 import Submission from '../../mixins/Submission.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class QuestionSetSubmission extends Base {
+export default class QuestionSetSubmission extends Submission(Base) {
 	static MimeType = COMMON_PREFIX + 'assessment.questionsetsubmission';
 
 	// prettier-ignore
@@ -62,4 +59,4 @@ class QuestionSetSubmission extends Base {
 	}
 }
 
-export default decorate(QuestionSetSubmission, [model, mixin(Submission)]);
+Registry.register(QuestionSetSubmission);

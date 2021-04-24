@@ -1,8 +1,5 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import Submission from '../../../mixins/Submission.js';
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
 const RELS = {
@@ -11,7 +8,7 @@ const RELS = {
 	HISTORY: 'History',
 };
 
-class AssignmentSubmission extends Base {
+export default class AssignmentSubmission extends Submission(Base) {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.assignmentsubmission',
 		COMMON_PREFIX + 'assessment.assignmentsubmissionpendingassessment',
@@ -113,4 +110,4 @@ class AssignmentSubmission extends Base {
 	}
 }
 
-export default decorate(AssignmentSubmission, [model, mixin(Submission)]);
+Registry.register(AssignmentSubmission);

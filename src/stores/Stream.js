@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 
 import invariant from 'invariant';
 
-import { mixin, URL } from '@nti/lib-commons';
+import { URL } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import { Service, Parent, DELETED, SortOrder } from '../constants.js';
@@ -25,7 +25,7 @@ const load = (scope, url) =>
 		o => (scope.applyBatch(o), scope.parseList(o.Items || []))
 	);
 
-export default class Stream extends EventEmitter {
+export default class Stream extends Pendability(EventEmitter) {
 	/**
 	 * constructor
 	 *
@@ -33,7 +33,7 @@ export default class Stream extends EventEmitter {
 	 * @param {Model} owner			Parent object. (the thing that called the constructor)
 	 * @param {string|Promise} href			initial URL to load.
 	 * @param {Object} options		Query-String param object.
-	 * @param {function} collator	Optional collator function that returns an array, given an array in its first argument.
+	 * @param {Function} collator	Optional collator function that returns an array, given an array in its first argument.
 	 * @returns {void}
 	 */
 	constructor(service, owner, href, options = {}, collator = null) {
@@ -49,8 +49,6 @@ export default class Stream extends EventEmitter {
 		});
 
 		initPrivate(this, { data: [] });
-
-		mixin(this, Pendability);
 
 		if (process.browser) {
 			this.on('load', (_, time) =>

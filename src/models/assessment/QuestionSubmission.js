@@ -1,17 +1,14 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import { Service } from '../../constants.js';
 import Submission from '../../mixins/Submission.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class QuestionSubmission extends Base {
+export default class QuestionSubmission extends Submission(Base) {
 	static MimeType = COMMON_PREFIX + 'assessment.questionsubmission';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'questionId':                    { type: 'string'  },
 		'parts':                         { type: '*' },
 		'ContainerId':                   { type: 'string'  },
@@ -71,4 +68,4 @@ class QuestionSubmission extends Base {
 	}
 }
 
-export default decorate(QuestionSubmission, [model, mixin(Submission)]);
+Registry.register(QuestionSubmission);

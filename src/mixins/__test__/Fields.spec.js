@@ -48,17 +48,11 @@ describe('Fields Mixin', () => {
 	test('Fields do not automatically combine on subclass', () => {
 		jest.spyOn(logger, 'debug').mockImplementation(() => {});
 
-		const Foo = mixin(Fields)(
-			class Foo {
-				static Fields = {
-					foo: { type: 'string' },
-				};
-
-				constructor() {
-					this.initMixins({});
-				}
-			}
-		);
+		class Foo extends Fields() {
+			static Fields = {
+				foo: { type: 'string' },
+			};
+		}
 
 		expect(Foo.Fields).toEqualFields({
 			foo: { type: 'string' },
@@ -85,17 +79,11 @@ describe('Fields Mixin', () => {
 	test('Fields do not log if you spread the base...', () => {
 		jest.spyOn(logger, 'debug').mockImplementation(() => {});
 
-		const Foo = mixin(Fields)(
-			class Foo {
-				static Fields = {
-					foo: { type: 'string' },
-				};
-
-				constructor() {
-					this.initMixins({});
-				}
-			}
-		);
+		class Foo extends Fields() {
+			static Fields = {
+				foo: { type: 'string' },
+			};
+		}
 
 		class Bar extends Foo {
 			static Fields = {
@@ -137,13 +125,11 @@ describe('Fields Mixin', () => {
 			};
 		}
 
-		const Foo = mixin(Fields)(
-			class Foo {
-				static Fields = {
-					foo: { type: 'string' },
-				};
-			}
-		);
+		class Foo extends Fields() {
+			static Fields = {
+				foo: { type: 'string' },
+			};
+		}
 
 		const Bar = mixin(TypeA)(class Bar extends Foo {});
 		const Baz = mixin(TypeA, TypeB)(class Baz extends Foo {});
@@ -170,13 +156,11 @@ describe('Fields Mixin', () => {
 	});
 
 	test('Fields Override', () => {
-		const Foo = mixin(Fields)(
-			class Foo {
-				static Fields = {
-					foo: { type: 'string' },
-				};
-			}
-		);
+		class Foo extends Fields() {
+			static Fields = {
+				foo: { type: 'string' },
+			};
+		}
 
 		class Bar extends Foo {
 			static Fields = {
@@ -195,48 +179,33 @@ describe('Fields Mixin', () => {
 	});
 
 	test('Fields use defaultValue', () => {
-		const Foo = mixin(Fields)(
-			class Foo {
-				static Fields = {
-					foo: { type: 'string', defaultValue: 'bar' },
-				};
-				constructor(data) {
-					this.initMixins(data);
-				}
-			}
-		);
+		class Foo extends Fields() {
+			static Fields = {
+				foo: { type: 'string', defaultValue: 'bar' },
+			};
+		}
 
 		expect(new Foo({ foo: 'baz' }).foo).toBe('baz');
 		expect(new Foo().foo).toBe('bar');
 	});
 
 	test('Fields: empty model[] use defaultValue', () => {
-		const Foo = mixin(Fields)(
-			class Foo {
-				static Fields = {
-					foo: { type: 'model[]', defaultValue: [] },
-				};
-				constructor(data) {
-					this.initMixins(data);
-				}
-			}
-		);
+		class Foo extends Fields() {
+			static Fields = {
+				foo: { type: 'model[]', defaultValue: [] },
+			};
+		}
 
 		expect(new Foo().foo).toEqual([]);
 	});
 
 	describe('Fields validate types', () => {
 		test('string', () => {
-			const Foo = mixin(Fields)(
-				class Foo {
-					static Fields = {
-						foo: { type: 'string' },
-					};
-					constructor(data) {
-						this.initMixins(data);
-					}
-				}
-			);
+			class Foo extends Fields() {
+				static Fields = {
+					foo: { type: 'string' },
+				};
+			}
 
 			jest.spyOn(logger, 'error').mockImplementation(() => {});
 			expect(() => new Foo({ foo: 'baz' })).not.toThrow();
@@ -246,16 +215,11 @@ describe('Fields Mixin', () => {
 		});
 
 		test('boolean', () => {
-			const Foo = mixin(Fields)(
-				class Foo {
-					static Fields = {
-						foo: { type: 'boolean' },
-					};
-					constructor(data) {
-						this.initMixins(data);
-					}
-				}
-			);
+			class Foo extends Fields() {
+				static Fields = {
+					foo: { type: 'boolean' },
+				};
+			}
 
 			jest.spyOn(logger, 'error').mockImplementation(() => {});
 			expect(() => new Foo({ foo: true })).not.toThrow();
@@ -266,16 +230,11 @@ describe('Fields Mixin', () => {
 		});
 
 		test('number', () => {
-			const Foo = mixin(Fields)(
-				class Foo {
-					static Fields = {
-						foo: { type: 'number' },
-					};
-					constructor(data) {
-						this.initMixins(data);
-					}
-				}
-			);
+			class Foo extends Fields() {
+				static Fields = {
+					foo: { type: 'number' },
+				};
+			}
 
 			jest.spyOn(logger, 'error').mockImplementation(() => {});
 			expect(() => new Foo({ foo: 1 })).not.toThrow();
@@ -285,16 +244,11 @@ describe('Fields Mixin', () => {
 		});
 
 		test('object', () => {
-			const Foo = mixin(Fields)(
-				class Foo {
-					static Fields = {
-						foo: { type: 'object' },
-					};
-					constructor(data) {
-						this.initMixins(data);
-					}
-				}
-			);
+			class Foo extends Fields() {
+				static Fields = {
+					foo: { type: 'object' },
+				};
+			}
 
 			jest.spyOn(logger, 'error').mockImplementation(() => {});
 			expect(() => new Foo({ foo: {} })).not.toThrow();
@@ -305,16 +259,11 @@ describe('Fields Mixin', () => {
 	});
 
 	test('Fields can set alternate name', () => {
-		const Foo = mixin(Fields)(
-			class Foo {
-				static Fields = {
-					foo: { type: 'string', name: 'bax' },
-				};
-				constructor(data) {
-					this.initMixins(data);
-				}
-			}
-		);
+		class Foo extends Fields() {
+			static Fields = {
+				foo: { type: 'string', name: 'bax' },
+			};
+		}
 
 		const f = new Foo({ foo: 'bar' });
 		expect(f.bax).toBe('bar');
@@ -326,16 +275,11 @@ describe('Fields Mixin', () => {
 	});
 
 	test('Fields can set alternate name and shadow', () => {
-		const Foo = mixin(Fields)(
-			class Foo {
-				static Fields = {
-					foo: { type: 'string', name: 'bax' },
-				};
-				constructor(data) {
-					this.initMixins(data);
-				}
-			}
-		);
+		class Foo extends Fields() {
+			static Fields = {
+				foo: { type: 'string', name: 'bax' },
+			};
+		}
 
 		jest.spyOn(logger, 'error').mockImplementation(() => {});
 		jest.spyOn(logger, 'debug').mockImplementation(() => {});
@@ -354,16 +298,11 @@ describe('Fields Mixin', () => {
 	});
 
 	describe('Fields validate types', () => {
-		const Foo = mixin(Fields)(
-			class Foo {
-				static Fields = {
-					field1: { type: 'number?' },
-				};
-				constructor(data) {
-					this.initMixins(data);
-				}
-			}
-		);
+		class Foo extends Fields() {
+			static Fields = {
+				field1: { type: 'number?' },
+			};
+		}
 
 		test('Coerce number from string', () => {
 			const asString = new Foo({ field1: '25' });
@@ -387,16 +326,11 @@ describe('Fields Mixin', () => {
 	});
 
 	describe('Fields validate types', () => {
-		const Foo = mixin(Fields)(
-			class Foo {
-				static Fields = {
-					field1: { type: 'string?' },
-				};
-				constructor(data) {
-					this.initMixins(data);
-				}
-			}
-		);
+		class Foo extends Fields() {
+			static Fields = {
+				field1: { type: 'string?' },
+			};
+		}
 
 		test('Coerce string from string', () => {
 			const asString = new Foo({ field1: 'a string' });
@@ -456,16 +390,11 @@ describe('Fields Mixin', () => {
 		});
 
 		test('Throw Error: Parse Twice', () => {
-			const Foo = mixin(Fields)(
-				class Foo {
-					static Fields = {
-						Items: { type: 'model[]', defaultValue: [] },
-					};
-					constructor(data) {
-						this.initMixins(data);
-					}
-				}
-			);
+			class Foo extends Fields() {
+				static Fields = {
+					Items: { type: 'model[]', defaultValue: [] },
+				};
+			}
 
 			class HighLight {
 				static Fields = {
@@ -493,37 +422,32 @@ describe('Fields Mixin', () => {
 
 		beforeEach(() => getter.mockReturnValue(value.initial));
 
-		const Foo = mixin(Fields)(
-			class Foo {
-				static Fields = {
-					field1: { type: 'string' },
-					field2: { type: 'string' },
-					field3: { type: 'string' },
-				};
-				constructor(data) {
-					this.initMixins(data);
-				}
-				get field1() {
-					return getter();
-				}
-				set field1(v) {
-					setter();
-					getter.mockReturnValue(v);
-				}
-
-				get field3() {
-					return 'constant value';
-				}
-
-				static make = data =>
-					new Foo({
-						field1: 'test',
-						field2: value.initial,
-						field3: 'not this',
-						...data,
-					});
+		class Foo extends Fields() {
+			static Fields = {
+				field1: { type: 'string' },
+				field2: { type: 'string' },
+				field3: { type: 'string' },
+			};
+			get field1() {
+				return getter();
 			}
-		);
+			set field1(v) {
+				setter();
+				getter.mockReturnValue(v);
+			}
+
+			get field3() {
+				return 'constant value';
+			}
+
+			static make = data =>
+				new Foo({
+					field1: 'test',
+					field2: value.initial,
+					field3: 'not this',
+					...data,
+				});
+		}
 
 		test('Preserves class getter', () => {
 			const f = Foo.make();

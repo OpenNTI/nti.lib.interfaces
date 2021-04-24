@@ -1,7 +1,5 @@
 import EventEmitter from 'events';
 
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
 import { Service } from '../constants.js';
@@ -10,7 +8,7 @@ import { parseListFn } from '../models/Parser.js';
 
 const logger = Logger.get('store:Achievements');
 
-class Achievements extends EventEmitter {
+export default class Achievements extends Pendability(EventEmitter) {
 	constructor(service, owner, data) {
 		super();
 		Object.assign(this, {
@@ -72,5 +70,3 @@ class Achievements extends EventEmitter {
 		return this.waitForPending().then(() => this.earnable);
 	}
 }
-
-export default decorate(Achievements, [mixin(Pendability)]);

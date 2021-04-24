@@ -8,49 +8,51 @@ function getCompletedDate(item, items) {
 	);
 }
 
-export default function Applier(targetModelClass) {
-	Object.assign(targetModelClass.Fields, {
-		CompletedItem: { type: 'model' },
-		CompletionRequired: { type: 'boolean' },
-		CompletionDefaultState: { type: 'boolean' },
-		IsCompletionDefaultState: { type: 'boolean' },
-		CompletedDate: { type: 'date', name: '__CompletedDate' },
-	});
+export default Target =>
+	class Completable extends Target {
+		// prettier-ignore
+		static Fields = {
+			...super.Fields,
+			CompletedItem:            { type: 'model'                           },
+			CompletionRequired:       { type: 'boolean'                         },
+			CompletionDefaultState:   { type: 'boolean'                         },
+			IsCompletionDefaultState: { type: 'boolean'                         },
+			CompletedDate:            { type: 'date',   name: '__CompletedDate' },
+		};
 
-	return {
 		getCompletedDate() {
 			return (
 				this.CompletedItem?.getCompletedDate() ??
 				this.get_CompletedDate()
 			);
-		},
+		}
 
 		isCompletable() {
 			// if this key exists, the object was decorated with completion fields
 			// this should only happen within courses that are maked as completable
 			return Object.keys(this.__toRaw()).includes('CompletionRequired');
-		},
+		}
 
 		hasCompleted() {
 			return this.getCompletedDate() != null;
-		},
+		}
 
 		completedSuccessfully() {
 			const { CompletedItem } = this;
 
 			return CompletedItem && CompletedItem.Success;
-		},
+		}
 
 		completedUnsuccessfully() {
 			const { CompletedItem } = this;
 
 			return CompletedItem && !CompletedItem.Success;
-		},
+		}
 
 		getPercentageCompleted() {
 			//TODO: fill this out
 			return 0;
-		},
+		}
 
 		async updateCompletedState(enrollment) {
 			enrollment = enrollment || this.parent('getCompletedItems');
@@ -83,6 +85,5 @@ export default function Applier(targetModelClass) {
 				);
 				//Its fine if this fails
 			}
-		},
+		}
 	};
-}

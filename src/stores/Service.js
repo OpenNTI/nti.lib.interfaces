@@ -3,9 +3,8 @@ import EventEmitter from 'events';
 import LRU from 'lru-cache';
 
 import Logger from '@nti/util-logger';
-import { mixin } from '@nti/lib-decorators';
 import { isNTIID } from '@nti/lib-ntiids';
-import { decorate, URL, wait } from '@nti/lib-commons';
+import { URL, wait } from '@nti/lib-commons';
 
 import { parse } from '../models/Parser.js';
 import { Workspace } from '../models/index.js';
@@ -72,14 +71,16 @@ function hideCurrentProperties(o) {
 	}
 }
 
-class ServiceDocument extends EventEmitter {
+export default class ServiceDocument extends Pendability(
+	InstanceCacheContainer(EventEmitter)
+) {
 	static ClientContext = {};
 
 	#chatClient = null;
 	#pong = null;
 
 	constructor(json, server, context) {
-		super();
+		super(json);
 
 		this.setMaxListeners(100);
 		//Make EventEmitter properties non-enumerable
@@ -90,10 +91,6 @@ class ServiceDocument extends EventEmitter {
 		this[Server] = server;
 		this[Context] =
 			context === ServiceDocument.ClientContext ? void context : context;
-
-		if (this.initMixins) {
-			this.initMixins(json);
-		}
 
 		server
 			.getPong(this[Context] || ServiceDocument.ClientContext)
@@ -979,7 +976,3 @@ class ServiceDocument extends EventEmitter {
 		return promise;
 	}
 }
-
-export default decorate(ServiceDocument, [
-	mixin(Pendability, InstanceCacheContainer),
-]);

@@ -1,5 +1,4 @@
-import { decorate, pluck } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
+import { pluck } from '@nti/lib-commons';
 
 import names from '../../mixins/CourseAndAssignmentNameResolving.js';
 import {
@@ -7,13 +6,13 @@ import {
 	AfterInstanceRefresh,
 } from '../../mixins/InstanceCacheable.js';
 import { getPrivate } from '../../utils/private.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 //
 import Base from '../Base.js';
 
 const ENDS_IN_LETTER_REGEX = /\s[a-fiw-]$/i;
 
-class Grade extends Base {
+export default class Grade extends names(Base) {
 	static AllowWildDisconnectedInstances = true;
 	static MimeType = [
 		COMMON_PREFIX + 'grade',
@@ -23,7 +22,7 @@ class Grade extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'assignmentContainer': { type: 'string'  },
 		'assignmentName':      { type: 'string'  },
 		'AssignmentId':        { type: 'string'  },
@@ -161,7 +160,8 @@ class Grade extends Base {
 	}
 }
 
-export default decorate(Grade, [cacheClassInstances, model, mixin(names)]);
+cacheClassInstances(Grade);
+Registry.register(Grade);
 
 function processValue(value) {
 	if (typeof value === 'number') {

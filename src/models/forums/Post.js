@@ -1,13 +1,10 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 // import Editable from '../../mixins/Editable'; //Base already mixes in Editable
 import Likable from '../../mixins/Likable.js';
 import DiscussionInterface from '../../mixins/DiscussionInterface.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class Post extends Base {
+export default class Post extends DiscussionInterface(Likable(Base)) {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.post',
 		COMMON_PREFIX + 'forums.communityheadlinepost',
@@ -19,7 +16,7 @@ class Post extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'body':       { type: '*[]'     },
 		'title':      { type: 'string'  },
 		'Deleted':    { type: 'boolean' }
@@ -30,4 +27,4 @@ class Post extends Base {
 	}
 }
 
-export default decorate(Post, [model, mixin(Likable, DiscussionInterface)]);
+Registry.register(Post);

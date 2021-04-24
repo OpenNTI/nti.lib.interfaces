@@ -3,18 +3,16 @@ import { extname } from 'path';
 
 import mime from 'mime-types';
 
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
 import { isNTIID } from '@nti/lib-ntiids';
 
-import { Mixin as ContentTreeMixin } from '../../content-tree/index.js';
+import { Mixin as ContentTree } from '../../content-tree/index.js';
 import Completable from '../../mixins/Completable.js';
 import UserDataStore from '../../stores/UserData.js';
 import {
 	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
 	Service,
 } from '../../constants.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 import Pages from './mixins/Pages.js';
@@ -47,12 +45,14 @@ External Links:
 const CONTENT_TYPE = 'application/vnd.nextthought.content';
 const EXTERNAL_TYPE = 'application/vnd.nextthought.externallink';
 
-class RelatedWorkReference extends Base {
+export default class RelatedWorkReference extends ContentTree(
+	Completable(Pages(Base))
+) {
 	static MimeType = COMMON_PREFIX + 'relatedworkref';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'desc':               { type: 'string' },
 		'href':               { type: 'string' },
 		'icon':               { type: 'string' },
@@ -202,7 +202,4 @@ class RelatedWorkReference extends Base {
 	}
 }
 
-export default decorate(RelatedWorkReference, [
-	model,
-	mixin(Completable, ContentTreeMixin, Pages),
-]);
+Registry.register(RelatedWorkReference);

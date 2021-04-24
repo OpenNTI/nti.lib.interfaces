@@ -1,16 +1,13 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import assessed from '../../mixins/AssessedAssessmentPart.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class AssessedPart extends Base {
+export default class AssessedPart extends assessed(Base) {
 	static MimeType = COMMON_PREFIX + 'assessment.assessedpart';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'assessedValue':     { type: 'number'  },
 		'solutions':         { type: 'model[]' },
 		'submittedResponse': { type: '*'       }, // this can be various types, numbers, objects, etc
@@ -34,4 +31,4 @@ class AssessedPart extends Base {
 	}
 }
 
-export default decorate(AssessedPart, [model, mixin(assessed)]);
+Registry.register(AssessedPart);

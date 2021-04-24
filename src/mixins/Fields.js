@@ -61,11 +61,11 @@ const isArrayType = _t.bind(/\[]$/);
  * @param {T} target
  * @returns {T & FieldInterface<T>}
  */
-export default function FieldsApplier(target) {
-	return {
+export default function FieldsApplier(target = class Dummy {}) {
+	return class extends target {
 		__toRaw() {
 			return this[RAW];
-		},
+		}
 
 		__isDirty(property = null) {
 			const check = key => {
@@ -93,9 +93,14 @@ export default function FieldsApplier(target) {
 			}
 
 			return false;
-		},
+		}
 
-		initMixin(data) {
+		constructor(...args) {
+			super();
+			this[Service] = args.length > 1 ? args[0] : null;
+
+			let data = args.pop(); //data should always be the last arg
+
 			const noData = !data;
 
 			data = data ? clone(data) : {};
@@ -188,7 +193,7 @@ export default function FieldsApplier(target) {
 					);
 				}
 			}
-		},
+		}
 
 		[Parser](raw, defaultValueForKey) {
 			if (raw === this) {
@@ -235,7 +240,7 @@ export default function FieldsApplier(target) {
 				}
 			}
 			return o;
-		},
+		}
 
 		[RepresentsSameObject](o) {
 			const Cls = this.constructor;
@@ -251,11 +256,11 @@ export default function FieldsApplier(target) {
 				o.NTIID,
 				true /*ignore "specific provider" differences*/
 			);
-		},
+		}
 
 		getObjectHref() {
 			return this.href || this[Service].getObjectURL(this.getID());
-		},
+		}
 
 		refresh(newRaw) {
 			const service = this[Service];
@@ -298,7 +303,7 @@ export default function FieldsApplier(target) {
 			this.addToPending(inflight);
 
 			return inflight;
-		},
+		}
 
 		//deprecated - use Fields declaration
 		[Symbol.for('TakeOver')](x, y) {
@@ -322,7 +327,7 @@ export default function FieldsApplier(target) {
 					get: getterWarning(scope, name, x),
 				});
 			}
-		},
+		}
 
 		applyRefreshedData(data, force) {
 			if (!this[RepresentsSameObject](data)) {
@@ -384,11 +389,11 @@ export default function FieldsApplier(target) {
 			}
 
 			return this;
-		},
+		}
 
 		findField(value) {
 			return Object.keys(this).find(x => __readValue(this, x) === value);
-		},
+		}
 	};
 }
 

@@ -1,16 +1,13 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import Completable from '../../mixins/Completable.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class QuestionSetReference extends Base {
+export default class QuestionSetReference extends Completable(Base) {
 	static MimeType = COMMON_PREFIX + 'questionsetref';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Target-NTIID':   { type: 'string' },
 		'question-count': { type: 'number?' },
 		'label':          { type: 'string' }
@@ -25,4 +22,4 @@ class QuestionSetReference extends Base {
 	}
 }
 
-export default decorate(QuestionSetReference, [model, mixin(Completable)]);
+Registry.register(QuestionSetReference);

@@ -1,18 +1,15 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import { Service } from '../../../constants.js';
 import names from '../../../mixins/CourseAndAssignmentNameResolving.js';
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class AssignmentFeedback extends Base {
+export default class AssignmentFeedback extends names(Base) {
 	static MimeType =
 		COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitemfeedback';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'AssignmentId':      { type: 'string' },
 		'body':              { type: '*[]'    },
 		'title':             { type: 'string' },
@@ -47,4 +44,4 @@ class AssignmentFeedback extends Base {
 	}
 }
 
-export default decorate(AssignmentFeedback, [model, mixin(names)]);
+Registry.register(AssignmentFeedback);

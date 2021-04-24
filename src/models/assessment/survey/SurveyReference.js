@@ -1,17 +1,14 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import Completable from '../../../mixins/Completable.js';
 import { ASSESSMENT_HISTORY_LINK } from '../../../constants.js';
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class SurveyReference extends Base {
+export default class SurveyReference extends Completable(Base) {
 	static MimeType = COMMON_PREFIX + 'surveyref';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'isClosed':                              { type: 'boolean' },
 		'question-count':                        { type: 'number?' },
 		'label':                                 { type: 'string'  },
@@ -48,4 +45,4 @@ class SurveyReference extends Base {
 	}
 }
 
-export default decorate(SurveyReference, [model, mixin(Completable)]);
+Registry.register(SurveyReference);

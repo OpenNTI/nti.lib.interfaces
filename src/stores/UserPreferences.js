@@ -1,12 +1,11 @@
 import EventEmitter from 'events';
 
-import { decorate, ObjectUtils } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
+import { ObjectUtils } from '@nti/lib-commons';
 
 import { Mixin as Pendability } from '../mixins/Pendability.js';
 import Base from '../models/Base.js';
 
-class UserPreferences extends EventEmitter {
+export default class UserPreferences extends Pendability(EventEmitter) {
 	constructor(service) {
 		super();
 		this.service = service;
@@ -52,5 +51,3 @@ class UserPreferences extends EventEmitter {
 		}
 	}
 }
-
-export default decorate(UserPreferences, [mixin(Pendability)]);

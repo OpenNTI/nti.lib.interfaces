@@ -3,10 +3,12 @@ import mixin from '../EnrollmentIdentity.js';
 
 describe('EnrollmentIdentity Mixin', () => {
 	test('should define isEnrollment = true', () => {
-		expect(mixin.isEnrollment).toBe(true);
+		expect(mixin(class {}).prototype.isEnrollment).toBe(true);
 	});
 
 	test('isEnrollment should be readonly', () => {
-		expect(() => (mixin.isEnrollment = false)).toThrow();
+		expect(
+			() => (mixin(class {}).prototype.isEnrollment = false)
+		).toThrow();
 	});
 });

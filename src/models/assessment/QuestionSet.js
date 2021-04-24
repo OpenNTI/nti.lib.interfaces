@@ -1,9 +1,8 @@
-import { decorate, pluck } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
+import { pluck } from '@nti/lib-commons';
 
 import Completable from '../../mixins/Completable.js';
 import PlacementProvider from '../../authoring/placement/providers/QuestionSet.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 import SubmittableIdentity from './mixins/SubmittableIdentity.js';
@@ -12,7 +11,9 @@ import QuestionSetSubmission from './QuestionSetSubmission.js';
 const SUBMITTED_TYPE =
 	'application/vnd.nextthought.assessment.assessedquestionset';
 
-class QuestionSet extends Base {
+export default class QuestionSet extends SubmittableIdentity(
+	Completable(Base)
+) {
 	static MimeType = [
 		COMMON_PREFIX + 'questionset',
 		COMMON_PREFIX + 'naquestionbank',
@@ -23,7 +24,7 @@ class QuestionSet extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'draw':                                  { type: 'number',                               },
 		'question-count':                        { type: 'number?'                               },
 		'questions':                             { type: 'model[]'                               },
@@ -189,7 +190,4 @@ class QuestionSet extends Base {
 	}
 }
 
-export default decorate(QuestionSet, [
-	model,
-	mixin(SubmittableIdentity, Completable),
-]);
+Registry.register(QuestionSet);

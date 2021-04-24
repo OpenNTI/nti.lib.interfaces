@@ -1,8 +1,5 @@
-import { decorate, forward } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import { SCOPED_COURSE_INSTANCE, Service } from '../../constants.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 import CourseIdentity from './mixins/CourseIdentity.js';
@@ -12,7 +9,9 @@ const emptyFunction = () => {};
 const EMPTY_CATALOG_ENTRY = { getAuthorLine: emptyFunction };
 const ACKNOWLEDGE = 'AcknowledgeCompletion';
 
-class Enrollment extends Base {
+export default class Enrollment extends CourseIdentity(
+	EnrollmentIdentity(Base)
+) {
 	static MimeType = [
 		COMMON_PREFIX + 'courses.courseenrollment',
 		COMMON_PREFIX + 'courseware.courseinstanceenrollment',
@@ -20,7 +19,7 @@ class Enrollment extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'CatalogEntry':           { type: 'model'   },
 		'CourseProgress':         { type: 'model'   },
 		'LegacyEnrollmentStatus': { type: 'string'  },
@@ -33,6 +32,13 @@ class Enrollment extends Base {
 
 	/** @private */
 	CourseInstance = null;
+
+	getEndDate() {
+		return this.CatalogEntry.getEndDate();
+	}
+	getStartDate() {
+		return this.CatalogEntry.getStartDate();
+	}
 
 	get title() {
 		return this.CatalogEntry.Title;
@@ -130,18 +136,4 @@ class Enrollment extends Base {
 	}
 }
 
-export default decorate(Enrollment, [
-	model,
-	mixin(
-		CourseIdentity,
-		EnrollmentIdentity,
-		forward(
-			[
-				'getEndDate',
-				'getStartDate',
-				//From:
-			],
-			'CatalogEntry'
-		)
-	),
-]);
+Registry.register(Enrollment);
