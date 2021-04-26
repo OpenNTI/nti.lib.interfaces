@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class CompletionPolicy extends Base {
+export default class CompletionPolicy extends Base {
 	static MimeType = [COMMON_PREFIX + 'completion.aggregatecompletionpolicy'];
 
 	// prettier-ignore
@@ -14,4 +12,4 @@ class CompletionPolicy extends Base {
 	}
 }
 
-export default decorate(CompletionPolicy, [model]);
+Registry.register(CompletionPolicy);

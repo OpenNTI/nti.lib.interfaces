@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Purchasable from './Purchasable.js';
 
-class PurchasableCourse extends Purchasable {
+export default class PurchasableCourse extends Purchasable {
 	static MimeType = COMMON_PREFIX + 'store.purchasablecourse';
 
 	// prettier-ignore
@@ -14,4 +12,4 @@ class PurchasableCourse extends Purchasable {
 	}
 }
 
-export default decorate(PurchasableCourse, [model]);
+Registry.register(PurchasableCourse);

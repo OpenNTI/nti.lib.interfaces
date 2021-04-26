@@ -1,11 +1,9 @@
-import { decorate } from '@nti/lib-commons';
-
 // import {Parser as parse} from '../../../../../constants.js';
-import { model, COMMON_PREFIX } from '../../../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../../../Registry.js';
 
 import Base from './Part.js';
 
-class AggregatedOrderingPart extends Base {
+export default class AggregatedOrderingPart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedorderingpart';
 
 	// prettier-ignore
@@ -61,4 +59,4 @@ class AggregatedOrderingPart extends Base {
 	}
 }
 
-export default decorate(AggregatedOrderingPart, [model]);
+Registry.register(AggregatedOrderingPart);

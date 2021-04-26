@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Preference from './Preference.js';
 
-class SortGroups extends Preference {
+export default class SortGroups extends Preference {
 	static MimeType = COMMON_PREFIX + 'preference.sort';
 
 	// prettier-ignore
@@ -16,4 +14,4 @@ class SortGroups extends Preference {
 	}
 }
 
-export default decorate(SortGroups, [model]);
+Registry.register(SortGroups);

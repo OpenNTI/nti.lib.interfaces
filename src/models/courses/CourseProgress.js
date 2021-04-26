@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class CourseProgress extends Base {
+export default class CourseProgress extends Base {
 	static MimeType = [COMMON_PREFIX + 'completion.completioncontextprogress'];
 
 	// prettier-ignore
@@ -26,4 +24,4 @@ class CourseProgress extends Base {
 	getCompletedDate() {} //implemented by CompletedDate date field.
 }
 
-export default decorate(CourseProgress, [model]);
+Registry.register(CourseProgress);

@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 
 import BaseEvent from './BaseEvent.js';
 
-class WebinarCalendarEvent extends BaseEvent {
+export default class WebinarCalendarEvent extends BaseEvent {
 	static MimeType = `${COMMON_PREFIX}webinar.webinarcalendarevent`;
 
 	// prettier-ignore
@@ -17,4 +15,4 @@ class WebinarCalendarEvent extends BaseEvent {
 	};
 }
 
-export default decorate(WebinarCalendarEvent, [model]);
+Registry.register(WebinarCalendarEvent);

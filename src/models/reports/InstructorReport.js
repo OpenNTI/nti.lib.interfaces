@@ -1,11 +1,9 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Base from './BaseReport.js';
 
-class InstructorReport extends Base {
+export default class InstructorReport extends Base {
 	static MimeType = COMMON_PREFIX + 'courseware_reports.instructorreport';
 }
 
-export default decorate(InstructorReport, [model]);
+Registry.register(InstructorReport);

@@ -1,6 +1,4 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import FileSystemEntity from './FileSystemEntity.js';
 
@@ -9,7 +7,7 @@ import FileSystemEntity from './FileSystemEntity.js';
 //	associate    - ?
 //	external     - ?
 
-class File extends FileSystemEntity {
+export default class File extends FileSystemEntity {
 	static MimeType = [
 		COMMON_PREFIX + 'contentfile',
 		COMMON_PREFIX + 'contentblobfile',
@@ -42,4 +40,4 @@ class File extends FileSystemEntity {
 	}
 }
 
-export default decorate(File, [model]);
+Registry.register(File);

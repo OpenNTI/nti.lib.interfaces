@@ -1,12 +1,12 @@
-import { decorate, pluck } from '@nti/lib-commons';
+import { pluck } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Entity from './Entity.js';
 
 const getID = e => (typeof e === 'object' ? e.getID() : e);
 
-class FriendsList extends Entity {
+export default class FriendsList extends Entity {
 	static MimeType = COMMON_PREFIX + 'friendslist';
 
 	// prettier-ignore
@@ -60,7 +60,7 @@ class FriendsList extends Entity {
 	/**
 	 * Add a new entity to the list.
 	 *
-	 * @param {...string|Entity} entity The entity to add.
+	 * @param {...string|Entity} entities The entity to add.
 	 * @returns {Promise} To fulfill if successfull, or reject with an error.
 	 */
 	async add(...entities) {
@@ -186,4 +186,4 @@ class FriendsList extends Entity {
 	}
 }
 
-export default decorate(FriendsList, [model]);
+Registry.register(FriendsList);

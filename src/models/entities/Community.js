@@ -1,8 +1,6 @@
-import { decorate } from '@nti/lib-commons';
-
 import Stream from '../../stores/Stream.js';
 import { Service } from '../../constants.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import { Channels } from '../community/index.js';
 import PagedLinkDataSource from '../../data-sources/common/PagedLinkDataSource.js';
 
@@ -17,7 +15,7 @@ const KnownActivitySorts = [
 	'LikeCount',
 ];
 
-class Community extends Entity {
+export default class Community extends Entity {
 	static MimeType = COMMON_PREFIX + 'community';
 
 	static SiteAutoSubscribe = {
@@ -307,4 +305,4 @@ class Community extends Entity {
 	}
 }
 
-export default decorate(Community, [model]);
+Registry.register(Community);

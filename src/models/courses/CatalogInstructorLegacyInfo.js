@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class CatalogInstructorLegacyInfo extends Base {
+export default class CatalogInstructorLegacyInfo extends Base {
 	static MimeType =
 		COMMON_PREFIX + 'courses.coursecataloginstructorlegacyinfo';
 
@@ -19,4 +17,4 @@ class CatalogInstructorLegacyInfo extends Base {
 	}
 }
 
-export default decorate(CatalogInstructorLegacyInfo, [model]);
+Registry.register(CatalogInstructorLegacyInfo);

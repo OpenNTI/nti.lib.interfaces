@@ -1,13 +1,14 @@
-import { decorate, isEmpty } from '@nti/lib-commons';
+import { isEmpty } from '@nti/lib-commons';
 
 import { Service } from '../../constants.js';
 import Base from '../Base.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import User from './User.js';
+
 /** @typedef {import('../../stores/Service').default} ServiceDocument */
 
-class PresenceInfo extends Base {
+export default class PresenceInfo extends Base {
 	static MimeType = COMMON_PREFIX + 'presenceinfo';
 
 	/**
@@ -134,4 +135,4 @@ class PresenceInfo extends Base {
 	}
 }
 
-export default decorate(PresenceInfo, [model]);
+Registry.register(PresenceInfo);

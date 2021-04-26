@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class VideoRef extends Base {
+export default class VideoRef extends Base {
 	static MimeType = COMMON_PREFIX + 'ntivideoref';
 
 	constructor(service, parent, data) {
@@ -13,4 +11,4 @@ class VideoRef extends Base {
 	}
 }
 
-export default decorate(VideoRef, [model]);
+Registry.register(VideoRef);

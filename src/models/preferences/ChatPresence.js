@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Preference from './Preference.js';
 
-class ChatPresence extends Preference {
+export default class ChatPresence extends Preference {
 	static MimeType = COMMON_PREFIX + 'preference.chatpresence';
 
 	// prettier-ignore
@@ -17,4 +15,4 @@ class ChatPresence extends Preference {
 	}
 }
 
-export default decorate(ChatPresence, [model]);
+Registry.register(ChatPresence);

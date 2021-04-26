@@ -1,6 +1,4 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import BaseIntegration from '../Integration.js';
 
 const ConnectRel = 'enable';
@@ -8,7 +6,7 @@ const ConnectMimeType = 'application/vnd.nextthought.site.acclaimintegration';
 
 const DisconnectRel = 'disconnect';
 
-class CredlyAcclaimIntegration extends BaseIntegration {
+export default class CredlyAcclaimIntegration extends BaseIntegration {
 	static MimeType = [COMMON_PREFIX + 'site.acclaimintegration'];
 
 	// prettier-ignore
@@ -63,4 +61,4 @@ class CredlyAcclaimIntegration extends BaseIntegration {
 	}
 }
 
-export default decorate(CredlyAcclaimIntegration, [model]);
+Registry.register(CredlyAcclaimIntegration);

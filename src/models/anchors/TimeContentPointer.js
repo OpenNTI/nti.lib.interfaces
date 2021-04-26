@@ -1,12 +1,10 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import ContentPointer from './ContentPointer.js';
 
 const VALID_ROLES = ['start', 'end'];
 
-class TimeContentPointer extends ContentPointer {
+export default class TimeContentPointer extends ContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.timecontentpointer';
 
 	// prettier-ignore
@@ -64,4 +62,4 @@ class TimeContentPointer extends ContentPointer {
 	}
 }
 
-export default decorate(TimeContentPointer, [model]);
+Registry.register(TimeContentPointer);

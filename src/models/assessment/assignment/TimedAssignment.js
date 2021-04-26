@@ -1,13 +1,11 @@
-import { decorate } from '@nti/lib-commons';
-
 import { Service } from '../../../constants.js';
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 
 import Assignment from './Assignment.js';
 
 const secondsToMilliseconds = s => s * 1000;
 
-class TimedAssignment extends Assignment {
+export default class TimedAssignment extends Assignment {
 	static MimeType = COMMON_PREFIX + 'assessment.timedassignment';
 
 	// prettier-ignore
@@ -67,4 +65,4 @@ class TimedAssignment extends Assignment {
 	}
 }
 
-export default decorate(TimedAssignment, [model]);
+Registry.register(TimedAssignment);

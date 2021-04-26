@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class AssignmentCompletionConstraint extends Base {
+export default class AssignmentCompletionConstraint extends Base {
 	static MimeType = COMMON_PREFIX + 'lesson.assignmentcompletionconstraint';
 
 	// prettier-ignore
@@ -20,4 +18,4 @@ class AssignmentCompletionConstraint extends Base {
 	}
 }
 
-export default decorate(AssignmentCompletionConstraint, [model]);
+Registry.register(AssignmentCompletionConstraint);

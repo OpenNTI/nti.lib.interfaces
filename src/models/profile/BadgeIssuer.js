@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class BadgeIssuer extends Base {
+export default class BadgeIssuer extends Base {
 	static MimeType = COMMON_PREFIX + 'openbadges.issuer';
 
 	// prettier-ignore
@@ -18,4 +16,4 @@ class BadgeIssuer extends Base {
 	}
 }
 
-export default decorate(BadgeIssuer, [model]);
+Registry.register(BadgeIssuer);

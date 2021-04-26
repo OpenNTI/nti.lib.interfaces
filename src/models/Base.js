@@ -9,7 +9,7 @@ import Fields, { hideField } from '../mixins/Fields.js';
 import HasLinks from '../mixins/HasLinks.js';
 import { Parent, Service } from '../constants.js';
 
-import Registry, { COMMON_PREFIX, model } from './Registry.js';
+import Registry, { COMMON_PREFIX } from './Registry.js';
 
 const logger = Logger.get('models:Base');
 
@@ -18,7 +18,7 @@ const CONTENT_VISIBILITY_MAP = { OU: 'OUID' };
 const PHANTOM = Symbol.for('Phantom');
 const is = Symbol('isTest');
 
-class Model extends Pendability(
+export default class Model extends Pendability(
 	Editable(JSONValue(HasLinks(Fields(EventEmitter))))
 ) {
 	static MimeType = COMMON_PREFIX + '__base__';
@@ -272,5 +272,5 @@ class Model extends Pendability(
 	}
 }
 
-model(Model);
-export default Model;
+// This probably doesn't need registering... but it was already being registered... so...
+Registry.register(Model);

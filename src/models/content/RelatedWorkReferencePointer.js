@@ -1,6 +1,4 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 /*
@@ -17,7 +15,7 @@ href: "/dataserver2/Objects/tag%3Anextthought.com%2C2011-10%3Aglobal.admin.alpha
 target :"tag:nextthought.com,2011-10:NTI-NTIRelatedWorkRef-global_admin_alpha1_4743953516163133541_b62c3bd2"
 */
 
-class RelatedWorkReferencePointer extends Base {
+export default class RelatedWorkReferencePointer extends Base {
 	static MimeType = COMMON_PREFIX + 'relatedworkrefpointer';
 
 	// prettier-ignore
@@ -28,4 +26,4 @@ class RelatedWorkReferencePointer extends Base {
 	}
 }
 
-export default decorate(RelatedWorkReferencePointer, [model]);
+Registry.register(RelatedWorkReferencePointer);

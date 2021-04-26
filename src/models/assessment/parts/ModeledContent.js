@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Part from '../Part.js';
 
-class ModeledContent extends Part {
+export default class ModeledContent extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.modeledcontentpart';
 }
 
-export default decorate(ModeledContent, [model]);
+Registry.register(ModeledContent);

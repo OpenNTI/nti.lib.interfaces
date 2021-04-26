@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class InquiryItem extends Base {
+export default class InquiryItem extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.inquiryitem',
 		COMMON_PREFIX + 'assessment.userscourseinquiryitem',
@@ -30,4 +28,4 @@ class InquiryItem extends Base {
 	}
 }
 
-export default decorate(InquiryItem, [model]);
+Registry.register(InquiryItem);

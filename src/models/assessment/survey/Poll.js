@@ -1,18 +1,17 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin /*, readonly*/ } from '@nti/lib-decorators';
-
 import {
 	ASSESSMENT_HISTORY_LINK,
 	SURVEY_AGGREGATED_LINK,
 	SURVEY_REPORT_LINK,
 } from '../../../constants.js';
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Question from '../Question.js';
 
 import PollSubmission from './PollSubmission.js';
 
-class Poll extends Question {
+export default class Poll extends Question {
 	static MimeType = COMMON_PREFIX + 'napoll';
+
+	isPoll = true;
 
 	get hasAggregationData() {
 		return this.hasLink(SURVEY_AGGREGATED_LINK);
@@ -47,4 +46,4 @@ class Poll extends Question {
 	}
 }
 
-export default decorate(Poll, [model, mixin({ /*@readonly*/ isPoll: true })]);
+Registry.register(Poll);

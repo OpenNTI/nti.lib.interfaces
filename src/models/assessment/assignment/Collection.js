@@ -5,9 +5,7 @@
  * non-assignment assessment object.  We also have a reference to all the
  * assignments that we can currently see.
  */
-import { decorate } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
-import { mixin } from '@nti/lib-decorators';
 
 import {
 	ASSESSMENT_HISTORY_LINK,
@@ -19,7 +17,7 @@ import Base from '../../Base.js';
 import { getPrivate } from '../../../utils/private.js';
 
 import AssignmentsByX from './AssignmentsByX.js';
-import ActivityMixin from './AssignmentActivityMixin.js';
+import Activity from './AssignmentActivityMixin.js';
 
 const logger = Logger.get('assignment:Collection:Base');
 
@@ -83,7 +81,7 @@ const sortComparatorTitle = (a, b) => (a.title || '').localeCompare(b.title);
 
 const GetListFrom = Symbol();
 
-class Collection extends Base {
+export default class Collection extends Activity(Base) {
 	/**
 	 * Build the Assessment Collection.
 	 *
@@ -393,7 +391,7 @@ class Collection extends Base {
 	 *
 	 * @param {string} outlineNodeId Optional. The outlineNode NTIID you wish to scope to.
 	 *
-	 * @returns {array} An array of Assignments.
+	 * @returns {Array} An array of Assignments.
 	 */
 	getAssignments(outlineNodeId) {
 		return this[GetListFrom](
@@ -408,7 +406,7 @@ class Collection extends Base {
 	 *
 	 * @param {string} outlineNodeId Optional. The outlineNode NTIID you wish to scope to.
 	 *
-	 * @returns {array} An array of Assessments.
+	 * @returns {Array} An array of Assessments.
 	 */
 	getAssessments(outlineNodeId) {
 		return this[GetListFrom](
@@ -473,7 +471,4 @@ class Collection extends Base {
 	}
 }
 
-export default decorate(Collection, [
-	mixin(ActivityMixin),
-	exposeOrderBySymbols,
-]);
+exposeOrderBySymbols(Collection);

@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
 import { Service } from '../../constants.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class SharingPagePreference extends Base {
+export default class SharingPagePreference extends Base {
 	static MimeType = COMMON_PREFIX + 'sharingpagepreference';
 
 	// prettier-ignore
@@ -33,4 +31,4 @@ class SharingPagePreference extends Base {
 	}
 }
 
-export default decorate(SharingPagePreference, [model]);
+Registry.register(SharingPagePreference);

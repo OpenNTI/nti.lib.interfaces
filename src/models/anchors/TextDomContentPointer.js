@@ -1,11 +1,9 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import DomContentPointer from './DomContentPointer.js';
 import ElementDomContentPointer from './ElementDomContentPointer.js';
 
-class TextDomContentPointer extends DomContentPointer {
+export default class TextDomContentPointer extends DomContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.textdomcontentpointer';
 
 	// prettier-ignore
@@ -82,4 +80,4 @@ class TextDomContentPointer extends DomContentPointer {
 	}
 }
 
-export default decorate(TextDomContentPointer, [model]);
+Registry.register(TextDomContentPointer);

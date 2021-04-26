@@ -1,11 +1,9 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import BaseCredit from './BaseCredit.js';
 
-class CourseAwardedCredit extends BaseCredit {
+export default class CourseAwardedCredit extends BaseCredit {
 	static MimeType = [COMMON_PREFIX + 'credit.courseawardedcredit'];
 }
 
-export default decorate(CourseAwardedCredit, [model]);
+Registry.register(CourseAwardedCredit);

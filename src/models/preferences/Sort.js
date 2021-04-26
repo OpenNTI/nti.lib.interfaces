@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Preference from './Preference.js';
 
-class Sort extends Preference {
+export default class Sort extends Preference {
 	static MimeType = [
 		COMMON_PREFIX + 'preference.sort.books',
 		COMMON_PREFIX + 'preference.sort.communities',
@@ -19,4 +17,4 @@ class Sort extends Preference {
 	}
 }
 
-export default decorate(Sort, [model]);
+Registry.register(Sort);

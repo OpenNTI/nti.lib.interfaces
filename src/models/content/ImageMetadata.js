@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class ImageMetadata extends Base {
+export default class ImageMetadata extends Base {
 	static MimeType = COMMON_PREFIX + 'metadata.imagemetadata';
 	// prettier-ignore
 	static Fields = {
@@ -17,4 +15,4 @@ class ImageMetadata extends Base {
 	// - safeimage
 }
 
-export default decorate(ImageMetadata, [model]);
+Registry.register(ImageMetadata);

@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Base from './Base.js';
 
-class ContentRangeDescription extends Base {
+export default class ContentRangeDescription extends Base {
 	static MimeType = COMMON_PREFIX + 'contentrange.contentrangedescription';
 
 	// prettier-ignore
@@ -30,4 +28,4 @@ class ContentRangeDescription extends Base {
 	}
 }
 
-export default decorate(ContentRangeDescription, [model]);
+Registry.register(ContentRangeDescription);

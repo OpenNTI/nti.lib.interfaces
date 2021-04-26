@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class WordEntry extends Base {
+export default class WordEntry extends Base {
 	static MimeType = COMMON_PREFIX + 'naqwordentry';
 
 	// prettier-ignore
@@ -14,4 +12,4 @@ class WordEntry extends Base {
 	};
 }
 
-export default decorate(WordEntry, [model]);
+Registry.register(WordEntry);

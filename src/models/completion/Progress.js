@@ -1,13 +1,11 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 const HasCompleted = Symbol('Has Completed Field');
 const HasProgress = Symbol('Has Progress Field');
 const ResourceID = Symbol('Resource ID Field');
 
-class Progress extends Base {
+export default class Progress extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'progress',
 		COMMON_PREFIX + 'videoprogress',
@@ -47,4 +45,4 @@ class Progress extends Base {
 	}
 }
 
-export default decorate(Progress, [model]);
+Registry.register(Progress);

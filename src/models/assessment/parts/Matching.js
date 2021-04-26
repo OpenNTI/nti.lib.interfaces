@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Part from '../Part.js';
 
-class Matching extends Part {
+export default class Matching extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.matchingpart';
 
 	// prettier-ignore
@@ -26,4 +24,4 @@ class Matching extends Part {
 	}
 }
 
-export default decorate(Matching, [model]);
+Registry.register(Matching);

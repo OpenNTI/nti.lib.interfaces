@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class SuggestedContacts extends Base {
+export default class SuggestedContacts extends Base {
 	static MimeType = COMMON_PREFIX + 'suggestedcontacts';
 
 	// prettier-ignore
@@ -19,4 +17,4 @@ class SuggestedContacts extends Base {
 	}
 }
 
-export default decorate(SuggestedContacts, [model]);
+Registry.register(SuggestedContacts);

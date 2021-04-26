@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class BaseCredit extends Base {
+export default class BaseCredit extends Base {
 	static MimeType = [COMMON_PREFIX + 'credit.basecredit'];
 
 	// prettier-ignore
@@ -21,4 +19,4 @@ class BaseCredit extends Base {
 	getAwardedDate() {} //implemented by awarded_date date field.
 }
 
-export default decorate(BaseCredit, [model]);
+Registry.register(BaseCredit);

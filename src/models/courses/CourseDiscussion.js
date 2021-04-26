@@ -1,12 +1,10 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 //TODO: does this need to live somewhere else
 const DEFAULT_ICON = '/app/resources/images/elements/discussion-icon.png';
 
-class CourseDiscussion extends Base {
+export default class CourseDiscussion extends Base {
 	static MimeType = COMMON_PREFIX + 'courses.discussion';
 
 	// prettier-ignore
@@ -20,4 +18,4 @@ class CourseDiscussion extends Base {
 	}
 }
 
-export default decorate(CourseDiscussion, [model]);
+Registry.register(CourseDiscussion);

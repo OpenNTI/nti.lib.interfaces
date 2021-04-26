@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class CompletableItemDefaultRequiredPolicy extends Base {
+export default class CompletableItemDefaultRequiredPolicy extends Base {
 	static MimeType = [COMMON_PREFIX + 'completion.defaultrequiredpolicy'];
 
 	// prettier-ignore
@@ -13,4 +11,4 @@ class CompletableItemDefaultRequiredPolicy extends Base {
 	}
 }
 
-export default decorate(CompletableItemDefaultRequiredPolicy, [model]);
+Registry.register(CompletableItemDefaultRequiredPolicy);

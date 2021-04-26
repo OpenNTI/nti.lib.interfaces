@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model } from '../../Registry.js';
+import Registry from '../../Registry.js';
 import Base from '../../Base.js';
 
-class BaseEvent extends Base {
+export default class BaseEvent extends Base {
 	static MimeType = '__base-event__';
 
 	// prettier-ignore
@@ -28,7 +26,7 @@ class BaseEvent extends Base {
 	getUniqueIdentifier = () => this.getID();
 }
 
-export default decorate(BaseEvent, [model]);
+Registry.register(BaseEvent);
 
 async function resolveCatalogEntry(service, event) {
 	const self = event;

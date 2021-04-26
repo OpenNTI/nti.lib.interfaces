@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class GradeBookByAssignmentSummary extends Base {
+export default class GradeBookByAssignmentSummary extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'gradebook.gradebookbyassignmentsummary',
 		'GradeBookByAssignmentSummary', //ClassName fallback??
@@ -16,4 +14,4 @@ class GradeBookByAssignmentSummary extends Base {
 	}
 }
 
-export default decorate(GradeBookByAssignmentSummary, [model]);
+Registry.register(GradeBookByAssignmentSummary);

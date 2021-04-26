@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class UserTopicParticipationSummary extends Base {
+export default class UserTopicParticipationSummary extends Base {
 	static MimeType = COMMON_PREFIX + 'forums.usertopicparticipationsummary';
 
 	// prettier-ignore
@@ -16,4 +14,4 @@ class UserTopicParticipationSummary extends Base {
 	}
 }
 
-export default decorate(UserTopicParticipationSummary, [model]);
+Registry.register(UserTopicParticipationSummary);

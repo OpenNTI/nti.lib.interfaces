@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import QuestionSetSubmission from '../QuestionSetSubmission.js';
 import { resolveSubmitTo } from '../utils.js';
 
-class SurveySubmission extends QuestionSetSubmission {
+export default class SurveySubmission extends QuestionSetSubmission {
 	static MimeType = COMMON_PREFIX + 'assessment.surveysubmission';
 	static COURSE_SUBMISSION_REL = 'CourseInquiries';
 
@@ -44,4 +42,4 @@ class SurveySubmission extends QuestionSetSubmission {
 	}
 }
 
-export default decorate(SurveySubmission, [model]);
+Registry.register(SurveySubmission);

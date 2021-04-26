@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class PricingResults extends Base {
+export default class PricingResults extends Base {
 	static MimeType = COMMON_PREFIX + 'store.pricingresults';
 
 	// prettier-ignore
@@ -16,4 +14,4 @@ class PricingResults extends Base {
 	}
 }
 
-export default decorate(PricingResults, [model]);
+Registry.register(PricingResults);

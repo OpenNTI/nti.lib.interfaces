@@ -1,6 +1,4 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 import MetaDataResolver from './MetaDataResolver.js';
@@ -9,7 +7,7 @@ import MediaSourceFactory from './MediaSourceFactory.js';
 const resolver = Symbol('Resolver');
 const resolveCanAccess = Symbol('Resolve Can Access');
 
-class MediaSource extends Base {
+export default class MediaSource extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'ntivideosource',
 		COMMON_PREFIX + 'videosource',
@@ -99,4 +97,4 @@ class MediaSource extends Base {
 	}
 }
 
-export default decorate(MediaSource, [model]);
+Registry.register(MediaSource);

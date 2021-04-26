@@ -1,14 +1,13 @@
-import { decorate } from '@nti/lib-commons';
 import { ntiidEquals } from '@nti/lib-ntiids';
 
 import { RepresentsSameObject } from '../../constants.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Package from './Package.js';
 
 const RST_TYPE = 'text/x-rst';
 
-class RenderablePackage extends Package {
+export default class RenderablePackage extends Package {
 	static MimeType = COMMON_PREFIX + 'renderablecontentpackage';
 
 	// prettier-ignore
@@ -76,4 +75,4 @@ class RenderablePackage extends Package {
 	}
 }
 
-export default decorate(RenderablePackage, [model]);
+Registry.register(RenderablePackage);

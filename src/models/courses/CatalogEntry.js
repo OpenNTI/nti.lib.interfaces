@@ -1,13 +1,11 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 import CatalogEntryFactory from './CatalogEntryFactory.js';
 
 const EnrollmentOptions = Symbol('EnrollmentOptions');
 
-class CourseCatalogEntry extends Base {
+export default class CourseCatalogEntry extends Base {
 	static MimeType = COMMON_PREFIX + 'courses.catalogentry';
 
 	// prettier-ignore
@@ -120,4 +118,4 @@ class CourseCatalogEntry extends Base {
 	}
 }
 
-export default decorate(CourseCatalogEntry, [model]);
+Registry.register(CourseCatalogEntry);

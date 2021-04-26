@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import BaseSiteInvitation from './BaseSiteInvitation.js';
 
-class SiteAdminInvitation extends BaseSiteInvitation {
+export default class SiteAdminInvitation extends BaseSiteInvitation {
 	static MimeType = COMMON_PREFIX + 'siteadmininvitation';
 
 	// prettier-ignore
@@ -13,4 +11,4 @@ class SiteAdminInvitation extends BaseSiteInvitation {
 	}
 }
 
-export default decorate(SiteAdminInvitation, [model]);
+Registry.register(SiteAdminInvitation);

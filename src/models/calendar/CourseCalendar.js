@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class CourseCalendar extends Base {
+export default class CourseCalendar extends Base {
 	static MimeType = `${COMMON_PREFIX}courseware.coursecalendar`;
 
 	// prettier-ignore
@@ -14,4 +12,4 @@ class CourseCalendar extends Base {
 	}
 }
 
-export default decorate(CourseCalendar, [model]);
+Registry.register(CourseCalendar);

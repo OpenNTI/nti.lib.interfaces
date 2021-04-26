@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from './Registry.js';
+import Registry, { COMMON_PREFIX } from './Registry.js';
 import Base from './Base.js';
 import Collection from './WorkspaceCollection.js';
 
-class Workspace extends Base {
+export default class Workspace extends Base {
 	static MimeType = COMMON_PREFIX + 'workspace';
 
 	// prettier-ignore
@@ -19,4 +17,4 @@ class Workspace extends Base {
 	}
 }
 
-export default decorate(Workspace, [model]);
+Registry.register(Workspace);

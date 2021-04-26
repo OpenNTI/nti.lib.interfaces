@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class OutlineNodeProgress extends Base {
+export default class OutlineNodeProgress extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courseoutlinenodeprogress',
 		COMMON_PREFIX + 'progresscontainer',
@@ -20,4 +18,4 @@ class OutlineNodeProgress extends Base {
 	}
 }
 
-export default decorate(OutlineNodeProgress, [model]);
+Registry.register(OutlineNodeProgress);

@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class SearchFragment extends Base {
+export default class SearchFragment extends Base {
 	static MimeType = COMMON_PREFIX + 'search.searchfragment';
 
 	// prettier-ignore
@@ -13,4 +11,4 @@ class SearchFragment extends Base {
 	}
 }
 
-export default decorate(SearchFragment, [model]);
+Registry.register(SearchFragment);

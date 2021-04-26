@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import EnrollmentOption from './EnrollmentOption.js';
 
-class EnrollmentOption5Minute extends EnrollmentOption {
+export default class EnrollmentOption5Minute extends EnrollmentOption {
 	static MimeType = COMMON_PREFIX + 'courseware.fiveminuteenrollmentoption';
 
 	// prettier-ignore
@@ -32,4 +30,4 @@ class EnrollmentOption5Minute extends EnrollmentOption {
 	getRefundCutOffDate() {} //implemented by the date Field type
 }
 
-export default decorate(EnrollmentOption5Minute, [model]);
+Registry.register(EnrollmentOption5Minute);

@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class AssignmentHistoryItem extends Base {
+export default class AssignmentHistoryItem extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.assignmenthistoryitem',
 		COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitem',
@@ -60,4 +58,4 @@ class AssignmentHistoryItem extends Base {
 	}
 }
 
-export default decorate(AssignmentHistoryItem, [model]);
+Registry.register(AssignmentHistoryItem);

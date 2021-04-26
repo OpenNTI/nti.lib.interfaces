@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import BaseIntegration from '../Integration.js';
 
-class GoogleSSOIntegration extends BaseIntegration {
+export default class GoogleSSOIntegration extends BaseIntegration {
 	static MimeType = [COMMON_PREFIX + 'integration.googlessointegration'];
 }
 
-export default decorate(GoogleSSOIntegration, [model]);
+Registry.register(GoogleSSOIntegration);

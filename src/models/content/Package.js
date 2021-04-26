@@ -1,7 +1,7 @@
-import { decorate, URL } from '@nti/lib-commons';
+import { URL } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 import { Service } from '../../constants.js';
 import MediaIndex from '../media/MediaIndex.js';
@@ -16,7 +16,7 @@ const VideoIndexReqest = Symbol('VideoIndexReqest');
 const getAssociationCount = x => x.LessonContainerCount;
 const names = (x, y, v) => (Array.isArray(v) ? v.join(', ') : null);
 
-class Package extends Base {
+export default class Package extends Base {
 	static MimeType = COMMON_PREFIX + 'contentpackage';
 
 	// prettier-ignore
@@ -174,4 +174,4 @@ class Package extends Base {
 	}
 }
 
-export default decorate(Package, [model]);
+Registry.register(Package);

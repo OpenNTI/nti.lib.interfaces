@@ -1,11 +1,9 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import ContentRangeDescription from './ContentRangeDescription.js';
 import TimeContentPointer from './TimeContentPointer.js';
 
-class TimeRangeDescription extends ContentRangeDescription {
+export default class TimeRangeDescription extends ContentRangeDescription {
 	static MimeType = COMMON_PREFIX + 'contentrange.timerangedescription';
 
 	// prettier-ignore
@@ -42,4 +40,4 @@ class TimeRangeDescription extends ContentRangeDescription {
 	}
 }
 
-export default decorate(TimeRangeDescription, [model]);
+Registry.register(TimeRangeDescription);

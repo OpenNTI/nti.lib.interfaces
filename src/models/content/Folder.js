@@ -1,11 +1,9 @@
-import { decorate } from '@nti/lib-commons';
-
 import { Service } from '../../constants.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import FileSystemEntity, { validateSortObject } from './FileSystemEntity.js';
 
-class Folder extends FileSystemEntity {
+export default class Folder extends FileSystemEntity {
 	static MimeType = [
 		COMMON_PREFIX + 'contentfolder',
 		COMMON_PREFIX + 'courseware.contentfolder',
@@ -49,4 +47,4 @@ class Folder extends FileSystemEntity {
 	}
 }
 
-export default decorate(Folder, [model]);
+Registry.register(Folder);

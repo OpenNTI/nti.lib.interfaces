@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class StripeConnectKey extends Base {
+export default class StripeConnectKey extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'store.stripeconnectkey',
 		COMMON_PREFIX + 'store.persistentstripeconnectkey',
@@ -19,4 +17,4 @@ class StripeConnectKey extends Base {
 	}
 }
 
-export default decorate(StripeConnectKey, [model]);
+Registry.register(StripeConnectKey);

@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class SCORMReference extends Base {
+export default class SCORMReference extends Base {
 	static MimeType = [COMMON_PREFIX + 'scormcontentref'];
 
 	// prettier-ignore
@@ -57,4 +55,4 @@ class SCORMReference extends Base {
 	}
 }
 
-export default decorate(SCORMReference, [model]);
+Registry.register(SCORMReference);

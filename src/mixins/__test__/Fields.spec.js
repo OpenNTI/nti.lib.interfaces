@@ -1,7 +1,6 @@
 /* eslint-env jest */
 import diff from 'jest-diff';
 
-import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
 import Fields, { clone } from '../Fields.js';
@@ -105,25 +104,28 @@ describe('Fields Mixin', () => {
 	});
 
 	test('Fields do not Combine when assigned', () => {
-		function TypeA(t) {
-			t.Fields = {
-				...t.Fields,
-				typeA: { type: 'string' },
+		const TypeA = t =>
+			class extends t {
+				static Fields = {
+					...super.Fields,
+					typeA: { type: 'string' },
+				};
 			};
-		}
 
-		function TypeB(t) {
-			t.Fields = {
-				...t.Fields,
-				typeB: { type: 'string' },
+		const TypeB = t =>
+			class extends t {
+				static Fields = {
+					...super.Fields,
+					typeB: { type: 'string' },
+				};
 			};
-		}
 
-		function TypeC(t) {
-			t.Fields = {
-				typeC: { type: 'string' },
+		const TypeC = t =>
+			class extends t {
+				static Fields = {
+					typeC: { type: 'string' },
+				};
 			};
-		}
 
 		class Foo extends Fields() {
 			static Fields = {
@@ -131,9 +133,9 @@ describe('Fields Mixin', () => {
 			};
 		}
 
-		const Bar = mixin(TypeA)(class Bar extends Foo {});
-		const Baz = mixin(TypeA, TypeB)(class Baz extends Foo {});
-		const NoBaseFields = mixin(TypeC)(class NoBaseFields extends Foo {});
+		const Bar = TypeA(class Bar extends Foo {});
+		const Baz = TypeA(TypeB(class Baz extends Foo {}));
+		const NoBaseFields = TypeC(class NoBaseFields extends Foo {});
 
 		expect(Foo.Fields).toEqualFields({
 			foo: { type: 'string' },

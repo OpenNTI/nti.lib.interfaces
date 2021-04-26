@@ -1,11 +1,9 @@
-import { decorate } from '@nti/lib-commons';
-
 // import {Parser as parse} from '../../../../../constants.js';
-import { model, COMMON_PREFIX } from '../../../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../../../Registry.js';
 
 import Base from './Ordering.js';
 
-class AggregatedMatchingPart extends Base {
+export default class AggregatedMatchingPart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedmatchingpart';
 
 	getResults(part) {
@@ -32,4 +30,4 @@ class AggregatedMatchingPart extends Base {
 	}
 }
 
-export default decorate(AggregatedMatchingPart, [model]);
+Registry.register(AggregatedMatchingPart);

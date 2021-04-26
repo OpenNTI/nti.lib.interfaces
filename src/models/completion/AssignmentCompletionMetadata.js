@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class AssignmentCompletionMetadata extends Base {
+export default class AssignmentCompletionMetadata extends Base {
 	static MimeType = [COMMON_PREFIX + 'assignmentcompletionmetadata'];
 
 	// prettier-ignore
@@ -25,4 +23,4 @@ class AssignmentCompletionMetadata extends Base {
 	getCompletionDate() {} //implemented by CompletionDate date field.
 }
 
-export default decorate(AssignmentCompletionMetadata, [model]);
+Registry.register(AssignmentCompletionMetadata);

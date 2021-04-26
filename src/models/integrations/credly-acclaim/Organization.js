@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class CredlyAcclaimOrganization extends Base {
+export default class CredlyAcclaimOrganization extends Base {
 	static MimeType = [COMMON_PREFIX + 'acclaim.organization'];
 
 	// prettier-ignore
@@ -17,4 +15,4 @@ class CredlyAcclaimOrganization extends Base {
 	}
 }
 
-export default decorate(CredlyAcclaimOrganization, [model]);
+Registry.register(CredlyAcclaimOrganization);

@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Folder from './Folder.js';
 
-class Root extends Folder {
+export default class Root extends Folder {
 	static MimeType = [
 		COMMON_PREFIX + 'contentrootfolder',
 		COMMON_PREFIX + 'courserootfolder',
@@ -14,4 +12,4 @@ class Root extends Folder {
 	isRoot = true;
 }
 
-export default decorate(Root, [model]);
+Registry.register(Root);

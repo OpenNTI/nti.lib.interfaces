@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Preference from './Preference.js';
 
-class PushNotifications extends Preference {
+export default class PushNotifications extends Preference {
 	static MimeType = COMMON_PREFIX + 'preference.pushnotifications';
 
 	// prettier-ignore
@@ -15,4 +13,4 @@ class PushNotifications extends Preference {
 	}
 }
 
-export default decorate(PushNotifications, [model]);
+Registry.register(PushNotifications);

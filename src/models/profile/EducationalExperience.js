@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class EducationalExperience extends Base {
+export default class EducationalExperience extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'profile.educationalexperience',
 		COMMON_PREFIX + 'profile.educationalexperiance', //is this misspelling still used?
@@ -20,4 +18,4 @@ class EducationalExperience extends Base {
 	}
 }
 
-export default decorate(EducationalExperience, [model]);
+Registry.register(EducationalExperience);

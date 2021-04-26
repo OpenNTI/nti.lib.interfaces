@@ -1,11 +1,11 @@
 import path from 'path';
 
-import { decorate, FileType } from '@nti/lib-commons';
+import { FileType } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Part from '../Part.js';
 
-class File extends Part {
+export default class File extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.filepart';
 
 	// prettier-ignore
@@ -50,4 +50,4 @@ class File extends Part {
 	}
 }
 
-export default decorate(File, [model]);
+Registry.register(File);

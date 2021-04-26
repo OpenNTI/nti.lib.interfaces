@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Batch from '../../../data-sources/data-types/Batch.js';
 
-class CredlyAcclaimBadgeCollection extends Batch {
+export default class CredlyAcclaimBadgeCollection extends Batch {
 	static MimeType = [
 		COMMON_PREFIX + 'acclaim.badgecollection',
 		COMMON_PREFIX + 'acclaim.awardedbadgecollection', //just use the same class for now, might need to split it out in the future
@@ -20,4 +18,4 @@ class CredlyAcclaimBadgeCollection extends Batch {
 	}
 }
 
-export default decorate(CredlyAcclaimBadgeCollection, [model]);
+Registry.register(CredlyAcclaimBadgeCollection);

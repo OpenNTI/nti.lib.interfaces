@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from './Registry.js';
+import Registry, { COMMON_PREFIX } from './Registry.js';
 import Base from './Base.js';
 
-class AnalyticsSession extends Base {
+export default class AnalyticsSession extends Base {
 	static MimeType = COMMON_PREFIX + 'analytics.analyticssession';
 
 	// prettier-ignore
@@ -21,4 +19,4 @@ class AnalyticsSession extends Base {
 	getSessionEndTime() {} //implemented by SessionEndTime date field.
 }
 
-export default decorate(AnalyticsSession, [model]);
+Registry.register(AnalyticsSession);
