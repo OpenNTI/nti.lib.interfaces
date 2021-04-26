@@ -1,6 +1,7 @@
 export default Target =>
 	class extends Target {
 		static Fields = {
+			...super.Fields,
 			Pinned: { type: 'boolean' },
 		};
 

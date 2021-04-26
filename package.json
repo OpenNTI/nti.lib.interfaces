@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "@nti/lib-commons": "NextThought/nti.lib.commons",
-    "@nti/lib-decorators": "NextThought/nti.lib.decorators",
     "@nti/lib-ntiids": "NextThought/nti.lib.ntiids",
     "@nti/util-logger": "NextThought/nti.util.logger",
     "date-fns": "^2.8.1",
