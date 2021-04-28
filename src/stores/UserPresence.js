@@ -38,6 +38,7 @@ export class UserPresence extends EventEmitter {
 		const oldPresence = this.#presence[username];
 
 		this.#presence[username] = presenceInfo;
+		this.emit('change');
 
 		if (!oldPresence || !isSamePresence(oldPresence, presenceInfo)) {
 			this.emit('presence-changed', username, presenceInfo, oldPresence);
