@@ -392,7 +392,12 @@ export default function FieldsApplier(target = class Dummy {}) {
 		}
 
 		findField(value) {
-			return Object.keys(this).find(x => __readValue(this, x) === value);
+			const keys = [
+				...Object.getOwnPropertyNames(this),
+				...Object.getOwnPropertySymbols(this),
+			];
+
+			return keys.find(x => __readValue(this, x) === value);
 		}
 	};
 }
