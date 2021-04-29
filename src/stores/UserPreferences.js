@@ -4,6 +4,7 @@ import { decorate, ObjectUtils } from '@nti/lib-commons';
 import { mixin } from '@nti/lib-decorators';
 
 import { Mixin as Pendability } from '../mixins/Pendability.js';
+import Base from '../models/Base.js';
 
 class UserPreferences extends EventEmitter {
 	constructor(service) {
@@ -36,6 +37,14 @@ class UserPreferences extends EventEmitter {
 	}
 
 	set(key, value) {
+		// flatten objects
+		if (typeof value === 'object' && !(value instanceof Base)) {
+			for (const prop of Object.keys(value)) {
+				this.set(key + '.' + prop, value[prop]);
+			}
+			return;
+		}
+
 		if (value !== this.get(key)) {
 			ObjectUtils.set(this.#data, key, value);
 			// This may not be needed (now that we emit change on model change events)
