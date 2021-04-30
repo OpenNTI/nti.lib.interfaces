@@ -23,7 +23,7 @@ const JSONValue = {
 		return this.getData();
 	},
 
-	getData() {
+	getData({ diff = false } = {}) {
 		let d = {};
 
 		try {
@@ -37,6 +37,11 @@ const JSONValue = {
 			this[Serializing] = true;
 
 			for (let k of keys) {
+				// skip unchanged values
+				if (diff && !this.__isDirty(k)) {
+					continue;
+				}
+
 				const v = __readValue(this, k);
 
 				if (
@@ -49,7 +54,7 @@ const JSONValue = {
 					d[k] =
 						this[translator] && isFunction(this[translator])
 							? this[translator](v)
-							: get(v);
+							: get(v, { diff });
 				}
 			}
 		} finally {
@@ -60,7 +65,7 @@ const JSONValue = {
 	},
 };
 
-function get(v) {
+function get(v, opts) {
 	if (Array.isArray(v)) {
 		return v.map(get);
 	}
@@ -76,7 +81,7 @@ function get(v) {
 	}
 
 	return isFunction(v?.getData)
-		? v.getData()
+		? v.getData(opts)
 		: isFunction(v?.toJSON)
 		? v.toJSON()
 		: v;

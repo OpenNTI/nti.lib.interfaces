@@ -63,7 +63,11 @@ export default class PreferenceRoot extends Base {
 					}
 
 					// save the section of the preferences
-					await field.save(field.toJSON(), null, 'self');
+					await field.save(
+						field.getData({ diff: true }),
+						null,
+						'self'
+					);
 				}
 			} catch (saveError) {
 				logger.stack(saveError);
