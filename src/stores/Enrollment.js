@@ -37,7 +37,7 @@ export default class Enrollment extends EventEmitter {
 		const course = await this.getCourse(courseId);
 
 		if (!course.PreferredAccess) {
-			return Promise.reject(new Error('Not Enrolled?'));
+			throw new Error('Not Enrolled?');
 		}
 
 		let error;
