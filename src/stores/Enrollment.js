@@ -1,10 +1,14 @@
+import EventEmitter from 'events';
+
 import { Service } from '../constants.js';
 import getLink from '../utils/get-link.js';
 
 //TODO: There isn't enough here to warrent a whole heavy class. This should move to the catalog API on the app side.
 
-export default class Enrollment {
+export default class Enrollment extends EventEmitter {
 	constructor(service) {
+		super();
+		this.setMaxListeners(100);
 		this.service = service;
 	}
 
@@ -29,10 +33,22 @@ export default class Enrollment {
 	}
 
 	async dropCourse(courseId) {
+		this.emit('beforedrop', { courseId });
 		const course = await this.getCourse(courseId);
-		return course.PreferredAccess
-			? course.PreferredAccess.drop()
-			: Promise.reject(new Error('Not Enrolled?'));
+
+		if (!course.PreferredAccess) {
+			throw new Error('Not Enrolled?');
+		}
+
+		let error;
+		try {
+			return await course.PreferredAccess.drop();
+		} catch (e) {
+			error = e;
+			throw e;
+		} finally {
+			this.emit('afterdrop', { course, courseId, error });
+		}
 	}
 
 	redeemGift(purchasable, courseId, accessKey) {
