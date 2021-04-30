@@ -67,19 +67,32 @@ export default function FieldsApplier(target) {
 			return this[RAW];
 		},
 
-		__isDirty() {
-			for (const key of Object.keys(this[RAW])) {
+		__isDirty(property = null) {
+			const check = key => {
 				const value = __readValue(this, key);
 				if (value !== this[RAW][key]) {
 					if (value?.__isDirty) {
 						if (!value.__isDirty()) {
-							continue;
+							return false;
 						}
 					}
 
 					return true;
 				}
+				return false;
+			};
+
+			if (property) {
+				return check(property);
 			}
+
+			for (const key of Object.keys(this[RAW])) {
+				if (check(key)) {
+					return true;
+				}
+			}
+
+			return false;
 		},
 
 		initMixin(data) {
