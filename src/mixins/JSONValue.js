@@ -1,4 +1,4 @@
-import { readValueFor } from './Fields.js';
+import { __readValue } from './Fields.js';
 
 const isFunction = f => typeof f === 'function';
 
@@ -37,7 +37,7 @@ const JSONValue = {
 			this[Serializing] = true;
 
 			for (let k of keys) {
-				const v = readValueFor(this, k);
+				const v = __readValue(this, k);
 
 				if (
 					v !== void undefined &&
@@ -84,7 +84,11 @@ function get(v) {
 
 function isBlackListed(scope, k) {
 	let overrides = scope.BLACK_LIST_OVERRIDE;
-	if (overrides && overrides[k]) {
+	// Allow for a key=>boolean map and an implied true list of keys (array of strings)
+	if (Array.isArray(overrides)) {
+		overrides = overrides.reduce((o, x) => (o[x] = true), {});
+	}
+	if (overrides?.[k]) {
 		return false;
 	}
 

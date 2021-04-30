@@ -67,6 +67,21 @@ export default function FieldsApplier(target) {
 			return this[RAW];
 		},
 
+		__isDirty() {
+			for (const key of Object.keys(this[RAW])) {
+				const value = __readValue(this, key);
+				if (value !== this[RAW][key]) {
+					if (value?.__isDirty) {
+						if (!value.__isDirty()) {
+							continue;
+						}
+					}
+
+					return true;
+				}
+			}
+		},
+
 		initMixin(data) {
 			const noData = !data;
 
@@ -359,7 +374,7 @@ export default function FieldsApplier(target) {
 		},
 
 		findField(value) {
-			return Object.keys(this).find(x => readValueFor(this, x) === value);
+			return Object.keys(this).find(x => __readValue(this, x) === value);
 		},
 	};
 }
@@ -505,7 +520,7 @@ export function updateField(scope, field, desc) {
 
 // @private - used to read a value without warning.
 // INTERNAL only! -- intended for serializing scope to JSON in JSONValue
-export function readValueFor(scope, fieldName) {
+export function __readValue(scope, fieldName) {
 	const descriptor = getPropertyDescriptor(scope, fieldName);
 	const { renamedTo, [__get]: getter } = descriptor?.get || {};
 	const readKey = renamedTo || fieldName;
@@ -530,7 +545,7 @@ function dateGetter(key) {
 	const symbol = getParsedDateKey(key);
 	let last;
 	return function () {
-		const v = readValueFor(this, key);
+		const v = __readValue(this, key);
 		if (typeof this[symbol] !== 'object' || v !== last) {
 			last = v;
 			this[symbol] = Array.isArray(v)
