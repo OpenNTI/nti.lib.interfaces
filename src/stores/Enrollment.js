@@ -35,13 +35,13 @@ export default class Enrollment extends EventEmitter {
 	async dropCourse(courseId) {
 		this.emit('beforedrop', { courseId });
 		const course = await this.getCourse(courseId);
-
-		if (!course.PreferredAccess) {
-			throw new Error('Not Enrolled?');
-		}
-
 		let error;
+
 		try {
+			if (!course.PreferredAccess) {
+				throw new Error('Not Enrolled?');
+			}
+
 			return await course.PreferredAccess.drop();
 		} catch (e) {
 			error = e;
