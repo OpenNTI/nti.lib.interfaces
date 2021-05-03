@@ -38,7 +38,7 @@ export default class FriendsList extends Entity {
 	}
 
 	/**
-	 * Determins if the entity is in this List.
+	 * Determines if the entity is in this List.
 	 *
 	 * @param {string|Entity} entity The User entity, string or Model Instance.
 	 *
@@ -61,7 +61,7 @@ export default class FriendsList extends Entity {
 	 * Add a new entity to the list.
 	 *
 	 * @param {...string|Entity} entities The entity to add.
-	 * @returns {Promise} To fulfill if successfull, or reject with an error.
+	 * @returns {Promise} To fulfill if successful, or reject with an error.
 	 */
 	async add(...entities) {
 		if (!this.isModifiable) {
@@ -70,7 +70,7 @@ export default class FriendsList extends Entity {
 
 		let data = this.getData();
 		let { friends = [] } = this;
-		let newfriends = [];
+		let newFriends = [];
 
 		//unwrap argument array argument
 		if (entities.length === 1 && Array.isArray(entities[0])) {
@@ -84,14 +84,14 @@ export default class FriendsList extends Entity {
 				continue;
 			}
 
-			newfriends.push(entityId);
+			newFriends.push(entityId);
 		}
 
-		if (newfriends.length === 0) {
+		if (newFriends.length === 0) {
 			return Promise.resolve(this);
 		}
 
-		data.friends = [...friends.map(x => getID(x)), ...newfriends];
+		data.friends = [...friends.map(x => getID(x)), ...newFriends];
 
 		return this.putToLink('edit', data)
 			.then(o => this.refresh(pluck(o, 'NTIID', 'friends')))
@@ -104,7 +104,7 @@ export default class FriendsList extends Entity {
 	 *
 	 * @param {string|Entity} entity The entity to be removed.
 	 *
-	 * @returns {Promise} To fulfill if successfull, or reject with an error.
+	 * @returns {Promise} To fulfill if successful, or reject with an error.
 	 */
 	async remove(entity) {
 		const entityId = getID(entity);
@@ -160,11 +160,11 @@ export default class FriendsList extends Entity {
 	}
 
 	updateFields = fields => {
-		const preprocessors = {
+		const preProcessors = {
 			friends: friends => [...friends.map(f => getID(f))],
 		};
 
-		const pre = field => preprocessors[field] || (x => x);
+		const pre = field => preProcessors[field] || (x => x);
 
 		const data = this.getData();
 		Object.entries(fields).forEach(
