@@ -1,23 +1,61 @@
 import { decorate, isEmpty } from '@nti/lib-commons';
 
+import { Service } from '../../constants.js';
 import Base from '../Base.js';
 import { model, COMMON_PREFIX } from '../Registry.js';
+
+import User from './User.js';
+/** @typedef {import('../../stores/Service').default} ServiceDocument */
 
 class PresenceInfo extends Base {
 	static MimeType = COMMON_PREFIX + 'presenceinfo';
 
+	/**
+	 *
+	 * @param {ServiceDocument|User} service
+	 * @param {string|PresenceInfo} [type]
+	 * @param {string} [show]
+	 * @param {string} [status]
+	 * @returns {PresenceInfo}
+	 */
 	static from(service, type, show, status) {
-		if (type instanceof PresenceInfo) {
-			return new PresenceInfo(service, null, type.getData());
-		}
+		const explicitUser = service instanceof User;
+		const username = explicitUser
+			? service.getID()
+			: service.getAppUsername();
+
+		// Service has a self-pointer on [Service] so we can do this when we may have a model:
+		service = service[Service];
+		type = type || 'unavailable';
 
 		return new PresenceInfo(service, null, {
 			MimeType: PresenceInfo.MimeType,
-			username: service.getAppUsername(),
-			type,
-			show,
-			status,
+			username,
+			...(type.getData?.() || {
+				type,
+			}),
+			//if we have an explicit user, force it, otherwise, let it be as is (app user or inherited from PresenceInfo)
+			...(explicitUser ? { username } : null),
+			// Allow show and status to override values given prior (if type is another PresenceInfo)
+			...(show == null ? show : { show }),
+			...(status == null ? status : { status }),
 		});
+	}
+
+	static isEqual(a, b) {
+		const fields = ['username', 'type', 'show', 'status'];
+
+		for (let field of fields) {
+			if (a?.[field] !== b?.[field]) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	equal(other) {
+		return PresenceInfo.isEqual(this, other);
 	}
 
 	from(data) {

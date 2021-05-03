@@ -10,11 +10,16 @@ import { mixin } from '@nti/lib-decorators';
 import { Service, DELETED } from '../constants.js';
 import { Mixin as Pendability } from '../mixins/Pendability.js';
 import { parse, parseListFn } from '../models/Parser.js';
+
 // import getLink from '../utils/get-link.js';
+import UserPresence from './UserPresence.js';
+
+/** @typedef {import('../models/entities/Entity')} Entity */
+/** @typedef {import('../models/entities/User')} User */
 
 export const MIME_TYPE = 'application/vnd.nextthought.friendslist';
 
-const logger = Logger.get('store:Contacts');
+const logger = Logger.get('contacts');
 
 const DATA = Symbol();
 const CREATE = Symbol();
@@ -79,8 +84,6 @@ class Contacts extends EventEmitter {
 
 		this.initMixins();
 
-		this.onChange = this.onChange.bind(this);
-
 		const parseList = parseListFn(this, service);
 		this.load = uri =>
 			service.get(uri).then(o => parseList(Object.values(o.Items || [])));
@@ -94,6 +97,18 @@ class Contacts extends EventEmitter {
 				logger.debug('Load: %s %o', time, this)
 			);
 		}
+
+		this.on('change', () => {
+			for (const presence of UserPresence) {
+				if (!this.contains(presence.username)) {
+					UserPresence.__dropPlaceholder(presence);
+				}
+			}
+
+			for (const entity of this) {
+				UserPresence.__ensure(entity);
+			}
+		});
 
 		this.loading = true;
 		const start = Date.now();
@@ -208,7 +223,7 @@ class Contacts extends EventEmitter {
 		return this[DATA].filter(x => x.getID() !== RESERVED_GROUP_ID);
 	}
 
-	onChange(who, what) {
+	onChange = (who, what) => {
 		const data = this[DATA];
 		if (what === DELETED) {
 			const index = data.findIndex(x => x.getID() === who.getID());
@@ -223,10 +238,10 @@ class Contacts extends EventEmitter {
 		}
 
 		this.emit('change', this);
-	}
+	};
 
 	/**
-	 * Determins if the entity is in any of your Lists in the Contacts store.
+	 * Determines if the entity is in any of your Lists in the Contacts store.
 	 *
 	 * @param {string|Entity} entity The User entity, string or Model Instance.
 	 *
@@ -245,7 +260,7 @@ class Contacts extends EventEmitter {
 		return found;
 	}
 
-	addContact(entity, toLists = []) {
+	async addContact(entity, toLists = []) {
 		const getList = x =>
 			typeof x === 'object' ? x : this[DATA].find(l => l.getID() === x);
 
@@ -256,7 +271,7 @@ class Contacts extends EventEmitter {
 			list = getList(list);
 
 			if (!list || !list.add || list.isGroup) {
-				return Promise.reject('Bad List');
+				throw new Error('Bad List');
 			}
 
 			pending.push(list);
@@ -265,7 +280,7 @@ class Contacts extends EventEmitter {
 		return Promise.all(pending.map(list => list.add(entity)));
 	}
 
-	removeContact(entity) {
+	async removeContact(entity) {
 		const pending = [];
 		const lists = [];
 		const undo = () => this.addContact(entity, lists);
@@ -281,7 +296,9 @@ class Contacts extends EventEmitter {
 			}
 		}
 
-		return Promise.all(pending).then(() => ({ lists, undo }));
+		await Promise.all(pending);
+
+		return { lists, undo };
 	}
 
 	entityMatchesQuery(entity, query) {
@@ -318,9 +335,8 @@ class Contacts extends EventEmitter {
 		const token = (this.activeSearch = { query });
 
 		const prevReq = this[ACTIVE_SEARCH_REQUEST];
-		if (prevReq && prevReq.abort) {
-			prevReq.abort();
-		}
+
+		prevReq?.abort?.();
 
 		const req = (this[ACTIVE_SEARCH_REQUEST] = Promises.buffer(300, () =>
 			service.get(fetch)
