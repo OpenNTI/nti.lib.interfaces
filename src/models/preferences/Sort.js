@@ -14,8 +14,8 @@ class Sort extends Preference {
 	// prettier-ignore
 	static Fields = {
 		...Preference.Fields,
-		'sortOn':        { type: 'string'},
-		'sortDirection': { type: 'string'},
+		'sortOn':    { type: 'string'},
+		'sortOrder': { type: 'string'},
 	}
 }
 

@@ -22,11 +22,11 @@ export class BooksDataSource extends BaseDataSource {
 	static sortOptions = sortOptions;
 	sortOptions = sortOptions;
 
-	async request({ sortOn, sortDirection, batchSize, filter }) {
+	async request({ sortOn, sortOrder, batchSize, filter }) {
 		return this.collection.fetchLink('self', {
 			...defaultOptions,
 			sortOn,
-			sortDirection,
+			sortOrder,
 			batchSize,
 			filter,
 		});

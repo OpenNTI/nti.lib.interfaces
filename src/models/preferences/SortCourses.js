@@ -12,7 +12,7 @@ class SortCourses extends Preference {
 		...Preference.Fields,
 		'administered':  { type: 'model'  },
 		'sortOn':        { type: 'string' },
-		'sortDirection': { type: 'string' },
+		'sortOrder':     { type: 'string' },
 	}
 }
 

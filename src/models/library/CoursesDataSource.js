@@ -34,7 +34,7 @@ export class CoursesDataSource extends BaseDataSource {
 		batchStart = 0,
 		filter,
 		sortOn = FAVORITES,
-		sortDirection,
+		sortOrder,
 		preprocessor,
 	} = {}) {
 		const useFavorites =
@@ -53,7 +53,7 @@ export class CoursesDataSource extends BaseDataSource {
 				: {
 						filter,
 						sortOn,
-						sortDirection,
+						sortOrder,
 						batchStart: 0,
 						batchSize,
 				  }
@@ -66,7 +66,7 @@ export class CoursesDataSource extends BaseDataSource {
 			items,
 			total,
 			sortOn,
-			sortDirection,
+			sortOrder,
 			nextBatch: batch.getLink('batch-next'),
 			hasMore: total > items.length,
 		};
