@@ -198,6 +198,7 @@ export default class ServiceDocument extends Pendability(
 		return DataCache.getForContext(this[Context]);
 	}
 
+	/** @returns {ChatClient} */
 	getChatClient() {
 		if (!this.#chatClient) {
 			this.#chatClient = new ChatClient(this);
@@ -205,6 +206,7 @@ export default class ServiceDocument extends Pendability(
 		return this.#chatClient;
 	}
 
+	/** @returns {ContactsStore} */
 	getContacts() {
 		if (!this[Contacts]) {
 			const { href } =
