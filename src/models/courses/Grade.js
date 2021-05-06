@@ -27,7 +27,7 @@ class Grade extends Base {
 		'assignmentContainer': { type: 'string'  },
 		'assignmentName':      { type: 'string'  },
 		'AssignmentId':        { type: 'string'  },
-		'Correctness':         { type: 'string'  },
+		'Correctness':         { type: 'string?'  },
 		'IsExcused':           { type: 'boolean' },
 		'IsPredicted':         { type: 'boolean' },
 		'Username':            { type: 'string'  },
