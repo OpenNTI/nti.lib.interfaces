@@ -361,9 +361,6 @@ class ServiceDocument extends EventEmitter {
 
 	getEnrollment() {
 		if (!this[ENROLLMENT]) {
-			logger.warn(
-				'TODO: Move the guts of store/Enrollent into the app as API.'
-			);
 			this[ENROLLMENT] = new Enrollment(this);
 		}
 		return this[ENROLLMENT];
