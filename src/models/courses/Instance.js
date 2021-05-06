@@ -342,6 +342,19 @@ class Instance extends Base {
 		return service.get(url).then(parseResult);
 	}
 
+	async getCurrentGrade () {
+		const service = this[Service];
+		const link = this.getLink('CurrentGrade');
+
+		if (!link) {
+			throw new Error('No Link');
+		}
+
+		const result = await service.get(link);
+
+		return service.getObject(result.FinalGrade ?? result.PredictedGrade, {parent: this});
+	}
+
 	getAllSurveys(params) {
 		const service = this[Service];
 		const href = this.getLink('Inquiries');
@@ -502,6 +515,7 @@ class Instance extends Base {
 
 	/**
 	 * Gets an outline node by id.
+	 *
 	 * @param {string} id - the outlineNode id. (ntiid)
 	 * @param {Object} [options] - options to pass to getOutline().
 	 * @returns {Promise} fulfills with outline node, or rejects if not found.

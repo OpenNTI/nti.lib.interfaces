@@ -18,6 +18,7 @@ class Grade extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'grade',
 		COMMON_PREFIX + 'gradebook.grade',
+		COMMON_PREFIX + 'predictedgrade'
 	];
 
 	// prettier-ignore
@@ -124,7 +125,7 @@ class Grade extends Base {
 	}
 
 	isPredicted() {
-		return !!this.IsPredicted;
+		return !!this.IsPredicted || this.Class === 'PredictedGrade';
 	}
 
 	hasAutoGrade() {
