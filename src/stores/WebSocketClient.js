@@ -76,7 +76,9 @@ export default class WebSocketClient extends EventEmitter {
 			if (port) {
 				this.#socket = null;
 				port.removeAllListeners();
-				port.disconnect();
+				if (port.transport) {
+					port.disconnect();
+				}
 
 				//also can use this to synchronously disconnect, if we get extra messages after.
 				//port.socket.disconnectSync();
