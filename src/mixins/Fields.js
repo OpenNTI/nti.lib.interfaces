@@ -251,10 +251,17 @@ export default function FieldsApplier(target = class Dummy {}) {
 				);
 			}
 
-			return ntiidEquals(
-				this.NTIID,
-				o.NTIID,
-				true /*ignore "specific provider" differences*/
+			return (
+				ntiidEquals(
+					this.NTIID,
+					o.NTIID,
+					true /*ignore "specific provider" differences*/
+				) ||
+				ntiidEquals(
+					this.OID,
+					o.OID,
+					true /*ignore "specific provider" differences*/
+				)
 			);
 		}
 
@@ -331,6 +338,11 @@ export default function FieldsApplier(target = class Dummy {}) {
 
 		applyRefreshedData(data, force) {
 			if (!this[RepresentsSameObject](data)) {
+				logger.debug(
+					'Refreshed Data does not represent this object:\nInput: %O, Current Object: %O',
+					data,
+					this
+				);
 				throw new Error('Mismatch!');
 			}
 
