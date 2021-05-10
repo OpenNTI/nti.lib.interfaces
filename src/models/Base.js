@@ -54,10 +54,6 @@ export default class Model extends Pendability(
 		this[Service] = service;
 		//only allow null, and lib-interface models as "parents"
 		this[Parent] = parent != null && parent[Service] ? parent : null;
-
-		if (this.initMixins) {
-			this.initMixins(data);
-		}
 	}
 
 	clone() {

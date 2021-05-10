@@ -25,8 +25,6 @@ export default class UserData extends Pendability(EventEmitter) {
 			rootId: rootContainerId,
 		});
 
-		this.initMixins?.();
-
 		this.onChange = this.onChange.bind(this);
 
 		let parseList = parseListFn(this, service);

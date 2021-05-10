@@ -40,7 +40,6 @@ function setFilter(
 export default class GradeBookSummary extends Paged(Stream) {
 	constructor(service, owner, href, options, ...args) {
 		super(service, owner, href, options, ...args);
-		this.initMixins();
 	}
 
 	get parseList() {

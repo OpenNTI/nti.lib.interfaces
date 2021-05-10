@@ -7,6 +7,8 @@ import { Mixin as Pendability } from '../mixins/Pendability.js';
 // import getLink from '../utils/get-link.js';
 import { parseListFn } from '../models/Parser.js';
 
+/** @typedef {import('../models/entities/User.js').default} User */
+
 const logger = Logger.get('store:EntityStore');
 const DATA = Symbol();
 
@@ -29,7 +31,6 @@ export default class EntityStore extends Pendability(EventEmitter) {
 			context,
 		});
 
-		this.initMixins();
 		this.onChange = this.onChange && this.onChange.bind(this);
 
 		let parseList = parseListFn(this, service);

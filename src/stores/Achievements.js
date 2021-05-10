@@ -17,7 +17,6 @@ export default class Achievements extends Pendability(EventEmitter) {
 			loading: true,
 		});
 
-		this.initMixins();
 		//this.onChange = this.onChange.bind(this);
 		let parseList = parseListFn(this, service);
 		let loadBin = (name, href) =>
