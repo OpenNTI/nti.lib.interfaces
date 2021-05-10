@@ -23,6 +23,7 @@ const getType = x => x.constructor;
 const getTypeName = x => ((x = getType(x)), x.name || x.MimeType);
 const getMethod = x =>
 	'get' + x.replace(PASCAL_CASE_REGEX, (_, c) => (c || '').toUpperCase());
+const unidentifiable = x => !(x?.NTIID || x?.oid);
 
 const TYPE_MAP = {
 	'*': null, // wildcard "ANY" type
@@ -252,6 +253,7 @@ export default function FieldsApplier(target = class Dummy {}) {
 			}
 
 			return (
+				(unidentifiable(this) && unidentifiable(o)) ||
 				ntiidEquals(
 					this.NTIID,
 					o.NTIID,
