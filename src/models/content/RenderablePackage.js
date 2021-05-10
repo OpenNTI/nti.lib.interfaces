@@ -1,6 +1,3 @@
-import { ntiidEquals } from '@nti/lib-ntiids';
-
-import { RepresentsSameObject } from '../../constants.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Package from './Package.js';
@@ -26,13 +23,6 @@ export default class RenderablePackage extends Package {
 	//no-op this for renderable packages, all the icons should
 	//be set as properties for now
 	setUpAssets() {}
-
-	[RepresentsSameObject](o) {
-		return (
-			ntiidEquals(this.NTIID, o.NTIID, true) ||
-			ntiidEquals(this.OID, o.OID, true)
-		);
-	}
 
 	getRSTContents() {
 		return this.fetchLink('contents').then(contents => {
