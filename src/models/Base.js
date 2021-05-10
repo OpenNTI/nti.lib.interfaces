@@ -134,7 +134,8 @@ class Base extends EventEmitter {
 		//NOTE: in the future if we need to subscribe to more than just the
 		//change event, we can create a GlobalEventEmitter class and make the base
 		//model extend that.
-		const event = `${this.getEventPrefix()}-change`;
+		const prefix = this.getEventPrefix();
+		const event = `${prefix}-change`;
 		const listener = async (item, ...args) => {
 			if (item === this) {
 				return fn(item, ...args);
@@ -151,10 +152,14 @@ class Base extends EventEmitter {
 			}
 		};
 
-		this[Service].addListener(event, listener);
+		if (prefix) {
+			this[Service].addListener(event, listener);
+		}
 
 		return () => {
-			this[Service].removeListener(event, listener);
+			if (prefix) {
+				this[Service].removeListener(event, listener);
+			}
 		};
 	}
 
