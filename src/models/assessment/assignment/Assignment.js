@@ -278,7 +278,7 @@ export default class Assignment extends Completable(
 			if (getVersion(save) !== this.version) {
 				//Drop savepoints that have mismatched versions
 				throw new Error(
-					`Version Missmatch: SavePoint(${getVersion(
+					`Version Mismatch: SavePoint(${getVersion(
 						save
 					)}) != Assignment(${this.version})`
 				);
