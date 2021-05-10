@@ -426,6 +426,7 @@ describe('Fields Mixin', () => {
 
 		class Foo extends Fields() {
 			static Fields = {
+				NTIID: { type: 'string' },
 				field1: { type: 'string' },
 				field2: { type: 'string' },
 				field3: { type: 'string' },
@@ -474,12 +475,13 @@ describe('Fields Mixin', () => {
 		});
 
 		test('Refresh applies fields as expected', () => {
-			const f = Foo.make();
+			const f = Foo.make({ NTIID: 'tag:nextthought.com,2011-10:foo' });
 			expect(f.field1).toEqual('test');
 			expect(f.field2).toEqual(value.initial);
 			expect(f.field3).toEqual('constant value');
 
 			f.applyRefreshedData({
+				NTIID: 'tag:nextthought.com,2011-10:foo',
 				field1: 'test1',
 				field2: value.changed,
 				field3: 'new',
