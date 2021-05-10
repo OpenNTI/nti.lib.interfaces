@@ -269,25 +269,22 @@ export default function FieldsApplier(target = class Dummy {}) {
 			return this.href || this[Service].getObjectURL(this.getID());
 		}
 
-		refresh(newRaw) {
+		async refresh(newRaw) {
 			const service = this[Service];
 			const INFLIGHT = 'model:inflight-refresh';
+			const queue = this[INFLIGHT] || (this[INFLIGHT] = []);
+			const [lock] = queue;
 
-			if (this[INFLIGHT]) {
+			if (lock) {
+				// console.log('locked', !!newRaw);
 				if (newRaw) {
-					logger.trace?.(
-						'Waiting to refresh until previous refresh %O',
-						this
-					);
-					return this[INFLIGHT].then(() => this.refresh(newRaw));
+					// append queue
+					queue.push(newRaw);
 				}
 
-				logger.trace?.(
-					'Ignoring duplicate request to refresh. %O',
-					this
-				);
-				return this[INFLIGHT];
+				return await lock;
 			}
+
 			logger.debug('Refresh %O', this);
 
 			//TODO: in the case that we are getting the full object from the server
@@ -295,21 +292,34 @@ export default function FieldsApplier(target = class Dummy {}) {
 			//data. If we had keys that are not in the incoming we should set them
 			//to null on the incoming data so the property on the model will be nulled out
 			//instead of retaining the previous value.
-			const fetch = newRaw
-				? Promise.resolve(newRaw)
-				: service.getObjectAtURL(this.getObjectHref(), this.getID());
 
-			const inflight = fetch.then(o =>
-				this.applyRefreshedData(o, !newRaw)
+			this.addToPending(
+				queue.push(
+					(async () => {
+						try {
+							const firstTask =
+								newRaw ||
+								(await service.getObjectAtURL(
+									this.getObjectHref(),
+									this.getID()
+								));
+
+							const work = [firstTask, ...queue.slice(1)];
+							for (const [step, data] of Object.entries(work)) {
+								this.applyRefreshedData(
+									data,
+									step === 0 && !newRaw
+								);
+							}
+						} finally {
+							delete this[INFLIGHT];
+						}
+						return this;
+					})()
+				)[0]
 			);
 
-			this[INFLIGHT] = inflight
-				.catch(r => (delete this[INFLIGHT], Promise.reject(r))) //swallow all errors so we can cleanup
-				.then(r => (delete this[INFLIGHT], r));
-
-			this.addToPending(inflight);
-
-			return inflight;
+			return await queue[0];
 		}
 
 		//deprecated - use Fields declaration
