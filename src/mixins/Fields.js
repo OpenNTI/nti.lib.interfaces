@@ -516,8 +516,8 @@ function getterWarning(scope, name, originalName) {
 }
 
 function GetEnumerabilityOf(obj, propName) {
-	const desc = obj && Object.getOwnPropertyDescriptor(obj, propName);
-	return desc && desc.enumerable;
+	const desc = Object.getOwnPropertyDescriptor(obj || {}, propName);
+	return desc?.enumerable;
 }
 
 //deprecated
