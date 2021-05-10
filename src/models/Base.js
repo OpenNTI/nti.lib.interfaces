@@ -1,15 +1,14 @@
-import EventEmitter from 'events';
-
 import Logger from '@nti/util-logger';
 
 import JSONValue from '../mixins/JSONValue.js';
 import { Mixin as Pendability } from '../mixins/Pendability.js';
 import Editable from '../mixins/Editable.js';
-import Fields, { hideField } from '../mixins/Fields.js';
+import Fields from '../mixins/Fields.js';
 import HasLinks from '../mixins/HasLinks.js';
 import { Parent, Service } from '../constants.js';
 
 import Registry, { COMMON_PREFIX } from './Registry.js';
+import { BaseObservable } from './BaseObservable.js';
 
 const logger = Logger.get('models:Base');
 
@@ -19,7 +18,7 @@ const PHANTOM = Symbol.for('Phantom');
 const is = Symbol('isTest');
 
 export default class Model extends Pendability(
-	Editable(JSONValue(HasLinks(Fields(EventEmitter))))
+	Editable(JSONValue(HasLinks(Fields(BaseObservable))))
 ) {
 	static MimeType = COMMON_PREFIX + '__base__';
 
@@ -45,10 +44,6 @@ export default class Model extends Pendability(
 	 */
 	constructor(service, parent, data) {
 		super(service, parent, data);
-
-		this.setMaxListeners(100);
-		//Make EventEmitter properties non-enumerable
-		Object.keys(this).map(key => hideField(this, key));
 
 		// Allow null, and objects that declare they are a service.
 		// Undefined and other falsy values are invalid.
