@@ -17,7 +17,7 @@ export default class Grade extends names(Base) {
 	static MimeType = [
 		COMMON_PREFIX + 'grade',
 		COMMON_PREFIX + 'gradebook.grade',
-		COMMON_PREFIX + 'predictedgrade'
+		COMMON_PREFIX + 'predictedgrade',
 	];
 
 	// prettier-ignore
@@ -148,7 +148,7 @@ export default class Grade extends names(Base) {
 	 * treat a letter grade value of '-' the same as no letter grade
 	 *
 	 * @param  {string} value the value of the grade
-	 * @param  {char} letter the letter value of the grade
+	 * @param  {string} letter the letter value of the grade
 	 * @returns {boolean}        if they are the same values
 	 */
 	equals(value, letter) {
