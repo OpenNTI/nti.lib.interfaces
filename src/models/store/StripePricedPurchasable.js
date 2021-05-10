@@ -1,16 +1,14 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 import Coupon from './StripeCoupon.js';
 
-class StripePricedPurchasable extends Base {
+export default class StripePricedPurchasable extends Base {
 	static MimeType = COMMON_PREFIX + 'store.stripepricedpurchasable';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Amount':             { type: 'number',  name: 'amount'             },
 		'Coupon':             { type: Coupon,    name: 'coupon'             },
 		'Currency':           { type: 'string',  name: 'currency'           },
@@ -21,4 +19,4 @@ class StripePricedPurchasable extends Base {
 	}
 }
 
-export default decorate(StripePricedPurchasable, [model]);
+Registry.register(StripePricedPurchasable);

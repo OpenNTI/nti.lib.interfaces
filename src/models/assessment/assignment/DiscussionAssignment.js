@@ -1,11 +1,9 @@
-import { decorate } from '@nti/lib-commons';
-
 import { Service } from '../../../constants.js';
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 
 import Assignment from './Assignment.js';
 
-class DiscussionAssignment extends Assignment {
+export default class DiscussionAssignment extends Assignment {
 	static MimeType = COMMON_PREFIX + 'assessment.discussionassignment';
 
 	isDiscussion = true;
@@ -21,4 +19,4 @@ class DiscussionAssignment extends Assignment {
 	}
 }
 
-export default decorate(DiscussionAssignment, [model]);
+Registry.register(DiscussionAssignment);

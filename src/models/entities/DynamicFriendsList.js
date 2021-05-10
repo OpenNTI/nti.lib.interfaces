@@ -1,17 +1,15 @@
-import { decorate } from '@nti/lib-commons';
-
 import { Service, DELETED } from '../../constants.js';
 import Stream from '../../stores/Stream.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import FriendsList from './FriendsList.js';
 
-class DynamicFriendsList extends FriendsList {
+export default class DynamicFriendsList extends FriendsList {
 	static MimeType = COMMON_PREFIX + 'dynamicfriendslist';
 
 	// prettier-ignore
 	static Fields = {
-		...FriendsList.Fields,
+		...super.Fields,
 		'IsDynamicSharing': { type: 'boolean', required: true, requiredValue: true },
 	}
 
@@ -117,4 +115,4 @@ class DynamicFriendsList extends FriendsList {
 	}
 }
 
-export default decorate(DynamicFriendsList, [model]);
+Registry.register(DynamicFriendsList);

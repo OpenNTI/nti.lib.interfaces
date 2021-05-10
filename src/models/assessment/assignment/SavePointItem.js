@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class SavePointItem extends Base {
+export default class SavePointItem extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.savepointitem',
 		COMMON_PREFIX + 'assessment.userscourseassignmentsavepointitem',
@@ -11,7 +9,7 @@ class SavePointItem extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Submission': { type: 'model' }
 	}
 
@@ -28,4 +26,4 @@ class SavePointItem extends Base {
 	}
 }
 
-export default decorate(SavePointItem, [model]);
+Registry.register(SavePointItem);

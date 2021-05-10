@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class CompletionMetadata extends Base {
+export default class CompletionMetadata extends Base {
 	static MimeType = [COMMON_PREFIX + 'completion.completionmetadata'];
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'FailCount':     { type: 'number'  },
 		'SuccessCount':  { type: 'number'  },
 		'ItemCount':     { type: 'number'  },
@@ -16,4 +14,4 @@ class CompletionMetadata extends Base {
 	}
 }
 
-export default decorate(CompletionMetadata, [model]);
+Registry.register(CompletionMetadata);

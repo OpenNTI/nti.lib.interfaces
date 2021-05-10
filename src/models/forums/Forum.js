@@ -1,11 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import { Service, Parser as parse } from '../../constants.js';
 import GetContents from '../../mixins/GetContents.js';
 import DiscussionInterface from '../../mixins/DiscussionInterface.js';
 import getLink from '../../utils/get-link.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 import { encodeIdFrom } from '../../utils/href-ntiids.js';
 
@@ -13,7 +10,7 @@ import ForumContentsDataSource from './forum-contents-data-source/index.js';
 
 const KnownSorts = ['createdTime', 'Last Modified', 'PostCount', 'LikeCount'];
 
-class Forum extends Base {
+export default class Forum extends GetContents(Base) {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.forum',
 		COMMON_PREFIX + 'forums.communityforum',
@@ -25,7 +22,7 @@ class Forum extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'ID':                          { type: 'string' }, // Local id (within the container)
 		'NewestDescendant':            { type: 'model'  },
 		'NewestDescendantCreatedTime': { type: 'date'   },
@@ -127,4 +124,4 @@ class Forum extends Base {
 	}
 }
 
-export default decorate(Forum, [model, mixin(GetContents)]);
+Registry.register(Forum);

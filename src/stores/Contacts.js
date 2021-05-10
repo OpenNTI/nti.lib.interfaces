@@ -4,8 +4,7 @@ import EventEmitter from 'events';
 import { v4 as uuid } from 'uuid';
 
 import Logger from '@nti/util-logger';
-import { decorate, Promises } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
+import { Promises } from '@nti/lib-commons';
 
 import { Service, DELETED } from '../constants.js';
 import { Mixin as Pendability } from '../mixins/Pendability.js';
@@ -62,7 +61,7 @@ export function getNewListData(
 	};
 }
 
-class Contacts extends EventEmitter {
+export default class Contacts extends Pendability(EventEmitter) {
 	/**
 	 * Contacts constructor
 	 *
@@ -81,8 +80,6 @@ class Contacts extends EventEmitter {
 			entryPoint,
 			context,
 		});
-
-		this.initMixins();
 
 		const parseList = parseListFn(this, service);
 		this.load = uri =>
@@ -363,5 +360,3 @@ class Contacts extends EventEmitter {
 		}
 	}
 }
-
-export default decorate(Contacts, [mixin(Pendability)]);

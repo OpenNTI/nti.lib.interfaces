@@ -1,7 +1,5 @@
-import { decorate } from '@nti/lib-commons';
-
 import { Service } from '../../constants.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 const POLL_INTERVAL = 3000;
@@ -24,12 +22,12 @@ function getIntervalTimeout(interval) {
 	}
 }
 
-class ContentPackageRenderJob extends Base {
+export default class ContentPackageRenderJob extends Base {
 	static MimeType = COMMON_PREFIX + 'content.packagerenderjob';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'JobId':     { type: 'string'  },
 		'State':     { type: 'string'  },
 	}
@@ -118,4 +116,4 @@ class ContentPackageRenderJob extends Base {
 	}
 }
 
-export default decorate(ContentPackageRenderJob, [model]);
+Registry.register(ContentPackageRenderJob);

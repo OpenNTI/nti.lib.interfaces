@@ -1,16 +1,14 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import QuestionSubmission from '../QuestionSubmission.js';
 import { resolveSubmitTo } from '../utils.js';
 
-class PollSubmission extends QuestionSubmission {
+export default class PollSubmission extends QuestionSubmission {
 	static MimeType = COMMON_PREFIX + 'assessment.pollsubmission';
 	static COURSE_SUBMISSION_REL = 'CourseInquiries';
 
 	// prettier-ignore
 	static Fields = {
-		...QuestionSubmission.Fields,
+		...super.Fields,
 		'pollId': { type: 'string'  },
 	}
 
@@ -53,4 +51,4 @@ class PollSubmission extends QuestionSubmission {
 	}
 }
 
-export default decorate(PollSubmission, [model]);
+Registry.register(PollSubmission);

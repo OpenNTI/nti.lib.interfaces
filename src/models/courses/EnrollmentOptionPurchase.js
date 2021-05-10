@@ -1,6 +1,4 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 import EnrollmentOption from './EnrollmentOption.js';
@@ -10,19 +8,19 @@ const Purchasables = Symbol('Purchasables');
 class Collection extends Base {
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'DefaultPurchaseNTIID': { type: 'string'  },
 		'DefaultGiftingNTIID':  { type: 'string'  },
 		'Items':                { type: 'model[]' },
 	}
 }
 
-class EnrollmentOptionStore extends EnrollmentOption {
+export default class EnrollmentOptionStore extends EnrollmentOption {
 	static MimeType = COMMON_PREFIX + 'courseware.storeenrollmentoption';
 
 	// prettier-ignore
 	static Fields = {
-		...EnrollmentOption.Fields,
+		...super.Fields,
 		'RequiresAdmission':  { type: 'boolean',  name: 'requiresAdmission'  },
 		'AllowVendorUpdates': { type: 'boolean',  name: 'allowVendorUpdates' },
 		'Purchasables':       { type: Collection, name: Purchasables         },
@@ -53,4 +51,4 @@ class EnrollmentOptionStore extends EnrollmentOption {
 	}
 }
 
-export default decorate(EnrollmentOptionStore, [model]);
+Registry.register(EnrollmentOptionStore);

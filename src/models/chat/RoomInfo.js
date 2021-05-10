@@ -1,11 +1,11 @@
-import { decorate, isEmpty } from '@nti/lib-commons';
+import { isEmpty } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import { Service } from '../../constants.js';
 import Base from '../Base.js';
 
 const INPUT_STATES = new Set(['composing', 'paused']);
-class RoomInfo extends Base {
+export default class RoomInfo extends Base {
 	static MimeType = [
 		COMMON_PREFIX + '_meeting',
 		COMMON_PREFIX + 'meeting',
@@ -14,7 +14,7 @@ class RoomInfo extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Active':       { type: 'boolean',  name: 'isActive'     },
 		'MessageCount': { type: 'number',   name: 'messageCount' },
 		'Moderated':    { type: 'boolean',  name: 'isModerated'  },
@@ -91,4 +91,4 @@ class RoomInfo extends Base {
 	}
 }
 
-export default decorate(RoomInfo, [model]);
+Registry.register(RoomInfo);

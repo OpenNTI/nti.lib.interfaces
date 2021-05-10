@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../../Registry.js';
 import MultipleChoice from '../MultipleChoice.js';
 
-class NonGradableMultipleChoice extends MultipleChoice {
+export default class NonGradableMultipleChoice extends MultipleChoice {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.nongradablemultiplechoicepart',
 		COMMON_PREFIX +
@@ -13,4 +11,4 @@ class NonGradableMultipleChoice extends MultipleChoice {
 	isNonGradable = true;
 }
 
-export default decorate(NonGradableMultipleChoice, [model]);
+Registry.register(NonGradableMultipleChoice);

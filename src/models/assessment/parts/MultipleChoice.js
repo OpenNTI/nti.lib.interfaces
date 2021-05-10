@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Part from '../Part.js';
 
-class MultipleChoice extends Part {
+export default class MultipleChoice extends Part {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.multiplechoicepart',
 		COMMON_PREFIX + 'assessment.multiplechoicemultipleanswerpart',
@@ -13,9 +11,9 @@ class MultipleChoice extends Part {
 
 	// prettier-ignore
 	static Fields = {
-		...Part.Fields,
+		...super.Fields,
 		'choices': { type: 'string[]', content: true },
 	}
 }
 
-export default decorate(MultipleChoice, [model]);
+Registry.register(MultipleChoice);

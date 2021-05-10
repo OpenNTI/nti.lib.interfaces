@@ -1,15 +1,13 @@
-import { decorate } from '@nti/lib-commons';
-
 import { thread } from '../../utils/UserDataThreader.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class Transcript extends Base {
+export default class Transcript extends Base {
 	static MimeType = COMMON_PREFIX + 'transcript';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Messages':     { type: 'model[]',  name: 'messages'     },
 		'RoomInfo':     { type: 'model'                          },
 		'Contributors': { type: 'string[]', name: 'contributors' },
@@ -44,4 +42,4 @@ class Transcript extends Base {
 	}
 }
 
-export default decorate(Transcript, [model]);
+Registry.register(Transcript);

@@ -1,11 +1,12 @@
-export default {
-	getAssessedRoot() {
-		let p = this.parent();
+export default Base =>
+	class extends Base {
+		getAssessedRoot() {
+			let p = this.parent();
 
-		if (!p || !p.getAssessedRoot) {
-			return this;
+			if (!p || !p.getAssessedRoot) {
+				return this;
+			}
+
+			return p.getAssessedRoot();
 		}
-
-		return p.getAssessedRoot();
-	},
-};
+	};

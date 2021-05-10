@@ -1,11 +1,9 @@
-import { decorate } from '@nti/lib-commons';
-
 // import {Parser as parse} from '../../../../../constants.js';
-import { model, COMMON_PREFIX } from '../../../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../../../Registry.js';
 
 import Base from './Part.js';
 
-class AggregatedFreeResponsePart extends Base {
+export default class AggregatedFreeResponsePart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedfreeresponsepart';
 
 	getResults() {
@@ -13,4 +11,4 @@ class AggregatedFreeResponsePart extends Base {
 	}
 }
 
-export default decorate(AggregatedFreeResponsePart, [model]);
+Registry.register(AggregatedFreeResponsePart);

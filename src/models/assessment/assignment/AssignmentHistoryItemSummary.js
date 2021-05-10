@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class AssignmentHistoryItemSummary extends Base {
+export default class AssignmentHistoryItemSummary extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.assignmenthistoryitemsummary',
 		COMMON_PREFIX + 'assessment.userscourseassignmenthistoryitemsummary',
@@ -11,7 +9,7 @@ class AssignmentHistoryItemSummary extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Grade':                 { type: 'model',  name: 'grade'         },
 		'FeedbackCount':         { type: 'number', name: 'feedbackCount' },
 		'Metadata':              { type: 'model'                         },
@@ -24,4 +22,4 @@ class AssignmentHistoryItemSummary extends Base {
 	}
 }
 
-export default decorate(AssignmentHistoryItemSummary, [model]);
+Registry.register(AssignmentHistoryItemSummary);

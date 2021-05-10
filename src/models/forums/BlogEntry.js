@@ -1,16 +1,15 @@
-import { decorate } from '@nti/lib-commons';
 import { isNTIID } from '@nti/lib-ntiids';
 
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Topic from './Topic.js';
 
-class BlogEntry extends Topic {
+export default class BlogEntry extends Topic {
 	static MimeType = COMMON_PREFIX + 'forums.personalblogentry';
 
 	// prettier-ignore
 	static Fields = {
-		...Topic.Fields,
+		...super.Fields,
 		'sharedWith': { type: 'string[]' },
 		'tags':       { type: 'string[]' },
 	}
@@ -81,4 +80,4 @@ class BlogEntry extends Topic {
 	}
 }
 
-export default decorate(BlogEntry, [model]);
+Registry.register(BlogEntry);

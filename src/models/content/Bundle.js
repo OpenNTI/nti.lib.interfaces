@@ -1,11 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import { Service } from '../../constants.js';
 import TablesOfContents from '../content/TablesOfContents.js';
 import MediaIndex from '../media/MediaIndex.js';
 import Publishable from '../../mixins/Publishable.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 import Forum from '../forums/Forum.js';
 import Batch from '../../data-sources/data-types/Batch.js';
@@ -18,7 +15,7 @@ const BundleCommunityCache = Symbol('Bundle Community Cache');
 
 const names = (x, y, v) => (Array.isArray(v) ? v.join(', ') : null);
 
-class Bundle extends Base {
+export default class Bundle extends Publishable(Base) {
 	static MimeType = [
 		COMMON_PREFIX + 'contentpackagebundle',
 		COMMON_PREFIX + 'coursecontentpackagebundle',
@@ -27,7 +24,7 @@ class Bundle extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Discussions':                          { type: 'model'                     },
 		'DCCreator':                            { type: names,     name: 'author'   },
 		'byline':                               { type: 'string'                    },
@@ -213,4 +210,4 @@ async function resolvePackages(bundle) {
 	}
 }
 
-export default decorate(Bundle, [model, mixin(Publishable)]);
+Registry.register(Bundle);

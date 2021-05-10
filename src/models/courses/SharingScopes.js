@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class SharingScopes extends Base {
+export default class SharingScopes extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courseinstancesharingscopes',
 		COMMON_PREFIX + 'courses.courseinstancesharingscopes',
@@ -11,7 +9,7 @@ class SharingScopes extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'DefaultSharingScopeNTIID': { type: 'string'  },
 		'Items':                    { type: 'model{}' },
 	}
@@ -46,4 +44,4 @@ class SharingScopes extends Base {
 	}
 }
 
-export default decorate(SharingScopes, [model]);
+Registry.register(SharingScopes);

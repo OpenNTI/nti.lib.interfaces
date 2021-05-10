@@ -1,5 +1,4 @@
-import { decorate, isEmpty } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
+import { isEmpty } from '@nti/lib-commons';
 
 import Completable from '../../mixins/Completable.js';
 import UserDataStore from '../../stores/UserData.js';
@@ -9,7 +8,7 @@ import {
 	Service,
 } from '../../constants.js';
 import getLink from '../../utils/get-link.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Pages from '../content/mixins/Pages.js';
 import Base from '../Base.js';
 
@@ -56,12 +55,12 @@ class MediaSourceUtil {
 	}
 }
 
-class Video extends Base {
+export default class Video extends Completable(Pages(Base)) {
 	static MimeType = [COMMON_PREFIX + 'ntivideo', COMMON_PREFIX + 'video'];
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'itemprop':    { type: 'string'   }, //From a parsed DomObject
 		'sources':     { type: 'model[]'  },
 		'title':       { type: 'string'   }, //From a parsed DomObject
@@ -220,4 +219,4 @@ class Video extends Base {
 	}
 }
 
-export default decorate(Video, [model, mixin(Completable, Pages)]);
+Registry.register(Video);

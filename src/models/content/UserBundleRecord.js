@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class UserBundleRecord extends Base {
+export default class UserBundleRecord extends Base {
 	static MimeType = COMMON_PREFIX + 'userbundlerecord';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Bundle':       { type: 'model'  },
 		'User':         { type: 'model'  },
 		'LastSeenTime': { type: 'date'   },
@@ -16,4 +14,4 @@ class UserBundleRecord extends Base {
 	}
 }
 
-export default decorate(UserBundleRecord, [model]);
+Registry.register(UserBundleRecord);

@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class WebinarSession extends Base {
+export default class WebinarSession extends Base {
 	static MimeType = COMMON_PREFIX + 'webinarsession';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'startTime': { type: 'date' },
 		'endTime':   { type: 'date' }
 	}
@@ -17,4 +15,4 @@ class WebinarSession extends Base {
 	getEndTime() {} //implemented by endTime date field.
 }
 
-export default decorate(WebinarSession, [model]);
+Registry.register(WebinarSession);

@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class Timeline extends Base {
+export default class Timeline extends Base {
 	static MimeType = COMMON_PREFIX + 'ntitimeline';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'desc':             { type: 'string'  },
 		'description':      { type: 'string'  },
 		'icon':             { type: 'string'  },
@@ -17,4 +15,4 @@ class Timeline extends Base {
 	}
 }
 
-export default decorate(Timeline, [model]);
+Registry.register(Timeline);

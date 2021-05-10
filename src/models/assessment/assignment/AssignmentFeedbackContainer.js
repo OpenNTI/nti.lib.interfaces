@@ -1,17 +1,15 @@
-import { decorate } from '@nti/lib-commons';
-
 import { Service } from '../../../constants.js';
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class AssignmentFeedbackContainer extends Base {
+export default class AssignmentFeedbackContainer extends Base {
 	static MimeType =
 		COMMON_PREFIX +
 		'assessment.userscourseassignmenthistoryitemfeedbackcontainer';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Items': { type: 'model[]' }
 	}
 
@@ -55,4 +53,4 @@ class AssignmentFeedbackContainer extends Base {
 	}
 }
 
-export default decorate(AssignmentFeedbackContainer, [model]);
+Registry.register(AssignmentFeedbackContainer);

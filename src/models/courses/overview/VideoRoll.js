@@ -1,16 +1,13 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
-import { Mixin as ContentTreeMixin } from '../../../content-tree/index.js';
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import { Mixin as ContentTree } from '../../../content-tree/index.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class VideoRoll extends Base {
+export default class VideoRoll extends ContentTree(Base) {
 	static MimeType = COMMON_PREFIX + 'videoroll';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Items': { type: 'model[]' }
 	}
 
@@ -19,4 +16,4 @@ class VideoRoll extends Base {
 	}
 }
 
-export default decorate(VideoRoll, [model, mixin(ContentTreeMixin)]);
+Registry.register(VideoRoll);

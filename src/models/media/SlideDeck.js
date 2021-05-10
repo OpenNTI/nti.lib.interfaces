@@ -1,24 +1,21 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin /*, readonly*/ } from '@nti/lib-decorators';
-
 import UserDataStore from '../../stores/UserData.js';
 import {
 	REL_RELEVANT_CONTAINED_USER_GENERATED_DATA,
 	Service,
 } from '../../constants.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 const UserData = Symbol('UserData');
-
-class SlideDeck extends Base {
+export default class SlideDeck extends Base {
+	isSlideDeck = true;
 	[Symbol.iterator] = () => this.Slides[Symbol.iterator]();
 
 	static MimeType = COMMON_PREFIX + 'ntislidedeck';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'byline': { type: 'string'  },
 		'title':  { type: 'string'  },
 		'Slides': { type: 'model[]' },
@@ -45,7 +42,4 @@ class SlideDeck extends Base {
 	}
 }
 
-export default decorate(SlideDeck, [
-	model,
-	mixin({ /*@readonly*/ isSlideDeck: true }),
-]);
+Registry.register(SlideDeck);

@@ -62,30 +62,33 @@ function setup(data, keys) {
 
 export const SetupContentProperties = Symbol('SetupContentProperties');
 
-export const Mixin = {
-	initMixin(data) {
-		const { constructor: Type } = this;
-		const { Fields = {} } = Type;
+export const Mixin = Target =>
+	class HasContent extends Target {
+		constructor(...args) {
+			super(...args);
+			let data = args[args.length - 1];
+			const { constructor: Type } = this;
+			const { Fields = {} } = Type;
 
-		let keys = Object.keys(Fields).filter(x => Fields[x].content);
+			let keys = Object.keys(Fields).filter(x => Fields[x].content);
 
-		if (isEmpty(keys)) {
-			keys = ['content'];
+			if (isEmpty(keys)) {
+				keys = ['content'];
+			}
+
+			this[SetupContentProperties] = setup;
+
+			this[SetupContentProperties](data, keys);
 		}
 
-		this[SetupContentProperties] = setup;
+		getContentRoot() {
+			const findRootValue = x => (
+				(x = this.parent('ContentRoot')), x && x.ContentRoot
+			);
+			const findRootGetter = x => (
+				(x = this.parent('getContentRoot')), x && x.getContentRoot()
+			);
 
-		this[SetupContentProperties](data, keys);
-	},
-
-	getContentRoot() {
-		const findRootValue = x => (
-			(x = this.parent('ContentRoot')), x && x.ContentRoot
-		);
-		const findRootGetter = x => (
-			(x = this.parent('getContentRoot')), x && x.getContentRoot()
-		);
-
-		return this.ContentRoot || findRootValue() || findRootGetter();
-	},
-};
+			return this.ContentRoot || findRootValue() || findRootGetter();
+		}
+	};

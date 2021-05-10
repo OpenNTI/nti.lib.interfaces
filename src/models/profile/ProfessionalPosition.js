@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class ProfessionalPosition extends Base {
+export default class ProfessionalPosition extends Base {
 	static MimeType = COMMON_PREFIX + 'profile.professionalposition';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'companyName': { type: 'string', required: true },
 		'description': { type: 'string'                 },
 		'endYear':     { type: 'number'                 },
@@ -17,4 +15,4 @@ class ProfessionalPosition extends Base {
 	}
 }
 
-export default decorate(ProfessionalPosition, [model]);
+Registry.register(ProfessionalPosition);

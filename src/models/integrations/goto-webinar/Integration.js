@@ -1,6 +1,4 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Integration from '../Integration.js';
 
 const DISCONNECTED_MIMETYPE =
@@ -8,12 +6,12 @@ const DISCONNECTED_MIMETYPE =
 const CONNECTED_MIMETYPE =
 	COMMON_PREFIX + 'integration.gotowebinarauthorizedintegration';
 
-class GotoWebinar extends Integration {
+export default class GotoWebinar extends Integration {
 	static MimeType = [DISCONNECTED_MIMETYPE, CONNECTED_MIMETYPE];
 
 	// prettier-ignore
 	static Fields = {
-		...Integration.Fields,
+		...super.Fields,
 		'webinar_realname': {type: 'string', name: 'accountName'}
 	}
 
@@ -68,4 +66,4 @@ class GotoWebinar extends Integration {
 	}
 }
 
-export default decorate(GotoWebinar, [model]);
+Registry.register(GotoWebinar);

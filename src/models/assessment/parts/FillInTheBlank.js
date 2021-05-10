@@ -1,6 +1,4 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Part from '../Part.js';
 
 const isShortAnswer = RegExp.prototype.test.bind(/ShortAnswer/i);
@@ -11,7 +9,7 @@ const keyName = /name=['"]([^'"]+)['"]/i;
 
 const ValueKeys = Symbol('value-keys');
 
-class FillInTheBlank extends Part {
+export default class FillInTheBlank extends Part {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.fillintheblank',
 		COMMON_PREFIX + 'assessment.fillintheblankshortanswerpart',
@@ -20,7 +18,7 @@ class FillInTheBlank extends Part {
 
 	// prettier-ignore
 	static Fields = {
-		...Part.Fields,
+		...super.Fields,
 		'input':   { type: 'string', content: true },
 	}
 
@@ -57,4 +55,4 @@ class FillInTheBlank extends Part {
 	}
 }
 
-export default decorate(FillInTheBlank, [model]);
+Registry.register(FillInTheBlank);

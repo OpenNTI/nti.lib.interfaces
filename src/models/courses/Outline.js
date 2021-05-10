@@ -1,6 +1,6 @@
-import { decorate, isEmpty, updateValue } from '@nti/lib-commons';
+import { isEmpty, updateValue } from '@nti/lib-commons';
 
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 import PageSource from './OutlineNodeBackedPageSource.js';
@@ -14,12 +14,12 @@ function getMaxDepthFrom(n) {
 		.reduce((max, depth) => Math.max(max, depth), 0);
 }
 
-class Outline extends Base {
+export default class Outline extends Base {
 	static MimeType = COMMON_PREFIX + 'courses.courseoutline';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'ContentNTIID': { type: 'string'                      }
 	}
 
@@ -138,4 +138,4 @@ class Outline extends Base {
 	}
 }
 
-export default decorate(Outline, [model]);
+Registry.register(Outline);

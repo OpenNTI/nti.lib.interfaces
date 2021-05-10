@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
 import Base from '../Base.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
-class RosterRecord extends Base {
+export default class RosterRecord extends Base {
 	static MimeType = COMMON_PREFIX + 'courses.rosterenrollmentsummary';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'CourseProgress':         { type: 'model', name: 'courseProgress'    },
 		'LegacyEnrollmentStatus': { type: 'string', name: 'enrollmentStatus' },
 		'RealEnrollmentStatus':   { type: '*', name: 'status'                },
@@ -26,4 +24,4 @@ class RosterRecord extends Base {
 	}
 }
 
-export default decorate(RosterRecord, [model]);
+Registry.register(RosterRecord);

@@ -1,9 +1,6 @@
-export default Object.defineProperties(
-	{},
-	{
-		isCourse: {
-			writable: false,
-			value: true,
-		},
-	}
-);
+export default Target =>
+	class CourseIdentity extends Target {
+		get isCourse() {
+			return true;
+		}
+	};

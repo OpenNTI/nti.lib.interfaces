@@ -1,12 +1,10 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../../Registry.js';
 import ModeledContent from '../ModeledContent.js';
 
-class NonGradableModeledContent extends ModeledContent {
+export default class NonGradableModeledContent extends ModeledContent {
 	static MimeType =
 		COMMON_PREFIX + 'assessment.nongradablemodeledcontentpart';
 	isNonGradable = true;
 }
 
-export default decorate(NonGradableModeledContent, [model]);
+Registry.register(NonGradableModeledContent);

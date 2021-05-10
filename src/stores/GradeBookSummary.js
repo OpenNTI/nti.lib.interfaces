@@ -1,5 +1,3 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
 import { getPrivate } from '../utils/private.js';
@@ -39,7 +37,7 @@ function setFilter(
 	instance.loadPage(1);
 }
 
-class GradeBookSummary extends Stream {
+export default class GradeBookSummary extends Paged(Stream) {
 	constructor(service, owner, href, options, ...args) {
 		super(service, owner, href, options, ...args);
 		this.initMixins();
@@ -135,5 +133,3 @@ class GradeBookSummary extends Stream {
 		return getPrivate(this).categoryFilter;
 	}
 }
-
-export default decorate(GradeBookSummary, [mixin(Paged)]);

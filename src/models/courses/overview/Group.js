@@ -1,16 +1,13 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
-import { Mixin as ContentTreeMixin } from '../../../content-tree/index.js';
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import { Mixin as ContentTree } from '../../../content-tree/index.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class OverviewGroup extends Base {
+export default class OverviewGroup extends ContentTree(Base) {
 	static MimeType = COMMON_PREFIX + 'nticourseoverviewgroup';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Items':       { type: 'model[]' },
 		'accentColor': { type: 'string' },
 		'title':       { type: 'string' }
@@ -27,4 +24,4 @@ class OverviewGroup extends Base {
 	}
 }
 
-export default decorate(OverviewGroup, [model, mixin(ContentTreeMixin)]);
+Registry.register(OverviewGroup);

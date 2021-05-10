@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class UserTopicParticipationSummary extends Base {
+export default class UserTopicParticipationSummary extends Base {
 	static MimeType = COMMON_PREFIX + 'forums.usertopicparticipationsummary';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Contexts':              { type: 'model[]'                    },
 		'NestedChildReplyCount': { type: 'number', name: 'repliesTo'  },
 		'ReplyToCount':          { type: 'number', name: 'replies'    },
@@ -16,4 +14,4 @@ class UserTopicParticipationSummary extends Base {
 	}
 }
 
-export default decorate(UserTopicParticipationSummary, [model]);
+Registry.register(UserTopicParticipationSummary);

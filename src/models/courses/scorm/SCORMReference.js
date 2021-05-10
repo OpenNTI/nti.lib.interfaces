@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class SCORMReference extends Base {
+export default class SCORMReference extends Base {
 	static MimeType = [COMMON_PREFIX + 'scormcontentref'];
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'title':            { type: 'string' },
 		'description':      { type: 'string' },
 		'icon':             { type: 'string' },
@@ -57,4 +55,4 @@ class SCORMReference extends Base {
 	}
 }
 
-export default decorate(SCORMReference, [model]);
+Registry.register(SCORMReference);

@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class CourseInvitation extends Base {
+export default class CourseInvitation extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courseware.courseinvitation',
 		COMMON_PREFIX + 'invitations.courseinvitation',
@@ -11,10 +9,10 @@ class CourseInvitation extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Code':        { type: 'string' },
 		'Description': { type: 'string' }
 	}
 }
 
-export default decorate(CourseInvitation, [model]);
+Registry.register(CourseInvitation);

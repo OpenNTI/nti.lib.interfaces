@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
 import Achievements from '../../stores/Achievements.js';
 import Stream from '../../stores/Stream.js';
 import { Service, TOS_NOT_ACCEPTED } from '../../constants.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Entity from './Entity.js';
 
@@ -29,12 +27,12 @@ function cleanData(data) {
 	};
 }
 
-class User extends Entity {
+export default class User extends Entity {
 	static MimeType = COMMON_PREFIX + 'user';
 
 	// prettier-ignore
 	static Fields = {
-		...Entity.Fields,
+		...super.Fields,
 		//Do not define "cleaned" fields (see cleanData)
 		'Connections':        { type: '*'         },
 		'DynamicMemberships': { type: 'model[]'   },
@@ -274,4 +272,4 @@ class User extends Entity {
 	}
 }
 
-export default decorate(User, [model]);
+Registry.register(User);

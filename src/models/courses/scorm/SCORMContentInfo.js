@@ -1,9 +1,6 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import Completable from '../../../mixins/Completable.js';
 import { createPollingTask } from '../../../tasks/index.js';
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
 const IMPLICIT_ERROR = Symbol('Implicit Error');
@@ -16,12 +13,12 @@ const RUNNING = 'running';
 const ERROR = 'error';
 const FINISHED = 'finished';
 
-class SCORMContentInfo extends Base {
+export default class SCORMContentInfo extends Completable(Base) {
 	static MimeType = [COMMON_PREFIX + 'scorm.scormcontentinfo'];
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'scorm_id':   { type: 'string', name: 'scormId'   },
 		'title':      { type: 'string'                    },
 		'upload_job': { type: 'object', name: 'uploadJob' }
@@ -86,4 +83,4 @@ class SCORMContentInfo extends Base {
 	}
 }
 
-export default decorate(SCORMContentInfo, [model, mixin(Completable)]);
+Registry.register(SCORMContentInfo);

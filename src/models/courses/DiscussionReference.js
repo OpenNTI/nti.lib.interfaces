@@ -1,7 +1,6 @@
-import { decorate } from '@nti/lib-commons';
 import { parseNTIID, isNTIID } from '@nti/lib-ntiids';
 
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 import { Service } from '../../constants.js';
 
@@ -16,7 +15,7 @@ const RESOLVED_TARGET_NTIID = Symbol('Resolved Target NTIID');
 "title": "1.1 Warmer: Elias Hill"
 }
 */
-class DiscussionReference extends Base {
+export default class DiscussionReference extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'discussion',
 		COMMON_PREFIX + 'discussionref',
@@ -24,7 +23,7 @@ class DiscussionReference extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'icon':         { type: 'string' },
 		'label':        { type: 'string' },
 		'title':        { type: 'string' },
@@ -64,7 +63,7 @@ class DiscussionReference extends Base {
 	}
 }
 
-export default decorate(DiscussionReference, [model]);
+Registry.register(DiscussionReference);
 
 function hasValidTargetNTIID(ref) {
 	return ref['Target-NTIID'] && isNTIID(ref['Target-NTIID']);

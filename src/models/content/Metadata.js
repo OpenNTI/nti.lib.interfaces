@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class Metadata extends Base {
+export default class Metadata extends Base {
 	static MimeType = COMMON_PREFIX + 'metadata.contentmetadata';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'contentLocation': { type: 'string'  },
 		'contentMimeType': { type: 'string'  },
 		'description':     { type: 'string'  },
@@ -19,4 +17,4 @@ class Metadata extends Base {
 	}
 }
 
-export default decorate(Metadata, [model]);
+Registry.register(Metadata);

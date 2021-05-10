@@ -20,7 +20,7 @@ export { default as FiveMinuteEnrollmentInterface } from './interface/FiveMinute
 
 export * from './constants.js';
 export * as Authoring from './authoring/index.js';
-export * as Mixins from './mixins/index.js';
+// export * as Mixins from './mixins/index.js';
 export * as UserDataThreader from './utils/UserDataThreader.js';
 export * as Tasks from './tasks/index.js';
 

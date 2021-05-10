@@ -1,11 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import GetContents from '../../mixins/GetContents.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class Board extends Base {
+export default class Board extends GetContents(Base) {
 	static MimeType = [
 		COMMON_PREFIX + 'forums.board',
 		COMMON_PREFIX + 'forums.communityboard',
@@ -15,7 +12,7 @@ class Board extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'ForumCount':   { type: 'number'                        },
 		'description':  { type: 'string'                        },
 		'title':        { type: 'string'                        },
@@ -35,4 +32,4 @@ class Board extends Base {
 	}
 }
 
-export default decorate(Board, [model, mixin(GetContents)]);
+Registry.register(Board);

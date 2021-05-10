@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Part from '../Part.js';
 
-class Ordering extends Part {
+export default class Ordering extends Part {
 	static MimeType = COMMON_PREFIX + 'assessment.orderingpart';
 
 	// prettier-ignore
 	static Fields = {
-		...Part.Fields,
+		...super.Fields,
 		'labels': { type: 'string[]', content: true },
 		'values': { type: 'string[]', content: true },
 	}
@@ -22,4 +20,4 @@ class Ordering extends Part {
 	}
 }
 
-export default decorate(Ordering, [model]);
+Registry.register(Ordering);

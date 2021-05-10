@@ -6,25 +6,26 @@ const awaitSafely = async p => {
 	}
 };
 
-export default {
-	get isFlagged() {
-		return this.hasLink('flag.metoo');
-	},
+export default Target =>
+	class Flaggable extends Target {
+		get isFlagged() {
+			return this.hasLink('flag.metoo');
+		}
 
-	get isFlaggable() {
-		return this.hasLink('flag') || this.hasLink('flag.metoo');
-	},
+		get isFlaggable() {
+			return this.hasLink('flag') || this.hasLink('flag.metoo');
+		}
 
-	async flag() {
-		await awaitSafely(this.flagging || Promise.resolve());
+		async flag() {
+			await awaitSafely(this.flagging || Promise.resolve());
 
-		const worker = (this.flagging = this.isFlagged
-			? this.postToLink('flag.metoo')
-			: this.postToLink('flag'));
+			const worker = (this.flagging = this.isFlagged
+				? this.postToLink('flag.metoo')
+				: this.postToLink('flag'));
 
-		const resp = await worker;
+			const resp = await worker;
 
-		this.refresh(resp);
-		this.onChange('isFlagged');
-	},
-};
+			this.refresh(resp);
+			this.onChange('isFlagged');
+		}
+	};

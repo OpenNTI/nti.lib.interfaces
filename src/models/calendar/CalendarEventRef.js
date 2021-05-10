@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class CalendarEventRef extends Base {
+export default class CalendarEventRef extends Base {
 	static MimeType = `${COMMON_PREFIX}nticalendareventref`;
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'CalendarEvent':        { type: 'model'  },
 		'Target-NTIID':         { type: 'string'}
 	}
@@ -22,4 +20,4 @@ class CalendarEventRef extends Base {
 	}
 }
 
-export default decorate(CalendarEventRef, [model]);
+Registry.register(CalendarEventRef);

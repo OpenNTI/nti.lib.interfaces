@@ -17,7 +17,7 @@ export default class Page extends Batch {
 
 	// prettier-ignore
 	static Fields = {
-		...Batch.Fields,
+		...super.Fields,
 		'PageSize':               {type: 'number'},
 		'ItemCount':              {type: 'number'},
 		'TotalItemCount':         {type: 'number'},

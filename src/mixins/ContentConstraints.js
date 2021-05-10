@@ -1,10 +1,13 @@
-export default function Applier(targetModelClass) {
-	Object.assign(targetModelClass.Fields, {
-		PublicationConstraints: { type: 'model' },
-	});
+export default Target =>
+	class ContentConstraints extends Target {
+		static Fields = {
+			...super.Fields,
+			PublicationConstraints: { type: 'model' },
+		};
 
-	return {
-		contentIsConstrainable: true,
+		get contentIsConstrainable() {
+			return true;
+		}
 
 		get contentIsConstrained() {
 			//NOTE: Ideally this would be defined by the constraints model, but its
@@ -14,13 +17,12 @@ export default function Applier(targetModelClass) {
 				!this.hasMetContentConstraints();
 
 			return isConstrained && !!this.PublicationConstraints;
-		},
+		}
 
 		contentIsConstrainedBy(itemOrId) {
 			return (
 				this.contentIsConstrained &&
 				this.PublicationConstraints.hasConstraintFor(itemOrId)
 			);
-		},
+		}
 	};
-}

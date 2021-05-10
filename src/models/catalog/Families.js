@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class CatalogFamilies extends Base {
+export default class CatalogFamilies extends Base {
 	static MimeType = COMMON_PREFIX + 'catalogfamilies';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Items': {type: 'model[]'}
 	}
 
@@ -58,4 +56,4 @@ class CatalogFamilies extends Base {
 	}
 }
 
-export default decorate(CatalogFamilies, [model]);
+Registry.register(CatalogFamilies);

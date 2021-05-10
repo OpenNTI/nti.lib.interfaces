@@ -1,13 +1,11 @@
-import { decorate } from '@nti/lib-commons';
-
 // import {Parser as parse} from '../../../../../constants.js';
-import { model, COMMON_PREFIX } from '../../../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../../../Registry.js';
 
 import Base from './MultipleChoice.js';
 
-class AggregatedMultipleChoiceMultipleAnswerPart extends Base {
+export default class AggregatedMultipleChoiceMultipleAnswerPart extends Base {
 	static MimeType =
 		COMMON_PREFIX + 'assessment.aggregatedmultiplechoicemultipleanswerpart';
 }
 
-export default decorate(AggregatedMultipleChoiceMultipleAnswerPart, [model]);
+Registry.register(AggregatedMultipleChoiceMultipleAnswerPart);

@@ -1,14 +1,12 @@
-import { decorate, wait } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
+import { wait } from '@nti/lib-commons';
 
 import {
 	ASSESSMENT_HISTORY_LINK,
 	SURVEY_AGGREGATED_LINK,
 	SURVEY_REPORT_LINK,
 } from '../../../constants.js';
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Publishable from '../../../mixins/Publishable.js';
-import Completable from '../../../mixins/Completable.js';
 import Pages from '../../content/mixins/Pages.js';
 import QuestionSet from '../QuestionSet.js';
 
@@ -16,12 +14,12 @@ import SurveySubmission from './SurveySubmission.js';
 
 const AGGREGATED = Symbol(SURVEY_AGGREGATED_LINK);
 
-class Survey extends QuestionSet {
+export default class Survey extends Publishable(Pages(QuestionSet)) {
 	static MimeType = COMMON_PREFIX + 'nasurvey';
 
 	// prettier-ignore
 	static Fields = {
-		...QuestionSet.Fields,
+		...super.Fields,
 		'title':                              { type: 'string'  },
 		'description':                        { type: 'string'  },
 		'disclosure':                         { type: 'string'  },
@@ -66,6 +64,7 @@ class Survey extends QuestionSet {
 
 	/**
 	 * DANGER: Resets all submissions on an assignment across all students.
+	 *
 	 * @returns {Promise} Promise that fulfills with request code.
 	 */
 	resetAllSubmissions() {
@@ -148,7 +147,4 @@ class Survey extends QuestionSet {
 	}
 }
 
-export default decorate(Survey, [
-	model,
-	mixin(Completable, Publishable, Pages),
-]);
+Registry.register(Survey);

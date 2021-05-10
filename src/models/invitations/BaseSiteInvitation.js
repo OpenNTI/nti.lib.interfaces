@@ -3,7 +3,7 @@ import Base from '../Base.js';
 export default class BaseSiteInvitation extends Base {
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'receiver':     { type: 'string'  },
 		'sender':       { type: 'string'  },
 		'site':         { type: 'string'  },

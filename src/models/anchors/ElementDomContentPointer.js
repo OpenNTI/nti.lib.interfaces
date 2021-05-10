@@ -1,15 +1,13 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import DomContentPointer from './DomContentPointer.js';
 
-class ElementDomContentPointer extends DomContentPointer {
+export default class ElementDomContentPointer extends DomContentPointer {
 	static MimeType = COMMON_PREFIX + 'contentrange.elementdomcontentpointer';
 
 	// prettier-ignore
 	static Fields = {
-		...DomContentPointer.Fields,
+		...super.Fields,
 		'elementTagName': { type: 'string' },
 		'elementId':      { type: 'string' },
 	}
@@ -66,4 +64,4 @@ class ElementDomContentPointer extends DomContentPointer {
 	}
 }
 
-export default decorate(ElementDomContentPointer, [model]);
+Registry.register(ElementDomContentPointer);

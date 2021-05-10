@@ -4,7 +4,7 @@ import Base from '../../models/Base.js';
 export default class Batch extends Base {
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'BatchPage':              {type: 'number'                   },
 		'Items':                  {type: 'model[]', defaultValue: []},
 		'ItemCount':              {type: 'number'                   },

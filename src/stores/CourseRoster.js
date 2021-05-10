@@ -1,6 +1,3 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import { Service } from '../constants.js';
 import Base from '../models/Base.js';
 import Paged from '../mixins/Paged.js';
@@ -17,7 +14,7 @@ const FILTERS = {
 class RosterRecord extends Base {
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'LegacyEnrollmentStatus': { type: 'string', name: 'enrollmentStatus' },
 		'RealEnrollmentStatus':   { type: '*'                                },
 		'Username':               { type: '*', name: 'username'              },
@@ -33,12 +30,7 @@ class RosterRecord extends Base {
 	}
 }
 
-class CourseRosterStream extends Stream {
-	constructor(...args) {
-		super(...args);
-		this.initMixins();
-	}
-
+export default class CourseRosterStream extends Paged(Stream) {
 	parseList(items) {
 		return items
 			.map(x => x && new RosterRecord(this[Service], x))
@@ -61,5 +53,3 @@ class CourseRosterStream extends Stream {
 		this.nextBatch();
 	}
 }
-
-export default decorate(CourseRosterStream, [mixin(Paged)]);

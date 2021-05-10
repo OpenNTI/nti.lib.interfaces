@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
 import Base from '../../Base.js';
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 
-class MetadataAttemptItemContainer extends Base {
+export default class MetadataAttemptItemContainer extends Base {
 	static MimeType =
 		COMMON_PREFIX +
 		'assessment.userscourseassignmentattemptmetadataitemcontainer';
@@ -18,4 +16,4 @@ class MetadataAttemptItemContainer extends Base {
 	}
 }
 
-export default decorate(MetadataAttemptItemContainer, [model]);
+Registry.register(MetadataAttemptItemContainer);

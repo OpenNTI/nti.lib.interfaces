@@ -1,15 +1,13 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class InquiryItemResponse extends Base {
+export default class InquiryItemResponse extends Base {
 	static MimeType =
 		COMMON_PREFIX + 'assessment.userscourseinquiryitemresponse';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Aggregated': { type: 'model' },
 		'Submission': { type: 'model'  },
 	}
@@ -24,4 +22,4 @@ class InquiryItemResponse extends Base {
 	}
 }
 
-export default decorate(InquiryItemResponse, [model]);
+Registry.register(InquiryItemResponse);

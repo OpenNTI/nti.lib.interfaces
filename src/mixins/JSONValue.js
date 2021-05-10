@@ -18,7 +18,7 @@ function decode(fields, key) {
 
 const Serializing = Symbol('Serializing');
 
-const JSONValue = {
+export const JSONValue = {
 	toJSON() {
 		return this.getData();
 	},
@@ -100,4 +100,4 @@ function isBlackListed(scope, k) {
 	return BLACK_LISTED[k];
 }
 
-export default JSONValue;
+export default Base => (Object.assign(Base.prototype, JSONValue), Base);

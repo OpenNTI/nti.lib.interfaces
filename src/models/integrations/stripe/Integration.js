@@ -1,13 +1,11 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
 const ConnectRel = 'connect_stripe_account';
 const DisconnectRel = 'disconnect_stripe_account';
 const AccountInfoRel = 'account_info';
 
-class StripeIntegration extends Base {
+export default class StripeIntegration extends Base {
 	static MimeType = [COMMON_PREFIX + 'integration.stripeintegration'];
 
 	name = 'stripe';
@@ -55,4 +53,4 @@ class StripeIntegration extends Base {
 	}
 }
 
-export default decorate(StripeIntegration, [model]);
+Registry.register(StripeIntegration);

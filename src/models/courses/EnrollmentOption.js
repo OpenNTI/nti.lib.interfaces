@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class EnrollmentOption extends Base {
+export default class EnrollmentOption extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'courseware.enrollmentoption',
 		COMMON_PREFIX + 'courseware.openenrollmentoption',
@@ -11,11 +9,11 @@ class EnrollmentOption extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Enabled':     { type: 'boolean', name: 'enabled'   },
 		'IsAvailable': { type: 'boolean', name: 'available' },
 		'IsEnrolled':  { type: 'boolean', name: 'enrolled'  },
 	}
 }
 
-export default decorate(EnrollmentOption, [model]);
+Registry.register(EnrollmentOption);

@@ -1,9 +1,6 @@
-export default Object.defineProperties(
-	{},
-	{
-		isAssignment: {
-			writable: false,
-			value: true,
-		},
-	}
-);
+export default Target =>
+	class AssignmentIdentity extends Target {
+		get isAssignment() {
+			return true;
+		}
+	};

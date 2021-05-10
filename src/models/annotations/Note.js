@@ -1,6 +1,4 @@
-import { decorate } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
-import { mixin } from '@nti/lib-decorators';
 import { isNTIID } from '@nti/lib-ntiids';
 
 import { Service, Parser as parse } from '../../constants.js';
@@ -8,19 +6,21 @@ import Page from '../../data-sources/data-types/Page.js';
 import Flaggable from '../../mixins/Flaggable.js';
 import Threadable from '../../mixins/Threadable.js';
 import DiscussionInterface from '../../mixins/DiscussionInterface.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Highlight from './Highlight.js';
 
 const logger = Logger.get('models:annotations:Note');
 const UpdatedDiscussionCount = Symbol('Discussion Count');
 
-class Note extends Highlight {
+export default class Note extends DiscussionInterface(
+	Threadable(Flaggable(Highlight))
+) {
 	static MimeType = COMMON_PREFIX + 'note';
 
 	// prettier-ignore
 	static Fields = {
-		...Highlight.Fields,
+		...super.Fields,
 		'body':                   { type: '*[]'      },
 		'inReplyTo':              { type: 'string'   },
 		'references':             { type: 'string[]' },
@@ -143,7 +143,4 @@ class Note extends Highlight {
 	}
 }
 
-export default decorate(Note, [
-	model,
-	mixin(Threadable, Flaggable, DiscussionInterface),
-]);
+Registry.register(Note);

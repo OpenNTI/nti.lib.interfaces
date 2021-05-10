@@ -1,9 +1,6 @@
-export default Object.defineProperties(
-	{},
-	{
-		isAdministrative: {
-			writable: false,
-			value: true,
-		},
-	}
-);
+export default Target =>
+	class AdministrativeIdentity extends Target {
+		get isAdministrative() {
+			return true;
+		}
+	};

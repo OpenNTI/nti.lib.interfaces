@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../../Registry.js';
 import Base from '../../../Base.js';
 
-class AggregatedPoll extends Base {
+export default class AggregatedPoll extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedpoll';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'parts':            { type: 'model[]' },
 		'pollId':           { type: 'string'  },
 		'ContainerContext': { type: '*'       },
@@ -19,4 +17,4 @@ class AggregatedPoll extends Base {
 	}
 }
 
-export default decorate(AggregatedPoll, [model]);
+Registry.register(AggregatedPoll);

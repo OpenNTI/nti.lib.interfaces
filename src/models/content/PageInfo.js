@@ -1,5 +1,4 @@
-import { decorate, Markup, URL } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
+import { Markup, URL } from '@nti/lib-commons';
 
 import UserDataStore from '../../stores/UserData.js';
 import {
@@ -9,7 +8,7 @@ import {
 	Service,
 	Parser as parse,
 } from '../../constants.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 import Pages from './mixins/Pages.js';
@@ -20,12 +19,12 @@ const UserData = Symbol('UserData');
 const ContentPackageMimeTypes =
 	'application/vnd.nextthought.renderablecontentpackage';
 
-class PageInfo extends Base {
+export default class PageInfo extends Pages(Base) {
 	static MimeType = COMMON_PREFIX + 'pageinfo';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'AssessmentItems':     { type: 'model[]', defaultValue: [] },
 		'ContentPackageNTIID': { type: 'string'                    },
 		'label':               { type: 'string'                    },
@@ -200,4 +199,4 @@ function setupAssessmentItems(items, pageInfo) {
 	);
 }
 
-export default decorate(PageInfo, [model, mixin(Pages)]);
+Registry.register(PageInfo);

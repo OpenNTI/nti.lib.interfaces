@@ -1,17 +1,15 @@
-import { decorate } from '@nti/lib-commons';
-
 import { Parent } from '../../constants.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 const EXISTING_TRANSCRIPT = ' A Transcript already exists';
 
-class Transcript extends Base {
+export default class Transcript extends Base {
 	static MimeType = [COMMON_PREFIX + 'ntitranscript'];
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'lang':     {type: 'string'},
 		'purpose':  {type: 'string'},
 		'src':      {type: 'string'},
@@ -51,4 +49,4 @@ class Transcript extends Base {
 	}
 }
 
-export default decorate(Transcript, [model]);
+Registry.register(Transcript);

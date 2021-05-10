@@ -1,11 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import PlacementProvider from '../../../authoring/placement/providers/Assignment.js';
 import { Service, ASSESSMENT_HISTORY_LINK } from '../../../constants.js';
 import Publishable from '../../../mixins/Publishable.js';
 import Completable from '../../../mixins/Completable.js';
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 import SubmittableIdentity from '../mixins/SubmittableIdentity.js';
 import AssignmentIdentity from '../mixins/AssignmentIdentity.js';
@@ -19,12 +16,14 @@ const isSummary = ({ parts }) => parts && parts.some(x => x.IsSummary);
 const getAssociationCount = x => x.LessonContainerCount;
 const has = (x, k) => Object.prototype.hasOwnProperty.call(x, k);
 
-class Assignment extends Base {
+export default class Assignment extends Completable(
+	Publishable(SubmittableIdentity(AssignmentIdentity(Base)))
+) {
 	static MimeType = COMMON_PREFIX + 'assessment.assignment';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'auto_grade':                           { type: 'boolean', name: 'isAutoGraded'                },
 		'is_non_public':                        { type: 'boolean', name: 'isNonPublic'                 },
 		'available_for_submission_beginning':   { type: 'date',                                        },//becomes getAvailableForSubmissionBeginning (use getAssignedDate)
@@ -428,7 +427,4 @@ class Assignment extends Base {
 	}
 }
 
-export default decorate(Assignment, [
-	model,
-	mixin(Completable, Publishable, SubmittableIdentity, AssignmentIdentity),
-]);
+Registry.register(Assignment);

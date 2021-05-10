@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class SlideVideo extends Base {
+export default class SlideVideo extends Base {
 	static MimeType = COMMON_PREFIX + 'ntislidevideo';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'byline':        { type: 'string'                      },
 		'DCDescription': { type: 'string', name: 'description' },
 		'DCTitle':       { type: 'string', name: 'title'       },
@@ -18,4 +16,4 @@ class SlideVideo extends Base {
 	}
 }
 
-export default decorate(SlideVideo, [model]);
+Registry.register(SlideVideo);

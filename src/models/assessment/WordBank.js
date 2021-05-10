@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class WordBank extends Base {
+export default class WordBank extends Base {
 	static MimeType = COMMON_PREFIX + 'naqwordbank';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'entries': { type: 'model[]' },
 		'unique':  { type: 'boolean' }
 	};
@@ -20,4 +18,4 @@ class WordBank extends Base {
 		);
 	}
 }
-export default decorate(WordBank, [model]);
+Registry.register(WordBank);

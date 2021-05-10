@@ -1,7 +1,5 @@
 import EventEmitter from 'events';
 
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
 import Logger from '@nti/util-logger';
 
 import JSONValue from '../mixins/JSONValue.js';
@@ -11,7 +9,7 @@ import Fields, { hideField } from '../mixins/Fields.js';
 import HasLinks from '../mixins/HasLinks.js';
 import { Parent, Service } from '../constants.js';
 
-import Registry, { COMMON_PREFIX, model } from './Registry.js';
+import Registry, { COMMON_PREFIX } from './Registry.js';
 
 const logger = Logger.get('models:Base');
 
@@ -20,7 +18,9 @@ const CONTENT_VISIBILITY_MAP = { OU: 'OUID' };
 const PHANTOM = Symbol.for('Phantom');
 const is = Symbol('isTest');
 
-class Base extends EventEmitter {
+export default class Model extends Pendability(
+	Editable(JSONValue(HasLinks(Fields(EventEmitter))))
+) {
 	static MimeType = COMMON_PREFIX + '__base__';
 
 	// prettier-ignore
@@ -40,11 +40,11 @@ class Base extends EventEmitter {
 	/**
 	 *
 	 * @param {import('../stores/Service.js').default} service
-	 * @param {?Base} parent
+	 * @param {?Model} parent
 	 * @param {*} data
 	 */
 	constructor(service, parent, data) {
-		super();
+		super(service, parent, data);
 
 		this.setMaxListeners(100);
 		//Make EventEmitter properties non-enumerable
@@ -272,10 +272,5 @@ class Base extends EventEmitter {
 	}
 }
 
-/** @typedef {Base & HasLinks & JSONValue & Editable & Pendability & import('../mixins/Fields').FieldInterface<Base>} Model */
-
-/** @type {Model} (default) */
-export default decorate(Base, [
-	model,
-	mixin(HasLinks, JSONValue, Editable, Pendability, Fields),
-]);
+// This probably doesn't need registering... but it was already being registered... so...
+Registry.register(Model);

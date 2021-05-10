@@ -1,9 +1,6 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import PlacementProvider from '../../authoring/placement/providers/Question.js';
 import { Mixin as HasContent } from '../../mixins/HasContent.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 import QuestionIdentity from './mixins/QuestionIdentity.js';
@@ -14,7 +11,9 @@ import QuestionSubmission from './QuestionSubmission.js';
 
 const Individual = Symbol('Individual');
 
-class Question extends Base {
+export default class Question extends HasContent(
+	SubmittableIdentity(QuestionIdentity(Base))
+) {
 	static MimeType = [
 		COMMON_PREFIX + 'question',
 		COMMON_PREFIX + 'naquestion',
@@ -24,7 +23,7 @@ class Question extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'content':                  { type: 'string',  content: true    },
 		'parts':                    { type: 'model[]', defaultValue: [] },
 		'wordbank':                 { type: 'model'                     },
@@ -134,7 +133,4 @@ class Question extends Base {
 	}
 }
 
-export default decorate(Question, [
-	model,
-	mixin(HasContent, SubmittableIdentity, QuestionIdentity),
-]);
+Registry.register(Question);

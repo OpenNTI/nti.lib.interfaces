@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-class AssignmentPart extends Base {
+export default class AssignmentPart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.assignmentpart';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'question_set':  { type: 'model'   },
 		'QuestionSetId': { type: 'string'  },
 		'IsSummary':     { type: 'boolean' }
@@ -43,4 +41,4 @@ class AssignmentPart extends Base {
 	}
 }
 
-export default decorate(AssignmentPart, [model]);
+Registry.register(AssignmentPart);

@@ -1,16 +1,14 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import ContentRangeDescription from './ContentRangeDescription.js';
 import DomContentPointer from './DomContentPointer.js';
 
-class DomContentRangeDescription extends ContentRangeDescription {
+export default class DomContentRangeDescription extends ContentRangeDescription {
 	static MimeType = COMMON_PREFIX + 'contentrange.domcontentrangedescription';
 
 	// prettier-ignore
 	static Fields = {
-		...ContentRangeDescription.Fields,
+		...super.Fields,
 		'ancestor': { type: 'model' },
 		'end':      { type: 'model' },
 		'start':    { type: 'model' },
@@ -53,4 +51,4 @@ class DomContentRangeDescription extends ContentRangeDescription {
 	}
 }
 
-export default decorate(DomContentRangeDescription, [model]);
+Registry.register(DomContentRangeDescription);

@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Board from './Board.js';
 
-class Blog extends Board {
+export default class Blog extends Board {
 	static MimeType = COMMON_PREFIX + 'forums.personalblog';
 
 	title = 'Thoughts';
@@ -15,4 +13,4 @@ class Blog extends Board {
 	}
 }
 
-export default decorate(Blog, [model]);
+Registry.register(Blog);

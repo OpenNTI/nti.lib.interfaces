@@ -1,9 +1,7 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class Response extends Base {
+export default class Response extends Base {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.response',
 		COMMON_PREFIX + 'assessment.dictresponse',
@@ -11,4 +9,4 @@ class Response extends Base {
 	];
 }
 
-export default decorate(Response, [model]);
+Registry.register(Response);

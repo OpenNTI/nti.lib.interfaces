@@ -8,83 +8,84 @@ import { createUploadTask } from '../tasks/index.js';
 
 const logger = Logger.get('mixins:HasLinks');
 
-export default {
-	getLink(rel, params) {
-		let link = getLinkImpl(this, rel) || (rel === 'self' && this.href);
+const HasLinks = Base =>
+	class extends Base {
+		getLink(rel, params) {
+			let link = getLinkImpl(this, rel) || (rel === 'self' && this.href);
 
-		if (link && params) {
-			link = URL.appendQueryParams(link, params);
+			if (link && params) {
+				link = URL.appendQueryParams(link, params);
+			}
+
+			return link;
 		}
 
-		return link;
-	},
-
-	getLinkProperty(rel, prop) {
-		const link = getLinkImpl(this, rel, true);
-		return link && link[prop];
-	},
-
-	hasLink(rel) {
-		return !!this.getLink(rel);
-	},
-
-	fetchLinkParsed(rel, params) {
-		return this.fetchLink(rel, params, true);
-	},
-
-	fetchLink(rel, params, parseResponse) {
-		return this.requestLink(rel, 'get', void 0, params, parseResponse);
-	},
-
-	deleteLink(rel) {
-		return this.requestLink(rel, 'delete');
-	},
-
-	postToLink(rel, data, parseResponse) {
-		return this.requestLink(rel, 'post', data, void 0, parseResponse);
-	},
-
-	putToLink(rel, data, parseResponse) {
-		return this.requestLink(rel, 'put', data, void 0, parseResponse);
-	},
-
-	async requestLink(rel, method, data, params, parseResponse) {
-		const link = this.getLink(rel, params);
-		if (!link) {
-			throw new Error(NO_LINK);
+		getLinkProperty(rel, prop) {
+			const link = getLinkImpl(this, rel, true);
+			return link && link[prop];
 		}
 
-		let result = /^mock/i.test(link)
-			? Promise.resolve(
-					getLinkImpl(this, rel, true).result ||
-						Promise.reject('Bad Mock Data')
-			  )
-			: this[Service][method](link, data);
-
-		if (parseResponse) {
-			result = parseResult(this, result);
+		hasLink(rel) {
+			return !!this.getLink(rel);
 		}
 
-		return result;
-	},
+		fetchLinkParsed(rel, params) {
+			return this.fetchLink(rel, params, true);
+		}
 
-	uploadToLink(rel, method, data, params, parseResponse) {
-		const link = this.getLink(rel, params);
-		const parser = parseResponse
-			? r => parseResult(this, Promise.resolve(JSON.parse(r)))
-			: null;
+		fetchLink(rel, params, parseResponse) {
+			return this.requestLink(rel, 'get', void 0, params, parseResponse);
+		}
 
-		return createUploadTask(link, data, method, parser);
-	},
+		deleteLink(rel) {
+			return this.requestLink(rel, 'delete');
+		}
 
-	putUploadToLink(rel, data, parseResponse) {
-		return this.uploadToLink(rel, 'PUT', data, void 0, parseResponse);
-	},
+		postToLink(rel, data, parseResponse) {
+			return this.requestLink(rel, 'post', data, void 0, parseResponse);
+		}
 
-	postUploadToLink(rel, data, parseResponse) {
-		return this.uploadToLink(rel, 'POST', data, void 0, parseResponse);
-	},
-};
+		putToLink(rel, data, parseResponse) {
+			return this.requestLink(rel, 'put', data, void 0, parseResponse);
+		}
+
+		async requestLink(rel, method, data, params, parseResponse) {
+			const link = this.getLink(rel, params);
+			if (!link) {
+				throw new Error(NO_LINK);
+			}
+
+			let result = /^mock/i.test(link)
+				? Promise.resolve(
+						getLinkImpl(this, rel, true).result ||
+							Promise.reject('Bad Mock Data')
+				  )
+				: this[Service][method](link, data);
+
+			if (parseResponse) {
+				result = parseResult(this, result);
+			}
+
+			return result;
+		}
+
+		uploadToLink(rel, method, data, params, parseResponse) {
+			const link = this.getLink(rel, params);
+			const parser = parseResponse
+				? r => parseResult(this, Promise.resolve(JSON.parse(r)))
+				: null;
+
+			return createUploadTask(link, data, method, parser);
+		}
+
+		putUploadToLink(rel, data, parseResponse) {
+			return this.uploadToLink(rel, 'PUT', data, void 0, parseResponse);
+		}
+
+		postUploadToLink(rel, data, parseResponse) {
+			return this.uploadToLink(rel, 'POST', data, void 0, parseResponse);
+		}
+	};
 
 /*** Utility private functions ***/
 
@@ -108,3 +109,5 @@ function parseResult(scope, requestPromise) {
 			Array.isArray(o) ? Promise.all(o.map(maybeWait)) : maybeWait(o)
 		);
 }
+
+export default HasLinks;

@@ -1,16 +1,14 @@
-import { decorate } from '@nti/lib-commons';
-
 // import {Parser as parse} from '../../../../../constants.js';
-import { model, COMMON_PREFIX } from '../../../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../../../Registry.js';
 
 import Base from './Part.js';
 
-class AggregatedMultipleChoicePart extends Base {
+export default class AggregatedMultipleChoicePart extends Base {
 	static MimeType = COMMON_PREFIX + 'assessment.aggregatedmultiplechoicepart';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'Results': { type: '*' },   // can be a map of values
 	}
 
@@ -33,4 +31,4 @@ class AggregatedMultipleChoicePart extends Base {
 	}
 }
 
-export default decorate(AggregatedMultipleChoicePart, [model]);
+Registry.register(AggregatedMultipleChoicePart);

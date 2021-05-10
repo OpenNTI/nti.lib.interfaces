@@ -1,11 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
 import { Mixin as HasContent } from '../../mixins/HasContent.js';
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class Hint extends Base {
+export default class Hint extends HasContent(Base) {
 	static MimeType = [
 		COMMON_PREFIX + 'assessment.hint',
 		COMMON_PREFIX + 'assessment.htmlhint',
@@ -14,9 +11,9 @@ class Hint extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'value': { type: 'string', content: true },
 	}
 }
 
-export default decorate(Hint, [model, mixin(HasContent)]);
+Registry.register(Hint);

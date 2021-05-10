@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-class SCORMCompletionMetadata extends Base {
+export default class SCORMCompletionMetadata extends Base {
 	static MimeType = [COMMON_PREFIX + 'scormcompletionmetadata'];
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'ScormContentInfoNTIID': { type: 'string'   },
 		'ScormContentInfoTitle': { type: 'string'   },
 		'CompletionDate':        { type: 'date'     },
@@ -18,4 +16,4 @@ class SCORMCompletionMetadata extends Base {
 	getCompletionDate() {} //implemented by CompletionDate date field.
 }
 
-export default decorate(SCORMCompletionMetadata, [model]);
+Registry.register(SCORMCompletionMetadata);

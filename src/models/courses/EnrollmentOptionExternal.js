@@ -1,10 +1,8 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import EnrollmentOption from './EnrollmentOption.js';
 
-class EnrollmentOptionExternal extends EnrollmentOption {
+export default class EnrollmentOptionExternal extends EnrollmentOption {
 	static MimeType = [
 		COMMON_PREFIX + 'courseware.externalenrollmentoption',
 		COMMON_PREFIX + 'courseware.ensyncimisexternalenrollmentoption',
@@ -12,9 +10,9 @@ class EnrollmentOptionExternal extends EnrollmentOption {
 
 	// prettier-ignore
 	static Fields = {
-		...EnrollmentOption.Fields,
+		...super.Fields,
 		'enrollment_url':  { type: 'string', name: 'enrollmentURL' }
 	}
 }
 
-export default decorate(EnrollmentOptionExternal, [model]);
+Registry.register(EnrollmentOptionExternal);

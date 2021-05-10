@@ -1,18 +1,17 @@
-import { decorate } from '@nti/lib-commons';
-import { mixin } from '@nti/lib-decorators';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import AdministrativeIdentity from './mixins/AdministrativeIdentity.js';
 import Enrollment from './Enrollment.js';
 
-class InstanceAdministrativeRole extends Enrollment {
+export default class InstanceAdministrativeRole extends AdministrativeIdentity(
+	Enrollment
+) {
 	static MimeType =
 		COMMON_PREFIX + 'courseware.courseinstanceadministrativerole';
 
 	// prettier-ignore
 	static Fields = {
-		...Enrollment.Fields,
+		...super.Fields,
 		'RoleName': { type: 'string' },
 	}
 
@@ -102,7 +101,4 @@ function buildSuggestionsFrom(scopes, sectionName = 'My Course') {
 	return items;
 }
 
-export default decorate(InstanceAdministrativeRole, [
-	model,
-	mixin(AdministrativeIdentity),
-]);
+Registry.register(InstanceAdministrativeRole);

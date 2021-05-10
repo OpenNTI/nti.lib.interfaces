@@ -1,15 +1,13 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 
 import BaseEvent from './BaseEvent.js';
 
-class AssignmentCalendarEvent extends BaseEvent {
+export default class AssignmentCalendarEvent extends BaseEvent {
 	static MimeType = `${COMMON_PREFIX}assessment.assignmentcalendarevent`;
 
 	// prettier-ignore
 	static Fields = {
-		...BaseEvent.Fields,
+		...super.Fields,
 		'total_points':       { type: 'number', name: 'totalPoints' },
 		'MaximumTimeAllowed': { type: 'number'  },
 		'IsTimedAssignment':  { type: 'boolean' },
@@ -24,4 +22,4 @@ class AssignmentCalendarEvent extends BaseEvent {
 	getUniqueIdentifier = () => this.AssignmentNTIID + this.CatalogEntryNTIID;
 }
 
-export default decorate(AssignmentCalendarEvent, [model]);
+Registry.register(AssignmentCalendarEvent);

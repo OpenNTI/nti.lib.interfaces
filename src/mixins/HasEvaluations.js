@@ -5,16 +5,19 @@ const PollTpl = {
 	parts: [],
 };
 
-export default {
-	hasEvaluations: true,
+export default Target =>
+	class extends Target {
+		hasEvaluations = true;
 
-	getEvaluationsRel: () => 'CourseEvaluations',
+		getEvaluationsRel() {
+			return 'CourseEvaluations';
+		}
 
-	createPoll(data = {}) {
-		return this.postToLink(
-			this.getEvaluationsRel(),
-			{ ...PollTpl, ...data },
-			true
-		);
-	},
-};
+		createPoll(data = {}) {
+			return this.postToLink(
+				this.getEvaluationsRel(),
+				{ ...PollTpl, ...data },
+				true
+			);
+		}
+	};

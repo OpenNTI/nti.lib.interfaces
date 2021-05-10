@@ -1,15 +1,13 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 
 import Base from './Base.js';
 
-class TextContext extends Base {
+export default class TextContext extends Base {
 	static MimeType = COMMON_PREFIX + 'contentrange.textcontext';
 
 	// prettier-ignore
 	static Fields = {
-		...Base.Fields,
+		...super.Fields,
 		'contextOffset': { type: 'number' },
 		'contextText':   { type: 'string' },
 	}
@@ -47,4 +45,4 @@ class TextContext extends Base {
 	}
 }
 
-export default decorate(TextContext, [model]);
+Registry.register(TextContext);

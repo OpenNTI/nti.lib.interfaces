@@ -1,14 +1,12 @@
-import { decorate } from '@nti/lib-commons';
-
-import { model, COMMON_PREFIX } from '../../Registry.js';
+import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Instance from '../Instance.js';
 
-class ScormInstance extends Instance {
+export default class ScormInstance extends Instance {
 	static MimeType = [COMMON_PREFIX + 'courses.scormcourseinstance'];
 
 	// prettier-ignore
 	static Fields = {
-		...Instance.Fields,
+		...super.Fields,
 		Metadata: { type: 'model' }
 	}
 
@@ -19,4 +17,4 @@ class ScormInstance extends Instance {
 	}
 }
 
-export default decorate(ScormInstance, [model]);
+Registry.register(ScormInstance);
