@@ -1,11 +1,10 @@
-import EventEmitter from 'events';
-
 import LRU from 'lru-cache';
 
 import Logger from '@nti/util-logger';
 import { isNTIID } from '@nti/lib-ntiids';
 import { URL, wait } from '@nti/lib-commons';
 
+import { BaseObservable } from '../models/BaseObservable.js';
 import { parse } from '../models/Parser.js';
 import { Workspace } from '../models/index.js';
 import Capabilities from '../models/Capabilities.js';
@@ -60,19 +59,8 @@ const TitleSpecificWorkspaces = {
 	Communities: CommunitiesWorkspace,
 };
 
-function hideCurrentProperties(o) {
-	for (let key of Object.keys(o)) {
-		const desc = Object.getOwnPropertyDescriptor(o, key);
-		if (desc) {
-			desc.enumerable = false;
-			delete o[key];
-			Object.defineProperty(o, key, desc);
-		}
-	}
-}
-
 export default class ServiceDocument extends Pendability(
-	InstanceCacheContainer(EventEmitter)
+	InstanceCacheContainer(BaseObservable)
 ) {
 	static ClientContext = {};
 
@@ -81,10 +69,6 @@ export default class ServiceDocument extends Pendability(
 
 	constructor(json, server, context) {
 		super(json);
-
-		this.setMaxListeners(100);
-		//Make EventEmitter properties non-enumerable
-		hideCurrentProperties(this);
 
 		this.isService = Service;
 		this[Service] = this; //So the parser can access it

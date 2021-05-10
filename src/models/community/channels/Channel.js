@@ -1,11 +1,9 @@
-import EventEmitter from 'events';
-
 import { defineReadOnly } from '@nti/lib-commons';
 
-import { hideField } from '../../../mixins/Fields.js';
+import { BaseObservable } from '../../BaseObservable.js';
 import Iterator from '../../../data-sources/Iterator.js';
 
-export default class CommunityChannel extends EventEmitter {
+export default class CommunityChannel extends BaseObservable {
 	static fromForum(forum, section = null) {
 		const save = forum.isModifiable
 			? async data => {
@@ -68,9 +66,6 @@ export default class CommunityChannel extends EventEmitter {
 		section,
 	}) {
 		super();
-		this.setMaxListeners(100);
-		//Make EventEmitter properties non-enumerable
-		Object.keys(this).map(key => hideField(this, key));
 
 		this.#backer = backer;
 		this.#id = id;

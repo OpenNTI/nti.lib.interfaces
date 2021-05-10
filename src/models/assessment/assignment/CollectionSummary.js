@@ -1,9 +1,8 @@
-import EventEmitter from 'events';
-
 import invariant from 'invariant';
 
 import { Paging } from '@nti/lib-commons';
 
+import { BaseObservable } from '../../BaseObservable.js';
 import { initPrivate, getPrivate } from '../../../utils/private.js';
 import { SortOrder } from '../../../constants.js';
 
@@ -17,7 +16,7 @@ function clearCache(x) {
 	}
 }
 
-class AssignmentSummary extends EventEmitter {
+class AssignmentSummary extends BaseObservable {
 	constructor(assignment, history, username) {
 		super();
 		initPrivate(this, { assignment, history, username });
@@ -104,9 +103,10 @@ class AssignmentSummary extends EventEmitter {
 
 /**
  * This class is used by the assignment/Collection.
+ *
  * @private
  */
-export default class AssignmentCollectionSummary extends EventEmitter {
+export default class AssignmentCollectionSummary extends BaseObservable {
 	/**
 	 * Build store.
 	 *
@@ -118,8 +118,6 @@ export default class AssignmentCollectionSummary extends EventEmitter {
 	 */
 	constructor(service, parent, HistoryPromise) {
 		super();
-
-		this.setMaxListeners(100);
 
 		const data = {
 			service,

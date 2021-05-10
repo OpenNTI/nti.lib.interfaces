@@ -1,14 +1,12 @@
-import EventEmitter from 'events';
-
 import { Service } from '../constants.js';
+import { BaseObservable } from '../models/BaseObservable.js';
 import getLink from '../utils/get-link.js';
 
-//TODO: There isn't enough here to warrent a whole heavy class. This should move to the catalog API on the app side.
+//TODO: There isn't enough here to warrant a whole heavy class. This should move to the catalog API on the app side.
 
-export default class Enrollment extends EventEmitter {
+export default class Enrollment extends BaseObservable {
 	constructor(service) {
 		super();
-		this.setMaxListeners(100);
 		this.service = service;
 	}
 

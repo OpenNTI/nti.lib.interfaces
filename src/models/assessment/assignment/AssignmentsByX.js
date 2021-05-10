@@ -1,7 +1,6 @@
-import EventEmitter from 'events';
-
 import { Paging } from '@nti/lib-commons';
 
+import { BaseObservable } from '../../BaseObservable.js';
 import { initPrivate, getPrivate } from '../../../utils/private.js';
 
 const PageSource = Paging.ListBackedPageSource;
@@ -23,7 +22,7 @@ function getGroups(x) {
 	return groups || [];
 }
 
-export default class AssignmentsByX extends EventEmitter {
+export default class AssignmentsByX extends BaseObservable {
 	constructor(collection, defaultOrder) {
 		super();
 		let data = { collection, order: defaultOrder };
