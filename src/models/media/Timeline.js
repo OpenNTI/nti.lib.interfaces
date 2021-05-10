@@ -7,6 +7,7 @@ export default class Timeline extends Base {
 	// prettier-ignore
 	static Fields = {
 		...super.Fields,
+		'Target-NTIID':     { type: 'string'  },
 		'desc':             { type: 'string'  },
 		'description':      { type: 'string'  },
 		'icon':             { type: 'string'  },
