@@ -5,10 +5,18 @@ import { JSONValue } from '../JSONValue.js';
 
 test('JSONValue handles cycles', () => {
 	jest.spyOn(console, 'warn').mockImplementation(() => {});
-	const A = { ...JSONValue, name: 'Foo', ref: {}, nullKey: null };
-	const B = { ...JSONValue, name: 'Bar', ref: { A } };
+	const A = new (class A extends JSONValue() {
+		name = 'Foo';
+		ref = {};
+		nullKey = null;
+	})();
+	const B = new (class B extends JSONValue() {
+		name = 'Bar';
+		ref = {};
+	})();
 	A.B = B;
 	A.ref.B = B;
+	B.ref.A = A;
 
 	expect(A.getData()).toMatchInlineSnapshot(`
 		Object {

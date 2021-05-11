@@ -16,53 +16,59 @@ function decode(fields, key) {
 	return field.key || key;
 }
 
-const Serializing = Symbol('Serializing');
+const Serializing = new Set();
 
-export const JSONValue = {
-	toJSON() {
-		return this.getData();
-	},
+function getData({ diff = false } = {}) {
+	let d = {};
 
-	getData({ diff = false } = {}) {
-		let d = {};
+	try {
+		const { Fields = {} } = this.constructor;
+		//Sets dedupe values...
+		const keys = new Set([
+			...Object.keys(Fields),
+			...Object.keys(this).map(k => decode(Fields, k)),
+		]);
 
-		try {
-			const { Fields = {} } = this.constructor;
-			//Sets dedupe values...
-			const keys = new Set([
-				...Object.keys(Fields),
-				...Object.keys(this).map(k => decode(Fields, k)),
-			]);
+		Serializing.add(this);
 
-			this[Serializing] = true;
-
-			for (let k of keys) {
-				// skip unchanged values
-				if (diff && !this.__isDirty(k)) {
-					continue;
-				}
-
-				const v = __readValue(this, k);
-
-				if (
-					v !== void undefined &&
-					!isBlackListed(this, k) &&
-					!isFunction(v)
-				) {
-					let translator = `translate:${k}`;
-
-					d[k] =
-						this[translator] && isFunction(this[translator])
-							? this[translator](v)
-							: get(v, { diff });
-				}
+		for (let k of keys) {
+			// skip unchanged values
+			if (diff && !this.__isDirty(k)) {
+				continue;
 			}
-		} finally {
-			delete this[Serializing];
-		}
 
-		return d;
-	},
+			const v = __readValue(this, k);
+
+			if (
+				v !== void undefined &&
+				!isBlackListed(this, k) &&
+				!isFunction(v)
+			) {
+				let translator = `translate:${k}`;
+
+				d[k] =
+					this[translator] && isFunction(this[translator])
+						? this[translator](v)
+						: get(v, { diff });
+			}
+		}
+	} finally {
+		Serializing.delete(this);
+	}
+
+	return d;
+}
+
+export const JSONValue = (Target = Object) => {
+	class JSONValueImpl extends Target {
+		toJSON() {
+			return getData.apply(this);
+		}
+	}
+
+	JSONValueImpl.prototype.getData = getData;
+
+	return JSONValueImpl;
 };
 
 function get(v, opts) {
@@ -70,18 +76,14 @@ function get(v, opts) {
 		return v.map(get);
 	}
 
-	if (v?.[Serializing]) {
+	if (Serializing.has(v)) {
 		// eslint-disable-next-line no-console
 		console.warn('Data Cycle Detected');
 		return void 0;
 	}
 
-	if (v?.constructor === Object && v.getData !== JSONValue.getData) {
-		v = { ...v, ...JSONValue };
-	}
-
-	return isFunction(v?.getData)
-		? v.getData(opts)
+	return isFunction(v?.getData) || v?.constructor === Object
+		? getData.call(v, opts)
 		: isFunction(v?.toJSON)
 		? v.toJSON()
 		: v;
@@ -99,5 +101,3 @@ function isBlackListed(scope, k) {
 
 	return BLACK_LISTED[k];
 }
-
-export default Base => (Object.assign(Base.prototype, JSONValue), Base);

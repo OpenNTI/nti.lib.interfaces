@@ -1,6 +1,6 @@
 import Logger from '@nti/util-logger';
 
-import JSONValue from '../mixins/JSONValue.js';
+import { JSONValue } from '../mixins/JSONValue.js';
 import { Mixin as Pendability } from '../mixins/Pendability.js';
 import Editable from '../mixins/Editable.js';
 import Fields from '../mixins/Fields.js';

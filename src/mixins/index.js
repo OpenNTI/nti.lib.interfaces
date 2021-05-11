@@ -4,7 +4,7 @@ export { default as CourseAndAssignmentNameResolving } from './CourseAndAssignme
 export { default as Editable } from './Editable.js';
 export { default as Flaggable } from './Flaggable.js';
 export { default as GetContents } from './GetContents.js';
-export { default as JSONValue } from './JSONValue.js';
+export { JSONValue } from './JSONValue.js';
 export { default as Likable } from './Likable.js';
 export { default as Paged } from './Paged.js';
 export { default as Pinnable } from './Pinnable.js';
