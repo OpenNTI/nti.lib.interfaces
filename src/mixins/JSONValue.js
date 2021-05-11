@@ -62,7 +62,7 @@ function getData({ diff = false } = {}) {
 export const JSONValue = (Target = Object) => {
 	class JSONValueImpl extends Target {
 		toJSON() {
-			return getData.apply(this);
+			return this.getData();
 		}
 	}
 
