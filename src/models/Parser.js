@@ -118,8 +118,8 @@ function getModelByType(type) {
 }
 
 function getType(o) {
-	let type = o.MimeType || o.mimeType;
-	if (!type) {
+	let type = o?.MimeType || o?.mimeType;
+	if (!type && o) {
 		type = o.Class;
 		if (type) {
 			logger.error(
@@ -131,15 +131,14 @@ function getType(o) {
 			logger.error('Object does not have an identity', o);
 		}
 	}
-	return type;
+	return type || o;
 }
 
 function error(obj) {
 	let e = new Error(
-		'No Parser for object: ' +
-			(obj && getType(obj)) +
-			'\n' +
-			JSON.stringify(obj).substr(0, 100)
+		`No Parser for object: ${
+			getType(obj) || JSON.stringify(obj, null, 2).substr(0, 1000)
+		}`
 	);
 	e.NoParser = true;
 	throw e;
