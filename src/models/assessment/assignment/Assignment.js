@@ -72,9 +72,8 @@ export default class Assignment extends Completable(
 			const rawAssignment = await this.postToLink('Commence');
 			await this.refresh(rawAssignment);
 		} else if (this.CurrentMetadataAttemptItem) {
-			const rawAssignment = await this.CurrentMetadataAttemptItem.fetchLink(
-				'Assignment'
-			);
+			const rawAssignment =
+				await this.CurrentMetadataAttemptItem.fetchLink('Assignment');
 			await this.refresh(rawAssignment);
 		}
 
@@ -400,8 +399,7 @@ export default class Assignment extends Completable(
 
 		return work.then(() => {
 			if (this.canPublish() || this.canUnpublish()) {
-				return Publishable.setPublishState.call(
-					this,
+				return super.setPublishState(
 					value,
 					'available_for_submission_beginning',
 					'parts',
