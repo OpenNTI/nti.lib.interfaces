@@ -135,8 +135,7 @@ export default class Survey extends Publishable(Pages(QuestionSet)) {
 
 		return work.then(() => {
 			if (this.canPublish() || this.canUnpublish()) {
-				return Publishable.setPublishState.call(
-					this,
+				return super.setPublishState(
 					value,
 					'available_for_submission_beginning',
 					'questions',
