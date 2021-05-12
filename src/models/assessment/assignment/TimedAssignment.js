@@ -12,7 +12,7 @@ export default class TimedAssignment extends Assignment {
 	static Fields = {
 		...super.Fields,
 		'IsTimedAssignment':  { type: 'boolean' },
-		'MaximumTimeAllowed': { type: 'number'  },
+		'maximum_time_allowed': { type: 'number', name: 'MaximumTimeAllowed' },
 		'Metadata':           { type: 'object'  },
 	}
 
