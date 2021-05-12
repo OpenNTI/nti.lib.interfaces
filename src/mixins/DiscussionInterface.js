@@ -351,7 +351,7 @@ const Mixin = Target =>
 		}
 
 		canAddDiscussion() {
-			throw new Error('canAddDiscussion not implementd');
+			throw new Error('canAddDiscussion not implemented');
 		}
 
 		getDiscussionCount() {
@@ -371,7 +371,7 @@ const Mixin = Target =>
 		}
 
 		addDiscussion() {
-			throw new Error('addDiscussion not implented');
+			throw new Error('addDiscussion not implemented');
 		}
 
 		onDiscussionAdded(discussion, silent) {
