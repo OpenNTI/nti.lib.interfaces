@@ -215,6 +215,7 @@ const Mixin = Target =>
 
 		constructor(...args) {
 			super(...args);
+			// TODO: Should resolveMentions occur even if addToPending is not available?
 			this.addToPending?.(resolveMentions(this));
 		}
 
@@ -313,7 +314,7 @@ const Mixin = Target =>
 				return post.updatePost(data, ...args);
 			}
 
-			const payload = DiscussionInterface.getPayload(data);
+			const payload = getPayload(data);
 
 			const result = await this.save(payload, ...args);
 			await resolveMentions(this);
