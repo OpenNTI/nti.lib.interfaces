@@ -70,7 +70,9 @@ export default class PreferenceRoot extends Base {
 					);
 				}
 			} catch (saveError) {
-				logger.stack(saveError);
+				if (saveError.statusCode !== 0) {
+					logger.stack(saveError);
+				}
 			} finally {
 				stash.saving = null;
 			}
