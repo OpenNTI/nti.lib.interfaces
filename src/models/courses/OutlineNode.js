@@ -67,14 +67,12 @@ export default class OutlineNode extends Publishable(
 	}
 
 	get depth() {
-		let type = super.constructor;
-		return this.parents({ test: p => p instanceof type }).length;
+		return this.parents({ test: p => p instanceof Outline }).length;
 	}
 
 	get root() {
-		let type = super.constructor;
 		return this.parent({
-			test: o => o.constructor === type,
+			test: o => o.constructor === Outline,
 		});
 	}
 
