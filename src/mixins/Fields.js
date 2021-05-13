@@ -19,7 +19,7 @@ const None = void 0;
 const RAW = Symbol.for('Raw Data');
 const PASCAL_CASE_REGEX = /(?:^|[^a-z0-9])([a-z0-9])?/gim;
 
-const getType = x => x.constructor;
+export const getType = x => x?.constructor;
 const getTypeName = x => ((x = getType(x)), x.name || x.MimeType);
 const getMethod = x =>
 	'get' + x.replace(PASCAL_CASE_REGEX, (_, c) => (c || '').toUpperCase());
@@ -139,8 +139,12 @@ export default function FieldsApplier(target = class Dummy {}) {
 
 			for (let key of AllFields) {
 				//get the name, type, and defaultValue of the field...
-				const { name = key, type, required, defaultValue } =
-					Fields[key] || {}; //TODO: Add deprecated flag, and a forced value override.
+				const {
+					name = key,
+					type,
+					required,
+					defaultValue,
+				} = Fields[key] || {}; //TODO: Add deprecated flag, and a forced value override.
 
 				const value = data[key];
 				const declared = key in Fields;
@@ -244,7 +248,7 @@ export default function FieldsApplier(target = class Dummy {}) {
 		}
 
 		[RepresentsSameObject](o) {
-			const Cls = this.constructor;
+			const Cls = getType(this);
 
 			if (Cls.deriveCacheKeyFrom) {
 				return (
@@ -614,7 +618,9 @@ function enforceType(scope, fieldName, expectedType, value) {
 
 	if (!isExpected && type !== 'undefined') {
 		throw new TypeError(
-			`${scope.constructor.name}: Expected a ${expectedType} type for ${fieldName} but got ${type}`
+			`${
+				getType(scope).name
+			}: Expected a ${expectedType} type for ${fieldName} but got ${type}`
 		);
 	}
 }

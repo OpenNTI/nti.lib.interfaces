@@ -1,4 +1,4 @@
-import { __readValue } from './Fields.js';
+import { __readValue, getType } from './Fields.js';
 
 const isFunction = f => typeof f === 'function';
 
@@ -22,7 +22,7 @@ function getData({ diff = false } = {}) {
 	let d = {};
 
 	try {
-		const { Fields = {} } = this.constructor;
+		const { Fields = {} } = getType(this);
 		//Sets dedupe values...
 		const keys = new Set([
 			...Object.keys(Fields),
@@ -82,7 +82,7 @@ function get(v, opts) {
 		return void 0;
 	}
 
-	return isFunction(v?.getData) || v?.constructor === Object
+	return isFunction(v?.getData) || getType(v) === Object
 		? getData.call(v, opts)
 		: isFunction(v?.toJSON)
 		? v.toJSON()
