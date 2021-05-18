@@ -785,10 +785,16 @@ const isNonFieldsFn = fn => fn && !fn[FieldsFn];
 
 function applyField(scope, fieldName, valueIn, declared, defaultValue) {
 	let value = valueIn !== None ? valueIn : clone(defaultValue);
+	let originalName = null;
 
 	if (fieldName in scope) {
 		const descriptor = getPropertyDescriptor(scope, fieldName);
 		const { get, set } = descriptor || {};
+		if (get?.renamedFrom) {
+			originalName = {
+				renamedFrom: get.renamedFrom,
+			};
+		}
 
 		// We only want to skip when the class has defined its own getter/setter.
 		// When applyField is invoked as part of a refresh, the Fields getter/setter
@@ -841,7 +847,11 @@ function applyField(scope, fieldName, valueIn, declared, defaultValue) {
 			? getter
 			: warningGetter;
 
-	Object.assign(get, { declared, [__get]: getter });
+	Object.assign(get, {
+		[__get]: getter,
+		declared,
+		...originalName,
+	});
 
 	const set = setter;
 
