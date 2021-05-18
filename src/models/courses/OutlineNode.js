@@ -176,15 +176,15 @@ export default class OutlineNode extends Publishable(
 			const contentsPromise = getContent();
 
 			if (decorateProgress) {
-				Promise.all([contentsPromise, this.getProgress()]).then(
-					applyProgress
-				);
+				Promise.all([contentsPromise, this.getProgress()])
+					.then(applyProgress)
+					.catch(() => {});
 			}
 
 			if (decorateSummary) {
-				Promise.all([contentsPromise, this.getSummary()]).then(
-					applySummary
-				);
+				Promise.all([contentsPromise, this.getSummary()])
+					.then(applySummary)
+					.catch(() => {});
 			}
 
 			return await contentsPromise;
