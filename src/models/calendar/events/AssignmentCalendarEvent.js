@@ -1,8 +1,8 @@
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
 
-import BaseEvent from './BaseEvent.js';
+import { BaseEvent } from './BaseEvent.js';
 
-export default class AssignmentCalendarEvent extends BaseEvent {
+export class AssignmentCalendarEvent extends BaseEvent {
 	static MimeType = `${COMMON_PREFIX}assessment.assignmentcalendarevent`;
 
 	// prettier-ignore

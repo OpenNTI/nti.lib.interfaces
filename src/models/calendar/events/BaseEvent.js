@@ -1,7 +1,7 @@
 import Registry from '../../Registry.js';
 import Base from '../../Base.js';
 
-export default class BaseEvent extends Base {
+export class BaseEvent extends Base {
 	static MimeType = '__base-event__';
 
 	// prettier-ignore
