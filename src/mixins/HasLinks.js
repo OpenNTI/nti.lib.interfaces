@@ -8,7 +8,12 @@ import { createUploadTask } from '../tasks/index.js';
 
 const logger = Logger.get('mixins:HasLinks');
 
-const HasLinks = Base =>
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export const mixin = Base =>
 	class extends Base {
 		getLink(rel, params) {
 			let link = getLinkImpl(this, rel) || (rel === 'self' && this.href);
@@ -109,5 +114,3 @@ function parseResult(scope, requestPromise) {
 			Array.isArray(o) ? Promise.all(o.map(maybeWait)) : maybeWait(o)
 		);
 }
-
-export default HasLinks;

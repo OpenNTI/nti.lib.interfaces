@@ -5,7 +5,7 @@ import mime from 'mime-types';
 
 import { isNTIID } from '@nti/lib-ntiids';
 
-import { Mixin as ContentTree } from '../../content-tree/index.js';
+import { mixin as ContentTree } from '../../content-tree/index.js';
 import Completable from '../../mixins/Completable.js';
 import UserDataStore from '../../stores/UserData.js';
 import {

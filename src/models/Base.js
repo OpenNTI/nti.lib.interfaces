@@ -1,10 +1,10 @@
 import Logger from '@nti/util-logger';
 
 import { JSONValue } from '../mixins/JSONValue.js';
-import { Mixin as Pendability } from '../mixins/Pendability.js';
-import Editable from '../mixins/Editable.js';
-import Fields from '../mixins/Fields.js';
-import HasLinks from '../mixins/HasLinks.js';
+import { mixin as Pendability } from '../mixins/Pendability.js';
+import { mixin as Editable } from '../mixins/Editable.js';
+import { mixin as Fields } from '../mixins/Fields.js';
+import { mixin as HasLinks } from '../mixins/HasLinks.js';
 import { Parent, Service } from '../constants.js';
 
 import Registry, { COMMON_PREFIX } from './Registry.js';
@@ -164,7 +164,6 @@ export default class Model extends Pendability(
 	 * @param {Array} query The arguments:
 	 *                      {string} query[0] attribute - The name of a property/attribute name.
 	 *                      {string|RegExp} query[1] attributeValue - The (optional) value or value tester
-	 *
 	 * @returns {Model} The model that passes the test.
 	 */
 	parent(...query) {
@@ -187,11 +186,9 @@ export default class Model extends Pendability(
 	 * Returns a list of parents that match the given query. If no query is given, all parents are returned.
 	 *
 	 * @see #up()
-	 *
 	 * @param {Array} query The arguments:
 	 *                      {string} query[0] attribute - The name of a property/attribute name.
 	 *                      {string|RegExp} query[1] attributeValue - The (optional) value or value tester
-	 *
 	 * @returns {Model[]} All the parents that match the query
 	 */
 	parents(...query) {

@@ -1,7 +1,12 @@
 import { Node } from './tree-node/index.js';
 
-export default Target =>
-	class extends Target {
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export const mixin = Base =>
+	class extends Base {
 		getContentTree() {
 			return new Node(this);
 		}

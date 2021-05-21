@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import Logger from '@nti/util-logger';
 
 import { Service } from '../constants.js';
-import { Mixin as Pendability } from '../mixins/Pendability.js';
+import { mixin as Pendability } from '../mixins/Pendability.js';
 import { parseListFn } from '../models/Parser.js';
 
 const logger = Logger.get('store:Achievements');

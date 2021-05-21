@@ -8,7 +8,7 @@ import {
 	Parser as parse,
 	SCOPED_COURSE_INSTANCE,
 } from '../../constants.js';
-import { Mixin as ContentTree } from '../../content-tree/index.js';
+import { mixin as ContentTree } from '../../content-tree/index.js';
 import Publishable from '../../mixins/Publishable.js';
 import ContentConstraints from '../../mixins/ContentConstraints.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';

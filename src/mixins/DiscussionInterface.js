@@ -199,8 +199,14 @@ export const getPayload = payload => {
 	formData.append('__json__', JSON.stringify(json));
 	return formData;
 };
-const Mixin = Target =>
-	class DiscussionInterface extends Target {
+
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export const mixin = Base =>
+	class DiscussionInterface extends Base {
 		static Fields = {
 			...super.Fields,
 			title: super.Fields.title ?? { type: 'string' },
@@ -426,5 +432,5 @@ const Mixin = Target =>
 		}
 	};
 
-Mixin.getPayload = getPayload;
-export default Mixin;
+mixin.getPayload = getPayload;
+export default mixin;

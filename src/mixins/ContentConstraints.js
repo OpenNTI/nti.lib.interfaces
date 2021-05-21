@@ -1,5 +1,10 @@
-export default Target =>
-	class ContentConstraints extends Target {
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export default Base =>
+	class ContentConstraints extends Base {
 		static Fields = {
 			...super.Fields,
 			PublicationConstraints: { type: 'model' },

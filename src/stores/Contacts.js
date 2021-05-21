@@ -7,7 +7,7 @@ import Logger from '@nti/util-logger';
 import { Promises } from '@nti/lib-commons';
 
 import { Service, DELETED } from '../constants.js';
-import { Mixin as Pendability } from '../mixins/Pendability.js';
+import { mixin as Pendability } from '../mixins/Pendability.js';
 import { parse, parseListFn } from '../models/Parser.js';
 
 // import getLink from '../utils/get-link.js';
@@ -68,7 +68,6 @@ export default class Contacts extends Pendability(EventEmitter) {
 	 * @param {Service} service The service descriptor.
 	 * @param {string} entryPoint The URL to interact with.
 	 * @param {User} context The user.
-	 *
 	 * @returns {void}
 	 */
 	constructor(service, entryPoint, context) {
@@ -241,7 +240,6 @@ export default class Contacts extends Pendability(EventEmitter) {
 	 * Determines if the entity is in any of your Lists in the Contacts store.
 	 *
 	 * @param {string|Entity} entity The User entity, string or Model Instance.
-	 *
 	 * @returns {boolean} true if the store has any reference to the entity.
 	 */
 	contains(entity) {

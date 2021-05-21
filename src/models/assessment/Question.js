@@ -1,5 +1,5 @@
 import PlacementProvider from '../../authoring/placement/providers/Question.js';
-import { Mixin as HasContent } from '../../mixins/HasContent.js';
+import { mixin as HasContent } from '../../mixins/HasContent.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 

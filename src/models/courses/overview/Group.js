@@ -1,4 +1,4 @@
-import { Mixin as ContentTree } from '../../../content-tree/index.js';
+import { mixin as ContentTree } from '../../../content-tree/index.js';
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 

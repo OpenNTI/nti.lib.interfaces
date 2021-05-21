@@ -59,8 +59,13 @@ function getData({ diff = false } = {}) {
 	return d;
 }
 
-export const JSONValue = (Target = Object) => {
-	class JSONValueImpl extends Target {
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export const JSONValue = (Base = Object) => {
+	class JSONValueImpl extends Base {
 		toJSON() {
 			return this.getData();
 		}

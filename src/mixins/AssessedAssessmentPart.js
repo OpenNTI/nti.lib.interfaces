@@ -1,3 +1,8 @@
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
 export default Base =>
 	class extends Base {
 		getAssessedRoot() {

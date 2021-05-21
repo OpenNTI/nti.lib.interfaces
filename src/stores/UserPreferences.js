@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 
 import { ObjectUtils } from '@nti/lib-commons';
 
-import { Mixin as Pendability } from '../mixins/Pendability.js';
+import { mixin as Pendability } from '../mixins/Pendability.js';
 import Base from '../models/Base.js';
 
 export default class UserPreferences extends Pendability(EventEmitter) {

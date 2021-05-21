@@ -62,8 +62,13 @@ function setup(data, keys) {
 
 export const SetupContentProperties = Symbol('SetupContentProperties');
 
-export const Mixin = Target =>
-	class HasContent extends Target {
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export const mixin = Base =>
+	class HasContent extends Base {
 		constructor(...args) {
 			super(...args);
 			let data = args[args.length - 1];

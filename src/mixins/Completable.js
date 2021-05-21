@@ -8,8 +8,13 @@ function getCompletedDate(item, items) {
 	);
 }
 
-export default Target =>
-	class Completable extends Target {
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export default Base =>
+	class Completable extends Base {
 		// prettier-ignore
 		static Fields = {
 			...super.Fields,

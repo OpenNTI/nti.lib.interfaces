@@ -3,7 +3,14 @@ import { begin, finishers } from '../utils/events-begin-finish.js';
 
 const after = (task, call) => task.catch(() => {}).then(() => call());
 
-const Editable = Base =>
+/** @typedef {new (...args: any[]) => {}} Constructor */
+
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export const mixin = Base =>
 	class extends Base {
 		async delete(rel = 'edit') {
 			const link = this.getLink(rel);
@@ -160,5 +167,3 @@ function ensureSavingKeysOn(o, savingKeys) {
 
 	return o;
 }
-
-export default Editable;

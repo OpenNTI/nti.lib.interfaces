@@ -7,8 +7,13 @@ import { isNTIID } from '@nti/lib-ntiids';
 import { Service } from '../constants.js';
 import getLink from '../utils/get-link.js';
 
-export default Target =>
-	class extends Target {
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export default Base =>
+	class extends Base {
 		constructor(...args) {
 			super(...args);
 

@@ -6,8 +6,13 @@ import { thread, CHILDREN, PARENT } from '../utils/UserDataThreader.js';
 
 const logger = Logger.get('models:mixins:Threadable');
 
-export default Target =>
-	class extends Target {
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export default Base =>
+	class extends Base {
 		isThreadable = true;
 
 		constructor(...args) {

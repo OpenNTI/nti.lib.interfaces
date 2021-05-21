@@ -48,8 +48,13 @@ const isArrayType = _t.bind(/\[]$/);
 // const isDictionaryType = _t.bind(/\{}$/);
 // const isCollectionType = x => isArrayType(x) || isDictionaryType(x);
 
-export default function FieldsApplier(target = Object) {
-	return class Fields extends target {
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export const mixin = (Base = Object) =>
+	class extends Base {
 		__toRaw() {
 			return this[RAW];
 		}
@@ -352,7 +357,7 @@ export default function FieldsApplier(target = Object) {
 				data = data.__toRaw();
 			}
 
-			//TODO: check if the data's Last Modified is older than my Last Modified
+			//TODO: check if the Last Modified in data is older than my Last Modified
 			// if (!force && this.getLastModified() > Parsing.parseDate(data['Last Modified'])) {
 			// 	throw new Error('Attempting to refresh with older data');
 			// }
@@ -414,7 +419,6 @@ export default function FieldsApplier(target = Object) {
 			return keys.find(x => __readValue(this, x) === value);
 		}
 	};
-}
 
 function applyFieldStrategy(
 	scope,
@@ -860,8 +864,8 @@ export function clone(obj) {
 	) {
 		/**
 		 * We decided to pass models along.
-		 * They will be handeled in the applyModelField as a model and not be reparsed.
-		 * This was a problem when we passed parsed models and then reparsed them again.
+		 * They will be handled in the applyModelField as a model and not be re-parsed.
+		 * This was a problem when we passed parsed models and then re-parsed them again.
 		 * Since we are no longer doing that this shouldn't be an issue.
 		 */
 

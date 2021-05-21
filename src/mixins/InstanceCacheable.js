@@ -72,6 +72,11 @@ export function parseOrRefresh(service, parent, data) {
 	return inst;
 }
 
-export function cacheClassInstances(Clazz) {
-	Clazz.parse = parseOrRefresh;
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export function cacheClassInstances(Base) {
+	Base.parse = parseOrRefresh;
 }

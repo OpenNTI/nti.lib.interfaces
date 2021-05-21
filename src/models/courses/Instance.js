@@ -5,7 +5,7 @@ import { wait } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import { MEDIA_BY_OUTLINE_NODE, NO_LINK, Service } from '../../constants.js';
-import { Mixin as ContentTree } from '../../content-tree/index.js';
+import { mixin as ContentTree } from '../../content-tree/index.js';
 import HasEvaluations from '../../mixins/HasEvaluations.js';
 import AssessmentCollectionStudentView from '../assessment/assignment/CollectionStudentView.js';
 import AssessmentCollectionInstructorView from '../assessment/assignment/CollectionInstructorView.js';
@@ -343,7 +343,7 @@ export default class Instance extends ContentTree(
 		return service.get(url).then(parseResult);
 	}
 
-	async getCurrentGrade () {
+	async getCurrentGrade() {
 		const service = this[Service];
 		const link = this.getLink('CurrentGrade');
 
@@ -353,7 +353,9 @@ export default class Instance extends ContentTree(
 
 		const result = await service.get(link);
 
-		return service.getObject(result.FinalGrade ?? result.PredictedGrade, {parent: this});
+		return service.getObject(result.FinalGrade ?? result.PredictedGrade, {
+			parent: this,
+		});
 	}
 
 	getAllSurveys(params) {

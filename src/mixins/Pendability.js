@@ -4,7 +4,12 @@ const PRIVATE_PENDING = new WeakMap();
 const getPending = p => PRIVATE_PENDING.get(p) || [];
 const setPending = (p, list) => (PRIVATE_PENDING.set(p, list), list);
 
-export const Mixin = Base =>
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export const mixin = Base =>
 	class extends Base {
 		getPending() {
 			return getPending(this);
@@ -51,7 +56,7 @@ export const Mixin = Base =>
 		}
 	};
 
-const Prototype = Mixin(class {}).prototype;
+const Prototype = mixin(class {}).prototype;
 
 export function attach(context) {
 	setPending(context, getPending(context));

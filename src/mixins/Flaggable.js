@@ -6,8 +6,13 @@ const awaitSafely = async p => {
 	}
 };
 
-export default Target =>
-	class Flaggable extends Target {
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export default Base =>
+	class Flaggable extends Base {
 		get isFlagged() {
 			return this.hasLink('flag.metoo');
 		}

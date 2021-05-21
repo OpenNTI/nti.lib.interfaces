@@ -13,10 +13,10 @@ import AbstractPlaceholder from '../models/AbstractPlaceholder.js';
 import Batch from '../data-sources/data-types/Batch.js';
 import PageInfo from '../models/content/PageInfo.js';
 import {
-	Mixin as Pendability,
 	attach as attachPendingQueue,
+	mixin as Pendability,
 } from '../mixins/Pendability.js';
-import { Mixin as InstanceCacheContainer } from '../mixins/InstanceCacheContainer.js';
+import { mixin as InstanceCacheContainer } from '../mixins/InstanceCacheContainer.js';
 import DataCache from '../utils/data-cache.js';
 import getLink from '../utils/get-link.js';
 import maybeWait from '../utils/maybe-wait.js';
@@ -448,12 +448,11 @@ export default class ServiceDocument extends Pendability(
 			ntiids = [ntiids];
 		}
 
-		return Promise.all(
-			ntiids.map(n => this.getObjectRaw(n))
-		).then(results =>
-			(!Array.isArray(results) ? [results] : results).map(o =>
-				o && o.MimeType ? o : null
-			)
+		return Promise.all(ntiids.map(n => this.getObjectRaw(n))).then(
+			results =>
+				(!Array.isArray(results) ? [results] : results).map(o =>
+					o && o.MimeType ? o : null
+				)
 		);
 	}
 
@@ -649,7 +648,6 @@ export default class ServiceDocument extends Pendability(
 	 * Resolve an entity.
 	 *
 	 * @param {string} entityId ID to resolve to entity.
-	 *
 	 * @returns {Promise} Promise for an Entity.
 	 */
 	async resolveEntity(entityId) {

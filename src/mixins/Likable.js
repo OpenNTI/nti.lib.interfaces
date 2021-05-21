@@ -2,8 +2,13 @@ import { pluck } from '@nti/lib-commons';
 
 import { NO_LINK } from '../constants.js';
 
-export default Target =>
-	class Likable extends Target {
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export default Base =>
+	class Likable extends Base {
 		like() {
 			let link = this.hasLink('like') ? 'like' : 'unlike';
 			return this.postToLink(link)

@@ -4,7 +4,12 @@ export function getCacheFor(o) {
 	return CACHE.get(o);
 }
 
-export const Mixin = Base =>
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export const mixin = Base =>
 	class extends Base {
 		constructor(...args) {
 			super(...args);

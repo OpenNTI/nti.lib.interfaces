@@ -2,8 +2,13 @@ import { Service, Parser as parse } from '../constants.js';
 
 const Submitted = Symbol('Submitted');
 
-export default Target =>
-	class Submission extends Target {
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export default Base =>
+	class Submission extends Base {
 		canSubmit() {
 			if (this.isSubmitted()) {
 				return false;

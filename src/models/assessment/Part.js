@@ -1,5 +1,5 @@
 import {
-	Mixin as HasContent,
+	mixin as HasContent,
 	SetupContentProperties,
 } from '../../mixins/HasContent.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';

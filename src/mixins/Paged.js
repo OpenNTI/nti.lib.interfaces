@@ -1,8 +1,13 @@
 const isPositiveFiniteNumber = n =>
 	typeof n === 'number' && isFinite(n) && n > 0;
 
-export default Target =>
-	class Paged extends Target {
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export default Base =>
+	class Paged extends Base {
 		constructor(...args) {
 			super(...args);
 			this.continuous = false;

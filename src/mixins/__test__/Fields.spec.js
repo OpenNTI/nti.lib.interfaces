@@ -3,7 +3,7 @@ import diff from 'jest-diff';
 
 import Logger from '@nti/util-logger';
 
-import Fields, { clone } from '../Fields.js';
+import { clone, mixin as Fields } from '../Fields.js';
 
 const logger = Logger.get('mixins:Fields');
 

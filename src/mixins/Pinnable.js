@@ -1,5 +1,10 @@
-export default Target =>
-	class extends Target {
+/**
+ * @template {new (...args: any[]) => {}} T
+ * @param {T} Base
+ * @mixin
+ */
+export default Base =>
+	class extends Base {
 		static Fields = {
 			...super.Fields,
 			Pinned: { type: 'boolean' },

@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import Logger from '@nti/util-logger';
 
 import { Service } from '../constants.js';
-import { Mixin as Pendability } from '../mixins/Pendability.js';
+import { mixin as Pendability } from '../mixins/Pendability.js';
 // import getLink from '../utils/get-link.js';
 import { parseListFn } from '../models/Parser.js';
 
@@ -19,7 +19,6 @@ export default class EntityStore extends Pendability(EventEmitter) {
 	 * @param {Service} service The service descriptor.
 	 * @param {string} entryPoint The URL to interact with.
 	 * @param {User} context The user.
-	 *
 	 * @returns {void}
 	 */
 	constructor(service, entryPoint, context) {
