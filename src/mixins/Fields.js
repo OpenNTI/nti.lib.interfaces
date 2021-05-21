@@ -55,10 +55,23 @@ const isArrayType = _t.bind(/\[]$/);
  */
 export const mixin = (Base = Object) =>
 	class extends Base {
+		/**
+		 * Access the raw data used to build this model instance.
+		 *
+		 * @protected
+		 * @returns {any}
+		 */
 		__toRaw() {
 			return this[RAW];
 		}
 
+		/**
+		 * Determine if this model (or field) has changed.
+		 *
+		 * @protected
+		 * @param {string|symbol|null} property
+		 * @returns {boolean}
+		 */
 		__isDirty(property = null) {
 			const check = key => {
 				const value = __readValue(this, key);
@@ -266,6 +279,12 @@ export const mixin = (Base = Object) =>
 			return this.href || this[Service].getObjectURL(this.getID());
 		}
 
+		/**
+		 * Fetch or apply new data to this model instance.
+		 *
+		 * @param {*?} newRaw
+		 * @returns {Promise<this>}
+		 */
 		async refresh(newRaw) {
 			const service = this[Service];
 			const INFLIGHT = 'model:inflight-refresh';
@@ -343,6 +362,12 @@ export const mixin = (Base = Object) =>
 			}
 		}
 
+		/**
+		 * @private
+		 * @param {any} data
+		 * @param {boolean} force
+		 * @returns {this}
+		 */
 		applyRefreshedData(data, force) {
 			if (!this[RepresentsSameObject](data)) {
 				logger.debug(
@@ -410,6 +435,12 @@ export const mixin = (Base = Object) =>
 			return this;
 		}
 
+		/**
+		 * Find the field name that has the given value.
+		 *
+		 * @param {*} value
+		 * @returns {string | symbol | null}
+		 */
 		findField(value) {
 			const keys = [
 				...Object.getOwnPropertyNames(this),
