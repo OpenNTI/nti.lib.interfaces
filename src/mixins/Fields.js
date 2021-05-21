@@ -48,22 +48,8 @@ const isArrayType = _t.bind(/\[]$/);
 // const isDictionaryType = _t.bind(/\{}$/);
 // const isCollectionType = x => isArrayType(x) || isDictionaryType(x);
 
-/**
- * @template T
- * @typedef {{
- * 	__toRaw:() => any;
- *  getObjectHref: () => string;
- *  refresh: (x: any?) => Promise<T>;
- * }} FieldInterface
- */
-
-/**
- * @template T
- * @param {T} target
- * @returns {T & FieldInterface<T>}
- */
-export default function FieldsApplier(target = class Dummy {}) {
-	return class extends target {
+export default function FieldsApplier(target = Object) {
+	return class Fields extends target {
 		__toRaw() {
 			return this[RAW];
 		}
@@ -819,7 +805,7 @@ function applyField(scope, fieldName, valueIn, declared, defaultValue) {
 		// avoid logger noise when overwriting our own descriptor
 		if (descriptor && !get) {
 			logger.warn(
-				`Overwiting existing field '${fieldName}' in %o'`,
+				`Overwriting existing field '${fieldName}' in %o'`,
 				scope.MimeType || scope
 			);
 		}
