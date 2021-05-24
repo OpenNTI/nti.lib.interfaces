@@ -16,6 +16,19 @@ export default class TimedAssignment extends Assignment {
 		'Metadata':           { type: 'object'  },
 	}
 
+	/**
+	 *
+	 * @param {Assignment} assignment
+	 * @returns {TimedAssignment}
+	 */
+	static fromAssignment(assignment) {
+		return new TimedAssignment(
+			assignment[Service],
+			assignment.parent(),
+			assignment.__toRaw()
+		);
+	}
+
 	isTimed = true;
 
 	isNonSubmit() {
