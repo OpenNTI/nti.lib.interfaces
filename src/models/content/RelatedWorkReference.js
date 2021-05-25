@@ -100,7 +100,7 @@ export default class RelatedWorkReference extends ContentTree(
 		const types = [this.type, this.targetMimeType];
 		if (this.isExternal && types.every(x => x === EXTERNAL_TYPE)) {
 			// We don't have a MimeType to lookup...
-			// Just compare the extention
+			// Just compare the extension
 			return this.getFileExtentionFromHref() === 'pdf';
 		}
 
