@@ -1,4 +1,3 @@
-/* globals spyOn */
 /* eslint-env jest */
 import Logger from '@nti/util-logger';
 
@@ -13,15 +12,21 @@ const logger = Logger.get('interfaces:utils:timezone');
 
 describe('TimeZone setup tools', () => {
 	beforeEach(() => {
-		spyOn(logger, 'warn');
+		jest.spyOn(logger, 'warn');
 		delete global.document;
+		jest.resetAllMocks();
 	});
 
 	test('getTimezoneFromEnvironment() with fill Intl support', () => {
+		global.Intl = {
+			DateTimeFormat: () => ({
+				resolvedOptions: () => ({ timeZone: 'my tz' }),
+			}),
+		};
 		const data = getTimezoneFromEnvironment();
 		expect(logger.warn).not.toHaveBeenCalled();
 		expect(data).toEqual({
-			// See comment in ../timzeon.js:28
+			// See comment in ../timezone.js:28
 			offset: -new Date().getTimezoneOffset(),
 			name: Intl.DateTimeFormat().resolvedOptions().timeZone,
 		});
@@ -32,7 +37,7 @@ describe('TimeZone setup tools', () => {
 		const data = getTimezoneFromEnvironment();
 		expect(logger.warn).toHaveBeenCalled();
 		expect(data).toEqual({
-			// See comment in ../timzeon.js:28
+			// See comment in ../timezone.js:28
 			offset: -new Date().getTimezoneOffset(),
 		});
 	});
@@ -46,7 +51,7 @@ describe('TimeZone setup tools', () => {
 		const data = getTimezoneFromEnvironment();
 		expect(logger.warn).not.toHaveBeenCalled();
 		expect(data).toEqual({
-			// See comment in ../timzeon.js:28
+			// See comment in ../timezone.js:28
 			offset: -new Date().getTimezoneOffset(),
 		});
 	});
@@ -64,7 +69,7 @@ describe('TimeZone setup tools', () => {
 	});
 
 	test('getTimezoneFromCookie() bad value', () => {
-		global.document = { cookie: 'timezone=asdas' };
+		global.document = { cookie: 'timezone=foobar' };
 		expect(getTimezoneFromCookie()).toEqual(null);
 	});
 
@@ -83,7 +88,7 @@ describe('TimeZone setup tools', () => {
 	test('getTimezone()', () => {
 		global.document = {};
 		const o = {
-			// See comment in ../timzeon.js:28
+			// See comment in ../timezone.js:28
 			offset: -new Date().getTimezoneOffset(),
 			name: Intl.DateTimeFormat().resolvedOptions().timeZone,
 		};

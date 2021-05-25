@@ -1,4 +1,3 @@
-/* globals spyOn */
 /* eslint-env jest */
 import Logger from '@nti/util-logger';
 
@@ -35,7 +34,7 @@ describe('Model Registry', () => {
 			expect(Registry.register(MOCK)).toBe(MOCK);
 			expect(Registry.register(MOCK2)).toBe(MOCK2);
 
-			spyOn(logger, 'warn');
+			jest.spyOn(logger, 'warn');
 			expect(Registry.register(MOCK)).toBe(MOCK);
 			expect(logger.warn).toHaveBeenCalledWith(
 				'Overriding Type!! %s with %o was %o',
@@ -61,7 +60,7 @@ describe('Model Registry', () => {
 				'aliases and types must be strings'
 			);
 
-			spyOn(logger, 'warn');
+			jest.spyOn(logger, 'warn');
 
 			expect(() => Registry.alias('cap', 'baz')).toThrow(
 				'Cannot alias a non-existing type'
@@ -84,7 +83,7 @@ describe('Model Registry', () => {
 
 		test('ignore', () => {
 			const r = Registry.getInstance();
-			spyOn(r, 'alias');
+			jest.spyOn(r, 'alias');
 			expect(Registry.ignore).toEqual(expect.any(Function));
 			expect(Registry.ignore('links')).toBeUndefined();
 			expect(r.alias).toHaveBeenCalledWith('ignored', 'links');
@@ -112,7 +111,7 @@ describe('Model Registry', () => {
 			expect(registry).not.toBe(Registry.getInstance());
 		});
 
-		test('Instance map is initalized with an ignored key', () => {
+		test('Instance map is initialized with an ignored key', () => {
 			expect(registry[MAP].size).toBe(1);
 			expect(registry[MAP].get('ignored')).toBeTruthy();
 		});
@@ -133,7 +132,7 @@ describe('Model Registry', () => {
 			expect(registry.register(MOCK)).toBe(MOCK);
 			expect(registry.register(MOCK2)).toBe(MOCK2);
 
-			spyOn(logger, 'warn');
+			jest.spyOn(logger, 'warn');
 			expect(registry.register(MOCK)).toBe(MOCK);
 			expect(logger.warn).toHaveBeenCalledWith(
 				'Overriding Type!! %s with %o was %o',
@@ -159,7 +158,7 @@ describe('Model Registry', () => {
 				'aliases and types must be strings'
 			);
 
-			spyOn(logger, 'warn');
+			jest.spyOn(logger, 'warn');
 
 			expect(() => registry.alias('cap', 'baz')).toThrow(
 				'Cannot alias a non-existing type'
@@ -195,7 +194,7 @@ describe('Model Registry', () => {
 			registry[MAP].set('baz', 'zaz');
 			registry[MAP].set('zaz', 'zab');
 
-			spyOn(logger, 'debug');
+			jest.spyOn(logger, 'debug');
 			expect(registry.lookup('zab')).toBeUndefined();
 			expect(logger.debug).toHaveBeenCalledWith(
 				'Alias Loop Detected... already seen: %s\n\t=?> %s',
