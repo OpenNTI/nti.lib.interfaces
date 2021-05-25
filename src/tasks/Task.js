@@ -50,10 +50,10 @@ export default class Task extends EventEmitter {
 			return;
 		}
 
-		this.setStateTimeout = setImmediate(() => {
+		this.setStateTimeout = setTimeout(() => {
 			this.emit(ChangeEvent);
 			delete this.setStateTimeout;
-		});
+		}, 0);
 	};
 
 	addChangeListener(fn) {
