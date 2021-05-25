@@ -22,7 +22,7 @@ const UserData = Symbol('UserData');
 /*
 Internal Links:
            NTIID: "tag:nextthought.com,2011-10:OU-RelatedWorkRef...:digestion_and_metabolism_textbook1"
-         creator: "Openstax, Heather Ketchum, and Eric Bright"
+         creator: "OpenStack, Heather Smith, and Eric Bright"
             desc: "Read this material about Digestion and Metabolism."
             icon: "resources/.../fd35e23767020999111e1f49239199b4c5eff23e.png"
             abel: "Digestion and Metabolism Textbook Reading 1"
@@ -96,12 +96,12 @@ export default class RelatedWorkReference extends ContentTree(
 		return !this.isContent && !this.isExternal;
 	}
 
-	get isEmbeddableDocument() {
+	get isEmbedableDocument() {
 		const types = [this.type, this.targetMimeType];
 		if (this.isExternal && types.every(x => x === EXTERNAL_TYPE)) {
 			// We don't have a MimeType to lookup...
 			// Just compare the extension
-			return this.getFileExtentionFromHref() === 'pdf';
+			return this.getFileExtensionFromHref() === 'pdf';
 		}
 
 		return !this.isDocument && types.some(x => mime.extension(x) === 'pdf');
@@ -134,7 +134,7 @@ export default class RelatedWorkReference extends ContentTree(
 		return Promise.resolve(store); //in the future, this may need to be async...
 	}
 
-	getFileExtentionFor() {
+	getFileExtensionFor() {
 		const ext = [this.type, this.targetMimeType].reduce(
 			(a, x) => a || mime.extension(x),
 			null
@@ -148,13 +148,13 @@ export default class RelatedWorkReference extends ContentTree(
 		}
 
 		if (!ext || ext === 'bin') {
-			return this.getFileExtentionFromHref();
+			return this.getFileExtensionFromHref();
 		}
 
 		return ext;
 	}
 
-	getFileExtentionFromHref() {
+	getFileExtensionFromHref() {
 		return extname(parseUrl(this.href).pathname)
 			.replace(/\./, '')
 			.toLowerCase();
