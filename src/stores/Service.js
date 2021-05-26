@@ -38,6 +38,8 @@ import Enrollment from './Enrollment.js';
 import UserPreferences from './UserPreferences.js';
 
 /** @typedef {import('../interface/DataServerInterface.js').default} DataServerInterface */
+/** @typedef {import('../models/Base.js').default} Model */
+/** @typedef {import('../models/entities/User.js').default} User */
 
 const ENROLLMENT = Symbol('enrollment');
 
@@ -907,8 +909,6 @@ export default class ServiceDocument extends Pendability(
 	}
 
 	/**
-
-	 * @method getContextPathFor
 	 * @param  {string|Object} thing The NTIID or model to retrieve a LibraryPath for.
 	 * @returns {Promise} Resolves with library path
 	 */
