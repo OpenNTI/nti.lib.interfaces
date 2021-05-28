@@ -11,7 +11,7 @@ export const MAP = Symbol('Model Map');
 export const COMMON_PREFIX = 'application/vnd.nextthought.';
 
 export const trimCommonPrefix = x =>
-	x &&
+	typeof x === 'string' &&
 	x
 		.replace(/(^application\/vnd\.nextthought\.)|(\+json$)/g, '')
 		.toLowerCase();
@@ -64,9 +64,8 @@ export default class Registry {
 			);
 		}
 
-		const MimeTypes = (Array.isArray(o.MimeType)
-			? o.MimeType
-			: [o.MimeType]
+		const MimeTypes = (
+			Array.isArray(o.MimeType) ? o.MimeType : [o.MimeType]
 		).filter(Boolean);
 		const [MimeType] = MimeTypes;
 		const BaseTypes = o.prototype.MimeTypes || [];
