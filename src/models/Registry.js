@@ -160,6 +160,11 @@ export default class Registry {
 	}
 
 	lookup(type) {
+		if (typeof type !== 'string') {
+			throw new Error(
+				'Invalid argument. Registry.lookup() only handles mimeType strings.'
+			);
+		}
 		let m = this[MAP].get(trimCommonPrefix(type));
 		logger.trace('Lookup: %s, %o', type, m);
 
