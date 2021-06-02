@@ -538,7 +538,7 @@ function getterWarning(scope, name, originalName) {
 	}
 
 	warn.renamedTo = name;
-	warn[__get] = () => scope[name];
+	warn[__get] = () => __readValue(scope, name);
 	return warn;
 }
 
