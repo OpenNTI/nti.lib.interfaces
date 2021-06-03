@@ -1,7 +1,7 @@
 import { pluck, Parsing } from '@nti/lib-commons';
 
 /**
- * @template {new (...args: any[]) => {}} T
+ * @template {import('../constants').Constructor} T
  * @param {T} Base
  * @mixin
  */

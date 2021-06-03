@@ -9,7 +9,7 @@ function getCompletedDate(item, items) {
 }
 
 /**
- * @template {new (...args: any[]) => {}} T
+ * @template {import('../constants').Constructor} T
  * @param {T} Base
  * @mixin
  */

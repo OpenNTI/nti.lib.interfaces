@@ -3,10 +3,8 @@ import { begin, finishers } from '../utils/events-begin-finish.js';
 
 const after = (task, call) => task.catch(() => {}).then(() => call());
 
-/** @typedef {new (...args: any[]) => {}} Constructor */
-
 /**
- * @template {new (...args: any[]) => {}} T
+ * @template {import('../constants').Constructor} T
  * @param {T} Base
  * @mixin
  */

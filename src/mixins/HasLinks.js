@@ -9,7 +9,7 @@ import { createUploadTask } from '../tasks/index.js';
 const logger = Logger.get('mixins:HasLinks');
 
 /**
- * @template {new (...args: any[]) => {}} T
+ * @template {import('../constants').Constructor} T
  * @param {T} Base
  * @mixin
  */

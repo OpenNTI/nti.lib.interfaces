@@ -1,3 +1,5 @@
+/** @typedef {new (...args: any[]) => {}} Constructor */
+
 export const Parent = Symbol.for('Parent');
 export const Service = Symbol.for('Service');
 

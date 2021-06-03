@@ -3,7 +3,7 @@ import { Service, Parser as parse } from '../constants.js';
 const Submitted = Symbol('Submitted');
 
 /**
- * @template {new (...args: any[]) => {}} T
+ * @template {import('../constants').Constructor} T
  * @param {T} Base
  * @mixin
  */

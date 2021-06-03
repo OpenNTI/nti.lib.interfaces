@@ -63,7 +63,7 @@ function setup(data, keys) {
 export const SetupContentProperties = Symbol('SetupContentProperties');
 
 /**
- * @template {new (...args: any[]) => {}} T
+ * @template {import('../constants').Constructor} T
  * @param {T} Base
  * @mixin
  */
