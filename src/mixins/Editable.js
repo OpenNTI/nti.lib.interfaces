@@ -16,7 +16,7 @@ export const mixin = Base =>
 			const link = this.getLink(rel);
 
 			if (!link) {
-				throw new Error('No Edit Link');
+				throw new Error(`No ${rel} Link`);
 			}
 
 			begin(this, DELETED);
@@ -46,7 +46,7 @@ export const mixin = Base =>
 
 		async saveFormData(data, onAfterRefresh = x => x, rel = 'edit') {
 			if (!this.hasLink(rel)) {
-				throw new Error('No Edit Link');
+				throw new Error(`No ${rel} Link`);
 			}
 
 			begin(this, SAVE);
@@ -82,7 +82,7 @@ export const mixin = Base =>
 			}
 
 			if (!this.hasLink(rel)) {
-				throw new Error('No Edit Link');
+				throw new Error(`No ${rel} Link`);
 			}
 
 			const { ...values } = newValues;

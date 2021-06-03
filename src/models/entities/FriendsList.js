@@ -41,7 +41,6 @@ export default class FriendsList extends Entity {
 	 * Determines if the entity is in this List.
 	 *
 	 * @param {string|Entity} entity The User entity, string or Model Instance.
-	 *
 	 * @returns {boolean} true if the entity is in this list.
 	 */
 	contains(entity) {
@@ -65,7 +64,7 @@ export default class FriendsList extends Entity {
 	 */
 	async add(...entities) {
 		if (!this.isModifiable) {
-			throw new Error('No Edit Link');
+			throw new Error('Model is not Modifiable');
 		}
 
 		let data = this.getData();
@@ -103,14 +102,13 @@ export default class FriendsList extends Entity {
 	 * Remove an entity from the list.
 	 *
 	 * @param {string|Entity} entity The entity to be removed.
-	 *
 	 * @returns {Promise} To fulfill if successful, or reject with an error.
 	 */
 	async remove(entity) {
 		const entityId = getID(entity);
 
 		if (!this.isModifiable) {
-			throw new Error('No Edit Link');
+			throw new Error('Model is not Modifiable');
 		}
 
 		const { friends = [] } = this;
@@ -147,7 +145,7 @@ export default class FriendsList extends Entity {
 	 */
 	async update(...entities) {
 		if (!this.isModifiable) {
-			throw new Error('No Edit Link');
+			throw new Error('Model is not Modifiable');
 		}
 
 		let data = this.getData();
