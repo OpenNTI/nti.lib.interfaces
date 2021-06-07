@@ -60,7 +60,7 @@ export default class DataServerInterface extends EventEmitter {
 		}
 
 		try {
-			const headers = (this.headers = {});
+			const headers = (this.headers = { ...config.extraHeaders });
 
 			//App Identifier headers
 			if (typeof BUILD_PACKAGE_NAME !== 'undefined') {
