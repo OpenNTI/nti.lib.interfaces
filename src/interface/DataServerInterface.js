@@ -503,48 +503,50 @@ export default class DataServerInterface extends EventEmitter {
 		}
 
 		const data = cache.get(SERVICE_DATA_CACHE_KEY);
-		const promise = (data && !refreshing //Do we have the data to build an instance? (are we're not freshing...)
-			? // Yes...
-			  Promise.resolve(new Service(data, this, context))
-			: //No... okay... get the data, but first we have to perform a ping/handshake...
-			  this.ping(void 0, context)
+		const promise = (
+			data && !refreshing //Do we have the data to build an instance? (are we're not freshing...)
+				? // Yes...
+				  Promise.resolve(new Service(data, this, context))
+				: //No... okay... get the data, but first we have to perform a ping/handshake...
+				  this.ping(void 0, context)
 
-					// now we can get the url of the service doc...
-					.then(
-						result =>
-							result.getLink(CONTINUE) ||
-							result.getLink(CONTINUE_ANONYMOUSLY) ||
-							Promise.reject(
-								Object.assign(
-									//captures the initial call site.
-									new Error(
-										'No continue link. Cannot fetch service document.'
-									),
-									{
-										NoContinueLink: true,
-									}
+						// now we can get the url of the service doc...
+						.then(
+							result =>
+								result.getLink(CONTINUE) ||
+								result.getLink(CONTINUE_ANONYMOUSLY) ||
+								Promise.reject(
+									Object.assign(
+										//captures the initial call site.
+										new Error(
+											'No continue link. Cannot fetch service document.'
+										),
+										{
+											NoContinueLink: true,
+										}
+									)
 								)
-							)
-					)
+						)
 
-					// With the url, we can finally load...
-					.then(serviceUrl => this.get(serviceUrl, context))
+						// With the url, we can finally load...
+						.then(serviceUrl => this.get(serviceUrl, context))
 
-					// Now that we have the data, save it into cache...
-					.then(
-						json => cache.set(SERVICE_DATA_CACHE_KEY, json) && json
-					)
+						// Now that we have the data, save it into cache...
+						.then(
+							json =>
+								cache.set(SERVICE_DATA_CACHE_KEY, json) && json
+						)
 
-					//Setup our Service instance...
-					.then(json =>
-						!cached
-							? //If we're not freshing, build a new Service...
-							  new Service(json, this, context)
-							: // Otherwise, update the existing one...
-							  Promise.resolve(cached) // "cached" may be a promise, so resolve/unwrap it first.
-									// Now we can apply the new data.
-									.then(doc => doc.assignData(json))
-					)
+						//Setup our Service instance...
+						.then(json =>
+							!cached
+								? //If we're not freshing, build a new Service...
+								  new Service(json, this, context)
+								: // Otherwise, update the existing one...
+								  Promise.resolve(cached) // "cached" may be a promise, so resolve/unwrap it first.
+										// Now we can apply the new data.
+										.then(doc => doc.assignData(json))
+						)
 		)
 			// Wait for all the tasks that got spun up when we parsed the data...
 			.then(doc => doc.waitForPending()); // waitForPending resolves with itself ("doc" in this case)
