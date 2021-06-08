@@ -86,9 +86,8 @@ export default class Video extends Completable(Pages(Base)) {
 	getDuration = async () => MediaSourceUtil.get('duration', this.sources);
 
 	/**
-	 * @param {string} [lang] Request a language specific transcript. If
-	 *                        nothing is provided, it will default to english.
-	 * @param {string} purpose Request a purpose specific transcript. It nothing is provided it will match any purpose
+	 * @param {string} [lang] Request a language specific transcript. If nothing is provided, it will default to english.
+	 * @param {string} purpose Request a purpose specific transcript. If nothing is provided, it will match any purpose
 	 * @returns {Promise} A promise of a transcript or a rejection.
 	 */
 	getTranscript(lang, purpose) {
