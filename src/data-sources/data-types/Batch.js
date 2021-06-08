@@ -1,6 +1,7 @@
 import { Service } from '../../constants.js';
 import Base from '../../models/Base.js';
 
+const next = 'batch-next';
 export default class Batch extends Base {
 	// prettier-ignore
 	static Fields = {
@@ -32,9 +33,21 @@ export default class Batch extends Base {
 		return this.Items[Symbol.iterator]();
 	}
 
-	async loadAll() {
-		const next = 'batch-next';
+	get empty() {
+		return (
+			this.Items.length === 0 &&
+			(this.ItemCount === 0 ||
+				this.Total === 0 ||
+				this.TotalItemCount === 0 ||
+				this.FilteredTotalItemCount === 0)
+		);
+	}
 
+	get hasMore() {
+		return this.hasLink(next);
+	}
+
+	async loadAll() {
 		while (this.hasLink(next)) {
 			const batch = await Batch.from(this, this.fetchLink(next));
 			this.Links = [

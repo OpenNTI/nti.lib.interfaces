@@ -1,15 +1,8 @@
+import Batch from '../../../data-sources/data-types/Batch.js';
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
-import Base from '../../Base.js';
 
-export class EventAttendance extends Base {
-	static MimeType = COMMON_PREFIX + 'calendar.usercalendareventattendance';
-
-	// prettier-ignore
-	static Fields = {
-		...super.Fields,
-		'registrationTime': { type: 'date' },
-		'User':             { type: 'model' }
-	}
+export class EventAttendance extends Batch {
+	static MimeType = COMMON_PREFIX + 'calendar.calendareventattendance';
 }
 
 Registry.register(EventAttendance);
