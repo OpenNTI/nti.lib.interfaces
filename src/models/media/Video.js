@@ -88,20 +88,22 @@ export default class Video extends Completable(Pages(Base)) {
 	/**
 	 * @param {string} [lang] Request a language specific transcript. If
 	 *                        nothing is provided, it will default to english.
+	 * @param {string} purpose Request a purpose specific transcript. It nothing is provided it will match any purpose
 	 * @returns {Promise} A promise of a transcript or a rejection.
 	 */
-	getTranscript(lang) {
-		const language = lang || 'en';
+	getTranscript(lang, purpose) {
+		const language = lang || 'en' || 'de';
 		const { transcripts } = this;
 
 		if (isEmpty(transcripts)) {
 			return Promise.reject(NO_TRANSCRIPT);
 		}
 
-		const target = this.transcripts.reduce(
-			(result, potential) =>
-				result || (potential.lang === language && potential),
-			null
+		const target = this.transcripts.find(
+			potential => (
+				potential.lang === language,
+				purpose && potential.purpose === purpose
+			)
 		);
 
 		if (!target) {
