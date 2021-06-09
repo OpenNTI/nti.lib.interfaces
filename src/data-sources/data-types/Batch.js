@@ -33,13 +33,18 @@ export default class Batch extends Base {
 		return this.Items[Symbol.iterator]();
 	}
 
+	get total() {
+		return this.Total ?? this.TotalItemCount ?? 0;
+	}
+
+	get filteredTotal() {
+		return this.FilteredTotalItemCount ?? 0;
+	}
+
 	get empty() {
 		return (
 			this.Items.length === 0 &&
-			(this.ItemCount === 0 ||
-				this.Total === 0 ||
-				this.TotalItemCount === 0 ||
-				this.FilteredTotalItemCount === 0)
+			(this.total === 0 || this.filteredTotal === 0)
 		);
 	}
 
