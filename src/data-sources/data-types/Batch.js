@@ -47,18 +47,26 @@ export default class Batch extends Base {
 		return this.hasLink(next);
 	}
 
-	async loadAll() {
-		while (this.hasLink(next)) {
-			const batch = await Batch.from(this, this.fetchLink(next));
-			this.Links = [
-				...this.Links.filter(x => x.rel !== next),
-				...batch.Links.filter(x => x.rel === next),
-			];
+	async next() {
+		if (!this.hasMore) {
+			return;
+		}
 
-			for (const item of batch.Items) {
-				item.reparent(this);
-				this.Items.push(item);
-			}
+		const batch = await Batch.from(this, this.fetchLink(next));
+		this.Links = [
+			...this.Links.filter(x => x.rel !== next),
+			...batch.Links.filter(x => x.rel === next),
+		];
+
+		for (const item of batch.Items) {
+			item.reparent(this);
+			this.Items.push(item);
+		}
+	}
+
+	async loadAll() {
+		while (this.hasMore) {
+			await this.next();
 		}
 
 		return this;
