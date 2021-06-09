@@ -16,7 +16,13 @@ const logger = Logger.get('mixins:HasLinks');
 export const mixin = Base =>
 	class extends Base {
 		getLink(rel, params) {
-			let link = getLinkImpl(this, rel) || (rel === 'self' && this.href);
+			const [name, ...segments] = rel.split('/');
+			let link =
+				getLinkImpl(this, name) || (name === 'self' && this.href);
+
+			if (link && segments.length > 0) {
+				link = URL.join(link, ...segments);
+			}
 
 			if (link && params) {
 				link = URL.appendQueryParams(link, params);
