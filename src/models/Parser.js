@@ -79,7 +79,10 @@ function trackInstances(service, data, make) {
 
 	let inst = map[id];
 	if (!inst) {
-		inst = map[id] = make();
+		inst = make();
+		if (id) {
+			map[id] = inst;
+		}
 	} else {
 		if (
 			!inst.getLastModified() ||
