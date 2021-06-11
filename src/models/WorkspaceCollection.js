@@ -1,8 +1,12 @@
 // import {model, COMMON_PREFIX} from './Registry.js';
 import Base from './Base.js';
+import Registry, { COMMON_PREFIX } from './Registry.js';
 
 export default class WorkspaceCollection extends Base {
-	// static MimeType = COMMON_PREFIX + 'workspace.collection'
+	static MimeType = COMMON_PREFIX + 'workspace.collection';
+
+	static computeMimeType = title =>
+		COMMON_PREFIX + `__internal__.${title?.toLowerCase()}`;
 
 	// prettier-ignore
 	static Fields = {
@@ -18,9 +22,13 @@ export default class WorkspaceCollection extends Base {
 			throw new TypeError('Invalid input, `items` sould be an array.');
 		}
 
-		return items.map(
-			data => new WorkspaceCollection(service, parent, data)
-		);
+		return items.map(data => {
+			const Cls =
+				Registry.lookup(this.computeMimeType(data.Title)) ||
+				WorkspaceCollection;
+
+			return new Cls(service, parent, data);
+		});
 	}
 
 	acceptsType(mime) {
