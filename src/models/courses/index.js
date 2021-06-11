@@ -10,6 +10,7 @@ export { default as GradeBookShell } from './GradeBookShell.js';
 export { default as GradeBookByAssignment } from './GradeBookByAssignment.js';
 export { default as GradeBookUserSummary } from './GradeBookUserSummary.js';
 export { default as CatalogEntry } from './CatalogEntry.js';
+export { default as CatalogFolder } from './CatalogFolder.js';
 export { default as CatalogLegacyEntry } from './CatalogLegacyEntry.js';
 export { default as CatalogInstructorLegacyInfo } from './CatalogInstructorLegacyInfo.js';
 export { default as CompletableItemDefaultRequiredPolicy } from './CompletableItemDefaultRequiredPolicy.js';
