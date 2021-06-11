@@ -6,7 +6,8 @@
   "description": "Provides an interface for interacting with the dataserver via javascript.",
   "main": "./src/index.js",
   "exports": {
-    ".": "./src/index.js"
+    ".": "./src/index.js",
+    "./package.json": "./package.json"
   },
   "type": "module",
   "files": [
