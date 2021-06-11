@@ -6,8 +6,12 @@ export default class CourseCatalogFolder extends Base {
 	// prettier-ignore
 	static Fields = {
 		...super.Fields,
-		'anonymously_accessible': { type: 'boolean' },
+		'anonymously_accessible': { type: 'boolean', name: 'anonymouslyAccessible' },
 	};
+
+	async setAnonymousAccess(anonymouslyAccessible) {
+		return this.save({ anonymouslyAccessible });
+	}
 }
 
 Registry.register(CourseCatalogFolder);
