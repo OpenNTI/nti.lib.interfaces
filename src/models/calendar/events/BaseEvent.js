@@ -1,6 +1,8 @@
 import Registry from '../../Registry.js';
 import Base from '../../Base.js';
 
+/** @typedef {import('../../entities/User.js').default} User */
+
 export class BaseEvent extends Base {
 	static MimeType = '__base-event__';
 
@@ -24,6 +26,21 @@ export class BaseEvent extends Base {
 	}
 
 	getUniqueIdentifier = () => this.getID();
+
+	/**
+	 *
+	 * @param {User} user
+	 */
+	async recordAttendance(user) {
+		const rel = 'record-attendance';
+		if (!this.hasLink(rel)) {
+			throw new Error(
+				'This event does not support recording attendance.'
+			);
+		}
+
+		await this.postToLink(rel, { Username: user.getID() });
+	}
 }
 
 Registry.register(BaseEvent);
