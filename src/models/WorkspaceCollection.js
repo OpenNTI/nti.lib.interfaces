@@ -17,7 +17,7 @@ export default class WorkspaceCollection extends Base {
 		'Title':   { type: 'string'   },
 	}
 
-	static List(service, parent, items) {
+	static List = (service, parent, items) => {
 		if (!Array.isArray(items)) {
 			throw new TypeError('Invalid input, `items` sould be an array.');
 		}
@@ -29,7 +29,7 @@ export default class WorkspaceCollection extends Base {
 
 			return new Cls(service, parent, data);
 		});
-	}
+	};
 
 	acceptsType(mime) {
 		return this.accepts.includes(mime);
