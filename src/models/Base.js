@@ -114,10 +114,15 @@ export default class Model extends Pendability(
 		this[Service]?.emit(`${this.getEventPrefix()}-change`, this, ...who);
 
 		if (this.parent(x => x.constructor.ChangeBubbles)) {
+			const what = [...who];
 			const p = this.parent();
-			const key = p?.findField(this);
 
-			p?.onChange?.(key, ...who);
+			const key = p?.findField(this);
+			if (key) {
+				what.unshift(key);
+			}
+
+			p?.onChange?.(...what);
 		}
 	}
 
