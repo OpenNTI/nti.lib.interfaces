@@ -137,7 +137,7 @@ export default class Model extends Pendability(
 				return fn(item, ...args);
 			}
 
-			if (item.getLastModified() >= this.getLastModified()) {
+			if (this.OID && item.getLastModified() >= this.getLastModified()) {
 				if (this.applyChange) {
 					await this.applyChange(item);
 				} else {
