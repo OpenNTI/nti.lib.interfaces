@@ -144,7 +144,7 @@ export default class Model extends Pendability(
 					await this.refresh(item.toJSON());
 				}
 
-				fn();
+				fn(this, ...args);
 			}
 		};
 
