@@ -49,7 +49,7 @@ export default class Batch extends Base {
 	}
 
 	get hasMore() {
-		return this.hasLink(next);
+		return this.hasLink(next) && this.Items?.length < this.total;
 	}
 
 	async next() {
