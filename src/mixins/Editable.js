@@ -10,11 +10,15 @@ const after = (task, call) => task.catch(() => {}).then(() => call());
  */
 export const mixin = Base =>
 	class extends Base {
-		async delete(rel = 'edit') {
+		async delete(rel) {
+			if (!rel) {
+				rel = ['delete', 'edit'].find(x => this.hasLink(x)) ?? '';
+			}
+
 			const link = this.getLink(rel);
 
 			if (!link) {
-				throw new Error(`No ${rel} Link`);
+				throw new Error(`No ${rel || 'delete or edit'} Link`);
 			}
 
 			begin(this, DELETED);
