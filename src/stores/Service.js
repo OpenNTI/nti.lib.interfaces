@@ -30,6 +30,7 @@ import {
 	Server,
 	Service,
 } from '../constants.js';
+import User from '../models/entities/User.js';
 
 import { ChatClient } from './ChatClient.js';
 import ContactsStore from './Contacts.js';
@@ -627,19 +628,37 @@ export default class ServiceDocument extends Pendability(
 		if (cached) {
 			result = Promise.resolve(cached);
 		} else {
-			result = this.get(this.getResolveUserURL(entityId)).then(data => {
-				let items = data.Items || (data.MimeType ? [data] : []);
-				let entity = items.find(entityMatcher);
+			result = (async () => {
+				let entity;
 
-				if (entity) {
-					cache.set(key, entity);
+				if (this.isAnonymous) {
+					entity = {
+						MimeType: User.MimeType,
+						Username: entityId,
+						shallow: true,
+						alias: ' ',
+						realname: ' ',
+						// url-join(getConfig().server, 'users', entityId, '@@avatar')
+						AvatarURL: `/dataserver2/users/${encodeURIComponent(
+							entityId
+						)}/@@avatar`,
+					};
+				} else {
+					const data = await this.get(
+						this.getResolveUserURL(entityId)
+					);
+					const items = data.Items || (data.MimeType ? [data] : []);
+					entity = items.find(entityMatcher);
 				}
 
-				return (
-					entity ||
-					Promise.reject(`Could not resolve entity: "${entityId}".`)
-				);
-			});
+				if (!entity) {
+					throw new Error(`Could not resolve entity: "${entityId}".`);
+				}
+
+				cache.set(key, entity);
+
+				return entity;
+			})();
 
 			cache.setVolatile(key, result); //if this is asked for again before we resolve, reuse this promise.
 			result.catch(() => cache.setVolatile(key, null));
