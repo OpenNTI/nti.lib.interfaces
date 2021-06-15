@@ -380,7 +380,8 @@ export default class DataServerInterface extends EventEmitter {
 
 			Object.assign(error, json);
 
-			const isConflict = response.status === 409;
+			// Don't offer a confirm if there isn't links.
+			const isConflict = response.status === 409 && !!json.Links;
 
 			if (isConflict) {
 				error.confirm = async (config = {}) => {
