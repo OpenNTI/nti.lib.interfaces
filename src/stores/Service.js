@@ -166,6 +166,10 @@ export default class ServiceDocument extends Pendability(
 		return Boolean(this[Context]);
 	}
 
+	get isAnonymous() {
+		return !this.getResolveAppUserURL();
+	}
+
 	//meant to be used by models and interface code. Client code should use the config getter in web-client.
 	getConfig() {
 		return this[Server].config;
