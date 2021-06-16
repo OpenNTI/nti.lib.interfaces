@@ -91,7 +91,7 @@ export default class Video extends Completable(Pages(Base)) {
 	 * @returns {Promise} A promise of a transcript or a rejection.
 	 */
 	getTranscript(lang, purpose) {
-		const language = lang || 'en' || 'de';
+		const language = lang || 'en';
 		const { transcripts } = this;
 
 		if (isEmpty(transcripts)) {
@@ -101,7 +101,7 @@ export default class Video extends Completable(Pages(Base)) {
 		const target = this.transcripts.find(
 			potential => (
 				potential.lang === language,
-				purpose && potential.purpose === purpose
+				!purpose || potential.purpose === purpose
 			)
 		);
 
