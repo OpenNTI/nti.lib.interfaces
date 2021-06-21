@@ -639,7 +639,7 @@ export default class ServiceDocument extends Pendability(
 						alias: ' ',
 						realname: ' ',
 						// url-join(getConfig().server, 'users', entityId, '@@avatar')
-						AvatarURL: `/dataserver2/users/${encodeURIComponent(
+						avatarURL: `/dataserver2/users/${encodeURIComponent(
 							entityId
 						)}/@@avatar`,
 					};
