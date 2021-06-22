@@ -157,8 +157,9 @@ export default class DataServerInterface extends EventEmitter {
 		const { accept } = options.headers || {};
 		const mime = accept && new FileType.MimeComparator(accept);
 
+		logger.trace('credentials: %s, url: %s', this.credentials, url);
 		const init = {
-			credentials: 'same-origin',
+			credentials: this.credentials || 'same-origin',
 			method: data ? 'POST' : 'GET',
 			signal: controller.signal,
 			...options,

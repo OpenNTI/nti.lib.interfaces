@@ -3,7 +3,6 @@
 export const Parent = Symbol.for('Parent');
 export const Service = Symbol.for('Service');
 
-export const Server = Symbol.for('Server');
 export const Context = Symbol.for('Context');
 
 export const Parser = Symbol('Parser');

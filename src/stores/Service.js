@@ -27,7 +27,6 @@ import {
 	REL_USER_RESOLVE,
 	REL_BULK_USER_RESOLVE,
 	Context,
-	Server,
 	Service,
 } from '../constants.js';
 import User from '../models/entities/User.js';
@@ -67,6 +66,7 @@ export default class ServiceDocument extends Pendability(
 ) {
 	static ClientContext = {};
 
+	#server = null;
 	#chatClient = null;
 	#pong = null;
 
@@ -74,8 +74,12 @@ export default class ServiceDocument extends Pendability(
 		super(json);
 
 		this.isService = Service;
+		this.#server = Object.create(server, {
+			credentials: {
+				get: () => (this.isAnonymous ? 'omit' : 'same-origin'),
+			},
+		});
 		this[Service] = this; //So the parser can access it
-		this[Server] = server;
 		this[Context] =
 			context === ServiceDocument.ClientContext ? void context : context;
 
@@ -87,11 +91,11 @@ export default class ServiceDocument extends Pendability(
 	}
 
 	get OnlineStatus() {
-		return this[Server].OnlineStatus;
+		return this.getServer().OnlineStatus;
 	}
 
 	dispatch(...args) {
-		this[Server].dispatch(...args);
+		this.getServer().dispatch(...args);
 	}
 
 	toJSON() {
@@ -173,7 +177,7 @@ export default class ServiceDocument extends Pendability(
 
 	//meant to be used by models and interface code. Client code should use the config getter in web-client.
 	getConfig() {
-		return this[Server].config;
+		return this.getServer().config;
 	}
 
 	getSiteName() {
@@ -182,7 +186,7 @@ export default class ServiceDocument extends Pendability(
 
 	/** @returns {DataServerInterface} */
 	getServer() {
-		return this[Server];
+		return this.#server;
 	}
 
 	getDataCache() {
