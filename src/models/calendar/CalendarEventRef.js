@@ -1,9 +1,10 @@
+import Completable from '../../mixins/Completable.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 /** @typedef {import('./events/BaseEvent').BaseEvent} BaseEvent */
 
-export default class CalendarEventRef extends Base {
+export default class CalendarEventRef extends Completable(Base) {
 	static MimeType = `${COMMON_PREFIX}nticalendareventref`;
 
 	// prettier-ignore
