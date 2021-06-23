@@ -74,7 +74,8 @@ export default class ServiceDocument extends Pendability(
 		super(json);
 
 		this.isService = Service;
-		this.#server = Object.create(server, {
+		this.#server = server;
+		Object.defineProperties(server, {
 			credentials: {
 				get: () => (this.isAnonymous ? 'omit' : 'same-origin'),
 			},
