@@ -75,11 +75,6 @@ export default class ServiceDocument extends Pendability(
 
 		this.isService = Service;
 		this.#server = server;
-		Object.defineProperties(server, {
-			credentials: {
-				get: () => (this.isAnonymous ? 'omit' : 'same-origin'),
-			},
-		});
 		this[Service] = this; //So the parser can access it
 		this[Context] =
 			context === ServiceDocument.ClientContext ? void context : context;
@@ -89,6 +84,21 @@ export default class ServiceDocument extends Pendability(
 			.then(pong => (this.#pong = pong));
 
 		this.assignData(json, { silent: true });
+
+		// Compose all request methods here so they inject the `credentials:omit` config to the request init if the service document is anonymous.
+		for (const method of ['get', 'head', 'post', 'put', 'delete']) {
+			const fn = this[method];
+			this[method] = (init, ...args) => {
+				if (this.isAnonymous) {
+					if (typeof init === 'string') {
+						init = { url: init };
+					}
+					init.credentials = 'omit';
+				}
+
+				return fn.call(this, init, ...args);
+			};
+		}
 	}
 
 	get OnlineStatus() {
@@ -263,6 +273,27 @@ export default class ServiceDocument extends Pendability(
 		return this[Lists];
 	}
 
+	async getBatch(url, params = {}, options, parent = this) {
+		let { transform, method = 'get', data = null } = options || {};
+		if (typeof options === 'function') {
+			transform = options;
+		}
+
+		if (!/^(get|post|put|delete|head)$/.test(method)) {
+			throw new Error('Invalid HTTP Method');
+		}
+
+		let raw = await this[method](URL.appendQueryParams(url, params), data);
+
+		if (transform) {
+			raw = await transform(raw);
+		}
+
+		const batch = new Batch(this, parent, raw);
+
+		return batch.waitForPending();
+	}
+
 	get(url) {
 		let key = typeof url === 'string' ? url : JSON.stringify(url);
 		const inflight = (this.inflightRequests = this.inflightRequests || {});
@@ -286,27 +317,6 @@ export default class ServiceDocument extends Pendability(
 			.then(clean, clean); //we remove the request's promise from the in-flight cache.
 
 		return p;
-	}
-
-	async getBatch(url, params = {}, options, parent = this) {
-		let { transform, method = 'get', data = null } = options || {};
-		if (typeof options === 'function') {
-			transform = options;
-		}
-
-		if (!/^(get|post|put|delete|head)$/.test(method)) {
-			throw new Error('Invalid HTTP Method');
-		}
-
-		let raw = await this[method](URL.appendQueryParams(url, params), data);
-
-		if (transform) {
-			raw = await transform(raw);
-		}
-
-		const batch = new Batch(this, parent, raw);
-
-		return batch.waitForPending();
 	}
 
 	head(url) {
