@@ -374,7 +374,15 @@ export default class DataServerInterface extends EventEmitter {
 		};
 
 		try {
-			const json = await response.json();
+			const text = await response.text();
+			let json = null;
+			try {
+				json = JSON.parse(text);
+			} catch {
+				json = {
+					Message: text,
+				};
+			}
 
 			json.Message = json.Message || json.message;
 
