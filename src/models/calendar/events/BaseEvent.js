@@ -15,8 +15,10 @@ export class BaseEvent extends Base {
 		'icon': 				{ type: 'string' },
 		'location': 			{ type: 'string' },
 		'title': 				{ type: 'string' },
+		'CatalogEntry':     	{ type: 'model'  }, // not currently coming back inline, but we're decorating it client-side
 		'CatalogEntryNTIID': 	{ type: 'string' },
-		'ContainerId': 			{ type: 'string' }
+		'ContainerId': 			{ type: 'string' },
+		'RegistrationTime':     { type: 'date'   }
 	}
 
 	constructor(service, parent, data) {
@@ -48,9 +50,9 @@ Registry.register(BaseEvent);
 async function resolveCatalogEntry(service, event) {
 	const self = event;
 	try {
-		const { CatalogEntryNTIID: id } = event;
+		const { CatalogEntryNTIID: id, CatalogEntry } = event;
 
-		if (!id) {
+		if (!id || CatalogEntry) {
 			return;
 		}
 
