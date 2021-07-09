@@ -1,7 +1,7 @@
 import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-export default class EventUserSearchHit extends Base {
+export class EventUserSearchHit extends Base {
 	static MimeType = `${COMMON_PREFIX}calendar.eventusersearchhit`;
 
 	// prettier-ignore
