@@ -172,6 +172,10 @@ export default class Contacts extends Pendability(EventEmitter) {
 			.then(() => this.emit('change', this));
 	}
 
+	get length() {
+		return this[DATA]?.length ?? 0;
+	}
+
 	[Symbol.iterator]() {
 		const name = x => (x && x.displayName) || '';
 		const users = {};
