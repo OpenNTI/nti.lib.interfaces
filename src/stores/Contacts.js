@@ -172,7 +172,7 @@ export default class Contacts extends Pendability(EventEmitter) {
 			.then(() => this.emit('change', this));
 	}
 
-	get length() {
+	get count() {
 		return this[DATA]?.length ?? 0;
 	}
 
