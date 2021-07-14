@@ -135,9 +135,8 @@ export default class User extends Entity {
 
 		let { following } = this;
 
-		let pending = contacts[(following ? 'remove' : 'add') + 'Contact'](
-			this
-		);
+		let pending =
+			contacts[(following ? 'remove' : 'add') + 'Contact'](this);
 
 		pending.then(() => this.onChange('following'));
 
@@ -262,13 +261,35 @@ export default class User extends Entity {
 	 * Get the communities this user is a member of.
 	 *
 	 * @param {boolean} excludeGroups Exclude DFL's from the result.
-	 *
-	 * @returns {array} List of Communities
+	 * @returns {Array} List of Communities
 	 */
 	getCommunities(excludeGroups) {
 		console.trace('Who calls this? Stop it. :}'); //eslint-disable-line
 		let list = this.DynamicMemberships;
 		return excludeGroups ? list.filter(ONLY_COMMUNITIES) : list;
+	}
+
+	/**
+	 * Change the users' password. Will reject with errors, otherwise fulfill nothing on success.
+	 *
+	 * If the server fails the request, we throw it and it should be an Error instance with the
+	 * json values applied describing the error. For example if the new/old password have
+	 * problems. Display the `error.message` to the user.
+	 *
+	 * @param {string} newPassword
+	 * @param {string} oldPassword
+	 * @returns {Promise<void>}
+	 */
+	async changePassword(newPassword, oldPassword) {
+		if (!this.hasLink('edit')) {
+			throw new Error('Cannot change password');
+		}
+
+		await this.putToLink('edit/++fields++password', {
+			id: this.getID(),
+			old_password: oldPassword,
+			password: newPassword,
+		});
 	}
 }
 
