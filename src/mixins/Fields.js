@@ -829,11 +829,18 @@ function applyField(scope, fieldName, valueIn, declared, defaultValue) {
 					hasOwnSetter
 				) {
 					scope[fieldName] = value;
+					return;
 				}
 			} catch (e) {
 				logger.stack?.(e);
 			}
-			return;
+
+			// Not an empty getter
+			if (!get.toString().match(/{}$/)) {
+				return;
+			}
+
+			logger.debug('Allowing non-empty getter');
 		}
 
 		// 'get' will be the Fields getter here. Checking it to just
