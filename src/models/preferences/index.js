@@ -1,5 +1,6 @@
 export { default as Root } from './Root.js';
 
+export { default as BadgesCourse } from './BadgesCourse.js';
 export { default as ChatPresence } from './ChatPresence.js';
 export { default as ChatPresenceState } from './ChatPresenceState.js';
 export { default as GradeBook } from './GradeBook.js';
