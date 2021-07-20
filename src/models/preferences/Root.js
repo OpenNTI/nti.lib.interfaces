@@ -14,6 +14,7 @@ export default class PreferenceRoot extends Base {
 	static Fields = {
 		...super.Fields,
 		'ChatPresence':      { type: 'model' },
+		'Badges':            { type: 'model' },
 		'Gradebook':         { type: 'model' },
 		'PushNotifications': { type: 'model' },
 		'Sort':              { type: 'model' },
