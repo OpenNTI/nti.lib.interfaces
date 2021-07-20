@@ -28,6 +28,7 @@ export { default as EnrollmentOptionExternal } from './EnrollmentOptionExternal.
 export { default as EnrollmentOptionOZone } from './EnrollmentOptionOZone.js';
 export { default as EnrollmentOption5Minute } from './EnrollmentOption5Minute.js';
 export { default as EnrollmentOptionPurchase } from './EnrollmentOptionPurchase.js';
+export { default as SeatLimit } from './SeatLimit.js';
 export { default as SharingScopes } from './SharingScopes.js';
 export { default as Outline } from './Outline.js';
 export { default as OutlineNode } from './OutlineNode.js';
