@@ -1,7 +1,3 @@
-import url from 'url';
-
-import QueryString from 'query-string';
-
 import { Service, Context } from '../../../constants.js';
 
 const NOT_FOUND = 'ENTRY_ID_NOT_FOUND';
@@ -13,14 +9,13 @@ const isWebM = RegExp.prototype.test.bind(/webm|matroska/i);
 const isMP4 = RegExp.prototype.test.bind(/mp4/i);
 const is3gp = RegExp.prototype.test.bind(/3gp/i);
 
-const kalturaRe = /kaltura/i;
+const kalturaRe = /^kaltura/i;
 
 export default class KalturaProvider {
 	static service = 'kaltura';
 
 	static handles(uri) {
-		const u = url.parse(uri);
-		return kalturaRe.test(u.protocol) || kalturaRe.test(u.host);
+		return kalturaRe.test(uri);
 	}
 
 	static getID(href) {
@@ -75,20 +70,19 @@ export default class KalturaProvider {
 
 //Private util functions
 
-function normalizeUrl(href) {
-	const forceTrailingSlash = x =>
-		String(x).substr(-1) === '/' ? x : `${x}/`;
+const forceTrailingSlash = x => (String(x).substr(-1) === '/' ? x : `${x}/`);
 
-	if (/^kaltura/i.test(href)) {
+function normalizeUrl(href) {
+	if (kalturaRe.test(href)) {
 		return forceTrailingSlash(href);
 	}
 
-	const parts = url.parse(href, true);
+	const parts = new URL(href);
 
 	const pattern1 = () => {
 		const regex = /\/(?:partner_id|p)\/(\d*)\/.*\/entry_id\/(\w*)/gi;
 
-		const [, partnerId, entryId] = parts.path.split(regex);
+		const [, partnerId, entryId] = parts.pathname.split(regex);
 		if (partnerId && entryId) {
 			return `kaltura://${partnerId}/${entryId}/`;
 		}
@@ -104,7 +98,7 @@ function normalizeUrl(href) {
 	};
 
 	const pattern3 = () => {
-		const partnerId = parts.query.playerId;
+		const partnerId = parts.searchParams.get('playerId');
 		const pathname = parts.pathname.split('/id/');
 		const entryId = pathname[pathname.length - 1];
 
@@ -120,6 +114,7 @@ function normalizeUrl(href) {
  * ID should take the form `${partnerId}/${entryId}` for consistency
  * with Vimeo and YouTube (and the Video component), but in rst the
  * server expects `${partnerId}:${entryId}`.
+ *
  * @param  {string} href kaltura video href
  * @returns {string} id of the form `${partnerId}/${entryId}`
  */
@@ -209,7 +204,7 @@ function getParams(partnerId, entryId, context = {}) {
 	};
 
 	//Do not alter these three lines
-	param.kalsig = kalturaSig(QueryString.stringify(param));
+	param.kalsig = kalturaSig(stringifyQuery(param));
 	param.format = 1;
 	delete param.service;
 
@@ -343,9 +338,19 @@ function buildURL(service, source) {
 	id = Array.isArray(id) ? id[0] : id;
 
 	const [partnerId, entryId] = id.split(':');
-	const params = QueryString.stringify(
+	const params = stringifyQuery(
 		getParams(partnerId, entryId, service && service[Context])
 	);
 
 	return `https://cdnapisec.kaltura.com/api_v3/index.php?service=multirequest&${params}`;
+}
+
+function stringifyQuery(query) {
+	const out = new URLSearchParams();
+
+	for (const [key, value] of Object.entries(query || {})) {
+		out.append(key, value);
+	}
+
+	return out.toString();
 }

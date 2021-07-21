@@ -1,7 +1,5 @@
-import URL from 'url';
 import path from 'path';
 
-import QueryString from 'query-string';
 import { parse, toSeconds } from 'iso8601-duration';
 
 import { getAPIKey } from '../../utils/GoogleAPI.js';
@@ -23,20 +21,21 @@ async function buildURL(service, source) {
 
 	if (!service.isServerSide) {
 		const { server, basepath } = service.getConfig();
-		return (
-			URL.resolve(server, path.resolve(basepath, 'api/videos/youtube')) +
-			'?' +
-			QueryString.stringify({
-				part: 'contentDetails,snippet,statistics',
-				id,
-			})
+		const url = new URL(
+			path.resolve(basepath, 'api/videos/youtube'),
+			server
 		);
+		url.searchParams.append('part', 'contentDetails,snippet,statistics');
+		url.searchParams.append('id', id);
+		return url.toString();
 	}
 
 	try {
 		// See here for details: https://developers.google.com/youtube/v3/docs/videos
 		const key = await getAPIKey(service);
-		return API.replace('{0}', id) + QueryString.stringify({ key });
+		const api = new URL(API.replace('{0}', id));
+		api.searchParams.append('key', key);
+		return api.toString();
 	} catch (e) {
 		//eslint-disable-next-line no-console
 		console.error(e);
