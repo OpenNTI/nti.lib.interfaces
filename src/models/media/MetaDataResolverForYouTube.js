@@ -23,7 +23,7 @@ async function buildURL(service, source) {
 		const { server, basepath } = service.getConfig();
 		const url = new URL(
 			path.resolve(basepath, 'api/videos/youtube'),
-			server
+			new URL(server, global.location || 'file://')
 		);
 		url.searchParams.append('part', 'contentDetails,snippet,statistics');
 		url.searchParams.append('id', id);
