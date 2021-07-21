@@ -10,9 +10,10 @@ export default class EnrollmentOption extends Base {
 	// prettier-ignore
 	static Fields = {
 		...super.Fields,
-		'Enabled':     { type: 'boolean', name: 'enabled'   },
-		'IsAvailable': { type: 'boolean', name: 'available' },
-		'IsEnrolled':  { type: 'boolean', name: 'enrolled'  },
+		'Enabled':         { type: 'boolean', name: 'enabled'   },
+		'IsAvailable':     { type: 'boolean', name: 'available' },
+		'IsEnrolled':      { type: 'boolean', name: 'enrolled'  },
+		'IsSeatAvailable': { type: 'boolean', name: 'seatAvailable' }
 	}
 }
 
