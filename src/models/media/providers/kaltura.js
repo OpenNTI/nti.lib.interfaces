@@ -1,3 +1,5 @@
+import { Url } from '@nti/lib-commons';
+
 import { Service, Context } from '../../../constants.js';
 
 const NOT_FOUND = 'ENTRY_ID_NOT_FOUND';
@@ -204,7 +206,7 @@ function getParams(partnerId, entryId, context = {}) {
 	};
 
 	//Do not alter these three lines
-	param.kalsig = kalturaSig(stringifyQuery(param));
+	param.kalsig = kalturaSig(Url.stringifyQuery(param));
 	param.format = 1;
 	delete param.service;
 
@@ -338,19 +340,9 @@ function buildURL(service, source) {
 	id = Array.isArray(id) ? id[0] : id;
 
 	const [partnerId, entryId] = id.split(':');
-	const params = stringifyQuery(
+	const params = Url.stringifyQuery(
 		getParams(partnerId, entryId, service && service[Context])
 	);
 
 	return `https://cdnapisec.kaltura.com/api_v3/index.php?service=multirequest&${params}`;
-}
-
-function stringifyQuery(query) {
-	const out = new URLSearchParams();
-
-	for (const [key, value] of Object.entries(query || {})) {
-		out.append(key, value);
-	}
-
-	return out.toString();
 }
