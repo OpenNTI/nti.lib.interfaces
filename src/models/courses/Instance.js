@@ -44,6 +44,11 @@ const KnownActivitySorts = [
 	'LikeCount',
 ];
 
+const MOCK_CERT_TEMPLATE = {
+	Class: 'CertificateTemplate',
+	MimeType: 'application/vnd.nextthought.completion.certificatetemplate',
+};
+
 export default class Instance extends ContentTree(
 	HasEvaluations(CourseIdentity(Base))
 ) {
@@ -67,7 +72,8 @@ export default class Instance extends ContentTree(
 		'TotalEnrolledCount':                { type: 'number', name: 'enrolledTotalCount'          },
 		'TotalLegacyForCreditEnrolledCount': { type: 'number', name: 'enrolledForCreditTotalCount' },
 		'TotalLegacyOpenEnrolledCount':      { type: 'number', name: 'enrolledOpenlyTotalCount'    },
-		'CompletionPolicy':                  { type: 'model'                                       }
+		'CompletionPolicy':                  { type: 'model'                                       },
+		'CertificateTemplates':              { type: 'model[]'                                     },
 	}
 
 	get isLegacy() {
@@ -75,7 +81,13 @@ export default class Instance extends ContentTree(
 	}
 
 	constructor(service, parent, data) {
-		super(service, parent, data);
+		super(service, parent, {
+			...data,
+			CertificateTemplates: Array.from({ length: 3 }, (_, i) => ({
+				...MOCK_CERT_TEMPLATE,
+				NTIID: `${i}`,
+			})),
+		});
 
 		let bundle = this.ContentPackageBundle;
 		if (bundle) {
