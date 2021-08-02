@@ -250,11 +250,15 @@ export default class DataServerInterface extends EventEmitter {
 			fetch(url, init)
 				// Normalize request failures
 				.catch(e =>
-					Promise.reject({
-						Message: 'Request Failed.',
-						statusCode: 0,
-						error: e,
-					})
+					Promise.reject(
+						Object.assign(e, {
+							Message: 'Request Failed.',
+							statusCode: 0,
+							error: e,
+							init,
+							url,
+						})
+					)
 				)
 
 				// Check Network Status
