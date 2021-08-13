@@ -11,7 +11,7 @@ export default class SCORMReference extends Base {
 		'description':      { type: 'string' },
 		'icon':             { type: 'string' },
 		'target':           { type: 'string' },
-		'ScormContentInfo': {type: 'model' }
+		'ScormContentInfo': { type: 'model' }
 	}
 
 	get CompletedItem() {
@@ -21,6 +21,10 @@ export default class SCORMReference extends Base {
 		if (this.ScormContentInfo) {
 			this.ScormContentInfo.CompletedItem = item;
 		}
+	}
+
+	get isScormRef() {
+		return true;
 	}
 
 	isCompletable(...args) {
