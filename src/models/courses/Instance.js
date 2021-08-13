@@ -47,6 +47,7 @@ const KnownActivitySorts = [
 const MOCK_CERT_TEMPLATE = {
 	Class: 'CertificateTemplate',
 	MimeType: 'application/vnd.nextthought.completion.certificatetemplate',
+	Title: 'Mock Certificate Template',
 };
 
 export default class Instance extends ContentTree(

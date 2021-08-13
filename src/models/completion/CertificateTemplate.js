@@ -7,6 +7,7 @@ export class CertificateTemplate extends Base {
 	// prettier-ignore
 	static Fields = {
 		...super.Fields,
+		Title: { type: 'string' }
 	}
 
 	get thumbnailUrl() {
