@@ -11,6 +11,7 @@ import UserPresence from './UserPresence.js';
 /** @typedef {import('./Service.js').default} ServiceDocument */
 /** @typedef {import('./WebSocketClient.js').default} WebSocketClient */
 /** @typedef {import('../models/preferences/ChatPresenceState.js').default} ChatPresenceState */
+/** @typedef {import('../models/chat/RoomInfo.js').default} RoomInfo */
 
 const logger = Logger.get('chat-client');
 const noop = () => {};
@@ -156,6 +157,16 @@ export class ChatClient extends EventEmitter {
 		);
 	}
 
+	/** @typedef {(result: unknown, data: unknown) => void} AcknowledgmentFunction */
+	/**
+	 *
+	 * @param {RoomInfo} room
+	 * @param {object|any[]} message
+	 * @param {string[]} replyTo
+	 * @param {string} channel
+	 * @param {string[]=} recipients
+	 * @param {AcknowledgmentFunction=} acknowledgment
+	 */
 	async postMessage(
 		room,
 		message,
