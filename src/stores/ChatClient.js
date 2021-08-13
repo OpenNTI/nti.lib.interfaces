@@ -157,22 +157,28 @@ export class ChatClient extends EventEmitter {
 		);
 	}
 
+	/** @typedef {(result: unknown, data: unknown) => void} AcknowledgmentFunction */
+
 	/**
-	 * Used when sending a status message through the STATE channel:
-	 * - The server expects the body argument to be a dictionary (i.e. an object.)
-	 * - The server expects the recipients argument to be defined and it's okay for it to be an empty
-	 * array.
+	 * Send a status message through the STATE channel
 	 *
 	 * @param {RoomInfo} room
 	 * @param {{state: string}} state
 	 * @param {AcknowledgmentFunction=} acknowledgment
 	 */
 	async postStatus(room, state, acknowledgment) {
-		this.postMessage(room, state, null, 'STATE', null, acknowledgment);
+		this.postMessage(
+			room,
+			state, // The server expects the body to be the object "{state: 'status text'}"
+			null, // replyTo
+			'STATE', // Channel
+			null, // recipients
+			acknowledgment
+		);
 	}
 
-	/** @typedef {(result: unknown, data: unknown) => void} AcknowledgmentFunction */
 	/**
+	 * Send a message across the socket
 	 *
 	 * @param {RoomInfo} room
 	 * @param {object|any[]} message
@@ -196,6 +202,7 @@ export class ChatClient extends EventEmitter {
 			channel,
 		};
 
+		//  The server expects the recipients argument to be defined as an array. Otherwise, omit the property.
 		if (recipients) {
 			data.recipients = ArrayUtils.ensure(recipients);
 		}
