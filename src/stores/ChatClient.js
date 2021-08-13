@@ -163,21 +163,12 @@ export class ChatClient extends EventEmitter {
 	 * - The server expects the recipients argument to be defined and it's okay for it to be an empty
 	 * array.
 	 *
-	 * @param {object} room
-	 * @param {object} state
-	 * @param {Function} acknowledgment
+	 * @param {RoomInfo} room
+	 * @param {{state: string}} state
+	 * @param {AcknowledgmentFunction=} acknowledgment
 	 */
 	async postStatus(room, state, acknowledgment) {
-		const data = {
-			Class: 'MessageInfo',
-			ContainerId: room.getID(),
-			channel: 'STATE',
-			body: state,
-		};
-
-		this.#socket.send('chat_postMessage', data, async result =>
-			acknowledgment?.(result, data)
-		);
+		this.postMessage(room, state, null, 'STATE', null, acknowledgment);
 	}
 
 	/** @typedef {(result: unknown, data: unknown) => void} AcknowledgmentFunction */
@@ -201,10 +192,13 @@ export class ChatClient extends EventEmitter {
 		const data = {
 			Class: 'MessageInfo',
 			ContainerId: room.getID(),
-			body: ArrayUtils.ensure(message),
+			body: message,
 			channel,
-			recipients,
 		};
+
+		if (recipients) {
+			data.recipients = ArrayUtils.ensure(recipients);
+		}
 
 		this.#socket.send('chat_postMessage', data, async result =>
 			acknowledgment?.(result, data)
