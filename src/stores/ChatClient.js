@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 
-import { Array as ArrayUtils, buffer } from '@nti/lib-commons';
+import { buffer } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import PresenceInfo from '../models/entities/PresenceInfo.js';
@@ -178,7 +178,7 @@ export class ChatClient extends EventEmitter {
 		const data = {
 			Class: 'MessageInfo',
 			ContainerId: room.getID(),
-			body: ArrayUtils.ensure(message),
+			body: message,
 			channel,
 			recipients,
 		};
