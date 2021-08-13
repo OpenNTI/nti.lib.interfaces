@@ -157,6 +157,20 @@ export class ChatClient extends EventEmitter {
 		);
 	}
 
+	/**
+	 * Used when sending a status message through the STATE channel:
+	 * - The server expects the body argument to be a dictionary (i.e. an object.)
+	 * - The server expects the recipients argument to be defined and it's okay for it to be an empty
+	 * array.
+	 *
+	 * @param {RoomInfo} room
+	 * @param {{state: string}} state
+	 * @param {AcknowledgmentFunction=} acknowledgment
+	 */
+	async postStatus(room, state, acknowledgment) {
+		this.postMessage(room, state, null, 'STATE', null, acknowledgment);
+	}
+
 	/** @typedef {(result: unknown, data: unknown) => void} AcknowledgmentFunction */
 	/**
 	 *
@@ -178,10 +192,13 @@ export class ChatClient extends EventEmitter {
 		const data = {
 			Class: 'MessageInfo',
 			ContainerId: room.getID(),
-			body: ArrayUtils.ensure(message),
+			body: message,
 			channel,
-			recipients,
 		};
+
+		if (recipients) {
+			data.recipients = ArrayUtils.ensure(recipients);
+		}
 
 		this.#socket.send('chat_postMessage', data, async result =>
 			acknowledgment?.(result, data)
