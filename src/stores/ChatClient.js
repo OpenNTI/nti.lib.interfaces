@@ -1,6 +1,6 @@
 import EventEmitter from 'events';
 
-import { buffer } from '@nti/lib-commons';
+import { Array as ArrayUtils, buffer } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import PresenceInfo from '../models/entities/PresenceInfo.js';
@@ -157,6 +157,29 @@ export class ChatClient extends EventEmitter {
 		);
 	}
 
+	/**
+	 * Used when sending a status message through the STATE channel:
+	 * - The server expects the body argument to be a dictionary (i.e. an object.)
+	 * - The server expects the recipients argument to be defined and it's okay for it to be an empty
+	 * array.
+	 *
+	 * @param {object} room
+	 * @param {object} state
+	 * @param {Function} acknowledgment
+	 */
+	async postStatus(room, state, acknowledgment) {
+		const data = {
+			Class: 'MessageInfo',
+			ContainerId: room.getID(),
+			channel: 'STATE',
+			body: state,
+		};
+
+		this.#socket.send('chat_postMessage', data, async result =>
+			acknowledgment?.(result, data)
+		);
+	}
+
 	/** @typedef {(result: unknown, data: unknown) => void} AcknowledgmentFunction */
 	/**
 	 *
@@ -178,7 +201,7 @@ export class ChatClient extends EventEmitter {
 		const data = {
 			Class: 'MessageInfo',
 			ContainerId: room.getID(),
-			body: message,
+			body: ArrayUtils.ensure(message),
 			channel,
 			recipients,
 		};
