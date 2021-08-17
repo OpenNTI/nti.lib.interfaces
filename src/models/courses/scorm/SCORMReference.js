@@ -7,11 +7,13 @@ export default class SCORMReference extends Base {
 	// prettier-ignore
 	static Fields = {
 		...super.Fields,
-		'title':            { type: 'string' },
-		'description':      { type: 'string' },
-		'icon':             { type: 'string' },
-		'target':           { type: 'string' },
-		'ScormContentInfo': {type: 'model' }
+		'title':              { type: 'string' },
+		'description':        { type: 'string' },
+		'icon':               { type: 'string' },
+		'target':             { type: 'string' },
+		'ScormContentInfo':   { type: 'model' },
+		'CompletionRequired': { type: 'boolean' },
+		'Target-NTIID':       { type: 'string' },
 	}
 
 	get CompletedItem() {
@@ -21,6 +23,10 @@ export default class SCORMReference extends Base {
 		if (this.ScormContentInfo) {
 			this.ScormContentInfo.CompletedItem = item;
 		}
+	}
+
+	get isScormRef() {
+		return true;
 	}
 
 	isCompletable(...args) {
