@@ -12,4 +12,10 @@ export default class BaseSiteInvitation extends Base {
 		'message':      { type: 'string'  },
 		'expiryTime':   { type: 'date'    }
 	}
+
+	get expired() {
+		const time = this.getExpiryTime();
+
+		return time && time.getTime() !== 0;
+	}
 }
