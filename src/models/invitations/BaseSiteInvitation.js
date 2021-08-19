@@ -4,6 +4,7 @@ export default class BaseSiteInvitation extends Base {
 	// prettier-ignore
 	static Fields = {
 		...super.Fields,
+		'original_receiver': {type: 'string', name: 'originalReceiver'},
 		'receiver':     { type: 'string'  },
 		'sender':       { type: 'string'  },
 		'site':         { type: 'string'  },
