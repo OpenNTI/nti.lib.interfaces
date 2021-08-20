@@ -9,7 +9,7 @@ export default class CompletionPolicy extends Base {
 		...super.Fields,
 		'percentage':                    { type: 'number' },
 		'offers_completion_certificate': { type: 'boolean', name: 'offersCompletionCertificate' },
-		'CertificateTemplateNTIID':      { type: 'string' },
+		'certificate_renderer_name':     { type: 'string', name: 'certificateRendererName' },
 	}
 }
 
