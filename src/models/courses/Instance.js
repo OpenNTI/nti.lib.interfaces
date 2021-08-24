@@ -67,7 +67,7 @@ export default class Instance extends ContentTree(
 		'TotalEnrolledCount':                { type: 'number', name: 'enrolledTotalCount'          },
 		'TotalLegacyForCreditEnrolledCount': { type: 'number', name: 'enrolledForCreditTotalCount' },
 		'TotalLegacyOpenEnrolledCount':      { type: 'number', name: 'enrolledOpenlyTotalCount'    },
-		'CompletionPolicy':                  { type: 'model'                                       },
+		'CompletionPolicy':                  { type: 'model'                                       }
 	}
 
 	get isLegacy() {
