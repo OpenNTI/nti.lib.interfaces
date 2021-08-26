@@ -24,6 +24,8 @@ export * as Authoring from './authoring/index.js';
 export * as UserDataThreader from './utils/UserDataThreader.js';
 export * as Tasks from './tasks/index.js';
 
+export { default as Batch } from './data-sources/data-types/Batch.js';
+
 export { Models };
 export function getModel(...args) {
 	return Registry.lookup(...args);
