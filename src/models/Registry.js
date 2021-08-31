@@ -130,6 +130,9 @@ export default class Registry {
 			throw new TypeError('aliases and types must be strings');
 		}
 
+		alias = trimCommonPrefix(alias);
+		existingType = trimCommonPrefix(existingType);
+
 		if (existingType === alias) {
 			throw new TypeError(
 				'Cannot create an alias that is self-referencing.'
@@ -156,7 +159,7 @@ export default class Registry {
 		}
 
 		logger.debug('Registering alias %s to %s', alias, existingType);
-		map.set(trimCommonPrefix(alias), trimCommonPrefix(existingType));
+		map.set(alias, existingType);
 	}
 
 	lookup(type) {
