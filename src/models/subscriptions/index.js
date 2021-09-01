@@ -1,1 +1,3 @@
 export { PersistentSubscription } from './PersistentSubscription.js';
+export { PersistentWebhookDeliveryAttempt } from './PersistentWebhookDeliveryAttempt.js';
+export { SubscriptionDeliveryHistory } from './SubscriptionDeliveryHistory.js';
