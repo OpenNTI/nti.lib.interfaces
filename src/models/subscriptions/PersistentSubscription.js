@@ -5,7 +5,15 @@ export class PersistentSubscription extends Base {
 	static MimeType = COMMON_PREFIX + 'zapier.persistentsubscription';
 
 	static Fields = {
-		'OwnerId':   { type: 'string' },
+		...super.Fields,
+		'OwnerId': { type: 'string' },
+		'Status':  { type: 'string' },
+	}
+
+	isPersistentSubscription = true
+
+	getID() {
+		return this.Id; // doesn't have an NTIID
 	}
 }
 
