@@ -1,8 +1,11 @@
 import { Service } from '../../constants.js';
 import Base from '../../models/Base.js';
+import Registry from '../../models/Registry.js';
 
 const next = 'batch-next';
 export default class Batch extends Base {
+	static MimeType = 'internal-batch-wrapper';
+
 	// prettier-ignore
 	static Fields = {
 		...super.Fields,
@@ -37,6 +40,7 @@ export default class Batch extends Base {
 		return this.Total ?? this.TotalItemCount ?? 0;
 	}
 
+	/** @type {number} */
 	get filteredTotal() {
 		return this.FilteredTotalItemCount ?? 0;
 	}
@@ -52,6 +56,7 @@ export default class Batch extends Base {
 		return this.hasLink(next) && this.Items?.length < this.total;
 	}
 
+	// TODO: rename to appendNext, and make it update fields
 	async next() {
 		if (!this.hasMore) {
 			return;
@@ -77,3 +82,5 @@ export default class Batch extends Base {
 		return this;
 	}
 }
+
+Registry.register(Batch);

@@ -74,7 +74,7 @@ export const mixin = Base =>
 				: this[Service][method](link, data);
 
 			if (parseResponse) {
-				result = parseResult(this, result);
+				result = parseResult(this, result, parseResponse === 'batch');
 			}
 
 			return result;
@@ -100,17 +100,24 @@ export const mixin = Base =>
 
 /*** Utility private functions ***/
 
-function parseResult(scope, requestPromise) {
+function parseResult(scope, requestPromise, asBatch) {
 	function selectItems(x) {
 		const extract = x && x.Items && !x.MimeType;
+		const BatchMime = 'internal-batch-wrapper';
 
-		if (extract && x.Links) {
+		if (!asBatch && extract && x.Links) {
 			logger.debug(
 				'Unboxing array collection. (Collection wrapper has Links and will not be accessible)'
 			);
 		}
 
-		return extract ? x.Items : x;
+		return asBatch
+			? !x.Items
+				? { MimeType: BatchMime, Items: [x] }
+				: ((x.MimeType = x.MimeType || BatchMime), x)
+			: extract
+			? x.Items
+			: x;
 	}
 
 	return requestPromise
