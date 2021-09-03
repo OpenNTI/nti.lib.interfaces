@@ -36,6 +36,33 @@ export default class Batch extends Base {
 		return this.Items[Symbol.iterator]();
 	}
 
+	/** @type {number} */
+	get currentPage() {
+		return this.BatchPage;
+	}
+
+	get pageCount() {
+		return Math.ceil(this.totalInContext / this.pageSize);
+	}
+
+	get pageSize() {
+		for (let rel of ['self', 'next', 'prev']) {
+			rel = this.getLink(rel)?.split('?');
+			rel = rel?.[1] ?? rel?.[0];
+			const batchSize = new URLSearchParams(rel).get('batchSize');
+			if (batchSize != null) {
+				return parseInt(batchSize, 10);
+			}
+		}
+		return null;
+	}
+
+	/** @type {number} */
+	get totalInContext() {
+		return this.FilteredTotalItemCount ?? this.total;
+	}
+
+	/** @type {number} */
 	get total() {
 		return this.Total ?? this.TotalItemCount ?? 0;
 	}
