@@ -6,6 +6,7 @@ export class PersistentSubscription extends Base {
 
 	static Fields = {
 		...super.Fields,
+		'Id':      { type: 'string' },
 		'OwnerId': { type: 'string' },
 		'Status':  { type: 'string' },
 	}
