@@ -12,9 +12,14 @@ export default class CredlyAcclaimBadgeCollection extends Batch {
 	static Fields = {
 		...super.Fields,
 		'badges_count': {type: 'number', name: 'badgeCount'},
-		'current_page': {type: 'number', name: 'BatchPage'},
+		'current_page': {type: 'number', name: 'currentBadgePage'},
 		'total_badges_count': {type: 'number', name: 'totalBadgesCount'},
 		'total_pages': {type: 'number', name: 'totalPages'}
+	}
+
+	/** @type {number} */
+	get currentPage() {
+		return this.currentBadgePage;
 	}
 }
 
