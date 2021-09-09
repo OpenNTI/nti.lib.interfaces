@@ -8,6 +8,22 @@ function getCompletedDate(item, items) {
 	);
 }
 
+function isSameCompletionItem(a, b) {
+	if (!a && !b) {
+		return true;
+	}
+	if (a && !b) {
+		return false;
+	}
+	if (!a && b) {
+		return false;
+	}
+
+	return (
+		a.Success === b.Success && a.getCompletedDate() === b.getCompletedDate()
+	);
+}
+
 /**
  * @template {import('../constants').Constructor} T
  * @param {T} Base
@@ -57,6 +73,35 @@ export default Base =>
 		getPercentageCompleted() {
 			//TODO: fill this out
 			return 0;
+		}
+
+		async updateCompletedItem() {
+			try {
+				const prevItem = this.CompletedItem;
+				await this.refresh();
+
+				const curItem = this.CompletedItem;
+
+				if (isSameCompletionItem(prevItem, curItem)) {
+					return;
+				}
+
+				const concernedParents = this.parents('onCompletionUpdated');
+
+				await Promise.all(
+					concernedParents.map(c =>
+						c.onCompletionUpdated().catch(() => {})
+					)
+				);
+			} catch (e) {
+				// eslint-disable-next-line no-console
+				console.error(
+					'in updateCompletedItem(); ',
+					e.stack || e.message || e
+				);
+
+				//Its fine if this fails
+			}
 		}
 
 		async updateCompletedState(enrollment) {

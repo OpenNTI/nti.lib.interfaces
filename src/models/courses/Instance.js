@@ -121,9 +121,14 @@ export default class Instance extends ContentTree(
 		return this.fetchLinkParsed('UserCoursePreferredAccess').then(
 			enrollment => {
 				this.PreferredAccess = enrollment;
+				this.onChange('PreferredAccess');
 				return this;
 			}
 		);
+	}
+
+	onCompletionUpdated() {
+		return this.refreshPreferredAccess();
 	}
 
 	containsPackage(id) {
