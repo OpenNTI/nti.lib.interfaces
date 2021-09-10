@@ -13,6 +13,7 @@ export default class SCORMReference extends Base {
 		'target':             { type: 'string' },
 		'ScormContentInfo':   { type: 'model' },
 		'CompletionRequired': { type: 'boolean' },
+		'CompletedItem':      { type: 'model' },
 		'Target-NTIID':       { type: 'string' },
 	}
 
