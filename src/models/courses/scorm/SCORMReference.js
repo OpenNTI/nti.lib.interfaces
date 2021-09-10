@@ -59,6 +59,21 @@ export default class SCORMReference extends Base {
 			? this.ScormContentInfo.completedUnsuccessfully(...args)
 			: null;
 	}
+
+	async updateCompletedItem() {
+		try {
+			await this.refresh();
+
+			this.ScormContentInfo.updateCompletionContext();
+		} catch (e) {
+			// eslint-disable-next-line no-console
+			console.error(
+				'in SCORMReference.updateCompletedItem(); ',
+				e.stack || e.message || e
+			);
+			//its fine if this fails
+		}
+	}
 }
 
 Registry.register(SCORMReference);

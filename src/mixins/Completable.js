@@ -75,6 +75,16 @@ export default Base =>
 			return 0;
 		}
 
+		async updateCompletionContext() {
+			const concernedParents = this.parents('onCompletionUpdated');
+
+			await Promise.all(
+				concernedParents.map(c =>
+					c.onCompletionUpdated().catch(() => {})
+				)
+			);
+		}
+
 		async updateCompletedItem() {
 			try {
 				const prevItem = this.CompletedItem;
@@ -86,13 +96,7 @@ export default Base =>
 					return;
 				}
 
-				const concernedParents = this.parents('onCompletionUpdated');
-
-				await Promise.all(
-					concernedParents.map(c =>
-						c.onCompletionUpdated().catch(() => {})
-					)
-				);
+				this.updateCompletionContext();
 			} catch (e) {
 				// eslint-disable-next-line no-console
 				console.error(
