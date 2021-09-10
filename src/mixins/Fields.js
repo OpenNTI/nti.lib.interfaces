@@ -327,6 +327,9 @@ export const mixin = (Base = Object) =>
 									step === 0 && !newRaw
 								);
 							}
+						} catch (e) {
+							logger.warn('Refreshing %o because: %o', this, e);
+							throw e;
 						} finally {
 							delete this[INFLIGHT];
 						}
