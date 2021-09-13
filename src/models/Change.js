@@ -9,7 +9,8 @@ export class Change extends Base {
 	// prettier-ignore
 	static Fields = {
 		...super.Fields,
-		'Item': { type: 'model' }
+		'ChangeType':	{ type: 'string' },
+		'Item':			{ type: 'model'  }
 	}
 
 	static wrap(thing) {
