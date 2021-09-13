@@ -31,34 +31,22 @@ export default class SCORMReference extends Base {
 	}
 
 	isCompletable(...args) {
-		return this.ScormContentInfo
-			? this.ScormContentInfo.isCompletable(...args)
-			: null;
+		return this.ScormContentInfo?.isCompletable(...args) ?? null;
 	}
 	getCompletedDate(...args) {
-		return this.ScormContentInfo
-			? this.ScormContentInfo.getCompletedDate(...args)
-			: null;
+		return this.ScormContentInfo?.getCompletedDate(...args) ?? null;
 	}
 	hasCompleted(...args) {
-		return this.ScormContentInfo
-			? this.ScormContentInfo.hasCompleted(...args)
-			: null;
+		return this.ScormContentInfo?.hasCompleted(...args) ?? null;
 	}
 	updateCompletedState(...args) {
-		return this.ScormContentInfo
-			? this.ScormContentInfo.updateCompletedState(...args)
-			: null;
+		return this.ScormContentInfo?.updateCompletedState(...args) ?? null;
 	}
 	completedSuccessfully(...args) {
-		return this.ScormContentInfo
-			? this.ScormContentInfo.completedSuccessfully(...args)
-			: null;
+		return this.ScormContentInfo?.completedSuccessfully(...args) ?? null;
 	}
 	completedUnsuccessfully(...args) {
-		return this.ScormContentInfo
-			? this.ScormContentInfo.completedUnsuccessfully(...args)
-			: null;
+		return this.ScormContentInfo?.completedUnsuccessfully(...args) ?? null;
 	}
 }
 

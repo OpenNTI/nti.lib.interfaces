@@ -65,15 +65,11 @@ export default Base =>
 		}
 
 		completedSuccessfully() {
-			const { CompletedItem } = this;
-
-			return CompletedItem && CompletedItem.Success;
+			return this.CompletedItem?.Success;
 		}
 
 		completedUnsuccessfully() {
-			const { CompletedItem } = this;
-
-			return CompletedItem && !CompletedItem.Success;
+			return !this.CompletedItem?.Success;
 		}
 
 		getPercentageCompleted() {
