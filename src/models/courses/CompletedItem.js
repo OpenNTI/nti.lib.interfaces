@@ -9,6 +9,7 @@ export default class CompletedItem extends Base {
 	static Fields = {
 		...super.Fields,
 		'CompletedDate':       { type: 'date'                       },
+		'ItemNTIID':           { type: 'string'                     },
 		'Success':         	   { type: 'boolean'                    },
 		'CompletionMetadata':  { type: CompletionMetadata           }
 	}
