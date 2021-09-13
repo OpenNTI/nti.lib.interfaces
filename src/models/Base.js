@@ -168,6 +168,15 @@ export default class Model extends Pendability(
 	 * It is intentional that this event can only fire if, and only if, there
 	 * is an external subscriber to changes vis {@link subscribeToChange}
 	 *
+	 * Because mixins and sub-classes may opt-into various changes, its
+	 * important that the handlers of this event check that the change is the
+	 * one they really care about. The {@link __isSocketChangeEventApplicable}
+	 * may be extended to include other change types. (for example, the
+	 * original implementation is opting into change events for a child
+	 * CompletionItem, ...as in, both the CompletionItem and the parent object
+	 * would receive the change for the CompletionItem if they both had change
+	 * subscriptions)
+	 *
 	 * @private
 	 * @param {Change} change
 	 */
