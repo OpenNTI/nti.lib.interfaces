@@ -1,5 +1,7 @@
 import Logger from '@nti/util-logger';
 
+import CompletedItem from '../models/courses/CompletedItem.js';
+
 const logger = Logger.get('mixins:Completable');
 
 function getCompletedDate(item, items) {
@@ -28,6 +30,22 @@ export default Base =>
 			IsCompletionDefaultState: { type: 'boolean'                         },
 			CompletedDate:            { type: 'date',   name: '__CompletedDate' },
 		};
+
+		constructor(...args) {
+			super(...args);
+			this.addListener('incoming-change', change => {
+				if (change.Item instanceof CompletedItem) {
+					this.updateCompletedState();
+				}
+			});
+		}
+
+		__isSocketChangeEventApplicable(change) {
+			return (
+				super.__isSocketChangeEventApplicable?.(change) ||
+				this.getID() === change.Item.ItemNTIID
+			);
+		}
 
 		getCompletedDate() {
 			return (
