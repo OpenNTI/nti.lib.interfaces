@@ -1,7 +1,8 @@
+import Completable from '../../../mixins/Completable.js';
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-export default class SCORMReference extends Base {
+export default class SCORMReference extends Completable(Base) {
 	static MimeType = [COMMON_PREFIX + 'scormcontentref'];
 
 	// prettier-ignore
@@ -17,6 +18,13 @@ export default class SCORMReference extends Base {
 		'Target-NTIID':       { type: 'string' },
 	}
 
+	__isSocketChangeEventApplicable(change) {
+		return (
+			super.__isSocketChangeEventApplicable?.(change) ||
+			this.ScormContentInfo?.getID() === change.Item.ItemNTIID
+		);
+	}
+
 	get CompletedItem() {
 		return this.ScormContentInfo?.CompletedItem;
 	}
@@ -25,7 +33,7 @@ export default class SCORMReference extends Base {
 			this.ScormContentInfo.CompletedItem = item;
 		}
 	}
-
+	kk;
 	get isScormRef() {
 		return true;
 	}
