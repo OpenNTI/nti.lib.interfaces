@@ -1,4 +1,4 @@
-import { Base64 } from 'js-base64/base64.mjs';
+import { Base64 } from 'js-base64';
 
 import { parseNTIID } from '@nti/lib-ntiids';
 

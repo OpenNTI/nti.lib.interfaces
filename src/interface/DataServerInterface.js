@@ -1,7 +1,7 @@
 /*globals BUILD_PACKAGE_NAME, BUILD_PACKAGE_VERSION*/
 import EventEmitter from 'events';
 
-import { Base64 } from 'js-base64/base64.mjs';
+import { Base64 } from 'js-base64';
 
 import Logger from '@nti/util-logger';
 import { FileType, URL } from '@nti/lib-commons';
