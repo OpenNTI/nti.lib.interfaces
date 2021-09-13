@@ -166,7 +166,7 @@ export default class Model extends Pendability(
 	 * is meant for internal use only)
 	 *
 	 * It is intentional that this event can only fire if, and only if, there
-	 * is an external subscriber to changes vis {@link subscribeToChange}
+	 * is an external subscriber to changes via {@link subscribeToChange}
 	 *
 	 * Because mixins and sub-classes may opt-into various changes, its
 	 * important that the handlers of this event check that the change is the
