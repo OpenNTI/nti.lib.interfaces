@@ -161,14 +161,19 @@ export default class Model extends Pendability(
 	}
 
 	/**
-	 * Implement this to handle a change event from the socket.
+	 * Emits an internal `socket-change` event which sub-classes/mixins may
+	 * listen to. (There isn't a private event type so just know this event
+	 * is meant for internal use only)
 	 *
-	 * @abstract
-	 * @protected
+	 * It is intentional that this event can only fire if, and only if, there
+	 * is an external subscriber to changes vis {@link subscribeToChange}
+	 *
+	 * @private
 	 * @param {Change} change
-	 * @returns {boolean}
 	 */
-	__onSocketChangeEvent(change) {}
+	__onSocketChangeEvent(change) {
+		this.emit('incoming-change', change);
+	}
 
 	subscribeToChange(fn) {
 		//NOTE: in the future if we need to subscribe to more than just the
