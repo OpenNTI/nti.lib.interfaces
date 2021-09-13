@@ -14,6 +14,13 @@ export default class CalendarEventRef extends Completable(Base) {
 		'Target-NTIID':         { type: 'string' },
 	}
 
+	__isSocketChangeEventApplicable(change) {
+		return (
+			super.__isSocketChangeEventApplicable?.(change) ||
+			this.CalendarEvent?.getID() === change.Item.ItemNTIID
+		);
+	}
+
 	/**
 	 * @property {BaseEvent} CalendarEvent
 	 */
