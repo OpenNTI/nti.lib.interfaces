@@ -3,7 +3,7 @@ import { Parent, Service } from '../constants.js';
 import Registry, { COMMON_PREFIX } from './Registry.js';
 import Base from './Base.js';
 
-export default class Change extends Base {
+export class Change extends Base {
 	static MimeType = COMMON_PREFIX + 'change';
 
 	// prettier-ignore

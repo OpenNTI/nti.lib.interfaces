@@ -16,7 +16,7 @@ const logger = Logger.get('websocket');
 const SOCKET_IO_SRC = '/socket.io/static/socket.io.js';
 const SESSION_ID = 'sessionId'.toLowerCase();
 
-export default class WebSocketClient extends EventEmitter {
+export class WebSocketClient extends EventEmitter {
 	//#region set up
 
 	/** @type {DataServerInterface} */
@@ -43,6 +43,7 @@ export default class WebSocketClient extends EventEmitter {
 					async: true,
 				})
 			);
+			this.setup();
 		} catch {
 			throw new Error('SocketIO not available in this context');
 		}

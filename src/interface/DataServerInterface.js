@@ -17,7 +17,7 @@ import getContentType from '../utils/get-content-type-header.js';
 import Registry from '../models/Registry.js';
 import { attach as attachPendingQueue } from '../mixins/Pendability.js';
 import Service from '../stores/Service.js';
-import WebSocketClient from '../stores/WebSocketClient.js';
+import { WebSocketClient } from '../stores/WebSocketClient.js';
 import {
 	REQUEST_CONFLICT_EVENT,
 	REQUEST_ERROR_EVENT,

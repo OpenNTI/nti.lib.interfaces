@@ -25,7 +25,7 @@ export * as subscriptions from './subscriptions/index.js';
 
 export { default as Base } from './Base.js';
 export { default as AnalyticsSession } from './AnalyticsSession.js';
-export { default as Change } from './Change.js';
+export * from './Change.js';
 export { default as Workspace } from './Workspace.js';
 export { default as WorkspaceCollection } from './WorkspaceCollection.js';
 export { default as CourseCollection } from './CourseCollection.js';
