@@ -1,3 +1,7 @@
+import Logger from '@nti/util-logger';
+
+const logger = Logger.get('mixins:Completable');
+
 function getCompletedDate(item, items) {
 	return (
 		items &&
@@ -5,22 +9,6 @@ function getCompletedDate(item, items) {
 			items[item.href] ||
 			items[item['Target-NTIID']] ||
 			items[item['target-NTIID']])
-	);
-}
-
-function isSameCompletionItem(a, b) {
-	if (!a && !b) {
-		return true;
-	}
-	if (a && !b) {
-		return false;
-	}
-	if (!a && b) {
-		return false;
-	}
-
-	return (
-		a.Success === b.Success && a.getCompletedDate() === b.getCompletedDate()
 	);
 }
 
@@ -75,39 +63,6 @@ export default Base =>
 			return 0;
 		}
 
-		async updateCompletionContext() {
-			const concernedParents = this.parents('onCompletionUpdated');
-
-			await Promise.all(
-				concernedParents.map(c =>
-					c.onCompletionUpdated().catch(() => {})
-				)
-			);
-		}
-
-		async updateCompletedItem() {
-			try {
-				const prevItem = this.CompletedItem;
-				await this.refresh();
-
-				const curItem = this.CompletedItem;
-
-				if (isSameCompletionItem(prevItem, curItem)) {
-					return;
-				}
-
-				this.updateCompletionContext();
-			} catch (e) {
-				// eslint-disable-next-line no-console
-				console.error(
-					'in updateCompletedItem(); ',
-					e.stack || e.message || e
-				);
-
-				//Its fine if this fails
-			}
-		}
-
 		async updateCompletedState(enrollment) {
 			enrollment = enrollment || this.parent('getCompletedItems');
 
@@ -132,12 +87,7 @@ export default Base =>
 
 				return this;
 			} catch (e) {
-				// eslint-disable-next-line no-console
-				console.error(
-					'in updateCompletedState():',
-					e.stack || e.message || e
-				);
-				//Its fine if this fails
+				logger.stack(e);
 			}
 		}
 	};
