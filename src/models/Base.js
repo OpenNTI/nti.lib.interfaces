@@ -10,6 +10,9 @@ import { Parent, Service } from '../constants.js';
 import Registry, { COMMON_PREFIX } from './Registry.js';
 import { BaseObservable } from './BaseObservable.js';
 
+/** @typedef {import('../stores/WebSocketClient').WebSocketClient} WebSocketClient */
+/** @typedef {import('./Change').Change} Change */
+
 const logger = Logger.get('models:Base');
 
 const CONTENT_VISIBILITY_MAP = { OU: 'OUID' };
@@ -126,12 +129,55 @@ export default class Model extends Pendability(
 		}
 	}
 
+	/**
+	 * Return the websocket client or null if the context can't have a socket.
+	 *
+	 * @protected
+	 * @returns {WebSocketClient?}
+	 */
+	__getWebSocket() {
+		try {
+			return this[Service].getServer().getWebSocketClient();
+		} catch {
+			/* not available */
+			return null;
+		}
+	}
+
+	/**
+	 * This function is called upon to determine if the incoming event is
+	 * applicable to this model. Override if another selection criterion
+	 * is necessary.
+	 *
+	 * Returning `true` from here will result in {@link __onSocketChangeEvent}
+	 * being called with this change.
+	 *
+	 * @protected
+	 * @param {Change} change
+	 * @returns {boolean}
+	 */
+	__isSocketChangeEventApplicable(change) {
+		return this.OID === change?.Item?.OID;
+	}
+
+	/**
+	 * Implement this to handle a change event from the socket.
+	 *
+	 * @abstract
+	 * @protected
+	 * @param {Change} change
+	 * @returns {boolean}
+	 */
+	__onSocketChangeEvent(change) {}
+
 	subscribeToChange(fn) {
 		//NOTE: in the future if we need to subscribe to more than just the
 		//change event, we can create a GlobalEventEmitter class and make the base
 		//model extend that.
 		const prefix = this.getEventPrefix();
 		const event = `${prefix}-change`;
+		const socket = this.__getWebSocket();
+
 		const listener = async (item, ...args) => {
 			if (item === this) {
 				return fn(item, ...args);
@@ -148,13 +194,26 @@ export default class Model extends Pendability(
 			}
 		};
 
+		const incomingChange = async data => {
+			/** @type {Change} Parse raw json into a change model */
+			const change = await this[Service].getObject(data);
+			if (this.__isSocketChangeEventApplicable(change)) {
+				this.__onSocketChangeEvent(change);
+			}
+		};
+
 		if (prefix) {
 			this[Service].addListener(event, listener);
+			socket?.addListener('data_noticeIncomingChange', incomingChange);
 		}
 
 		return () => {
 			if (prefix) {
 				this[Service].removeListener(event, listener);
+				socket?.removeListener(
+					'data_noticeIncomingChange',
+					incomingChange
+				);
 			}
 		};
 	}
