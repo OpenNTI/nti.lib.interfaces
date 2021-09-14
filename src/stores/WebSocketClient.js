@@ -32,6 +32,8 @@ export class WebSocketClient extends EventEmitter {
 	/** @param {DataServerInterface} server */
 	constructor(server) {
 		super();
+		// we will have many listeners...
+		this.setMaxListeners(Infinity);
 
 		this.#server = server;
 
