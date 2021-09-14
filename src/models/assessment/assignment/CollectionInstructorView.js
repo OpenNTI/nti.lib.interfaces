@@ -1,6 +1,6 @@
-import Url from 'url';
 import path from 'path';
 
+import { url } from '@nti/lib-commons';
 // import Logger from '@nti/util-logger';
 
 import AssignmentSummary from '../../../stores/AssignmentSummary.js';
@@ -25,12 +25,12 @@ const keyForUser = userId =>
 const ASSESSMENT_HISTORY_LINK_PREFIX = new RegExp('^' + keyForUser(''));
 
 const forUser = (ref, userId) => (
-	(ref = Url.parse(ref)),
+	(ref = url.parse(ref)),
 	(ref.pathname = path.join(
 		path.dirname(ref.pathname),
 		encodeURIComponent(userId)
 	)),
-	ref.format()
+	ref.toString()
 );
 
 export default class CollectionInstructorView extends Base {

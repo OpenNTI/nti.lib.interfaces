@@ -4,7 +4,7 @@ import EventEmitter from 'events';
 import { Base64 } from 'js-base64';
 
 import Logger from '@nti/util-logger';
-import { FileType, URL } from '@nti/lib-commons';
+import { FileType, url } from '@nti/lib-commons';
 
 import DataCache from '../utils/data-cache.js';
 import parseBody from '../utils/attempt-json-parse.js';
@@ -149,7 +149,7 @@ export default class DataServerInterface extends EventEmitter {
 		const abort = () => controller.abort();
 		const id = this.nextRequestId++;
 		const start = Date.now();
-		const url = URL.resolve(this.config.server, options.url || '');
+		const _url = url.resolve(this.config.server, options.url || '');
 
 		delete options.url; //make sure we only give fetch() one url...
 
@@ -218,7 +218,7 @@ export default class DataServerInterface extends EventEmitter {
 		}
 
 		const result = new Promise((fulfillRequest, rejectRequest) => {
-			logger.trace('REQUEST %d (send) -> %s %s', id, init.method, url);
+			logger.trace('REQUEST %d (send) -> %s %s', id, init.method, _url);
 			// logger.trace('REQUEST %d HEADERS: %s %s:\n%o', id, init.method, url, init.headers);
 
 			if (context) {
@@ -240,14 +240,14 @@ export default class DataServerInterface extends EventEmitter {
 			const networkCheck = this.__checkRequestNetwork.bind(
 				this,
 				id,
-				url,
+				_url,
 				init,
 				data,
 				start,
 				context
 			);
 
-			fetch(url, init)
+			fetch(_url, init)
 				// Normalize request failures
 				.catch(e =>
 					Promise.reject(
@@ -256,7 +256,7 @@ export default class DataServerInterface extends EventEmitter {
 							statusCode: 0,
 							error: e,
 							init,
-							url,
+							url: _url,
 						})
 					)
 				)
@@ -269,7 +269,7 @@ export default class DataServerInterface extends EventEmitter {
 					this.__checkRequestStatus.bind(
 						this,
 						id,
-						url,
+						_url,
 						init,
 						data,
 						start,
@@ -610,9 +610,9 @@ export default class DataServerInterface extends EventEmitter {
 		global.location.replace(href);
 	}
 
-	computeOAuthUrl(url, successUrl, failureUrl) {
+	computeOAuthUrl(_url, successUrl, failureUrl) {
 		//OAuth logins only work client side, so this method will only work in a browser, and will fail on node.
-		return URL.appendQueryParams(url, {
+		return url.appendQueryParams(_url, {
 			success: successUrl,
 			failure: failureUrl,
 		});

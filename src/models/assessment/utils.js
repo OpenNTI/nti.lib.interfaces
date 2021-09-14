@@ -1,4 +1,4 @@
-import { URL } from '@nti/lib-commons';
+import { url } from '@nti/lib-commons';
 
 export function resolveSubmitTo(item, rel = 'Assessments') {
 	const FindCourse = o => o && o.isCourse && o.hasLink(rel);
@@ -6,6 +6,6 @@ export function resolveSubmitTo(item, rel = 'Assessments') {
 
 	return (
 		course &&
-		URL.join(course.getLink(rel), encodeURIComponent(item.getID()))
+		url.join(course.getLink(rel), encodeURIComponent(item.getID()))
 	);
 }

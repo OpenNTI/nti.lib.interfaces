@@ -1,20 +1,14 @@
-import { URL } from '@nti/lib-commons';
+import { url } from '@nti/lib-commons';
 
 import PagedDataSource from '../../data-sources/PagedDataSource.js';
 import PagedBatch from '../../data-sources/data-types/Page.js';
 import { NO_LINK } from '../../constants.js';
 
-async function loadRootPage (parent, service) {
+async function loadRootPage(parent, service) {
 	const contentPackages = await parent.getContentPackages();
 	const rootPageNTIID = contentPackages[0].NTIID;
 
-	return service.getPageInfo(
-		rootPageNTIID,
-		null,
-		null,
-		null,
-		parent
-	);
+	return service.getPageInfo(rootPageNTIID, null, null, null, parent);
 }
 
 export default class BundleStreamDataSource extends PagedDataSource {
@@ -45,7 +39,7 @@ export default class BundleStreamDataSource extends PagedDataSource {
 		}
 
 		const contents = await this.service.get(
-			URL.appendQueryParams(link, requestParams)
+			url.appendQueryParams(link, requestParams)
 		);
 
 		return new PagedBatch(this.service, this.parent, {

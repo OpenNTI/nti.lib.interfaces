@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 
 import Logger from '@nti/util-logger';
-import { URL, defineProtected } from '@nti/lib-commons';
+import { url, defineProtected } from '@nti/lib-commons';
 
 import getLink from '../utils/get-link.js';
 
@@ -99,22 +99,22 @@ export default class Library extends EventEmitter {
 	}
 }
 
-async function loadCollection(scope, url, key, filter) {
+async function loadCollection(scope, _url, key, filter) {
 	const { service } = scope;
 	let list = (scope[key] = []);
 
-	url = URL.appendQueryParams(url, { batchSize: 10, batchStart: 0 });
+	_url = url.appendQueryParams(_url, { batchSize: 10, batchStart: 0 });
 
 	do {
-		const data = await loadPage(service, url, filter);
+		const data = await loadPage(service, _url, filter);
 		const items = await scope.parse(data.Items);
 
-		url = getLink(data, 'batch-next');
+		_url = getLink(data, 'batch-next');
 
 		list.push(...items);
 
 		scope.onChange();
-	} while (url);
+	} while (_url);
 }
 
 async function loadPage(service, url, filter) {

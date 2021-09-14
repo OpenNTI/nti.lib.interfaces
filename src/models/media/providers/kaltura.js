@@ -1,4 +1,4 @@
-import { Url } from '@nti/lib-commons';
+import { url } from '@nti/lib-commons';
 
 import { Service, Context } from '../../../constants.js';
 
@@ -206,7 +206,7 @@ function getParams(partnerId, entryId, context = {}) {
 	};
 
 	//Do not alter these three lines
-	param.kalsig = kalturaSig(Url.stringifyQuery(param));
+	param.kalsig = kalturaSig(url.stringifyQuery(param));
 	param.format = 1;
 	delete param.service;
 
@@ -340,7 +340,7 @@ function buildURL(service, source) {
 	id = Array.isArray(id) ? id[0] : id;
 
 	const [partnerId, entryId] = id.split(':');
-	const params = Url.stringifyQuery(
+	const params = url.stringifyQuery(
 		getParams(partnerId, entryId, service && service[Context])
 	);
 

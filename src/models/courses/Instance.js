@@ -1,7 +1,6 @@
-import Url from 'url';
 import path from 'path';
 
-import { wait } from '@nti/lib-commons';
+import { wait, url } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import { MEDIA_BY_OUTLINE_NODE, NO_LINK, Service } from '../../constants.js';
@@ -339,13 +338,11 @@ export default class Instance extends ContentTree(
 
 		const parseResult = o =>
 			service.getObject(o, { parent: assignemntParentRef });
-		const uri = Url.parse(href);
+		const uri = url.parse(href);
 
 		uri.pathname = path.join(uri.pathname, encodeURIComponent(ntiid));
 
-		const url = uri.format();
-
-		return service.get(url).then(parseResult);
+		return service.get(uri.toString()).then(parseResult);
 	}
 
 	async getCurrentGrade() {
@@ -389,13 +386,11 @@ export default class Instance extends ContentTree(
 
 		const parseResult = o =>
 			service.getObject(o, { parent: inquiryParentRef });
-		const uri = Url.parse(href);
+		const uri = url.parse(href);
 
 		uri.pathname = path.join(uri.pathname, encodeURIComponent(ntiid));
 
-		const url = uri.format();
-
-		return service.get(url).then(parseResult);
+		return service.get(uri.toString()).then(parseResult);
 	}
 
 	getAccessTokens() {
@@ -596,14 +591,14 @@ export default class Instance extends ContentTree(
 		});
 	}
 
-	resolveContentURL(url) {
+	resolveContentURL(_url) {
 		let bundle = this.ContentPackageBundle;
 		let pkgs = bundle?.ContentPackages || []; //probably should search all packages...
 		let pkg = pkgs.find(x => !x.isRenderable && x.root);
 
-		let root = pkg && Url.parse(pkg.root);
+		let root = pkg && url.parse(pkg.root);
 
-		return Promise.resolve(root ? root.resolve(url) : url);
+		return Promise.resolve(root ? url.resolve(root, _url) : _url);
 	}
 
 	getDefaultShareWithValue(/*preferences*/) {

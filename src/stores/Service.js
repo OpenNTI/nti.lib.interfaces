@@ -2,7 +2,7 @@ import LRU from 'lru-cache';
 
 import Logger from '@nti/util-logger';
 import { isNTIID } from '@nti/lib-ntiids';
-import { URL, wait } from '@nti/lib-commons';
+import { url, wait } from '@nti/lib-commons';
 
 import { BaseObservable } from '../models/BaseObservable.js';
 import { parse } from '../models/Parser.js';
@@ -273,7 +273,7 @@ export default class ServiceDocument extends Pendability(
 		return this[Lists];
 	}
 
-	async getBatch(url, params = {}, options, parent = this) {
+	async getBatch(_url, params = {}, options, parent = this) {
 		let { transform, method = 'get', data = null } = options || {};
 		if (typeof options === 'function') {
 			transform = options;
@@ -283,7 +283,7 @@ export default class ServiceDocument extends Pendability(
 			throw new Error('Invalid HTTP Method');
 		}
 
-		let raw = await this[method](URL.appendQueryParams(url, params), data);
+		let raw = await this[method](url.appendQueryParams(_url, params), data);
 
 		if (transform) {
 			raw = await transform(raw);
@@ -421,7 +421,7 @@ export default class ServiceDocument extends Pendability(
 			);
 		}
 
-		let url = this.getObjectURL(ntiid, field);
+		let _url = this.getObjectURL(ntiid, field);
 
 		if (type || params) {
 			const headers = {};
@@ -434,11 +434,11 @@ export default class ServiceDocument extends Pendability(
 				headers.accept = type;
 			}
 
-			url = URL.appendQueryParams(url, extras);
-			url = { url, headers };
+			_url = url.appendQueryParams(_url, extras);
+			_url = { url: _url, headers };
 		}
 
-		return this.getObjectAtURL(url, ntiid);
+		return this.getObjectAtURL(_url, ntiid);
 	}
 
 	async buildGetObjectErrorHandler(ntiid) {
@@ -534,17 +534,17 @@ export default class ServiceDocument extends Pendability(
 	}
 
 	async getPurchasables(ids) {
-		let url = '/dataserver2/store/get_purchasables';
+		let _url = '/dataserver2/store/get_purchasables';
 
 		if (ids) {
 			if (Array.isArray(ids)) {
 				ids = ids.join(',');
 			}
 
-			url = URL.appendQueryParams(url, { purchasables: ids });
+			_url = url.appendQueryParams(_url, { purchasables: ids });
 		}
 
-		const collection = parse(this, null, (await this.get(url)).Items);
+		const collection = parse(this, null, (await this.get(_url)).Items);
 		await maybeWait(collection);
 		return collection;
 	}
@@ -782,22 +782,22 @@ export default class ServiceDocument extends Pendability(
 	}
 
 	getLogoutURL(successURL) {
-		let url = getLink(this.#pong, 'logon.logout');
-		if (!url) {
+		let _url = getLink(this.#pong, 'logon.logout');
+		if (!_url) {
 			logger.error(
 				'No Logout URL defined! Pulling a URL out of thin air.'
 			);
-			url = '/dataserver2/logon.logout';
+			_url = '/dataserver2/logon.logout';
 		}
 
-		return URL.appendQueryParams(url, { success: successURL });
+		return url.appendQueryParams(_url, { success: successURL });
 	}
 
 	getContainerURL(ntiid, postfix) {
 		let base = this.getResolveAppUserURL();
 		let pageURI = encodeURIComponent(`Pages(${ntiid})`);
 
-		return URL.join(base, pageURI, postfix || '');
+		return url.join(base, pageURI, postfix || '');
 	}
 
 	getContentPackagesURL(name) {
@@ -858,7 +858,7 @@ export default class ServiceDocument extends Pendability(
 			return null;
 		}
 
-		return URL.join(l, username && encodeURIComponent(username));
+		return url.join(l, username && encodeURIComponent(username));
 	}
 
 	getUserUnifiedSearchURL() {
@@ -888,7 +888,7 @@ export default class ServiceDocument extends Pendability(
 			return null;
 		}
 
-		return URL.join(l, username && encodeURIComponent(username));
+		return url.join(l, username && encodeURIComponent(username));
 	}
 
 	getBulkResolveUserURL() {
@@ -902,7 +902,7 @@ export default class ServiceDocument extends Pendability(
 
 	getMetadataExtractorURL(uri) {
 		const base = '/dataserver2/URLMetaDataExtractor';
-		return uri ? URL.appendQueryParams(base, { url: uri }) : base;
+		return uri ? url.appendQueryParams(base, { url: uri }) : base;
 	}
 
 	getPurchasableItemURL() {
@@ -952,9 +952,9 @@ export default class ServiceDocument extends Pendability(
 	 */
 	async getContextPathFor(thing) {
 		const cache = LibraryPathCache;
-		let url = thing.getLink && thing.getLink('LibraryPath');
+		let _url = thing.getLink && thing.getLink('LibraryPath');
 
-		if (!url) {
+		if (!_url) {
 			const id = (thing && thing.getID && thing.getID()) || thing;
 			if (typeof id !== 'string') {
 				throw new Error(
@@ -970,12 +970,12 @@ export default class ServiceDocument extends Pendability(
 				);
 			}
 
-			url = URL.appendQueryParams(href, { objectId: id });
+			_url = url.appendQueryParams(href, { objectId: id });
 		}
 
 		const fetch = async () => {
 			const parent = typeof thing === 'object' ? thing : this;
-			const data = await this.get(url);
+			const data = await this.get(_url);
 			// data will be an array of arrays of models.
 			// So:
 			// 		[
@@ -989,10 +989,10 @@ export default class ServiceDocument extends Pendability(
 			);
 		};
 
-		let promise = cache.get(url);
+		let promise = cache.get(_url);
 
 		if (!promise) {
-			cache.set(url, (promise = fetch()));
+			cache.set(_url, (promise = fetch()));
 		}
 
 		return promise;

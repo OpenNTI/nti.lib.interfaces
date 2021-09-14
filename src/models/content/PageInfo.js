@@ -1,4 +1,4 @@
-import { Markup, URL } from '@nti/lib-commons';
+import { Markup, url } from '@nti/lib-commons';
 
 import UserDataStore from '../../stores/UserData.js';
 import {
@@ -63,7 +63,7 @@ export default class PageInfo extends Pages(Base) {
 	}
 
 	getContentRoot() {
-		return URL.resolve(this.getLink('content'), '.');
+		return url.resolve(this.getLink('content'), '.');
 	}
 
 	getContent() {
@@ -122,7 +122,7 @@ export default class PageInfo extends Pages(Base) {
 			throw new Error(NO_LINK);
 		}
 
-		return this.getResource(URL.appendQueryParams(link, o))
+		return this.getResource(url.appendQueryParams(link, o))
 			.then(objects => objects.Items[0] || Promise.reject(NOT_FOUND))
 			.then(this[parse].bind(this));
 	}
@@ -143,11 +143,11 @@ export default class PageInfo extends Pages(Base) {
 		return Promise.resolve(store); //in the future, this may need to be async...
 	}
 
-	resolveContentURL(url) {
+	resolveContentURL(_url) {
 		const { RootURL } = this;
-		const root = RootURL && URL.parse(RootURL);
+		const root = RootURL && url.parse(RootURL);
 
-		return Promise.resolve(root ? root.resolve(url) : url);
+		return Promise.resolve(root ? root.resolve(_url) : _url);
 	}
 
 	insertNewDiscussion(discussion) {

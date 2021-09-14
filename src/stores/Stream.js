@@ -2,7 +2,7 @@ import EventEmitter from 'events';
 
 import invariant from 'invariant';
 
-import { URL } from '@nti/lib-commons';
+import { url } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import { Service, Parent, DELETED, SortOrder } from '../constants.js';
@@ -197,7 +197,7 @@ export default class Stream extends Pendability(EventEmitter) {
 			start = Date.now();
 
 			const getHref = (ref, params = {}) =>
-				ref && URL.appendQueryParams(ref, params);
+				ref && url.appendQueryParams(ref, params);
 
 			let next =
 				(prev ? this.prev : this.next) ||

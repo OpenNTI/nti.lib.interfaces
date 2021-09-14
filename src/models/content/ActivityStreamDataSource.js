@@ -1,4 +1,4 @@
-import { URL } from '@nti/lib-commons';
+import { url } from '@nti/lib-commons';
 
 import PagedDataSource from '../../data-sources/PagedDataSource.js';
 import PagedBatch from '../../data-sources/data-types/Page.js';
@@ -19,7 +19,7 @@ export default class ActivityStreamDataSource extends PagedDataSource {
 		}
 
 		const activity = await this.service.get(
-			URL.appendQueryParams(link, requestParams)
+			url.appendQueryParams(link, requestParams)
 		);
 
 		return new PagedBatch(this.service, this.parent, {

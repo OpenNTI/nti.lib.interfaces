@@ -1,4 +1,4 @@
-import { isEmpty, URL } from '@nti/lib-commons';
+import { isEmpty, url } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import { Service, Parent } from '../../constants.js';
@@ -28,9 +28,9 @@ export default class MediaIndex {
 		let root = parent.root;
 
 		function prefix(o) {
-			o.src = URL.resolve(root || '', o.src);
+			o.src = url.resolve(root || '', o.src);
 			o.srcjsonp = o.srcjsonp
-				? URL.resolve(root || '', o.srcjsonp)
+				? url.resolve(root || '', o.srcjsonp)
 				: o.srcjsonp;
 			return o;
 		}

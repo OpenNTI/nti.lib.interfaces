@@ -1,4 +1,4 @@
-import { URL } from '@nti/lib-commons';
+import { url } from '@nti/lib-commons';
 
 import { NO_LINK, Service, Parser as parse } from '../constants.js';
 
@@ -16,7 +16,7 @@ export default Base =>
 			}
 
 			if (typeof params === 'object') {
-				link = URL.appendQueryParams(link, params);
+				link = url.appendQueryParams(link, params);
 			}
 
 			return this[Service].get(link).then(raw =>

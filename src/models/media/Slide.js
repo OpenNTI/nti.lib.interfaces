@@ -1,11 +1,11 @@
-import { URL } from '@nti/lib-commons';
+import { url } from '@nti/lib-commons';
 
 import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 const getRoot = x => (x ? x.root : x) || '/missing-root/';
 const findRoot = p => getRoot(p && p.parent ? p.parent('root') : null);
-const resolve = (s, p, path) => URL.resolve(findRoot(p), path);
+const resolve = (s, p, path) => url.resolve(findRoot(p), path);
 
 export default class Slide extends Base {
 	static MimeType = COMMON_PREFIX + 'slide';

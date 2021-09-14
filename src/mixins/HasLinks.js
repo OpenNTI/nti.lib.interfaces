@@ -1,4 +1,4 @@
-import { URL } from '@nti/lib-commons';
+import { url } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import getLinkImpl from '../utils/get-link.js';
@@ -21,11 +21,11 @@ export const mixin = Base =>
 				getLinkImpl(this, name) || (name === 'self' && this.href);
 
 			if (link && segments.length > 0) {
-				link = URL.join(link, ...segments);
+				link = url.join(link, ...segments);
 			}
 
 			if (link && params) {
-				link = URL.appendQueryParams(link, params);
+				link = url.appendQueryParams(link, params);
 			}
 
 			return link;

@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { URL } from '@nti/lib-commons';
+import { url } from '@nti/lib-commons';
 
 import PagedDataSource from '../../data-sources/PagedDataSource.js';
 import PagedBatch from '../../data-sources/data-types/Page.js';
@@ -30,7 +30,7 @@ export default class BundleSearchDataSource extends PagedDataSource {
 		);
 
 		const contents = await this.service.get(
-			URL.appendQueryParams(href, requestParams)
+			url.appendQueryParams(href, requestParams)
 		);
 
 		return new PagedBatch(this.service, this.parent, {

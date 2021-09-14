@@ -1,4 +1,4 @@
-import { URL } from '@nti/lib-commons';
+import { url } from '@nti/lib-commons';
 
 import PagedDataSource from '../../../data-sources/PagedDataSource.js';
 import PagedBatch from '../../../data-sources/data-types/Page.js';
@@ -20,7 +20,7 @@ export default class CourseAllActivityDataSource extends PagedDataSource {
 		};
 
 		const contents = await this.service.get(
-			URL.appendQueryParams(link, requestParams)
+			url.appendQueryParams(link, requestParams)
 		);
 
 		return new PagedBatch(this.service, this.parent, {

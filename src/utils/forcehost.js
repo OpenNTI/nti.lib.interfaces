@@ -1,10 +1,10 @@
-import Url from 'url';
+import { url } from '@nti/lib-commons';
 
 export default function forceHost(s) {
 	//Force our config to always point to our server...(client side)
-	let url = Url.parse(s);
+	let _url = url.parse(s);
 	let { host, hostname, protocol, port } = global.location;
-	Object.assign(url, { url, host, hostname, protocol, port });
+	Object.assign(_url, { host, hostname, protocol, port });
 
-	return url.format();
+	return _url.toString();
 }

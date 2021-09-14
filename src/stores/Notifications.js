@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
 
 import Logger from '@nti/util-logger';
-import { forward, wait, URL } from '@nti/lib-commons';
+import { forward, wait, url } from '@nti/lib-commons';
 
 import { Service, ROOT_NTIID, REL_MESSAGE_INBOX } from '../constants.js';
 import { parse } from '../models/Parser.js';
@@ -25,12 +25,12 @@ export default class Notifications extends EventEmitter {
 			.getPageInfo(ROOT_NTIID)
 			//Find our url to fetch notifications from...
 			.then(pageInfo => {
-				const url = pageInfo.getLink(REL_MESSAGE_INBOX);
-				if (!url) {
+				const _url = pageInfo.getLink(REL_MESSAGE_INBOX);
+				if (!_url) {
 					return Promise.reject('No Notifications url');
 				}
 
-				return URL.appendQueryParams(url, {
+				return url.appendQueryParams(_url, {
 					batchSize: BATCH_SIZE,
 					batchStart: 0,
 				});
@@ -84,11 +84,9 @@ export default class Notifications extends EventEmitter {
 
 		if (!inflight) {
 			if (this.nextBatchSrc) {
-				inflight = get(
-					this[Service],
-					this.nextBatchSrc,
-					true
-				).then(data => applyData(this, data));
+				inflight = get(this[Service], this.nextBatchSrc, true).then(
+					data => applyData(this, data)
+				);
 
 				inflight.then(clean, clean);
 			} else {

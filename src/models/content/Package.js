@@ -1,4 +1,4 @@
-import { URL } from '@nti/lib-commons';
+import { url } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import Registry, { COMMON_PREFIX } from '../Registry.js';
@@ -74,7 +74,7 @@ export default class Package extends Base {
 			return '';
 		}
 
-		return URL.join(root, 'presentation-assets', 'webapp', 'v1');
+		return url.join(root, 'presentation-assets', 'webapp', 'v1');
 	}
 
 	async getPackage(id) {
@@ -148,7 +148,7 @@ export default class Package extends Base {
 				toc =>
 					Promise.resolve(toc)
 						.then(find)
-						.then(path => URL.join(this.root, path))
+						.then(path => url.join(this.root, path))
 						.then(get)
 						.then(data =>
 							MediaIndex.build(this[Service], this, toc, data)
@@ -162,7 +162,7 @@ export default class Package extends Base {
 	async getRealPageIndex() {
 		const service = this[Service];
 		const { root } = this;
-		const link = URL.join(root, 'real_pages.json');
+		const link = url.join(root, 'real_pages.json');
 
 		try {
 			const index = await service.get(link);
