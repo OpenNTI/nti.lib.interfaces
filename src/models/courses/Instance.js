@@ -14,6 +14,7 @@ import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 import Forum from '../forums/Forum.js';
 
+import CompletedItem from './CompletedItem.js';
 import CourseAllActivityDataSource from './data-sources/CourseAllActivityDataSource.js';
 import CourseCommunity from './CourseCommunity.js';
 import ActivityStream from './BucketedActivityStream.js';
@@ -82,6 +83,22 @@ export default class Instance extends ContentTree(
 		}
 
 		this.addToPending(resolvePreferredAccess(service, this, parent));
+		this.addListener('incoming-change', change => {
+			if (change.Item instanceof CompletedItem) {
+				this.refreshPreferredAccess();
+			}
+		});
+	}
+
+	__isSocketChangeEventApplicable(change) {
+		return (
+			super.__isSocketChangeEventApplicable?.(change) ||
+			this.getID() ===
+				change.Item?.getLinkProperty(
+					'UserCoursePreferredAccess',
+					'ntiid'
+				)
+		);
 	}
 
 	get title() {
