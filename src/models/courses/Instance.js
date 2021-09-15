@@ -596,9 +596,7 @@ export default class Instance extends ContentTree(
 		let pkgs = bundle?.ContentPackages || []; //probably should search all packages...
 		let pkg = pkgs.find(x => !x.isRenderable && x.root);
 
-		let root = pkg && url.parse(pkg.root);
-
-		return Promise.resolve(root ? url.resolve(root, _url) : _url);
+		return Promise.resolve(pkg ? url.resolve(pkg.root, _url) : _url);
 	}
 
 	getDefaultShareWithValue(/*preferences*/) {
