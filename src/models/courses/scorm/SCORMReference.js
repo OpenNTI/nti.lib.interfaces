@@ -33,7 +33,7 @@ export default class SCORMReference extends Completable(Base) {
 			this.ScormContentInfo.CompletedItem = item;
 		}
 	}
-	kk;
+
 	get isScormRef() {
 		return true;
 	}
