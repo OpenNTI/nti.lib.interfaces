@@ -5,6 +5,10 @@ import Base from '../../Base.js';
 export default class SCORMReference extends Completable(Base) {
 	static MimeType = [COMMON_PREFIX + 'scormcontentref'];
 
+	// Since this forwards ops to ScormContentInfo,
+	//   make those events bubble up to us so that our listeners get notified
+	static ChangeBubbles = true;
+
 	// prettier-ignore
 	static Fields = {
 		...super.Fields,
