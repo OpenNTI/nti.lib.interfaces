@@ -1,3 +1,4 @@
+import CompletedItem from '../CompletedItem.js';
 import Completable from '../../../mixins/Completable.js';
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
@@ -20,6 +21,15 @@ export default class SCORMReference extends Completable(Base) {
 		'CompletionRequired': { type: 'boolean' },
 		'CompletedItem':      { type: 'model' },
 		'Target-NTIID':       { type: 'string' },
+	}
+
+	constructor(...args) {
+		super(...args);
+		this.addListener('incoming-change', change => {
+			if (change.Item instanceof CompletedItem) {
+				this.refresh();
+			}
+		});
 	}
 
 	__isSocketChangeEventApplicable(change) {
