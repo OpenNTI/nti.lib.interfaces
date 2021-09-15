@@ -20,7 +20,7 @@ export default class SCORMReference extends Completable(Base) {
 
 	__isSocketChangeEventApplicable(change) {
 		return (
-			super.__isSocketChangeEventApplicable?.(change) ||
+			super.__isSocketChangeEventApplicable(change) ||
 			this.ScormContentInfo?.getID() === change.Item.ItemNTIID
 		);
 	}

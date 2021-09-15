@@ -92,7 +92,7 @@ export default class Instance extends ContentTree(
 
 	__isSocketChangeEventApplicable(change) {
 		return (
-			super.__isSocketChangeEventApplicable?.(change) ||
+			super.__isSocketChangeEventApplicable(change) ||
 			this.getID() ===
 				change.Item?.getLinkProperty(
 					'UserCoursePreferredAccess',

@@ -16,7 +16,7 @@ export default class CalendarEventRef extends Completable(Base) {
 
 	__isSocketChangeEventApplicable(change) {
 		return (
-			super.__isSocketChangeEventApplicable?.(change) ||
+			super.__isSocketChangeEventApplicable(change) ||
 			this.CalendarEvent?.getID() === change.Item.ItemNTIID
 		);
 	}

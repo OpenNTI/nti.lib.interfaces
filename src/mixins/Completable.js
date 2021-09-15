@@ -42,7 +42,7 @@ export default Base =>
 
 		__isSocketChangeEventApplicable(change) {
 			return (
-				super.__isSocketChangeEventApplicable?.(change) ||
+				super.__isSocketChangeEventApplicable(change) ||
 				this.getID() === change.Item.ItemNTIID
 			);
 		}
