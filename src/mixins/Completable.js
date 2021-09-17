@@ -77,12 +77,12 @@ export default Base =>
 			return 0;
 		}
 
-		updateCompletedItem(item) {
+		async updateCompletedItem(item) {
 			if (!item) {
 				return this.refresh();
 			}
 
-			return this.refresh({ CompletedItem: item });
+			this.CompletedItem = item;
 		}
 
 		async updateCompletedState(enrollment) {
