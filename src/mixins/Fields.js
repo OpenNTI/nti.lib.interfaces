@@ -831,7 +831,12 @@ function applyField(scope, fieldName, valueIn, declared, defaultValue) {
 					(descriptor.writable && 'value' in descriptor) ||
 					hasOwnSetter
 				) {
-					scope[fieldName] = value;
+					try {
+						applyField.applying = true;
+						scope[fieldName] = value;
+					} finally {
+						applyField.applying = false;
+					}
 				}
 			} catch (e) {
 				logger.stack?.(e);
@@ -855,7 +860,9 @@ function applyField(scope, fieldName, valueIn, declared, defaultValue) {
 		scope[`beforeSet:${fieldName}`]?.(x);
 		// console.trace('setting %s to', fieldName, x);
 		value = x;
-		scope.onChange(fieldName);
+		if (!applyField.applying) {
+			scope.onChange(fieldName);
+		}
 		scope[`afterSet:${fieldName}`]?.(x);
 	});
 	const getter = makeFieldsFn(() => value);
