@@ -35,7 +35,7 @@ export default Base =>
 			super(...args);
 			this.addListener('incoming-change', change => {
 				if (change.Item instanceof CompletedItem) {
-					this.updateCompletedState();
+					this.updateCompletedItem(change.Item);
 				}
 			});
 		}
@@ -75,6 +75,14 @@ export default Base =>
 		getPercentageCompleted() {
 			//TODO: fill this out
 			return 0;
+		}
+
+		updateCompletedItem(item) {
+			if (!item) {
+				return this.refresh();
+			}
+
+			return this.refresh({ CompletedItem: item });
 		}
 
 		async updateCompletedState(enrollment) {
