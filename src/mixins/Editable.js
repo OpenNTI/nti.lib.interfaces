@@ -10,6 +10,40 @@ const after = (task, call) => task.catch(() => {}).then(() => call());
  */
 export const mixin = Base =>
 	class extends Base {
+		/**
+		 * @template T
+		 * @param {T} editableThing
+		 * @returns {T}
+		 */
+		static getStagingInstance(editableThing) {
+			const Type = this.constructor;
+			if (Type !== editableThing.constructor) {
+				throw new Error('Incompatible Type.');
+			}
+
+			class StagingInstance extends Type {
+				getEventPrefix() {
+					return super.getEventPrefix() + '--staged';
+				}
+
+				async save(...args) {
+					const res = await super.save(...args);
+					editableThing.refresh(this.toJSON());
+					return res;
+				}
+			}
+
+			return new StagingInstance(
+				editableThing[Service],
+				null,
+				editableThing.toJSON?.()
+			);
+		}
+
+		getStagingInstance() {
+			return this.constructor.getStagingInstance(this);
+		}
+
 		async delete(rel) {
 			if (!rel) {
 				rel = ['delete', 'edit'].find(x => this.hasLink(x)) ?? '';
