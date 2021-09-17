@@ -435,6 +435,7 @@ export const mixin = (Base = Object) =>
 				);
 			}
 
+			this.onChange?.();
 			return this;
 		}
 
