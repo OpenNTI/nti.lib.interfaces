@@ -1,5 +1,5 @@
 import Logger from '@nti/util-logger';
-import { Parsing, Array as ArrayUtils } from '@nti/lib-commons';
+import { equals, Parsing, Array as ArrayUtils } from '@nti/lib-commons';
 import { ntiidEquals } from '@nti/lib-ntiids';
 
 import { getPropertyDescriptor } from '../utils/get-property-descriptor.js';
@@ -40,6 +40,7 @@ const TYPE_MAP = {
 	'string?': coerceStringField,
 };
 
+const isEquivalent = Symbol('IsEquivalent');
 const __get = Symbol('get');
 const {
 	prototype: { test: _t },
@@ -287,7 +288,7 @@ export const mixin = (Base = Object) =>
 		 */
 		async refresh(newRaw) {
 			const service = this[Service];
-			const INFLIGHT = 'model:inflight-refresh';
+			const INFLIGHT = Symbol.for('model:inflight-refresh');
 			const queue = this[INFLIGHT] || (this[INFLIGHT] = []);
 			const [lock] = queue;
 
@@ -420,11 +421,9 @@ export const mixin = (Base = Object) =>
 				}
 
 				// skip if the value does not change.
-				if (current === value) {
+				if (equals(current, value, true)) {
 					continue;
 				}
-
-				changed.push(name);
 
 				//Apply new value
 				applyFieldStrategy(
@@ -436,12 +435,56 @@ export const mixin = (Base = Object) =>
 					defaultValue,
 					key
 				);
+
+				// only add the field to changed set if the new field is not equivalent.
+				const newValue = __readValue(this, name);
+
+				const equiv = current?.[isEquivalent]
+					? current[isEquivalent](newValue)
+					: equals(current, newValue, true);
+
+				if (!equiv) {
+					changed.push(name);
+				}
 			}
 
 			if (changed.length > 0) {
 				this.onChange?.(changed);
 			}
 			return this;
+		}
+
+		[isEquivalent](other) {
+			if (this === other) {
+				return true;
+			}
+
+			const keys = new Set([
+				...getFields(this).AllFields,
+				...getFields(other).AllFields,
+			]);
+
+			if (!(other instanceof Base)) {
+				return false;
+			}
+
+			for (const key of keys) {
+				const me = __readValue(this, key);
+				const them = __readValue(other, key);
+				// eslint-disable-next-line eqeqeq
+				if (me != them) {
+					if (
+						me?.[isEquivalent]
+							? me[isEquivalent](them)
+							: equals(me, them, true)
+					) {
+						continue;
+					}
+					return false;
+				}
+			}
+
+			return true;
 		}
 
 		/**
@@ -516,9 +559,9 @@ function applyFieldStrategy(
 	}
 }
 
-function getFields(obj, data) {
+function getFields(obj, data = {}) {
 	const Type = getType(obj);
-	const { Fields } = Type;
+	const { Fields = obj } = Type || {};
 	const FieldKeys = Object.keys(Fields).filter(k => Fields[k]);
 	const FieldRenames = FieldKeys.map(x => Fields[x].name).filter(Boolean);
 	const DataFields = Object.keys(data).filter(x => !FieldRenames.includes(x));
