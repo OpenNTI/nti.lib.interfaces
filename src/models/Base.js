@@ -113,8 +113,11 @@ export default class Model extends Pendability(
 
 	onChange(...who) {
 		this.emit('change', this, ...who);
+		const prefix = this.getEventPrefix();
 
-		this[Service]?.emit(`${this.getEventPrefix()}-change`, this, ...who);
+		if (prefix) {
+			this[Service]?.emit(`${prefix}-change`, this, ...who);
+		}
 
 		if (this.parent(x => x.constructor.ChangeBubbles)) {
 			const what = [...who];
@@ -197,7 +200,7 @@ export default class Model extends Pendability(
 				return fn(item, ...args);
 			}
 
-			if (this.OID && item.getLastModified() >= this.getLastModified()) {
+			if (prefix && item.getLastModified() >= this.getLastModified()) {
 				if (this.applyChange) {
 					await this.applyChange(item);
 				} else {
