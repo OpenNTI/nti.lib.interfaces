@@ -395,8 +395,9 @@ export const mixin = (Base = Object) =>
 
 			const { Fields, DataFields } = getFields(this, data);
 
+			const changed = [];
 			//Just iterate over changing fields
-			for (let key of DataFields) {
+			for (const key of DataFields) {
 				//get the name, type, and defaultValue of the field...
 				const { name = key, type, defaultValue } = Fields[key] || {};
 
@@ -423,6 +424,8 @@ export const mixin = (Base = Object) =>
 					continue;
 				}
 
+				changed.push(name);
+
 				//Apply new value
 				applyFieldStrategy(
 					this,
@@ -435,7 +438,9 @@ export const mixin = (Base = Object) =>
 				);
 			}
 
-			this.onChange?.();
+			if (changed.length > 0) {
+				this.onChange?.(changed);
+			}
 			return this;
 		}
 
