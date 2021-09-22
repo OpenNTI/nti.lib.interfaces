@@ -647,6 +647,13 @@ export function updateField(scope, field, desc) {
 export function __readValue(scope, fieldName) {
 	const descriptor = getPropertyDescriptor(scope, fieldName);
 	const { renamedTo, [__get]: getter } = descriptor?.get || {};
+	if ('value' in descriptor && !descriptor?.get && scope?.[Parser]) {
+		logger.warn(
+			`Blocked reading non-field '${fieldName}' in %o'`,
+			scope.MimeType || scope
+		);
+		return;
+	}
 	const readKey = renamedTo || fieldName;
 	return getter ? getter() : scope[readKey];
 }
