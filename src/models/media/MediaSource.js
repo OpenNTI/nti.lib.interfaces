@@ -35,20 +35,17 @@ export default class MediaSource extends Base {
 		return MediaSourceFactory.from(service, uri);
 	}
 
-	constructor(service, parent, data) {
-		super(service, parent, data);
-		this.meta = {};
-	}
+	#meta = {};
 
 	get hasResolverFailure() {
-		return !!this.meta.failure;
+		return !!this.#meta.failure;
 	}
 
 	getResolver() {
 		return (
 			this[resolver] ||
 			(this[resolver] = MetaDataResolver.from(this).then(
-				meta => (this.meta = meta)
+				meta => (this.#meta = meta)
 			))
 		);
 	}
@@ -65,9 +62,9 @@ export default class MediaSource extends Base {
 	}
 
 	getProperty(prop) {
-		return this.meta[prop]
-			? Promise.resolve(this.meta[prop])
-			: this.getResolver().then(() => this.meta[prop]);
+		return this.#meta[prop]
+			? Promise.resolve(this.#meta[prop])
+			: this.getResolver().then(() => this.#meta[prop]);
 	}
 
 	getPoster() {
@@ -77,9 +74,9 @@ export default class MediaSource extends Base {
 	getThumbnail() {
 		return this.getProperty('thumbnail').then(
 			() =>
-				this.meta.thumbnail ||
+				this.#meta.thumbnail ||
 				this.thumbnail ||
-				this.meta.poster ||
+				this.#meta.poster ||
 				this.poster
 		);
 	}
