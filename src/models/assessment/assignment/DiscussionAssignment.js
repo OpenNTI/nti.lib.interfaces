@@ -6,7 +6,10 @@ import Assignment from './Assignment.js';
 export default class DiscussionAssignment extends Assignment {
 	static MimeType = COMMON_PREFIX + 'assessment.discussionassignment';
 
-	isDiscussion = true;
+	// make non-enumerable
+	get isDiscussion() {
+		return true;
+	}
 
 	get canManuallyEdit() {
 		return this[Service].capabilities.canDoAdvancedEditing;

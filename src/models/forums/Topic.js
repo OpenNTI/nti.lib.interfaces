@@ -37,7 +37,10 @@ export default class Topic extends DiscussionInterface(
 		'Reports':                        { type: 'model[]'}
 	}
 
-	isTopic = true;
+	// make non-enumerable
+	get isTopic() {
+		return true;
+	}
 
 	canEditSharing() {
 		return false;

@@ -225,7 +225,10 @@ export const mixin = Base =>
 			this.addToPending?.(resolveMentions(this));
 		}
 
-		isDiscussion = true;
+		// make non-enumerable
+		get isDiscussion() {
+			return true;
+		}
 
 		getPost() {
 			return this;
