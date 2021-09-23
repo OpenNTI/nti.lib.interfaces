@@ -18,6 +18,11 @@ function decode(fields, key) {
 
 const Serializing = new Set();
 
+/**
+ * @param {object} options
+ * @param {boolean|'deep'|'shallow'} options.diff
+ * @returns {object}
+ */
 function getData({ diff = false } = {}) {
 	let d = {};
 
@@ -33,7 +38,13 @@ function getData({ diff = false } = {}) {
 
 		for (let k of keys) {
 			// skip unchanged values
-			if (diff && !this.__isDirty(k)) {
+			if (
+				diff &&
+				// always include MimeType
+				k !== 'MimeType' &&
+				this.__isDirty &&
+				!this.__isDirty(k)
+			) {
 				continue;
 			}
 
@@ -49,7 +60,7 @@ function getData({ diff = false } = {}) {
 				d[k] =
 					this[translator] && isFunction(this[translator])
 						? this[translator](v)
-						: get(v, { diff });
+						: get(v, { diff: diff === 'deep' ? diff : false });
 			}
 		}
 	} finally {

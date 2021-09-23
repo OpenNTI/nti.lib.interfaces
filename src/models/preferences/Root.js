@@ -65,7 +65,7 @@ export default class PreferenceRoot extends Base {
 
 					// save the section of the preferences
 					await field.save(
-						field.getData({ diff: true }),
+						field.getData({ diff: 'deep' }),
 						null,
 						'self'
 					);
