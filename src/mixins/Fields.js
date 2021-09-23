@@ -645,12 +645,20 @@ export function updateField(scope, field, desc) {
 // @private - used to read a value without warning.
 // INTERNAL only! -- intended for serializing scope to JSON in JSONValue
 export function __readValue(scope, fieldName) {
-	const seen = (__readValue.seen = __readValue.seen || {});
 	const descriptor = getPropertyDescriptor(scope, fieldName);
 	const { renamedTo, [__get]: getter } = descriptor?.get || {};
-	if ('value' in descriptor && !descriptor?.get && scope?.[Parser]) {
+
+	if (
+		descriptor &&
+		'value' in descriptor &&
+		typeof descriptor.value !== 'function' &&
+		!descriptor?.get &&
+		scope?.[Parser]
+	) {
+		const seen = (__readValue.seen = __readValue.seen || {});
 		const key = scope.MimeType ?? JSON.stringify(scope);
 		seen[key] = seen[key] || {};
+
 		if (!seen[key][fieldName]) {
 			seen[key][fieldName] = true;
 			logger.warn(
@@ -660,6 +668,7 @@ export function __readValue(scope, fieldName) {
 		}
 		return;
 	}
+
 	const readKey = renamedTo || fieldName;
 	return getter ? getter() : scope[readKey];
 }
