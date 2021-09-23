@@ -246,9 +246,10 @@ export const mixin = Base =>
 			return parts.join('-');
 		}
 
-		async applyChange(item) {
-			await this.refresh(item.toJSON());
+		async refresh(item) {
+			await super.refresh(item);
 			await resolveMentions(this);
+			return this;
 		}
 
 		getTitle() {

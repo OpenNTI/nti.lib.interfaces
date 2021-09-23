@@ -200,14 +200,27 @@ export default class Model extends Pendability(
 				return fn(item, ...args);
 			}
 
-			if (prefix && item.getLastModified() >= this.getLastModified()) {
-				if (this.applyChange) {
-					await this.applyChange(item);
-				} else {
-					await this.refresh(item.toJSON());
-				}
+			if (
+				prefix &&
+				(item.getLastModified() > this.getLastModified() ||
+					item.__isDirty())
+			) {
+				const refreshing = Symbol.for(
+					'model:subscribeToChange:listener'
+				);
+				try {
+					if (!this[refreshing]) {
+						this[refreshing] = true;
 
-				fn(this, ...args);
+						// If we need to change refresh, remember subclasses may
+						// override refresh... change them too.
+						await this.refresh(item);
+
+						fn(this, ...args);
+					}
+				} finally {
+					delete this[refreshing];
+				}
 			}
 		};
 

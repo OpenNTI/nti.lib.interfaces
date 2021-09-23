@@ -385,6 +385,13 @@ export const mixin = (Base = Object) =>
 				throw new Error('Mismatch!');
 			}
 
+			if (data.__toRaw && data.getData) {
+				data = {
+					...data.__toRaw(),
+					...data.getData({ diff: 'shallow' }),
+				};
+			}
+
 			if (data.__toRaw) {
 				data = data.__toRaw();
 			}
