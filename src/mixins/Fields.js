@@ -645,13 +645,19 @@ export function updateField(scope, field, desc) {
 // @private - used to read a value without warning.
 // INTERNAL only! -- intended for serializing scope to JSON in JSONValue
 export function __readValue(scope, fieldName) {
+	const seen = (__readValue.seen = __readValue.seen || {});
 	const descriptor = getPropertyDescriptor(scope, fieldName);
 	const { renamedTo, [__get]: getter } = descriptor?.get || {};
 	if ('value' in descriptor && !descriptor?.get && scope?.[Parser]) {
-		logger.warn(
-			`Blocked reading non-field '${fieldName}' in %o'`,
-			scope.MimeType || scope
-		);
+		const key = scope.MimeType ?? JSON.stringify(scope);
+		seen[key] = seen[key] || {};
+		if (!seen[key][fieldName]) {
+			seen[key][fieldName] = true;
+			logger.warn(
+				`Blocked reading non-field '${fieldName}' in %o'`,
+				scope.MimeType || scope
+			);
+		}
 		return;
 	}
 	const readKey = renamedTo || fieldName;
