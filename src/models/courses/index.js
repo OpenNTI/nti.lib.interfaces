@@ -15,6 +15,7 @@ export { default as CatalogLegacyEntry } from './CatalogLegacyEntry.js';
 export { default as CatalogInstructorLegacyInfo } from './CatalogInstructorLegacyInfo.js';
 export { default as CompletableItemDefaultRequiredPolicy } from './CompletableItemDefaultRequiredPolicy.js';
 export { default as CompletedItem } from './CompletedItem.js';
+export { default as CourseAdminSummary } from './CourseAdminSummary.js';
 export { default as CourseProgress } from './CourseProgress.js';
 export { default as Instance } from './Instance.js';
 export { default as Invitation } from './Invitation.js';
