@@ -569,7 +569,7 @@ function applyFieldStrategy(
 function getFields(obj, data = {}) {
 	const Type = getType(obj);
 	const { Fields = obj } = Type || {};
-	const FieldKeys = Object.keys(Fields).filter(k => Fields[k]);
+	const FieldKeys = Object.keys(Fields || {}).filter(k => Fields[k]);
 	const FieldRenames = FieldKeys.map(x => Fields[x].name).filter(Boolean);
 	const DataFields = Object.keys(data).filter(x => !FieldRenames.includes(x));
 	const AllFields = Array.from(new Set([...DataFields, ...FieldKeys]));
