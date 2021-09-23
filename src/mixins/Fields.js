@@ -314,18 +314,22 @@ export const mixin = (Base = Object) =>
 				queue.push(
 					(async () => {
 						try {
-							const firstTask =
-								newRaw ||
-								(await service.getObjectAtURL(
+							const firstTask = await (newRaw ||
+								service.getObjectAtURL(
 									this.getObjectHref(),
 									this.getID()
 								));
 
-							const work = [firstTask, ...queue.slice(1)];
-							for (const [step, data] of Object.entries(work)) {
+							const work = [
+								firstTask,
+								...queue.splice(1, queue.length),
+							];
+							for (const [, /*step*/ data] of Object.entries(
+								work
+							)) {
 								this.applyRefreshedData(
-									data,
-									step === 0 && !newRaw
+									data
+									// step === 0 && !newRaw
 								);
 							}
 						} catch (e) {
@@ -369,10 +373,9 @@ export const mixin = (Base = Object) =>
 		/**
 		 * @private
 		 * @param {any} data
-		 * @param {boolean} force
 		 * @returns {this}
 		 */
-		applyRefreshedData(data, force) {
+		applyRefreshedData(data) {
 			if (!this[RepresentsSameObject](data)) {
 				logger.debug(
 					'Refreshed Data does not represent this object:\nInput: %O, Current Object: %O',
