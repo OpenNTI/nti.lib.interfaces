@@ -395,7 +395,11 @@ export const mixin = (Base = Object) =>
 			// }
 
 			// Update raw
-			this[RAW] = { ...this[RAW], ...data };
+			this[RAW] = {
+				...this[RAW],
+				...data,
+				MimeType: data.MimeType || this[RAW].MimeType,
+			};
 
 			const { Fields, DataFields } = getFields(this, data);
 
