@@ -665,6 +665,7 @@ export function __readValue(scope, fieldName) {
 	if (
 		descriptor &&
 		'value' in descriptor &&
+		typeof fieldName !== 'symbol' &&
 		typeof descriptor.value !== 'function' &&
 		!descriptor?.get &&
 		scope?.[Parser]
