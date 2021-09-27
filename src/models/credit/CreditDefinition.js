@@ -7,8 +7,9 @@ export default class CreditDefinition extends Base {
 	// prettier-ignore
 	static Fields = {
 		...super.Fields,
-		'credit_type':  { type: 'string', name: 'type' },
-		'credit_units': { type: 'string', name: 'unit' }
+		'credit_precision': { type: 'number', name: 'precision' },
+		'credit_type':      { type: 'string', name: 'type' },
+		'credit_units':     { type: 'string', name: 'unit' },
 	}
 }
 
