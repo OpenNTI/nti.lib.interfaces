@@ -112,7 +112,11 @@ export const mixin = Base =>
 			return this.saving;
 		}
 
-		async save(newValues, onAfterRefresh = x => x, rel = 'edit') {
+		async save(
+			newValues = this.getData({ diff: 'shallow' }),
+			onAfterRefresh = x => x,
+			rel = 'edit'
+		) {
 			if (newValues instanceof FormData) {
 				return this.saveFormData(newValues, onAfterRefresh, rel);
 			}
@@ -173,7 +177,8 @@ export const mixin = Base =>
 
 			this.onChange('saving');
 
-			return this.saving;
+			await this.saving;
+			return this;
 		}
 
 		/**
