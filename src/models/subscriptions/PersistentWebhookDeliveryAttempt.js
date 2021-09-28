@@ -9,6 +9,8 @@ export class PersistentWebhookDeliveryAttempt extends Base {
 		'message': { type: 'string' },
 		'status':  { type: 'string' },
 	}
+
+	isWebhookDeliveryAttempt = true
 }
 
 Registry.register(PersistentWebhookDeliveryAttempt);
