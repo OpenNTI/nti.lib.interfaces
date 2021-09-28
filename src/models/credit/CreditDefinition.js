@@ -11,6 +11,10 @@ export default class CreditDefinition extends Base {
 		'credit_type':      { type: 'string', name: 'type' },
 		'credit_units':     { type: 'string', name: 'unit' },
 	}
+
+	toString() {
+		return `${this.type} ${this.unit} ${this.precision}`;
+	}
 }
 
 Registry.register(CreditDefinition);

@@ -15,6 +15,13 @@ const CAPABILITIES = {
 
 	canShareRedaction: false,
 
+	canAddCreditTypes() {
+		return (
+			this[Service]?.getCollection('CreditDefinitions', 'Global').accepts
+				?.length > 0
+		);
+	},
+
 	canSeeBlogs() {
 		return Boolean(this[Service]?.getCollection('Blog'));
 	},
