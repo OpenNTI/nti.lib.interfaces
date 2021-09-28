@@ -22,6 +22,12 @@ const CAPABILITIES = {
 		);
 	},
 
+	canBulkAwardCredits() {
+		return this[Service].getCollection('Credit', 'Global')?.hasLink(
+			'bulk_awarded_credit'
+		);
+	},
+
 	canSeeBlogs() {
 		return Boolean(this[Service]?.getCollection('Blog'));
 	},
