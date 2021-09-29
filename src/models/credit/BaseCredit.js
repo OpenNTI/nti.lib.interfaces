@@ -17,6 +17,16 @@ export default class BaseCredit extends Base {
 	}
 
 	getAwardedDate() {} //implemented by awarded_date date field.
+
+	getFormattedAmount() {
+		const { locale } = new Intl.NumberFormat().resolvedOptions();
+		const formatter = new Intl.NumberFormat(locale, {
+			minimumFractionDigits: this.creditDefinition.precision,
+			maximumFractionDigits: this.creditDefinition.precision,
+		});
+
+		return formatter.format(this.amount || 0);
+	}
 }
 
 Registry.register(BaseCredit);
