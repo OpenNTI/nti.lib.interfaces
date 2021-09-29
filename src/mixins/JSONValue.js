@@ -42,7 +42,7 @@ function getData({ diff = false } = {}) {
 				diff &&
 				// always include MimeType
 				k !== 'MimeType' &&
-				this.__isDirty &&
+				'__isDirty' in this &&
 				!this.__isDirty(k)
 			) {
 				continue;
@@ -111,7 +111,8 @@ function isBlackListed(scope, k) {
 	if (Array.isArray(overrides)) {
 		overrides = overrides.reduce((o, x) => (o[x] = true), {});
 	}
-	if (overrides?.[k]) {
+
+	if (overrides?.[k] || Object.getPrototypeOf(scope) === Object.prototype) {
 		return false;
 	}
 
