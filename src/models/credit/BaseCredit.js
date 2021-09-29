@@ -18,14 +18,18 @@ export default class BaseCredit extends Base {
 
 	getAwardedDate() {} //implemented by awarded_date date field.
 
-	getFormattedAmount() {
+	getFormattedAmount({ unit = false, type = false } = {}) {
+		const { creditDefinition: cd } = this;
 		const { locale } = new Intl.NumberFormat().resolvedOptions();
 		const formatter = new Intl.NumberFormat(locale, {
-			minimumFractionDigits: this.creditDefinition.precision,
-			maximumFractionDigits: this.creditDefinition.precision,
+			minimumFractionDigits: cd.precision,
+			maximumFractionDigits: cd.precision,
 		});
 
-		return formatter.format(this.amount || 0);
+		const result = formatter.format(this.amount || 0);
+		return [result, type && cd.type, unit && cd.unit]
+			.filter(Boolean)
+			.join(' ');
 	}
 }
 
