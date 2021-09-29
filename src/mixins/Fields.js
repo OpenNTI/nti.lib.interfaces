@@ -76,23 +76,53 @@ export const mixin = (Base = Object) =>
 		__isDirty(property = null) {
 			const check = key => {
 				const value = __readValue(this, key);
-				if (value !== this[RAW][key]) {
-					if (value?.__isDirty) {
-						if (!value.__isDirty()) {
-							return false;
-						}
-					}
+				const originalValue = this[RAW][key];
 
-					return true;
+				// JavaScriptism: For the newcomers, `null == undefined` is true,
+				// and so is `null !== undefined` but not `null === undefined`
+				if (value == null && originalValue == null) {
+					return false;
 				}
-				return false;
+
+				// covers literal values and strict object identities...
+				if (value === originalValue) {
+					return false;
+				}
+
+				// Arrays will likely never be strictly equal, so we need to check their items
+				if (Array.isArray(value)) {
+					// length differs means its dirty
+					return value.length !== originalValue?.length
+						? true // dirty, because length.
+						: // if values in array are not models...
+						!value.every(x => x instanceof Base)
+						? // test for equality without models. remember, if they equal, then not dirty. (false)
+						  !equals(
+								value,
+								originalValue,
+								/* true means deep (objects are equivalent) */
+								true
+						  )
+						: // fall back to testing each model for dirty, or if its raw, use equals
+						  value.some(
+								(x, i) =>
+									x?.__isDirty?.() ??
+									equals(x, originalValue[i], true)
+						  );
+				}
+
+				if (value?.__isDirty?.() === false) {
+					return false;
+				}
+
+				return true;
 			};
 
 			if (property) {
 				return check(property);
 			}
 
-			for (const key of Object.keys(this[RAW])) {
+			for (const key of getFields(this).AllFields) {
 				if (check(key)) {
 					return true;
 				}
@@ -670,12 +700,20 @@ export function __readValue(scope, fieldName) {
 		!descriptor?.get &&
 		scope?.[Parser]
 	) {
-		const seen = (__readValue.seen = __readValue.seen || {});
-		const key = scope.MimeType ?? JSON.stringify(scope);
-		seen[key] = seen[key] || {};
+		/** @type {WeakMap<unknown, {}>} */
+		const seen = (__readValue.seen = __readValue.seen || new WeakMap());
+		const key = scope.MimeType || scope;
+		const localSeen = seen.get(key) || seen[key] || {};
+		try {
+			// if we get a string, weakMap will throw
+			seen.set(key, localSeen);
+		} catch {
+			// just use the string as a property instead
+			seen[key] = localSeen;
+		}
 
-		if (!seen[key][fieldName]) {
-			seen[key][fieldName] = true;
+		if (!localSeen[fieldName]) {
+			localSeen[fieldName] = true;
 			logger.warn(
 				`Blocked reading non-field '${fieldName}' in %o'`,
 				scope.MimeType || scope
@@ -807,7 +845,6 @@ function applyModelMappedDictionaryField(
 		for (let dK of Object.keys(value || {})) {
 			const map = value[dK];
 			out[dK] = map;
-
 			for (let mK of Object.keys(map)) {
 				map[mK] = scope[Parser](map[mK]) || null;
 
@@ -821,9 +858,11 @@ function applyModelMappedDictionaryField(
 			}
 
 			Object.defineProperty(map, 'toJSON', { value: mapToJson });
+			addDirtyCheck(out, Object.keys(map));
 		}
 
 		Object.defineProperty(out, 'toJSON', { value: mapToJson });
+		addDirtyCheck(out, Object.keys(out));
 	}
 
 	applyField(scope, fieldName, out, declared, defaultValue);
@@ -848,6 +887,7 @@ function applyModelDictionaryField(
 		}
 
 		Object.defineProperty(out, 'toJSON', { value: mapToJson });
+		addDirtyCheck(out, Object.keys(out));
 	}
 
 	applyField(scope, fieldName, out, declared, defaultValue);
@@ -878,6 +918,17 @@ function applyModelField(scope, fieldName, value, declared, defaultValue) {
 	);
 }
 
+function addDirtyCheck(target, keys) {
+	Object.defineProperty(target, '__isDirty', {
+		value() {
+			if (new Set([...Object.keys(this), ...keys]).size !== keys.length) {
+				return true;
+			}
+			return keys.every(o => this[o]?.__isDirty?.());
+		},
+	});
+}
+
 function mapToJson() {
 	const scope = this;
 	const out = {};
@@ -894,7 +945,7 @@ const makeFieldsFn = fn => ((fn[FieldsFn] = true), fn);
 const isNonFieldsFn = fn => fn && !fn[FieldsFn];
 
 function applyField(scope, fieldName, valueIn, declared, defaultValue) {
-	let value = valueIn !== None ? valueIn : clone(defaultValue);
+	let value = clone(valueIn !== None ? valueIn : defaultValue);
 	let originalName = null;
 
 	if (fieldName in scope) {
@@ -947,7 +998,7 @@ function applyField(scope, fieldName, valueIn, declared, defaultValue) {
 		// console.trace('setting %s to', fieldName, x);
 		value = x;
 		if (!applyField.applying) {
-			scope.onChange(fieldName);
+			scope.onChange?.(fieldName);
 		}
 		scope[`afterSet:${fieldName}`]?.(x);
 	});
@@ -986,8 +1037,10 @@ export function clone(obj) {
 	}
 
 	if (
-		!Array.isArray(obj) &&
-		Object.getPrototypeOf(obj) !== Object.getPrototypeOf({})
+		(!Array.isArray(obj) &&
+			Object.getPrototypeOf(obj) !== Object.getPrototypeOf({})) ||
+		// or its an intermediate object (see applyModelDictionaryField and applyModelMappedDictionaryField)
+		'__isDirty' in obj
 	) {
 		/**
 		 * We decided to pass models along.

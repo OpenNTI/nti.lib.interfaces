@@ -1,9 +1,12 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-env jest */
 import diff from 'jest-diff';
 
 import Logger from '@nti/util-logger';
 
+import { JSONValue } from '../JSONValue.js';
 import { clone, mixin as Fields } from '../Fields.js';
+import Registry, { COMMON_PREFIX } from '../../models/Registry.js';
 
 const logger = Logger.get('mixins:Fields');
 
@@ -491,6 +494,82 @@ describe('Fields Mixin', () => {
 			expect(f.field1).toEqual('test1');
 			expect(f.field2).toEqual(value.changed);
 			expect(f.field3).toEqual('constant value');
+		});
+	});
+
+	describe.only('dirty checks', () => {
+		const MimeType = COMMON_PREFIX + 'dirty';
+
+		Registry.register(
+			class Dirty extends Fields(JSONValue()) {
+				static MimeType = MimeType;
+				static Fields = {
+					wut: { type: 'string' },
+				};
+			}
+		);
+		class Dummy extends Fields(JSONValue()) {
+			static MimeType = MimeType + '.dummy';
+			static Fields = {
+				field1: { type: 'string' },
+				field2: { type: 'string[]' },
+				field3: { type: 'model[]' },
+				field4: { type: 'model{}' },
+			};
+
+			static make = data =>
+				new Dummy({
+					MimeType: this.MimeType,
+					field1: 'test',
+					field2: ['abc'],
+					field3: [{ MimeType }],
+					field4: { foo: { MimeType } },
+					...data,
+				});
+		}
+
+		test('Starts not dirty', () => {
+			const d = Dummy.make();
+			expect(d.__isDirty()).toBe(false);
+		});
+
+		test('Becomes dirty: change literal', () => {
+			const d = Dummy.make();
+			d.field1 = '1';
+			expect(d.__isDirty()).toBe(true);
+		});
+
+		test('Becomes dirty: change array item', () => {
+			const d = Dummy.make();
+			d.field2[0] = '1';
+			expect(d.__isDirty()).toBe(true);
+		});
+
+		test('Becomes dirty: change modeled array item', () => {
+			const d = Dummy.make();
+			d.field3[0].wut = '1';
+
+			d.junk = 'boo'; // not declared
+			expect(d.toJSON()).not.toHaveProperty('junk');
+			expect(d.__isDirty()).toBe(true);
+		});
+
+		test('Becomes dirty: change modeled dict item', () => {
+			const d = Dummy.make();
+			expect(d.__isDirty()).toBe(false);
+
+			d.field4.foo.wut = 'idk';
+
+			expect(d.__isDirty()).toBe(true);
+		});
+
+		test('Becomes dirty: change modeled dict key', () => {
+			const d = Dummy.make();
+			expect(d.__isDirty()).toBe(false);
+
+			d.field4.wut = 'noo';
+
+			expect(d.__isDirty()).toBe(true);
 		});
 	});
 
