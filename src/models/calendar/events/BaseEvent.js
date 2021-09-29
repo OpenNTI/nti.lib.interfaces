@@ -15,7 +15,8 @@ export class BaseEvent extends Base {
 		'icon': 				{ type: 'string' },
 		'location': 			{ type: 'string' },
 		'title': 				{ type: 'string' },
-		'CatalogEntry':     	{ type: 'model'  }, // not currently coming back inline, but we're decorating it client-side
+		// Declaring CatalogEntry causes it to be serialized
+		// 'CatalogEntry':     	{ type: 'model'  }, // not currently coming back inline, but we're decorating it client-side
 		'CatalogEntryNTIID': 	{ type: 'string' },
 		'ContainerId': 			{ type: 'string' },
 		'RegistrationTime':     { type: 'date'   }
@@ -59,6 +60,7 @@ async function resolveCatalogEntry(service, event) {
 		const entry = await service.getObject(id);
 
 		self.CatalogEntry = entry;
+		self.onChange('CatalogEntry');
 	} catch (e) {
 		//just swallow the error for now
 	}
