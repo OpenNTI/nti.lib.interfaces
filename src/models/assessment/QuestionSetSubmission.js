@@ -17,7 +17,7 @@ export default class QuestionSetSubmission extends Submission(Base) {
 
 	static build(questionSet) {
 		const data = {
-			MimeType: QuestionSetSubmission.MimeType,
+			MimeType: this.MimeType,
 			questionSetId: questionSet.getID(),
 			ContainerId: questionSet.containerId,
 			CreatorRecordedEffortDuration: null,

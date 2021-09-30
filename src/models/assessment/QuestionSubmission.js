@@ -18,7 +18,7 @@ export default class QuestionSubmission extends Submission(Base) {
 	static build(question) {
 		const { parts } = question;
 		const data = {
-			MimeType: QuestionSubmission.MimeType,
+			MimeType: this.MimeType,
 			ContainerId: question.containerId,
 			NTIID: question.getID(),
 			questionId: question.getID(),

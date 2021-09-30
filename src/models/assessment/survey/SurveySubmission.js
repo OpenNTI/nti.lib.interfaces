@@ -22,7 +22,6 @@ export default class SurveySubmission extends QuestionSetSubmission {
 
 		const submitTo = resolveSubmitTo(survey, this.COURSE_SUBMISSION_REL);
 		if (submitTo) {
-			s.MimeType = SurveySubmission.MimeType;
 			Object.defineProperties(s, {
 				SubmissionHref: { value: submitTo },
 				SubmitsToObjectURL: { value: true },

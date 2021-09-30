@@ -21,7 +21,6 @@ export default class PollSubmission extends QuestionSubmission {
 
 		const submitTo = resolveSubmitTo(poll, this.COURSE_SUBMISSION_REL);
 		if (submitTo) {
-			s.MimeType = PollSubmission.MimeType;
 			Object.defineProperties(s, {
 				SubmissionHref: { value: submitTo },
 				SubmitsToObjectURL: { value: true },
