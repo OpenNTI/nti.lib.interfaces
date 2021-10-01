@@ -1,5 +1,3 @@
-import path from 'path';
-
 import { wait, url } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
@@ -265,11 +263,8 @@ export default class Instance extends ContentTree(
 	async getAssignments() {
 		const LOADING = Symbol.for('GetAssignmentsRequest');
 		const REFRESH = Symbol.for('RefreshAssignments');
-		const service = this[Service];
-		const parent = this.parent();
 		const getLink = rel =>
-			(parent && parent.getLink && parent.getLink(rel)) ||
-			this.getLink(rel);
+			this.parent()?.getLink?.(rel) || this.getLink(rel);
 		const { isAdministrative } = this;
 
 		if (!this.shouldShowAssignments()) {
@@ -294,7 +289,7 @@ export default class Instance extends ContentTree(
 
 			this[LOADING].isResolved = true;
 			return new CollectionImpl(
-				service,
+				this[Service],
 				this,
 				assignments,
 				assessments,
@@ -337,77 +332,43 @@ export default class Instance extends ContentTree(
 	}
 
 	async getAssignment(ntiid) {
-		const service = this[Service];
-		const href = this.getLink('Assessments');
-		// href will be something like this...
-		//		/dataserver2/%2B%2Betc...site/Courses/Alpha/NTI%201000/@@Assessments
-		//
-		// we will want to append the ntiid to the end:
-		//		/dataserver2/%2B%2Betc...site/Courses/Alpha/NTI%201000/@@Assessments/<ntiid>
-
-		if (!href) {
-			throw new Error(NO_LINK);
-		}
-
-		const assignemntParentRef = this; //the CourseInstance,
-		//tho, probably should be the Assignemnts Collection but we may not have that...
-		//the instance caches are on the service doc so we're covered there.
-
-		const parseResult = o =>
-			service.getObject(o, { parent: assignemntParentRef });
-		const uri = url.parse(href);
-
-		uri.pathname = path.join(uri.pathname, encodeURIComponent(ntiid));
-
-		return service.get(uri.toString()).then(parseResult);
+		return this.fetchLinkParsed(`Assessments/${encodeURIComponent(ntiid)}`);
 	}
 
 	async getCurrentGrade() {
-		const service = this[Service];
-		const link = this.getLink('CurrentGrade');
+		const result = await this.fetchLink('CurrentGrade');
 
-		if (!link) {
-			throw new Error('No Link');
-		}
-
-		const result = await service.get(link);
-
-		return service.getObject(result.FinalGrade ?? result.PredictedGrade, {
-			parent: this,
-		});
+		return this[Service].getObject(
+			result.FinalGrade ?? result.PredictedGrade,
+			{
+				parent: this,
+			}
+		);
 	}
 
 	getAllSurveys(params) {
-		const service = this[Service];
-		const href = this.getLink('Inquiries');
-
-		if (!href) {
+		if (!this.getLink('Inquiries')) {
 			throw new Error('Survey request failed.');
 		}
 
-		return service.getBatch(href, {
-			accept: 'application/vnd.nextthought.nasurvey',
-			...params,
-		});
+		return this.fetchLink(
+			'Inquiries',
+			{
+				accept: 'application/vnd.nextthought.nasurvey',
+				...params,
+			},
+			'batch'
+		);
 	}
 
 	async getInquiry(ntiid) {
-		const service = this[Service];
-		const href = this.getLink('CourseInquiries');
-
-		if (!href) {
+		if (!this.getLink('CourseInquiries')) {
 			throw new Error(NO_LINK);
 		}
 
-		const inquiryParentRef = this;
-
-		const parseResult = o =>
-			service.getObject(o, { parent: inquiryParentRef });
-		const uri = url.parse(href);
-
-		uri.pathname = path.join(uri.pathname, encodeURIComponent(ntiid));
-
-		return service.get(uri.toString()).then(parseResult);
+		return this.fetchLinkParsed(
+			`CourseInquiries/${encodeURIComponent(ntiid)}`
+		);
 	}
 
 	getAccessTokens() {
@@ -415,27 +376,15 @@ export default class Instance extends ContentTree(
 			return Promise.resolve();
 		}
 
-		const service = this[Service];
-		const url = this.getLink('CourseAccessTokens');
-
-		return service.getBatch(url).then(batch => batch && batch.Items);
+		return this.fetchLinkParsed('CourseAccessTokens');
 	}
 
 	getCourseDiscussions() {
-		const service = this[Service];
-		const url = this.getLink('CourseDiscussions');
-		//For now make the course the parent.
-		const discussionParentRef = this;
-		const parseItem = o =>
-			service.getObject(o, { parent: discussionParentRef });
-
-		if (!url) {
+		if (!this.getLink('CourseDiscussions')) {
 			return Promise.resolve([]);
 		}
 
-		return service
-			.get(url)
-			.then(({ Items: items }) => Promise.all(items.map(parseItem)));
+		return this.fetchLinkParsed('CourseDiscussions');
 	}
 
 	async getDiscussions(reloadBoard) {
