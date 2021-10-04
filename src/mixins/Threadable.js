@@ -13,7 +13,9 @@ const logger = Logger.get('models:mixins:Threadable');
  */
 export default Base =>
 	class extends Base {
-		isThreadable = true;
+		get isThreadable() {
+			return true;
+		}
 
 		constructor(...args) {
 			super(...args);

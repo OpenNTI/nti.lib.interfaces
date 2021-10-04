@@ -538,11 +538,7 @@ export const mixin = (Base = Object) =>
 		 * @returns {string | symbol | null}
 		 */
 		findField(value) {
-			const keys = [
-				...Object.getOwnPropertyNames(this),
-				...Object.getOwnPropertySymbols(this),
-			];
-
+			const keys = getFields(this).AllFields;
 			return keys.find(x => __readValue(this, x) === value);
 		}
 	};

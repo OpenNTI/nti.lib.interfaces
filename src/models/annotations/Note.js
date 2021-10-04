@@ -32,7 +32,9 @@ export default class Note extends DiscussionInterface(
 		'Class':                  { type: 'string'   }
 	}
 
-	isNote = true;
+	get isNote() {
+		return true;
+	}
 
 	get replyCount() {
 		// Rely on this value, placeholders will have a getter for the ReferencedByCount property.
