@@ -5,6 +5,7 @@ export * as lti from './lti/index.js';
 
 export { default as Grade } from './Grade.js';
 export { default as CourseDiscussion } from './CourseDiscussion.js';
+export * from './CourseDiscussions.js';
 export { default as DiscussionReference } from './DiscussionReference.js';
 export { default as GradeBookShell } from './GradeBookShell.js';
 export { default as GradeBookByAssignment } from './GradeBookByAssignment.js';
