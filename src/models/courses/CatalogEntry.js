@@ -2,10 +2,11 @@ import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 import CatalogEntryFactory from './CatalogEntryFactory.js';
+import CourseIdentity from './mixins/CourseIdentity.js';
 
 const EnrollmentOptions = Symbol('EnrollmentOptions');
 
-export default class CourseCatalogEntry extends Base {
+export default class CourseCatalogEntry extends CourseIdentity(Base) {
 	static MimeType = COMMON_PREFIX + 'courses.catalogentry';
 
 	// prettier-ignore
@@ -49,8 +50,9 @@ export default class CourseCatalogEntry extends Base {
 		return CatalogEntryFactory.from(service);
 	}
 
-	isCourse = true;
-	isCourseCatalogEntry = true;
+	get isCourseCatalogEntry() {
+		return true;
+	}
 
 	constructor(service, parent, data) {
 		super(service, parent.isEnrollment ? parent : null, data);
