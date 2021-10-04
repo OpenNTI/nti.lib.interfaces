@@ -1,7 +1,7 @@
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-export default class SCORMCourseMetadata extends Base {
+export class SCORMCourseMetadata extends Base {
 	static MimeType = [COMMON_PREFIX + 'courseware_scorm.scormcoursemetadata'];
 
 	// prettier-ignore

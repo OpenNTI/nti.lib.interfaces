@@ -13,7 +13,7 @@ const RUNNING = 'running';
 const ERROR = 'error';
 const FINISHED = 'finished';
 
-export default class SCORMContentInfo extends Completable(Base) {
+export class SCORMContentInfo extends Completable(Base) {
 	static MimeType = [COMMON_PREFIX + 'scorm.scormcontentinfo'];
 
 	// prettier-ignore

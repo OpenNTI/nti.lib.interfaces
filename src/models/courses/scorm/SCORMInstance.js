@@ -1,7 +1,7 @@
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Instance from '../Instance.js';
 
-export default class ScormInstance extends Instance {
+export class SCORMInstance extends Instance {
 	static MimeType = [COMMON_PREFIX + 'courses.scormcourseinstance'];
 
 	// prettier-ignore
@@ -10,11 +10,13 @@ export default class ScormInstance extends Instance {
 		Metadata: { type: 'model' }
 	}
 
-	isScormInstance = true;
+	get isScormInstance() {
+		return true;
+	}
 
 	getScormCourse() {
 		return this.Metadata.getLink('LaunchSCORM');
 	}
 }
 
-Registry.register(ScormInstance);
+Registry.register(SCORMInstance);
