@@ -45,3 +45,6 @@ export default class WorkspaceCollection extends Base {
 		return this;
 	}
 }
+
+Registry.register(WorkspaceCollection);
+Registry.alias('workspace.collection', 'collection');
