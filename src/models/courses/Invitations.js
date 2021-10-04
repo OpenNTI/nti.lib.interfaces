@@ -1,7 +1,8 @@
+import { ArrayLike } from '../../mixins/ArrayLike.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-export default class CourseInvitations extends Base {
+export default class CourseInvitations extends ArrayLike(Base) {
 	static MimeType = [COMMON_PREFIX + 'courseware.courseinvitations'];
 
 	// prettier-ignore
