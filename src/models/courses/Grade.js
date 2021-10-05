@@ -85,10 +85,9 @@ export default class Grade extends names(Base) {
 		return getPrivate(this).value;
 	}
 
-	//Models are supposed to be immutable, so this is mostly going to be called by super.refresh().
 	set value(v) {
 		processValue.call(this, v);
-		this.onChange();
+		this.onChange('value');
 	}
 
 	get letter() {
@@ -105,7 +104,7 @@ export default class Grade extends names(Base) {
 		}
 
 		getPrivate(this).letter = l;
-		this.onChange();
+		this.onChange('letter');
 	}
 
 	getValue() {
