@@ -54,7 +54,9 @@ export default class User extends Entity {
 		'about':              { type: 'string[]'  },
 		'interests':          { type: 'string[]'  },
 		'lastSeenTime':       { type: 'date'      },
-		'Deactivated':        { type: 'boolean'   }
+		'Deactivated':        { type: 'boolean'   },
+		'phones':             { type: '*'  },
+		'addresses':          { type: 'model{}'  },
 	}
 
 	isUser = true;

@@ -1,3 +1,5 @@
+export * as properties from './properties/index.js';
+
 export { default as Community } from './Community.js';
 export { default as DynamicFriendsList } from './DynamicFriendsList.js';
 export { default as FriendsList } from './FriendsList.js';
