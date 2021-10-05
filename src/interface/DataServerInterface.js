@@ -332,6 +332,9 @@ export default class DataServerInterface extends EventEmitter {
 
 		result.abort = () => controller.abort();
 		result.id = id;
+		result.catch(() => {
+			//this marks the promise "handled"
+		});
 
 		if (context) {
 			attachPendingQueue(context).addToPending(result);
