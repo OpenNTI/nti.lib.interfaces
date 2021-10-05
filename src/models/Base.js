@@ -111,13 +111,16 @@ export default class Model extends Pendability(
 		return this.OID;
 	}
 
-	onChange(...who) {
+	/**
+	 * This does the work of emitting change and bubbling. The external part if this is `onChange`.
+	 * Do not add service event emitters here. Local emits and parent only. Otherwise we can get
+	 * into an infinite emit loop
+	 *
+	 * @param {...any} who
+	 * @private
+	 */
+	_emitChange(...who) {
 		this.emit('change', this, ...who);
-		const prefix = this.getEventPrefix();
-
-		if (prefix) {
-			this[Service]?.emit(`${prefix}-change`, this, ...who);
-		}
 
 		if (this.parent(x => x.constructor.ChangeBubbles)) {
 			const what = [...who];
@@ -129,6 +132,20 @@ export default class Model extends Pendability(
 			}
 
 			p?.onChange?.(...what);
+		}
+	}
+
+	/**
+	 * Notify all listeners that this model instance has changed.
+	 *
+	 * @param {...any} who
+	 */
+	onChange(...who) {
+		this._emitChange(...who);
+
+		const prefix = this.getEventPrefix();
+		if (prefix) {
+			this[Service]?.emit(`${prefix}-change`, this, ...who);
 		}
 	}
 

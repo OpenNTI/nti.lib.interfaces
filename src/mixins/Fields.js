@@ -493,7 +493,7 @@ export const mixin = (Base = Object) =>
 			}
 
 			if (changed.length > 0) {
-				this.onChange?.(changed);
+				this._emitChange?.(changed);
 			}
 			return this;
 		}
