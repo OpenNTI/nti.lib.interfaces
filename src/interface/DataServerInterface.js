@@ -395,6 +395,13 @@ export default class DataServerInterface extends EventEmitter {
 
 			Object.assign(error, json);
 
+			if (response.status >= 500) {
+				if (process.env?.NODE_ENV !== 'development') {
+					error.Message =
+						error.message = `Something went wrong. (${response.status})`;
+				}
+			}
+
 			// Don't offer a confirm if there isn't links.
 			const isConflict = response.status === 409 && !!json.Links;
 
