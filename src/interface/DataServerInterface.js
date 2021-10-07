@@ -226,10 +226,8 @@ export default class DataServerInterface extends EventEmitter {
 					return rejectRequest('request/connection aborted');
 				}
 
-				if (context.on) {
-					context.on('aborted', abort);
-					context.on('close', abort);
-				}
+				context.on?.('aborted', abort);
+				context.on?.('close', abort);
 			}
 
 			const maybeFulfill = (...args) =>
@@ -251,13 +249,21 @@ export default class DataServerInterface extends EventEmitter {
 				// Normalize request failures
 				.catch(e =>
 					Promise.reject(
-						Object.assign(e, {
-							Message: 'Request Failed.',
-							statusCode: 0,
-							error: e,
-							init,
-							url: _url,
-						})
+						Object.assign(
+							e,
+							e.type === 'aborted'
+								? {
+										Message: 'aborted',
+										skip: true,
+								  }
+								: {
+										Message: 'Request Failed.',
+										statusCode: 0,
+										error: e,
+										init,
+										url: _url,
+								  }
+						)
 					)
 				)
 
@@ -344,6 +350,9 @@ export default class DataServerInterface extends EventEmitter {
 
 	async __checkRequestNetwork(id, url, init, data, start, context, response) {
 		const status = response.statusCode ?? response.status;
+		if (response.type === 'aborted') {
+			throw response;
+		}
 
 		//If we got a non-zero response status, there was no network error
 		//so we can just continue on our merry way.
