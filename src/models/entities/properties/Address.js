@@ -9,7 +9,7 @@ export default class PresenceInfo extends Base {
 	// prettier-ignore
 	static Fields = {
 		...super.Fields,
-		'first_name': {type: 'string'},
+		'full_name': {type: 'string'},
 		'street_address_1': {type: 'string'},
 		'street_address_2': {type: 'string'},
 		'city': {type: 'string'},
