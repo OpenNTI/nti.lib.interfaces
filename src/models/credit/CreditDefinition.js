@@ -22,7 +22,7 @@ export default class CreditDefinition extends Base {
 	}
 
 	toString() {
-		return `${this.type} ${this.unit} (${this.precision})`;
+		return `${this.type} ${this.unit}`;
 	}
 }
 
