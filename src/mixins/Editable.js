@@ -16,7 +16,7 @@ export const mixin = Base =>
 		 * @returns {T}
 		 */
 		static getStagingInstance(editableThing) {
-			const Type = this.constructor;
+			const Type = this;
 			if (Type !== editableThing.constructor) {
 				throw new Error('Incompatible Type.');
 			}
