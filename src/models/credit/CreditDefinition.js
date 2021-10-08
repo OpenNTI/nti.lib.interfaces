@@ -12,8 +12,17 @@ export default class CreditDefinition extends Base {
 		'credit_units':     { type: 'string', name: 'unit' },
 	}
 
+	format(n) {
+		const { locale } = new Intl.NumberFormat().resolvedOptions();
+		const formatter = new Intl.NumberFormat(locale, {
+			minimumFractionDigits: this.precision,
+			maximumFractionDigits: this.precision,
+		});
+		return formatter.format(n || 0);
+	}
+
 	toString() {
-		return `${this.type} ${this.unit} ${this.precision}`;
+		return `${this.type} ${this.unit} (${this.precision})`;
 	}
 }
 

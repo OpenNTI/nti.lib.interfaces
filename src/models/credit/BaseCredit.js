@@ -20,13 +20,8 @@ export default class BaseCredit extends Base {
 
 	getFormattedAmount({ unit = false, type = false } = {}) {
 		const { creditDefinition: cd } = this;
-		const { locale } = new Intl.NumberFormat().resolvedOptions();
-		const formatter = new Intl.NumberFormat(locale, {
-			minimumFractionDigits: cd.precision,
-			maximumFractionDigits: cd.precision,
-		});
 
-		const result = formatter.format(this.amount || 0);
+		const result = cd.format(this.amount || 0);
 		return [result, type && cd.type, unit && cd.unit]
 			.filter(Boolean)
 			.join(' ');
