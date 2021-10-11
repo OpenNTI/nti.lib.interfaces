@@ -43,7 +43,13 @@ export default class Folder extends FileSystemEntity {
 		sort = validateSortObject(sort) || {};
 		const additional = recursive ? { recursive: true, ...sort } : sort;
 
-		return this.fetchLinkParsed('search', { name: query, ...additional });
+		return this.fetchLink({
+			rel: 'search',
+			params: {
+				name: query,
+				...additional,
+			},
+		});
 	}
 }
 

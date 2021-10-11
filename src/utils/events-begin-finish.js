@@ -1,5 +1,7 @@
 import { EVENT_BEGIN, EVENT_FINISH } from '../constants.js';
 
+/** @typedef {import("events").EventEmitter} EventEmitter */
+
 /**
  * Fire a EVENT_BEGIN on the emitter.
  *
@@ -31,7 +33,7 @@ export const finish = (emitter, action, data, e) => (
  * @param  {EventEmitter} emitter - The emitter to fire the event on.
  * @param  {*} action - Any value to identify what is finishing.
  * @param  {*} data - Any value to passed for data.
- * @returns {arrau} Two callbacks to be applied/spread on a Promise@then()
+ * @returns {Array} Two callbacks to be applied/spread on a Promise@then()
  */
 export const finishers = (emitter, action, data) => [
 	response => finish(emitter, action, { response, ...data }),

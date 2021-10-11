@@ -132,9 +132,7 @@ export default class Instance extends ContentTree(
 	}
 
 	async refreshPreferredAccess() {
-		const enrollment = await this.fetchLinkParsed(
-			'UserCoursePreferredAccess'
-		);
+		const enrollment = await this.fetchLink('UserCoursePreferredAccess');
 
 		this.PreferredAccess = enrollment;
 		this.onChange('PreferredAccess');
@@ -185,7 +183,7 @@ export default class Instance extends ContentTree(
 			return null;
 		}
 
-		return this.fetchLink('RosterSummary');
+		return this.fetchLink({ rel: 'RosterSummary', mode: 'raw' });
 	}
 
 	get canInvite() {
@@ -231,7 +229,7 @@ export default class Instance extends ContentTree(
 	}
 
 	getResources() {
-		return this.fetchLinkParsed('resources');
+		return this.fetchLink('resources');
 	}
 
 	//Should only show assignments if there is an AssignmentsByOutlineNode link
@@ -257,7 +255,10 @@ export default class Instance extends ContentTree(
 		if (Array.isArray(type)) {
 			[type] = type;
 		}
-		return this.fetchLinkParsed('assets', type ? { accept: type } : {});
+		return this.fetchLink({
+			rel: 'assets',
+			params: type ? { accept: type } : {},
+		});
 	}
 
 	async getAssignments() {
@@ -273,10 +274,14 @@ export default class Instance extends ContentTree(
 
 		const load = async () => {
 			return Promise.all([
-				this.fetchLink('AssignmentSummaryByOutlineNode'),
-				this.fetchLink(
-					'NonAssignmentAssessmentSummaryItemsByOutlineNode'
-				),
+				this.fetchLink({
+					rel: 'AssignmentSummaryByOutlineNode',
+					mode: 'raw',
+				}),
+				this.fetchLink({
+					rel: 'NonAssignmentAssessmentSummaryItemsByOutlineNode',
+					mode: 'raw',
+				}),
 			]);
 		};
 
@@ -332,11 +337,14 @@ export default class Instance extends ContentTree(
 	}
 
 	async getAssignment(ntiid) {
-		return this.fetchLinkParsed(`Assessments/${encodeURIComponent(ntiid)}`);
+		return this.fetchLink(`Assessments/${encodeURIComponent(ntiid)}`);
 	}
 
 	async getCurrentGrade() {
-		const result = await this.fetchLink('CurrentGrade');
+		const result = await this.fetchLink({
+			rel: 'CurrentGrade',
+			mode: 'raw',
+		});
 
 		return this[Service].getObject(
 			result.FinalGrade ?? result.PredictedGrade,
@@ -351,14 +359,14 @@ export default class Instance extends ContentTree(
 			throw new Error('Survey request failed.');
 		}
 
-		return this.fetchLink(
-			'Inquiries',
-			{
+		return this.fetchLink({
+			rel: 'Inquiries',
+			params: {
 				accept: 'application/vnd.nextthought.nasurvey',
 				...params,
 			},
-			'batch'
-		);
+			mode: 'batch',
+		});
 	}
 
 	async getInquiry(ntiid) {
@@ -366,9 +374,7 @@ export default class Instance extends ContentTree(
 			throw new Error(NO_LINK);
 		}
 
-		return this.fetchLinkParsed(
-			`CourseInquiries/${encodeURIComponent(ntiid)}`
-		);
+		return this.fetchLink(`CourseInquiries/${encodeURIComponent(ntiid)}`);
 	}
 
 	getAccessTokens() {
@@ -376,7 +382,7 @@ export default class Instance extends ContentTree(
 			return Promise.resolve();
 		}
 
-		return this.fetchLinkParsed('CourseAccessTokens');
+		return this.fetchLink('CourseAccessTokens');
 	}
 
 	getCourseDiscussions() {
@@ -384,7 +390,7 @@ export default class Instance extends ContentTree(
 			return Promise.resolve([]);
 		}
 
-		return this.fetchLinkParsed('CourseDiscussions');
+		return this.fetchLink('CourseDiscussions');
 	}
 
 	async getDiscussions(reloadBoard) {
@@ -504,9 +510,10 @@ export default class Instance extends ContentTree(
 		if (!promise || promise.stale) {
 			const start = Date.now();
 
-			promise = this[MEDIA_INDEX] = this.fetchLink(
-				MEDIA_BY_OUTLINE_NODE
-			).then(x =>
+			promise = this[MEDIA_INDEX] = this.fetchLink({
+				rel: MEDIA_BY_OUTLINE_NODE,
+				mode: 'raw',
+			}).then(x =>
 				MediaIndex.build(this[Service], this, x.ContainerOrder || [], x)
 			);
 
@@ -666,9 +673,10 @@ export default class Instance extends ContentTree(
 	async getAvailableContentSummary() {
 		const load = async () => {
 			try {
-				const { Items } = await this.fetchLink(
-					'CourseContentLibrarySummary'
-				);
+				const { Items } = await this.fetchLink({
+					rel: 'CourseContentLibrarySummary',
+					mode: 'raw',
+				});
 
 				return Items.reduce((acc, i) => ({ ...acc, [i]: true }), {});
 			} catch (e) {
@@ -700,9 +708,7 @@ export default class Instance extends ContentTree(
 	}
 
 	async getLTIConfiguredTools() {
-		const configuredTools = await this.fetchLinkParsed(
-			'lti-configured-tools'
-		);
+		const configuredTools = await this.fetchLink('lti-configured-tools');
 		return configuredTools;
 	}
 
@@ -711,7 +717,7 @@ export default class Instance extends ContentTree(
 	}
 
 	getCatalogFamilies() {
-		return this.fetchLinkParsed('CourseCatalogFamilies');
+		return this.fetchLink('CourseCatalogFamilies');
 	}
 }
 
@@ -725,7 +731,7 @@ async function resolvePreferredAccess(service, instance, parent) {
 		const enrollment =
 			parent instanceof Enrollment
 				? parent
-				: await self.fetchLinkParsed('UserCoursePreferredAccess');
+				: await self.fetchLink('UserCoursePreferredAccess');
 
 		if (parent !== enrollment) {
 			// For legacy compatability

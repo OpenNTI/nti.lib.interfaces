@@ -6,7 +6,7 @@ export default {
 	handles: [ContentPackageMimeType, RenderableContentPackageMimeType],
 
 	removeItemFrom(item, container) {
-		return container.requestLink('RemoveRefs', 'delete', void 0, {
+		return container.deleteLink('RemoveRefs', {
 			target: item.NTIID,
 		});
 	},

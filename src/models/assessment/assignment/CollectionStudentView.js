@@ -99,7 +99,7 @@ export default class CollectionStudentView extends Base {
 function getHistoryFrom(inst) {
 	logger.debug('Loading assignment history for %s...', inst.parent().title);
 	return inst
-		.fetchLinkParsed(ASSESSMENT_HISTORY_LINK)
+		.fetchLink(ASSESSMENT_HISTORY_LINK)
 		.then(x =>
 			x instanceof HistoryCollection ? x : Promise.reject('Wrong Type')
 		)

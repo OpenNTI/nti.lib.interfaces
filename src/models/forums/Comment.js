@@ -62,7 +62,7 @@ export default class Comment extends Threadable(Post) {
 			sortOrder: 'ascending',
 		};
 
-		return this.fetchLinkParsed('replies', params);
+		return this.fetchLink({ rel: 'replies', params });
 	}
 
 	#getParentTopic = () => {

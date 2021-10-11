@@ -6,7 +6,7 @@ export default {
 
 	removeItemFrom(item, container) {
 		return container.getContent().then(content => {
-			return content.requestLink('RemoveRefs', 'delete', void 0, {
+			return container.deleteLink('RemoveRefs', {
 				target: item.NTIID,
 			});
 		});

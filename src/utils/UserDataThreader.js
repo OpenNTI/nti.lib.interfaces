@@ -1,6 +1,8 @@
 import Logger from '@nti/util-logger';
 import { isEmpty } from '@nti/lib-commons';
 
+/** @typedef {import("../models/Base").default} Model */
+
 export const PARENT = Symbol('Thread Links:Parent');
 export const CHILDREN = Symbol('Thread Links:Children');
 
@@ -16,7 +18,6 @@ const GETTERS = {
  *
  * @param {Model} item A User Generated Data model instance (Note, Highlight, etc)
  * @param {string[]} ids All the IDs in the response.
- *
  * @returns {boolean} Returns true if the item's references are not in the set of all ids.
  */
 export function topLevelOnly(item, ids) {
@@ -40,7 +41,6 @@ export function topLevelOnly(item, ids) {
  * its children remain. (hence threading will recreate the placeholder)
  *
  * @param {Object[]} list All the user data for a container.
- *
  * @returns {Object[]} All the top-level user data, rootes, and placeholder roots.
  */
 export function threadThreadables(list) {
@@ -60,9 +60,8 @@ export function threadThreadables(list) {
  * Given a set of Threadables, in the form of bins of arrays or just an array,
  * this will return an array of Threadable trees.
  *
- * @param {Object|array} data Something to thread. @see getData
- *
- * @returns {array} An array of Threadable trees. (Threadables that are roots to their trees)
+ * @param {Object | Array} data Something to thread. @see getData
+ * @returns {Array} An array of Threadable trees. (Threadables that are roots to their trees)
  */
 export function thread(data) {
 	data = getData(data);
@@ -81,9 +80,8 @@ export function thread(data) {
 /**
  * Returns an array of objects to thread.
  *
- * @param {Object|array} data Can be a single Threadable, an array of Threadables, or bins of Threadables.
- *
- * @returns {array} Objects ready to thread
+ * @param {Object | Array} data Can be a single Threadable, an array of Threadables, or bins of Threadables.
+ * @returns {Array} Objects ready to thread
  */
 function getData(data) {
 	let isArray = Array.isArray(data);

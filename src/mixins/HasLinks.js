@@ -1,3 +1,4 @@
+/* eslint-disable camelcase, jsdoc/valid-types */
 import { url } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
@@ -8,6 +9,18 @@ import { createUploadTask } from '../tasks/index.js';
 
 const logger = Logger.get('mixins:HasLinks');
 
+/** @typedef {import('./HasLinks').ParseMode} ParseMode  */
+/** @typedef {import('./HasLinks').HttpMethod} HttpMethod  */
+/**
+ * @template {ParseMode} T
+ * @typedef {object} FetchInit
+ * @property {string} rel
+ * @property {T} [mode='parse']
+ * @property {HttpMethod} [method="GET"]
+ * @property {object=} params
+ * @property {object=} data
+ */
+
 /**
  * @template {import('../constants').Constructor} T
  * @param {T} Base
@@ -15,6 +28,14 @@ const logger = Logger.get('mixins:HasLinks');
  */
 export const mixin = Base =>
 	class extends Base {
+		/**
+		 * Internal to model usage.
+		 *
+		 * @private
+		 * @param {string} rel The name of the link. Optionally followed by a path to append ex: `join("list", search)` => `list/<searchText>`
+		 * @param {object} params Appends query params to the link.
+		 * @returns {string?}
+		 */
 		getLink(rel, params) {
 			const [name, ...segments] = rel.split('/');
 			let link =
@@ -32,35 +53,82 @@ export const mixin = Base =>
 		}
 
 		getLinkProperty(rel, prop) {
-			const link = getLinkImpl(this, rel, true);
-			return link && link[prop];
+			return getLinkImpl(this, rel, true)?.[prop];
 		}
 
 		hasLink(rel) {
 			return !!this.getLink(rel);
 		}
 
-		fetchLinkParsed(rel, params) {
-			return this.fetchLink(rel, params, true);
+		deleteLink(rel, params) {
+			return this.fetchLink({ rel, method: 'delete', params });
 		}
 
-		fetchLink(rel, params, parseResponse) {
-			return this.requestLink(rel, 'get', void 0, params, parseResponse);
-		}
-
-		deleteLink(rel) {
-			return this.requestLink(rel, 'delete');
-		}
-
+		/**
+		 * @param {string} rel
+		 * @param {object} data
+		 * @param {boolean|'batch'} parseResponse
+		 * @deprecated
+		 * @returns {object}
+		 */
 		postToLink(rel, data, parseResponse) {
-			return this.requestLink(rel, 'post', data, void 0, parseResponse);
+			return this.fetchLink({
+				rel,
+				method: 'post',
+				data,
+				mode:
+					parseResponse === 'batch'
+						? 'batch'
+						: parseResponse
+						? 'parse'
+						: 'raw',
+			});
 		}
 
+		/**
+		 * @param {string} rel
+		 * @param {object} data
+		 * @param {boolean|'batch'} parseResponse
+		 * @deprecated
+		 * @returns {object}
+		 */
 		putToLink(rel, data, parseResponse) {
-			return this.requestLink(rel, 'put', data, void 0, parseResponse);
+			return this.fetchLink({
+				rel,
+				method: 'put',
+				data,
+				mode:
+					parseResponse === 'batch'
+						? 'batch'
+						: parseResponse
+						? 'parse'
+						: 'raw',
+			});
 		}
 
-		async requestLink(rel, method, data, params, parseResponse) {
+		/**
+		 * Fetch a named link from the server on this model instance.
+		 *
+		 *     // uncomment when  https://github.com/microsoft/TypeScript/pull/45483 lands.
+		 *     //@template {ParseMode} [T='parse']
+		 *
+		 * @template {ParseMode} T
+		 * @param {string|FetchInit<T>} relOrInit
+		 * @returns {Promise<import('./HasLinks').ParseType<T>>}
+		 */
+		async fetchLink(relOrInit) {
+			const {
+				data,
+				params,
+				method = 'get',
+				mode = 'parse',
+				rel,
+			} = typeof relOrInit === 'string'
+				? {
+						rel: relOrInit,
+				  }
+				: relOrInit;
+
 			const link = this.getLink(rel, params);
 			if (!link) {
 				throw new Error(NO_LINK);
@@ -73,8 +141,8 @@ export const mixin = Base =>
 				  )
 				: this[Service][method](link, data);
 
-			if (parseResponse) {
-				result = parseResult(this, result, parseResponse === 'batch');
+			if (mode === 'parse' || mode === 'batch') {
+				result = parseResult(this, result, mode === 'batch');
 			}
 
 			return result;
@@ -95,6 +163,11 @@ export const mixin = Base =>
 
 		postUploadToLink(rel, data, parseResponse) {
 			return this.uploadToLink(rel, 'POST', data, void 0, parseResponse);
+		}
+
+		async test() {
+			const foo = await this.fetchLink('');
+			return foo;
 		}
 	};
 

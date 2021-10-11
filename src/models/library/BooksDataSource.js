@@ -23,12 +23,16 @@ export class BooksDataSource extends BaseDataSource {
 	sortOptions = sortOptions;
 
 	async request({ sortOn, sortOrder, batchSize, filter }) {
-		return this.collection.fetchLink('self', {
-			...defaultOptions,
-			sortOn,
-			sortOrder,
-			batchSize,
-			filter,
+		return this.collection.fetchLink({
+			mode: 'raw',
+			rel: 'self',
+			params: {
+				...defaultOptions,
+				sortOn,
+				sortOrder,
+				batchSize,
+				filter,
+			},
 		});
 	}
 }

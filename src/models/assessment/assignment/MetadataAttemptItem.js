@@ -22,7 +22,7 @@ export default class MetadataAttemptItem extends Base {
 			return Promise.resolve(null);
 		}
 
-		return this.fetchLinkParsed('HistoryItem');
+		return this.fetchLink('HistoryItem');
 	}
 }
 

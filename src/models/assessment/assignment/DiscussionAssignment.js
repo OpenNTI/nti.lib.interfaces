@@ -18,7 +18,7 @@ export default class DiscussionAssignment extends Assignment {
 	resolveTopic(user) {
 		const params = user ? { user } : {};
 
-		return this.fetchLinkParsed('ResolveTopic', params);
+		return this.fetchLink({ rel: 'ResolveTopic', params });
 	}
 }
 

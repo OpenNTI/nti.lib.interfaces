@@ -8,7 +8,7 @@ export default class PagedDataSource extends BaseDataSource {
 	/**
 	 * Throw an error if load is called on a PagedDataSource
 	 *
-	 * @returns {Void} no return
+	 * @returns {void} no return
 	 */
 	load() {
 		throw new Error('Cannot call load on a PagedDataSource');

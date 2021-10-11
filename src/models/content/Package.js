@@ -54,7 +54,7 @@ export default class Package extends Base {
 	}
 
 	getAssociations() {
-		return this.fetchLinkParsed('Lessons');
+		return this.fetchLink('Lessons');
 	}
 
 	getObjectHref() {

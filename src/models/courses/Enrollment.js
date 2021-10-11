@@ -101,7 +101,10 @@ export default class Enrollment extends CourseIdentity(
 
 	async getCompletedItems() {
 		try {
-			const completedItems = await this.fetchLink('CompletedItems');
+			const completedItems = await this.fetchLink({
+				rel: 'CompletedItems',
+				mode: 'raw',
+			});
 
 			return completedItems.Items;
 		} catch (e) {
@@ -111,7 +114,7 @@ export default class Enrollment extends CourseIdentity(
 
 	async updateCourseProgress() {
 		try {
-			const courseProgress = await this.fetchLinkParsed('Progress');
+			const courseProgress = await this.fetchLink('Progress');
 
 			this.CourseProgress = courseProgress;
 			this.onChange('CourseProgress');
@@ -130,7 +133,7 @@ export default class Enrollment extends CourseIdentity(
 	}
 
 	async getScopedCourseInstance() {
-		const course = await this.fetchLinkParsed('CourseInstance');
+		const course = await this.fetchLink('CourseInstance');
 		course[SCOPED_COURSE_INSTANCE] = true;
 		return course;
 	}

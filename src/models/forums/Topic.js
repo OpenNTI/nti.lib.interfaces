@@ -89,7 +89,7 @@ export default class Topic extends DiscussionInterface(
 	loadUserSummary(user) {
 		const params = user ? { user } : {};
 
-		return this.fetchLinkParsed('UserTopicParticipationSummary', params);
+		return this.fetchLink({ rel: 'UserTopicParticipationSummary', params });
 	}
 
 	canAddDiscussion() {
@@ -105,9 +105,13 @@ export default class Topic extends DiscussionInterface(
 	}
 
 	async getDiscussions(params) {
-		const raw = await this.fetchLink('contents', {
-			...params,
-			filter: 'TopLevel',
+		const raw = await this.fetchLink({
+			mode: 'raw',
+			rel: 'contents',
+			params: {
+				...params,
+				filter: 'TopLevel',
+			},
 		});
 
 		if (params.batchSize) {

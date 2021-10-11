@@ -60,9 +60,10 @@ export class SCORMContentInfo extends Completable(Base) {
 	getPoll() {
 		const poll = async (cont, done) => {
 			try {
-				const updated = await this.fetchLink(
-					'SCORMContentAsyncUploadStatusUpdate'
-				);
+				const updated = await this.fetchLink({
+					mode: 'raw',
+					rel: 'SCORMContentAsyncUploadStatusUpdate',
+				});
 
 				await this.refresh(updated);
 				this.onChange();

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-env jest */
 
 import DiscussionInterface, { getPayload } from '../DiscussionInterface.js';

@@ -309,6 +309,7 @@ export default class OrderedContents {
 	 * Given an item and an index, insert it at the right place and try to save it to the server.
 	 * If it's successful, replace the optimistic placeholder with the item from the server.
 	 * If it fails, add an error to the optimistic placeholder and trigger a change
+	 *
 	 * @param  {Object} item the item to append
 	 * @param {number} index the index to insert the item at
 	 * @param {boolean} delaySave insert the placeholder, but wait to save it
@@ -330,6 +331,7 @@ export default class OrderedContents {
 	 * Given an item optimistically add it to the items, and try to save it to the server.
 	 * If it's successful, replace the optimistic placeholder with the item from the server.
 	 * If it fails, add an error to the optimistic placeholder and trigger a change
+	 *
 	 * @param  {Object} item the item to append
 	 * @param {boolean} delaySave insert the placeholder, but delay saving
 	 * @returns {Promise}      fulfills or rejects if the item is successfully added or not

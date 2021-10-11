@@ -73,7 +73,10 @@ export default class Assignment extends Completable(
 			await this.refresh(rawAssignment);
 		} else if (this.CurrentMetadataAttemptItem) {
 			const rawAssignment =
-				await this.CurrentMetadataAttemptItem.fetchLink('Assignment');
+				await this.CurrentMetadataAttemptItem.fetchLink({
+					rel: 'Assignment',
+					mode: 'raw',
+				});
 			await this.refresh(rawAssignment);
 		}
 
@@ -88,7 +91,7 @@ export default class Assignment extends Completable(
 		}
 
 		try {
-			const attempts = await this.fetchLinkParsed('MetadataAttempts');
+			const attempts = await this.fetchLink('MetadataAttempts');
 
 			return attempts.getLatest();
 		} catch (e) {
@@ -163,7 +166,7 @@ export default class Assignment extends Completable(
 	}
 
 	getAssociations() {
-		return this.fetchLinkParsed('Lessons');
+		return this.fetchLink('Lessons');
 	}
 
 	getPlacementProvider(scope, accepts) {
@@ -265,14 +268,14 @@ export default class Assignment extends Completable(
 	 * @returns {Promise} The history.
 	 */
 	async loadHistory() {
-		return this.fetchLinkParsed(ASSESSMENT_HISTORY_LINK);
+		return this.fetchLink(ASSESSMENT_HISTORY_LINK);
 	}
 
 	async loadSavePoint() {
 		const getVersion = x => ((x || {}).Submission || {}).version;
 
 		try {
-			const save = await this.fetchLinkParsed('Savepoint');
+			const save = await this.fetchLink('Savepoint');
 
 			if (getVersion(save) !== this.version) {
 				//Drop savepoints that have mismatched versions

@@ -1,7 +1,7 @@
 /**
  * Finds the NTIID field on the given object.
  *
- * @method getFuzzyID
+ * @function getFuzzyID
  * @param  {Object}         object                               The object to find an ID for.
  * @param  {Array<string>}  [keys=['Target-NTIID', 'NTIID']]     The possible ID fields.
  * @returns {string}         The key name, or undefined.

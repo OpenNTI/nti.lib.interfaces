@@ -223,7 +223,7 @@ export default Base =>
 		getRecentReplies(count = 1) {
 			let shouldRequest = this.hasLink('replies');
 			let request = shouldRequest
-				? this.fetchLinkParsed('replies', {
+				? this.fetchLink('replies', {
 						sortOn: 'createdTime',
 						sortOrder: 'descending',
 						batchSize: count,
@@ -261,7 +261,7 @@ export default Base =>
 
 			//do not make a request that we know will probably fail or result in nothing.
 			let request = shouldRequest
-				? this.fetchLinkParsed('replies')
+				? this.fetchLink('replies')
 				: Promise.resolve();
 
 			return (this[CHILDREN] = request

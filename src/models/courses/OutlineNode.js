@@ -118,7 +118,7 @@ export default class OutlineNode extends Publishable(
 			const link = 'overview-content';
 
 			const fetchLink = async () => {
-				let content = await this.fetchLink(link);
+				let content = await this.fetchLink({ rel: link, mode: 'raw' });
 
 				if (typeof content !== 'object') {
 					throw new TypeError(
@@ -204,7 +204,7 @@ export default class OutlineNode extends Publishable(
 			return Promise.resolve(null);
 		}
 
-		return this.fetchLinkParsed(link);
+		return this.fetchLink(link);
 	}
 
 	getSummary() {
@@ -216,12 +216,16 @@ export default class OutlineNode extends Publishable(
 
 		let accept = ['note'];
 
-		return this.fetchLink(link, {
-			// exclude: exclude.map(x=> 'application/vnd.nextthought.' + x).join(','),
-			accept: accept
-				.map(x => 'application/vnd.nextthought.' + x)
-				.join(','),
-			filter: 'TopLevel',
+		return this.fetchLink({
+			mode: 'raw',
+			rel: link,
+			params: {
+				// exclude: exclude.map(x=> 'application/vnd.nextthought.' + x).join(','),
+				accept: accept
+					.map(x => 'application/vnd.nextthought.' + x)
+					.join(','),
+				filter: 'TopLevel',
+			},
 		});
 	}
 
@@ -293,9 +297,10 @@ async function applyContentsOverlayWithUserCompletionStats(
 			'UnrequiredUnSuccessfulItems',
 		].reduce((_, k) => _.concat(o[k] || []), []);
 
-	const { Outline: o, Assignments } = await enrollment.fetchLink(
-		'UserLessonCompletionStatsByOutlineNode'
-	);
+	const { Outline: o, Assignments } = await enrollment.fetchLink({
+		mode: 'raw',
+		rel: 'UserLessonCompletionStatsByOutlineNode',
+	});
 	const outline = o
 		.reduce((_, i) => [..._, ...Object.values(i)], [])
 		.flat()

@@ -31,13 +31,13 @@ export default class StripeIntegration extends Base {
 	}
 
 	async getAccountName() {
-		const info = await this.fetchLink(AccountInfoRel);
+		const info = await this.fetchLink({ mode: 'raw', rel: AccountInfoRel });
 
 		return info && info.StripeAccountID;
 	}
 
 	async disconnect() {
-		await this.requestLink(DisconnectRel, 'delete');
+		await this.deleteLink(DisconnectRel);
 		await this.sync();
 	}
 

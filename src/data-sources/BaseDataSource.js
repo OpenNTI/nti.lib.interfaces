@@ -33,15 +33,17 @@ export default class BaseDataSource {
 
 	/**
 	 * A indicator that it is a DataSource
-	 * @readOnly
-	 * @type {Boolean}
+	 *
+	 * @readonly
+	 * @type {boolean}
 	 */
 	isDataSource = true;
 
 	/**
 	 * A indicator of what type of DataSource
-	 * @readOnly
-	 * @type {String}
+	 *
+	 * @readonly
+	 * @type {string}
 	 */
 	dataSourceType = BASE;
 
@@ -55,7 +57,6 @@ export default class BaseDataSource {
 	 *  	},
 	 *  	paramNameTwo: DataSourceInstance
 	 *  }
-	 *
 	 * @type {Object}
 	 */
 	handlers = {};

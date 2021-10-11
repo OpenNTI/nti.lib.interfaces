@@ -44,7 +44,7 @@ export default class Survey extends Publishable(Pages(QuestionSet)) {
 		let p = this[AGGREGATED];
 
 		if (!p) {
-			p = this[AGGREGATED] = this.fetchLinkParsed(SURVEY_AGGREGATED_LINK);
+			p = this[AGGREGATED] = this.fetchLink(SURVEY_AGGREGATED_LINK);
 			//cleanup
 			p.catch(() => null)
 				.then(() => wait(1000)) //one second after promise completes.
@@ -59,7 +59,7 @@ export default class Survey extends Publishable(Pages(QuestionSet)) {
 	}
 
 	loadPreviousSubmission() {
-		return this.fetchLinkParsed(ASSESSMENT_HISTORY_LINK);
+		return this.fetchLink(ASSESSMENT_HISTORY_LINK);
 	}
 
 	/**

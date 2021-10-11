@@ -30,7 +30,7 @@ export default class Poll extends Question {
 				.then(x => x.getQuestion(this.getID()));
 		}
 
-		return this.fetchLinkParsed(SURVEY_AGGREGATED_LINK);
+		return this.fetchLink(SURVEY_AGGREGATED_LINK);
 	}
 
 	getSubmission() {
@@ -38,7 +38,7 @@ export default class Poll extends Question {
 	}
 
 	loadPreviousSubmission() {
-		return this.fetchLinkParsed(ASSESSMENT_HISTORY_LINK);
+		return this.fetchLink(ASSESSMENT_HISTORY_LINK);
 	}
 
 	preflight(data) {

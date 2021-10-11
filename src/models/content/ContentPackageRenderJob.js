@@ -78,7 +78,10 @@ export default class ContentPackageRenderJob extends Base {
 				return;
 			}
 
-			this[ACTIVE_POLL] = this.fetchLink('QueryRenderJob')
+			this[ACTIVE_POLL] = this.fetchLink({
+				rel: 'QueryRenderJob',
+				mode: 'raw',
+			})
 				.then(newJob => {
 					const changed = newJob.State !== this.State;
 

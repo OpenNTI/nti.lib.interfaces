@@ -72,7 +72,7 @@ export default class Question extends HasContent(
 	}
 
 	getAssociations() {
-		return this.fetchLinkParsed('Assessments');
+		return this.fetchLink('Assessments');
 	}
 
 	getPlacementProvider(scope, accepts) {

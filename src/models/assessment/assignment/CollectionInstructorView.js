@@ -97,7 +97,7 @@ export default class CollectionInstructorView extends Base {
 		data.studentSummaries = data.studentSummaries || {};
 
 		if (!data.studentSummaries[studentUserId] && createIfDoesNotExist) {
-			let history = this.fetchLinkParsed(keyForUser(studentUserId));
+			let history = this.fetchLink(keyForUser(studentUserId));
 
 			data.studentSummaries[studentUserId] = new CollectionSummary(
 				this[Service],

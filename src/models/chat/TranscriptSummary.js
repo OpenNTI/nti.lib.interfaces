@@ -6,7 +6,7 @@ export default class TranscriptSummary extends Transcript {
 	static MimeType = COMMON_PREFIX + 'transcriptsummary';
 
 	getTranscript() {
-		return this.fetchLinkParsed('transcript');
+		return this.fetchLink('transcript');
 	}
 }
 

@@ -176,7 +176,10 @@ export default class User extends Entity {
 
 	getAccountProfile() {
 		if (!this[LOAD_PROFILE_CACHE]) {
-			this[LOAD_PROFILE_CACHE] = this.fetchLink('account.profile');
+			this[LOAD_PROFILE_CACHE] = this.fetchLink({
+				mode: 'raw',
+				rel: 'account.profile',
+			});
 
 			setTimeout(() => {
 				delete this[LOAD_PROFILE_CACHE];
@@ -203,7 +206,7 @@ export default class User extends Entity {
 			return Promise.reject('Badges not available');
 		}
 
-		return this.fetchLink('Badges').then(
+		return this.fetchLink({ mode: 'raw', rel: 'Badges' }).then(
 			workspace => new Achievements(this[Service], this, workspace)
 		);
 	}

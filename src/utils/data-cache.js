@@ -52,7 +52,7 @@ export default class DataCache {
 	 * cache is serialized.  This allows for caching instances of objects that
 	 * should not be serialized but need to be cached.
 	 *
-	 * @param {string/object} key   The key to assign the value to. Optionally this
+	 * @param {string|object} key   The key to assign the value to. Optionally this
 	 *                              can be an Object of keys and values.
 	 * @param {*} value A value to cache. If `key` is an object, this paramater is
 	 *                  ignored.

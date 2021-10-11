@@ -62,7 +62,7 @@ export default class QuestionSet extends SubmittableIdentity(
 	}
 
 	getAssociations() {
-		return this.fetchLinkParsed('Lessons');
+		return this.fetchLink('Lessons');
 	}
 
 	getPlacementProvider(scope, accepts) {
@@ -95,7 +95,7 @@ export default class QuestionSet extends SubmittableIdentity(
 	/**
 	 * Are the question parts set to use the Randomized Part variant?
 	 *
-	 * @property {boolean} isPartTypeRandomized.
+	 * @property {boolean} isPartTypeRandomized
 	 */
 
 	/**

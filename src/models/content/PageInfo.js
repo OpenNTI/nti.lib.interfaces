@@ -69,7 +69,7 @@ export default class PageInfo extends Pages(Base) {
 	getContent() {
 		let root = this.getContentRoot();
 
-		return this.fetchLink('content').then(html =>
+		return this.fetchLink({ rel: 'content', mode: 'raw' }).then(html =>
 			Markup.rebaseReferences(html, root)
 		);
 	}

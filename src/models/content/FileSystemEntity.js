@@ -39,7 +39,7 @@ export default class FileSystemEntity extends Base {
 	getContents(sort) {
 		sort = validateSortObject(sort);
 
-		return this.fetchLinkParsed('contents', sort);
+		return this.fetchLink({ rel: 'contents', params: sort });
 	}
 
 	getExportDownloadURL() {
@@ -80,7 +80,7 @@ export default class FileSystemEntity extends Base {
 	}
 
 	delete() {
-		return this.requestLink('delete', 'delete').catch(er =>
+		return this.deleteLink('delete').catch(er =>
 			Promise.reject(
 				er.message !== NO_LINK
 					? er

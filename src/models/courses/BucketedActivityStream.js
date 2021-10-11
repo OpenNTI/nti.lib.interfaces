@@ -48,7 +48,7 @@ export default class BucketedActivityStream extends Base {
 			//allow outline and assignments to be anything...
 			Promise.resolve(outline).catch(() => null),
 			Promise.resolve(assignments).catch(() => null),
-			this.fetchLinkParsed(SOURCE, { MostRecent: weekOf }),
+			this.fetchLink({ rel: SOURCE, params: { MostRecent: weekOf } }),
 		])
 			.then(data => this[BUILD_BINS](...data))
 			.then(() => delete this[ACTIVE_REQUEST])
@@ -67,8 +67,11 @@ export default class BucketedActivityStream extends Base {
 			.then(() => {
 				// Because we're simply waiting for the current (if any) request to finish, we do
 				// not need to chain/pend the new request to it (by returning its promise)
-				this[ACTIVE_REQUEST] = this.fetchLinkParsed(SOURCE, {
-					MostRecent: this.nextPageParam,
+				this[ACTIVE_REQUEST] = this.fetchLink({
+					rel: SOURCE,
+					params: {
+						MostRecent: this.nextPageParam,
+					},
 				})
 					.then(data => this[APPLY_ACTIVITY](data))
 					.then(() => delete this[ACTIVE_REQUEST])
@@ -173,9 +176,8 @@ export default class BucketedActivityStream extends Base {
 		}
 
 		for (let assignment of openAssignments) {
-			const outlineNodeId = assignmentsCollection.getOutlineNodeIdForAssessment(
-				assignment
-			);
+			const outlineNodeId =
+				assignmentsCollection.getOutlineNodeIdForAssessment(assignment);
 			const outlineNode = outlineNodeId && outline.getNode(outlineNodeId);
 
 			const obj = new ProxyObject(

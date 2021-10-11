@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 /* global io */
 import EventEmitter from 'events';
 

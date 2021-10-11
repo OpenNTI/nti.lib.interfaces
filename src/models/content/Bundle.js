@@ -5,7 +5,6 @@ import Publishable from '../../mixins/Publishable.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 import Forum from '../forums/Forum.js';
-import Batch from '../../data-sources/data-types/Batch.js';
 
 import BundleCommunity from './BundleCommunity.js';
 import BundleStreamDataSource from './BundleStreamDataSource.js';
@@ -133,7 +132,7 @@ export default class Bundle extends Publishable(Base) {
 
 	async getDiscussions(reloadBoard) {
 		if (!this.Discussions) {
-			this.Discussions = await this.fetchLinkParsed('DiscussionBoard');
+			this.Discussions = await this.fetchLink('DiscussionBoard');
 		} else if (reloadBoard) {
 			await this.Discussions.refresh();
 		}
@@ -154,10 +153,8 @@ export default class Bundle extends Publishable(Base) {
 	async getTablesOfContents() {
 		const packages = await this.getContentPackages();
 
-		return Promise.all(
-			packages.map(p => p.getTableOfContents())
-		).then(tables =>
-			TablesOfContents.fromIterable(tables, this[Service], this)
+		return Promise.all(packages.map(p => p.getTableOfContents())).then(
+			tables => TablesOfContents.fromIterable(tables, this[Service], this)
 		);
 	}
 
@@ -193,7 +190,7 @@ async function resolveDiscussions(bundle) {
 
 	try {
 		// eslint-disable-next-line require-atomic-updates
-		bundle.Discussions = await bundle.fetchLinkParsed('DiscussionBoard');
+		bundle.Discussions = await bundle.fetchLink('DiscussionBoard');
 	} catch (e) {
 		//swallow
 	}
@@ -201,7 +198,10 @@ async function resolveDiscussions(bundle) {
 
 async function resolvePackages(bundle) {
 	try {
-		const contents = await Batch.from(bundle, bundle.fetchLink('contents'));
+		const contents = await bundle.fetchLink({
+			rel: 'contents',
+			mode: 'batch',
+		});
 
 		//We need to load all of them upfront,so pull all pages in
 		return [...(await contents.loadAll())];

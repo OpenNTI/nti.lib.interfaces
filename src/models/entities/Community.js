@@ -134,7 +134,7 @@ export default class Community extends Entity {
 	}
 
 	getDiscussionBoard() {
-		return this.fetchLinkParsed('DiscussionBoard');
+		return this.fetchLink('DiscussionBoard');
 	}
 
 	getDiscussionBoardContents() {

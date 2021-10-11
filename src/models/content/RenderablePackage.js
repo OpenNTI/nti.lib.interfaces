@@ -25,13 +25,15 @@ export default class RenderablePackage extends Package {
 	setUpAssets() {}
 
 	getRSTContents() {
-		return this.fetchLink('contents').then(contents => {
-			if (contents.contentType !== RST_TYPE) {
-				throw new Error('Unexpected content type');
-			}
+		return this.fetchLink({ rel: 'contents', mode: 'raw' }).then(
+			contents => {
+				if (contents.contentType !== RST_TYPE) {
+					throw new Error('Unexpected content type');
+				}
 
-			return contents;
-		});
+				return contents;
+			}
+		);
 	}
 
 	setRSTContents(contents, prevVersion) {

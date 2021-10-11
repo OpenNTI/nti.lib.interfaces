@@ -1,13 +1,15 @@
 /**
- * @typedef {{
- * 	rel: string;
- * 	href: string;
- * 	ntiid?: string;
- * 	result?: string;
- * }} Link
+ * @typedef {object} Link
+ * @property {string} rel
+ * @property {string} href
+ * @property {string?} ntiid
+ * @property {string?} result
  */
 
-/** @typedef {{ Links: Link[]; }} HasLinks */
+/**
+ * @typedef {object} HasLinks
+ * @property {Link[]} Links
+ */
 
 /**
  * @template {HasLinks | Link[]} T

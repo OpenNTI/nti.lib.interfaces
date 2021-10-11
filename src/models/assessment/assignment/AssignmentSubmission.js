@@ -40,7 +40,7 @@ export default class AssignmentSubmission extends Submission(Base) {
 	 * @returns {Promise} The history.
 	 */
 	getHistory() {
-		return this.fetchLinkParsed(RELS.ASSIGNMENT_HISTORY_ITEM);
+		return this.fetchLink(RELS.ASSIGNMENT_HISTORY_ITEM);
 	}
 
 	getID() {
@@ -91,16 +91,18 @@ export default class AssignmentSubmission extends Submission(Base) {
 
 		await p.refresh();
 		if (p.hasLink(RELS.HISTORY)) {
-			const history = await p.fetchLinkParsed(RELS.HISTORY);
+			const history = await p.fetchLink(RELS.HISTORY);
 
 			if (
 				history &&
 				history.MetadataAttemptItem &&
 				history.MetadataAttemptItem.hasLink(RELS.ASSIGNMENT)
 			) {
-				const newAssignmentData = await history.MetadataAttemptItem.fetchLink(
-					RELS.ASSIGNMENT
-				);
+				const newAssignmentData =
+					await history.MetadataAttemptItem.fetchLink({
+						rel: RELS.ASSIGNMENT,
+						mode: 'raw',
+					});
 				await p.refresh(newAssignmentData);
 			}
 		}
