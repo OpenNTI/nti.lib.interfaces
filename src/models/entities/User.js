@@ -147,7 +147,12 @@ export default class User extends Entity {
 
 	async joinGroupWithCode(code) {
 		const data = { invitation_codes: [code] };
-		await this.postToLink('accept-invitations', data);
+		await this.fetchLink({
+			method: 'post',
+			mode: 'raw',
+			rel: 'accept-invitations',
+			data,
+		});
 		this[Service].getGroups().load();
 	}
 
@@ -198,7 +203,12 @@ export default class User extends Entity {
 	}
 
 	preflightProfile(data) {
-		return this.putToLink('account.profile.preflight', data);
+		return this.fetchLink({
+			method: 'put',
+			mode: 'raw',
+			rel: 'account.profile.preflight',
+			data,
+		});
 	}
 
 	getAchievements() {
@@ -290,10 +300,15 @@ export default class User extends Entity {
 			throw new Error('Cannot change password');
 		}
 
-		await this.putToLink('edit/++fields++password', {
-			id: this.getID(),
-			old_password: oldPassword,
-			password: newPassword,
+		await this.fetchLink({
+			method: 'put',
+			mode: 'raw',
+			rel: 'edit/++fields++password',
+			data: {
+				id: this.getID(),
+				old_password: oldPassword,
+				password: newPassword,
+			},
 		});
 	}
 }

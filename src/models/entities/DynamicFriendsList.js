@@ -94,7 +94,13 @@ export default class DynamicFriendsList extends FriendsList {
 							body,
 						})
 						.then(topic =>
-							topic.postToLink('publish').then(() => topic)
+							topic
+								.fetchLink({
+									method: 'post',
+									mode: 'raw',
+									rel: 'publish',
+								})
+								.then(() => topic)
 						)
 						.then(x => this.insert(x));
 				},

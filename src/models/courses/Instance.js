@@ -193,17 +193,27 @@ export default class Instance extends ContentTree(
 	async preflightInvitationsCsv(csv) {
 		const formData = new FormData();
 		formData.append('csv', csv);
-		return this.postToLink('CheckCourseInvitationsCSV', formData);
+		return this.fetchLink({
+			method: 'post',
+			mode: 'raw',
+			rel: 'CheckCourseInvitationsCSV',
+			data: formData,
+		});
 	}
 
 	async sendInvitations(emails, message) {
 		const Items = (emails || []).map(email => ({ email }));
 
-		return this.postToLink('SendCourseInvitations', {
-			Items,
-			message,
-			MimeType:
-				'application/vnd.nextthought.courses.usercourseinvitations',
+		return this.fetchLink({
+			method: 'post',
+			mode: 'raw',
+			rel: 'SendCourseInvitations',
+			data: {
+				Items,
+				message,
+				MimeType:
+					'application/vnd.nextthought.courses.usercourseinvitations',
+			},
 		});
 	}
 
@@ -242,7 +252,11 @@ export default class Instance extends ContentTree(
 			throw new Error('No Assets Link');
 		}
 
-		const asset = await this.postToLink('assets', data, true);
+		const asset = await this.fetchLink({
+			method: 'post',
+			rel: 'assets',
+			data,
+		});
 
 		if (asset.isVideo) {
 			delete this[MEDIA_INDEX];

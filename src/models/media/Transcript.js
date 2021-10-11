@@ -42,7 +42,12 @@ export default class Transcript extends Base {
 
 		data.append(file.name, file);
 
-		const newTranscript = await this.putToLink('edit', data);
+		const newTranscript = await this.fetchLink({
+			method: 'put',
+			mode: 'raw',
+			rel: 'edit',
+			data,
+		});
 
 		this.refresh(newTranscript);
 		this.emit('changed');

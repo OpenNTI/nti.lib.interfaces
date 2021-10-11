@@ -92,7 +92,7 @@ export default class FriendsList extends Entity {
 
 		data.friends = [...friends.map(x => getID(x)), ...newFriends];
 
-		return this.putToLink('edit', data)
+		return this.fetchLink({ method: 'put', mode: 'raw', rel: 'edit', data })
 			.then(o => this.refresh(pluck(o, 'NTIID', 'friends')))
 			.then(() => this.onChange('friends'))
 			.then(() => this); //always fulfill with 'this' (don't leak new/raw instances)
@@ -125,7 +125,7 @@ export default class FriendsList extends Entity {
 		const data = this.getData();
 		data.friends = friends.map(x => getID(x));
 
-		return this.putToLink('edit', data)
+		return this.fetchLink({ method: 'put', mode: 'raw', rel: 'edit', data })
 			.then(() => this.onChange('friends'))
 			.then(() => this) //always fulfill with 'this' (don't leak new/raw instances)
 			.catch(e => {
@@ -151,7 +151,7 @@ export default class FriendsList extends Entity {
 		let data = this.getData();
 		data.friends = [...entities.map(x => getID(x))];
 
-		return this.putToLink('edit', data)
+		return this.fetchLink({ method: 'put', mode: 'raw', rel: 'edit', data })
 			.then(o => this.refresh(pluck(o, 'NTIID', 'friends')))
 			.then(() => this.onChange('friends'))
 			.then(() => this); //always fulfill with 'this' (don't leak new/raw instances)
@@ -169,7 +169,7 @@ export default class FriendsList extends Entity {
 			([field, value]) => (data[field] = pre(field)(value))
 		);
 
-		return this.putToLink('edit', data)
+		return this.fetchLink({ method: 'put', mode: 'raw', rel: 'edit', data })
 			.then(o =>
 				this.refresh(
 					pluck.apply(void 0, [o, 'NTIID', ...Object.keys(fields)])

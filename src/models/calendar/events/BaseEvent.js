@@ -42,7 +42,12 @@ export class BaseEvent extends Base {
 			);
 		}
 
-		await this.postToLink(rel, { Username: user.getID() });
+		await this.fetchLink({
+			method: 'post',
+			mode: 'raw',
+			rel: rel,
+			data: { Username: user.getID() },
+		});
 	}
 }
 

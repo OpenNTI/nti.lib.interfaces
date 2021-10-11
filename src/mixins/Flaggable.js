@@ -24,9 +24,11 @@ export default Base =>
 		async flag() {
 			await awaitSafely(this.flagging || Promise.resolve());
 
-			const worker = (this.flagging = this.isFlagged
-				? this.postToLink('flag.metoo')
-				: this.postToLink('flag'));
+			const worker = (this.flagging = this.fetchLink({
+				method: 'post',
+				mode: 'raw',
+				rel: this.isFlagged ? 'flag.metoo' : 'flag',
+			}));
 
 			const resp = await worker;
 

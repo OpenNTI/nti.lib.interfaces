@@ -83,7 +83,12 @@ export default class Topic extends DiscussionInterface(
 			});
 		}
 
-		return this.postToLink('add', payload); // Parse response?
+		return this.fetchLink({
+			method: 'post',
+			mode: 'raw',
+			rel: 'add',
+			data: payload,
+		}); // Parse response?
 	}
 
 	loadUserSummary(user) {
@@ -145,11 +150,11 @@ export default class Topic extends DiscussionInterface(
 			});
 		}
 
-		const discussion = await this.postToLink(
-			'add',
-			DiscussionInterface.getPayload(payload),
-			true
-		);
+		const discussion = await this.fetchLink({
+			method: 'post',
+			rel: 'add',
+			data: DiscussionInterface.getPayload(payload),
+		});
 
 		if (!forComment) {
 			discussion.overrideParentDiscussion(this);

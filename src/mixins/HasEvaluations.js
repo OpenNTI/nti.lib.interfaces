@@ -19,10 +19,9 @@ export default Base =>
 		}
 
 		createPoll(data = {}) {
-			return this.postToLink(
-				this.getEvaluationsRel(),
-				{ ...PollTpl, ...data },
-				true
-			);
+			return this.fetchLink({
+				rel: this.getEvaluationsRel(),
+				data: { ...PollTpl, ...data },
+			});
 		}
 	};

@@ -117,7 +117,12 @@ export default class Forum extends GetContents(Base) {
 	}
 
 	async edit(payload) {
-		await this.putToLink('edit', payload);
+		await this.fetchLink({
+			method: 'put',
+			mode: 'raw',
+			rel: 'edit',
+			data: payload,
+		});
 
 		const parent = this.parent();
 		parent.emit('change');

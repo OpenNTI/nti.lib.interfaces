@@ -62,7 +62,11 @@ export default class FileSystemEntity extends Base {
 	}
 
 	clear() {
-		return this.postToLink('clear').catch(er =>
+		return this.fetchLink({
+			method: 'post',
+			mode: 'raw',
+			rel: 'clear',
+		}).catch(er =>
 			Promise.reject(
 				er.message !== NO_LINK
 					? er
@@ -106,7 +110,12 @@ export default class FileSystemEntity extends Base {
 			'name',
 			'path',
 		];
-		return this.postToLink('move', { path })
+		return this.fetchLink({
+			method: 'post',
+			mode: 'raw',
+			rel: 'move',
+			data: { path },
+		})
 			.then(o => this.refresh(pluck(o, ...keys)))
 			.then(() => this.onChange(keys))
 			.catch(er =>
@@ -136,7 +145,12 @@ export default class FileSystemEntity extends Base {
 			'path',
 		];
 
-		return this.postToLink('rename', { filename: newName })
+		return this.fetchLink({
+			method: 'post',
+			mode: 'raw',
+			rel: 'rename',
+			data: { filename: newName },
+		})
 			.then(o => this.refresh(pluck(o, ...keys)))
 			.then(() => this.onChange(keys))
 			.catch(er =>
@@ -157,7 +171,11 @@ export default class FileSystemEntity extends Base {
 	}
 
 	mkdir() {
-		return this.postToLink('mkdir', {}, true).catch(er =>
+		return this.fetchLink({
+			method: 'post',
+			rel: 'mkdir',
+			data: {},
+		}).catch(er =>
 			Promise.reject(
 				er.message !== NO_LINK
 					? er

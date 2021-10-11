@@ -68,7 +68,7 @@ export default class Survey extends Publishable(Pages(QuestionSet)) {
 	 * @returns {Promise} Promise that fulfills with request code.
 	 */
 	resetAllSubmissions() {
-		return this.postToLink('Reset')
+		return this.fetchLink({ method: 'post', mode: 'raw', rel: 'Reset' })
 			.then(o => this.refresh(o))
 			.then(() => this.onChange('all'));
 	}

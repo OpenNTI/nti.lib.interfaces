@@ -37,10 +37,15 @@ export default class RenderablePackage extends Package {
 	}
 
 	setRSTContents(contents, prevVersion) {
-		return this.putToLink('contents', {
-			contentType: RST_TYPE,
-			contents,
-			version: prevVersion,
+		return this.fetchLink({
+			method: 'put',
+			mode: 'raw',
+			rel: 'contents',
+			data: {
+				contentType: RST_TYPE,
+				contents,
+				version: prevVersion,
+			},
 		})
 			.then(updatedContentPackage => {
 				const newContents = updatedContentPackage.contents;
@@ -55,13 +60,13 @@ export default class RenderablePackage extends Package {
 	}
 
 	publish() {
-		return this.postToLink('publish')
+		return this.fetchLink({ method: 'post', mode: 'raw', rel: 'publish' })
 			.then(updatedContentPackage => this.refresh(updatedContentPackage))
 			.then(() => this.onChange());
 	}
 
 	unpublish() {
-		return this.postToLink('unpublish')
+		return this.fetchLink({ method: 'post', mode: 'raw', rel: 'unpublish' })
 			.then(updatedContentPackage => this.refresh(updatedContentPackage))
 			.then(() => this.onChange());
 	}

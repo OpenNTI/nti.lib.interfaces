@@ -36,9 +36,14 @@ export default class CredlyAcclaimIntegration extends BaseIntegration {
 	}
 
 	async connect(authToken) {
-		await this.postToLink(ConnectRel, {
-			mimetype: ConnectMimeType,
-			authorization_token: authToken,
+		await this.fetchLink({
+			method: 'post',
+			mode: 'raw',
+			rel: ConnectRel,
+			data: {
+				mimetype: ConnectMimeType,
+				authorization_token: authToken,
+			},
 		});
 
 		await this.sync();

@@ -69,7 +69,11 @@ export default class Assignment extends Completable(
 
 	async start() {
 		if (this.hasLink('Commence')) {
-			const rawAssignment = await this.postToLink('Commence');
+			const rawAssignment = await this.fetchLink({
+				method: 'post',
+				mode: 'raw',
+				rel: 'Commence',
+			});
 			await this.refresh(rawAssignment);
 		} else if (this.CurrentMetadataAttemptItem) {
 			const rawAssignment =
@@ -316,11 +320,12 @@ export default class Assignment extends Completable(
 			last.abort();
 		}
 
-		const result = (this[ActiveSavePointPost] = this.postToLink(
-			'Savepoint',
+		const result = (this[ActiveSavePointPost] = this.fetchLink({
+			method: 'post',
+			mode: parseResponse ? 'parse' : 'raw',
+			rel: 'Savepoint',
 			data,
-			parseResponse
-		));
+		}));
 
 		try {
 			await result;
@@ -422,7 +427,7 @@ export default class Assignment extends Completable(
 	 * @returns {Promise} Promise that fulfills with request code.
 	 */
 	resetAllSubmissions() {
-		return this.postToLink('Reset')
+		return this.fetchLink({ method: 'post', mode: 'raw', rel: 'Reset' })
 			.then(o => this.refresh(o))
 			.then(() => this.onChange('all'));
 	}

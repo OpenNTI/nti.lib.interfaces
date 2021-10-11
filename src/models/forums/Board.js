@@ -26,7 +26,11 @@ export default class Board extends GetContents(Base) {
 	}
 
 	async createForum(newForum) {
-		const forum = await this.postToLink('add', newForum, true);
+		const forum = await this.fetchLink({
+			method: 'post',
+			rel: 'add',
+			data: newForum,
+		});
 		this.emit('change');
 		return forum;
 	}

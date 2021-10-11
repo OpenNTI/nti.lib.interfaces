@@ -84,11 +84,10 @@ export default class CommunitiesWorkspace extends Workspace {
 		}
 
 		try {
-			const community = await this.AllCommunities.postToLink(
-				'self',
-				payload,
-				true
-			);
+			const community = await this.AllCommunities.fetchLink({
+				rel: 'self',
+				data: payload,
+			});
 
 			delete this[CommunitiesCache];
 

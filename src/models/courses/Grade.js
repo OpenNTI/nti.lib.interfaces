@@ -137,7 +137,7 @@ export default class Grade extends names(Base) {
 
 		let link = this.hasLink(A) ? A : B;
 
-		return this.postToLink(link)
+		return this.fetchLink({ method: 'post', mode: 'raw', rel: link })
 			.then(o => this.refresh(pluck(o, 'NTIID', 'Links', 'IsExcused')))
 			.then(() => this.onChange('excuse'));
 	}

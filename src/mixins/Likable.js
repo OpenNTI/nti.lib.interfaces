@@ -10,8 +10,11 @@ import { NO_LINK } from '../constants.js';
 export default Base =>
 	class Likable extends Base {
 		like() {
-			let link = this.hasLink('like') ? 'like' : 'unlike';
-			return this.postToLink(link)
+			return this.fetchLink({
+				method: 'post',
+				mode: 'raw',
+				rel: this.hasLink('like') ? 'like' : 'unlike',
+			})
 				.then(o =>
 					this.refresh(
 						pluck(
@@ -27,8 +30,11 @@ export default Base =>
 		}
 
 		favorite() {
-			let link = this.hasLink('favorite') ? 'favorite' : 'unfavorite';
-			return this.postToLink(link)
+			return this.fetchLink({
+				method: 'post',
+				mode: 'raw',
+				rel: this.hasLink('favorite') ? 'favorite' : 'unfavorite',
+			})
 				.then(o => this.refresh(pluck(o, 'NTIID', 'Links')))
 				.then(() => this.onChange('favorite'));
 		}
@@ -44,7 +50,7 @@ export default Base =>
 				throw new Error(NO_LINK);
 			}
 
-			return this.postToLink(link)
+			return this.fetchLink({ method: 'post', mode: 'raw', rel: link })
 				.then(o => this.refresh(pluck(o, 'NTIID', 'Links')))
 				.then(() => this.onChange('flag'));
 		}

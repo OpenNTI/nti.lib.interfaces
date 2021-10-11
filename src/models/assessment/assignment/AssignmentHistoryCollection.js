@@ -76,7 +76,12 @@ export default class AssignmentHistoryCollection extends Base {
 	}
 
 	markSeen() {
-		return this.putToLink('lastViewed', new Date().getTime() / 1000)
+		return this.fetchLink({
+			method: 'put',
+			mode: 'raw',
+			rel: 'lastViewed',
+			data: new Date().getTime() / 1000,
+		})
 			.then(o => this.refresh(pluck(o, 'NTIID', 'Links', 'lastViewed')))
 			.then(() => this.onChange('lastViewed'));
 	}

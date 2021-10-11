@@ -36,7 +36,11 @@ export default class BlogEntry extends Topic {
 
 		//if we are changing the state of publish, do that now.
 		if (isPublished !== publish) {
-			workflow = this.postToLink(`${publish ? '' : 'un'}publish`);
+			workflow = this.fetchLink({
+				method: 'post',
+				mode: 'raw',
+				rel: `${publish ? '' : 'un'}publish`,
+			});
 		}
 
 		//If we are publishing, merge sharedWith and tags, and void out sharedWith.

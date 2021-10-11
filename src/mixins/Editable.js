@@ -90,7 +90,7 @@ export const mixin = Base =>
 			const previousSave = this.saving || Promise.resolve();
 
 			const worker = (this.saving = after(previousSave, () =>
-				this.putToLink(rel, data)
+				this.fetchLink({ method: 'put', mode: 'raw', rel, data })
 			)
 				.then(o => this.refresh(o).then(() => o))
 				.then(o => (onAfterRefresh?.(this, o), o))
@@ -150,7 +150,7 @@ export const mixin = Base =>
 
 			let keys = null;
 			const worker = (this.saving = after(previousSave, () =>
-				this.putToLink(rel, values)
+				this.fetchLink({ method: 'put', rel, data: values })
 			)
 				.then(
 					o => (

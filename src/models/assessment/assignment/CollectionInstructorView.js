@@ -231,7 +231,11 @@ export default class CollectionInstructorView extends Base {
 		return this.getHistoryItem(assignmentId, username)
 			.then(history => {
 				if (history.hasLink('Reset')) {
-					return history.postToLink('Reset');
+					return history.fetchLink({
+						method: 'post',
+						mode: 'raw',
+						rel: 'Reset',
+					});
 				} else {
 					return Promise.reject('No reset link on history container');
 				}

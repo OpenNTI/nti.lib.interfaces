@@ -156,7 +156,7 @@ export default class QuestionSet extends SubmittableIdentity(
 		const rel = 'randomize' + (parts ? 'PartsType' : '');
 
 		let link = this.hasLink(cap(rel)) ? cap(rel) : cap(`un${rel}`);
-		return this.postToLink(link)
+		return this.fetchLink({ method: 'post', mode: 'raw', rel: link })
 			.then(o =>
 				this.refresh(
 					pluck(

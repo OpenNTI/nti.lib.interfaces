@@ -23,8 +23,12 @@ export default Base =>
 					? { publishBeginning: state.getTime() / 1000 }
 					: void state;
 
-			//JSG: The REST interface reserves "POST" for creating objects not modifiying. This (IMHO) should be a "PUT"
-			return this.postToLink(link, payload)
+			return this.fetchLink({
+				method: 'post',
+				mode: 'raw',
+				rel: link,
+				data: payload,
+			})
 				.then(o =>
 					this.refresh(
 						pluck(

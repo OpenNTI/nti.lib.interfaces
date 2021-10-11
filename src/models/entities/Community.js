@@ -121,7 +121,13 @@ export default class Community extends Entity {
 							body,
 						})
 						.then(topic =>
-							topic.postToLink('publish').then(() => topic)
+							topic
+								.fetchLink({
+									method: 'post',
+									mode: 'raw',
+									rel: 'publish',
+								})
+								.then(() => topic)
 						)
 						.then(x => this.insert(x));
 				},
@@ -167,7 +173,12 @@ export default class Community extends Entity {
 	}
 
 	async addMembers(users) {
-		const resp = await this.postToLink('AddMembers', { users: users });
+		const resp = await this.fetchLink({
+			method: 'post',
+			mode: 'raw',
+			rel: 'AddMembers',
+			data: { users },
+		});
 		const { Added, NumberOfMembers } = resp;
 
 		await this.refresh({ NumberOfMembers, NTIID: this.NTIID });
@@ -179,7 +190,12 @@ export default class Community extends Entity {
 	}
 
 	async removeMembers(users) {
-		const resp = await this.postToLink('RemoveMembers', { users: users });
+		const resp = await this.fetchLink({
+			method: 'post',
+			mode: 'raw',
+			rel: 'RemoveMembers',
+			data: { users },
+		});
 		const { Removed, NumberOfMembers } = resp;
 
 		await this.refresh({ NumberOfMembers, NTIID: this.NTIID });
@@ -203,7 +219,12 @@ export default class Community extends Entity {
 	}
 
 	async join() {
-		const resp = await this.postToLink('join', {});
+		const resp = await this.fetchLink({
+			method: 'post',
+			mode: 'raw',
+			rel: 'join',
+			data: {},
+		});
 
 		await this.refresh(resp);
 
@@ -215,7 +236,12 @@ export default class Community extends Entity {
 	}
 
 	async leave() {
-		const resp = await this.postToLink('leave', {});
+		const resp = await this.fetchLink({
+			method: 'post',
+			mode: 'raw',
+			rel: 'leave',
+			data: {},
+		});
 
 		await this.refresh(resp);
 

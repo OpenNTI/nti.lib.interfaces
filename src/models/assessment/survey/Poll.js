@@ -42,7 +42,12 @@ export default class Poll extends Question {
 	}
 
 	preflight(data) {
-		return this.putToLink('preflight_update', data);
+		return this.fetchLink({
+			method: 'put',
+			mode: 'raw',
+			rel: 'preflight_update',
+			data,
+		});
 	}
 }
 

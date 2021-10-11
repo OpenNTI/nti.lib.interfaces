@@ -1,11 +1,9 @@
-import { pluck } from '@nti/lib-commons';
-
-import { NO_LINK } from '../../constants.js';
+import Flaggable from '../../mixins/Flaggable.js';
 import Threadable from '../../mixins/Threadable.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
-export default class MessageInfo extends Threadable(Base) {
+export default class MessageInfo extends Flaggable(Threadable(Base)) {
 	static MimeType = COMMON_PREFIX + 'messageinfo';
 
 	// prettier-ignore
@@ -19,22 +17,6 @@ export default class MessageInfo extends Threadable(Base) {
 		'inReplyTo':   { type: 'string' },
 		'recipients':  { type: 'string[]' },
 		'sharedWith':  { type: 'string[]' },
-	}
-
-	async flag() {
-		let link = this.hasLink('flag')
-			? 'flag'
-			: this.hasLink('flag.metoo')
-			? 'flag.metoo'
-			: null;
-
-		if (!link) {
-			throw new Error(NO_LINK);
-		}
-
-		return this.postToLink(link)
-			.then(o => this.refresh(pluck(o, 'NTIID', 'Links')))
-			.then(() => this.onChange('flag'));
 	}
 }
 

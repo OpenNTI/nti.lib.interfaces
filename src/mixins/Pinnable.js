@@ -19,7 +19,11 @@ export default Base =>
 		}
 
 		async pin() {
-			const resp = await this.postToLink('pin');
+			const resp = await this.fetchLink({
+				method: 'post',
+				mode: 'raw',
+				rel: 'pin',
+			});
 			await this.refresh(resp);
 
 			this.onChange('isPinned');
@@ -27,7 +31,11 @@ export default Base =>
 		}
 
 		async unpin() {
-			const resp = await this.postToLink('unpin');
+			const resp = await this.fetchLink({
+				method: 'post',
+				mode: 'raw',
+				rel: 'unpin',
+			});
 			await this.refresh(resp);
 
 			this.onChange('isPinned');

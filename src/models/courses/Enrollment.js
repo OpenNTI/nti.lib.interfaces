@@ -64,7 +64,7 @@ export default class Enrollment extends CourseIdentity(
 	}
 
 	async acknowledgeCourseCompletion() {
-		await this.postToLink(ACKNOWLEDGE);
+		await this.fetchLink({ method: 'post', mode: 'raw', rel: ACKNOWLEDGE });
 		await this.refresh();
 	}
 
