@@ -164,11 +164,6 @@ export const mixin = Base =>
 		postUploadToLink(rel, data, parseResponse) {
 			return this.uploadToLink(rel, 'POST', data, void 0, parseResponse);
 		}
-
-		async test() {
-			const foo = await this.fetchLink('');
-			return foo;
-		}
 	};
 
 /*** Utility private functions ***/
