@@ -3,7 +3,7 @@ import Registry, { COMMON_PREFIX } from '../../Registry.js';
 
 /** @typedef {import('../../stores/Service').default} ServiceDocument */
 
-export default class PresenceInfo extends Base {
+export default class AddressProperty extends Base {
 	static MimeType = COMMON_PREFIX + 'users.address';
 
 	// prettier-ignore
@@ -19,4 +19,4 @@ export default class PresenceInfo extends Base {
 	}
 }
 
-Registry.register(PresenceInfo);
+Registry.register(AddressProperty);
