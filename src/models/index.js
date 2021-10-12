@@ -20,6 +20,7 @@ export * as media from './media/index.js';
 export * as preferences from './preferences/index.js';
 export * as profile from './profile/index.js';
 export * as reports from './reports/index.js';
+export * as segments from './segments/index.js';
 export * as store from './store/index.js';
 export * as subscriptions from './subscriptions/index.js';
 
