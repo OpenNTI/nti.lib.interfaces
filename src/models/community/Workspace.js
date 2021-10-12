@@ -85,6 +85,7 @@ export default class CommunitiesWorkspace extends Workspace {
 
 		try {
 			const community = await this.AllCommunities.fetchLink({
+				method: 'post',
 				rel: 'self',
 				data: payload,
 			});
