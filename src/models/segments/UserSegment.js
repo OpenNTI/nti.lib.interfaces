@@ -9,6 +9,8 @@ export default class UserSegment extends Base {
 		...super.Fields,
 		'title': {type: 'string'}
 	}
+
+	isSegment = true;
 }
 
 Registry.register(UserSegment);
