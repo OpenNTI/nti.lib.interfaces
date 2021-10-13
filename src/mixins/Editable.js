@@ -150,7 +150,12 @@ export const mixin = Base =>
 
 			let keys = null;
 			const worker = (this.saving = after(previousSave, () =>
-				this.fetchLink({ method: 'put', rel, data: values })
+				this.fetchLink({
+					method: 'put',
+					mode: 'raw',
+					rel,
+					data: values,
+				})
 			)
 				.then(
 					o => (
