@@ -113,7 +113,6 @@ export default class AssignmentCollectionSummary extends BaseObservable {
 	 * @param {Service} service    Instance of the ServiceDocument
 	 * @param {Collection} parent Instance of the Assignment Collection. (parent)
 	 * @param {Promise} HistoryPromise  A promise that fulfills with an AssignmentHistoryCollection
-	 *
 	 * @returns {void}
 	 */
 	constructor(service, parent, HistoryPromise) {

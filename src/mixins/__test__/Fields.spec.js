@@ -1,4 +1,4 @@
-/* eslint-disable import/no-extraneous-dependencies */
+ 
 /* eslint-env jest */
 import diff from 'jest-diff';
 

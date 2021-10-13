@@ -340,7 +340,6 @@ export default class Collection extends Activity(Base) {
 	 *
 	 * @param {enum}   order   One of the ORDER_BY_* static constants on this class.
 	 * @param {string} search  A search filter string
-	 *
 	 * @returns {Promise} fulfills with an object with key: groups, order, and search
 	 */
 	async getAssignmentsBy(order, search) {
@@ -390,7 +389,6 @@ export default class Collection extends Activity(Base) {
 	 * omitted then ALL the assignments are returned.
 	 *
 	 * @param {string} outlineNodeId Optional. The outlineNode NTIID you wish to scope to.
-	 *
 	 * @returns {Array} An array of Assignments.
 	 */
 	getAssignments(outlineNodeId) {
@@ -405,7 +403,6 @@ export default class Collection extends Activity(Base) {
 	 * omitted then ALL the assessments are returned.
 	 *
 	 * @param {string} outlineNodeId Optional. The outlineNode NTIID you wish to scope to.
-	 *
 	 * @returns {Array} An array of Assessments.
 	 */
 	getAssessments(outlineNodeId) {

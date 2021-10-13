@@ -1,4 +1,3 @@
-/* eslint-disable camelcase, jsdoc/valid-types */
 import { url } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 

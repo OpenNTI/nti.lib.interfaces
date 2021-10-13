@@ -20,7 +20,6 @@ export default class Groups extends EntityStore {
 	 * @param {Service} service The service descriptor.
 	 * @param {string} entryPoint The URL to interact with.
 	 * @param {User} context The user.
-	 *
 	 * @returns {void}
 	 */
 	constructor(service, entryPoint, context) {
