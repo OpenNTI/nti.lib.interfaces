@@ -1,9 +1,10 @@
-import Registry, {COMMON_PREFIX } from '../Registry.js';
+import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 export class PersistentSubscription extends Base {
 	static MimeType = COMMON_PREFIX + 'zapier.persistentsubscription';
 
+	// prettier-ignore
 	static Fields = {
 		...super.Fields,
 		'Id':      { type: 'string' },
@@ -11,7 +12,7 @@ export class PersistentSubscription extends Base {
 		'Status':  { type: 'string' },
 	}
 
-	isPersistentSubscription = true
+	isPersistentSubscription = true;
 
 	getID() {
 		return this.Id; // doesn't have an NTIID
