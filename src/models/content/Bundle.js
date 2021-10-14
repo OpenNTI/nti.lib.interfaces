@@ -15,6 +15,7 @@ const BundleCommunityCache = Symbol('Bundle Community Cache');
 const names = (x, y, v) => (Array.isArray(v) ? v.join(', ') : null);
 
 export default class Bundle extends Publishable(Base) {
+	static ChangeBubbles = true;
 	static MimeType = [
 		COMMON_PREFIX + 'contentpackagebundle',
 		COMMON_PREFIX + 'coursecontentpackagebundle',
@@ -57,12 +58,6 @@ export default class Bundle extends Publishable(Base) {
 		if (!this.#contentPackages) {
 			this.#contentPackages = resolvePackages(this);
 			this.#contentPackages = await this.#contentPackages;
-
-			const onChange = (...args) => this.onChange(...args);
-
-			for (let p of this.#contentPackages) {
-				p.on('change', onChange);
-			}
 		}
 
 		return this.#contentPackages;
