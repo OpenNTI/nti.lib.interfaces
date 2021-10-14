@@ -110,7 +110,7 @@ export default class Note extends DiscussionInterface(
 	async getDiscussions(params) {
 		const replies = await this.getReplies();
 
-		return Page.fromList(replies, params, this[Service], this);
+		return Page.fromList(replies, this);
 	}
 
 	async addDiscussion(data) {

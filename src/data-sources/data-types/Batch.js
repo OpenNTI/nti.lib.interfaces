@@ -22,6 +22,27 @@ export default class Batch extends Base {
 		return new Batch(parent[Service], parent, await data).waitForPending();
 	}
 
+	/**
+	 * @param {Base[]} list
+	 * @param {Base?} parent
+	 * @returns {Batch}
+	 */
+	static fromList(list, parent) {
+		const service = (parent || list?.[0])?.[Service];
+		const batch = new Batch(service, parent, {
+			BatchPage: 1,
+			pageSize: list.length,
+			Total: list.length,
+			TotalItemCount: list.length,
+			Items: [],
+		});
+
+		//list is already parsed, do no pass it to the constructor
+		batch.Items = list;
+
+		return batch;
+	}
+
 	constructor(service, parent, data) {
 		super(service, parent, data);
 
@@ -34,6 +55,10 @@ export default class Batch extends Base {
 
 	[Symbol.iterator]() {
 		return this.Items[Symbol.iterator]();
+	}
+
+	get count() {
+		return this.Items?.length;
 	}
 
 	/** @type {number} */
@@ -54,7 +79,7 @@ export default class Batch extends Base {
 				return parseInt(batchSize, 10);
 			}
 		}
-		return null;
+		return this.count;
 	}
 
 	/** @type {number} */
@@ -83,13 +108,20 @@ export default class Batch extends Base {
 		return this.hasLink(next) && this.Items?.length < this.total;
 	}
 
-	// TODO: rename to appendNext, and make it update fields
 	async next() {
 		if (!this.hasMore) {
 			return;
 		}
+		return this.fetchLink({ rel: 'batch-next', mode: 'batch' });
+	}
 
-		const batch = await Batch.from(this, this.fetchLink(next));
+	async appendNext() {
+		if (!this.hasMore) {
+			return;
+		}
+
+		// TODO: update fields
+		const batch = await this.fetchLink({ rel: next, mode: 'batch' });
 		this.Links = [
 			...this.Links.filter(x => x.rel !== next),
 			...batch.Links.filter(x => x.rel === next),
@@ -103,7 +135,7 @@ export default class Batch extends Base {
 
 	async loadAll() {
 		while (this.hasMore) {
-			await this.next();
+			await this.appendNext();
 		}
 
 		return this;
