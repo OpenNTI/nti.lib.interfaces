@@ -112,7 +112,10 @@ export default class Batch extends Base {
 		if (!this.hasMore) {
 			return;
 		}
-		return this.fetchLink({ rel: 'batch-next', mode: 'batch' });
+		return this.fetchLink({
+			rel: 'batch-next',
+			mode: this.constructor.MimeType,
+		});
 	}
 
 	async appendNext() {
@@ -121,7 +124,10 @@ export default class Batch extends Base {
 		}
 
 		// TODO: update fields
-		const batch = await this.fetchLink({ rel: next, mode: 'batch' });
+		const batch = await this.fetchLink({
+			rel: next,
+			mode: this.constructor.MimeType,
+		});
 		this.Links = [
 			...this.Links.filter(x => x.rel !== next),
 			...batch.Links.filter(x => x.rel === next),

@@ -1,6 +1,7 @@
 import { url } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
+import Registry from '../models/Registry.js';
 import getLinkImpl from '../utils/get-link.js';
 import maybeWait from '../utils/maybe-wait.js';
 import { Parser, Service, NO_LINK } from '../constants.js';
@@ -140,8 +141,8 @@ export const mixin = Base =>
 				  )
 				: this[Service][method](link, data);
 
-			if (mode === 'parse' || mode === 'batch') {
-				result = parseResult(this, result, mode === 'batch');
+			if (mode && mode !== 'raw') {
+				result = parseResult(this, result, mode);
 			}
 
 			return result;
@@ -167,21 +168,31 @@ export const mixin = Base =>
 
 /*** Utility private functions ***/
 
-function parseResult(scope, requestPromise, asBatch) {
+/**
+ *
+ * @param {Base} scope
+ * @param {Promise<Object>} requestPromise
+ * @param {'parse'|'batch'|string} mode - the string 'parse', 'batch' (or a mimetype in the registry to use as the wrapper.)
+ * @returns {Base|Base[]} An instance of a parsed model or an array or models
+ */
+function parseResult(scope, requestPromise, mode) {
 	function selectItems(x) {
 		const extract = x && x.Items && !x.MimeType;
-		const BatchMime = 'internal-batch-wrapper';
 
-		if (!asBatch && extract && x.Links) {
+		const WrapperMime = Registry.lookup(mode)
+			? mode
+			: 'internal-batch-wrapper';
+
+		if (mode === 'parse' && extract && x.Links) {
 			logger.debug(
 				'Unboxing array collection. (Collection wrapper has Links and will not be accessible)'
 			);
 		}
 
-		return asBatch
+		return mode !== 'parse'
 			? !x.Items
-				? { MimeType: BatchMime, Items: [x] }
-				: ((x.MimeType = x.MimeType || BatchMime), x)
+				? { MimeType: WrapperMime, Items: [x] }
+				: ((x.MimeType = x.MimeType || WrapperMime), x)
 			: extract
 			? x.Items
 			: x;

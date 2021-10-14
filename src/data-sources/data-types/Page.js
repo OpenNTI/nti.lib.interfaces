@@ -1,6 +1,10 @@
+import Registry from '../../models/Registry.js';
+
 import Batch from './Batch.js';
 
 export default class Page extends Batch {
+	static MimeType = 'internal-batch-page-wrapper';
+
 	get TotalPageCount() {
 		return this.pageCount;
 	}
@@ -19,3 +23,5 @@ export default class Page extends Batch {
 
 	loadNextPage = this.next;
 }
+
+Registry.register(Page);
