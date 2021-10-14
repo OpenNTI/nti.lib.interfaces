@@ -87,7 +87,9 @@ export default class CommunityChannel extends BaseObservable {
 		return this.#backer;
 	}
 
-	isCommunityChannel = true;
+	get isCommunityChannel() {
+		return true;
+	}
 
 	getID() {
 		return this.#id;

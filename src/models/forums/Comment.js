@@ -24,7 +24,9 @@ export default class Comment extends Threadable(Post) {
 		'Class':             { type: 'string'   }
 	}
 
-	isComment = true;
+	get isComment() {
+		return true;
+	}
 
 	get isBlogComment() {
 		return this.MimeType === COMMON_PREFIX + 'forums.personalblogcomment';

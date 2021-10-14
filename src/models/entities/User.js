@@ -59,7 +59,9 @@ export default class User extends Entity {
 		'addresses':          { type: 'model{}'  },
 	}
 
-	isUser = true;
+	get isUser() {
+		return true;
+	}
 
 	constructor(service, data) {
 		cleanData(data);

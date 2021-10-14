@@ -1,9 +1,13 @@
 import AbstractCommunity from '../AbstractCommunity.js';
 import { Channels } from '../community/index.js';
+import { AutoSubscribable, Avatar, HasMembers } from '../community/traits.js';
 
 const ContentsCache = new Map();
 
-export default class CourseCommunity extends AbstractCommunity {
+export default class CourseCommunity extends AutoSubscribable(
+	false,
+	HasMembers(false, Avatar(false, AbstractCommunity))
+) {
 	static hasCommunity(course) {
 		return course.Discussions || course.ParentDiscussions;
 	}
@@ -30,11 +34,6 @@ export default class CourseCommunity extends AbstractCommunity {
 			? course.ParentDiscussions
 			: null;
 	}
-
-	isCommunity = true;
-	noAvatar = true;
-	hasMembers = false;
-	autoSubscribable = false;
 
 	getID() {
 		return this.#course.getID();

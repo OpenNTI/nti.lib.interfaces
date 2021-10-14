@@ -7,6 +7,10 @@ const ResolveChannelList = Symbol('Resolve Channel List Method');
 export default class AbstractCommunity extends EventEmitter {
 	static ResolveChannelList = ResolveChannelList;
 
+	get isCommunity() {
+		return true;
+	}
+
 	#channelListPromise = null;
 	#channelList = [];
 

@@ -1,9 +1,13 @@
 import { Channels } from '../community/index.js';
 import AbstractCommunity from '../AbstractCommunity.js';
+import { AutoSubscribable, Avatar, HasMembers } from '../community/traits.js';
 
 export const ResolveChannelList = Symbol('ResolveChannelList');
 
-export default class BundleCommunity extends AbstractCommunity {
+export default class BundleCommunity extends AutoSubscribable(
+	false,
+	HasMembers(false, Avatar(false, AbstractCommunity))
+) {
 	static hasCommunity(bundle) {
 		return bundle && bundle.Discussions;
 	}
@@ -25,11 +29,6 @@ export default class BundleCommunity extends AbstractCommunity {
 		this.#bundle = bundle;
 		this.#board = bundle.Discussions;
 	}
-
-	isCommunity = true;
-	noAvatar = true;
-	hasMembers = false;
-	autoSubscribable = false;
 
 	getID() {
 		return this.#bundle.getID();

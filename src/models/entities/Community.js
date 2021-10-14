@@ -30,7 +30,9 @@ export default class Community extends Entity {
 		'auto_subscribe': {type: 'object'}
 	}
 
-	isCommunity = true;
+	get isCommunity() {
+		return true;
+	}
 
 	#channelListPromise = null;
 
