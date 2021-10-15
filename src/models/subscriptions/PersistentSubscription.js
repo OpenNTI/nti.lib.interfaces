@@ -10,6 +10,7 @@ export class PersistentSubscription extends Base {
 		'Id':      { type: 'string' },
 		'OwnerId': { type: 'string' },
 		'Status':  { type: 'string' },
+		'Target':  { type: 'string' },
 	}
 
 	isPersistentSubscription = true;
