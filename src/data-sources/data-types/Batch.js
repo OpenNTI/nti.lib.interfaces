@@ -58,7 +58,7 @@ export default class Batch extends Base {
 	}
 
 	get count() {
-		return this.Items?.length;
+		return this.Items?.length ?? 0;
 	}
 
 	/** @type {number} */
@@ -72,9 +72,10 @@ export default class Batch extends Base {
 
 	get pageSize() {
 		for (let rel of ['self', 'next', 'prev']) {
-			rel = this.getLink(rel)?.split('?');
-			rel = rel?.[1] ?? rel?.[0];
-			const batchSize = new URLSearchParams(rel).get('batchSize');
+			const [base = '', params] = this.getLink(rel)?.split?.('?') || [];
+			const batchSize = new URLSearchParams(params ?? base).get(
+				'batchSize'
+			);
 			if (batchSize != null) {
 				return parseInt(batchSize, 10);
 			}

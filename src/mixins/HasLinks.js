@@ -37,7 +37,7 @@ export const mixin = Base =>
 		 * @returns {string?}
 		 */
 		getLink(rel, params) {
-			const [name, ...segments] = rel.split('/');
+			const [name, ...segments] = rel?.split('/') || [];
 			let link =
 				getLinkImpl(this, name) || (name === 'self' && this.href);
 
