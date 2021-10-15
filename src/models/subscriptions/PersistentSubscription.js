@@ -2,7 +2,7 @@ import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Base from '../Base.js';
 
 export class PersistentSubscription extends Base {
-	static MimeType = COMMON_PREFIX + 'zapier.persistentsubscription';
+	static MimeType = COMMON_PREFIX + 'webhooks.webhooksubscription';
 
 	// prettier-ignore
 	static Fields = {
@@ -20,4 +20,3 @@ export class PersistentSubscription extends Base {
 }
 
 Registry.register(PersistentSubscription);
-Registry.alias(PersistentSubscription.MimeType, 'PersistentSubscription');
