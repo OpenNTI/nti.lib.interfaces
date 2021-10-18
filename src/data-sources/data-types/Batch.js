@@ -152,6 +152,18 @@ export default class Batch extends Base {
 
 		return this;
 	}
+
+	/**
+	 * @param {number} x
+	 * @returns {{batchSize: number, batchStart: number}}
+	 */
+	getParamsForPage(x) {
+		const { pageSize: batchSize } = this;
+		return {
+			batchSize,
+			batchStart: Math.max(0, x - 1) * batchSize,
+		};
+	}
 }
 
 Registry.register(Batch);
