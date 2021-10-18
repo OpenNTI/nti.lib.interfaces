@@ -7,7 +7,8 @@ export default class UserSegment extends Base {
 	// prettier-ignore
 	static Fields = {
 		...super.Fields,
-		'title': {type: 'string'}
+		'title': {type: 'string'},
+		'filter_set': {type: '*', name: 'filterSet'}
 	}
 
 	isSegment = true;
