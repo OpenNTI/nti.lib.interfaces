@@ -57,6 +57,7 @@ export default class Batch extends Base {
 		return this.Items[Symbol.iterator]();
 	}
 
+	/** @type {number} */
 	get count() {
 		return this.Items?.length ?? 0;
 	}
