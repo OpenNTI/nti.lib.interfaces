@@ -67,10 +67,12 @@ export default class Batch extends Base {
 		return this.BatchPage;
 	}
 
+	/** @type {number} */
 	get pageCount() {
 		return Math.ceil(this.totalInContext / this.pageSize);
 	}
 
+	/** @type {number} */
 	get pageSize() {
 		for (let rel of ['self', 'next', 'prev']) {
 			const [base = '', params] = this.getLink(rel)?.split?.('?') || [];
@@ -99,6 +101,7 @@ export default class Batch extends Base {
 		return this.FilteredTotalItemCount ?? 0;
 	}
 
+	/** @type {boolean} */
 	get empty() {
 		return (
 			this.Items.length === 0 &&
@@ -106,6 +109,7 @@ export default class Batch extends Base {
 		);
 	}
 
+	/** @type {boolean} */
 	get hasMore() {
 		return this.hasLink(next) && this.Items?.length < this.total;
 	}
