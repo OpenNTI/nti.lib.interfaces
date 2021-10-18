@@ -9,8 +9,8 @@ import { createUploadTask } from '../tasks/index.js';
 
 const logger = Logger.get('mixins:HasLinks');
 
-/** @typedef {import('./HasLinks').ParseMode} ParseMode  */
-/** @typedef {import('./HasLinks').HttpMethod} HttpMethod  */
+/** @typedef {import('./HasLinksTypes').ParseMode} ParseMode  */
+/** @typedef {import('./HasLinksTypes').HttpMethod} HttpMethod  */
 /**
  * @template {ParseMode} T
  * @typedef {object} FetchInit
@@ -114,7 +114,7 @@ export const mixin = Base =>
 		 *
 		 * @template {ParseMode} T
 		 * @param {string|FetchInit<T>} relOrInit
-		 * @returns {Promise<import('./HasLinks').ParseType<T>>}
+		 * @returns {Promise<import('./HasLinksTypes').ParseType<T>>}
 		 */
 		async fetchLink(relOrInit) {
 			const {
