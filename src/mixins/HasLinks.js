@@ -177,25 +177,25 @@ export const mixin = Base =>
  */
 function parseResult(scope, requestPromise, mode) {
 	function selectItems(x) {
+		if (mode !== 'parse') {
+			const WrapperMime = Registry.lookup(mode)
+				? mode
+				: 'internal-batch-wrapper';
+			return {
+				...(!x?.Items ? { Items: [x] } : x),
+				// do not use the MimeType in `x` at this point, because we've set it by the `mode`.
+				MimeType: WrapperMime,
+			};
+		}
+
 		const extract = x && x.Items && !x.MimeType;
-
-		const WrapperMime = Registry.lookup(mode)
-			? mode
-			: 'internal-batch-wrapper';
-
 		if (mode === 'parse' && extract && x.Links) {
 			logger.debug(
 				'Unboxing array collection. (Collection wrapper has Links and will not be accessible)'
 			);
 		}
 
-		return mode !== 'parse'
-			? !x.Items
-				? { MimeType: WrapperMime, Items: [x] }
-				: ((x.MimeType = x.MimeType || WrapperMime), x)
-			: extract
-			? x.Items
-			: x;
+		return extract ? x.Items : x;
 	}
 
 	return requestPromise
