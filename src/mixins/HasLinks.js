@@ -123,6 +123,7 @@ export const mixin = Base =>
 				method = 'get',
 				mode = 'parse',
 				rel,
+				throwMissing = true,
 			} = typeof relOrInit === 'string'
 				? {
 						rel: relOrInit,
@@ -131,6 +132,9 @@ export const mixin = Base =>
 
 			const link = this.getLink(rel, params);
 			if (!link) {
+				if (!throwMissing) {
+					return null;
+				}
 				throw new Error(NO_LINK);
 			}
 
