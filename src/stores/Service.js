@@ -273,6 +273,17 @@ export default class ServiceDocument extends Pendability(
 		return this[Lists];
 	}
 
+	/**
+	 * Don't use this. Convert any usage to `modelInstance.fetchLink({rel: '', mode: 'batch'})`
+	 *
+	 * @param {string} _url
+	 * @param {object} params
+	 * @param {object} options
+	 * @param {any} parent
+	 * @returns {Promise<Batch>}
+	 * @protected
+	 * @deprecated
+	 */
 	async getBatch(_url, params = {}, options, parent = this) {
 		let { transform, method = 'get', data = null } = options || {};
 		if (typeof options === 'function') {
@@ -294,6 +305,14 @@ export default class ServiceDocument extends Pendability(
 		return batch.waitForPending();
 	}
 
+	/**
+	 * Performs HTTP requests and attempts to collate them.
+	 * Do not use directly outside of @nti/lib-interfaces. Public request api is on the model with 'fetchLink'
+	 *
+	 * @param {string} url
+	 * @returns {Promise<any>}
+	 * @protected
+	 */
 	get(url) {
 		let key = typeof url === 'string' ? url : JSON.stringify(url);
 		const inflight = (this.inflightRequests = this.inflightRequests || {});
@@ -319,18 +338,53 @@ export default class ServiceDocument extends Pendability(
 		return p;
 	}
 
+	/**
+	 * Performs HTTP HEAD requests
+	 * Do not use directly outside of @nti/lib-interfaces. Public request api is on the model with 'fetchLink'
+	 *
+	 * @param {string} url
+	 * @returns {Promise<any>}
+	 * @protected
+	 */
 	head(url) {
 		return this.get({ method: 'HEAD', url: url });
 	}
 
+	/**
+	 * Performs HTTP POST requests
+	 * Do not use directly outside of @nti/lib-interfaces. Public request api is on the model with 'fetchLink'
+	 *
+	 * @param {string} url
+	 * @param {any} data
+	 * @returns {Promise<any>}
+	 * @protected
+	 */
 	post(url, data) {
 		return this.getServer().post(url, data, this[Context]);
 	}
 
+	/**
+	 * Performs HTTP PUT requests
+	 * Do not use directly outside of @nti/lib-interfaces. Public request api is on the model with 'fetchLink'
+	 *
+	 * @param {string} url
+	 * @param {any} data
+	 * @returns {Promise<any>}
+	 * @protected
+	 */
 	put(url, data) {
 		return this.getServer().put(url, data, this[Context]);
 	}
 
+	/**
+	 * Performs HTTP DELETE requests
+	 * Do not use directly outside of @nti/lib-interfaces. Public request api is on the model with 'fetchLink'
+	 *
+	 * @param {string} url
+	 * @param {any} data
+	 * @returns {Promise<any>}
+	 * @protected
+	 */
 	delete(url, data) {
 		return this.getServer().delete(url, data, this[Context]);
 	}
@@ -346,9 +400,31 @@ export default class ServiceDocument extends Pendability(
 		}
 	}
 
+	/**
+	 * Performs HTTP POST requests
+	 * Do not use directly outside of @nti/lib-interfaces. Public request api is on the model with 'fetchLink'
+	 *
+	 * @param {string} url
+	 * @param {any} data
+	 * @param {Model} parent
+	 * @returns {Promise<any>}
+	 * @protected
+	 * @deprecated
+	 */
 	postParseResponse = async (url, data, parent = this) =>
 		this.requestParseResponse('post', url, data, parent);
 
+	/**
+	 * Performs HTTP PUT requests
+	 * Do not use directly outside of @nti/lib-interfaces. Public request api is on the model with 'fetchLink'
+	 *
+	 * @param {string} url
+	 * @param {any} data
+	 * @param {Model} parent
+	 * @returns {Promise<any>}
+	 * @protected
+	 * @deprecated
+	 */
 	putParseResponse = async (url, data, parent = this) =>
 		this.requestParseResponse('put', url, data, parent);
 
