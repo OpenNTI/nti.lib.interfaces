@@ -1,6 +1,4 @@
-import { isEmpty, Markup } from '@nti/lib-commons';
-
-import { getPropertyDescriptor } from '../utils/get-property-descriptor.js';
+import { getPropertyDescriptor, isEmpty, Markup } from '@nti/lib-commons';
 
 function cleanupContentString(content) {
 	try {

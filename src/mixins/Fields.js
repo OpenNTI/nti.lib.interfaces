@@ -1,8 +1,12 @@
 import Logger from '@nti/util-logger';
-import { equals, Parsing, Array as ArrayUtils } from '@nti/lib-commons';
+import {
+	equals,
+	getPropertyDescriptor,
+	Parsing,
+	Array as ArrayUtils,
+} from '@nti/lib-commons';
 import { ntiidEquals } from '@nti/lib-ntiids';
 
-import { getPropertyDescriptor } from '../utils/get-property-descriptor.js';
 import {
 	Parser,
 	RepresentsSameObject,
