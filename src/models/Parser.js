@@ -33,10 +33,11 @@ export function parse(service, parent, obj) {
 	}
 
 	if (Object.getPrototypeOf(obj) !== Object.getPrototypeOf({})) {
-		let message =
-			'Attempting to parse something other than an object-literal';
-		logger.error('%s %o', message, obj);
-		throw new Error(message);
+		const e = new TypeError(
+			`Attempting to parse something other than an object-literal (${typeof obj})`
+		);
+		logger.error('%s\n --> %o', e.stack, obj);
+		throw e;
 	}
 
 	let Cls = getModelByType(getType(obj));
