@@ -8,7 +8,7 @@ export default class GoogleAPIKey extends Base {
 	static Fields = {
 		...super.Fields,
 		appid: { type: 'string', name: 'AppId' },
-		key:   { type: 'string', name: 'DevKey' }
+		key:   { type: 'string'                }
 	}
 
 	getAuthLink(origin) {
