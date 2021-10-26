@@ -1,7 +1,14 @@
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
 import Base from '../../Base.js';
 
-export default class GoogleAPIKey extends Base {
+export class GoogleAPIKey extends Base {
+	static async fetch(service) {
+		const APIKey = await service
+			.getUserWorkspace()
+			?.fetchLink?.('GoogleAPIKey');
+		return APIKey;
+	}
+
 	static MimeType = [COMMON_PREFIX + 'google.googleapikey'];
 
 	// prettier-ignore

@@ -2,7 +2,7 @@ import path from 'path';
 
 import { parse, toSeconds } from 'iso8601-duration';
 
-import { getAPIKey } from '../../utils/GoogleAPI.js';
+import { GoogleAPIKey } from '../integrations/index.js';
 
 const API = 'https://www.googleapis.com/youtube/v3/videos?';
 const FAIL_POSTER = 'http://img.youtube.com/vi/{0}/hqdefault.jpg';
@@ -32,7 +32,7 @@ async function buildURL(service, source) {
 
 	try {
 		// See here for details: https://developers.google.com/youtube/v3/docs/videos
-		const key = await getAPIKey(service);
+		const { key } = await GoogleAPIKey.fetch(service);
 		const api = new URL(API.replace('{0}', id));
 		api.searchParams.append('key', key);
 		return api.toString();
