@@ -143,7 +143,7 @@ export const mixin = Base =>
 						getLinkImpl(this, rel, true).result ||
 							Promise.reject('Bad Mock Data')
 				  )
-				: this[Service][method](link, data);
+				: this[Service][method?.toLowerCase()](link, data);
 
 			if (mode && mode !== 'raw') {
 				result = parseResult(this, result, mode);

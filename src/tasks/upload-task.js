@@ -35,7 +35,7 @@ export default function createUploadTask(
 		let uploadFinished = false;
 		let totalProgress = 0;
 
-		xhr.open(method, url, true);
+		xhr.open(method?.toUpperCase(), url, true);
 
 		xhr.setRequestHeader('accept', 'application/json');
 		xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
