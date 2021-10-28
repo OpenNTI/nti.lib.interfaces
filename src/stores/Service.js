@@ -249,23 +249,26 @@ export default class ServiceDocument extends Pendability(
 	}
 
 	getLists() {
-		const contacts = this[Contacts];
-		if (!this[Lists] && contacts) {
-			this[Lists] = Object.create(contacts, {
-				[Symbol.iterator]: {
-					value: function () {
-						const snapshot = this.getLists();
-						const { length } = snapshot;
-						let index = 0;
-						return {
-							next() {
-								const done = index >= length;
-								const value = snapshot[index++];
+		const contacts = this.getContacts();
+		if (!this[Lists]) {
+			this[Lists] = new Proxy(contacts, {
+				get(target, prop, receiver) {
+					if (prop === Symbol.iterator) {
+						return function () {
+							const snapshot = contacts.getLists();
+							const { length } = snapshot;
+							let index = 0;
+							return {
+								next() {
+									const done = index >= length;
+									const value = snapshot[index++];
 
-								return { value, done };
-							},
+									return { value, done };
+								},
+							};
 						};
-					},
+					}
+					return Reflect.get(target, prop, receiver);
 				},
 			});
 		}

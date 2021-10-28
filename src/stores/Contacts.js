@@ -122,7 +122,7 @@ export default class Contacts extends Pendability(EventEmitter) {
 				);
 				this.error = true;
 			})
-			.then(() => {
+			.finally(() => {
 				this.loading = false;
 				this.loaded = Date.now();
 				this.emit('load', this, `${this.loaded - start}ms`);
