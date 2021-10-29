@@ -155,7 +155,12 @@ export const mixin = Base =>
 		uploadToLink(rel, method, data, params, parseResponse) {
 			const link = this.getLink(rel, params);
 			const parser = parseResponse
-				? r => parseResult(this, Promise.resolve(JSON.parse(r)))
+				? r =>
+						parseResult(
+							this,
+							Promise.resolve(JSON.parse(r)),
+							'parse'
+						)
 				: null;
 
 			return createUploadTask(link, data, method, parser);
