@@ -884,6 +884,12 @@ export default class ServiceDocument extends Pendability(
 		return url.appendQueryParams(_url, { success: successURL });
 	}
 
+	/**
+	 * @protected
+	 * @param {string} ntiid
+	 * @param {string} postfix
+	 * @returns {string}
+	 */
 	getContainerURL(ntiid, postfix) {
 		let base = this.getResolveAppUserURL();
 		let pageURI = encodeURIComponent(`Pages(${ntiid})`);
@@ -891,25 +897,61 @@ export default class ServiceDocument extends Pendability(
 		return url.join(base, pageURI, postfix || '');
 	}
 
+	/**
+	 * @deprecated
+	 * @param {string} name
+	 * @returns {string}
+	 */
 	getContentPackagesURL(name) {
 		return (this.getCollection(name || 'Main', 'Library') || {}).href;
 	}
 
+	/**
+	 * @deprecated
+	 * @returns {string}
+	 */
 	getContentBundlesURL() {
 		return (
 			this.getCollection('VisibleContentBundles', 'ContentBundles') || {}
 		).href;
 	}
 
+	/**
+	 * @param {Record<string,string>} params
+	 * @returns {Promise<Batch>}
+	 */
+	async getContentBundles(params) {
+		return this.getCollection(
+			'VisibleContentBundles',
+			'ContentBundles'
+		)?.fetchLink({
+			rel: 'self',
+			mode: 'batch',
+			params,
+		});
+	}
+
+	/**
+	 * @deprecated
+	 * @returns {string}
+	 */
 	getCoursesEnrolledURL() {
 		return (this.getCollection('EnrolledCourses', 'Courses') || {}).href;
 	}
 
+	/**
+	 * @deprecated
+	 * @returns {string}
+	 */
 	getCoursesAdministeringURL() {
 		return (this.getCollection('AdministeredCourses', 'Courses') || {})
 			.href;
 	}
 
+	/**
+	 * @deprecated
+	 * @returns {string}
+	 */
 	getCoursesCatalogURL() {
 		return (this.getCollection('AllCourses', 'Courses') || {}).href;
 	}

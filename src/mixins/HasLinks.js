@@ -184,33 +184,37 @@ export const mixin = Base =>
  * @param {'parse'|'batch'|string} mode - the string 'parse', 'batch' (or a mimetype in the registry to use as the wrapper.)
  * @returns {Base|Base[]} An instance of a parsed model or an array or models
  */
-function parseResult(scope, requestPromise, mode) {
-	function selectItems(x) {
-		if (mode !== 'parse') {
-			const WrapperMime = Registry.lookup(mode)
-				? mode
-				: 'internal-batch-wrapper';
-			return {
-				...(!x?.Items ? { Items: [x] } : x),
-				// do not use the MimeType in `x` at this point, because we've set it by the `mode`.
-				MimeType: WrapperMime,
-			};
-		}
+async function parseResult(scope, requestPromise, mode) {
+	let data = await requestPromise;
 
-		const extract = x && x.Items && !x.MimeType;
-		if (mode === 'parse' && extract && x.Links) {
-			logger.debug(
-				'Unboxing array collection. (Collection wrapper has Links and will not be accessible)'
-			);
-		}
+	const isLibraryBatch = x =>
+		!x.MimeType && x?.title === 'Library' && Array.isArray(x?.titles);
 
-		return extract ? x.Items : x;
+	const ItemsKey = isLibraryBatch(data) ? 'titles' : 'Items';
+
+	if (mode !== 'parse') {
+		const WrapperMime = Registry.lookup(mode)
+			? mode
+			: isLibraryBatch(data)
+			? 'internal-batch-wrapper-library'
+			: 'internal-batch-wrapper';
+
+		data = {
+			...(!data?.[ItemsKey] ? { [ItemsKey]: [data] } : data),
+			// do not use the MimeType in `x` at this point, because we've set it by the `mode`.
+			MimeType: WrapperMime,
+		};
 	}
 
-	return requestPromise
-		.then(selectItems)
-		.then(x => scope[Parser](x))
-		.then(o =>
-			Array.isArray(o) ? Promise.all(o.map(maybeWait)) : maybeWait(o)
+	const extract = data?.[ItemsKey] && !data.MimeType;
+	if (mode === 'parse' && extract && data.Links) {
+		logger.debug(
+			'Unboxing array collection. (Collection wrapper has Links and will not be accessible)'
 		);
+	}
+
+	data = extract ? data?.[ItemsKey] : data;
+	data = scope[Parser](data);
+	await maybeWait(data);
+	return data;
 }
