@@ -6,7 +6,7 @@ import { url, wait } from '@nti/lib-commons';
 
 import { BaseObservable } from '../models/BaseObservable.js';
 import { parse } from '../models/Parser.js';
-import { Workspace } from '../models/index.js';
+import { Workspace, WorkspaceCollection } from '../models/index.js';
 import Capabilities from '../models/Capabilities.js';
 import CommunitiesWorkspace from '../models/community/Workspace.js';
 import AbstractPlaceholder from '../models/AbstractPlaceholder.js';
@@ -39,6 +39,7 @@ import UserPreferences from './UserPreferences.js';
 
 /** @typedef {import('../interface/DataServerInterface.js').default} DataServerInterface */
 /** @typedef {import('../models/Base.js').default} Model */
+/** @typedef {import('../utils/get-link.js').Link} Link */
 /** @typedef {import('../models/entities/User.js').default} User */
 
 const ENROLLMENT = Symbol('enrollment');
@@ -134,11 +135,7 @@ export default class ServiceDocument extends Pendability(
 				return new Cls(this, this, o);
 			}));
 
-			this.addToPending(
-				parsed
-					.filter(o => o && o.waitForPending)
-					.map(o => o.waitForPending())
-			);
+			this.addToPending(parsed.map(o => o?.waitForPending?.()));
 		}
 
 		this.capabilities = new Capabilities(this, caps);
@@ -815,12 +812,18 @@ export default class ServiceDocument extends Pendability(
 		return (this.Items || []).find(x => x.Title === name);
 	}
 
+	/**
+	 *
+	 * @param {string} title
+	 * @param {string=} workspaceName
+	 * @returns {WorkspaceCollection}
+	 */
 	getCollection(title, workspaceName) {
 		const workspace = workspaceName
 			? this.getWorkspace(workspaceName)
 			: this.getUserWorkspace();
 
-		const items = (workspace && workspace.Items) || [];
+		const items = workspace?.Items || [];
 
 		return items.find(o => o.Title === title);
 	}
@@ -828,13 +831,18 @@ export default class ServiceDocument extends Pendability(
 	/**
 	 *
 	 * @param {string} mimeType The mimetype of what we're looking for
-	 * @param {string} [title] Optionally, restrict by title
-	 * @param {Array} [tryScopes] Optionally, pick a destination from contextual scopes. Treat as a stack!
-	 * @returns {Object} the collection
+	 * @param {string=} title Optionally, restrict by title
+	 * @param {Model[]=} tryScopes Optionally, pick a destination from contextual scopes. Treat as a stack!
+	 * @returns {WorkspaceCollection|Link} the collection
 	 */
 	getCollectionFor(mimeType, title, tryScopes) {
+		/** @type {Workspace[]} */
 		let items = this.Items || [];
-		let Pages = x => x && x.rel === 'Pages';
+		/**
+		 * @param {Link} x
+		 * @returns {boolean}
+		 */
+		let Pages = x => x?.rel === 'Pages';
 
 		if (mimeType && typeof mimeType !== 'string') {
 			mimeType = mimeType.MimeType;
@@ -845,7 +853,7 @@ export default class ServiceDocument extends Pendability(
 		tryScopes = (tryScopes || []).slice().reverse();
 
 		for (let scope of tryScopes) {
-			let link = ((scope || {}).Links || []).find(Pages);
+			let link = (scope?.Links || []).find(Pages);
 			if (link /*&& link.accepts(mimeType)*/) {
 				return link;
 			}

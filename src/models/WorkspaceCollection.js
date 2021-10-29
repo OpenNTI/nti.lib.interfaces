@@ -10,10 +10,9 @@ export default class WorkspaceCollection extends Base {
 
 	// prettier-ignore
 	static Fields = {
+		...super.Fields,
 		'accepts': { type: 'string[]' },
-		'href':    { type: 'string'   },
 		'Items':   { type: 'model[]'  },
-		'Links':   { type: '*'        },
 		'Title':   { type: 'string'   },
 	}
 
@@ -30,6 +29,17 @@ export default class WorkspaceCollection extends Base {
 			return new Cls(service, parent, data);
 		});
 	};
+
+	constructor(...args) {
+		super(...args);
+
+		/** @type {string[]} */
+		this.accepts;
+		/** @type {Base[]} */
+		this.Items;
+		/** @type {string} */
+		this.Title;
+	}
 
 	acceptsType(mime) {
 		return this.accepts.includes(mime);

@@ -11,7 +11,9 @@ import Registry, { COMMON_PREFIX } from './Registry.js';
 import { BaseObservable } from './BaseObservable.js';
 
 /** @typedef {import('../stores/WebSocketClient').WebSocketClient} WebSocketClient */
+/** @typedef {import('../utils/get-link.js').Link} Link */
 /** @typedef {import('./Change').Change} Change */
+/** @typedef {() => Date} DateGetter */
 
 const logger = Logger.get('models:Base');
 
@@ -47,6 +49,23 @@ export default class Model extends Pendability(
 	 */
 	constructor(service, parent, data) {
 		super(service, parent, data);
+
+		/** @type {string?} */
+		this.Class;
+		/** @type {string} */
+		this.MimeType;
+		/** @type {string} */
+		this.OID;
+		/** @type {string} */
+		this.creator;
+		/** @type {string} */
+		this.href;
+		/** @type {Link[]} */
+		this.Links;
+		/** @type {DateGetter} */
+		this.getCreatedTime;
+		/** @type {DateGetter} */
+		this.getLastModifiedTime;
 
 		// Allow null, and objects that declare they are a service.
 		// Undefined and other falsy values are invalid.

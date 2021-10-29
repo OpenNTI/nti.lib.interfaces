@@ -6,6 +6,7 @@ export default class BaseReport extends Base {
 
 	// prettier-ignore
 	static Fields = {
+		...super.Fields,
 		'description':     {type: 'string'},
 		'title':           {type: 'string'},
 		'supported_types': {type: 'string[]', name: 'supportedTypes'},

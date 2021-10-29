@@ -3,12 +3,14 @@ import { url } from '@nti/lib-commons';
 import Base from '../Base.js';
 
 export default class Preference extends Base {
+	// prettier-ignore
 	static Fields = {
+		Class:    { type: 'string' },
 		MimeType: { type: 'string' },
 	};
 
 	get href() {
 		const p = this.parent();
-		return url.join(p.href, p.findField(this));
+		return p && url.join(p.href, p.findField(this));
 	}
 }

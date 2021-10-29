@@ -7,10 +7,18 @@ export default class Workspace extends Base {
 
 	// prettier-ignore
 	static Fields = {
-		//...super.Fields,
+		...super.Fields,
 		'Items': { type: Collection.List },
-		'Links': { type: '*'             },
 		'Title': { type: 'string'        },
+	}
+
+	constructor(...args) {
+		super(...args);
+
+		/** @type {Collection[]} */
+		this.Items;
+		/** @type {string} */
+		this.Title;
 	}
 
 	getCollection(title) {

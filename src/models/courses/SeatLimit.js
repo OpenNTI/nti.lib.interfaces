@@ -4,8 +4,10 @@ import Base from '../Base.js';
 export default class CourseSeatLimit extends Base {
 	static MimeType = COMMON_PREFIX + 'courses.seatlimit';
 
+	// prettier-ignore
 	static Fields = {
-		max_seats: { type: 'number', name: 'MaxSeats' },
+		...super.Fields,
+		max_seats:  { type: 'number', name: 'MaxSeats'  },
 		used_seats: { type: 'number', name: 'UsedSeats' },
 	};
 }
