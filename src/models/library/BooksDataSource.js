@@ -1,4 +1,5 @@
 import BaseDataSource from '../../data-sources/BaseDataSource.js';
+import { NotAvailableError } from '../../utils/errors.js';
 
 const defaultOptions = {};
 
@@ -23,6 +24,9 @@ export class BooksDataSource extends BaseDataSource {
 	sortOptions = sortOptions;
 
 	async request({ sortOn, sortOrder, batchSize, filter }) {
+		if (!this.collection) {
+			throw new NotAvailableError('Not Available');
+		}
 		return this.collection.fetchLink({
 			mode: 'raw',
 			rel: 'self',

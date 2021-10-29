@@ -103,7 +103,8 @@ async function loadCollection(scope, _url, key, filter) {
 	const { service } = scope;
 	let list = (scope[key] = []);
 
-	_url = url.appendQueryParams(_url, { batchSize: 10, batchStart: 0 });
+	_url =
+		_url && url.appendQueryParams(_url, { batchSize: 10, batchStart: 0 });
 
 	do {
 		const data = await loadPage(service, _url, filter);
