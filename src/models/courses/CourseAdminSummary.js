@@ -9,7 +9,7 @@ export default class CourseAdminSummary extends Base {
 		...super.Fields,
 		username: {type: 'string'},
 		user: {type: 'model'}
-	}
+	};
 }
 
 Registry.register(CourseAdminSummary);

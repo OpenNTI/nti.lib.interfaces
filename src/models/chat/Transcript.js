@@ -11,7 +11,7 @@ export default class Transcript extends Base {
 		'Messages':     { type: 'model[]',  name: 'messages'     },
 		'RoomInfo':     { type: 'model'                          },
 		'Contributors': { type: 'string[]', name: 'contributors' },
-	}
+	};
 
 	constructor(service, parent, data) {
 		super(service, parent, data);

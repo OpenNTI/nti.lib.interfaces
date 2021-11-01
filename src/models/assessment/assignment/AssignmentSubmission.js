@@ -22,7 +22,7 @@ export default class AssignmentSubmission extends Submission(Base) {
 		'CreatorRecordedEffortDuration': { type: 'number'                    },
 		'version':                       { type: 'string'                    },
 		'isPracticeSubmission':          { type: 'boolean'                   }
-	}
+	};
 
 	constructor(service, parent, data, submitTo) {
 		super(service, parent, data);

@@ -13,7 +13,7 @@ export default class WebinarAsset extends Completable(Base) {
 		'webinar':      { type: 'model'  },
 		'organizerKey': { type: 'string' },
 		'icon':         { type: 'string' }
-	}
+	};
 }
 
 Registry.register(WebinarAsset);

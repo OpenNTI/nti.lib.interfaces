@@ -14,7 +14,7 @@ export default class CatalogInstructorLegacyInfo extends Base {
 		'Title':        { type: 'string' },
 		'defaultphoto': { type: 'string' },
 		'username':     { type: 'string' },
-	}
+	};
 }
 
 Registry.register(CatalogInstructorLegacyInfo);

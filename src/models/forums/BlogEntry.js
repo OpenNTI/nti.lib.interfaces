@@ -12,7 +12,7 @@ export default class BlogEntry extends Topic {
 		...super.Fields,
 		'sharedWith': { type: 'string[]' },
 		'tags':       { type: 'string[]' },
-	}
+	};
 
 	constructor(service, parent, data) {
 		super(service, parent, data);

@@ -10,7 +10,7 @@ export default class EnrollmentOptionContainer extends Base {
 		'AvailableEnrollmentOptions': { type: 'model[]' },
 		'Items':                      { type: 'model[]' },
 		'ItemCount':                  { type: 'number'  }
-	}
+	};
 }
 
 Registry.register(EnrollmentOptionContainer);

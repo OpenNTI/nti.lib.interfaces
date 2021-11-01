@@ -22,7 +22,7 @@ export default class PurchaseAttempt extends Base {
 		'Synced':         { type: 'string', name: 'synced'         },
 		'TokenID':        { type: 'string', name: 'tokenId'        },
 		'TransactionID':  { type: 'string', name: 'transactionID'  },
-	}
+	};
 
 	getDeliveryDate() {} //implemented by the date Field type
 	getEndTime() {} //implemented by the date Field type

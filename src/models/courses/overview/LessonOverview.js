@@ -10,7 +10,7 @@ export default class LessonOverview extends ContentTree(Base) {
 		...super.Fields,
 		'Items': { type: 'model[]' },
 		'title': { type: 'string'  }
-	}
+	};
 
 	getRefsTo(item) {
 		return this.Items.reduce(

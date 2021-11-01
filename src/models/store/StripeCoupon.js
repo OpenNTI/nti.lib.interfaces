@@ -12,7 +12,7 @@ export default class StripeCoupon extends Base {
 		'Duration':       { type: 'string?', name: 'duration'      },
 		'PercentOff':     { type: 'number', name: 'percentOff'    },
 		'TimesRedeemed':  { type: 'number', name: 'timesRedeemed' },
-	}
+	};
 
 	getID() {
 		return this.ID;

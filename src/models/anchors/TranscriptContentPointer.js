@@ -10,7 +10,7 @@ export default class TranscriptContentPointer extends TimeContentPointer {
 		...super.Fields,
 		'cueid':   { type: 'string' },
 		'pointer': { type: 'model'  },
-	}
+	};
 
 	constructor(service, parent, data) {
 		super(service, parent, data);

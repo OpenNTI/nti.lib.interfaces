@@ -31,7 +31,7 @@ export default class Package extends Base {
 		'PlatformPresentationResources':        { type: 'object'                 },
 		'PresentationProperties':               { type: 'object'                 }
 		// 'background': { type: 'string',                },
-	}
+	};
 
 	getDefaultShareWithValue(preferences) {
 		return preferences ? preferences.value : [];

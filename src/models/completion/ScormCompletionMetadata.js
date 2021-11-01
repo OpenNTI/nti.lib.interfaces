@@ -11,7 +11,7 @@ export default class SCORMCompletionMetadata extends Base {
 		'ScormContentInfoTitle': { type: 'string'   },
 		'CompletionDate':        { type: 'date'     },
 		'Success':               { type: 'boolean'  }
-	}
+	};
 
 	getCompletionDate() {} //implemented by CompletionDate date field.
 }

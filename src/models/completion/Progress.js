@@ -20,7 +20,7 @@ export default class Progress extends Base {
 		'HasProgress':         { type: 'boolean', name: HasProgress  },
 		'MaxPossibleProgress': { type: 'number'                      },
 		'ResourceID':          { type: 'string',  name: ResourceID   },
-	}
+	};
 
 	getCompletedDate() {} //implemented by CompletedDate date field.
 

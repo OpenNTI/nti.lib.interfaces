@@ -14,7 +14,7 @@ export default class File extends Part {
 		'allowed_extensions': { type: 'string[]' },
 		'allowed_mime_types': { type: 'string[]' },
 		'max_file_size':      { type: 'number'   },
-	}
+	};
 
 	fileSetDescriptor = new FileType.FileSetDescriptor(
 		this.allowed_extensions || ['*'],

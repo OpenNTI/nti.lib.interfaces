@@ -6,7 +6,7 @@ export default class Part extends Base {
 		...super.Fields,
 		'Results': { type: 'object[]' },
 		'Total':   { type: 'number' },
-	}
+	};
 
 	isAggregated = true;
 

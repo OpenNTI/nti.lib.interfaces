@@ -10,7 +10,7 @@ export default class PollSubmission extends QuestionSubmission {
 	static Fields = {
 		...super.Fields,
 		'pollId': { type: 'string'  },
-	}
+	};
 
 	static build(poll) {
 		const s = super.build(poll);

@@ -19,7 +19,7 @@ export default class CredlyAcclaimBadge extends Base {
 		'template_id': {type: 'string', name: 'templateID'},
 		'updated_at': {type: 'date', name: 'updatedAt'},
 		'visibility': {type: 'string'}
-	}
+	};
 
 	getID() {
 		return this.templateID;

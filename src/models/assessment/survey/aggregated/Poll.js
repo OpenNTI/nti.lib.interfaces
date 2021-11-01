@@ -10,7 +10,7 @@ export default class AggregatedPoll extends Base {
 		'parts':            { type: 'model[]' },
 		'pollId':           { type: 'string'  },
 		'ContainerContext': { type: '*'       },
-	}
+	};
 
 	getID() {
 		return this.pollId;

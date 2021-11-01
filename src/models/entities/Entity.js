@@ -18,7 +18,7 @@ export default class Entity extends Base {
 		'NonI18NLastName':  { type: 'string' },
 		'realname':         { type: 'string' },
 		'Username':         { type: 'string' },
-	}
+	};
 
 	static trackInstances = true;
 

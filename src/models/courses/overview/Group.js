@@ -11,7 +11,7 @@ export default class OverviewGroup extends ContentTree(Base) {
 		'Items':       { type: 'model[]' },
 		'accentColor': { type: 'string' },
 		'title':       { type: 'string' }
-	}
+	};
 
 	getRefsTo(item) {
 		const itemID = item.NTIID || item;

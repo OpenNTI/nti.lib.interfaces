@@ -12,7 +12,7 @@ export default class DomContentRangeDescription extends ContentRangeDescription 
 		'ancestor': { type: 'model' },
 		'end':      { type: 'model' },
 		'start':    { type: 'model' },
-	}
+	};
 
 	isDomContentRangeDescription = true;
 	isEmpty = false;

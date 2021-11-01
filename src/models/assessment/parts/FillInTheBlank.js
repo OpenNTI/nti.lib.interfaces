@@ -20,7 +20,7 @@ export default class FillInTheBlank extends Part {
 	static Fields = {
 		...super.Fields,
 		'input':   { type: 'string', content: true },
-	}
+	};
 
 	constructor(service, parent, data) {
 		if (isShortAnswer(data.MimeType)) {

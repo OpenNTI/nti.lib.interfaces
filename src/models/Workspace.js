@@ -10,7 +10,7 @@ export default class Workspace extends Base {
 		...super.Fields,
 		'Items': { type: Collection.List },
 		'Title': { type: 'string'        },
-	}
+	};
 
 	constructor(...args) {
 		super(...args);

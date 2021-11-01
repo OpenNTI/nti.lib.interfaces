@@ -9,7 +9,7 @@ export default class BadgesCourse extends Preference {
 	static Fields = {
 		...super.Fields,
 		'Course': {type: 'model'},
-	}
+	};
 }
 
 Registry.register(BadgesCourse);

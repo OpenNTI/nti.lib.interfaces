@@ -72,7 +72,7 @@ export default class PresenceInfo extends Base {
 		'status':   { type: 'string' },
 		// populate a source for a presence info... if it comes from the socket, or from the user/preference-change
 		'source':   { type: 'string' },
-	}
+	};
 
 	get name() {
 		return this.getName();

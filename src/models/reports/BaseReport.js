@@ -13,7 +13,7 @@ export default class BaseReport extends Base {
 		'rel':             {type: 'string'},
 		'href':            {type: 'string'},
 		'contexts':        {type: 'object'}
-	}
+	};
 }
 
 Registry.register(BaseReport);

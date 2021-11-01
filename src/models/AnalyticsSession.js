@@ -13,7 +13,7 @@ export default class AnalyticsSession extends Base {
 		'UserAgent':            { type: 'string' },
 		'Username':             { type: 'string' },
 		'SessionID':            { type: 'number' }
-	}
+	};
 
 	getSessionStartTime() {} //implemented by SessionStartTime date field.
 	getSessionEndTime() {} //implemented by SessionEndTime date field.

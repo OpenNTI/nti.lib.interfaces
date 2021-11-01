@@ -19,7 +19,7 @@ export default class PreferenceRoot extends Base {
 		'PushNotifications': { type: 'model' },
 		'Sort':              { type: 'model' },
 		'WebApp':            { type: 'model' },
-	}
+	};
 
 	constructor(service, parent, data) {
 		super(service, parent, data);

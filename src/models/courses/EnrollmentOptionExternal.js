@@ -12,7 +12,7 @@ export default class EnrollmentOptionExternal extends EnrollmentOption {
 	static Fields = {
 		...super.Fields,
 		'enrollment_url':  { type: 'string', name: 'enrollmentURL' }
-	}
+	};
 }
 
 Registry.register(EnrollmentOptionExternal);

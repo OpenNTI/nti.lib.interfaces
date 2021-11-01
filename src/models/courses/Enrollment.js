@@ -28,7 +28,7 @@ export default class Enrollment extends CourseIdentity(
 		'UserProfile':            { type: 'model'   },
 		'Reports':                { type: 'model[]' },
 		'LastSeenTime':           { type: 'date'    }
-	}
+	};
 
 	/** @private */
 	CourseInstance = null;

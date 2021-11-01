@@ -16,7 +16,7 @@ export default class AssignmentHistoryItem extends Base {
 		'SyntheticSubmission': { type: 'boolean'               },
 		'pendingAssessment':   { type: 'model'                 },
 		'MetadataAttemptItem': { type: 'model' 				   },
-	}
+	};
 
 	getQuestions() {
 		let submission = this.pendingAssessment || this.Submission;

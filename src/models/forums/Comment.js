@@ -22,7 +22,7 @@ export default class Comment extends Threadable(Post) {
 		'references':        { type: 'string[]' },
 		'LikeCount':         { type: 'number'   },
 		'Class':             { type: 'string'   }
-	}
+	};
 
 	get isComment() {
 		return true;

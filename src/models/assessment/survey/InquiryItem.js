@@ -12,7 +12,7 @@ export default class InquiryItem extends Base {
 		...super.Fields,
 		'Submission':        { type: 'model' },
 		'CatalogEntryNTIID': { type: 'string'  },
-	}
+	};
 
 	getQuestions() {
 		let submission = this.Submission;

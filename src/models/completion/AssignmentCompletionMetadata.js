@@ -14,7 +14,7 @@ export default class AssignmentCompletionMetadata extends Base {
 		'Success':                             { type: 'boolean'  },
 		'TotalPoints':                         { type: 'number'   },
 		'UserPointsReceived':                  { type: 'any'   },
-	}
+	};
 
 	getNumericUserPointsReceived() {
 		return parseFloat(this.UserPointsReceived, 10);

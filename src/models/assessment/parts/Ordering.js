@@ -9,7 +9,7 @@ export default class Ordering extends Part {
 		...super.Fields,
 		'labels': { type: 'string[]', content: true },
 		'values': { type: 'string[]', content: true },
-	}
+	};
 
 	isAnswered() {
 		return true;

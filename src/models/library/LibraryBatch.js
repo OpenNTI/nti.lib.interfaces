@@ -8,7 +8,7 @@ export class LibraryBatch extends Batch {
 	static Fields = {
 		...super.Fields,
 		'titles': { type: 'model[]' },
-	}
+	};
 
 	get Items() {
 		return this.titles || [];

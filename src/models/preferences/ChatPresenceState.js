@@ -16,7 +16,7 @@ export default class ChatPresenceState extends Preference {
 		'show':   { type: 'string' },
 		'status': { type: 'string' },
 		'type':   { type: 'string' },
-	}
+	};
 
 	'translate:show'(show) {
 		return show === 'offline' ? '' : show;

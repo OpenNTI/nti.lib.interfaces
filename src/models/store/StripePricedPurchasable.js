@@ -16,7 +16,7 @@ export default class StripePricedPurchasable extends Base {
 		'PurchasePrice':      { type: 'number',  name: 'price'              },
 		'Quantity':           { type: 'number',  name: 'quantity'           },
 		'Provider':           { type: 'string'                              },
-	}
+	};
 }
 
 Registry.register(StripePricedPurchasable);

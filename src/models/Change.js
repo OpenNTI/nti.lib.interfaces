@@ -11,7 +11,7 @@ export class Change extends Base {
 		...super.Fields,
 		'ChangeType':	{ type: 'string' },
 		'Item':			{ type: 'model'  }
-	}
+	};
 
 	static wrap(thing) {
 		if (!(thing instanceof Base)) {

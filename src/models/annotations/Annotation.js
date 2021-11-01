@@ -16,7 +16,7 @@ export default class Annotation extends Likable(Base) {
 		'presentationProperties': { type: '*'        },
 		'prohibitReSharing':      { type: 'boolean'  },
 		'tags':                   { type: 'string[]' },
-	}
+	};
 
 	constructor(service, parent, data) {
 		super(service, parent, data);

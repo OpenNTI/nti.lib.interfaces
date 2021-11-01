@@ -13,7 +13,7 @@ export default class GiftPurchaseAttempt extends PurchaseAttempt {
 		'Sender':       { type: 'string', name: 'sender'       },
 		'SenderName':   { type: 'string', name: 'senderName'   },
 		'To':           { type: 'string', name: 'to'           },
-	}
+	};
 }
 
 Registry.register(GiftPurchaseAttempt);

@@ -13,7 +13,7 @@ export default class RosterRecord extends Base {
 		'Reports':                { type: 'model', name: 'reports'           },
 		'Username':               { type: '*', name: 'username'              },
 		'UserProfile':            { type: 'model', name: 'user'              },
-	}
+	};
 
 	constructor(service, data) {
 		super(service, null, data);

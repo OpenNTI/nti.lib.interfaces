@@ -53,7 +53,7 @@ export default class Assignment extends Completable(
 		'UserCompletionCount':                  { type: 'number'                                       }
 		// Do not add a Target-NTIID field to this model. Legacy overview models shared this mimetype but have a
 		// different shape... leave those warnings in the console.
-	}
+	};
 
 	get IsSummary() {
 		return isSummary(this);

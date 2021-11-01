@@ -12,7 +12,7 @@ export default class SurveySubmission extends QuestionSetSubmission {
 		'parts':    { type: 'model[]', defaultValue: [] },
 		'surveyId': { type: 'string'                    },
 		'version':  { type: 'string'                    }
-	}
+	};
 
 	static build(survey) {
 		const s = super.build(survey);

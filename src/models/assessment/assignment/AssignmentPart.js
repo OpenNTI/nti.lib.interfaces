@@ -10,7 +10,7 @@ export default class AssignmentPart extends Base {
 		'question_set':  { type: 'model'   },
 		'QuestionSetId': { type: 'string'  },
 		'IsSummary':     { type: 'boolean' }
-	}
+	};
 
 	containsId(id) {
 		const { question_set: o, QuestionSetId } = this;

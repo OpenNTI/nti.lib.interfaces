@@ -11,7 +11,7 @@ export default class SavePointItem extends Base {
 	static Fields = {
 		...super.Fields,
 		'Submission': { type: 'model' }
-	}
+	};
 
 	getQuestions() {
 		return this.Submission ? this.Submission.getQuestions() : [];

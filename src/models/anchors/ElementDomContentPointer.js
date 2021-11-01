@@ -10,7 +10,7 @@ export default class ElementDomContentPointer extends DomContentPointer {
 		...super.Fields,
 		'elementTagName': { type: 'string' },
 		'elementId':      { type: 'string' },
-	}
+	};
 
 	constructor(service, parent, data) {
 		//If we are given a dom element as input, pull the necessary parts and

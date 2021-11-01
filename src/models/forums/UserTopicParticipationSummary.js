@@ -11,7 +11,7 @@ export default class UserTopicParticipationSummary extends Base {
 		'NestedChildReplyCount': { type: 'number', name: 'repliesTo'  },
 		'ReplyToCount':          { type: 'number', name: 'replies'    },
 		'TopLevelCount':         { type: 'number', name: 'comments'   },
-	}
+	};
 }
 
 Registry.register(UserTopicParticipationSummary);

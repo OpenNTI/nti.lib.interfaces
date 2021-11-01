@@ -22,7 +22,7 @@ export class SCORMContentInfo extends Completable(Base) {
 		'scorm_id':   { type: 'string', name: 'scormId'   },
 		'title':      { type: 'string'                    },
 		'upload_job': { type: 'object', name: 'uploadJob' }
-	}
+	};
 
 	get isProcessing() {
 		const { uploadJob } = this;

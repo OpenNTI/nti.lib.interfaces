@@ -16,7 +16,7 @@ export default class Batch extends Base {
 		'Total':                  {type: 'number'                   },
 		'TotalItemCount':         {type: 'number'                   },
 		'FilteredTotalItemCount': {type: 'number'                   }
-	}
+	};
 
 	static async from(parent, data) {
 		return new Batch(parent[Service], parent, await data).waitForPending();

@@ -14,7 +14,7 @@ export default class Sort extends Preference {
 		...super.Fields,
 		'sortOn':    { type: 'string'},
 		'sortOrder': { type: 'string'},
-	}
+	};
 }
 
 Registry.register(Sort);

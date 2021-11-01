@@ -9,7 +9,7 @@ export default class Matching extends Part {
 		...super.Fields,
 		'values': { type: 'string[]', content: true },
 		'labels': { type: 'string[]', content: true },
-	}
+	};
 
 	isAnswered(partValue) {
 		let maybe = !!partValue;

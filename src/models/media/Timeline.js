@@ -13,7 +13,7 @@ export default class Timeline extends Base {
 		'icon':             { type: 'string'  },
 		'label':            { type: 'string'  },
 		'suggested-inline': { type: 'boolean' },
-	}
+	};
 }
 
 Registry.register(Timeline);

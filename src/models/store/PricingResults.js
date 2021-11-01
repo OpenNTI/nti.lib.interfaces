@@ -11,7 +11,7 @@ export default class PricingResults extends Base {
 		'Items':                      { type: 'model[]'                   },
 		'TotalPurchasePrice':         { type: 'number'                    },
 		'TotalNonDiscountedPrice':    { type: 'number'                    },
-	}
+	};
 }
 
 Registry.register(PricingResults);

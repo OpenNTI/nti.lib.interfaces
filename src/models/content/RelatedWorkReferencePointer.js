@@ -23,7 +23,7 @@ export default class RelatedWorkReferencePointer extends Base {
 		...super.Fields,
 		'Containers': { type: 'string[]' },
 		'target':     { type: 'string'   },
-	}
+	};
 }
 
 Registry.register(RelatedWorkReferencePointer);

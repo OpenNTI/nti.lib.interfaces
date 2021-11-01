@@ -10,7 +10,7 @@ export default class CompletionPolicy extends Base {
 		'percentage':                    { type: 'number'                                       },
 		'offers_completion_certificate': { type: 'boolean', name: 'offersCompletionCertificate' },
 		'certificate_renderer_name':     { type: 'string', name: 'certificateRendererName'      },
-	}
+	};
 }
 
 Registry.register(CompletionPolicy);

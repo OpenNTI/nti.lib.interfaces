@@ -15,7 +15,7 @@ export default class Transcript extends Base {
 		'src':      {type: 'string'},
 		'srcjsonp': {type: 'string'},
 		'type':     {type: 'string'}
-	}
+	};
 
 	_parentHasExisting(purpose, lang) {
 		const parent = this[Parent];

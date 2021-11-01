@@ -11,7 +11,7 @@ export default class OutlineNodeProgress extends Base {
 	static Fields = {
 		...super.Fields,
 		'Items': { type: 'model{}' },
-	}
+	};
 
 	getProgress(ntiid) {
 		return this.Items[ntiid];

@@ -13,7 +13,7 @@ export default class QuestionSubmission extends Submission(Base) {
 		'parts':                         { type: '*' },
 		'ContainerId':                   { type: 'string'  },
 		'CreatorRecordedEffortDuration': { type: 'number'  },
-	}
+	};
 
 	static build(question) {
 		const { parts } = question;

@@ -28,7 +28,7 @@ export default class DiscussionReference extends Base {
 		'label':        { type: 'string' },
 		'title':        { type: 'string' },
 		'Target-NTIID': { type: 'string' },
-	}
+	};
 
 	constructor(service, parent, data) {
 		super(service, parent, data);

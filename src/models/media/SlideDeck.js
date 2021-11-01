@@ -20,7 +20,7 @@ export default class SlideDeck extends Base {
 		'title':  { type: 'string'  },
 		'Slides': { type: 'model[]' },
 		'Videos': { type: 'model[]' },
-	}
+	};
 
 	getUserData() {
 		let store = this[UserData];

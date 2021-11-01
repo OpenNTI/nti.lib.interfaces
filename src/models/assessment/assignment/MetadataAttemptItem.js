@@ -11,7 +11,7 @@ export default class MetadataAttemptItem extends Base {
 		'StartTime': 	{ type: 'date' },
 		'SubmitTime': 	{ type: 'date' },
 		'Duration': 	{ type: 'any'  },
-	}
+	};
 
 	getDuration() {
 		return this.Duration && this.Duration * 1000;

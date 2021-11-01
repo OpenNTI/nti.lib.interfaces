@@ -30,7 +30,7 @@ export default class Note extends DiscussionInterface(
 		'presentationProperties': { type: 'object'   },
 		'style':                  { type: 'string'   },
 		'Class':                  { type: 'string'   }
-	}
+	};
 
 	get isNote() {
 		return true;

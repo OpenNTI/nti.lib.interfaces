@@ -13,7 +13,7 @@ export default class GotoWebinar extends Integration {
 	static Fields = {
 		...super.Fields,
 		'webinar_realname': {type: 'string', name: 'accountName'}
-	}
+	};
 
 	name = 'goto-webinar';
 

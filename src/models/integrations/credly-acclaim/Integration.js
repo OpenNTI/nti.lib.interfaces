@@ -14,7 +14,7 @@ export default class CredlyAcclaimIntegration extends BaseIntegration {
 		...super.Fields,
 		'authorization_token': {type: 'string', name: 'authorizationToken'},
 		'organization': {type: 'model'}
-	}
+	};
 
 	name = 'credly-acclaim';
 	isCredilyAcclaimIntegration = true;

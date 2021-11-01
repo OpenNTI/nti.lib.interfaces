@@ -9,7 +9,7 @@ export default class Highlight extends Annotation {
 	static Fields = {
 		...super.Fields,
 		'selectedText': { type: 'string' },
-	}
+	};
 }
 
 Registry.register(Highlight);

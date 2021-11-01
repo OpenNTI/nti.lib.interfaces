@@ -8,7 +8,7 @@ export default class CatalogFamilies extends Base {
 	static Fields = {
 		...super.Fields,
 		'Items': {type: 'model[]'}
-	}
+	};
 
 	getPrimaryFamily() {
 		return this.Items && this.Items[0];

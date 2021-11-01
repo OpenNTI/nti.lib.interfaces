@@ -9,7 +9,7 @@ export default class CourseInvitations extends ArrayLike(Base) {
 	static Fields = {
 		...super.Fields,
 		'Items':     { type: 'model[]' }
-	}
+	};
 }
 
 Registry.register(CourseInvitations);

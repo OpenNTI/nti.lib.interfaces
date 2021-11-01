@@ -9,7 +9,7 @@ export default class ImageMetadata extends Base {
 		'height': { type: 'number' },
 		'url':    { type: 'string' },
 		'width':  { type: 'number' },
-	}
+	};
 
 	// known links:
 	// - safeimage

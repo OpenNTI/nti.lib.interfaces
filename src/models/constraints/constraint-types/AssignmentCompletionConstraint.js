@@ -8,7 +8,7 @@ export default class AssignmentCompletionConstraint extends Base {
 	static Fields = {
 		...super.Fields,
 		'assignments': { type: 'string[]'}
-	}
+	};
 
 	hasConstraintFor(itemOrId) {
 		const { assignments } = this;

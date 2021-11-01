@@ -11,7 +11,7 @@ export default class SharingPagePreference extends Base {
 		'Provenance': { type: 'string', name: 'provenance' },
 		'State':      { type: 'string', name: 'state'      },
 		'sharedWith': { type: '*[]',    name: 'value'      },
-	}
+	};
 
 	//For the sake of bandwidth, and data...etc... lets not pre-resolve these.
 	//Lets wait until the user actually invokes a note editior.

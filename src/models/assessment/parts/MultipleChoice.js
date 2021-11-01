@@ -13,7 +13,7 @@ export default class MultipleChoice extends Part {
 	static Fields = {
 		...super.Fields,
 		'choices': { type: 'string[]', content: true },
-	}
+	};
 }
 
 Registry.register(MultipleChoice);

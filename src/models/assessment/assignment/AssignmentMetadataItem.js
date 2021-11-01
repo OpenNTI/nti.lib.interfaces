@@ -11,7 +11,7 @@ export default class AssignmentMetadataItem extends Base {
 		'Duration':          { type: 'number', name: 'duration' }, //seconds
 		'StartTime':         { type: 'date'                     },
 		'CatalogEntryNTIID': { type: 'string'                   },
-	}
+	};
 
 	getStartTime() {} //implemented by StartTime date field
 

@@ -8,7 +8,7 @@ export default class SiteInvitation extends BaseSiteInvitation {
 	// prettier-ignore
 	static Fields = {
 		...BaseSiteInvitation.Fields
-	}
+	};
 }
 
 Registry.register(SiteInvitation);

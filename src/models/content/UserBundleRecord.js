@@ -11,7 +11,7 @@ export default class UserBundleRecord extends Base {
 		'User':         { type: 'model'  },
 		'LastSeenTime': { type: 'date'   },
 		'Reports':      { type: 'model[]'}
-	}
+	};
 }
 
 Registry.register(UserBundleRecord);

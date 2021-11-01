@@ -6,5 +6,5 @@ export default class Integration extends Base {
 		...super.Fields,
 		'title':       {type: 'string'},
 		'description': {type: 'string'}
-	}
+	};
 }

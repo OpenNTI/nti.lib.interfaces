@@ -11,7 +11,7 @@ export default class QuestionSetReference extends Completable(Base) {
 		'Target-NTIID':   { type: 'string' },
 		'question-count': { type: 'number?' },
 		'label':          { type: 'string' }
-	}
+	};
 
 	get target() {
 		return this['Target-NTIID'];

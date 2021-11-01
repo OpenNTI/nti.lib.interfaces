@@ -12,7 +12,7 @@ export default class CompletedItem extends Base {
 		'ItemNTIID':           { type: 'string'                     },
 		'Success':         	   { type: 'boolean'                    },
 		'CompletionMetadata':  { type: CompletionMetadata           }
-	}
+	};
 
 	getCompletedDate() {} //implemented by CompletedDate date field.
 }

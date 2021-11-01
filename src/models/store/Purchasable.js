@@ -24,7 +24,7 @@ export default class Purchasable extends Base {
 		'Title':            { type: 'string',  name: 'title'          },
 		'StripeConnectKey': { type: 'model',   name: StripeConnectKey },
 		'VendorInfo':       { type: 'model',   name: 'vendorInfo'     },
-	}
+	};
 
 	getStripeConnectKey() {
 		return this[StripeConnectKey];

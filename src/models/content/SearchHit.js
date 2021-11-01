@@ -18,7 +18,7 @@ export default class ContentUnitSearchHit extends Base {
 		'Fragments':      { type: 'model[]'  },
 		'Score':          { type: 'number'   },
 		'TargetMimeType': { type: 'string'   }
-	}
+	};
 
 	isContentUnitSearchHit = true;
 }

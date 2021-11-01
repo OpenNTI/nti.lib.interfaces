@@ -15,7 +15,7 @@ export default class PurchasableVendorInfo extends Base {
 		'StartDate':          { type: 'date'    },
 		'Term':               { type: '*'       },
 		'Title':              { type: 'string'  }
-	}
+	};
 
 	getEndDate() {} //implemented by the date Field type
 	getStartDate() {} //implemented by the date Field type

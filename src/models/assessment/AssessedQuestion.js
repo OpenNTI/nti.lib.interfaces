@@ -10,7 +10,7 @@ export default class AssessedQuestion extends assessed(Base) {
 		...super.Fields,
 		'parts':      { type: 'model[]' },
 		'questionId': { type: 'string'  },
-	}
+	};
 
 	getID() {
 		return this.questionId || this.NTIID;

@@ -9,7 +9,7 @@ export default class MetadataAttemptItemContainer extends Base {
 	// prettier-ignore
 	static Fields = {
 		'Items': {type: 'model[]'}
-	}
+	};
 
 	getLatest() {
 		return this.Items ? this.Items[this.Items.length - 1] : null;

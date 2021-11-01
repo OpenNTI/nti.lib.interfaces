@@ -10,7 +10,7 @@ export default class PushNotifications extends Preference {
 		...super.Fields,
 		'Email':                       { type: 'model'   },
         'send_me_push_notifications':  { type: 'boolean' },
-	}
+	};
 }
 
 Registry.register(PushNotifications);

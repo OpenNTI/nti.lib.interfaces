@@ -17,7 +17,7 @@ export default class Webinar extends Base {
 		'times':               { type: 'model[]' },
 		'webinarID':           { type: 'string'  },
 		'webinarKey':          { type: 'string'  }
-	}
+	};
 
 	/**
 	 * Returns the duration of the nearest session (based on either a given time or nearest from now)

@@ -11,7 +11,7 @@ export default class DynamicFriendsList extends FriendsList {
 	static Fields = {
 		...super.Fields,
 		'IsDynamicSharing': { type: 'boolean', required: true, requiredValue: true },
-	}
+	};
 
 	isGroup = true;
 

@@ -64,7 +64,7 @@ export default class RelatedWorkReference extends ContentTree(
 		'description':        { type: 'string' },
 		'byline':             { type: 'string' },
 		'TargetPublishState': { type: 'string' }
-	}
+	};
 
 	static fromID(service, id) {
 		return new RelatedWorkReference(service, null, { NTIID: id });

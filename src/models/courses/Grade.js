@@ -35,7 +35,7 @@ export default class Grade extends names(Base) {
 		'AutoGrade':           { type: 'number'  },
 		'AutoGradeMax':        { type: 'number'  },
 		'CatalogEntryNTIID':   { type: 'string'  }
-	}
+	};
 
 	static deriveCacheKeyFrom(data) {
 		if (!data) {

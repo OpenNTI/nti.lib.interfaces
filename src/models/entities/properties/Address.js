@@ -16,7 +16,7 @@ export default class AddressProperty extends Base {
 		'state': {type: 'string'},
 		'postal_code': {type: 'string'},
 		'country': {type: 'string'}
-	}
+	};
 }
 
 Registry.register(AddressProperty);

@@ -27,7 +27,7 @@ export default class Badge extends Base {
 		'issuer':      { type: 'model'    },
 		'name':        { type: 'string'   },
 		'tags':        { type: 'string[]' },
-	}
+	};
 }
 
 Registry.register(Badge);

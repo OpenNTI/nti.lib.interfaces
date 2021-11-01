@@ -9,7 +9,7 @@ export class EventAttendanceRecord extends Base {
 		...super.Fields,
 		'registrationTime': { type: 'date' },
 		'User':             { type: 'model' }
-	}
+	};
 }
 
 Registry.register(EventAttendanceRecord);

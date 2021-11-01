@@ -13,7 +13,7 @@ export class AssignmentCalendarEvent extends BaseEvent {
 		'IsTimedAssignment':  { type: 'boolean' },
 		'AssignmentNTIID':    { type: 'string'  },
 		'CatalogEntryNTIID':  { type: 'string'  }
-	}
+	};
 
 	get dueDate() {
 		return this.getStartTime();

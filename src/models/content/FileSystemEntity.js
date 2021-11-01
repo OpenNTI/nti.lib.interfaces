@@ -25,7 +25,7 @@ export default class FileSystemEntity extends Base {
 		'filename': { type: 'string' },
 		'name':     { type: 'string' },
 		'path':     { type: 'string' },
-	}
+	};
 
 	can(action) {
 		return this.hasLink(action);

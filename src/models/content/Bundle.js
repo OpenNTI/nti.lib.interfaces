@@ -34,7 +34,7 @@ export default class Bundle extends Publishable(Base) {
 		'root':                                 { type: 'string'                    },
 		'Reports':								{ type: 'model[]'					},
 		'PublicationState':                     { type: 'string'                    }
-	}
+	};
 
 	#contentPackages = null;
 

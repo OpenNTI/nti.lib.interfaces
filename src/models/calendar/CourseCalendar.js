@@ -9,7 +9,7 @@ export default class CourseCalendar extends Base {
 		...super.Fields,
 		'title':       	{ type: 'string' },
 		'CatalogEntry': { type: 'model'  }
-	}
+	};
 }
 
 Registry.register(CourseCalendar);

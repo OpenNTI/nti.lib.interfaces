@@ -5,7 +5,7 @@ export default class BaseConstraints extends Base {
 	static Fields = {
 		...super.Fields,
 		'Items': {type: 'model[]'}
-	}
+	};
 
 	hasConstraintFor(itemOrId) {
 		const { Items } = this;

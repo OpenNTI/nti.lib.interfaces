@@ -20,7 +20,7 @@ export default class Post extends DiscussionInterface(Likable(Base)) {
 		'body':       { type: '*[]'     },
 		'title':      { type: 'string'  },
 		'Deleted':    { type: 'boolean' }
-	}
+	};
 
 	getRawSharedWith() {
 		return this.parent().getRawSharedWith();

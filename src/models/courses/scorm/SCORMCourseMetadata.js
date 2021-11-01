@@ -8,7 +8,7 @@ export class SCORMCourseMetadata extends Base {
 	static Fields = {
 		...super.Fields,
 		'scorm_id': { type: 'string', name: 'scormId' }
-	}
+	};
 }
 
 Registry.register(SCORMCourseMetadata);

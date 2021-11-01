@@ -13,7 +13,7 @@ export default class FriendsList extends Entity {
 	static Fields = {
 		...super.Fields,
 		'friends': { type: 'model[]' },
-	}
+	};
 
 	get displayType() {
 		return 'List';

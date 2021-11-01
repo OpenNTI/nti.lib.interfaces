@@ -14,7 +14,7 @@ export default class EnrollmentOption extends Base {
 		'IsAvailable':     { type: 'boolean', name: 'available' },
 		'IsEnrolled':      { type: 'boolean', name: 'enrolled'  },
 		'IsSeatAvailable': { type: 'boolean', name: 'seatAvailable' }
-	}
+	};
 }
 
 Registry.register(EnrollmentOption);

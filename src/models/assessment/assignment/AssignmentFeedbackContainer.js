@@ -11,7 +11,7 @@ export default class AssignmentFeedbackContainer extends Base {
 	static Fields = {
 		...super.Fields,
 		'Items': { type: 'model[]' }
-	}
+	};
 
 	async addPost(body) {
 		let link = this.getLink('edit');

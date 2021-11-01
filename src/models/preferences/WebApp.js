@@ -10,7 +10,7 @@ export default class WebApp extends Preference {
 		...super.Fields,
 		'preferFlashVideo': { type: 'boolean' },
         'useHighContrast':  { type: 'boolean' },
-	}
+	};
 }
 
 Registry.register(WebApp);

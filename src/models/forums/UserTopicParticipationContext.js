@@ -9,7 +9,7 @@ export default class UserTopicParticipationContext extends Base {
 		...super.Fields,
 		'Context':       { type: 'model' },
 		'ParentContext': { type: 'model' },
-	}
+	};
 }
 
 Registry.register(UserTopicParticipationContext);

@@ -13,7 +13,7 @@ export default class QuestionSetSubmission extends Submission(Base) {
 		'questionSetId':                 { type: 'string'  },
 		'ContainerId':                   { type: 'string'  },
 		'CreatorRecordedEffortDuration': { type: 'number'  },
-	}
+	};
 
 	static build(questionSet) {
 		const data = {

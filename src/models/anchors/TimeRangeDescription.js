@@ -12,7 +12,7 @@ export default class TimeRangeDescription extends ContentRangeDescription {
 		'seriesId': { type: 'string' },
 		'start':    { type: 'model'  },
 		'end':      { type: 'model'  },
-	}
+	};
 
 	isTimeRange = true;
 	isEmpty = false;

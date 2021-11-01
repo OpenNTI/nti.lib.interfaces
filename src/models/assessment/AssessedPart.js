@@ -12,7 +12,7 @@ export default class AssessedPart extends assessed(Base) {
 		'solutions':         { type: 'model[]' },
 		'submittedResponse': { type: '*'       }, // this can be various types, numbers, objects, etc
 		'explanation':       { type: 'string'  }
-	}
+	};
 
 	getQuestionId() {
 		return this.parent().getID();

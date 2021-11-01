@@ -20,7 +20,7 @@ export class BaseEvent extends Base {
 		'CatalogEntryNTIID': 	{ type: 'string' },
 		'ContainerId': 			{ type: 'string' },
 		'RegistrationTime':     { type: 'date'   }
-	}
+	};
 
 	constructor(service, parent, data) {
 		super(service, parent, data);

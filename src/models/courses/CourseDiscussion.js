@@ -11,7 +11,7 @@ export default class CourseDiscussion extends Base {
 	static Fields = {
 		...super.Fields,
 		'icon': { type: 'string' },
-	}
+	};
 
 	getIcon() {
 		return this.icon || DEFAULT_ICON;

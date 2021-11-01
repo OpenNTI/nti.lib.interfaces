@@ -12,7 +12,7 @@ export default class SharingScopes extends Base {
 		...super.Fields,
 		'DefaultSharingScopeNTIID': { type: 'string'  },
 		'Items':                    { type: 'model{}' },
-	}
+	};
 
 	get defaultScope() {
 		return this.getScopeForId(this.defaultScopeId);

@@ -67,7 +67,7 @@ export default class Video extends Completable(Pages(Base)) {
 		'transcripts': { type: 'model[]'  },
 		'ntiid':       { type: 'string'   },
 		'label':       { type: 'string'   }
-	}
+	};
 
 	isVideo = true;
 

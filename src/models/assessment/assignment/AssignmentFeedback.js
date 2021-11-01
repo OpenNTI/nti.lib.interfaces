@@ -14,7 +14,7 @@ export default class AssignmentFeedback extends names(Base) {
 		'body':              { type: '*[]'    },
 		'title':             { type: 'string' },
 		'SubmissionCreator': { type: 'string' }
-	}
+	};
 
 	constructor(service, parent, data) {
 		super(service, parent, data);

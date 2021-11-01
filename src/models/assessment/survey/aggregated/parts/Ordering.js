@@ -10,7 +10,7 @@ export default class AggregatedOrderingPart extends Base {
 	static Fields = {
 		...super.Fields,
 		'Results': { type: 'object[]' },
-	}
+	};
 
 	getResults(part) {
 		const ix = x => part.values.indexOf(x[0]);

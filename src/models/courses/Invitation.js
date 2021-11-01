@@ -12,7 +12,7 @@ export default class CourseInvitation extends Base {
 		...super.Fields,
 		'Code':        { type: 'string' },
 		'Description': { type: 'string' }
-	}
+	};
 }
 
 Registry.register(CourseInvitation);

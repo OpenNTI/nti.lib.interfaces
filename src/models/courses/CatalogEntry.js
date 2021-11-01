@@ -44,7 +44,7 @@ export default class CourseCatalogEntry extends CourseIdentity(Base) {
 		'awardable_credits':                    { type: 'model[]', name: 'credits'          },
 		'AwardsCertificate':                    { type: 'boolean'                           },
 		'seat_limit':                           { type: 'model', name: 'SeatLimit'          }
-	}
+	};
 
 	static getFactory(service) {
 		return CatalogEntryFactory.from(service);

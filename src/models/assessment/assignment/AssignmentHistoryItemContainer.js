@@ -9,7 +9,7 @@ export default class AssignmentHistoryItemContainer extends Base {
 	static Fields = {
 		...super.Fields,
 		'Items':                     { type: 'model[]'  }
-	}
+	};
 
 	getMostRecentHistoryItem() {
 		return this.Items?.[this.Items.length - 1];

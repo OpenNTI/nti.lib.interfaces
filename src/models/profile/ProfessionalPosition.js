@@ -12,7 +12,7 @@ export default class ProfessionalPosition extends Base {
 		'endYear':     { type: 'number'                 },
 		'startYear':   { type: 'number'                 },
 		'title':       { type: 'string'                 },
-	}
+	};
 }
 
 Registry.register(ProfessionalPosition);

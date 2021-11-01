@@ -9,7 +9,7 @@ export default class PurchasableCourse extends Purchasable {
 	static Fields = {
 		...super.Fields,
 		'ID': { type: 'string' }
-	}
+	};
 }
 
 Registry.register(PurchasableCourse);

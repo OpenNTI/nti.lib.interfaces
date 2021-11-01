@@ -15,7 +15,7 @@ export default class CatalogFamily extends Base {
 		'ProviderUniqueID':              { type: 'string' },
 		'StartDate':                     { type: 'date'   },
 		'EndDate':                       { type: 'date'   }
-	}
+	};
 
 	getFamilyID() {
 		return this.CatalogFamilyID;

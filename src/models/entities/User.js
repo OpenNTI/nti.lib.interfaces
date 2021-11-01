@@ -57,7 +57,7 @@ export default class User extends Entity {
 		'Deactivated':        { type: 'boolean'   },
 		'phones':             { type: '*'  },
 		'addresses':          { type: 'model{}'  },
-	}
+	};
 
 	get isUser() {
 		return true;

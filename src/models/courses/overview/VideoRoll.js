@@ -9,7 +9,7 @@ export default class VideoRoll extends ContentTree(Base) {
 	static Fields = {
 		...super.Fields,
 		'Items': { type: 'model[]' }
-	}
+	};
 
 	getContentTreeChildrenSource() {
 		return this.Items;

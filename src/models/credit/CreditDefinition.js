@@ -10,7 +10,7 @@ export default class CreditDefinition extends Base {
 		'credit_precision': { type: 'number', name: 'precision' },
 		'credit_type':      { type: 'string', name: 'type' },
 		'credit_units':     { type: 'string', name: 'unit' },
-	}
+	};
 
 	format(n) {
 		const { locale } = new Intl.NumberFormat().resolvedOptions();

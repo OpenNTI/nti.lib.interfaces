@@ -13,7 +13,7 @@ export default class InstanceAdministrativeRole extends AdministrativeIdentity(
 	static Fields = {
 		...super.Fields,
 		'RoleName': { type: 'string' },
-	}
+	};
 
 	get isInstructor() {
 		const value = Boolean((this.CourseInstance || {}).GradeBook);

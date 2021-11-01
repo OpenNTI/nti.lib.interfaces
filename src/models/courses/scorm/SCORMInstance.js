@@ -8,7 +8,7 @@ export class SCORMInstance extends Instance {
 	static Fields = {
 		...super.Fields,
 		Metadata: { type: 'model' }
-	}
+	};
 
 	get isScormInstance() {
 		return true;

@@ -13,7 +13,7 @@ export default class SlideVideo extends Base {
 		'slidedeckid':   { type: 'string', name: 'deckId'      },
 		'thumbnail':     { type: 'string'                      },
 		'video-ntiid':   { type: 'string', name: 'videoId'     },
-	}
+	};
 }
 
 Registry.register(SlideVideo);

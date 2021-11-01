@@ -12,7 +12,7 @@ export default class StripePurchaseItem extends Base {
 		'Coupon':   { type: 'string',  name: 'coupon'   },
 		'Items':    { type: 'model[]', name: Items      },
 		'Quantity': { type: 'number',  name: 'quantity' },
-	}
+	};
 }
 
 Registry.register(StripePurchaseItem);

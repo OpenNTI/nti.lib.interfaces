@@ -11,7 +11,7 @@ export default class GradeBookByAssignmentSummary extends Base {
 	static Fields = {
 		...super.Fields,
 		'Items': { type: 'model[]' },
-	}
+	};
 }
 
 Registry.register(GradeBookByAssignmentSummary);

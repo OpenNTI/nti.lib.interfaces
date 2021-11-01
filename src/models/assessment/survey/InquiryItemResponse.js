@@ -10,7 +10,7 @@ export default class InquiryItemResponse extends Base {
 		...super.Fields,
 		'Aggregated': { type: 'model' },
 		'Submission': { type: 'model'  },
-	}
+	};
 
 	getQuestions() {
 		let submission = this.Submission;

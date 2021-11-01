@@ -18,7 +18,7 @@ export default class SurveyReference extends Completable(Base) {
 		'TargetAvailableForSubmissionBeginning': { type: 'date'    },
 		'TargetAvailableForSubmissionEnding':    { type: 'date'    },
 		'TargetPublishState':                    { type: 'string'  }
-	}
+	};
 
 	get isSubmitted() {
 		return this.hasLink(ASSESSMENT_HISTORY_LINK);

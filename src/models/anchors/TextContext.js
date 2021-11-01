@@ -10,7 +10,7 @@ export default class TextContext extends Base {
 		...super.Fields,
 		'contextOffset': { type: 'number' },
 		'contextText':   { type: 'string' },
-	}
+	};
 
 	isEmpty = false;
 

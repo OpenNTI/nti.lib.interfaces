@@ -19,7 +19,7 @@ export default class CourseProgress extends Base {
 		'PercentageProgress':     { type: 'number'                     },
 		'CompletedItem': 	      { type: 'model'                      },
 		'UnsuccessfulItemNTIIDs': { type: 'string[]'                   },
-	}
+	};
 
 	getCompletedDate() {} //implemented by CompletedDate date field.
 }

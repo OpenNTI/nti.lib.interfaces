@@ -14,7 +14,7 @@ export default class WorkspaceCollection extends Base {
 		'accepts': { type: 'string[]' },
 		'Items':   { type: 'model[]'  },
 		'Title':   { type: 'string'   },
-	}
+	};
 
 	static List = (service, parent, items) => {
 		if (!Array.isArray(items)) {

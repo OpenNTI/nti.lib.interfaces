@@ -17,7 +17,7 @@ export default class MessageInfo extends Flaggable(Threadable(Base)) {
 		'inReplyTo':   { type: 'string' },
 		'recipients':  { type: 'string[]' },
 		'sharedWith':  { type: 'string[]' },
-	}
+	};
 }
 
 Registry.register(MessageInfo);

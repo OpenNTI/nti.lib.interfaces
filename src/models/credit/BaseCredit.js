@@ -14,7 +14,7 @@ export default class BaseCredit extends Base {
 		'issuer':            { type: 'string'                          },
 		'awarded_date':      { type: 'date',                           }, //becomes getAwardedDate
 		'user':              { type: 'model',                          }
-	}
+	};
 
 	getAwardedDate() {} //implemented by awarded_date date field.
 

@@ -16,7 +16,7 @@ export default class EnrollmentOption5Minute extends EnrollmentOption {
 		'OU_EnrollCutOffDate':   { type: 'date',                                   },
 		'OU_RefundCutOffDate':   { type: 'date',                                   },
 		'RefundCutOffDate':      { type: 'date',                                   },
-	}
+	};
 
 	constructor(service, parent, data) {
 		super(service, parent, data);

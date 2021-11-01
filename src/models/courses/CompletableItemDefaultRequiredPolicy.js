@@ -8,7 +8,7 @@ export default class CompletableItemDefaultRequiredPolicy extends Base {
 	static Fields = {
 		...super.Fields,
 		'mime_types': { type: 'string[]', name: 'mimeTypes' }
-	}
+	};
 }
 
 Registry.register(CompletableItemDefaultRequiredPolicy);

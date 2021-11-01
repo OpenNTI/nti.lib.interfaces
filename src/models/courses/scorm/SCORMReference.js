@@ -20,7 +20,7 @@ export class SCORMReference extends Completable(Base) {
 		'CompletionRequired': { type: 'boolean' },
 		'CompletedItem':      { type: 'model' },
 		'Target-NTIID':       { type: 'string' },
-	}
+	};
 
 	__isSocketChangeEventApplicable(change) {
 		return (

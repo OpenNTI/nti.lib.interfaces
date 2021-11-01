@@ -7,7 +7,7 @@ export default class UserCalendar extends Base {
 	// prettier-ignore
 	static Fields = {
 		...super.Fields,
-	}
+	};
 }
 
 Registry.register(UserCalendar);

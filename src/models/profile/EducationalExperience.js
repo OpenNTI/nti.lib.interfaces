@@ -15,7 +15,7 @@ export default class EducationalExperience extends Base {
 		'endYear':     { type: 'number'                 },
 		'school':      { type: 'string', required: true },
 		'startYear':   { type: 'number'                 },
-	}
+	};
 }
 
 Registry.register(EducationalExperience);

@@ -34,7 +34,7 @@ export default class Forum extends GetContents(Base) {
 		'IsDefaultForum':              { type: 'boolean'},
 		'DefaultSharedToNTIIDs':       { type: 'string[]'},
 		'DefaultSharedToDisplayNames': { type: 'string[]'}
-	}
+	};
 
 	isForum = true;
 

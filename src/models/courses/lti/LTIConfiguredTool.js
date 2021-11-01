@@ -13,7 +13,7 @@ export default class LTIConfiguredTool extends Base {
 		'secret': { types: 'string' },
 		'launch_url': { types: 'string' },
 		'secure_launch_url': { types: 'string' }
-	}
+	};
 }
 
 Registry.register(LTIConfiguredTool);

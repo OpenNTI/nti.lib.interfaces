@@ -10,7 +10,7 @@ export default class AggregatedMultipleChoicePart extends Base {
 	static Fields = {
 		...super.Fields,
 		'Results': { type: '*' },   // can be a map of values
-	}
+	};
 
 	getResults(part) {
 		const { Results: results, Total: total } = this;

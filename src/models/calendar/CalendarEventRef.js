@@ -12,7 +12,7 @@ export default class CalendarEventRef extends Completable(Base) {
 		...super.Fields,
 		'CalendarEvent':        { type: 'model'  },
 		'Target-NTIID':         { type: 'string' },
-	}
+	};
 
 	__isSocketChangeEventApplicable(change) {
 		return (

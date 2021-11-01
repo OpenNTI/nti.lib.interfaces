@@ -35,7 +35,7 @@ export default class Topic extends DiscussionInterface(
 		'headline':                       { type: 'model'  },
 		'LikeCount':                      { type: 'number' },
 		'Reports':                        { type: 'model[]'}
-	}
+	};
 
 	// make non-enumerable
 	get isTopic() {

@@ -11,7 +11,7 @@ export default class AssignmentReference extends Completable(Base) {
 		'Target-NTIID':  { type: 'string' },
 		'label':         { type: 'string' },
 		'title':         { type: 'string' },
-	}
+	};
 
 	get target() {
 		return this['Target-NTIID'];

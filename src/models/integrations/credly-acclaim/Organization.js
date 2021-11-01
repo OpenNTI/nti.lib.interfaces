@@ -12,7 +12,7 @@ export default class CredlyAcclaimOrganization extends Base {
 		'organization_id': {type: 'string', name: 'organizationId'},
 		'photo_url': {type: 'string', name: 'photoURL'},
 		'website_url': {type: 'string', name: 'websiteURL'}
-	}
+	};
 }
 
 Registry.register(CredlyAcclaimOrganization);

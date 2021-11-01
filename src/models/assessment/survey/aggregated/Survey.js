@@ -10,7 +10,7 @@ export default class AggregatedSurveyResults extends Base {
 		'questions':        { type: 'model[]' },
 		'surveyId':         { type: 'string'  },
 		'ContainerContext': { type: '*'       },
-	}
+	};
 
 	getQuestions() {
 		return this.questions;

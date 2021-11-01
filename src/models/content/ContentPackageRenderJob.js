@@ -30,7 +30,7 @@ export default class ContentPackageRenderJob extends Base {
 		...super.Fields,
 		'JobId':     { type: 'string'  },
 		'State':     { type: 'string'  },
-	}
+	};
 
 	getID() {
 		return this.JobId;

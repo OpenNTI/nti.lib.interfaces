@@ -16,7 +16,7 @@ export default class GradeBookUserSummary extends Base {
 		'UngradedAssignmentCount': { type: 'number?', name: 'ungraded'   },
 		'User':                    { type: 'model',  name: 'user'        },
 		'AvailableFinalGrade':     { type: 'boolean'                     }
-	}
+	};
 
 	get username() {
 		return this.user.getID();

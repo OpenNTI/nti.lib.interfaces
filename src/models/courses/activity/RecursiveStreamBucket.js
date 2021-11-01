@@ -17,7 +17,7 @@ export default class RecursiveStreamBucket extends Base {
 		'Items':               { type: thread,  defaultValue: [] },
 		'MostRecentTimestamp': { type: 'number'                  },
 		'OldestTimestamp':     { type: 'number'                  },
-	}
+	};
 
 	get mostRecentDate() {
 		return new Date(this.MostRecentTimestamp * 1000);

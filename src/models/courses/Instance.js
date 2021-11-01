@@ -66,7 +66,7 @@ export default class Instance extends ContentTree(
 		'TotalLegacyForCreditEnrolledCount': { type: 'number', name: 'enrolledForCreditTotalCount' },
 		'TotalLegacyOpenEnrolledCount':      { type: 'number', name: 'enrolledOpenlyTotalCount'    },
 		'CompletionPolicy':                  { type: 'model'                                       }
-	}
+	};
 
 	get isLegacy() {
 		return /legacy/i.test(this.MimeType);

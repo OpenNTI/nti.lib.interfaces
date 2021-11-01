@@ -12,7 +12,7 @@ export default class AssignmentHistoryCollection extends Base {
 		'lastViewed':                { type: 'date'     },
 		'AvailableAssignmentNTIIDs': { type: 'string[]' },
 		'Items':                     { type: 'model{}'  },
-	}
+	};
 
 	isRelevantFor(ntiid) {
 		const { AvailableAssignmentNTIIDs: ids } = this;

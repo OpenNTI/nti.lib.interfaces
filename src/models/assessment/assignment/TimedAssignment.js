@@ -14,7 +14,7 @@ export default class TimedAssignment extends Assignment {
 		'IsTimedAssignment':  { type: 'boolean' },
 		'maximum_time_allowed': { type: 'number', name: 'MaximumTimeAllowed' },
 		'Metadata':           { type: 'object'  },
-	}
+	};
 
 	/**
 	 *

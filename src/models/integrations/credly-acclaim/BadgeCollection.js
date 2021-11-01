@@ -15,7 +15,7 @@ export default class CredlyAcclaimBadgeCollection extends Batch {
 		'current_page': {type: 'number', name: 'currentBadgePage'},
 		'total_badges_count': {type: 'number', name: 'totalBadgesCount'},
 		'total_pages': {type: 'number', name: 'totalPages'}
-	}
+	};
 
 	/** @type {number} */
 	get currentPage() {

@@ -19,7 +19,7 @@ class RosterRecord extends Base {
 		'RealEnrollmentStatus':   { type: '*'                                },
 		'Username':               { type: '*', name: 'username'              },
 		'UserProfile':            { type: 'model', name: 'user'              },
-	}
+	};
 
 	constructor(service, data) {
 		super(service, null, data);

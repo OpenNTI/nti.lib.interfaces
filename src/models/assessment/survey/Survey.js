@@ -30,7 +30,7 @@ export default class Survey extends Publishable(Pages(QuestionSet)) {
 		'version':                            { type: 'string'  },
 		'submissions':                        { type: 'number'  },
 		'Reports':                            { type: 'model[]' }
-	}
+	};
 
 	get hasAggregationData() {
 		return this.hasLink(SURVEY_AGGREGATED_LINK);

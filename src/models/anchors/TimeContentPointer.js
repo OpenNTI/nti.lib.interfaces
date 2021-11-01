@@ -12,7 +12,7 @@ export default class TimeContentPointer extends ContentPointer {
 		...super.Fields,
 		'seconds': { type: 'number' },
 		'role':    { type: 'string' }
-	}
+	};
 
 	constructor(service, parent, data) {
 		super(service, parent, data);

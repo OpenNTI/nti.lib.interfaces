@@ -23,7 +23,7 @@ export default class Part extends HasContent(Base) {
 		'hints':       { type: 'model[]'               },
 		'solutions':   { type: 'model[]'               },
 		'wordbank':    { type: 'model[]'               },
-	}
+	};
 
 	constructor(service, parent, data) {
 		super(service, parent, data);

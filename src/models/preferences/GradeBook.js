@@ -9,7 +9,7 @@ export default class GradeBook extends Preference {
 	static Fields = {
 		...super.Fields,
 		'hide_avatars': { type: 'boolean' },
-	}
+	};
 }
 
 Registry.register(GradeBook);

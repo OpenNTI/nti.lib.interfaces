@@ -15,7 +15,7 @@ export default class AssignmentHistoryItemSummary extends Base {
 		'Metadata':              { type: 'model'                         },
 		'SubmissionCreatedTime': { type: 'date'                          },
 		'MetadataAttemptItem':   { type: 'model'                         }
-	}
+	};
 
 	get completed() {
 		return this.getSubmissionCreatedTime();

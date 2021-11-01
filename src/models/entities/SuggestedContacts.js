@@ -8,7 +8,7 @@ export default class SuggestedContacts extends Base {
 	static Fields = {
 		...super.Fields,
 		'ItemCount': { type: 'number' },
-	}
+	};
 
 	constructor(service, data) {
 		super(service, null, data);

@@ -39,7 +39,7 @@ export default class Model extends Pendability(
 		//We don't want to parse Links, set its type to wild.
 		'Links':                  { type: '*'                       },
 		'href':                   { type: 'string'                  }
-	}
+	};
 
 	/**
 	 *

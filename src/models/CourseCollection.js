@@ -9,7 +9,7 @@ export default class CourseCollection extends WorkspaceCollection {
 	static Fields = {
 		...super.Fields,
 		'CourseCatalog': { type: 'model' },
-	}
+	};
 }
 
 Registry.register(CourseCollection);

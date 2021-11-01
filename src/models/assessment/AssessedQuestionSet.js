@@ -8,7 +8,7 @@ export default class AssessedQuestionSet extends assessed(Base) {
 	static Fields = {
 		...super.Fields,
 		'questions': { type: 'model[]' },
-	}
+	};
 
 	getQuestion(id) {
 		return this.questions.reduce(

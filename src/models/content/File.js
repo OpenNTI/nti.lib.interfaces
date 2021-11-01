@@ -21,7 +21,7 @@ export default class File extends FileSystemEntity {
 		'size':         { type: 'number' },
 		'url':          { type: 'string' },
 		'FileMimeType': { type: 'string' },
-	}
+	};
 
 	getFileMimeType() {
 		return this.FileMimeType;

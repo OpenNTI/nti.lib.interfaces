@@ -8,7 +8,7 @@ export class EventUserSearchHit extends Base {
 	static Fields = {
 		...super.Fields,
 		'User': { type: 'model' }
-	}
+	};
 }
 
 Registry.register(EventUserSearchHit);

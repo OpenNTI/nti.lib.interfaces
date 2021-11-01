@@ -9,7 +9,7 @@ export default class GoogleAPIKey extends Base {
 		...super.Fields,
 		appid: { type: 'string', name: 'AppId' },
 		key:   { type: 'string'                }
-	}
+	};
 
 	getAuthLink(origin) {
 		const link = this.getLink('google.authorize');

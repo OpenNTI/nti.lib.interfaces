@@ -14,7 +14,7 @@ export default class StripeConnectKey extends Base {
 		'LiveMode':     { type: 'boolean' },
 		'PublicKey':    { type: 'string'  },
 		'StripeUserID': { type: 'string'  },
-	}
+	};
 }
 
 Registry.register(StripeConnectKey);

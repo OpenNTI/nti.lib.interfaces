@@ -21,7 +21,7 @@ export default class Outline extends Base {
 	static Fields = {
 		...super.Fields,
 		'ContentNTIID': { type: 'string'                      }
-	}
+	};
 
 	unpublished = false;
 

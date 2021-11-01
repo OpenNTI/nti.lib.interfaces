@@ -11,7 +11,7 @@ export default class CompletionMetadata extends Base {
 		'SuccessCount':  { type: 'number'  },
 		'ItemCount':     { type: 'number'  },
 		'Items':  		 { type: 'model[]' }
-	}
+	};
 }
 
 Registry.register(CompletionMetadata);

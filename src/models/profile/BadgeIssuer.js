@@ -13,7 +13,7 @@ export default class BadgeIssuer extends Base {
 		'name':           { type: 'string' },
 		'revocationList': { type: '*'      },
 		'url':            { type: 'string' },
-	}
+	};
 }
 
 Registry.register(BadgeIssuer);

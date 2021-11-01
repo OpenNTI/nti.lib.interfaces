@@ -32,7 +32,7 @@ export default class PageInfo extends Pages(Base) {
 		'title':               { type: 'string'                    },
 		'Title':               { type: 'string'                    },
 		'RootURL':             { type: 'string'                    }
-	}
+	};
 
 	constructor(service, parent, data) {
 		super(service, parent, data);

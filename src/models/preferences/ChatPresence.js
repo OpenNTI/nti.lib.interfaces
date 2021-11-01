@@ -12,7 +12,7 @@ export default class ChatPresence extends Preference {
 		'Available': { type: 'model' },
         'Away':      { type: 'model' },
         'DND':       { type: 'model' },
-	}
+	};
 }
 
 Registry.register(ChatPresence);

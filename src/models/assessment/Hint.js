@@ -13,7 +13,7 @@ export default class Hint extends HasContent(Base) {
 	static Fields = {
 		...super.Fields,
 		'value': { type: 'string', content: true },
-	}
+	};
 }
 
 Registry.register(Hint);

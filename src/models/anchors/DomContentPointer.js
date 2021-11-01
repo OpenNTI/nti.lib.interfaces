@@ -11,7 +11,7 @@ export default class DomContentPointer extends ContentPointer {
 	static Fields = {
 		...super.Fields,
 		role: { type: 'string' }
-	}
+	};
 
 	constructor(service, parent, data) {
 		super(service, parent, data);

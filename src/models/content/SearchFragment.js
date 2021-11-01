@@ -8,7 +8,7 @@ export default class SearchFragment extends Base {
 	static Fields = {
 		'Matches': { type: 'string[]' },
 		'Field':   { type: 'string'   },
-	}
+	};
 }
 
 Registry.register(SearchFragment);

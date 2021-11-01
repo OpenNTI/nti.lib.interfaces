@@ -28,7 +28,7 @@ export default class MediaSource extends Base {
 		'title':     { type: 'string' }, //From a parsed DomObject
 		'type':      { type: 'string' },
 		'duration':  { type: 'number' }
-	}
+	};
 
 	static from(service, uri) {
 		/* async */

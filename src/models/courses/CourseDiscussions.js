@@ -9,7 +9,7 @@ export class CourseDiscussions extends ArrayLike(Base) {
 	static Fields = {
 		...super.Fields,
 		'Items': { type: 'model[]' },
-	}
+	};
 }
 
 Registry.register(CourseDiscussions);

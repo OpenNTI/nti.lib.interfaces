@@ -22,7 +22,7 @@ export default class RoomInfo extends Base {
 		'Occupants':    { type: 'string[]', name: 'occupants'    },
 		'inReplyTo':    { type: 'string'                         },
 		'references':   { type: 'string[]'                       },
-	}
+	};
 
 	#states = {};
 	#originalOccupants;

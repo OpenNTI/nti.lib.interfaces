@@ -12,7 +12,7 @@ class Collection extends Base {
 		'DefaultPurchaseNTIID': { type: 'string'  },
 		'DefaultGiftingNTIID':  { type: 'string'  },
 		'Items':                { type: 'model[]' },
-	}
+	};
 }
 
 export default class EnrollmentOptionStore extends EnrollmentOption {
@@ -24,7 +24,7 @@ export default class EnrollmentOptionStore extends EnrollmentOption {
 		'RequiresAdmission':  { type: 'boolean',  name: 'requiresAdmission'  },
 		'AllowVendorUpdates': { type: 'boolean',  name: 'allowVendorUpdates' },
 		'Purchasables':       { type: Collection, name: Purchasables         },
-	}
+	};
 
 	getPurchasables() {
 		return this[Purchasables].Items || [];

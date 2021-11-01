@@ -11,7 +11,7 @@ export default class SortGroups extends Preference {
 		'courses':     { type: 'model' },
 		'communities': { type: 'model' },
 		'books':       { type: 'model' },
-	}
+	};
 }
 
 Registry.register(SortGroups);

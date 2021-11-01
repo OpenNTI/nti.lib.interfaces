@@ -17,7 +17,7 @@ export default class Board extends GetContents(Base) {
 		'description':  { type: 'string'                        },
 		'title':        { type: 'string'                        },
 		'ordered_keys': { type: 'string[]', name: 'orderedKeys' }
-	}
+	};
 
 	isBoard = true;
 

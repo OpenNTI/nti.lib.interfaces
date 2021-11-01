@@ -19,7 +19,7 @@ export default class Slide extends Base {
 		'slidenumber':     { type: 'string', name: 'number'    },
 		'slidevideostart': { type: 'number?', name: 'startTime' },
 		'slidevideoend':   { type: 'number?', name: 'endTime'   },
-	}
+	};
 }
 
 Registry.register(Slide);

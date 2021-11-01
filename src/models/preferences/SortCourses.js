@@ -11,7 +11,7 @@ export default class SortCourses extends Preference {
 		'administered':  { type: 'model'  },
 		'sortOn':        { type: 'string' },
 		'sortOrder':     { type: 'string' },
-	}
+	};
 }
 
 Registry.register(SortCourses);

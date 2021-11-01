@@ -15,7 +15,7 @@ export default class CredlyAcclaimAwardedBadge extends Base {
 		'recipient_email': {type: 'string', name: 'recipientEmail'},
 		'state': {type: 'string'},
 		'updated_at': {type: 'string', name: 'updatedAt'}
-	}
+	};
 
 	get name() {
 		return this.badgeTemplate.name;

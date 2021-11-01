@@ -16,7 +16,7 @@ export default class RenderablePackage extends Package {
 		'isPublished':          { type: 'boolean'},
 		'isRendered':           { type: 'boolean'},
 		'isLocked':             { type: 'boolean'}
-	}
+	};
 
 	isRenderable = true;
 

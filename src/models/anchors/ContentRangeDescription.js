@@ -9,7 +9,7 @@ export default class ContentRangeDescription extends Base {
 	static Fields = {
 		...super.Fields,
 		'Class': { type: 'string' }
-	}
+	};
 
 	locatorKey() {
 		return Symbol.for('locator');

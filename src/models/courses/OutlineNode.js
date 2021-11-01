@@ -40,7 +40,7 @@ export default class OutlineNode extends Publishable(
 		'PublicationState':     { type: '*'                         },
 		'ntiid':                { type: 'string'                    },
 		'title':                { type: 'string'                    }
-	}
+	};
 
 	isOutlineNode = true;
 

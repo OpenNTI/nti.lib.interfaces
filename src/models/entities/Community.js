@@ -28,7 +28,7 @@ export default class Community extends Entity {
 		'RemoteIsMember': {type: 'boolean'},
 		'NumberOfMembers': {type: 'number'},
 		'auto_subscribe': {type: 'object'}
-	}
+	};
 
 	get isCommunity() {
 		return true;

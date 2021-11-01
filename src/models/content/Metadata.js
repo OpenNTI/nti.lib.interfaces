@@ -14,7 +14,7 @@ export default class Metadata extends Base {
 		'sourceLocation':  { type: 'string'  },
 		'sourcePath':      { type: 'string'  },
 		'title':           { type: 'string'  },
-	}
+	};
 }
 
 Registry.register(Metadata);

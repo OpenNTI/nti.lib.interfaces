@@ -12,7 +12,7 @@ export default class PricedItem extends Base {
 		'Provider':      { type: 'string', name: 'provider'      },
 		'PurchasePrice': { type: 'number', name: 'purchasePrice' },
 		'Quantity':      { type: 'number', name: 'quantity'      },
-	}
+	};
 }
 
 Registry.register(PricedItem);

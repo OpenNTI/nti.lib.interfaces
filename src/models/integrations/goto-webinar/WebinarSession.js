@@ -9,7 +9,7 @@ export default class WebinarSession extends Base {
 		...super.Fields,
 		'startTime': { type: 'date' },
 		'endTime':   { type: 'date' }
-	}
+	};
 
 	getStartTime() {} //implemented by startTime date field.
 	getEndTime() {} //implemented by endTime date field.
