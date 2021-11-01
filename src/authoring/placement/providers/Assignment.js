@@ -2,6 +2,9 @@ import { defineProtected } from '@nti/lib-commons';
 
 import { placeItemIn, removeItemFrom } from '../factories/index.js';
 
+/** @typedef {import('../../../models/assessment/assignment/Assignment.js').default} Assignment */
+/** @typedef {import('../../../models/courses/Instance.js').default} Instance */
+
 const ContentNodeMimeType =
 	'application/vnd.nextthought.courses.courseoutlinecontentnode';
 

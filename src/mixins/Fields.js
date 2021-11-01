@@ -54,7 +54,7 @@ const isArrayType = _t.bind(/\[]$/);
 // const isCollectionType = x => isArrayType(x) || isDictionaryType(x);
 
 /**
- * @template {import('../constants').Constructor} T
+ * @template {import('../types').Constructor} T
  * @param {T} Base
  * @mixin
  */

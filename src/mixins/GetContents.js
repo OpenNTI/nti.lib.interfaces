@@ -3,7 +3,7 @@ import { url } from '@nti/lib-commons';
 import { NO_LINK, Service, Parser as parse } from '../constants.js';
 
 /**
- * @template {import('../constants').Constructor} T
+ * @template {import('../types').Constructor} T
  * @param {T} Base
  * @mixin
  */

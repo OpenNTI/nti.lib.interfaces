@@ -18,6 +18,8 @@ import getFuzzyTargetProperty from '../../utils/get-fuzzy-target-property.js';
 import Outline from './Outline.js';
 import fallbackOverview from './_fallbacks.OverviewFromToC.js';
 
+/** @typedef {import('../assessment/assignment/Collection.js').default} Collection */
+
 const logger = Logger.get('models:courses:OutlineNode');
 
 export default class OutlineNode extends Publishable(

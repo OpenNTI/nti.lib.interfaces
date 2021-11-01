@@ -19,6 +19,9 @@ import { getPrivate } from '../../../utils/private.js';
 import AssignmentsByX from './AssignmentsByX.js';
 import Activity from './AssignmentActivityMixin.js';
 
+/** @typedef {import('../../Base.js').default} Model */
+/** @typedef {import('../../../stores/Service.js').default} ServiceDocument */
+
 const logger = Logger.get('assignment:Collection:Base');
 
 const ORDER_BY_COMPLETION = Symbol('ORDER_BY_COMPLETION');
@@ -338,7 +341,7 @@ export default class Collection extends Activity(Base) {
 	/**
 	 * Returns filtered assignments grouped by a particular ordering.
 	 *
-	 * @param {enum}   order   One of the ORDER_BY_* static constants on this class.
+	 * @param {ORDER_BY_COMPLETION|ORDER_BY_DUE_DATE|ORDER_BY_LESSON} order   One of the ORDER_BY_* static constants on this class.
 	 * @param {string} search  A search filter string
 	 * @returns {Promise} fulfills with an object with key: groups, order, and search
 	 */

@@ -3,7 +3,7 @@ import { pluck } from '@nti/lib-commons';
 import { NO_LINK } from '../constants.js';
 
 /**
- * @template {import('../constants').Constructor} T
+ * @template {import('../types').Constructor} T
  * @param {T} Base
  * @mixin
  */

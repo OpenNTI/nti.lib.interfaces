@@ -7,6 +7,9 @@ import maybeWait from '../utils/maybe-wait.js';
 import { getNewListData } from './Contacts.js';
 import EntityStore from './EntityStore.js';
 
+/** @typedef {import('./Service').default} ServiceDocument */
+/** @typedef {import('../models/entities/User.js').default} User */
+
 export const MIME_TYPE = 'application/vnd.nextthought.dynamicfriendslist';
 
 const logger = Logger.get('store:Groups');
@@ -17,7 +20,7 @@ export default class Groups extends EntityStore {
 	/**
 	 * Groups constructor
 	 *
-	 * @param {Service} service The service descriptor.
+	 * @param {ServiceDocument} service The service descriptor.
 	 * @param {string} entryPoint The URL to interact with.
 	 * @param {User} context The user.
 	 * @returns {void}

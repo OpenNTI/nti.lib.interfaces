@@ -1,5 +1,6 @@
-/** @module BaseDataSource */
 import { Service, Parent } from '../constants.js';
+
+/** @typedef {import('./data-types/Batch.js').default} Batch */
 
 const BASE = Symbol('Base');
 const KNOWN_PARAMS = Symbol('Known Params');

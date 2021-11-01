@@ -5,6 +5,8 @@ import Base from '../Base.js';
 import CourseIdentity from './mixins/CourseIdentity.js';
 import EnrollmentIdentity from './mixins/EnrollmentIdentity.js';
 
+/** @typedef {import('./Instance.js').default} Instance */
+
 const emptyFunction = () => {};
 const EMPTY_CATALOG_ENTRY = { getAuthorLine: emptyFunction };
 const ACKNOWLEDGE = 'AcknowledgeCompletion';

@@ -11,6 +11,9 @@ import getLink from '../utils/get-link.js';
 import { parseListFn } from '../models/Parser.js';
 import { initPrivate, getPrivate } from '../utils/private.js';
 
+/** @typedef {import('../models/Base.js').default} Model */
+/** @typedef {import('./Service.js').default} ServiceDocument */
+
 class RetryBatch extends Error {
 	constructor(fn = () => {}) {
 		super('Retrying Batch');
@@ -29,7 +32,7 @@ export default class Stream extends Pendability(EventEmitter) {
 	/**
 	 * constructor
 	 *
-	 * @param {Service} service		Service document instance.
+	 * @param {ServiceDocument} service		Service document instance.
 	 * @param {Model} owner			Parent object. (the thing that called the constructor)
 	 * @param {string|Promise} href			initial URL to load.
 	 * @param {Object} options		Query-String param object.

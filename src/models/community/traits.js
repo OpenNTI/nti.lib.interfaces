@@ -1,4 +1,4 @@
-/** @typedef {import('../constants').Constructor} Constructor */
+/** @typedef {import('../types').Constructor} Constructor */
 
 /**
  * @template {Constructor} T

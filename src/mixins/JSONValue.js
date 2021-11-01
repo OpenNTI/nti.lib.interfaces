@@ -71,7 +71,7 @@ function getData({ diff = false } = {}) {
 }
 
 /**
- * @template {import('../constants').Constructor} T
+ * @template {import('../types').Constructor} T
  * @param {T} Base
  * @mixin
  */

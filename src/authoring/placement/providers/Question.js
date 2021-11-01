@@ -2,6 +2,9 @@ import { defineProtected } from '@nti/lib-commons';
 
 import { placeItemIn, removeItemFrom } from '../factories/index.js';
 
+/** @typedef {import('../../../models/assessment/Question.js').default} Question */
+/** @typedef {import('../../../models/courses/Instance.js').default} Instance */
+
 const AssignmentType = 'application/vnd.nextthought.assessment.assignment';
 
 const Handlers = {

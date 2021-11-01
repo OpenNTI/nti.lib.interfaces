@@ -1,5 +1,8 @@
 import { defineProtected } from '@nti/lib-commons';
 
+/** @typedef {import('../../../models/assessment/QuestionSet.js').default} QuestionSet */
+/** @typedef {import('../../../models/courses/Instance.js').default} Instance */
+
 export default class QuestionSetPlacementProvider {
 	/**
 	 * @param {Instance} scope - the course instance scope.

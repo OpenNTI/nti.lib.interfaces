@@ -5,7 +5,7 @@ const getPending = p => PRIVATE_PENDING.get(p) || [];
 const setPending = (p, list) => (PRIVATE_PENDING.set(p, list), list);
 
 /**
- * @template {import('../constants').Constructor} T
+ * @template {import('../types').Constructor} T
  * @param {T} Base
  * @mixin
  */

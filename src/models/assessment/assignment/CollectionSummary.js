@@ -6,6 +6,10 @@ import { BaseObservable } from '../../BaseObservable.js';
 import { initPrivate, getPrivate } from '../../../utils/private.js';
 import { SortOrder } from '../../../constants.js';
 
+/** @typedef {import('./Collection.js').default} Collection */
+/** @typedef {import('../../Base.js').default} Model */
+/** @typedef {import('../../../stores/Service.js').default} ServiceDocument */
+
 const PageSource = Paging.ListBackedPageSource;
 
 function clearCache(x) {
@@ -110,7 +114,7 @@ export default class AssignmentCollectionSummary extends BaseObservable {
 	/**
 	 * Build store.
 	 *
-	 * @param {Service} service    Instance of the ServiceDocument
+	 * @param {ServiceDocument} service    Instance of the ServiceDocument
 	 * @param {Collection} parent Instance of the Assignment Collection. (parent)
 	 * @param {Promise} HistoryPromise  A promise that fulfills with an AssignmentHistoryCollection
 	 * @returns {void}

@@ -4,7 +4,7 @@ import { begin, finishers } from '../utils/events-begin-finish.js';
 const after = (task, call) => task.catch(() => {}).then(() => call());
 
 /**
- * @template {import('../constants').Constructor} T
+ * @template {import('../types').Constructor} T
  * @param {T} Base
  * @mixin
  */

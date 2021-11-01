@@ -6,10 +6,10 @@ import Logger from '@nti/util-logger';
 
 /** @typedef {import('../interface/DataServerInterface.js').default} DataServerInterface */
 /** @typedef {() => void} Action */
-/** @typedef {(...x: any[]) => void} Handler */
+/** @typedef {import('../types').Constructor} Handler */
 /** @typedef {(eventName: string, handler: Handler) => void} RegisterHandler */
 /** @typedef {{ emit: (name: string, data: any, callback: Handler) => void; onPacket: Handler; on: RegisterHandler; removeAllListeners: Action; disconnect: Action; disconnectSync: Action }} SocketIO_Port */
-/** @typedef {{ scope: any; [key: string]: string | Handler }} HandlerMapping */
+/** @typedef {import('../types').HandlerMapping<Handler>} HandlerMapping */
 
 const logger = Logger.get('websocket');
 const SOCKET_IO_SRC = '/socket.io/static/socket.io.js';

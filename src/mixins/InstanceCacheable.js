@@ -73,7 +73,7 @@ export function parseOrRefresh(service, parent, data) {
 }
 
 /**
- * @template {import('../constants').Constructor} T
+ * @template {import('../types').Constructor} T
  * @param {T} Base
  * @mixin
  */

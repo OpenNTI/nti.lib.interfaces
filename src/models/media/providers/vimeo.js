@@ -2,8 +2,12 @@ import url from 'url';
 
 import { getMetaDataEntryPoint } from '../MetaDataResolverForVimeo.js';
 
+/** @typedef {import('../../Base.js').default} Model */
+/** @typedef {import('../../../stores/Service.js').default} ServiceDocument */
+
 const vimeoRe = /vimeo/i;
-const VIMEO_URL_PARTS = /(?:https?:)?\/\/(?:(?:www|player)\.)?vimeo.com\/(?:(?:channels|video)\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?|#)/i;
+const VIMEO_URL_PARTS =
+	/(?:https?:)?\/\/(?:(?:www|player)\.)?vimeo.com\/(?:(?:channels|video)\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?|#)/i;
 const VIMEO_PROTOCOL_PARTS = /vimeo:\/\/(\d+\/)?(\d+)/i;
 
 export { getMetaDataEntryPoint }; //Re-export from here... something may be needing it from this module.
@@ -30,7 +34,7 @@ export default class VimeoProvider {
 	/**
 	 * Resolves custom URLs so we can get the ID for our uses.
 	 *
-	 * @param  {Service} service the service instance.
+	 * @param  {ServiceDocument} service the service instance.
 	 * @param  {string} uri the url of the vimeo video.
 	 * @returns {Promise} resolves with the video id, or rejects with an error.
 	 */

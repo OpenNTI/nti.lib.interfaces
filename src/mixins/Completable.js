@@ -15,7 +15,7 @@ function getCompletedDate(item, items) {
 }
 
 /**
- * @template {import('../constants').Constructor} T
+ * @template {import('../types').Constructor} T
  * @param {T} Base
  * @mixin
  */

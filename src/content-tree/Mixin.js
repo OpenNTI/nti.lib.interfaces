@@ -1,7 +1,7 @@
 import { Node } from './tree-node/index.js';
 
 /**
- * @template {import('../constants').Constructor} T
+ * @template {import('../types').Constructor} T
  * @param {T} Base
  * @mixin
  */

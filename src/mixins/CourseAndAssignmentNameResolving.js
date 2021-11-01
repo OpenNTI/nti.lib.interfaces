@@ -8,7 +8,7 @@ import { Service } from '../constants.js';
 import getLink from '../utils/get-link.js';
 
 /**
- * @template {import('../constants').Constructor} T
+ * @template {import('../types').Constructor} T
  * @param {T} Base
  * @mixin
  */

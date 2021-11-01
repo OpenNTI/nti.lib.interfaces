@@ -7,7 +7,7 @@ import { thread, CHILDREN, PARENT } from '../utils/UserDataThreader.js';
 const logger = Logger.get('models:mixins:Threadable');
 
 /**
- * @template {import('../constants').Constructor} T
+ * @template {import('../types').Constructor} T
  * @param {T} Base
  * @mixin
  */

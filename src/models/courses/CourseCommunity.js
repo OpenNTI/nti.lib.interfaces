@@ -2,6 +2,8 @@ import AbstractCommunity from '../AbstractCommunity.js';
 import { Channels } from '../community/index.js';
 import { AutoSubscribable, Avatar, HasMembers } from '../community/traits.js';
 
+/** @typedef {import('../forums/Board.js').default} Board */
+
 const ContentsCache = new Map();
 
 export default class CourseCommunity extends AutoSubscribable(

@@ -2,7 +2,7 @@ const isPositiveFiniteNumber = n =>
 	typeof n === 'number' && isFinite(n) && n > 0;
 
 /**
- * @template {import('../constants').Constructor} T
+ * @template {import('../types').Constructor} T
  * @param {T} Base
  * @mixin
  */
