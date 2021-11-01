@@ -124,7 +124,7 @@ export default class DataServerInterface extends EventEmitter {
 
 	/**
 	 * Makes a request to the dataserver.
-	 *   It should be noted that this is intented to facilitate and abstract the act
+	 *   It should be noted that this is intended to facilitate and abstract the act
 	 *   of making a request to the dataserver so it is transparent between nodejs and a
 	 *   web browser. Do not use this directly. Only use the interface methods NOT
 	 *   prefixed with underscores.
