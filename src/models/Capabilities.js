@@ -17,7 +17,7 @@ const CAPABILITIES = {
 
 	canAddCreditTypes() {
 		return (
-			this[Service]?.getCollection('CreditDefinitions', 'Global').accepts
+			this[Service]?.getCollection('CreditDefinitions', 'Global')?.accepts
 				?.length > 0
 		);
 	},
