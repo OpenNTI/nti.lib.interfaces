@@ -1,11 +1,10 @@
- 
 /* eslint-env jest */
 import diff from 'jest-diff';
 
 import Logger from '@nti/util-logger';
 
-import { JSONValue } from '../JSONValue.js';
-import { clone, mixin as Fields } from '../Fields.js';
+import JSONValue from '../JSONValue.js';
+import Fields, { clone } from '../Fields.js';
 import Registry, { COMMON_PREFIX } from '../../models/Registry.js';
 
 const logger = Logger.get('mixins:Fields');

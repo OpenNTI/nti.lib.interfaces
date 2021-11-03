@@ -9,7 +9,7 @@ import AssessmentCollectionInstructorView from '../assessment/assignment/Collect
 import Roster from '../../stores/CourseRoster.js';
 import MediaIndex from '../media/MediaIndex.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 import Forum from '../forums/Forum.js';
 
 import CompletedItem from './CompletedItem.js';

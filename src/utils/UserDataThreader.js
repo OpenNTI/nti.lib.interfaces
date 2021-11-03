@@ -1,7 +1,7 @@
 import Logger from '@nti/util-logger';
 import { isEmpty } from '@nti/lib-commons';
 
-/** @typedef {import("../models/Base").default} Model */
+/** @typedef {import("../models/Model").default} Model */
 
 export const PARENT = Symbol('Thread Links:Parent');
 export const CHILDREN = Symbol('Thread Links:Children');

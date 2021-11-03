@@ -2,7 +2,7 @@ import { url } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 import { Service } from '../../constants.js';
 import MediaIndex from '../media/MediaIndex.js';
 import TablesOfContents from '../content/TablesOfContents.js';

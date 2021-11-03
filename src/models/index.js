@@ -24,7 +24,10 @@ export * as segments from './segments/index.js';
 export * as store from './store/index.js';
 export * as subscriptions from './subscriptions/index.js';
 
-export { default as Base } from './Base.js';
+/** @deprecated Use Model instead*/
+export { default as Base } from './Model.js';
+
+export { default as Model } from './Model.js';
 export { default as AnalyticsSession } from './AnalyticsSession.js';
 export * from './Change.js';
 export { default as Workspace } from './Workspace.js';

@@ -1,6 +1,6 @@
 import { Service } from '../../constants.js';
 import Likable from '../../mixins/Likable.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 export default class Annotation extends Likable(Base) {
 	// prettier-ignore

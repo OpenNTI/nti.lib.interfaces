@@ -1,5 +1,5 @@
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 import CatalogEntryFactory from './CatalogEntryFactory.js';
 import CourseIdentity from './mixins/CourseIdentity.js';

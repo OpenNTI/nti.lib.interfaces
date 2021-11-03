@@ -13,13 +13,13 @@ import {
 	Service,
 	Parent,
 } from '../../../constants.js';
-import Base from '../../Base.js';
+import Base from '../../Model.js';
 import { getPrivate } from '../../../utils/private.js';
 
 import AssignmentsByX from './AssignmentsByX.js';
 import Activity from './AssignmentActivityMixin.js';
 
-/** @typedef {import('../../Base.js').default} Model */
+/** @typedef {import('../../Model.js').default} Model */
 /** @typedef {import('../../../stores/Service.js').default} ServiceDocument */
 
 const logger = Logger.get('assignment:Collection:Base');

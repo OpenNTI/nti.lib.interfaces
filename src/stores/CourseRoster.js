@@ -1,5 +1,5 @@
 import { Service } from '../constants.js';
-import Base from '../models/Base.js';
+import Base from '../models/Model.js';
 import Paged from '../mixins/Paged.js';
 
 import Stream from './Stream.js';

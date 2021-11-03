@@ -2,7 +2,7 @@ import { buffer, ObjectUtils } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 const logger = Logger.get('user-preferences:root');
 

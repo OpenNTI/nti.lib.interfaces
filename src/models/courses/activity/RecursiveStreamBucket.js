@@ -1,7 +1,7 @@
 import { threadThreadables } from '../../../utils/UserDataThreader.js';
 import { Parser as parse } from '../../../constants.js';
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
-import Base from '../../Base.js';
+import Base from '../../Model.js';
 
 const thread = (_, bucket, data) => threadThreadables(bucket[parse](data));
 

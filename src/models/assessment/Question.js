@@ -1,7 +1,7 @@
 import PlacementProvider from '../../authoring/placement/providers/Question.js';
 import { mixin as HasContent } from '../../mixins/HasContent.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 import QuestionIdentity from './mixins/QuestionIdentity.js';
 import SubmittableIdentity from './mixins/SubmittableIdentity.js';

@@ -1,6 +1,6 @@
 import { Service } from '../../../constants.js';
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
-import Base from '../../Base.js';
+import Base from '../../Model.js';
 
 export default class AssignmentFeedbackContainer extends Base {
 	static MimeType =

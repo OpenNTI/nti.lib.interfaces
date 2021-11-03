@@ -2,7 +2,7 @@ import { isEmpty } from '@nti/lib-commons';
 
 import Registry, { COMMON_PREFIX } from '../Registry.js';
 import { Service } from '../../constants.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 const INPUT_STATES = new Set(['composing', 'paused']);
 export default class RoomInfo extends Base {

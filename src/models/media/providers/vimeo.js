@@ -2,7 +2,7 @@ import url from 'url';
 
 import { getMetaDataEntryPoint } from '../MetaDataResolverForVimeo.js';
 
-/** @typedef {import('../../Base.js').default} Model */
+/** @typedef {import('../../Model.js').default} Model */
 /** @typedef {import('../../../stores/Service.js').default} ServiceDocument */
 
 const vimeoRe = /vimeo/i;

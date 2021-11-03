@@ -1,4 +1,4 @@
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 export class Segment extends Base {
 	// prettier-ignore

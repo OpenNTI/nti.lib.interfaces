@@ -3,7 +3,7 @@ import GetContents from '../../mixins/GetContents.js';
 import DiscussionInterface from '../../mixins/DiscussionInterface.js';
 import getLink from '../../utils/get-link.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 import { encodeIdFrom } from '../../utils/href-ntiids.js';
 
 import ForumContentsDataSource from './forum-contents-data-source/index.js';

@@ -1,5 +1,5 @@
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 export class PersistentWebhookDeliveryAttempt extends Base {
 	static MimeType = COMMON_PREFIX + 'webhooks.webhookdeliveryattempt';

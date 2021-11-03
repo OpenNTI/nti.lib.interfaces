@@ -6,12 +6,12 @@ import { url } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
 import { Service, Parent, DELETED, SortOrder } from '../constants.js';
-import { mixin as Pendability } from '../mixins/Pendability.js';
+import Pendability from '../mixins/Pendability.js';
 import getLink from '../utils/get-link.js';
 import { parseListFn } from '../models/Parser.js';
 import { initPrivate, getPrivate } from '../utils/private.js';
 
-/** @typedef {import('../models/Base.js').default} Model */
+/** @typedef {import('../models/Model.js').default} Model */
 /** @typedef {import('./Service.js').default} ServiceDocument */
 
 class RetryBatch extends Error {

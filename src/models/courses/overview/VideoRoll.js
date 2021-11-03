@@ -1,6 +1,6 @@
 import { mixin as ContentTree } from '../../../content-tree/index.js';
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
-import Base from '../../Base.js';
+import Base from '../../Model.js';
 
 export default class VideoRoll extends ContentTree(Base) {
 	static MimeType = COMMON_PREFIX + 'videoroll';

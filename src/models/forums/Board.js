@@ -1,6 +1,6 @@
 import GetContents from '../../mixins/GetContents.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 export default class Board extends GetContents(Base) {
 	static MimeType = [

@@ -7,7 +7,7 @@ import Logger from '@nti/util-logger';
 import { Promises } from '@nti/lib-commons';
 
 import { Service, DELETED } from '../constants.js';
-import { mixin as Pendability } from '../mixins/Pendability.js';
+import Pendability from '../mixins/Pendability.js';
 import { parse, parseListFn } from '../models/Parser.js';
 
 // import getLink from '../utils/get-link.js';

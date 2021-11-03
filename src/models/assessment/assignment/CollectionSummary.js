@@ -2,12 +2,12 @@ import invariant from 'invariant';
 
 import { Paging } from '@nti/lib-commons';
 
-import { BaseObservable } from '../../BaseObservable.js';
+import { BaseObservable } from '../../AbstractModel.js';
 import { initPrivate, getPrivate } from '../../../utils/private.js';
 import { SortOrder } from '../../../constants.js';
 
 /** @typedef {import('./Collection.js').default} Collection */
-/** @typedef {import('../../Base.js').default} Model */
+/** @typedef {import('../../Model.js').default} Model */
 /** @typedef {import('../../../stores/Service.js').default} ServiceDocument */
 
 const PageSource = Paging.ListBackedPageSource;

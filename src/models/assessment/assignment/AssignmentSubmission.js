@@ -1,6 +1,6 @@
 import Submission from '../../../mixins/Submission.js';
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
-import Base from '../../Base.js';
+import Base from '../../Model.js';
 
 const RELS = {
 	ASSIGNMENT: 'Assignment',

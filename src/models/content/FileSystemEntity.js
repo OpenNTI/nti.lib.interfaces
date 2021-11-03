@@ -1,6 +1,6 @@
 import { pluck } from '@nti/lib-commons';
 
-import Base from '../Base.js';
+import Base from '../Model.js';
 import { NO_LINK } from '../../constants.js';
 
 //Known Links:

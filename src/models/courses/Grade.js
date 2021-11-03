@@ -8,7 +8,7 @@ import {
 import { getPrivate } from '../../utils/private.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
 //
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 const ENDS_IN_LETTER_REGEX = /\s[a-fiw-]$/i;
 

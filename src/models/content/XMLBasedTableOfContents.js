@@ -1,6 +1,6 @@
 import XML from 'elementtree';
 
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 import PageSource from './TableOfContentsBackedPageSource.js';
 import Node from './TableOfContentsNode.js';

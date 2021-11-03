@@ -1,4 +1,4 @@
-import Base from '../Base.js';
+import Base from '../Model.js';
 import { Service } from '../../constants.js';
 
 const getNodeId = node => node.getContentId();

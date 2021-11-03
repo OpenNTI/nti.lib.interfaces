@@ -1,5 +1,5 @@
 import Batch from '../data-sources/data-types/Batch';
-import Base from '../models/Base';
+import Base from '../models/Model';
 
 export type ParseMode = 'parse' | 'batch' | 'raw';
 

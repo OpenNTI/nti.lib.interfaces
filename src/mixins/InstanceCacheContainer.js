@@ -9,7 +9,7 @@ export function getCacheFor(o) {
  * @param {T} Base
  * @mixin
  */
-export const mixin = Base =>
+export default Base =>
 	class extends Base {
 		constructor(...args) {
 			super(...args);

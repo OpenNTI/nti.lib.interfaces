@@ -1,7 +1,7 @@
 import { url } from '@nti/lib-commons';
 
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 const getRoot = x => (x ? x.root : x) || '/missing-root/';
 const findRoot = p => getRoot(p && p.parent ? p.parent('root') : null);

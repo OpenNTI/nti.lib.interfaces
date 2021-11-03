@@ -1,6 +1,6 @@
 import { Parser as parse } from '../../../constants.js';
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
-import Base from '../../Base.js';
+import Base from '../../Model.js';
 
 const BY_MOST_RECENT = (a, b) => b.MostRecentTimestamp - a.MostRecentTimestamp;
 const sorted = (_, stream, data) =>

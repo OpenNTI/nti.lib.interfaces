@@ -1,7 +1,7 @@
 import { parseNTIID, isNTIID } from '@nti/lib-ntiids';
 
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 import { Service } from '../../constants.js';
 
 const RESOLVE_TARGET = Symbol('Target');

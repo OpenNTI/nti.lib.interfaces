@@ -1,7 +1,7 @@
 import Completable from '../../../mixins/Completable.js';
 import { ASSESSMENT_HISTORY_LINK } from '../../../constants.js';
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
-import Base from '../../Base.js';
+import Base from '../../Model.js';
 
 export default class SurveyReference extends Completable(Base) {
 	static MimeType = COMMON_PREFIX + 'surveyref';

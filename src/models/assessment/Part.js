@@ -3,7 +3,7 @@ import {
 	SetupContentProperties,
 } from '../../mixins/HasContent.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 //Rules:
 // Show Hints from start if they are present. If more than one, increment which one you see every time your show.

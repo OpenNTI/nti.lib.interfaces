@@ -6,7 +6,7 @@ import Pinnable from '../../mixins/Pinnable.js';
 import Flaggable from '../../mixins/Flaggable.js';
 import DiscussionInterface from '../../mixins/DiscussionInterface.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 export default class Topic extends DiscussionInterface(
 	GetContents(Pinnable(Likable(Flaggable(Base))))

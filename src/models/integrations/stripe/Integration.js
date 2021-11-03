@@ -1,5 +1,5 @@
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
-import Base from '../../Base.js';
+import Base from '../../Model.js';
 
 const ConnectRel = 'connect_stripe_account';
 const DisconnectRel = 'disconnect_stripe_account';

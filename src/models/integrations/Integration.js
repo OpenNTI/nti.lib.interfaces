@@ -1,4 +1,4 @@
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 export default class Integration extends Base {
 	// prettier-ignore

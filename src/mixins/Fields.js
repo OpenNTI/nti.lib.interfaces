@@ -58,8 +58,8 @@ const isArrayType = _t.bind(/\[]$/);
  * @param {T} Base
  * @mixin
  */
-export const mixin = (Base = Object) =>
-	class extends Base {
+export default (Base = Object) =>
+	class Fields extends Base {
 		/**
 		 * Access the raw data used to build this model instance.
 		 *
@@ -136,8 +136,8 @@ export const mixin = (Base = Object) =>
 		}
 
 		constructor(...args) {
-			super();
-			this[Service] = args.length > 1 ? args[0] : null;
+			super(...args);
+			this[Service] = args.find(x => x?.isService === Service);
 
 			let data = args.pop(); //data should always be the last arg
 

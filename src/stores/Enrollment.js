@@ -1,5 +1,5 @@
 import { Service } from '../constants.js';
-import { BaseObservable } from '../models/BaseObservable.js';
+import { BaseObservable } from '../models/AbstractModel.js';
 import getLink from '../utils/get-link.js';
 
 //TODO: There isn't enough here to warrant a whole heavy class. This should move to the catalog API on the app side.

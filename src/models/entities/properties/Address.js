@@ -1,4 +1,4 @@
-import Base from '../../Base.js';
+import Base from '../../Model.js';
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
 
 /** @typedef {import('../../stores/Service').default} ServiceDocument */

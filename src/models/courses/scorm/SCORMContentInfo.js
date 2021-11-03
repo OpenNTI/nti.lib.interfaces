@@ -1,7 +1,7 @@
 import Completable from '../../../mixins/Completable.js';
 import { createPollingTask } from '../../../tasks/index.js';
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
-import Base from '../../Base.js';
+import Base from '../../Model.js';
 
 const IMPLICIT_ERROR = Symbol('Implicit Error');
 

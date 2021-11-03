@@ -1,7 +1,7 @@
 import { isEmpty, updateValue } from '@nti/lib-commons';
 
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 import PageSource from './OutlineNodeBackedPageSource.js';
 

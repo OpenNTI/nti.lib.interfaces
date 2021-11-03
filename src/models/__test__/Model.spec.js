@@ -1,5 +1,5 @@
 /* eslint-env jest */
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 import MockService from './mock-service.js';
 

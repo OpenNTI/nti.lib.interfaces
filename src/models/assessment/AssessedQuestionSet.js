@@ -1,6 +1,6 @@
 import assessed from '../../mixins/AssessedAssessmentPart.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 export default class AssessedQuestionSet extends assessed(Base) {
 	static MimeType = COMMON_PREFIX + 'assessment.assessedquestionset';

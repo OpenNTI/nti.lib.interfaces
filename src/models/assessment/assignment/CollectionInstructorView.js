@@ -16,7 +16,7 @@ import Base from './Collection.js';
 import CollectionSummary from './CollectionSummary.js';
 import ActivityStore from './AssignmentActivityStore.js';
 
-/** @typedef {import('../../Base.js').default} Model */
+/** @typedef {import('../../Model.js').default} Model */
 /** @typedef {import('../../../stores/Service.js').default} ServiceDocument */
 
 // const logger = Logger.get('assignment:Collection:Instructor');

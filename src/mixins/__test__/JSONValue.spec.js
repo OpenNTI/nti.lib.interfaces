@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-env jest */
 
-import { JSONValue } from '../JSONValue.js';
+import JSONValue from '../JSONValue.js';
 
 test('JSONValue handles cycles', () => {
 	jest.spyOn(console, 'warn').mockImplementation(() => {});

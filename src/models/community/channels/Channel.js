@@ -1,6 +1,6 @@
 import { defineReadOnly } from '@nti/lib-commons';
 
-import { BaseObservable } from '../../BaseObservable.js';
+import { BaseObservable } from '../../AbstractModel.js';
 import Iterator from '../../../data-sources/Iterator.js';
 
 export default class CommunityChannel extends BaseObservable {

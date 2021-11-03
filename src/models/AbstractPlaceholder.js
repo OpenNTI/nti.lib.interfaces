@@ -1,6 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
-import Base from './Base.js';
+import Base from './Model.js';
 
 function MarkerFactory(obj) {
 	const markers = {};

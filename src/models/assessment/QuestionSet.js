@@ -3,7 +3,7 @@ import { pluck } from '@nti/lib-commons';
 import Completable from '../../mixins/Completable.js';
 import PlacementProvider from '../../authoring/placement/providers/QuestionSet.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 import SubmittableIdentity from './mixins/SubmittableIdentity.js';
 import QuestionSetSubmission from './QuestionSetSubmission.js';

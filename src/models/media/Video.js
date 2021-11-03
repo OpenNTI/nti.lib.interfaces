@@ -10,7 +10,7 @@ import {
 import getLink from '../../utils/get-link.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Pages from '../content/mixins/Pages.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 const UserData = Symbol('UserData');
 

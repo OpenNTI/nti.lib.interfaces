@@ -1,6 +1,6 @@
 import { SCOPED_COURSE_INSTANCE, Service } from '../../constants.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 import CourseIdentity from './mixins/CourseIdentity.js';
 import EnrollmentIdentity from './mixins/EnrollmentIdentity.js';

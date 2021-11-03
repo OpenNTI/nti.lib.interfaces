@@ -1,6 +1,6 @@
 import { Paging } from '@nti/lib-commons';
 
-import { BaseObservable } from '../../BaseObservable.js';
+import { BaseObservable } from '../../AbstractModel.js';
 import { initPrivate, getPrivate } from '../../../utils/private.js';
 
 const PageSource = Paging.ListBackedPageSource;

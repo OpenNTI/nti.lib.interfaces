@@ -1,6 +1,6 @@
 import Completable from '../../../mixins/Completable.js';
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
-import Base from '../../Base.js';
+import Base from '../../Model.js';
 
 export class SCORMReference extends Completable(Base) {
 	static MimeType = [COMMON_PREFIX + 'scormcontentref'];

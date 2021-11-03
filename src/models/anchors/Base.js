@@ -1,4 +1,4 @@
-import Model from '../Base.js';
+import Model from '../Model.js';
 
 export default class Base extends Model {
 	constructor(service, parent, data) {

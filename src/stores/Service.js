@@ -4,7 +4,7 @@ import Logger from '@nti/util-logger';
 import { isNTIID } from '@nti/lib-ntiids';
 import { url, wait } from '@nti/lib-commons';
 
-import { BaseObservable } from '../models/BaseObservable.js';
+import { BaseObservable } from '../models/AbstractModel.js';
 import { parse } from '../models/Parser.js';
 import { Workspace, WorkspaceCollection } from '../models/index.js';
 import Capabilities from '../models/Capabilities.js';
@@ -12,11 +12,10 @@ import CommunitiesWorkspace from '../models/community/Workspace.js';
 import AbstractPlaceholder from '../models/AbstractPlaceholder.js';
 import Batch from '../data-sources/data-types/Batch.js';
 import PageInfo from '../models/content/PageInfo.js';
-import {
+import Pendability, {
 	attach as attachPendingQueue,
-	mixin as Pendability,
 } from '../mixins/Pendability.js';
-import { mixin as InstanceCacheContainer } from '../mixins/InstanceCacheContainer.js';
+import InstanceCacheContainer from '../mixins/InstanceCacheContainer.js';
 import DataCache from '../utils/data-cache.js';
 import getLink from '../utils/get-link.js';
 import maybeWait from '../utils/maybe-wait.js';
@@ -38,7 +37,7 @@ import Enrollment from './Enrollment.js';
 import UserPreferences from './UserPreferences.js';
 
 /** @typedef {import('../interface/DataServerInterface.js').default} DataServerInterface */
-/** @typedef {import('../models/Base.js').default} Model */
+/** @typedef {import('../models/Model.js').default} Model */
 /** @typedef {import('../utils/get-link.js').Link} Link */
 /** @typedef {import('../models/entities/User.js').default} User */
 

@@ -75,7 +75,7 @@ function getData({ diff = false } = {}) {
  * @param {T} Base
  * @mixin
  */
-export const JSONValue = (Base = Object) => {
+export default (Base = Object) => {
 	class JSONValueImpl extends Base {
 		toJSON() {
 			return this.getData();

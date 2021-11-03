@@ -7,7 +7,7 @@ import Base from './Collection.js';
 import CollectionSummary from './CollectionSummary.js';
 import HistoryCollection from './AssignmentHistoryCollection.js';
 
-/** @typedef {import('../../Base.js').default} Model */
+/** @typedef {import('../../Model.js').default} Model */
 /** @typedef {import('../../../stores/Service.js').default} ServiceDocument */
 
 const logger = Logger.get('assignment:Collection:Student');

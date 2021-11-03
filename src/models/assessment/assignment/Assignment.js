@@ -3,7 +3,7 @@ import { Service, ASSESSMENT_HISTORY_LINK } from '../../../constants.js';
 import Publishable from '../../../mixins/Publishable.js';
 import Completable from '../../../mixins/Completable.js';
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
-import Base from '../../Base.js';
+import Base from '../../Model.js';
 import SubmittableIdentity from '../mixins/SubmittableIdentity.js';
 import AssignmentIdentity from '../mixins/AssignmentIdentity.js';
 import { resolveSubmitTo } from '../utils.js';

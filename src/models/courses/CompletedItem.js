@@ -1,5 +1,5 @@
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 import CompletionMetadata from '../completion/CompletionMetadata.js';
 
 export default class CompletedItem extends Base {

@@ -1,7 +1,7 @@
 import Flaggable from '../../mixins/Flaggable.js';
 import Threadable from '../../mixins/Threadable.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 export default class MessageInfo extends Flaggable(Threadable(Base)) {
 	static MimeType = COMMON_PREFIX + 'messageinfo';

@@ -1,5 +1,5 @@
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 //TODO: does this need to live somewhere else
 const DEFAULT_ICON = '/app/resources/images/elements/discussion-icon.png';

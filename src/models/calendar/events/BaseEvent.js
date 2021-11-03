@@ -1,5 +1,5 @@
 import Registry from '../../Registry.js';
-import Base from '../../Base.js';
+import Base from '../../Model.js';
 
 /** @typedef {import('../../entities/User.js').default} User */
 

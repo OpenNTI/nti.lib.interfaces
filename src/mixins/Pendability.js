@@ -9,8 +9,8 @@ const setPending = (p, list) => (PRIVATE_PENDING.set(p, list), list);
  * @param {T} Base
  * @mixin
  */
-export const mixin = Base =>
-	class extends Base {
+const Pendability = Base =>
+	class Pendability extends Base {
 		getPending() {
 			return getPending(this);
 		}
@@ -56,7 +56,9 @@ export const mixin = Base =>
 		}
 	};
 
-const Prototype = mixin(class {}).prototype;
+const Prototype = Pendability(class {}).prototype;
+
+export default Pendability;
 
 export function attach(context) {
 	setPending(context, getPending(context));

@@ -26,8 +26,8 @@ const logger = Logger.get('mixins:HasLinks');
  * @param {T} Base
  * @mixin
  */
-export const mixin = Base =>
-	class extends Base {
+export default Base =>
+	class HasLinks extends Base {
 		/**
 		 * Internal to model usage.
 		 *

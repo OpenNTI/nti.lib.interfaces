@@ -2,7 +2,7 @@
 import Likable from '../../mixins/Likable.js';
 import DiscussionInterface from '../../mixins/DiscussionInterface.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 export default class Post extends DiscussionInterface(Likable(Base)) {
 	static MimeType = [

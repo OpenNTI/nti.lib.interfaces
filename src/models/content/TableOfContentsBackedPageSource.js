@@ -1,6 +1,6 @@
 import { encodeForURI as encodeNTIIDForURI } from '@nti/lib-ntiids';
 
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 const Service = Symbol.for('Service');
 

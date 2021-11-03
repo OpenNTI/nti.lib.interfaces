@@ -1,6 +1,6 @@
 import { mixin as HasContent } from '../../mixins/HasContent.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 export default class Hint extends HasContent(Base) {
 	static MimeType = [

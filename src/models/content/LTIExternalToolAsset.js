@@ -1,6 +1,6 @@
 import Registry, { COMMON_PREFIX } from '../Registry.js';
 import Completable from '../../mixins/Completable.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 /*
 	description: data.description,

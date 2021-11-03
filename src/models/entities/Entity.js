@@ -2,7 +2,7 @@ import Stream from '../../stores/Stream.js';
 import ActivityCollator from '../../utils/activity-collator.js';
 import { Service } from '../../constants.js';
 import ActivityStreamDataSource from '../content/ActivityStreamDataSource.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 export default class Entity extends Base {
 	// prettier-ignore

@@ -1,5 +1,5 @@
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 const HasCompleted = Symbol('Has Completed Field');
 const HasProgress = Symbol('Has Progress Field');

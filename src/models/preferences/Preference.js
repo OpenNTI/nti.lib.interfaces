@@ -1,6 +1,6 @@
 import { url } from '@nti/lib-commons';
 
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 export default class Preference extends Base {
 	// prettier-ignore

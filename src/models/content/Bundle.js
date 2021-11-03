@@ -3,7 +3,7 @@ import TablesOfContents from '../content/TablesOfContents.js';
 import MediaIndex from '../media/MediaIndex.js';
 import Publishable from '../../mixins/Publishable.js';
 import Registry, { COMMON_PREFIX } from '../Registry.js';
-import Base from '../Base.js';
+import Base from '../Model.js';
 import Forum from '../forums/Forum.js';
 
 import BundleCommunity from './BundleCommunity.js';

@@ -3,7 +3,7 @@ import { endOfISOWeek, startOfISOWeek } from 'date-fns';
 import { Proxy as ProxyObject } from '@nti/lib-commons';
 import Logger from '@nti/util-logger';
 
-import Base from '../Base.js';
+import Base from '../Model.js';
 
 const SOURCE = 'source';
 const ACTIVE_REQUEST = Symbol('active');

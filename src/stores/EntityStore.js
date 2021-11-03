@@ -3,7 +3,7 @@ import EventEmitter from 'events';
 import Logger from '@nti/util-logger';
 
 import { Service } from '../constants.js';
-import { mixin as Pendability } from '../mixins/Pendability.js';
+import Pendability from '../mixins/Pendability.js';
 // import getLink from '../utils/get-link.js';
 import { parseListFn } from '../models/Parser.js';
 

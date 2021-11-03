@@ -1,5 +1,5 @@
 import Registry, { COMMON_PREFIX } from '../../Registry.js';
-import Base from '../../Base.js';
+import Base from '../../Model.js';
 import Completable from '../../../mixins/Completable.js';
 
 export default class WebinarAsset extends Completable(Base) {
