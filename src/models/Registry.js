@@ -55,7 +55,7 @@ export default class Registry {
 			typeof o !== 'function'
 		) {
 			throw new TypeError(
-				`Illegial Argument: Model class expected:
+				`Illegal Argument: Model class expected:
 				Has Argument: ${!!o}
 				Has MimeType: ${o && !!o.MimeType}
 				Is Own MimeType: ${o && has(o, 'MimeType')}: ${o.MimeType} (${o.name})
