@@ -799,6 +799,9 @@ export default class ServiceDocument extends Pendability(
 		return data;
 	}
 
+	/**
+	 * @returns {Workspace}
+	 */
 	getUserWorkspace() {
 		return (this.Items || []).find(x => x.hasLink('ResolveSelf'));
 	}
