@@ -39,11 +39,6 @@ export default class Model extends Pendability(
 	 */
 	constructor(service, parent, data) {
 		super(service, parent, data);
-		// Allow null, and objects that declare they are a service.
-		// Undefined and other falsy values are invalid.
-		if (service !== null && (!service || service.isService !== Service)) {
-			throw new Error('Invalid Service Document');
-		}
 
 		/** @type {string?} */
 		this.Class;

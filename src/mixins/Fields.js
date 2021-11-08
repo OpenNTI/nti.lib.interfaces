@@ -137,7 +137,18 @@ export default (Base = Object) =>
 
 		constructor(...args) {
 			super(...args);
-			this[Service] = args.find(x => x?.isService === Service);
+			const service =
+				(this[Service] = args.find(x => x?.isService === Service)) ??
+				args.length > 1
+					? args[0] // assume first arg is service if we have more than 1 arg (last arg should be data)
+					: null;
+
+			// Allow null, and objects that declare they are a service.
+			// Undefined and other falsy values are invalid.
+			if (service !== null && service?.isService !== Service) {
+				console.log(args.length, args);
+				throw new Error('Invalid Service Document');
+			}
 
 			let data = args.pop(); //data should always be the last arg
 
@@ -1061,7 +1072,7 @@ export function clone(obj) {
 }
 
 function doParse(parent, data) {
-	const service = parent[Service];
+	const service = parent[Service] ?? null;
 
 	try {
 		return data && parse(service, parent, data);
