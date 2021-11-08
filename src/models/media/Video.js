@@ -69,15 +69,14 @@ export default class Video extends Completable(Pages(Base)) {
 		'label':       { type: 'string'   }
 	};
 
-	isVideo = true;
-
 	constructor(service, parent, data) {
 		super(service, parent, data);
 
-		Object.assign(this, {
-			NO_TRANSCRIPT,
-			NO_TRANSCRIPT_LANG,
-			EXISTING_TRANSCRIPT,
+		Object.defineProperties(this, {
+			isVideo: { value: true },
+			NO_TRANSCRIPT: { value: NO_TRANSCRIPT },
+			NO_TRANSCRIPT_LANG: { value: NO_TRANSCRIPT_LANG },
+			EXISTING_TRANSCRIPT: { value: EXISTING_TRANSCRIPT },
 		});
 	}
 
