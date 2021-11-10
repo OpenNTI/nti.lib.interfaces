@@ -7,8 +7,9 @@ import { Parent, Service } from '../constants.js';
 import Registry, { COMMON_PREFIX } from './Registry.js';
 import { AbstractModel } from './AbstractModel.js';
 
-/** @typedef {import('../utils/get-link.js').Link} Link */
-/** @typedef {() => Date} DateGetter */
+/** @typedef {import('../types').Data} Data */
+/** @typedef {import('../types').DateGetter} DateGetter */
+/** @typedef {import('../types').Link} Link */
 
 const CONTENT_VISIBILITY_MAP = { OU: 'OUID' };
 
@@ -32,10 +33,9 @@ export default class Model extends Pendability(
 	};
 
 	/**
-	 *
-	 * @param {import('../stores/Service.js').default} service
-	 * @param {?Model} parent
-	 * @param {*} data
+	 * @param {import('../types').Service} service The service document reference
+	 * @param {Model} parent The parent model reference
+	 * @param {Data} data The data for this model
 	 */
 	constructor(service, parent, data) {
 		super(service, parent, data);

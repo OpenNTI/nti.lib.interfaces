@@ -3,6 +3,11 @@ import DiscussionInterface from '../../../mixins/DiscussionInterface.js';
 
 const DiscussionType = 'application/vnd.nextthought.note';
 
+/**
+ * @template {import('../../../types').Constructor} T
+ * @param {T} Target
+ * @mixin
+ */
 export default Target =>
 	class Pages extends Target {
 		async addDiscussion(data) {

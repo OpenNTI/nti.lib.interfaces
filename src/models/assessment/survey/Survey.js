@@ -14,6 +14,11 @@ import SurveySubmission from './SurveySubmission.js';
 
 const AGGREGATED = Symbol(SURVEY_AGGREGATED_LINK);
 
+/** @typedef {import('../../../types').Service} Service */
+/** @typedef {import('../../../types').Model} Model */
+/** @typedef {import('../../../types').Data} Data */
+/** @typedef {import('../../../types').DateGetter} DateGetter */
+
 export default class Survey extends Publishable(Pages(QuestionSet)) {
 	static MimeType = COMMON_PREFIX + 'nasurvey';
 
@@ -25,12 +30,47 @@ export default class Survey extends Publishable(Pages(QuestionSet)) {
 		'disclosure':                         { type: 'string'  },
 		'contents':                           { type: 'string'  },
 		'PublicationState':                   { type: 'string'  },
+		'full_submission':                    { type: 'boolean', name: 'fullSubmission' },
 		'available_for_submission_beginning': { type: 'date'    },
 		'available_for_submission_ending':    { type: 'date'    },
 		'version':                            { type: 'string'  },
 		'submissions':                        { type: 'number'  },
 		'Reports':                            { type: 'model[]' }
 	};
+
+	/**
+	 * @param {Service} service The service document reference
+	 * @param {Model} parent The parent model reference
+	 * @param {Data} data The data for this model
+	 */
+	constructor(service, parent, data) {
+		super(service, parent, data);
+
+		/** @type {string} */
+		this.contents;
+		/** @type {string} */
+		this.description;
+		/** @type {string} */
+		this.disclosure;
+		/** @type {boolean} */
+		this.fullSubmission;
+		/** @type {number} */
+		this.submissions;
+		/** @type {string} */
+		this.title;
+		/** @type {string} */
+		this.version;
+
+		/** @type {DateGetter} */
+		this.getAvailableForSubmissionBeginning;
+		/** @type {DateGetter} */
+		this.getAvailableForSubmissionEnding;
+
+		/** @type {string} */
+		this.PublicationState;
+		/** @type {Model[]} */
+		this.Reports;
+	}
 
 	get hasAggregationData() {
 		return this.hasLink(SURVEY_AGGREGATED_LINK);
