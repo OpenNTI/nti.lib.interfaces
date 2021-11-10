@@ -3,7 +3,7 @@ export { default as CredlyAcclaimOrganization } from './credly-acclaim/Organizat
 export { default as CredlyAcclaimBadgeCollection } from './credly-acclaim/BadgeCollection.js';
 export { default as CredlyAcclaimBadge } from './credly-acclaim/Badge.js';
 export { default as CredlyAcclaimAwardedBadge } from './credly-acclaim/AwardedBadge.js';
-export { default as GoogleAPIKey } from './google/APIKey.js';
+export { GoogleAPIKey } from './google/APIKey.js';
 export { default as GoogleSSOIntegration } from './google/SSOIntegration.js';
 export { default as GotoWebinar } from './goto-webinar/Integration.js';
 export { default as Webinar } from './goto-webinar/Webinar.js';
