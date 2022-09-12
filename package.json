@@ -40,7 +40,7 @@
     "js-base64": "^3.7.0",
     "lru-cache": "^6.0.0",
     "mime-types": "^2.1.0",
-    "uuid": "^8.3.0"
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@nti/lib-scripts": "^2.0.0"
