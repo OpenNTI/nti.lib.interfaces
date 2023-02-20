@@ -38,7 +38,7 @@
     "invariant": "^2.2.0",
     "iso8601-duration": "^1.1.1",
     "js-base64": "^3.7.0",
-    "lru-cache": "^6.0.0",
+    "lru-cache": "^7.16.1",
     "mime-types": "^2.1.0",
     "uuid": "^8.3.0"
   },
